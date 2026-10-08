@@ -1,0 +1,104 @@
+{
+  "lessonsReviewed": 56,
+  "expandedLessonsPatched": 55,
+  "changedExpandedRows": 151,
+  "reviewedFieldOperations": 344,
+  "writtenModalityCorrections": 9,
+  "guidedOralActivities": 56,
+  "unit1DuplicateDistractor": 1,
+  "captures": [
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit2-writing-desktop.jpg",
+      "pixels": [
+        1536,
+        864
+      ],
+      "sourceSHA256": "3cad56c04485d8bade6b277dbb9de6e598684f64eda337d65312de752266595f",
+      "reference": "docs/design/graphic-guide-v1/writing-instruction-reference.png"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit2-writing-ready-desktop.png",
+      "pixels": [
+        1920,
+        842
+      ],
+      "sourceSHA256": "4d59cbf08605433d8dcfc99a9e723dd4faae79412b768ca0e76d2c76827bd418",
+      "reference": "docs/design/graphic-guide-v1/writing-instruction-reference.png"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit2-writing-mobile.png",
+      "pixels": [
+        488,
+        1055
+      ],
+      "sourceSHA256": "32d55d772accc92f97e27d4a27237456bdfed1c9330e78211e99b6d3a09e7142",
+      "reference": "docs/design/graphic-guide-v1/activity-writing-mobile-actual.jpg"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit2-writing-mobile-controls.png",
+      "pixels": [
+        488,
+        1055
+      ],
+      "sourceSHA256": "f4622013f001c7f15d6829c6da595aece6cb2616101627590aa8fc5d1a955893",
+      "reference": "docs/design/graphic-guide-v1/activity-writing-mobile-actual.jpg"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit53-conversation-desktop.jpg",
+      "pixels": [
+        1536,
+        864
+      ],
+      "sourceSHA256": "73b1430abcf9cca46abfdfd4a3f4c2550558f6c65879961a1bd1f305a6dce256",
+      "reference": "docs/design/graphic-guide-v1/speaking-canvas-v4-actual.jpg"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit53-conversation-mobile.png",
+      "pixels": [
+        488,
+        1055
+      ],
+      "sourceSHA256": "7afd3f26a9f93d09013dff223136218da12e2c7a3ef6158e0bc28e8f0e61b8fd",
+      "reference": "docs/design/content-format-mockups/v3/05-production.webp"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit24-relatives-desktop.png",
+      "pixels": [
+        1920,
+        842
+      ],
+      "sourceSHA256": "40de809f1e159ded535deac4bd35c8a798980ff64cf4495130c470d857279576",
+      "reference": "docs/design/content-format-mockups/v3/03-language.webp"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit35-probability-desktop.png",
+      "pixels": [
+        1920,
+        842
+      ],
+      "sourceSHA256": "c9ea5b7cacdf8280b1d85d633cc42ea82c126b0f6df74d394d5060974970677b",
+      "reference": "docs/design/content-format-mockups/v3/03-language.webp"
+    },
+    {
+      "capture": "docs/design/pedagogical-corrections/actual/unit42-reported-desktop.png",
+      "pixels": [
+        1920,
+        842
+      ],
+      "sourceSHA256": "ce7514a3fe20fbf044822d1075a3712500d10d58d822869e59e97d9c55d6963e",
+      "reference": "docs/design/graphic-guide-v1/auto-grammar-reference.png"
+    }
+  ],
+  "databaseApplied": false,
+  "productionTouched": false,
+  "technicalChecks": {
+    "unitFiles": 169,
+    "unitTests": 1236,
+    "unitTestsPassed": true,
+    "lintPassed": true,
+    "typescriptPassed": true,
+    "pythonTests": 202,
+    "pythonTestsPassed": true
+  },
+  "transactionalRehearsalsPassed": true
+}

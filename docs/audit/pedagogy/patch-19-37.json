@@ -730,7 +730,17 @@
             "content"
           ],
           "before": "<p>We use relative clauses or relative pronouns to include extra information about someone or something in the sentences.</p><p>To consider</p><p>1. Most relative pronouns are enclosed between commas. 2. They can also be used as the example with why. 3. How can be used to set clauses related to manners or ways. E.G: I know how he did it!</p><p>4. We can also used that to create relative clauses for people and things. Jane, that lives here, is my best friend. The car, that is on the corner, was stolen yesterday.</p>",
-          "after": "<p>We use relative clauses or relative pronouns to include extra information about someone or something in the sentences.</p><p>To consider</p><p>1. Restrictive relative clauses identify a specific person or thing and do not use commas: The student who lives here is my friend. 2. Non-restrictive relative clauses add extra information and use commas. Use who for people and which for things, not that, after a comma: Jane, who lives here, is my best friend. The car, which is on the corner, was stolen yesterday. 3. Why can introduce a clause about a reason. 4. How can introduce a clause about a manner or way: I know how he did it!</p>"
+          "after": "<p>Use relative clauses to identify someone or something, or to add information.</p><p><strong>Identify:</strong> no commas; use who, which or that. The student who lives here is my friend.</p><p><strong>Add information:</strong> use commas and who or which, not that. Jane, who lives here, is my best friend.</p><p><strong>Reason / manner:</strong> The reason why she left is clear. I know how he did it.</p>"
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Añade información."
         }
       ]
     },

@@ -260,8 +260,9 @@ replaceValue(23, rows.u23Answers, 'Keep the short-answer review key aligned with
 replaceString(24, rows.u24Text, 'Teach restrictive and non-restrictive relative clauses with correct punctuation and pronoun choices.', ['content'], (before) => {
   const first = before.slice(0, before.indexOf('<p>To consider</p>'))
   if (!first || !before.includes('<p>To consider</p>')) throw new Error('U24 relative-clause content shape changed')
-  return `${first}<p>To consider</p><p>1. Restrictive relative clauses identify a specific person or thing and do not use commas: The student who lives here is my friend. 2. Non-restrictive relative clauses add extra information and use commas. Use who for people and which for things, not that, after a comma: Jane, who lives here, is my best friend. The car, which is on the corner, was stolen yesterday. 3. Why can introduce a clause about a reason. 4. How can introduce a clause about a manner or way: I know how he did it!</p>`
+  return '<p>Use relative clauses to identify someone or something, or to add information.</p><p><strong>Identify:</strong> no commas; use who, which or that. The student who lives here is my friend.</p><p><strong>Add information:</strong> use commas and who or which, not that. Jane, who lives here, is my best friend.</p><p><strong>Reason / manner:</strong> The reason why she left is clear. I know how he did it.</p>'
 })
+addChange(24, rows.u24Text, 'Give the relative-clause explanation a specific task heading.', ['data', 'guidedTitle'], 'Añade información.')
 
 replaceValue(25, rows.u25Answers, 'Accept the standard unhyphenated spelling variant for the authored adjective blank.', ['items', 1, 'acceptedAnswers'], () => ['never-ending', 'never ending'])
 replaceValue(25, rows.u25Answers, 'Give the semantically unusual adjective blank an explicit lexical criterion.', ['items', 1, 'question'], () => 'Complete the descriptive paragraph with the adjective meaning “continuing without end.”')
