@@ -515,6 +515,12 @@ _TECHNICAL_LABELS = {
     "practice makes perfect",
     "contents",
     "content",
+    "let's talk",
+    "let’s talk",
+    "let' talk",
+    "let's write",
+    "let’s write",
+    "let' write",
     "copyright",
 }
 
@@ -595,7 +601,7 @@ def _goal_visible_texts(slide: Mapping[str, Any], texts: Sequence[str]) -> list[
 
 
 def _is_technical_text(value: str) -> bool:
-    lowered = _normalise(value).casefold().replace("�", "'").replace("’", "'")
+    lowered = _normalise(value).casefold().replace("\ufffd", "'").replace("�", "'").replace("’", "'")
     if not lowered:
         return True
     if lowered in _TECHNICAL_LABELS:
@@ -822,32 +828,62 @@ def _learner_context_texts(
         for value in (covered_texts or [])
         if _normalise(value)
     }
+    prompt_values = list(activity_prompts or [])
+    # ``_prompt_text`` is also used as a source fallback and can therefore be
+    # an entire reading/chart paragraph. Only treat it as a duplicate activity
+    # prompt when it is short or carries an explicit activity signal.
+    if prompt_text and (
+        len(_normalise(prompt_text)) < 120
+        or _is_speaking_prompt(prompt_text)
+        or _is_essay_prompt(prompt_text)
+        or _is_short_answer_prompt(prompt_text)
+        or _is_closed_answer_prompt(prompt_text)
+    ):
+        prompt_values.insert(0, prompt_text)
     prompt_keys = {
         _normalise(value).casefold()
-        for value in ([prompt_text, *(activity_prompts or [])])
+        for value in prompt_values
         if _normalise(value)
     }
-    # A source title is frequently the complete activity prompt (for example
-    # the role-play and writing slides). Keep it in provenance, but do not
-    # render it again beside the native activity. Short labels such as
-    # ``Let's Talk`` remain eligible teaching text when there is no reviewed
-    # activity block.
-    title_key = _normalise(slide.get("title")).casefold()
-    # Long authored reading/chart titles are source material, not a duplicate
-    # activity heading. Only suppress a long title when it is clearly an
-    # instruction that will be rendered by a native control.
-    if len(title_key) >= 32 and not _is_reading(title_key) and not _looks_like_flattened_source_chart(title_key):
-        prompt_keys.add(title_key)
+    source_open_prompts = {
+        _normalise(prompt).casefold()
+        for _native_type, prompt in _source_open_parts(slide)
+        if _normalise(prompt)
+    }
+    source_open_labels = {
+        label
+        for label, prompt in _authored_letter_prompts(slide).items()
+        if _normalise(prompt).casefold() in source_open_prompts
+    }
     # Published extraction is authoritative. Put it first so a native audit's
     # joined paragraph is recognized as coverage of already-visible source
     # values instead of becoming a second learner paragraph.
-    candidates = [*_meaningful_texts(slide), *_native_paragraphs(slide)]
+    # A long published passage is authoritative; without a verified table,
+    # native shape fragments from a different deck must not add a continuation.
+    published_values = _meaningful_texts(slide)
+    native_values = _native_paragraphs(slide)
+    if any(len(value) >= 160 for value in published_values) and not tables:
+        native_values = []
+    candidates = [*published_values, *native_values]
     result: list[str] = []
     seen: set[str] = set()
     for raw_value in candidates:
         value = _normalise(raw_value)
         key = value.casefold()
         if not value or key in seen or key in prompt_keys or key in video_urls or key in covered_keys:
+            continue
+        activity_label = re.match(r"\s*([C-E])\.\s+", value)
+        if activity_label and activity_label.group(1).upper() in source_open_labels:
+            # Native audits sometimes preserve a corrected or differently
+            # wrapped copy of a final D/E prompt. The source-open control owns
+            # that learner action; retain the exact published copy in
+            # originalSource without rendering a second prose block.
+            continue
+        # Native shape extraction can split “Let's Talk/Write” into tiny
+        # fragments (for example ``Let�s`` + ``Talk``). Those section labels
+        # are already represented by the structured control and are not
+        # learner teaching prose.
+        if len(value) <= 8 and (key.startswith("let") or key in {"talk", "write"}):
             continue
         if _is_technical_text(value):
             continue
@@ -878,6 +914,17 @@ def _learner_context_texts(
             covered_length = sum(len(prior) for prior in matching_prior)
             if covered_length / max(len(value), 1) >= 0.5:
                 continue
+        # Published extraction is authoritative. Native audits often split a
+        # published paragraph into several shape-level fragments; once the
+        # complete published value is retained, those fragments are already
+        # learner-visible and must not become a second copy of the passage.
+        if any(
+            len(prior) >= len(value)
+            and len(value) >= 40
+            and key in prior.casefold()
+            for prior in result
+        ):
+            continue
         seen.add(key)
         result.append(value)
     return result
@@ -931,6 +978,18 @@ def _teacher_led_listening_prompts(slide: Mapping[str, Any]) -> list[str]:
         for value in _meaningful_texts(slide)
         if _is_teacher_led_listening_prompt(value)
     ]
+
+
+def _is_replaced_listening_instruction(text: str) -> bool:
+    """Identify old listening directions hidden by a reviewed replacement."""
+
+    lowered = _normalise(text).casefold()
+    return bool(
+        re.search(
+            r"(?:listen\s+to\s+(?:the\s+)?audio|answer\s+(?:the\s+)?questions?(?:\s+(?:your|the)\s+teacher)?|questions?\s+(?:your|the)\s+teacher|take\s+notes|\(\s*t\s*\)\s*\(\s*f\s*\)|\bt\s*/\s*f\b|\btrue\s*(?:/|or|-)?\s*false\b)",
+            lowered,
+        )
+    )
 
 
 def _is_audio_required(slide: Mapping[str, Any]) -> bool:
@@ -2137,35 +2196,63 @@ def _reading_passage_texts(slide: Mapping[str, Any], evidence_texts: Sequence[st
     values = _unique_texts(evidence_texts)
     if not values:
         return []
+    source_activity_keys = {
+        _normalise(prompt).casefold()
+        for _native_type, prompt in _source_open_parts(slide)
+        if _normalise(prompt)
+    }
+    source_activity_labels = {
+        label
+        for label, prompt in _authored_letter_prompts(slide).items()
+        if _normalise(prompt).casefold() in source_activity_keys
+    }
 
     def collect(values_to_check: Sequence[str]) -> list[str]:
         candidates: list[str] = []
         for value in _unique_texts(values_to_check):
             lowered = value.casefold()
+            if lowered in source_activity_keys:
+                continue
+            activity_label = re.match(r"\s*([C-E])\.\s+", value)
+            if activity_label and activity_label.group(1).upper() in source_activity_labels:
+                continue
+            # Only treat the leading sentence as a slide instruction when it
+            # actually starts with a directive. A reading passage can contain
+            # ordinary prose such as “After that…” or dialogue questions; the
+            # old broad search truncated those authored paragraphs.
+            instruction_prefix = re.match(
+                r"\s*(?:[A-Z]\.\s*)?(?:read\b|answer\b|after that\b|questions?\s+below\b|read\s+.*\baloud\b|choose\b|select\b|complete\b|listen\s+to\s+the\s+audio\b|write\b|act\s+out\b|discuss\b|look\s+at\b)",
+                lowered,
+            )
             # Some published extractors flatten the instruction and passage
             # into one string. Preserve the authored prose after its closing
             # instruction sentence, including extraction/dialogue variants.
-            instruction_tail = re.search(
-                r"\b(?:questions?\s*(?:below)?|space\s+provided|corresponding\s+function|read\s+the\s+(?:text|dialogue|paragraph)|teacher)\s*[.!?]\s+",
-                lowered,
-            )
-            if instruction_tail:
-                tail = value[instruction_tail.end() :].strip()
-                if len(tail) >= 120 and not re.search(
-                    r"\b(?:write|act out|listen to the audio|choose|select|complete)\b",
-                    tail.casefold(),
-                ):
-                    candidates.append(tail)
-                    continue
-            if re.search(
-                r"\b(?:read the following|answer the questions?|after that|questions? below|read .* aloud|choose|select|complete|listen to the audio|write|act out|discuss with|look at)\b",
-                lowered[:260],
+            if instruction_prefix:
+                instruction_tail = re.search(
+                    r"\b(?:questions?\s*(?:below)?|space\s+provided|corresponding\s+function|read\s+the\s+(?:text|dialogue|paragraph)|teacher)\s*[.!?]\s+",
+                    lowered,
+                )
+                if instruction_tail:
+                    tail = value[instruction_tail.end() :].strip()
+                    if len(tail) >= 120 and not re.search(
+                        r"\b(?:write|act out|listen to the audio|choose|select|complete)\b",
+                        tail.casefold(),
+                    ):
+                        candidates.append(tail)
+                        continue
+                continue
+            # Final D/E activities can mention a reading section and are often
+            # long enough to look like a passage. Their native controls own
+            # that text; never promote the authored activity into a duplicate
+            # reading block.
+            if re.match(r"\s*[A-E]\.\s+", value) and (
+                _is_essay_prompt(value) or _is_speaking_prompt(value)
             ):
                 continue
             # A question list extracted as one paragraph is activity metadata,
             # not the reading passage.
             question_count = len(re.findall(r"\b\d+\.\s+[^.!?]*\?", value))
-            if question_count >= 2:
+            if instruction_prefix and question_count >= 2:
                 continue
             if len(value) >= 120:
                 candidates.append(value)
@@ -2187,7 +2274,15 @@ def _reading_passage_texts(slide: Mapping[str, Any], evidence_texts: Sequence[st
         for value in values
     ):
         return []
-    return values
+    return [
+        value
+        for value in values
+        if _normalise(value).casefold() not in source_activity_keys
+        and not (
+            (activity_label := re.match(r"\s*([C-E])\.\s+", value))
+            and activity_label.group(1).upper() in source_activity_labels
+        )
+    ]
 
 
 def _ai_grading_context(
@@ -3130,43 +3225,97 @@ def _authored_letter_prompts(slide: Mapping[str, Any]) -> dict[str, str]:
 
 
 def _source_open_parts(slide: Mapping[str, Any]) -> list[tuple[str, str]]:
-    """Return source-authored final speaking/writing prompts as separate parts."""
+    """Return source-authored final speaking/writing prompts as separate parts.
+
+    Most decks label the final oral/writing pair D/E, while Unit 3 labels the
+    pair C/D. Classify the authored wording instead of assuming the letter so
+    that a C conversation never inherits the following D writing prompt.
+    """
 
     prompts = _authored_letter_prompts(slide)
     result: list[tuple[str, str]] = []
-    speaking = prompts.get("D")
-    writing = prompts.get("E")
     # Lettered examples can occur in ordinary authored material. Require the
     # final-activity heading when only one of D/E is present so those examples
     # cannot silently become learner controls. A slide with both explicit D/E
     # parts remains unambiguous even when the deck omits the heading.
-    slide_values = _meaningful_texts(slide)
+    # Use raw published values for the section-heading check; ``Let's Talk``
+    # and ``Let's Write`` are intentionally excluded from learner prose.
+    slide_values = _slide_texts(slide)
     final_headings = {
         "let's talk",
         "let’s talk",
+        "let' talk",
         "let's write",
         "let’s write",
+        "let' write",
     }
     has_final_heading = any(
         _normalise(value).casefold().strip() in final_headings
         for value in slide_values
     )
-    has_open_signal = bool(
-        (speaking and _is_speaking_prompt(speaking))
-        or (writing and (_is_essay_prompt(writing) or _is_speaking_prompt(writing)))
+    has_talk_heading = any(
+        _normalise(value).casefold().strip() in {"let's talk", "let’s talk", "let' talk"}
+        for value in slide_values
     )
-    if not has_final_heading and not (speaking and writing) and not has_open_signal:
+    has_write_heading = any(
+        _normalise(value).casefold().strip() in {"let's write", "let’s write", "let' write"}
+        for value in slide_values
+    )
+    has_open_signal = bool(
+        any(
+            prompt
+            and (
+                _is_speaking_prompt(prompt)
+                or _is_essay_prompt(prompt)
+            )
+            for prompt in prompts.values()
+        )
+    )
+    if not has_final_heading and len(prompts) < 2 and not has_open_signal:
         return []
-    # Final D activities are learner production even when the source says to
-    # listen to a teacher first. Keep that teacher direction in provenance and
-    # expose the learner's speaking action without inventing an audio clip.
-    if speaking and len(speaking) > 20:
-        result.append(("recording", speaking))
-    if writing and len(writing) > 20:
-        if _is_essay_prompt(writing) or _word_limits(writing) != (None, None):
-            result.append(("essay", writing))
-        elif _is_speaking_prompt(writing):
-            result.append(("recording", writing))
+
+    def is_oral(prompt: str) -> bool:
+        # ``present``/``tell`` are common oral directions even when they do
+        # not contain the narrower recording verbs used by the detector.
+        return _is_speaking_prompt(prompt) or bool(
+            re.search(
+                r"\b(?:present|tell\s+(?:your|the)\s+teacher|talk\s+about|introduce\s+yourself|answer\s+your\s+teacher)\b",
+                prompt.casefold(),
+            )
+        )
+
+    for label in ("C", "D", "E"):
+        prompt = prompts.get(label)
+        if not prompt or len(prompt) <= 20:
+            continue
+        oral = is_oral(prompt)
+        written = _is_essay_prompt(prompt) or _word_limits(prompt) != (None, None)
+        # C is a final oral activity only when the slide's own heading says
+        # that it is the conversation section. This prevents ordinary
+        # lettered reading instructions from becoming recordings.
+        if label == "C":
+            if not has_talk_heading:
+                continue
+            oral = True
+            written = False
+        # In the common D/E layout the headings identify D as the oral part
+        # even when the prompt is phrased as an open question rather than an
+        # explicit “act out” instruction. Unit 3's C/D layout uses the write
+        # heading to keep D as the writing control.
+        elif label == "D" and has_talk_heading and not prompts.get("C"):
+            oral = True
+            written = False
+        elif label == "D" and has_write_heading and prompts.get("C"):
+            oral = False
+            written = True
+        if oral and not written:
+            result.append(("recording", prompt))
+        elif written and not oral:
+            result.append(("essay", prompt))
+        elif oral and written:
+            # A combined “present ... and write ...” instruction keeps its
+            # oral control here; a separate E writing prompt remains distinct.
+            result.append(("recording", prompt))
     return result
 
 
@@ -3803,6 +3952,39 @@ def _native_block_specs(
         )
     source_open_specs = _source_open_activity_specs(slide, source, audio_item)
     if review_supplied and source_open_specs:
+        # A review manifest can contain a compact placeholder or an older
+        # inferred response type for the same published D/E prompt. The
+        # source-authored control type is authoritative: discard a conflicting
+        # review projection, and keep only one reviewed control per prompt.
+        expected_open_types = {
+            _normalise(payload.get("sourcePrompt")).casefold(): native_type
+            for native_type, payload in source_open_specs
+            if _normalise(payload.get("sourcePrompt"))
+        }
+        filtered_review_specs: list[tuple[str, dict[str, Any]]] = []
+        seen_source_prompts: set[str] = set()
+        for native_type, payload in review_specs:
+            prompt_key = _normalise(
+                payload.get("sourcePrompt")
+                or payload.get("instruction")
+                or payload.get("prompt")
+            ).casefold()
+            expected_type = expected_open_types.get(prompt_key)
+            if expected_type is not None:
+                if native_type != expected_type or prompt_key in seen_source_prompts:
+                    continue
+                seen_source_prompts.add(prompt_key)
+            elif prompt_key and any(
+                len(source_prompt_key) >= 40 and source_prompt_key in prompt_key
+                for source_prompt_key in expected_open_types
+            ):
+                # Some review entries preserve a combined D/E placeholder
+                # (including section labels). Once the exact published
+                # controls are available, that combined projection would
+                # duplicate both activities and is discarded.
+                continue
+            filtered_review_specs.append((native_type, payload))
+        review_specs = filtered_review_specs
         # Keep one control per authored D/E prompt when another reviewed item
         # (for example a reading extraction) shares the same final slide.
         existing_open_prompts = {
@@ -3865,6 +4047,15 @@ def _native_block_specs(
         for item in (exercise_items or [])
         if isinstance(item, Mapping) and _text(item.get("prompt"))
     ]
+    # Source-open controls may be reconstructed from the published D/E (or
+    # Unit 3 C/D) labels when the review item is only a compact placeholder.
+    # Mark those exact prompts as structured activity text so the same prompt
+    # is not emitted again as a learner paragraph.
+    activity_prompts.extend(
+        _text(payload.get("sourcePrompt"))
+        for _native_type, payload in source_open_specs
+        if _text(payload.get("sourcePrompt"))
+    )
     if listening_review is not None:
         activity_prompts.extend(
             _text(item.get("prompt") or item.get("question"))
@@ -3880,7 +4071,7 @@ def _native_block_specs(
     )
     reading_passage_texts = _reading_passage_texts(slide, evidence_texts)
     reading_marker = re.search(
-        r"\b(?:read(?:ing)?|paragraph|passage|reading aloud|read aloud)\b",
+        r"\b(?:read(?:ing)?|passage|reading aloud|read aloud)\b",
         full_text.casefold(),
     )
     has_reading_passage = bool(
@@ -4209,20 +4400,64 @@ def _native_block_specs(
     if listening_review_supplied:
         specs.extend(listening_specs)
 
-    # Reviewed activities already render their authored prompt in a native
-    # control. Keep surrounding teaching prose only when no reviewed activity
-    # owns the slide; source text remains available through originalSource.
+    # Reviewed listening replacement blocks intentionally hide the old source
+    # question prose. Other reviewed activities still need their authored
+    # passage, dialogue, examples, and rules visible before the control.
     render_context_texts = context_texts
-    if review_specs or listening_specs:
-        render_context_texts = []
-    if render_context_texts and not closed_answer_blocked and not listening_review_supplied and (tables or not has_reading_passage):
+    if listening_review_supplied:
+        # Replace only the old listening directions/questions. Authored
+        # examples and adjacent teaching prose (for example Unit 34's
+        # “Back in the 90s” phone example) remain learner-visible.
+        render_context_texts = [
+            value
+            for value in render_context_texts
+            if not _is_replaced_listening_instruction(value)
+            and _normalise(value).casefold() not in {"listening", "audio", "listen"}
+        ]
+    elif review_specs:
+        review_prompt_keys = [
+            _normalise(value).casefold()
+            for value in activity_prompts
+            if _normalise(value)
+        ]
+        render_context_texts = [
+            value
+            for value in render_context_texts
+            if _normalise(value).casefold() not in {
+                "let's talk",
+                "let’s talk",
+                "let' talk",
+                "let's write",
+                "let’s write",
+                "let' write",
+            }
+            and not (
+                len(value) < 120
+                and any(
+                    _normalise(value).casefold() in prompt_key
+                    or prompt_key in _normalise(value).casefold()
+                    for prompt_key in review_prompt_keys
+                )
+            )
+        ]
+    if render_context_texts and not closed_answer_blocked and (tables or not has_reading_passage):
         visible_context = list(render_context_texts)
         # When no structured block survived (for example an audio source whose
         # URL is missing), retain the authored instruction in the reviewable
         # fallback text instead of leaving only a heading visible.
-        if not specs and prompt_text and _normalise(prompt_text).casefold() not in {
+        if (
+            not specs
+            and prompt_text
+            and (
+                len(_normalise(prompt_text)) < 120
+                or _is_speaking_prompt(prompt_text)
+                or _is_essay_prompt(prompt_text)
+                or _is_short_answer_prompt(prompt_text)
+            )
+            and _normalise(prompt_text).casefold() not in {
             _normalise(value).casefold() for value in visible_context
-        }:
+            }
+        ):
             visible_context.append(prompt_text)
         if visible_context:
             specs.append(
@@ -4292,6 +4527,8 @@ def _native_block_specs(
             return (2, 0)
         if has_reading_passage and native_type == "text":
             return (3, 0)
+        if native_type == "text" and item[1].get("sourceRole") == "teaching-context":
+            return (3, 1)
         if native_type in {"recording", "essay", "multiple_choice", "short_answer"}:
             return (4, 0)
         if native_type in {"structured-content", "vocabulary"}:

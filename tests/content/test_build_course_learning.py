@@ -3369,6 +3369,275 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(any(blocker["code"] == "audio-media-missing" and blocker["slide"] == 6 for blocker in plan["blockers"]))
         self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
 
+    def test_unit3_c_conversation_and_d_writing_keep_their_authored_labels(self) -> None:
+        source = source_fixture()
+        c_prompt = (
+            "C. Improvise a conversation with your teacher. Ask and answer questions about daily routine. "
+            "Do not forget to include all the aspects studied."
+        )
+        d_prompt = (
+            "D. Write a 30 - 50 word paragraph stating the daily routine of someone you know. "
+            "Include as many details as possible, do not forget to use the language studied in this lesson."
+        )
+        source["deck"]["slides"] = [
+            {"number": 15, "title": c_prompt, "visibleTexts": [c_prompt, "Let’s Talk", d_prompt, "Let’s Write"]}
+        ]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        generated = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") == [15]]
+        recording = next(row for row in generated if row["data"]["type"] == "recording")
+        essay = next(row for row in generated if row["data"]["type"] == "essay")
+        self.assertEqual(recording["data"]["instruction"], c_prompt)
+        self.assertEqual(essay["data"]["prompt"], d_prompt)
+        self.assertFalse(
+            any(
+                row["data"]["type"] == "text" and d_prompt in row["data"].get("content", "")
+                for row in generated
+            )
+        )
+
+    def test_reviewed_context_keeps_unit3_sentences_unit6_dialogue_and_unit34_example_visible(self) -> None:
+        cases = [
+            (
+                14,
+                "Daily routine questions",
+                [
+                    "1. Alex and Jane normally stay at home on Friday nights because it relaxes them. 2. I never go to the stadiums during season by car because it is dangerous. 3. Nathan administrates a restaurant in the mornings because he studies at nights in the south of the city.",
+                    "B. Check the following sentences and identify the possible interrogative words you can ask. After that, write the questions down.",
+                ],
+                "Identify possible interrogative words and write the questions.",
+                "1. Alex and Jane normally stay at home",
+            ),
+            (
+                16,
+                "Interview dialogue",
+                [
+                    "__A: Excuse me, My name is Aida, I am here for the interview. __A: Yes! At 9 o'clock. __A: Wow, sir! Yes! I will be here on Monday. Thanks. ----------- Aida enters the office ---------------- __C: Have a sit, miss. I’m Mr. Jenkins, The CEO of the company. __A: Thanks, sir. My name is Aida and I am here for the post of administrative assistant. __B: Hello! Do you have an appointment with Mr. Jenkins? __C: I see. I will ask you some questions. What is your experience as assistant? __A: I work as an assistant now in a small gas company, but I want to change job to grow professionally. __B: Take a sit. Mr. Jenkins will see you in a minute. __C: Magnificent! The company here is bigger but I think you can manage the job. How about starting on Monday? __A: Well, I check mails and send them, I organize meetings and have materials and presentations ready for my boss and I represent the company in different events. __C: I understand. Tell me, Aida, as an assistant, What do you do?",
+                    "D. Read the following sentences and organize the conversation by numbering the interventions. After that, act out the conversation with your teacher.",
+                ],
+                "D. Read the following sentences and organize the conversation by numbering the interventions. After that, act out the conversation with your teacher.",
+                "__A: Excuse me, My name is Aida",
+            ),
+            (
+                13,
+                "Evolution",
+                [
+                    "A. Describe how 5 different objects, gadgets, events, movements etc. have evolved in time. Follow the example.",
+                    "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary.",
+                    "0. Back in the 90s, cell phones were a great gadget even when they were huge and heavy. Nowadays, we have small, light smart phones with internet, so one may wonder what cell phones will be like in 10 years.",
+                ],
+                "Describe five objects, gadgets or events across time.",
+                "Back in the 90s, cell phones were a great gadget",
+            ),
+        ]
+
+        for number, title, visible_texts, review_prompt, expected in cases:
+            source = source_fixture()
+            slide = {"number": number, "title": title, "visibleTexts": visible_texts}
+            source["deck"]["slides"] = [slide]
+            source["deck"]["slideCount"] = 1
+            blockers: list[dict] = []
+            specs = builder._native_block_specs(
+                source,
+                slide,
+                LESSON_ID,
+                builder._source_digest(source),
+                None,
+                [
+                    {
+                        "id": f"context-{number}",
+                        "kind": "open-writing",
+                        "prompt": review_prompt,
+                        "reviewStatus": "open-response-preserved",
+                        "sourceEvidence": [review_prompt],
+                    }
+                ],
+                None,
+                blockers,
+            )
+            rendered = "\n".join(payload.get("content", "") for native_type, payload in specs if native_type == "text")
+            self.assertIn(expected, rendered, msg=f"source context missing on slide {number}")
+
+    def test_reading_passage_keeps_after_that_prose_and_dialogue_opening(self) -> None:
+        passage = (
+            "What a place! Two years ago, we visited one of the most amazing places of the world. "
+            "We went to Japan. After that, we traveled by train to Odaiba; the trip was marvelous and it was super fast. "
+            "When we arrived there, we looked for a hotel and we decided to stay in a typical Japanese inn that we found downtown. "
+            "We tried the traditional Ramen and the original sushi, IT WAS AMAZING! After 3 days, we flew back home."
+        )
+        dialogue = (
+            "__A: Excuse me, My name is Aida, I am here for the interview. __C: Have a sit, miss. I’m Mr. Jenkins, "
+            "The CEO of the company. __C: I see. I will ask you some questions. What is your experience as assistant? "
+            "__A: I work as an assistant now in a small gas company, but I want to change job to grow professionally."
+        )
+        self.assertEqual(
+            builder._reading_passage_texts(
+                {"title": passage, "visibleTexts": [passage, "C. Read the following paragraph and state if the sentences are true."]},
+                [passage, "C. Read the following paragraph and state if the sentences are true."],
+            ),
+            [passage],
+        )
+        self.assertEqual(
+            builder._reading_passage_texts(
+                {"title": dialogue, "visibleTexts": [dialogue, "D. Read the following sentences and act out the conversation."]},
+                [dialogue, "D. Read the following sentences and act out the conversation."],
+            ),
+            [dialogue],
+        )
+
+    def test_native_fragments_do_not_duplicate_published_unit45_continuation(self) -> None:
+        published = (
+            "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship. "
+            "Within twenty minutes of the collision the ship had flooded, so the passengers were told to use the lifeboats. "
+            "Many people were still waiting for instructions when the last signal was heard."
+        )
+        slide = {
+            "number": 15,
+            "title": "15",
+            "visibleTexts": [published],
+            "_nativeAudit": {
+                "paragraphs": [
+                    "When the alarm was finally raised the crew acted very quickly but it was already too late to save the ship.",
+                    "Within twenty minutes of the collision the ship had flooded, so the passengers were told to use the lifeboats.",
+                    "Many people were still waiting for instructions when the last signal was heard.",
+                ]
+            },
+        }
+        context = builder._learner_context_texts(slide, [], published)
+        self.assertEqual(context, [published])
+
+        source = source_fixture()
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+        blockers: list[dict] = []
+        specs = builder._native_block_specs(
+            source,
+            slide,
+            LESSON_ID,
+            builder._source_digest(source),
+            None,
+            [],
+            None,
+            blockers,
+        )
+        text_specs = [payload for native_type, payload in specs if native_type == "text"]
+        self.assertEqual(len(text_specs), 1)
+        self.assertEqual(text_specs[0]["content"].count("When the alarm"), 1)
+
+    def test_combined_review_placeholder_keeps_one_source_control_per_final_prompt(self) -> None:
+        source = source_fixture()
+        d_prompt = (
+            "D. Based on the topic presented in the reading section, what other event in the world do you think "
+            "would have been prevented if the right people had acted on time? Use the language studied."
+        )
+        e_prompt = (
+            "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. "
+            "How would have your life turned out if you had chosen something differently?"
+        )
+        slide = {"number": 16, "title": d_prompt, "visibleTexts": [d_prompt, e_prompt, "Let’s Talk", "Let’s Write"]}
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+        review_items = [
+            {
+                "id": "combined-final",
+                "kind": "open-production",
+                "prompt": f"{d_prompt}\n{e_prompt}\nLet’s Talk\nLet’s Write",
+                "reviewStatus": "open-response-preserved",
+                "sourceEvidence": [d_prompt, e_prompt],
+            }
+        ]
+        blockers: list[dict] = []
+        specs = builder._native_block_specs(
+            source,
+            slide,
+            LESSON_ID,
+            builder._source_digest(source),
+            None,
+            review_items,
+            None,
+            blockers,
+        )
+        self.assertEqual([native_type for native_type, _payload in specs], ["recording", "essay"])
+        self.assertEqual(specs[0][1]["instruction"], d_prompt)
+        self.assertEqual(specs[1][1]["prompt"], e_prompt)
+        self.assertFalse(any(native_type == "text" for native_type, _payload in specs))
+
+    def test_reviewed_listening_replacement_keeps_authored_example_without_old_prompt(self) -> None:
+        source = source_fixture(complete_audio=True)
+        slide = {
+            "number": 13,
+            "title": "A. Describe how objects have evolved.",
+            "visibleTexts": [
+                "A. Describe how objects have evolved.",
+                "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary.",
+                "1. The man is in a train station. (T) (F) 2. He is from Venezuela. (T) (F)",
+                "0. Back in the 90s, cell phones were a great gadget even when they were huge and heavy. Nowadays, we have small, light smart phones with internet.",
+            ],
+            "media": [
+                {
+                    "kind": "audio",
+                    "audioIndex": 1,
+                    "url": "https://cdn.example/lesson/audio-6.mp3",
+                    "publicHref": "/audio/lessons/course/unit-34-audio-01.mp3",
+                    "digest": "audio-sha256-fixture",
+                    "transcript": "Cell phones changed over time.",
+                }
+            ],
+        }
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+        listening_review = {
+            "audioIndex": 1,
+            "sourceAudioSha256": "audio-sha256-fixture",
+            "reviewStatus": "reviewed",
+            "items": [
+                {
+                    "id": "q1",
+                    "prompt": "What changed?",
+                    "reviewStatus": "reviewed",
+                    "explicitOptions": ["Size", "Color", "Name", "Place"],
+                    "answerItems": [{"canonical": "Size", "evidence": "Cell phones changed over time."}],
+                }
+            ],
+        }
+        blockers: list[dict] = []
+        specs = builder._native_block_specs(
+            source,
+            slide,
+            LESSON_ID,
+            builder._source_digest(source),
+            None,
+            None,
+            listening_review,
+            blockers,
+        )
+        text = "\n".join(payload.get("content", "") for native_type, payload in specs if native_type == "text")
+        self.assertIn("Back in the 90s", text)
+        self.assertNotIn("Listen to the audio and answer", text)
+        self.assertNotIn("The man is in a train station", text)
+        self.assertEqual([native_type for native_type, _payload in specs if native_type == "multiple_choice"], ["multiple_choice"])
+
+    def test_flattened_unit37_chart_without_verified_table_stays_complete_source_text(self) -> None:
+        source = source_fixture()
+        chart = (
+            "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. "
+            "Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. "
+            "Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses "
+            "2 Preferences + Relative clause Josh would love a company that can value his talent."
+        )
+        source["deck"]["slides"] = [{"number": 8, "title": chart, "visibleTexts": [chart]}]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        rows = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") == [8]]
+        text = next(row for row in rows if row["data"]["type"] == "text")
+        self.assertIn("Non-finite clauses are built from", text["data"]["content"])
+        self.assertIn("Relative clause", text["data"]["content"])
+        self.assertFalse(any(row["data"]["type"] == "structured-content" for row in rows))
+
 
 if __name__ == "__main__":
     unittest.main()
