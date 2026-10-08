@@ -498,7 +498,7 @@ function GuidedTablePanel({
                 scope="col"
                 colSpan={header.colSpan}
                 rowSpan={header.rowSpan}
-                className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-2.5 align-top font-sans text-base font-semibold leading-6 ${SLATE_TEXT} ${index === 0 ? 'rounded-tl-[16px]' : ''} ${index === headers.length - 1 ? 'rounded-tr-[16px]' : ''} ${index === indexColumn ? 'w-12 min-w-12' : ''}`}
+                className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-2.5 align-top font-sans text-base font-semibold leading-6 ${SLATE_TEXT} ${index === 0 ? 'rounded-tl-[16px]' : ''} ${index === headers.length - 1 ? 'rounded-tr-[16px]' : ''} ${index === indexColumn ? 'w-12 min-w-12' : ''} ${id === 'week-overview' && index === 0 ? 'w-[40%]' : ''}`}
               >
                 <GuidedTableCellContent cell={header} />
               </th>
@@ -513,7 +513,7 @@ function GuidedTablePanel({
                   key={cellIndex}
                   colSpan={cell.colSpan}
                   rowSpan={cell.rowSpan}
-                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-2 align-top font-serif text-lg leading-6 ${NAVY_TEXT} ${rowIndex === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
+                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] ${id === 'week-overview' ? 'px-2 sm:px-3' : 'px-3'} py-2 align-top font-serif ${id === 'week-overview' ? (cellIndex === 0 ? 'text-sm sm:text-lg' : 'text-base sm:text-lg') : 'text-lg'} leading-6 ${NAVY_TEXT} ${rowIndex === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
                   style={GEORGIA_FONT}
                 >
                   <GuidedTableCellContent cell={cell} />
