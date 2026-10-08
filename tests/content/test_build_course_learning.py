@@ -1076,6 +1076,184 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(any(blocker["code"] == "exercise-review-listening-blocked" for blocker in plan["blockers"]))
         self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
 
+    def test_listening_review_merges_four_choice_items_with_staged_audio(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"][5]["media"][0].update(
+            {
+                "publicHref": "/audio/lessons/course/unit-02-audio-01.mp3",
+                "sourceSha256": "audio-sha256-fixture",
+            }
+        )
+        source["deck"]["slides"] = [copy.deepcopy(source["deck"]["slides"][5])]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        options = [
+            {"id": "a", "text": "Peru"},
+            {"id": "b", "text": "Brazil"},
+            {"id": "c", "text": "Chile"},
+            {"id": "d", "text": "Mexico"},
+        ]
+        review = {
+            "exercises": [
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 6,
+                    "audioIndex": 0,
+                    "sourceAudioSha256": "audio-sha256-fixture",
+                    "items": [
+                        {
+                            "id": f"listening-{index}",
+                            "prompt": f"Which country is named in sentence {index}?",
+                            "explicitOptions": copy.deepcopy(options),
+                            "answerItems": [{"canonical": "Peru", "evidence": "I come from Peru."}],
+                            "evidence": "I come from Peru.",
+                            "reviewStatus": "reviewed",
+                        }
+                        for index in range(1, 5)
+                    ],
+                }
+            ]
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, listening_review=review)
+
+        self.assertTrue(plan["publishable"])
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        audio = next(row for row in generated if row["data"].get("type") == "audio")
+        multiple_choice = next(row for row in generated if row["data"].get("type") == "multiple_choice")
+        self.assertEqual(audio["data"]["url"], "/audio/lessons/course/unit-02-audio-01.mp3")
+        self.assertEqual(audio["data"]["mediaDigest"], "audio-sha256-fixture")
+        self.assertEqual(multiple_choice["data"]["data"]["sourceSlides"], [6])
+        self.assertEqual(audio["data"]["data"]["sourceSlides"], [6])
+        self.assertEqual(len(multiple_choice["data"]["items"]), 4)
+        self.assertTrue(all(len(item["options"]) == 4 for item in multiple_choice["data"]["items"]))
+        self.assertTrue(all(item["correctOptionId"] == "a" for item in multiple_choice["data"]["items"]))
+        self.assertFalse(any(row["data"].get("type") == "text" and row["data"]["data"].get("sourceSlides") == [6] for row in generated))
+
+    def test_listening_review_rejects_transcript_evidence_sha_and_manual_status(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"] = [copy.deepcopy(source["deck"]["slides"][5])]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        slide["media"][0].update(
+            {
+                "publicHref": "/audio/lessons/course/unit-02-audio-01.mp3",
+                "sourceSha256": "audio-sha256-fixture",
+            }
+        )
+        review = {
+            "exercises": [
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 6,
+                    "audioIndex": 0,
+                    "sourceAudioSha256": "wrong-sha",
+                    "items": [
+                        {
+                            "id": "blocked-listening",
+                            "prompt": "Which country is named?",
+                            "explicitOptions": [
+                                {"id": "a", "text": "Peru"},
+                                {"id": "b", "text": "Brazil"},
+                                {"id": "c", "text": "Chile"},
+                                {"id": "d", "text": "Mexico"},
+                            ],
+                            "answerItems": [{"canonical": "Peru"}],
+                            "evidence": "This sentence is absent from the transcript.",
+                            "reviewStatus": "manual",
+                        }
+                    ],
+                }
+            ]
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, listening_review=review)
+
+        codes = {blocker["code"] for blocker in plan["blockers"]}
+        self.assertFalse(plan["publishable"])
+        self.assertIn("listening-review-audio-sha-mismatch", codes)
+        self.assertIn("listening-review-blocked", codes)
+        self.assertFalse(any(row["data"].get("type") in {"audio", "multiple_choice"} and row["data"]["data"].get("sourceSlides") == [6] for row in plan["nextRows"]))
+
+        review["exercises"][0]["sourceAudioSha256"] = "audio-sha256-fixture"
+        review["exercises"][0]["items"][0]["reviewStatus"] = "reviewed"
+        evidence_plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, listening_review=review)
+        evidence_codes = {blocker["code"] for blocker in evidence_plan["blockers"]}
+        self.assertIn("listening-review-evidence-mismatch", evidence_codes)
+        self.assertFalse(any(row["data"].get("type") in {"audio", "multiple_choice"} and row["data"]["data"].get("sourceSlides") == [6] for row in evidence_plan["nextRows"]))
+
+    def test_listening_review_rejects_ambiguous_correct_option_and_wrong_scope(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"] = [copy.deepcopy(source["deck"]["slides"][5])]
+        source["deck"]["slideCount"] = 1
+        source["deck"]["slides"][0]["media"][0].update(
+            {
+                "publicHref": "/audio/lessons/course/unit-02-audio-01.mp3",
+                "sourceSha256": "audio-sha256-fixture",
+            }
+        )
+        review = {
+            "exercises": [
+                {
+                    "lessonId": "another-lesson",
+                    "slideNumber": 6,
+                    "audioIndex": 0,
+                    "sourceAudioSha256": "audio-sha256-fixture",
+                    "items": [],
+                },
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 6,
+                    "audioIndex": 0,
+                    "sourceAudioSha256": "audio-sha256-fixture",
+                    "items": [
+                        {
+                            "id": "ambiguous",
+                            "prompt": "Which country is named?",
+                            "explicitOptions": [
+                                {"id": "a", "text": "Peru"},
+                                {"id": "b", "text": "Brazil"},
+                                {"id": "c", "text": "Chile"},
+                                {"id": "d", "text": "Mexico"},
+                            ],
+                            "answerItems": [{"canonical": "Peru"}, {"canonical": "Brazil"}],
+                            "evidence": "I come from Peru.",
+                            "reviewStatus": "reviewed",
+                        }
+                    ],
+                },
+            ]
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, listening_review=review)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "listening-review-answer-ambiguous" for blocker in plan["blockers"]))
+        self.assertFalse(any(row["data"].get("type") == "multiple_choice" for row in plan["nextRows"]))
+
+    def test_listening_review_cli_combines_repeatable_documents(self) -> None:
+        combined = builder._listening_review_documents(
+            [
+                {"exercises": [{"lessonId": LESSON_ID, "slideNumber": 6}]},
+                {"exercises": [{"lessonId": LESSON_ID, "slideNumber": 7}]},
+            ]
+        )
+
+        self.assertEqual(
+            [(item["lessonId"], item["slideNumber"]) for item in combined["exercises"]],
+            [(LESSON_ID, 6), (LESSON_ID, 7)],
+        )
+        args = builder._parse_args(
+            [
+                "--snapshot", "snapshot.json",
+                "--source-dir", "sources",
+                "--output", "plans.json",
+                "--listening-review", "review-a.json",
+                "--listening-review", "review-b.json",
+            ]
+        )
+        self.assertEqual([str(path) for path in args.listening_review], ["review-a.json", "review-b.json"])
+
     def test_exercise_review_keeps_roleplay_and_writing_as_separate_open_blocks(self) -> None:
         source = source_fixture()
         source["deck"]["slides"] = [

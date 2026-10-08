@@ -1565,6 +1565,246 @@ def _exercise_review_index(
     return indexed
 
 
+def _is_listening_review_item(item: Mapping[str, Any]) -> bool:
+    value = " ".join(
+        _text(item.get(key))
+        for key in ("kind", "responseMode", "prompt")
+    ).casefold()
+    return bool(re.search(r"\b(?:listen|listening|audio|hear|teacher-listening)\b", value))
+
+
+def _listening_review_documents(documents: Sequence[Any]) -> dict[str, Any] | None:
+    """Combine repeatable listening-review files into one deterministic manifest."""
+
+    exercises: list[dict[str, Any]] = []
+    for document in documents:
+        if isinstance(document, Mapping):
+            values = document.get("exercises")
+        elif isinstance(document, list):
+            values = document
+        else:
+            raise PlanError("listening review must contain an exercises list")
+        if not isinstance(values, list):
+            raise PlanError("listening review must contain an exercises list")
+        for item in values:
+            exercises.append(copy.deepcopy(dict(item)) if isinstance(item, Mapping) else item)
+    return {"schemaVersion": 1, "exercises": exercises} if documents else None
+
+
+def _listening_review_audio_evidence(item: Mapping[str, Any]) -> list[str]:
+    values = _as_list(item.get("evidence"))
+    if not values:
+        values = _as_list(item.get("sourceEvidence"))
+    for answer in _as_list(item.get("answerItems")):
+        if isinstance(answer, Mapping):
+            values.extend(_as_list(answer.get("evidence") or answer.get("sourceEvidence")))
+    return _unique_texts(values)
+
+
+def _listening_review_answer_values(answer_items: Sequence[Mapping[str, Any]]) -> list[str]:
+    marked = [
+        answer
+        for answer in answer_items
+        if answer.get("isCorrect") is True or answer.get("correct") is True
+    ]
+    candidates = marked if marked else list(answer_items)
+    values: list[str] = []
+    for answer in candidates:
+        value = answer.get("canonical") or answer.get("canonicalCorrect") or answer.get("canonicalAnswer")
+        if value in (None, "", [], {}):
+            value = answer.get("correctAnswer")
+        if value in (None, "", [], {}):
+            value = answer.get("optionId") or answer.get("correctOptionId") or answer.get("correctOption") or answer.get("option")
+        if value in (None, "", [], {}):
+            marked_value = answer.get("correct")
+            value = answer.get("answer") or (marked_value if not isinstance(marked_value, bool) else None) or answer.get("correctText")
+        for candidate in _as_list(value):
+            text = _text(candidate)
+            if text and text not in values:
+                values.append(text)
+    return values
+
+
+def _listening_review_item_status(item: Mapping[str, Any]) -> str:
+    return _text(item.get("reviewStatus") or item.get("status")).casefold()
+
+
+def _is_listening_closed_slide(slide: Mapping[str, Any]) -> bool:
+    if not (_is_audio_required(slide) or _native_audio_items(slide)):
+        return False
+    prompt = _prompt_text(slide, _meaningful_texts(slide))
+    return _is_closed_answer_prompt(prompt)
+
+
+def _listening_review_index(
+    listening_review: Any,
+    source: Mapping[str, Any],
+    lesson_id: str,
+    audio_manifest: Any,
+    blockers: list[dict[str, Any]],
+) -> dict[int, Mapping[str, Any]]:
+    """Validate listening-review scope and index entries by published slide."""
+
+    if listening_review is None:
+        return {}
+    exercises = listening_review.get("exercises") if isinstance(listening_review, Mapping) else None
+    if not isinstance(exercises, list):
+        _add_blocker(blockers, _blocker("listening-review-invalid", detail="Listening review must contain an exercises list."))
+        return {}
+    source_slides = {_slide_number(slide): slide for slide in _slides(source)}
+    indexed: dict[int, Mapping[str, Any]] = {}
+    for raw_entry in exercises:
+        if not isinstance(raw_entry, Mapping):
+            _add_blocker(blockers, _blocker("listening-review-entry-invalid", detail="Listening review exercise is not an object."))
+            continue
+        entry = copy.deepcopy(dict(raw_entry))
+        entry_lesson = _text(entry.get("lessonId") or entry.get("sourceLessonId"))
+        if entry_lesson != lesson_id:
+            # A unified manifest is shared by all source decks. Entries for a
+            # different lesson belong to that lesson's plan and must not bleed
+            # into this one.
+            continue
+        raw_slide = entry.get("slideNumber", entry.get("slide"))
+        try:
+            slide_number = int(raw_slide)
+        except (TypeError, ValueError):
+            _add_blocker(blockers, _blocker("listening-review-slide-invalid", detail="Listening review has no numeric slideNumber."))
+            continue
+        entry["slideNumber"] = slide_number
+        slide = source_slides.get(slide_number)
+        if slide is None:
+            _add_blocker(blockers, _blocker("listening-review-slide-missing", slide_number, "Listening review slide is absent from the published source."))
+            continue
+        if slide_number in indexed:
+            _add_blocker(blockers, _blocker("listening-review-duplicate", slide_number, "Multiple listening review entries target the same lesson and slide."))
+            continue
+        entry_status = _text(entry.get("reviewStatus") or entry.get("status")).casefold()
+        if entry_status in {"blocked", "manual", "manual-review", "blocked-manual", "needs-manual-review", "blocked-awaiting-transcript", "awaiting-review"}:
+            _add_blocker(blockers, _blocker("listening-review-blocked", slide_number, _text(entry.get("blocker")) or "Listening review remains blocked for manual review."))
+        elif entry_status and entry_status not in {"reviewed", "approved", "ready"}:
+            _add_blocker(blockers, _blocker("listening-review-status-missing", slide_number, f"Listening review has unsupported status {entry_status!r}."))
+        audio_index = entry.get("audioIndex")
+        if isinstance(audio_index, bool) or not isinstance(audio_index, int) or audio_index < 0:
+            _add_blocker(blockers, _blocker("listening-review-audio-index-invalid", slide_number, "Listening review audioIndex must be a non-negative integer."))
+        if not _text(entry.get("sourceAudioSha256")):
+            _add_blocker(blockers, _blocker("listening-review-audio-sha-missing", slide_number, "Listening review requires sourceAudioSha256."))
+        raw_items = entry.get("items")
+        if not isinstance(raw_items, list) or not raw_items:
+            _add_blocker(blockers, _blocker("listening-review-items-missing", slide_number, "Listening review has no question items."))
+            entry["items"] = []
+        else:
+            item_ids: set[str] = set()
+            for item in raw_items:
+                if not isinstance(item, Mapping):
+                    _add_blocker(blockers, _blocker("listening-review-item-invalid", slide_number, "Listening review item is not an object."))
+                    continue
+                prompt = _text(item.get("prompt") or item.get("question"))
+                item_id = _text(item.get("id"))
+                if item_id and item_id in item_ids:
+                    _add_blocker(blockers, _blocker("listening-review-item-duplicate", slide_number, f"Listening review item id {item_id!r} is duplicated."))
+                if item_id:
+                    item_ids.add(item_id)
+                if not prompt:
+                    _add_blocker(blockers, _blocker("listening-review-prompt-missing", slide_number, "Listening review item has no authored prompt."))
+                options = item.get("explicitOptions")
+                if not isinstance(options, list) or len(options) != 4:
+                    _add_blocker(blockers, _blocker("listening-review-options-invalid", slide_number, "Each reviewed listening question requires exactly four explicit options."))
+                else:
+                    option_ids: list[str] = []
+                    option_texts: list[str] = []
+                    for option in options:
+                        if isinstance(option, Mapping):
+                            option_id = _text(option.get("id") or option.get("value"))
+                            option_text = _text(option.get("text") or option.get("label") or option.get("value"))
+                        else:
+                            option_id = ""
+                            option_text = _text(option)
+                        if not option_id or not option_text:
+                            if not option_text:
+                                _add_blocker(blockers, _blocker("listening-review-option-invalid", slide_number, "Listening review options require non-empty text."))
+                        option_ids.append(option_id or f"course-choice-{slide_number}-{len(option_ids) + 1:03d}")
+                        option_texts.append(option_text)
+                    if len(set(option_ids)) != len(option_ids) or len(set(option_texts)) != len(option_texts):
+                        _add_blocker(blockers, _blocker("listening-review-options-duplicate", slide_number, "Listening review options must be unique."))
+                answer_items = [value for value in _as_list(item.get("answerItems")) if isinstance(value, Mapping)]
+                answer_values = _listening_review_answer_values(answer_items)
+                if len(answer_values) != 1:
+                    _add_blocker(blockers, _blocker("listening-review-answer-ambiguous", slide_number, "Each reviewed listening question must identify exactly one correct option."))
+                evidence = _listening_review_audio_evidence(item)
+                if not evidence:
+                    _add_blocker(blockers, _blocker("listening-review-evidence-missing", slide_number, "Listening review requires transcript evidence for each question."))
+                status = _listening_review_item_status(item) or entry_status
+                if status in {"blocked", "manual", "manual-review", "blocked-manual", "needs-manual-review", "blocked-awaiting-transcript", "awaiting-review"}:
+                    _add_blocker(blockers, _blocker("listening-review-blocked", slide_number, _text(item.get("blocker")) or "Listening review remains blocked for manual review."))
+                elif status not in {"reviewed", "approved", "ready"}:
+                    _add_blocker(blockers, _blocker("listening-review-status-missing", slide_number, f"Listening review item has unsupported status {status!r}."))
+        indexed[slide_number] = entry
+
+    for number, slide in source_slides.items():
+        if _is_listening_closed_slide(slide) and number not in indexed:
+            _add_blocker(blockers, _blocker("listening-review-slide-missing", number, "Published closed listening content has no reviewed listening entry."))
+    return indexed
+
+
+def _listening_review_audio(
+    source: Mapping[str, Any],
+    slide: Mapping[str, Any],
+    lesson_id: str,
+    audio_manifest: Any,
+    review_entry: Mapping[str, Any],
+    blockers: list[dict[str, Any]],
+) -> Mapping[str, Any] | None:
+    number = _slide_number(slide)
+    candidates = [
+        candidate
+        for candidate in _audio_candidates(source, slide, lesson_id, audio_manifest)
+        if _audio_digest(candidate) or _audio_url(candidate) or _audio_transcript(candidate)
+    ]
+    audio_index = review_entry.get("audioIndex")
+    digest = _text(review_entry.get("sourceAudioSha256"))
+    if isinstance(audio_index, bool) or not isinstance(audio_index, int) or audio_index < 0 or audio_index >= len(candidates):
+        _add_blocker(blockers, _blocker("listening-review-audio-index-invalid", number, "Listening review audioIndex does not identify a source audio entry."))
+        return None
+    indexed_audio = candidates[audio_index]
+    matched = [candidate for candidate in candidates if _audio_digest(candidate).casefold() == digest.casefold()]
+    if not matched:
+        _add_blocker(blockers, _blocker("listening-review-audio-sha-mismatch", number, "Listening review sourceAudioSha256 does not match the staged source audio."))
+        return None
+    if _audio_digest(indexed_audio).casefold() != digest.casefold():
+        _add_blocker(blockers, _blocker("listening-review-audio-scope-mismatch", number, "Listening review audioIndex and sourceAudioSha256 identify different source audio."))
+        return None
+    audio = indexed_audio
+    if not _text(audio.get("publicHref") or audio.get("publicUrl") or audio.get("publicURL") or audio.get("playbackUrl") or audio.get("playbackURL")):
+        staged_matches = [
+            candidate
+            for candidate in matched
+            if _text(candidate.get("publicHref") or candidate.get("publicUrl") or candidate.get("publicURL") or candidate.get("playbackUrl") or candidate.get("playbackURL"))
+        ]
+        if len(staged_matches) == 1:
+            audio = staged_matches[0]
+    if not _text(audio.get("publicHref") or audio.get("publicUrl") or audio.get("publicURL") or audio.get("playbackUrl") or audio.get("playbackURL")):
+        _add_blocker(blockers, _blocker("listening-review-audio-public-missing", number, "Reviewed listening audio requires a staged publicHref or playback URL."))
+        return None
+    if not _audio_url(audio):
+        _add_blocker(blockers, _blocker("listening-review-audio-media-missing", number, "Reviewed listening audio has no browser playback URL."))
+        return None
+    transcript = _audio_transcript(audio)
+    if not transcript:
+        _add_blocker(blockers, _blocker("listening-review-audio-transcript-missing", number, "Reviewed listening audio requires its staged transcript."))
+        return None
+    evidence_mismatch = False
+    for item in _as_list(review_entry.get("items")):
+        if not isinstance(item, Mapping):
+            continue
+        for evidence in _listening_review_audio_evidence(item):
+            if evidence not in transcript:
+                _add_blocker(blockers, _blocker("listening-review-evidence-mismatch", number, f"Listening review evidence is not an exact substring of the staged transcript: {evidence!r}."))
+                evidence_mismatch = True
+    if evidence_mismatch:
+        return None
+    return audio
+
+
 def _original_source(
     source: Mapping[str, Any],
     lesson_id: str,
@@ -1831,6 +2071,89 @@ def _exercise_review_specs(
     return specs, listening_blocked
 
 
+def _listening_review_specs(
+    slide: Mapping[str, Any],
+    review_entry: Mapping[str, Any],
+    audio: Mapping[str, Any] | None,
+    blockers: list[dict[str, Any]],
+) -> tuple[list[tuple[str, dict[str, Any]]], bool]:
+    """Build one multi-step choice block from reviewed listening questions."""
+
+    number = _slide_number(slide)
+    if audio is None:
+        return [], True
+    items = _as_list(review_entry.get("items"))
+    choices: list[dict[str, Any]] = []
+    blocked = False
+    item_ids: set[str] = set()
+    entry_status = _text(review_entry.get("reviewStatus") or review_entry.get("status")).casefold()
+    if entry_status in {"blocked", "manual", "manual-review", "blocked-manual", "needs-manual-review", "blocked-awaiting-transcript", "awaiting-review"}:
+        blocked = True
+    elif entry_status and entry_status not in {"reviewed", "approved", "ready"}:
+        blocked = True
+    for index, raw_item in enumerate(items, start=1):
+        if not isinstance(raw_item, Mapping):
+            blocked = True
+            continue
+        status = _listening_review_item_status(raw_item) or entry_status
+        if not status:
+            blocked = True
+            continue
+        if status in {"blocked", "manual", "manual-review", "blocked-manual", "needs-manual-review", "blocked-awaiting-transcript", "awaiting-review"}:
+            blocked = True
+            continue
+        if status and status not in {"reviewed", "approved", "ready"}:
+            blocked = True
+            continue
+        options = raw_item.get("explicitOptions")
+        answer_items = [value for value in _as_list(raw_item.get("answerItems")) if isinstance(value, Mapping)]
+        answer_values = _listening_review_answer_values(answer_items)
+        if not isinstance(options, list) or len(options) != 4 or len(answer_values) != 1:
+            blocked = True
+            continue
+        choice_options, correct_option_id = _multiple_choice_options(options, answer_values[0], number)
+        option_ids = {option["id"] for option in choice_options}
+        option_texts = {option["text"] for option in choice_options}
+        if len(choice_options) != 4 or len(option_ids) != 4 or len(option_texts) != 4 or not correct_option_id or correct_option_id not in option_ids:
+            _add_blocker(blockers, _blocker("listening-review-answer-unmatched", number, "Reviewed listening answer does not match exactly one explicit option."))
+            blocked = True
+            continue
+        item_id = _text(raw_item.get("id")) or f"slide-{number}-item-{index:03d}"
+        if item_id in item_ids:
+            blocked = True
+            continue
+        item_ids.add(item_id)
+        choices.append(
+            {
+                "id": f"course-listening-{number}-{item_id}-{index:03d}",
+                "question": _text(raw_item.get("prompt") or raw_item.get("question")),
+                "options": choice_options,
+                "correctOptionId": correct_option_id,
+            }
+        )
+    if blocked or not choices:
+        return [], True
+    digest = _text(review_entry.get("sourceAudioSha256"))
+    return [
+        (
+            "multiple_choice",
+            {
+                "items": choices,
+                "context": "\n".join(_slide_texts(slide)),
+                "data": {
+                    "listeningReview": {
+                        "audioIndex": review_entry.get("audioIndex"),
+                        "sourceAudioSha256": digest,
+                        "playbackUrl": _audio_url(audio),
+                        "transcript": _audio_transcript(audio),
+                    },
+                    "exerciseReviewItems": copy.deepcopy([dict(item) for item in items if isinstance(item, Mapping)]),
+                },
+            },
+        )
+    ], False
+
+
 def _native_block_specs(
     source: Mapping[str, Any],
     slide: Mapping[str, Any],
@@ -1838,6 +2161,7 @@ def _native_block_specs(
     source_digest: str,
     audio_manifest: Any,
     exercise_items: Sequence[Mapping[str, Any]] | None,
+    listening_review: Mapping[str, Any] | None,
     blockers: list[dict[str, Any]],
 ) -> list[tuple[str, dict[str, Any]]]:
     number = _slide_number(slide)
@@ -1845,7 +2169,8 @@ def _native_block_specs(
     evidence_texts = _evidence_texts(slide)
     full_text = "\n".join(evidence_texts).strip()
     tables = _tables(slide)
-    audio_required = _is_audio_required(slide) or bool(_native_audio_items(slide))
+    listening_review_supplied = listening_review is not None
+    audio_required = _is_audio_required(slide) or bool(_native_audio_items(slide)) or listening_review_supplied
     audio_items = _audio_candidates(source, slide, lesson_id, audio_manifest) if audio_required else []
     # Prefer a complete authored evidence record over a rendered audio icon
     # placeholder from the published extraction.
@@ -1853,6 +2178,26 @@ def _native_block_specs(
         (item for item in audio_items if _audio_url(item) or _audio_digest(item) or _audio_transcript(item)),
         audio_items[0] if audio_items else None,
     )
+    listening_audio = None
+    listening_review_blocked = False
+    listening_specs: list[tuple[str, dict[str, Any]]] = []
+    if listening_review_supplied:
+        listening_audio = _listening_review_audio(
+            source,
+            slide,
+            lesson_id,
+            audio_manifest,
+            listening_review,
+            blockers,
+        )
+        if listening_audio is not None:
+            audio_item = listening_audio
+        listening_specs, listening_review_blocked = _listening_review_specs(
+            slide,
+            listening_review,
+            listening_audio,
+            blockers,
+        )
     video_urls = _video_urls(slide)
     native_figures = _native_figures(slide)
     native_evidence = _native_audit_payload(slide)
@@ -1957,9 +2302,9 @@ def _native_block_specs(
             )
         )
 
-    explicit_answer = None if review_supplied else _explicit_answer_key(slide)
-    explicit_options = None if review_supplied else _explicit_options(slide)
-    closed_answer_blocked = False
+    explicit_answer = None if review_supplied or listening_review_supplied else _explicit_answer_key(slide)
+    explicit_options = None if review_supplied or listening_review_supplied else _explicit_options(slide)
+    closed_answer_blocked = listening_review_blocked
     if explicit_answer is not None:
         if explicit_options:
             choice_options, correct_option_id = _multiple_choice_options(explicit_options, explicit_answer, number)
@@ -1997,7 +2342,7 @@ def _native_block_specs(
                 )
             )
 
-    if not review_listening_blocked and audio_required and audio_item is not None and _audio_url(audio_item) and _audio_digest(audio_item) and _audio_transcript(audio_item):
+    if not review_listening_blocked and not listening_review_blocked and audio_required and audio_item is not None and _audio_url(audio_item) and _audio_digest(audio_item) and _audio_transcript(audio_item):
         audio_provenance = _audio_provenance(audio_item)
         specs.append(
             (
@@ -2044,7 +2389,7 @@ def _native_block_specs(
             )
         )
 
-    if not review_supplied and _is_speaking_prompt(prompt_text):
+    if not review_supplied and not listening_review_supplied and _is_speaking_prompt(prompt_text):
         recording_time_limit = _time_limit(prompt_text)
         specs.append(
             (
@@ -2062,7 +2407,7 @@ def _native_block_specs(
             )
         )
 
-    if not review_supplied and explicit_answer is None and _is_closed_answer_prompt(prompt_text):
+    if not review_supplied and not listening_review_supplied and explicit_answer is None and _is_closed_answer_prompt(prompt_text):
         closed_answer_blocked = True
         _add_blocker(
             blockers,
@@ -2072,7 +2417,7 @@ def _native_block_specs(
                 "Closed-answer activity has no reviewed authored answer key; it remains a source instruction until reviewed.",
             ),
         )
-    elif not review_supplied and _is_essay_prompt(prompt_text):
+    elif not review_supplied and not listening_review_supplied and _is_essay_prompt(prompt_text):
         min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
@@ -2089,7 +2434,7 @@ def _native_block_specs(
                 },
             )
         )
-    elif not review_supplied and explicit_answer is None and _is_short_answer_prompt(prompt_text):
+    elif not review_supplied and not listening_review_supplied and explicit_answer is None and _is_short_answer_prompt(prompt_text):
         min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
@@ -2109,6 +2454,8 @@ def _native_block_specs(
 
     if review_supplied:
         specs.extend(review_specs)
+    if listening_review_supplied:
+        specs.extend(listening_specs)
 
     # Preserve a long authored reading passage as readable HTML even when the
     # same slide also has questions or a read-aloud instruction.
@@ -2332,16 +2679,28 @@ def _validate_native_payload(data: Mapping[str, Any], row_id: str) -> None:
         if "timeLimit" in data and (not isinstance(data["timeLimit"], int) or isinstance(data["timeLimit"], bool)):
             raise PlanError(f"recording row has an invalid timeLimit: {row_id}")
     elif native_type == "multiple_choice":
-        options = data.get("options")
-        if not isinstance(data.get("question"), str) or not isinstance(options, list) or not isinstance(data.get("correctOptionId"), str):
-            raise PlanError(f"multiple_choice row has an invalid shape: {row_id}")
-        option_ids: list[str] = []
-        for option in options:
-            if not isinstance(option, Mapping) or not isinstance(option.get("id"), str) or not isinstance(option.get("text"), str):
-                raise PlanError(f"multiple_choice row has an invalid option: {row_id}")
-            option_ids.append(option["id"])
-        if data["correctOptionId"] not in option_ids:
-            raise PlanError(f"multiple_choice row has an unmatched answer: {row_id}")
+        raw_items = data.get("items")
+        if isinstance(raw_items, list):
+            if not raw_items:
+                raise PlanError(f"multiple_choice row has no items: {row_id}")
+            questions = raw_items
+        else:
+            questions = [data]
+        for question in questions:
+            if not isinstance(question, Mapping):
+                raise PlanError(f"multiple_choice row has an invalid item: {row_id}")
+            options = question.get("options")
+            if not isinstance(question.get("question"), str) or not isinstance(options, list) or not isinstance(question.get("correctOptionId"), str):
+                raise PlanError(f"multiple_choice row has an invalid shape: {row_id}")
+            if isinstance(raw_items, list) and (not isinstance(question.get("id"), str) or not question.get("id")):
+                raise PlanError(f"multiple_choice row has an invalid item id: {row_id}")
+            option_ids: list[str] = []
+            for option in options:
+                if not isinstance(option, Mapping) or not isinstance(option.get("id"), str) or not isinstance(option.get("text"), str):
+                    raise PlanError(f"multiple_choice row has an invalid option: {row_id}")
+                option_ids.append(option["id"])
+            if question["correctOptionId"] not in option_ids:
+                raise PlanError(f"multiple_choice row has an unmatched answer: {row_id}")
     elif native_type == "short_answer":
         items = data.get("items")
         if not isinstance(items, list):
@@ -2359,6 +2718,7 @@ def build_plan(
     audio_manifest: Any = None,
     native_audit: Any = None,
     exercise_review: Any = None,
+    listening_review: Any = None,
 ) -> dict[str, Any]:
     """Build one deterministic plan while preserving the existing row identities."""
 
@@ -2369,8 +2729,15 @@ def build_plan(
     _validate_course_id(source.get("courseId"))
     source_digest = _source_digest(source)
     blockers: list[dict[str, Any]] = []
-    exercise_review_index = _exercise_review_index(exercise_review, source, lesson_id, blockers)
     source_with_native = _prepare_native_audit(source, native_audit, blockers)
+    exercise_review_index = _exercise_review_index(exercise_review, source_with_native, lesson_id, blockers)
+    listening_review_index = _listening_review_index(
+        listening_review,
+        source_with_native,
+        lesson_id,
+        audio_manifest,
+        blockers,
+    )
     if lesson is None:
         _add_blocker(blockers, _blocker("lesson-missing-from-snapshot", detail=f"No snapshot lesson matched {source_lesson_id}."))
     if _text(source.get("status")) and _text(source.get("status")).casefold() not in {"ok", "published", "ready"}:
@@ -2409,8 +2776,23 @@ def build_plan(
         # input, including an empty entry. This prevents the generic source
         # heuristics from inventing an answer or activity when the review is
         # incomplete; the index validator has already recorded the blocker.
+        listening_entry = listening_review_index.get(number) if listening_review is not None else None
         review_items = exercise_review_index.get(number, []) if exercise_review is not None else None
-        specs = _native_block_specs(source_with_native, slide, lesson_id, source_digest, audio_manifest, review_items, blockers)
+        if listening_entry is not None and review_items is not None:
+            # The dedicated listening review supersedes only the old listening
+            # exercise records on this slide. Other reviewed open activities
+            # remain available to the generic exercise mapper.
+            review_items = [item for item in review_items if not _is_listening_review_item(item)]
+        specs = _native_block_specs(
+            source_with_native,
+            slide,
+            lesson_id,
+            source_digest,
+            audio_manifest,
+            review_items,
+            listening_entry,
+            blockers,
+        )
         source_has_content = bool(
             _evidence_texts(slide)
             or _tables(slide)
@@ -2459,6 +2841,7 @@ def build_plans(
     audio_manifest: Any = None,
     native_audit: Any = None,
     exercise_review: Any = None,
+    listening_review: Any = None,
 ) -> list[dict[str, Any]]:
     """Build source plans sorted by stable lesson/module/source identifiers."""
 
@@ -2475,7 +2858,7 @@ def build_plans(
     for source in ordered_sources:
         source_lesson_id = _source_lesson_id(source)
         lesson = _lesson_from_snapshot(snapshot, source_lesson_id)
-        plans.append(build_plan(lesson, source, audio_manifest, native_audit, exercise_review))
+        plans.append(build_plan(lesson, source, audio_manifest, native_audit, exercise_review, listening_review))
     return plans
 
 
@@ -2544,8 +2927,9 @@ def build_manifest(
     expected_source_count: int | None = None,
     native_audit: Any = None,
     exercise_review: Any = None,
+    listening_review: Any = None,
 ) -> dict[str, Any]:
-    plans = build_plans(snapshot, sources, audio_manifest, native_audit, exercise_review)
+    plans = build_plans(snapshot, sources, audio_manifest, native_audit, exercise_review, listening_review)
     inventory_blockers: list[dict[str, Any]] = []
     if expected_source_count is not None and len(sources) != expected_source_count:
         inventory_blockers.append(
@@ -2595,6 +2979,12 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument("--audio-manifest", type=Path, help="optional original media URL/digest/transcript manifest")
     parser.add_argument("--native-audit", type=Path, help="optional native PPTX audit/enrichment JSON")
     parser.add_argument("--exercise-review", type=Path, help="optional reviewed exercise semantics JSON")
+    parser.add_argument(
+        "--listening-review",
+        type=Path,
+        action="append",
+        help="optional reviewed listening semantics JSON; may be supplied more than once",
+    )
     parser.add_argument("--expected-source-count", type=int, default=55)
     parser.add_argument("--require-ready", action="store_true", help="exit nonzero when inventory or plan blockers exist")
     return parser.parse_args(argv)
@@ -2609,6 +2999,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         sources = load_sources(args.source_dir)
         audio_manifest = load_json(args.audio_manifest) if args.audio_manifest else None
         exercise_review = load_json(args.exercise_review) if args.exercise_review else None
+        listening_documents = [load_json(path) for path in (args.listening_review or [])]
+        listening_review = _listening_review_documents(listening_documents)
         native_audit = None
         if args.native_audit:
             loaded_native_audit = load_json(args.native_audit)
@@ -2624,6 +3016,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.expected_source_count,
             native_audit,
             exercise_review,
+            listening_review,
         )
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
