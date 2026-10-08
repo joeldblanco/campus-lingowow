@@ -51,6 +51,34 @@ class PronunciationReviewTests(unittest.TestCase):
         self.assertTrue(all(slot["status"] == "blocked-manual" for slot in unit6["unresolvedAudioSlots"]))
         self.assertEqual(len(unit6["items"]), 3)
 
+    def test_entries_are_direct_builder_listening_records(self):
+        """Keep the artifact consumable by build-course-learning.py as-is."""
+
+        accepted_statuses = {"reviewed", "approved", "ready"}
+        for exercise in self.review["exercises"]:
+            self.assertIn(exercise["reviewStatus"], accepted_statuses)
+            self.assertIsInstance(exercise["lessonId"], str)
+            self.assertIsInstance(exercise["slideNumber"], int)
+            self.assertIsInstance(exercise["audioIndex"], int)
+            self.assertRegex(exercise["sourceAudioSha256"], r"^[0-9a-f]{64}$")
+            self.assertIsInstance(exercise["items"], list)
+
+            for item in exercise["items"]:
+                self.assertIn(item["reviewStatus"], accepted_statuses)
+                self.assertIsInstance(item["prompt"], str)
+                self.assertEqual(len(item["explicitOptions"]), 4)
+                self.assertEqual(len(item["answerItems"]), 1)
+                self.assertEqual(item["sourceAudioSha256"], exercise["sourceAudioSha256"])
+                self.assertEqual(
+                    item["sourceEvidence"]["clipSourceAudioSha256"],
+                    exercise["sourceAudioSha256"],
+                )
+
+            unresolved = exercise.get("unresolvedAudioSlots", [])
+            if unresolved:
+                self.assertTrue(exercise["manualReviewRequired"])
+                self.assertTrue(all(slot["status"] == "blocked-manual" for slot in unresolved))
+
 
 if __name__ == "__main__":
     unittest.main()
