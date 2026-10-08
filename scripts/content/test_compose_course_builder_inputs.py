@@ -38,6 +38,262 @@ class ComposerScopeTests(unittest.TestCase):
         self.assertEqual(unregistered.DEFAULT_UNIT_SCOPE.first, 2)
         self.assertEqual(unregistered.DEFAULT_UNIT_SCOPE.last, 52)
 
+    def _published_review_fixture(self, root: Path) -> tuple[dict, dict, dict[int, dict], dict[str, dict]]:
+        source = {
+            "unit": 53,
+            "lesson": {"id": "lesson-53"},
+            "sourceUrl": "https://example.test/unit-53",
+            "deck": {
+                "deckTitle": "Unit 53 - Source",
+                "slides": [
+                    {
+                        "number": 4,
+                        "title": "Look at the picture.",
+                        "visibleTexts": ["Look at the picture.", "STRUCTURES", "EXAMPLES", "Gerunds"],
+                    }
+                ],
+            },
+        }
+        review = {
+            "courseId": composer.COURSE_ID,
+            "records": [
+                {
+                    "unit": 53,
+                    "lessonId": "lesson-53",
+                    "sourceUrl": source["sourceUrl"],
+                    "status": "reviewed",
+                    "sourceProofSlides": [
+                        {
+                            "slideNumber": 4,
+                            "sourceUrl": source["sourceUrl"],
+                            "visibleTexts": source["deck"]["slides"][0]["visibleTexts"],
+                        }
+                    ],
+                }
+            ],
+        }
+        return review, source, {53: source}, {"lesson-53": source}
+
+    def test_published_source_review_explicitly_clears_missing_native_record(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            review, source, by_unit, by_lesson = self._published_review_fixture(Path(directory))
+            blockers: list[dict] = []
+            summary, accepted = composer._apply_published_source_review(
+                review,
+                by_unit,
+                by_lesson,
+                [Path(directory)],
+                blockers,
+                scope=composer._unit_scope(53, 53),
+            )
+            self.assertEqual(summary["applied"], 1)
+            self.assertEqual(blockers, [])
+            native = composer._compose_native_audit(
+                None,
+                None,
+                None,
+                None,
+                [],
+                by_unit,
+                blockers,
+                scope=composer._unit_scope(53, 53),
+                published_source_review=accepted,
+            )
+
+        self.assertEqual(native["records"], [])
+        self.assertEqual(native["publishedSourceReview"][0]["lessonId"], "lesson-53")
+        self.assertNotIn("native-record-missing", [item["code"] for item in blockers])
+        self.assertFalse(source["deck"]["slides"][0].get("_nativeAudit"))
+
+    def test_published_source_review_rejects_identity_and_proof_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            review, _source, by_unit, by_lesson = self._published_review_fixture(Path(directory))
+            review["records"][0]["sourceUrl"] = "https://example.test/other"
+            review["records"][0]["sourceProofSlides"][0]["visibleTexts"] = ["different slide"]
+            blockers: list[dict] = []
+            summary, accepted = composer._apply_published_source_review(
+                review,
+                by_unit,
+                by_lesson,
+                [Path(directory)],
+                blockers,
+                scope=composer._unit_scope(53, 53),
+            )
+
+        self.assertEqual(summary["applied"], 0)
+        self.assertEqual(accepted, {})
+        self.assertIn("published-source-review-identity-mismatch", [item["code"] for item in blockers])
+        self.assertIn("published-source-review-proof-mismatch", [item["code"] for item in blockers])
+
+    def test_published_source_review_projects_source_table_and_staged_figure(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            review, source, by_unit, by_lesson = self._published_review_fixture(root)
+            figure_path = root / "figure.jpg"
+            figure_path.write_bytes(b"published source figure")
+            digest = hashlib.sha256(figure_path.read_bytes()).hexdigest()
+            review["records"][0]["reviewedTables"] = [
+                {
+                    "slideNumber": 4,
+                    "tables": [{"rows": [["STRUCTURES", "EXAMPLES"], ["Gerunds", "Gerunds"]]}],
+                }
+            ]
+            review["records"][0]["reviewedFigures"] = [
+                {
+                    "slideNumber": 4,
+                    "confirmedInstructional": True,
+                    "sourceSha256": digest,
+                    "sourcePath": figure_path.name,
+                }
+            ]
+            blockers: list[dict] = []
+            _summary, accepted = composer._apply_published_source_review(
+                review,
+                by_unit,
+                by_lesson,
+                [root],
+                blockers,
+                scope=composer._unit_scope(53, 53),
+            )
+            figures, _counts = composer._figure_candidates(
+                None,
+                None,
+                {digest: {"status": "ready", "sourceSha256": digest, "publicUrl": "/figure.webp", "sourcePath": figure_path.name}},
+                {},
+                by_unit,
+                [root],
+                blockers,
+                scope=composer._unit_scope(53, 53),
+                published_source_review=accepted,
+            )
+            composer._attach_published_source_review(accepted, figures, by_unit, blockers)
+
+        self.assertEqual(blockers, [])
+        self.assertEqual(source["deck"]["slides"][0]["tables"][0]["rows"][0], ["STRUCTURES", "EXAMPLES"])
+        self.assertFalse(source["deck"]["slides"][0]["tableSemantics"]["nativeIdentityConfirmed"])
+        self.assertEqual(figures[0]["nativeEvidence"]["mapping"], "published-source-review")
+        self.assertFalse(source["deck"]["slides"][0]["_nativeAudit"]["nativeIdentityConfirmed"])
+
+    def test_listening_review_allows_proven_cross_slide_audio_and_preserves_source_slide(self) -> None:
+        source = {
+            "unit": 53,
+            "lesson": {"id": "lesson-53"},
+            "deck": {
+                "slides": [
+                    {"number": 12, "visibleTexts": ["Audio 2: original conversation"]},
+                    {"number": 13, "visibleTexts": ["Listen to the audio and answer teacher questions."]},
+                ]
+            },
+        }
+        digest = "a" * 64
+        audio = [
+            {
+                "lessonId": "lesson-53",
+                "unit": 53,
+                "slideNumber": 12,
+                "audioNumber": 2,
+                "sourceSha256": digest,
+            }
+        ]
+        documents = [
+            {
+                "exercises": [
+                    {
+                        "lessonId": "lesson-53",
+                        "unit": 53,
+                        "slideNumber": 13,
+                        "audioIndex": 2,
+                        "sourceAudioSha256": digest,
+                        "sourceAudioSlideNumber": 12,
+                        "sourceAudioSlideEvidence": ["Audio 2: original conversation"],
+                        "targetSlideEvidence": ["Listen to the audio and answer teacher questions."],
+                    }
+                ]
+            }
+        ]
+        blockers: list[dict] = []
+        result = composer._normalize_listening(documents, {"lesson-53": source}, audio, blockers)
+
+        self.assertEqual(blockers, [])
+        self.assertEqual(result["exercises"][0]["slideNumber"], 13)
+        self.assertEqual(result["exercises"][0]["sourceAudioSlideNumber"], 12)
+        aliases = [item for item in audio if item.get("activitySlideNumber") == 13]
+        self.assertEqual(len(aliases), 1)
+        self.assertEqual(aliases[0]["slideNumber"], 13)
+        self.assertEqual(aliases[0]["sourceSlideNumber"], 12)
+        self.assertEqual(aliases[0]["sourceAudioSlideNumber"], 12)
+
+    def test_listening_review_rejects_cross_slide_without_explicit_target_and_source_proof(self) -> None:
+        source = {
+            "unit": 53,
+            "lesson": {"id": "lesson-53"},
+            "deck": {
+                "slides": [
+                    {"number": 12, "visibleTexts": ["Audio 2: original conversation"]},
+                    {"number": 13, "visibleTexts": ["Listen to the audio and answer teacher questions."]},
+                ]
+            },
+        }
+        digest = "b" * 64
+        audio = [
+            {"lessonId": "lesson-53", "slideNumber": 12, "audioNumber": 2, "sourceSha256": digest}
+        ]
+        documents = [
+            {
+                "exercises": [
+                    {
+                        "lessonId": "lesson-53",
+                        "unit": 53,
+                        "slideNumber": 13,
+                        "audioIndex": 2,
+                        "sourceAudioSha256": digest,
+                        "sourceAudioSlideNumber": 12,
+                        "targetSlideEvidence": ["Listen to the audio and answer teacher questions."],
+                    }
+                ]
+            }
+        ]
+        blockers: list[dict] = []
+        result = composer._normalize_listening(documents, {"lesson-53": source}, audio, blockers)
+
+        self.assertEqual(result["exercises"], [])
+        self.assertEqual(result["rejectedEntries"][0]["compositionStatus"], "rejected-cross-slide-proof")
+        self.assertIn("listening-cross-slide-proof-missing", [item["code"] for item in blockers])
+
+    def test_listening_review_does_not_infer_adjacent_audio_slide(self) -> None:
+        source = {
+            "unit": 53,
+            "lesson": {"id": "lesson-53"},
+            "deck": {
+                "slides": [
+                    {"number": 12, "visibleTexts": ["Audio 2: original conversation"]},
+                    {"number": 13, "visibleTexts": ["Listen to the audio and answer teacher questions."]},
+                ]
+            },
+        }
+        digest = "c" * 64
+        audio = [
+            {"lessonId": "lesson-53", "slideNumber": 12, "audioNumber": 2, "sourceSha256": digest}
+        ]
+        documents = [
+            {
+                "exercises": [
+                    {
+                        "lessonId": "lesson-53",
+                        "unit": 53,
+                        "slideNumber": 13,
+                        "audioIndex": 2,
+                        "sourceAudioSha256": digest,
+                    }
+                ]
+            }
+        ]
+        blockers: list[dict] = []
+        result = composer._normalize_listening(documents, {"lesson-53": source}, audio, blockers)
+
+        self.assertEqual(result["exercises"], [])
+        self.assertIn("listening-source-audio-mismatch", [item["code"] for item in blockers])
+
     def test_default_scope_remains_units_2_to_52(self) -> None:
         args = composer._parse_args(
             [
