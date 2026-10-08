@@ -185,6 +185,18 @@ describe('Unit 1 sentence production', () => {
 })
 
 describe('Unit 1 conversation production', () => {
+  it('describes a teacher-led presentation as an activity rather than question turns', () => {
+    const block: Block = {
+      id: 'family-presentation', type: 'recording', order: 0,
+      instruction: 'Talk about your family. Present a family tree to your teacher.',
+      data: { learningRevision: 'course-guided-v1', guidedRole: 'conversation' },
+    }
+    render(<Unit1Production block={block} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Con mi profesora' }))
+    expect(screen.getByText('Realiza la actividad con tu profesora.')).toBeVisible()
+    expect(screen.getByRole('list', { name: 'Actividad para practicar con tu profesora' })).toBeVisible()
+    expect(screen.queryByText('Pregunten y respondan por turnos.')).not.toBeInTheDocument()
+  })
   it('uses the reviewed course scenario and authored turn count in both study modes', () => {
     const block: Block = {
       id: 'unit-two-conversation', type: 'recording', order: 0,

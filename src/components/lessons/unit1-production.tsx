@@ -340,6 +340,7 @@ function TeacherConversationMode({
   onGuidedCompletionChange?: (done: boolean) => void
 }) {
   const [completed, setCompleted] = useState(false)
+  const questionTurns = turns.every((turn) => /\?\s*$/.test(turn.question))
 
   const finishAction = (
     <Button
@@ -358,8 +359,8 @@ function TeacherConversationMode({
 
   return (
     <div className="space-y-6" data-unit1-conversation-mode="teacher">
-        <p className="text-base leading-6 text-[#506187]">Pregunten y respondan por turnos.</p>
-      <ol className="space-y-3" aria-label="Preguntas para practicar con tu profesora">
+        <p className="text-base leading-6 text-[#506187]">{questionTurns ? 'Pregunten y respondan por turnos.' : 'Realiza la actividad con tu profesora.'}</p>
+      <ol className="space-y-3" aria-label={questionTurns ? 'Preguntas para practicar con tu profesora' : 'Actividad para practicar con tu profesora'}>
         {turns.map((turn, index) => (
           <li
             key={turn.id}
