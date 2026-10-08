@@ -16,7 +16,6 @@ from __future__ import annotations
 import argparse
 import copy
 from collections import Counter, defaultdict
-from dataclasses import dataclass
 import hashlib
 import json
 import re
@@ -46,12 +45,12 @@ class ComposeError(ValueError):
     """Raised when a required audit input cannot be interpreted safely."""
 
 
-@dataclass(frozen=True)
 class UnitScope:
     """The inclusive unit range admitted by one composition run."""
 
-    first: int
-    last: int
+    def __init__(self, first: int, last: int) -> None:
+        self.first = first
+        self.last = last
 
     @property
     def units(self) -> range:

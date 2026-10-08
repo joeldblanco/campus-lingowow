@@ -26,6 +26,18 @@ def published_source(unit: int, lesson_id: str) -> dict:
 
 
 class ComposerScopeTests(unittest.TestCase):
+    def test_composer_loads_without_sys_modules_registration(self) -> None:
+        spec = importlib.util.spec_from_file_location(
+            "compose_course_builder_inputs_unregistered",
+            SCRIPT,
+        )
+        assert spec and spec.loader
+        unregistered = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(unregistered)
+
+        self.assertEqual(unregistered.DEFAULT_UNIT_SCOPE.first, 2)
+        self.assertEqual(unregistered.DEFAULT_UNIT_SCOPE.last, 52)
+
     def test_default_scope_remains_units_2_to_52(self) -> None:
         args = composer._parse_args(
             [
