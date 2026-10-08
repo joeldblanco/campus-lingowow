@@ -359,6 +359,273 @@ function GrammarSetPresentation({
   )
 }
 
+type GuidedTableCell = {
+  text: string
+  colSpan?: number
+  rowSpan?: number
+}
+
+type GuidedTableGroup = {
+  id: string
+  label: string
+  headers: GuidedTableCell[]
+  rows: GuidedTableCell[][]
+  notes: string[]
+  indexColumn?: number
+}
+
+function tableSpan(value: unknown): number | undefined {
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < 2) return undefined
+  return value
+}
+
+function guidedTableCell(value: unknown): GuidedTableCell | undefined {
+  if (typeof value === 'string') return { text: value }
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined
+
+  const cell = value as Record<string, unknown>
+  const text = typeof cell.text === 'string'
+    ? cell.text
+    : typeof cell.value === 'string'
+      ? cell.value
+      : typeof cell.content === 'string'
+        ? cell.content
+        : undefined
+  if (text === undefined) return undefined
+
+  return {
+    text,
+    colSpan: tableSpan(cell.colSpan),
+    rowSpan: tableSpan(cell.rowSpan),
+  }
+}
+
+function guidedTableCells(value: unknown): GuidedTableCell[] | undefined {
+  if (!Array.isArray(value)) return undefined
+  const cells = value.map(guidedTableCell)
+  return cells.every((cell): cell is GuidedTableCell => Boolean(cell)) ? cells : undefined
+}
+
+function numericIndexColumn(headers: GuidedTableCell[], rows: GuidedTableCell[][]): number | undefined {
+  const candidate = headers.findIndex((header) => header.text.trim() === '')
+  if (candidate < 0 || rows.length === 0) return undefined
+  const values = rows.map((row) => row[candidate]?.text.trim() || '')
+  return values.every((value) => /^\d{1,3}[.)]?$/.test(value)) ? candidate : undefined
+}
+
+function explicitIndexColumn(value: unknown): number | undefined {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : undefined
+}
+
+/**
+ * Builder-authored groups are the only opt-in path for splitting a source table.
+ * Invalid or absent metadata falls back to the original table unchanged.
+ */
+function getGuidedTableGroups(block: Extract<Block, { type: 'structured-content' }>): GuidedTableGroup[] | undefined {
+  const rawGroups = block.data?.tableGroups
+  if (!Array.isArray(rawGroups) || rawGroups.length === 0) return undefined
+
+  const groups = rawGroups.map((rawGroup, index): GuidedTableGroup | undefined => {
+    if (!rawGroup || typeof rawGroup !== 'object' || Array.isArray(rawGroup)) return undefined
+    const group = rawGroup as Record<string, unknown>
+    const headers = guidedTableCells(group.headers)
+    const rawRows = Array.isArray(group.rows) ? group.rows : undefined
+    if (!headers || !rawRows) return undefined
+
+    const rows: GuidedTableCell[][] = []
+    for (const rawRow of rawRows) {
+      const cells = Array.isArray(rawRow)
+        ? guidedTableCells(rawRow)
+        : rawRow && typeof rawRow === 'object' && !Array.isArray(rawRow)
+          ? guidedTableCells((rawRow as Record<string, unknown>).cells)
+          : undefined
+      if (!cells) return undefined
+      rows.push(cells)
+    }
+
+    const id = typeof group.key === 'string' && group.key.trim()
+      ? group.key.trim()
+      : typeof group.id === 'string' && group.id.trim()
+        ? group.id.trim()
+        : `group-${index + 1}`
+    const label = typeof group.sourceHeader === 'string' && group.sourceHeader.trim()
+      ? group.sourceHeader.trim()
+      : typeof group.title === 'string' && group.title.trim()
+        ? group.title.trim()
+        : `${block.title || 'Tabla de referencia'} ${index + 1}`
+    const notes = Array.isArray(group.notes)
+      ? group.notes.filter((note): note is string => typeof note === 'string')
+      : []
+    const indexColumn = explicitIndexColumn(group.indexColumn) ?? numericIndexColumn(headers, rows)
+
+    return { id, label, headers, rows, notes, indexColumn }
+  })
+
+  return groups.every((group): group is GuidedTableGroup => Boolean(group)) ? groups : undefined
+}
+
+function GuidedTableCellContent({ cell }: { cell: GuidedTableCell }) {
+  return <>{cell.text}</>
+}
+
+function GuidedTablePanel({
+  id,
+  label,
+  headers,
+  rows,
+  notes,
+  indexColumn,
+}: {
+  id: string
+  label: string
+  headers: GuidedTableCell[]
+  rows: GuidedTableCell[][]
+  notes: string[]
+  indexColumn?: number
+}) {
+  const columnCount = Math.max(headers.reduce((sum, cell) => sum + (cell.colSpan || 1), 0), ...rows.map((row) => row.reduce((sum, cell) => sum + (cell.colSpan || 1), 0)))
+  const tableMinWidth = id === 'week-overview' ? 240 : Math.max(240, columnCount * 144 - (indexColumn === undefined ? 0 : 96))
+  return (
+    <section data-guided-table-group={id} className="overflow-x-auto rounded-[20px] border border-[#EEE8FA] bg-white p-2 sm:p-3">
+      {columnCount > 2 && <p className="mb-2 px-3 text-sm text-[#506187] sm:hidden">Desliza para ver la tabla →</p>}
+      <table
+        aria-label={label}
+        className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
+        style={{ minWidth: tableMinWidth }}
+      >
+        <caption className="sr-only">{label}</caption>
+        <thead className="bg-[#EEE8FA]">
+          <tr>
+            {headers.map((header, index) => (
+              <th
+                key={index}
+                scope="col"
+                colSpan={header.colSpan}
+                rowSpan={header.rowSpan}
+                className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-2.5 align-top font-sans text-base font-semibold leading-6 ${SLATE_TEXT} ${index === 0 ? 'rounded-tl-[16px]' : ''} ${index === headers.length - 1 ? 'rounded-tr-[16px]' : ''} ${index === indexColumn ? 'w-12 min-w-12' : ''} ${id === 'week-overview' && index === 0 ? 'w-[40%]' : ''}`}
+              >
+                <GuidedTableCellContent cell={header} />
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr key={rowIndex} className={rowIndex % 2 === 1 ? 'bg-[#FAF8F4]' : 'bg-white'}>
+              {row.map((cell, cellIndex) => (
+                <td
+                  key={cellIndex}
+                  colSpan={cell.colSpan}
+                  rowSpan={cell.rowSpan}
+                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] ${id === 'week-overview' ? 'px-2 sm:px-3' : 'px-3'} py-2 align-top font-serif ${id === 'week-overview' && cellIndex === 0 ? 'text-sm sm:text-lg' : 'text-base sm:text-lg'} leading-6 ${NAVY_TEXT} ${rowIndex === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
+                  style={GEORGIA_FONT}
+                >
+                  <GuidedTableCellContent cell={cell} />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {notes.length > 0 && (
+        <div data-guided-table-notes className={`space-y-3 px-3 pt-3 text-base leading-6 ${NAVY_TEXT}`}>
+          {notes.map((note, index) => <p key={index} className="whitespace-pre-wrap">{note}</p>)}
+        </div>
+      )}
+    </section>
+  )
+}
+
+function StructuredContentPresentation({
+  block,
+}: {
+  block: Extract<Block, { type: 'structured-content' }>
+}) {
+  const content = block.content
+  if (!content) return null
+
+  const groups = getGuidedTableGroups(block)
+  if (groups) {
+    return (
+      <div
+        data-guided-table
+        data-guided-table-grouped
+        className="rounded-[24px] border border-[#EEE8FA] bg-white p-2 shadow-[0_12px_28px_rgba(16,36,92,0.07)] sm:p-3"
+      >
+        {block.subtitle && (
+          <p className={`px-3 pb-3 pt-2 text-base leading-6 ${SLATE_TEXT}`}>{block.subtitle}</p>
+        )}
+        <div data-guided-table-panels className="space-y-4">
+          {groups.map((group) => (
+            <GuidedTablePanel
+              key={group.id}
+              id={group.id}
+              label={group.label}
+              headers={group.headers}
+              rows={group.rows}
+              notes={group.notes}
+              indexColumn={group.indexColumn}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const headers = content.headers.map((text) => ({ text }))
+  const rows = content.rows.map((row) => row.map((text) => ({ text })))
+  const indexColumn = numericIndexColumn(headers, rows)
+  const columnCount = Math.max(headers.length, ...rows.map((row) => row.length))
+  const tableMinWidth = Math.max(240, columnCount * 144 - (indexColumn === undefined ? 0 : 96))
+
+  return (
+    <div
+      data-guided-table
+      className="overflow-x-auto rounded-[24px] border border-[#EEE8FA] bg-white p-2 shadow-[0_12px_28px_rgba(16,36,92,0.07)] sm:p-3"
+    >
+      {block.subtitle && (
+        <p className={`px-3 pb-3 pt-2 text-base leading-6 ${SLATE_TEXT}`}>{block.subtitle}</p>
+      )}
+      {columnCount > 2 && <p className="mb-2 px-3 text-sm text-[#506187] sm:hidden">Desliza para ver la tabla →</p>}
+      <table
+        aria-label={block.title || 'Tabla de referencia'}
+        className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
+        style={{ minWidth: tableMinWidth }}
+      >
+        <caption className="sr-only">{block.title || 'Tabla de referencia'}</caption>
+        <thead className="bg-[#EEE8FA]">
+          <tr>
+            {headers.map((header, index) => (
+              <th
+                key={index}
+                scope="col"
+                className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-2.5 font-sans text-base font-semibold leading-6 ${SLATE_TEXT} ${index === 0 ? 'rounded-tl-[16px]' : ''} ${index === headers.length - 1 ? 'rounded-tr-[16px]' : ''} ${index === indexColumn ? 'w-12 min-w-12' : ''}`}
+              >
+                {header.text}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={index} className={index % 2 === 1 ? 'bg-[#FAF8F4]' : 'bg-white'}>
+              {row.map((cell, cellIndex) => (
+                <td
+                  key={cellIndex}
+                  className={`whitespace-pre-wrap break-words border-b border-[#EEE8FA] px-3 py-1 align-top font-serif text-base sm:text-lg leading-6 ${NAVY_TEXT} ${index === rows.length - 1 ? 'border-b-0' : ''} ${cellIndex === indexColumn ? 'w-12 min-w-12' : ''}`}
+                  style={GEORGIA_FONT}
+                >
+                  {cell.text}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 /** Presentation-only blocks use real authored content; exercises keep their existing renderer. */
 export function GuidedLessonBlock({
   block,
@@ -416,52 +683,7 @@ export function GuidedLessonBlock({
       )
 
     case 'structured-content':
-      return block.content ? (
-        <div
-          data-guided-table
-          className="overflow-x-auto rounded-[24px] border border-[#EEE8FA] bg-white p-2 shadow-[0_12px_28px_rgba(16,36,92,0.07)] sm:p-3"
-        >
-          {block.subtitle && (
-            <p className={`px-3 pb-3 pt-2 text-base leading-6 ${SLATE_TEXT}`}>{block.subtitle}</p>
-          )}
-          <table
-            aria-label={block.title || 'Tabla de referencia'}
-            className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
-          >
-            <caption className="sr-only">{block.title || 'Tabla de referencia'}</caption>
-            <thead className="bg-[#EEE8FA]">
-              <tr>
-                {block.content.headers.map((header, index) => (
-                  <th
-                    key={index}
-                    scope="col"
-                    className={`whitespace-pre-wrap border-b border-[#EEE8FA] px-3 py-2.5 font-sans text-base font-semibold leading-6 ${SLATE_TEXT} ${index === 0 ? 'rounded-tl-[16px]' : ''} ${index === block.content!.headers.length - 1 ? 'rounded-tr-[16px]' : ''}`}
-                  >
-                    {header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {block.content.rows.map((row, index) => (
-                <tr key={index} className={index % 2 === 1 ? 'bg-[#FAF8F4]' : 'bg-white'}>
-                  {row.map((cell, cellIndex) => (
-                    <td
-                      key={cellIndex}
-                      className={`whitespace-pre-wrap border-b border-[#EEE8FA] px-3 py-1 font-serif text-lg leading-6 ${NAVY_TEXT} ${index === block.content!.rows.length - 1 ? 'border-b-0' : ''}`}
-                      style={GEORGIA_FONT}
-                    >
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        children
-      )
+      return block.content ? <StructuredContentPresentation block={block} /> : children
 
     default:
       return children

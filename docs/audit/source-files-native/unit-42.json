@@ -1,0 +1,4867 @@
+{
+  "schemaVersion": 1,
+  "unit": 42,
+  "module": {
+    "order": 11,
+    "title": "Módulo 11",
+    "id": "cmnmm9lep0009w1qknpan2awr",
+    "driveTitle": "Module 11"
+  },
+  "candidate": {
+    "id": "1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI",
+    "title": "Spilling the Beans - Unit 42.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "979700",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 11"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-42-primary-01-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI.pptx",
+    "localBytes": 979700,
+    "sha256": "47b6c0e6259f341873bbc7a3d7063878a684a83ce11a3bd5b4cf9318b741a261"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-42-primary-01-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSsvN1sYDsH1F1rGt_-NGv7R5v1aYYv5V95mrtEIeg98mOFSplQ21ZfKv2wOKSEkg/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSsvN1sYDsH1F1rGt_-NGv7R5v1aYYv5V95mrtEIeg98mOFSplQ21ZfKv2wOKSEkg/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 18,
+    "nativeSlideCount": 18,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.62691,
+    "publicTokenCoverage": 0.966736,
+    "slideDifferenceCount": 8,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nReport what you have heard from others.\nCompetencies\nUnderstand, express and report what you have heard from others in written and spoken English.",
+        "publishedText": "Competencies Understand, express and report what you have heard from others in written and spoken English. Communicative Function Report what you have heard from others.",
+        "sequenceRatio": 0.627219
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. 4",
+        "sequenceRatio": 0.988166
+      },
+      {
+        "slide": 8,
+        "nativeText": "Structures\nDIRECT SPEECH\nREPORTED SPEECH\nSimple Present\nWe are students \nI have a dog\nThey said they were students.\nHe told us he had a dog.\nPresent Progressive\nI am having so much fun.\nHe told me he was having so much fun.\nPast simple\nI was at home all night.\nShe said she had been at home all night.\nPast Progressive\nI was just eating a burger.\nHe said that he had just been eating a burger.\nFuture\nWe will buy the car.\nAre you going to sell the house?\nThey told us they would buy the car.\nShe asked me if I was going to sell the house.\nPresent Perfect\nHas he gone for good?\nHe asked me if he had gone for good.\nAny tense can be used to report utterances. Check the chart.",
+        "publishedText": "Structures DIRECT SPEECH REPORTED SPEECH Simple Present We are students. I have a dog. They said they were students. He told us he had a dog. Present Progressive I am having so much fun. He told me he was having so much fun. Past simple I was at home all night. She said she had been at home all night. Past Progressive I was just eating a burger. He said that he had just been eating a burger. Future We will buy the car. Are you going to sell the house? They told us they would buy the car. She asked me if I was going to sell the house. Present Perfect Has he gone for good? He asked me if he had gone for good. Any tense can be used to report utterances. Check the chart to see how tenses change depending on which one we are reporting.",
+        "sequenceRatio": 0.951168
+      },
+      {
+        "slide": 9,
+        "nativeText": "Structures\nDIRECT SPEECH\nREPORTED SPEECH\nPast Perfect\nWe had already taken lessons by 2020.\nThey said they had already taken lessons by 2020.\nModals\nI can go with you. \nWe would help you.\nI may not go.\nWe might have a review.\nHe told me he could go with us.\nThey told us they would help us.\nHe said that he might not go.\nThe teacher said that we might have a review.\nTo Consider\n\nMost of the structures we know change when we use reported or indirect speech.\nMost common verbs to use to report are: Say, Tell and Ask as you see in the examples. \nThe particle that is commonly used at the beginning of the report; but it can be omitted to. \nThe word if is used when we are reporting a question as shown in the examples. \nThe modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+        "publishedText": "Structures DIRECT SPEECH REPORTED SPEECH Past Perfect We had already taken lessons by 2020. They said they had already taken lessons by 2020. Modals I can go with you. We would help you. I may not go. We might have a review. He told me he could go with us. They told us they would help us. He said that he might not go. The teacher said that we might have a review. To Consider 1. Most of the structures we know change when we use reported or indirect speech. 2. Most common verbs used to report are: Say, Tell and Ask as you see in the examples. 3. The particle that is commonly used at the beginning of the report; but it can be omitted too. 4. The word if is used when we are reporting a question as shown in the examples. 5. The modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+        "sequenceRatio": 0.98476
+      },
+      {
+        "slide": 11,
+        "nativeText": "We can use indirect speech for the following functions:\nFunctions\nExamples\n1\nReport what other people say\nThey told us they had already finished the project.\n2\nReport questions other people make.\nJane asked Joe if he could buy dinner on his way home.\n3\nReport requests\nCarlos asked me to help him out.\nTo consider \nWhen reporting requests, we normally used the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example.\nRequests can be negative too. E.G.\n   Please, don’t smoke here. ---------> She asked me NOT to smoke here.",
+        "publishedText": "We can use indirect speech for the following functions: Functions Examples 1 Report what other people say They told us they had already finished the project. 2 Report questions other people make Jane asked Joe if he could buy dinner on his way home. 3 Report requests Carlos asked me to help him out. To consider 1. When reporting requests, we normally use the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example. 2. Requests can be negative too. E.G. Please, don’t smoke here. -----> She asked me NOT to smoke here.",
+        "sequenceRatio": 0.989111
+      },
+      {
+        "slide": 13,
+        "nativeText": "A. Write the correct report speech for each sentence. Follow the example.\nI did not do my homework..\n\nWe will definitely get that spot.\n\nI was watching TV and you called.\n\nDon’t open the windows, please.\n\nI normally eat cereal in the mornings.\n\nWe are having a terrible day..\n\nI may call her. \n\nWe should smoke outside.\n\nI cannot take this schedule now..\nHe said that he normally ate cereal in the mornings.",
+        "publishedText": "A. Write the correct reported speech for each sentence. Follow the example. I did not do my homework.. We will definitely get that spot. I was watching TV and you called. Don’t open the windows, please. I normally eat cereal in the mornings. We are having a terrible day.. I may call her. We should smoke outside. I cannot take this schedule now.. He said that he normally ate cereal in the mornings.",
+        "sequenceRatio": 0.997494
+      },
+      {
+        "slide": 15,
+        "nativeText": "‹#›\nC. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read aloud the text to your teacher.\nShe said she loved me: A Case of a Crime of Passion.\n\nMay 27th, 2021.\n\nAfter 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found  until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. \nRoberts, J.",
+        "publishedText": "15 C. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read the text aloud to your teacher. She said she loved me: A Case of a Crime of Passion. May 27th, 2021. After 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. Roberts, J.",
+        "sequenceRatio": 0.993208
+      },
+      {
+        "slide": 16,
+        "nativeText": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied.\nE. Write a 150-180 word text where you right a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied. E. Write an 120-160 word text where you write a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.979973
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 254427,
+      "sha256": "d500cc8c6cfd37c7a627330085c6d4aab4d4e07584efbe14bf81c619df9cbc1c"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 6,
+    "bytes": 428276,
+    "byExtension": {
+      ".jpg": 1,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 6,
+    "imageBytes": 428276
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-42-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 6028875,
+            "y": 3790025,
+            "cx": 1124000,
+            "cy": 1124000,
+            "right": 7152875,
+            "bottom": 4914025
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "290",
+          "shapeName": "Google Shape;290;g729cfa641f_0_32",
+          "bbox": {
+            "x": 2815025,
+            "y": 1205475,
+            "cx": 2919300,
+            "cy": 2919300,
+            "right": 5734325,
+            "bottom": 4124775
+          },
+          "slide": 14
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-42-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image2.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-42-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-42-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "328",
+          "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 18
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-42-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "329",
+          "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 18
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-42-1KHi4P4Bz687aT7Ez-S9Njwziaav63yZI\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 254427,
+      "sha256": "d500cc8c6cfd37c7a627330085c6d4aab4d4e07584efbe14bf81c619df9cbc1c",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "slide": 4
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "42",
+          "Spilling the Beans",
+          "Unit"
+        ],
+        "joinedText": "42\nSpilling the Beans\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2977500,
+              "cy": 1649100,
+              "right": 3788450,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "42",
+                "runs": [
+                  "4",
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "42"
+            ],
+            "joinedText": "42"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1288975,
+              "y": 2525225,
+              "cx": 6159900,
+              "cy": 1159800,
+              "right": 7448875,
+              "bottom": 3685025
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Spilling the Beans",
+                "runs": [
+                  "Spilling the Beans"
+                ]
+              }
+            ],
+            "texts": [
+              "Spilling the Beans"
+            ],
+            "joinedText": "Spilling the Beans"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 210350,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1299350,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "42",
+        "visibleTexts": [
+          "42",
+          "Spilling the Beans",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSapg7IZaj1uuQQrCTjNtjSTSX9DS2llwY6oU6HskwRf3clfATDGZlI-zmh9QsvATRKEvWj8mNQUP8M8F6rhh2_0qaKtW8XvsSv_P6xitSQE7tzvaWt3t0of5uvlskz_y_oiRvqH-AV6vvSPEE2yfkv3MqddjAgygxxomZ8DGC7CXpZGoUB9oHva7YjDE8-U0w=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Report what you have heard from others. ",
+          "Competencies",
+          "Understand, express and report what you have heard from others in written and spoken English."
+        ],
+        "joinedText": "Communicative Function\nReport what you have heard from others.\nCompetencies\nUnderstand, express and report what you have heard from others in written and spoken English.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Report what you have heard from others. ",
+                "runs": [
+                  "Report what you have heard from others. "
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Report what you have heard from others. "
+            ],
+            "joinedText": "Communicative Function\nReport what you have heard from others."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 5275500,
+              "cy": 2053500,
+              "right": 6727125,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Understand, express and report what you have heard from others in written and spoken English.",
+                "runs": [
+                  "Understand, express and report what you have heard from others in written and spoken English."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Understand, express and report what you have heard from others in written and spoken English."
+            ],
+            "joinedText": "Competencies\nUnderstand, express and report what you have heard from others in written and spoken English."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Competencies Understand, express and report what you have heard from others in written and spoken English.",
+        "visibleTexts": [
+          "Competencies Understand, express and report what you have heard from others in written and spoken English.",
+          "Communicative Function Report what you have heard from others."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 6028875,
+              "y": 3790025,
+              "cx": 1124000,
+              "cy": 1124000,
+              "right": 7152875,
+              "bottom": 4914025
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 6028875,
+              "y": 3790025,
+              "cx": 1124000,
+              "cy": 1124000,
+              "right": 7152875,
+              "bottom": 4914025
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb1siHJbhxOcakFypNpA6zqd8VazfmXgJDSGNIy6JWVZP6RKYJJ6y1tBX18G4nh6DIdHRt9QeNlo5qYc87MHBaweb_5_B6WFQedsGyNORHd7H4UTvLvrwUNMeaDuHScOt2Fj0HMUKMtTk3ChT0vjTf-LysK3PT4L9MdHyJORCfo20DPDvgWp6xZV3VdMZl3Yw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZnPyCE5CvQ3z5h7BWWEqtMj7g3T_tp983Feh5_3Qmr-GlDP9867r5PtcAKZs9Ti0SVNzWNGWL3zf0XEunHIcmn1S7X_KlIZUtsU9rTzw_jFj4EE9szWX6ChTqRtVdT2NfX5lZkzDscgGjAb2EZATUnB-hJmVuXnONoSdLubjCNCTzxHvjAAVTS5h_UqMr2rQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "IDIOM",
+          "MEANING",
+          "EXAMPLE",
+          "SHOOT THE BREEZE",
+          "To talk socially without exchanging too much information.",
+          "Be careful! Just shoot the breeze.",
+          "TO BE A NOSY PARKER",
+          "To meddle in someone else’s business.",
+          "Dean is such a nosy parker; always snooping around.",
+          "A PORK PIE",
+          "A story that is not true or that lacks of details.",
+          "That guy always with his pork pies; we need a new janitor.",
+          "TO SPIN THE YARN",
+          "To divulge something that we are not certain to be true.",
+          "I heard Mary left John, but I think our neighbors are just spinning the yarn.",
+          "TO DISH THE DIRT",
+          "To speak about others and reveal secrets or intimacies.",
+          "There’s no good in dishing the dirt about others.",
+          "TO GIVE THE GAME AWAY",
+          "To reveal all we know about something.",
+          "Don’t invite Jerry. He always gives the game away after a meeting.",
+          "KEEP IT TO YOURSELF",
+          "To not reveal information that is not yours even when you know it.",
+          "Joe is proposing tonight, but keep it to yourself until then.",
+          "MY LIPS ARE SEALED",
+          "To keep a secret not sharing any information to others.",
+          "Don’t worry, Annie; my lips are sealed",
+          "Look at the phrases and  discuss them with your teacher. Did you know them?"
+        ],
+        "joinedText": "IDIOM\nMEANING\nEXAMPLE\nSHOOT THE BREEZE\nTo talk socially without exchanging too much information.\nBe careful! Just shoot the breeze.\nTO BE A NOSY PARKER\nTo meddle in someone else’s business.\nDean is such a nosy parker; always snooping around.\nA PORK PIE\nA story that is not true or that lacks of details.\nThat guy always with his pork pies; we need a new janitor.\nTO SPIN THE YARN\nTo divulge something that we are not certain to be true.\nI heard Mary left John, but I think our neighbors are just spinning the yarn.\nTO DISH THE DIRT\nTo speak about others and reveal secrets or intimacies.\nThere’s no good in dishing the dirt about others.\nTO GIVE THE GAME AWAY\nTo reveal all we know about something.\nDon’t invite Jerry. He always gives the game away after a meeting.\nKEEP IT TO YOURSELF\nTo not reveal information that is not yours even when you know it.\nJoe is proposing tonight, but keep it to yourself until then.\nMY LIPS ARE SEALED\nTo keep a secret not sharing any information to others.\nDon’t worry, Annie; my lips are sealed\nLook at the phrases and  discuss them with your teacher. Did you know them?",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "kind": "table",
+            "bbox": {
+              "x": 887438,
+              "y": 943260,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3887438,
+              "bottom": 3943260
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "IDIOM",
+                "runs": []
+              },
+              {
+                "text": "MEANING",
+                "runs": []
+              },
+              {
+                "text": "EXAMPLE",
+                "runs": []
+              },
+              {
+                "text": "SHOOT THE BREEZE",
+                "runs": []
+              },
+              {
+                "text": "To talk socially without exchanging too much information.",
+                "runs": []
+              },
+              {
+                "text": "Be careful! Just shoot the breeze.",
+                "runs": []
+              },
+              {
+                "text": "TO BE A NOSY PARKER",
+                "runs": []
+              },
+              {
+                "text": "To meddle in someone else’s business.",
+                "runs": []
+              },
+              {
+                "text": "Dean is such a nosy parker; always snooping around.",
+                "runs": []
+              },
+              {
+                "text": "A PORK PIE",
+                "runs": []
+              },
+              {
+                "text": "A story that is not true or that lacks of details.",
+                "runs": []
+              },
+              {
+                "text": "That guy always with his pork pies; we need a new janitor.",
+                "runs": []
+              },
+              {
+                "text": "TO SPIN THE YARN",
+                "runs": []
+              },
+              {
+                "text": "To divulge something that we are not certain to be true.",
+                "runs": []
+              },
+              {
+                "text": "I heard Mary left John, but I think our neighbors are just spinning the yarn.",
+                "runs": []
+              },
+              {
+                "text": "TO DISH THE DIRT",
+                "runs": []
+              },
+              {
+                "text": "To speak about others and reveal secrets or intimacies.",
+                "runs": []
+              },
+              {
+                "text": "There’s no good in dishing the dirt about others.",
+                "runs": []
+              },
+              {
+                "text": "TO GIVE THE GAME AWAY",
+                "runs": []
+              },
+              {
+                "text": "To reveal all we know about something.",
+                "runs": []
+              },
+              {
+                "text": "Don’t invite Jerry. He always gives the game away after a meeting.",
+                "runs": []
+              },
+              {
+                "text": "KEEP IT TO YOURSELF",
+                "runs": []
+              },
+              {
+                "text": "To not reveal information that is not yours even when you know it.",
+                "runs": []
+              },
+              {
+                "text": "Joe is proposing tonight, but keep it to yourself until then.",
+                "runs": []
+              },
+              {
+                "text": "MY LIPS ARE SEALED",
+                "runs": []
+              },
+              {
+                "text": "To keep a secret not sharing any information to others.",
+                "runs": []
+              },
+              {
+                "text": "Don’t worry, Annie; my lips are sealed",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "IDIOM",
+              "MEANING",
+              "EXAMPLE",
+              "SHOOT THE BREEZE",
+              "To talk socially without exchanging too much information.",
+              "Be careful! Just shoot the breeze.",
+              "TO BE A NOSY PARKER",
+              "To meddle in someone else’s business.",
+              "Dean is such a nosy parker; always snooping around.",
+              "A PORK PIE",
+              "A story that is not true or that lacks of details.",
+              "That guy always with his pork pies; we need a new janitor.",
+              "TO SPIN THE YARN",
+              "To divulge something that we are not certain to be true.",
+              "I heard Mary left John, but I think our neighbors are just spinning the yarn.",
+              "TO DISH THE DIRT",
+              "To speak about others and reveal secrets or intimacies.",
+              "There’s no good in dishing the dirt about others.",
+              "TO GIVE THE GAME AWAY",
+              "To reveal all we know about something.",
+              "Don’t invite Jerry. He always gives the game away after a meeting.",
+              "KEEP IT TO YOURSELF",
+              "To not reveal information that is not yours even when you know it.",
+              "Joe is proposing tonight, but keep it to yourself until then.",
+              "MY LIPS ARE SEALED",
+              "To keep a secret not sharing any information to others.",
+              "Don’t worry, Annie; my lips are sealed"
+            ],
+            "joinedText": "IDIOM\nMEANING\nEXAMPLE\nSHOOT THE BREEZE\nTo talk socially without exchanging too much information.\nBe careful! Just shoot the breeze.\nTO BE A NOSY PARKER\nTo meddle in someone else’s business.\nDean is such a nosy parker; always snooping around.\nA PORK PIE\nA story that is not true or that lacks of details.\nThat guy always with his pork pies; we need a new janitor.\nTO SPIN THE YARN\nTo divulge something that we are not certain to be true.\nI heard Mary left John, but I think our neighbors are just spinning the yarn.\nTO DISH THE DIRT\nTo speak about others and reveal secrets or intimacies.\nThere’s no good in dishing the dirt about others.\nTO GIVE THE GAME AWAY\nTo reveal all we know about something.\nDon’t invite Jerry. He always gives the game away after a meeting.\nKEEP IT TO YOURSELF\nTo not reveal information that is not yours even when you know it.\nJoe is proposing tonight, but keep it to yourself until then.\nMY LIPS ARE SEALED\nTo keep a secret not sharing any information to others.\nDon’t worry, Annie; my lips are sealed",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;gd6c0dc1310_0_17",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the phrases and  discuss them with your teacher. Did you know them?",
+                "runs": [
+                  "Look at the phrases and  discuss them with your teacher. Did you know them?"
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the phrases and  discuss them with your teacher. Did you know them?"
+            ],
+            "joinedText": "Look at the phrases and  discuss them with your teacher. Did you know them?"
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "bbox": {
+              "x": 887438,
+              "y": 943260,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3887438,
+              "bottom": 3943260
+            },
+            "columnWidths": [
+              1648700,
+              2680075,
+              3040350
+            ],
+            "rows": [
+              {
+                "height": 402650,
+                "cells": [
+                  {
+                    "text": "IDIOM",
+                    "paragraphs": [
+                      {
+                        "text": "IDIOM",
+                        "runs": [
+                          "IDIOM"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "MEANING",
+                    "paragraphs": [
+                      {
+                        "text": "MEANING",
+                        "runs": [
+                          "MEANING"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "EXAMPLE",
+                    "paragraphs": [
+                      {
+                        "text": "EXAMPLE",
+                        "runs": [
+                          "EXAMPLE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "SHOOT THE BREEZE",
+                    "paragraphs": [
+                      {
+                        "text": "SHOOT THE BREEZE",
+                        "runs": [
+                          "SHOOT THE BREEZE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To talk socially without exchanging too much information.",
+                    "paragraphs": [
+                      {
+                        "text": "To talk socially without exchanging too much information.",
+                        "runs": [
+                          "To ",
+                          "talk socially without exchanging too much information."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Be careful! Just shoot the breeze.",
+                    "paragraphs": [
+                      {
+                        "text": "Be careful! Just shoot the breeze. ",
+                        "runs": [
+                          "Be careful! Just shoot the breeze. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "TO BE A NOSY PARKER",
+                    "paragraphs": [
+                      {
+                        "text": "TO BE A NOSY PARKER",
+                        "runs": [
+                          "TO BE A ",
+                          "NOSY",
+                          " PARKER"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To meddle in someone else’s business.",
+                    "paragraphs": [
+                      {
+                        "text": "To meddle in someone else’s business.",
+                        "runs": [
+                          "To ",
+                          "meddle in someone else’s business."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Dean is such a nosy parker; always snooping around.",
+                    "paragraphs": [
+                      {
+                        "text": "Dean is such a nosy parker; always snooping around.",
+                        "runs": [
+                          "Dean is such a nosy parker; always snooping around."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "A PORK PIE",
+                    "paragraphs": [
+                      {
+                        "text": "A PORK PIE",
+                        "runs": [
+                          "A PORK PIE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "A story that is not true or that lacks of details.",
+                    "paragraphs": [
+                      {
+                        "text": "A story that is not true or that lacks of details.  ",
+                        "runs": [
+                          "A story that is not true or that lacks of details. ",
+                          " "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "That guy always with his pork pies; we need a new janitor.",
+                    "paragraphs": [
+                      {
+                        "text": "That guy always with his pork pies; we need a new janitor.",
+                        "runs": [
+                          "That guy always with his ",
+                          "pork",
+                          " pies; we need a new janitor."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "TO SPIN THE YARN",
+                    "paragraphs": [
+                      {
+                        "text": "TO SPIN THE YARN",
+                        "runs": [
+                          "TO",
+                          " SPIN THE YARN"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To divulge something that we are not certain to be true.",
+                    "paragraphs": [
+                      {
+                        "text": "To divulge something that we are not certain to be true.",
+                        "runs": [
+                          "To ",
+                          "divulge",
+                          " ",
+                          "something",
+                          " that we are not certain to be true."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I heard Mary left John, but I think our neighbors are just spinning the yarn.",
+                    "paragraphs": [
+                      {
+                        "text": "I heard Mary left John, but I think our neighbors are just spinning the yarn.",
+                        "runs": [
+                          "I heard Mary left John, but I think our neighbors are just spinning the yarn."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "TO DISH THE DIRT",
+                    "paragraphs": [
+                      {
+                        "text": "TO DISH THE DIRT",
+                        "runs": [
+                          "TO ",
+                          "DISH THE DIRT"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To speak about others and reveal secrets or intimacies.",
+                    "paragraphs": [
+                      {
+                        "text": "To speak about others and reveal secrets or intimacies.",
+                        "runs": [
+                          "To ",
+                          "speak about others and reveal secrets or intimacies."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "There’s no good in dishing the dirt about others.",
+                    "paragraphs": [
+                      {
+                        "text": "There’s no good in dishing the dirt about others.",
+                        "runs": [
+                          "There’s no good in dishing the dirt about others."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "TO GIVE THE GAME AWAY",
+                    "paragraphs": [
+                      {
+                        "text": "TO GIVE THE GAME AWAY",
+                        "runs": [
+                          "TO ",
+                          "GIVE THE GAME AWAY"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To reveal all we know about something.",
+                    "paragraphs": [
+                      {
+                        "text": "To reveal all we know about something.",
+                        "runs": [
+                          "To ",
+                          "reveal all we know about something."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Don’t invite Jerry. He always gives the game away after a meeting.",
+                    "paragraphs": [
+                      {
+                        "text": "Don’t invite Jerry. He always gives the game away after a meeting. ",
+                        "runs": [
+                          "Don’t invite Jerry. He always gives the game away after a meeting. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "KEEP IT TO YOURSELF",
+                    "paragraphs": [
+                      {
+                        "text": "KEEP IT TO YOURSELF",
+                        "runs": [
+                          "KEEP IT TO YOURSELF"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To not reveal information that is not yours even when you know it.",
+                    "paragraphs": [
+                      {
+                        "text": "To not reveal information that is not yours even when you know it.",
+                        "runs": [
+                          "To ",
+                          "not reveal information that is not yours even when you know it."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Joe is proposing tonight, but keep it to yourself until then.",
+                    "paragraphs": [
+                      {
+                        "text": "Joe is proposing tonight, but keep it to yourself until then. ",
+                        "runs": [
+                          "Joe is proposing tonight, but keep it to yourself until then. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "MY LIPS ARE SEALED",
+                    "paragraphs": [
+                      {
+                        "text": "MY LIPS ARE SEALED",
+                        "runs": [
+                          "MY LIPS ARE SEALED"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To keep a secret not sharing any information to others.",
+                    "paragraphs": [
+                      {
+                        "text": "To keep a secret not sharing any information to others.",
+                        "runs": [
+                          "To",
+                          " keep a secret not sharing any information to others."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Don’t worry, Annie; my lips are sealed",
+                    "paragraphs": [
+                      {
+                        "text": "Don’t worry, Annie; my lips are sealed",
+                        "runs": [
+                          "Don’t worry, Annie; my lips are ",
+                          "sealed"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "IDIOM MEANING EXAMPLE SHOOT THE BREEZE To talk socially without exchanging too much information. Be careful! Just shoot the breeze. TO BE A NOSY PARKER To meddle in someone else’s business. Dean is such a nosy parker; always snooping around. A PORK PIE A story that is not true or that lacks of details. That guy always with his pork pies; we need a new janitor. TO SPIN THE YARN To divulge something that we are not certain to be true. I heard Mary left John, but I think our neighbors are just spinning the yarn. TO DISH THE DIRT To speak about others and reveal secrets or intimacies. There’s no good in dishing the dirt about others. TO GIVE THE GAME AWAY To reveal all we know about something. Don’t invite Jerry. He always gives the game away after a meeting. KEEP IT TO YOURSELF To not reveal information that is not yours even when you know it. Joe is proposing tonight, but keep it to yourself until then. MY LIPS ARE SEALED To keep a secret not sharing any information to others. Don’t worry, Annie; my lips are sealed",
+        "visibleTexts": [
+          "IDIOM MEANING EXAMPLE SHOOT THE BREEZE To talk socially without exchanging too much information. Be careful! Just shoot the breeze. TO BE A NOSY PARKER To meddle in someone else’s business. Dean is such a nosy parker; always snooping around. A PORK PIE A story that is not true or that lacks of details. That guy always with his pork pies; we need a new janitor. TO SPIN THE YARN To divulge something that we are not certain to be true. I heard Mary left John, but I think our neighbors are just spinning the yarn. TO DISH THE DIRT To speak about others and reveal secrets or intimacies. There’s no good in dishing the dirt about others. TO GIVE THE GAME AWAY To reveal all we know about something. Don’t invite Jerry. He always gives the game away after a meeting. KEEP IT TO YOURSELF To not reveal information that is not yours even when you know it. Joe is proposing tonight, but keep it to yourself until then. MY LIPS ARE SEALED To keep a secret not sharing any information to others. Don’t worry, Annie; my lips are sealed",
+          "Look at the phrases and discuss them with your teacher. Did you know them?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Structures",
+          "DIRECT SPEECH",
+          "REPORTED SPEECH",
+          "Simple Present",
+          "We are students \nI have a dog",
+          "They said they were students.\nHe told us he had a dog.",
+          "Present Progressive",
+          "I am having so much fun.",
+          "He told me he was having so much fun.",
+          "Past simple",
+          "I was at home all night.",
+          "She said she had been at home all night.",
+          "Past Progressive",
+          "I was just eating a burger.",
+          "He said that he had just been eating a burger.",
+          "Future",
+          "We will buy the car.\nAre you going to sell the house?",
+          "They told us they would buy the car.\nShe asked me if I was going to sell the house.",
+          "Present Perfect",
+          "Has he gone for good?",
+          "He asked me if he had gone for good.",
+          "Any tense can be used to report utterances. Check the chart."
+        ],
+        "joinedText": "Structures\nDIRECT SPEECH\nREPORTED SPEECH\nSimple Present\nWe are students \nI have a dog\nThey said they were students.\nHe told us he had a dog.\nPresent Progressive\nI am having so much fun.\nHe told me he was having so much fun.\nPast simple\nI was at home all night.\nShe said she had been at home all night.\nPast Progressive\nI was just eating a burger.\nHe said that he had just been eating a burger.\nFuture\nWe will buy the car.\nAre you going to sell the house?\nThey told us they would buy the car.\nShe asked me if I was going to sell the house.\nPresent Perfect\nHas he gone for good?\nHe asked me if he had gone for good.\nAny tense can be used to report utterances. Check the chart.",
+        "shapes": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 326963,
+              "y": 859450,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3326963,
+              "bottom": 3859450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Structures",
+                "runs": []
+              },
+              {
+                "text": "DIRECT SPEECH",
+                "runs": []
+              },
+              {
+                "text": "REPORTED SPEECH",
+                "runs": []
+              },
+              {
+                "text": "Simple Present",
+                "runs": []
+              },
+              {
+                "text": "We are students \nI have a dog",
+                "runs": []
+              },
+              {
+                "text": "They said they were students.\nHe told us he had a dog.",
+                "runs": []
+              },
+              {
+                "text": "Present Progressive",
+                "runs": []
+              },
+              {
+                "text": "I am having so much fun.",
+                "runs": []
+              },
+              {
+                "text": "He told me he was having so much fun.",
+                "runs": []
+              },
+              {
+                "text": "Past simple",
+                "runs": []
+              },
+              {
+                "text": "I was at home all night.",
+                "runs": []
+              },
+              {
+                "text": "She said she had been at home all night.",
+                "runs": []
+              },
+              {
+                "text": "Past Progressive",
+                "runs": []
+              },
+              {
+                "text": "I was just eating a burger.",
+                "runs": []
+              },
+              {
+                "text": "He said that he had just been eating a burger.",
+                "runs": []
+              },
+              {
+                "text": "Future",
+                "runs": []
+              },
+              {
+                "text": "We will buy the car.\nAre you going to sell the house?",
+                "runs": []
+              },
+              {
+                "text": "They told us they would buy the car.\nShe asked me if I was going to sell the house.",
+                "runs": []
+              },
+              {
+                "text": "Present Perfect",
+                "runs": []
+              },
+              {
+                "text": "Has he gone for good?",
+                "runs": []
+              },
+              {
+                "text": "He asked me if he had gone for good.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Structures",
+              "DIRECT SPEECH",
+              "REPORTED SPEECH",
+              "Simple Present",
+              "We are students \nI have a dog",
+              "They said they were students.\nHe told us he had a dog.",
+              "Present Progressive",
+              "I am having so much fun.",
+              "He told me he was having so much fun.",
+              "Past simple",
+              "I was at home all night.",
+              "She said she had been at home all night.",
+              "Past Progressive",
+              "I was just eating a burger.",
+              "He said that he had just been eating a burger.",
+              "Future",
+              "We will buy the car.\nAre you going to sell the house?",
+              "They told us they would buy the car.\nShe asked me if I was going to sell the house.",
+              "Present Perfect",
+              "Has he gone for good?",
+              "He asked me if he had gone for good."
+            ],
+            "joinedText": "Structures\nDIRECT SPEECH\nREPORTED SPEECH\nSimple Present\nWe are students \nI have a dog\nThey said they were students.\nHe told us he had a dog.\nPresent Progressive\nI am having so much fun.\nHe told me he was having so much fun.\nPast simple\nI was at home all night.\nShe said she had been at home all night.\nPast Progressive\nI was just eating a burger.\nHe said that he had just been eating a burger.\nFuture\nWe will buy the car.\nAre you going to sell the house?\nThey told us they would buy the car.\nShe asked me if I was going to sell the house.\nPresent Perfect\nHas he gone for good?\nHe asked me if he had gone for good.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 258054,
+              "cx": 6960900,
+              "cy": 487500,
+              "right": 8052450,
+              "bottom": 745554
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Any tense can be used to report utterances. Check the chart.",
+                "runs": [
+                  "Any tense can be used to report ",
+                  "utterances",
+                  ". Check the chart."
+                ]
+              }
+            ],
+            "texts": [
+              "Any tense can be used to report utterances. Check the chart."
+            ],
+            "joinedText": "Any tense can be used to report utterances. Check the chart."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 326963,
+              "y": 859450,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3326963,
+              "bottom": 3859450
+            },
+            "columnWidths": [
+              2048450,
+              2818400,
+              3846300
+            ],
+            "rows": [
+              {
+                "height": 547450,
+                "cells": [
+                  {
+                    "text": "Structures",
+                    "paragraphs": [
+                      {
+                        "text": "Structures",
+                        "runs": [
+                          "Structures"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "DIRECT SPEECH",
+                    "paragraphs": [
+                      {
+                        "text": "DIRECT SPEECH",
+                        "runs": [
+                          "DIRECT SPEECH"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "REPORTED SPEECH",
+                    "paragraphs": [
+                      {
+                        "text": "REPORTED SPEECH",
+                        "runs": [
+                          "REPORTED SPEECH"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Simple Present",
+                    "paragraphs": [
+                      {
+                        "text": "Simple Present",
+                        "runs": [
+                          "Simple Present"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We are students \nI have a dog",
+                    "paragraphs": [
+                      {
+                        "text": "We are students ",
+                        "runs": [
+                          "We ",
+                          "are",
+                          " students "
+                        ]
+                      },
+                      {
+                        "text": "I have a dog",
+                        "runs": [
+                          "I ",
+                          "have",
+                          " a dog"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They said they were students.\nHe told us he had a dog.",
+                    "paragraphs": [
+                      {
+                        "text": "They said they were students.",
+                        "runs": [
+                          "They said",
+                          " ",
+                          "they ",
+                          "were students",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "He told us he had a dog.",
+                        "runs": [
+                          "He told us",
+                          " he ",
+                          "had a dog",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Present Progressive",
+                    "paragraphs": [
+                      {
+                        "text": "Present Progressive",
+                        "runs": [
+                          "Present Progressive"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I am having so much fun.",
+                    "paragraphs": [
+                      {
+                        "text": "I am having so much fun. ",
+                        "runs": [
+                          "I ",
+                          "am having",
+                          " so much fun. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He told me he was having so much fun.",
+                    "paragraphs": [
+                      {
+                        "text": "He told me he was having so much fun.",
+                        "runs": [
+                          "He told ",
+                          "me he ",
+                          "was having ",
+                          "so much fun."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Past simple",
+                    "paragraphs": [
+                      {
+                        "text": "Past simple ",
+                        "runs": [
+                          "Past simple "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I was at home all night.",
+                    "paragraphs": [
+                      {
+                        "text": "I was at home all night.",
+                        "runs": [
+                          "I ",
+                          "was",
+                          " at home all night."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She said she had been at home all night.",
+                    "paragraphs": [
+                      {
+                        "text": "She said she had been at home all night.",
+                        "runs": [
+                          "She said",
+                          " she ",
+                          "had been",
+                          " at home all night."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Past Progressive",
+                    "paragraphs": [
+                      {
+                        "text": "Past Progressive",
+                        "runs": [
+                          "Past Progressive"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I was just eating a burger.",
+                    "paragraphs": [
+                      {
+                        "text": "I was just eating a burger. ",
+                        "runs": [
+                          "I ",
+                          "was just eating",
+                          " a burger. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He said that he had just been eating a burger.",
+                    "paragraphs": [
+                      {
+                        "text": "He said that he had just been eating a burger.",
+                        "runs": [
+                          "He said that ",
+                          "he ",
+                          "had just been eating",
+                          " a burger."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Future",
+                    "paragraphs": [
+                      {
+                        "text": "Future ",
+                        "runs": [
+                          "Future "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We will buy the car.\nAre you going to sell the house?",
+                    "paragraphs": [
+                      {
+                        "text": "We will buy the car.",
+                        "runs": [
+                          "We ",
+                          "will",
+                          " buy the car."
+                        ]
+                      },
+                      {
+                        "text": "Are you going to sell the house?",
+                        "runs": [
+                          "Are",
+                          " you ",
+                          "going to",
+                          " sell the house?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They told us they would buy the car.\nShe asked me if I was going to sell the house.",
+                    "paragraphs": [
+                      {
+                        "text": "They told us they would buy the car.",
+                        "runs": [
+                          "They told",
+                          " us they ",
+                          "would",
+                          " buy the car."
+                        ]
+                      },
+                      {
+                        "text": "She asked me if I was going to sell the house.",
+                        "runs": [
+                          "She asked ",
+                          "me",
+                          " ",
+                          "if",
+                          " ",
+                          "I ",
+                          "was going to",
+                          " sell the house."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Present Perfect",
+                    "paragraphs": [
+                      {
+                        "text": "Present Perfect ",
+                        "runs": [
+                          "Present Perfect "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Has he gone for good?",
+                    "paragraphs": [
+                      {
+                        "text": "Has he gone for good?",
+                        "runs": [
+                          "Has ",
+                          "he ",
+                          "gone ",
+                          "for good?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He asked me if he had gone for good.",
+                    "paragraphs": [
+                      {
+                        "text": "He asked me if he had gone for good.",
+                        "runs": [
+                          "He asked",
+                          " me ",
+                          "if",
+                          " he ",
+                          "had gone",
+                          " for good."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "Structures DIRECT SPEECH REPORTED SPEECH Simple Present We are students. I have a dog. They said they were students. He told us he had a dog. Present Progressive I am having so much fun. He told me he was having so much fun. Past simple I was at home all night. She said she had been at home all night. Past Progressive I was just eating a burger. He said that he had just been eating a burger. Future We will buy the car. Are you going to sell the house? They told us they would buy the car. She asked me if I was going to sell the house. Present Perfect Has he gone for good? He asked me if he had gone for good.",
+        "visibleTexts": [
+          "Structures DIRECT SPEECH REPORTED SPEECH Simple Present We are students. I have a dog. They said they were students. He told us he had a dog. Present Progressive I am having so much fun. He told me he was having so much fun. Past simple I was at home all night. She said she had been at home all night. Past Progressive I was just eating a burger. He said that he had just been eating a burger. Future We will buy the car. Are you going to sell the house? They told us they would buy the car. She asked me if I was going to sell the house. Present Perfect Has he gone for good? He asked me if he had gone for good.",
+          "Any tense can be used to report utterances. Check the chart to see how tenses change depending on which one we are reporting."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "table-or-chart-mentioned-without-table-semantics"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Structures",
+          "DIRECT SPEECH",
+          "REPORTED SPEECH",
+          "Past Perfect",
+          "We had already taken lessons by 2020.",
+          "They said they had already taken lessons by 2020.",
+          "Modals",
+          "I can go with you. \nWe would help you.\nI may not go.\nWe might have a review.",
+          "He told me he could go with us.\nThey told us they would help us.\nHe said that he might not go.\nThe teacher said that we might have a review.",
+          "To Consider\n\nMost of the structures we know change when we use reported or indirect speech.\nMost common verbs to use to report are: Say, Tell and Ask as you see in the examples. \nThe particle that is commonly used at the beginning of the report; but it can be omitted to. \nThe word if is used when we are reporting a question as shown in the examples. \nThe modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE."
+        ],
+        "joinedText": "Structures\nDIRECT SPEECH\nREPORTED SPEECH\nPast Perfect\nWe had already taken lessons by 2020.\nThey said they had already taken lessons by 2020.\nModals\nI can go with you. \nWe would help you.\nI may not go.\nWe might have a review.\nHe told me he could go with us.\nThey told us they would help us.\nHe said that he might not go.\nThe teacher said that we might have a review.\nTo Consider\n\nMost of the structures we know change when we use reported or indirect speech.\nMost common verbs to use to report are: Say, Tell and Ask as you see in the examples. \nThe particle that is commonly used at the beginning of the report; but it can be omitted to. \nThe word if is used when we are reporting a question as shown in the examples. \nThe modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+        "shapes": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;gdcdadc1522_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 326963,
+              "y": 549600,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3326963,
+              "bottom": 3549600
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Structures",
+                "runs": []
+              },
+              {
+                "text": "DIRECT SPEECH",
+                "runs": []
+              },
+              {
+                "text": "REPORTED SPEECH",
+                "runs": []
+              },
+              {
+                "text": "Past Perfect",
+                "runs": []
+              },
+              {
+                "text": "We had already taken lessons by 2020.",
+                "runs": []
+              },
+              {
+                "text": "They said they had already taken lessons by 2020.",
+                "runs": []
+              },
+              {
+                "text": "Modals",
+                "runs": []
+              },
+              {
+                "text": "I can go with you. \nWe would help you.\nI may not go.\nWe might have a review.",
+                "runs": []
+              },
+              {
+                "text": "He told me he could go with us.\nThey told us they would help us.\nHe said that he might not go.\nThe teacher said that we might have a review.",
+                "runs": []
+              },
+              {
+                "text": "To Consider\n\nMost of the structures we know change when we use reported or indirect speech.\nMost common verbs to use to report are: Say, Tell and Ask as you see in the examples. \nThe particle that is commonly used at the beginning of the report; but it can be omitted to. \nThe word if is used when we are reporting a question as shown in the examples. \nThe modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Structures",
+              "DIRECT SPEECH",
+              "REPORTED SPEECH",
+              "Past Perfect",
+              "We had already taken lessons by 2020.",
+              "They said they had already taken lessons by 2020.",
+              "Modals",
+              "I can go with you. \nWe would help you.\nI may not go.\nWe might have a review.",
+              "He told me he could go with us.\nThey told us they would help us.\nHe said that he might not go.\nThe teacher said that we might have a review.",
+              "To Consider\n\nMost of the structures we know change when we use reported or indirect speech.\nMost common verbs to use to report are: Say, Tell and Ask as you see in the examples. \nThe particle that is commonly used at the beginning of the report; but it can be omitted to. \nThe word if is used when we are reporting a question as shown in the examples. \nThe modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE."
+            ],
+            "joinedText": "Structures\nDIRECT SPEECH\nREPORTED SPEECH\nPast Perfect\nWe had already taken lessons by 2020.\nThey said they had already taken lessons by 2020.\nModals\nI can go with you. \nWe would help you.\nI may not go.\nWe might have a review.\nHe told me he could go with us.\nThey told us they would help us.\nHe said that he might not go.\nThe teacher said that we might have a review.\nTo Consider\n\nMost of the structures we know change when we use reported or indirect speech.\nMost common verbs to use to report are: Say, Tell and Ask as you see in the examples. \nThe particle that is commonly used at the beginning of the report; but it can be omitted to. \nThe word if is used when we are reporting a question as shown in the examples. \nThe modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;gdcdadc1522_0_0",
+            "bbox": {
+              "x": 326963,
+              "y": 549600,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3326963,
+              "bottom": 3549600
+            },
+            "columnWidths": [
+              2048450,
+              2818400,
+              3846300
+            ],
+            "rows": [
+              {
+                "height": 547450,
+                "cells": [
+                  {
+                    "text": "Structures",
+                    "paragraphs": [
+                      {
+                        "text": "Structures",
+                        "runs": [
+                          "Structures"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "DIRECT SPEECH",
+                    "paragraphs": [
+                      {
+                        "text": "DIRECT SPEECH",
+                        "runs": [
+                          "DIRECT SPEECH"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "REPORTED SPEECH",
+                    "paragraphs": [
+                      {
+                        "text": "REPORTED SPEECH",
+                        "runs": [
+                          "REPORTED SPEECH"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Past Perfect",
+                    "paragraphs": [
+                      {
+                        "text": "Past Perfect",
+                        "runs": [
+                          "Past Perfect"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We had already taken lessons by 2020.",
+                    "paragraphs": [
+                      {
+                        "text": "We had already taken lessons by 2020.",
+                        "runs": [
+                          "We ",
+                          "had already taken",
+                          " lessons by 2020."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They said they had already taken lessons by 2020.",
+                    "paragraphs": [
+                      {
+                        "text": "They said they had already taken lessons by 2020.",
+                        "runs": [
+                          "They said",
+                          " ",
+                          "they ",
+                          "had already taken ",
+                          "lessons by 2020."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Modals",
+                    "paragraphs": [
+                      {
+                        "text": "Modals ",
+                        "runs": [
+                          "Modals "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I can go with you. \nWe would help you.\nI may not go.\nWe might have a review.",
+                    "paragraphs": [
+                      {
+                        "text": "I can go with you. ",
+                        "runs": [
+                          "I ",
+                          "can go ",
+                          "with you",
+                          ". "
+                        ]
+                      },
+                      {
+                        "text": "We would help you.",
+                        "runs": [
+                          "We",
+                          " ",
+                          "would help ",
+                          "you."
+                        ]
+                      },
+                      {
+                        "text": "I may not go.",
+                        "runs": [
+                          "I ",
+                          "may not go",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "We might have a review.",
+                        "runs": [
+                          "We",
+                          " might have",
+                          " a review."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He told me he could go with us.\nThey told us they would help us.\nHe said that he might not go.\nThe teacher said that we might have a review.",
+                    "paragraphs": [
+                      {
+                        "text": "He told me he could go with us.",
+                        "runs": [
+                          "He told ",
+                          "me he ",
+                          "could go",
+                          " ",
+                          "with us",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "They told us they would help us.",
+                        "runs": [
+                          "They told ",
+                          "us they ",
+                          "would help ",
+                          "us."
+                        ]
+                      },
+                      {
+                        "text": "He said that he might not go.",
+                        "runs": [
+                          "He said that",
+                          " he ",
+                          "might not go",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "The teacher said that we might have a review.",
+                        "runs": [
+                          "The teacher said that",
+                          " we ",
+                          "might have ",
+                          "a review."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "To Consider\n\nMost of the structures we know change when we use reported or indirect speech.\nMost common verbs to use to report are: Say, Tell and Ask as you see in the examples. \nThe particle that is commonly used at the beginning of the report; but it can be omitted to. \nThe word if is used when we are reporting a question as shown in the examples. \nThe modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+                    "paragraphs": [
+                      {
+                        "text": "To Consider",
+                        "runs": [
+                          "To Consider"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Most of the structures we know change when we use reported or indirect speech.",
+                        "runs": [
+                          "Most of the structures we know ",
+                          "change",
+                          " when we use reported or indirect speech."
+                        ]
+                      },
+                      {
+                        "text": "Most common verbs to use to report are: Say, Tell and Ask as you see in the examples. ",
+                        "runs": [
+                          "Most common verbs",
+                          " to use to report are: ",
+                          "Say",
+                          ", ",
+                          "Tell",
+                          " and ",
+                          "Ask ",
+                          "as you see in the examples. "
+                        ]
+                      },
+                      {
+                        "text": "The particle that is commonly used at the beginning of the report; but it can be omitted to. ",
+                        "runs": [
+                          "The particle ",
+                          "that",
+                          " is commonly used at the ",
+                          "beginning",
+                          " of the report; but it can be ",
+                          "omitted",
+                          " to. "
+                        ]
+                      },
+                      {
+                        "text": "The word if is used when we are reporting a question as shown in the examples. ",
+                        "runs": [
+                          "The word",
+                          " if",
+                          " is used when we are reporting a question as shown in the examples. "
+                        ]
+                      },
+                      {
+                        "text": "The modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+                        "runs": [
+                          "The modals ",
+                          "Should",
+                          ", ",
+                          "Could",
+                          ", ",
+                          "Must",
+                          " and ",
+                          "ought",
+                          " ",
+                          "maintain",
+                          " their original form in reported speech; like ",
+                          "Might",
+                          " and ",
+                          "Would",
+                          ", they ",
+                          "DO NOT CHANGE",
+                          "."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "Structures DIRECT SPEECH REPORTED SPEECH Past Perfect We had already taken lessons by 2020. They said they had already taken lessons by 2020. Modals I can go with you. We would help you. I may not go. We might have a review. He told me he could go with us. They told us they would help us. He said that he might not go. The teacher said that we might have a review. To Consider 1. Most of the structures we know change when we use reported or indirect speech. 2. Most common verbs used to report are: Say, Tell and Ask as you see in the examples. 3. The particle that is commonly used at the beginning of the report; but it can be omitted too. 4. The word if is used when we are reporting a question as shown in the examples. 5. The modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE.",
+        "visibleTexts": [
+          "Structures DIRECT SPEECH REPORTED SPEECH Past Perfect We had already taken lessons by 2020. They said they had already taken lessons by 2020. Modals I can go with you. We would help you. I may not go. We might have a review. He told me he could go with us. They told us they would help us. He said that he might not go. The teacher said that we might have a review. To Consider 1. Most of the structures we know change when we use reported or indirect speech. 2. Most common verbs used to report are: Say, Tell and Ask as you see in the examples. 3. The particle that is commonly used at the beginning of the report; but it can be omitted too. 4. The word if is used when we are reporting a question as shown in the examples. 5. The modals Should, Could, Must and ought maintain their original form in reported speech; like Might and Would, they DO NOT CHANGE."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "259",
+            "shapeName": "Google Shape;259;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "260",
+            "shapeName": "Google Shape;260;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "We can use indirect speech for the following functions:",
+          "Functions",
+          "Examples",
+          "1",
+          "Report what other people say",
+          "They told us they had already finished the project.",
+          "2",
+          "Report questions other people make.",
+          "Jane asked Joe if he could buy dinner on his way home.",
+          "3",
+          "Report requests",
+          "Carlos asked me to help him out.",
+          "To consider ",
+          "When reporting requests, we normally used the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example.",
+          "Requests can be negative too. E.G.",
+          "   Please, don’t smoke here. ---------> She asked me NOT to smoke here."
+        ],
+        "joinedText": "We can use indirect speech for the following functions:\nFunctions\nExamples\n1\nReport what other people say\nThey told us they had already finished the project.\n2\nReport questions other people make.\nJane asked Joe if he could buy dinner on his way home.\n3\nReport requests\nCarlos asked me to help him out.\nTo consider \nWhen reporting requests, we normally used the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example.\nRequests can be negative too. E.G.\n   Please, don’t smoke here. ---------> She asked me NOT to smoke here.",
+        "shapes": [
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1643496,
+              "y": 272026,
+              "cx": 5316300,
+              "cy": 584700,
+              "right": 6959796,
+              "bottom": 856726
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can use indirect speech for the following functions:",
+                "runs": [
+                  "We can",
+                  " use indirect speech for the following functions:"
+                ]
+              }
+            ],
+            "texts": [
+              "We can use indirect speech for the following functions:"
+            ],
+            "joinedText": "We can use indirect speech for the following functions:"
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 1455100,
+              "y": 932925,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3932925
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Report what other people say",
+                "runs": []
+              },
+              {
+                "text": "They told us they had already finished the project.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Report questions other people make.",
+                "runs": []
+              },
+              {
+                "text": "Jane asked Joe if he could buy dinner on his way home.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Report requests",
+                "runs": []
+              },
+              {
+                "text": "Carlos asked me to help him out.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Report what other people say",
+              "They told us they had already finished the project.",
+              "2",
+              "Report questions other people make.",
+              "Jane asked Joe if he could buy dinner on his way home.",
+              "3",
+              "Report requests",
+              "Carlos asked me to help him out."
+            ],
+            "joinedText": "Functions\nExamples\n1\nReport what other people say\nThey told us they had already finished the project.\n2\nReport questions other people make.\nJane asked Joe if he could buy dinner on his way home.\n3\nReport requests\nCarlos asked me to help him out.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "267",
+            "shapeName": "Google Shape;267;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 1041100,
+              "y": 3020097,
+              "cx": 7373093,
+              "cy": 1789153,
+              "right": 8414193,
+              "bottom": 4809250
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "268",
+            "shapeName": "Google Shape;268;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 693800,
+              "y": 3470422,
+              "cx": 7286343,
+              "cy": 1761297,
+              "right": 7980143,
+              "bottom": 5231719
+            },
+            "parentShapeId": "267"
+          },
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "268",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 776753,
+              "y": 3927474,
+              "cx": 7273200,
+              "cy": 1152000,
+              "right": 8049953,
+              "bottom": 5079474
+            },
+            "parentShapeId": "268",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 607050,
+              "y": 3498275,
+              "cx": 6758400,
+              "cy": 1761300,
+              "right": 7365450,
+              "bottom": 5259575
+            },
+            "parentShapeId": "267",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "When reporting requests, we normally used the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example.",
+                "runs": [
+                  "When reporting requests, we normally used the verb ",
+                  "ASK",
+                  ". Also, when doing it, we work with ",
+                  "INFINITIVE FORMS",
+                  " as you see in the example."
+                ]
+              },
+              {
+                "text": "Requests can be negative too. E.G.",
+                "runs": [
+                  "Requests can be negative too. ",
+                  "E.G."
+                ]
+              },
+              {
+                "text": "   Please, don’t smoke here. ---------> She asked me NOT to smoke here.",
+                "runs": [
+                  "   Please, ",
+                  "don’t smoke",
+                  " here. ---------> She asked me ",
+                  "NOT to smoke",
+                  " here."
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "When reporting requests, we normally used the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example.",
+              "Requests can be negative too. E.G.",
+              "   Please, don’t smoke here. ---------> She asked me NOT to smoke here."
+            ],
+            "joinedText": "To consider \nWhen reporting requests, we normally used the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example.\nRequests can be negative too. E.G.\n   Please, don’t smoke here. ---------> She asked me NOT to smoke here."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "bbox": {
+              "x": 1455100,
+              "y": 932925,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3932925
+            },
+            "columnWidths": [
+              541675,
+              3133400,
+              3202725
+            ],
+            "rows": [
+              {
+                "height": 174625,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Report what other people say",
+                    "paragraphs": [
+                      {
+                        "text": "Report what other people say",
+                        "runs": [
+                          "Report what other people say"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They told us they had already finished the project.",
+                    "paragraphs": [
+                      {
+                        "text": "They told us they had already finished the project.",
+                        "runs": [
+                          "They",
+                          " told",
+                          " us they ",
+                          "had already finished",
+                          " the project."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Report questions other people make.",
+                    "paragraphs": [
+                      {
+                        "text": "Report questions other people make.",
+                        "runs": [
+                          "Report questions other people make."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Jane asked Joe if he could buy dinner on his way home.",
+                    "paragraphs": [
+                      {
+                        "text": "Jane asked Joe if he could buy dinner on his way home.",
+                        "runs": [
+                          "Jane asked ",
+                          "Joe ",
+                          "if",
+                          " he ",
+                          "could buy ",
+                          "dinner on his way home."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Report requests",
+                    "paragraphs": [
+                      {
+                        "text": "Report requests",
+                        "runs": [
+                          "Report requests"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Carlos asked me to help him out.",
+                    "paragraphs": [
+                      {
+                        "text": "Carlos asked me to help him out.",
+                        "runs": [
+                          "Carlos ",
+                          "asked ",
+                          "me",
+                          " ",
+                          "to help",
+                          " him out."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "We can use indirect speech for the following functions:",
+        "visibleTexts": [
+          "We can use indirect speech for the following functions:",
+          "Functions Examples 1 Report what other people say They told us they had already finished the project. 2 Report questions other people make Jane asked Joe if he could buy dinner on his way home. 3 Report requests Carlos asked me to help him out.",
+          "To consider 1. When reporting requests, we normally use the verb ASK. Also, when doing it, we work with INFINITIVE FORMS as you see in the example. 2. Requests can be negative too. E.G. Please, don’t smoke here. -----> She asked me NOT to smoke here."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "A. Write the correct report speech for each sentence. Follow the example. ",
+          "I did not do my homework..\n\nWe will definitely get that spot.\n\nI was watching TV and you called.\n\nDon’t open the windows, please.\n\nI normally eat cereal in the mornings.\n\nWe are having a terrible day..\n\nI may call her. \n\nWe should smoke outside.\n\nI cannot take this schedule now..",
+          "He said that he normally ate cereal in the mornings."
+        ],
+        "joinedText": "A. Write the correct report speech for each sentence. Follow the example.\nI did not do my homework..\n\nWe will definitely get that spot.\n\nI was watching TV and you called.\n\nDon’t open the windows, please.\n\nI normally eat cereal in the mornings.\n\nWe are having a terrible day..\n\nI may call her. \n\nWe should smoke outside.\n\nI cannot take this schedule now..\nHe said that he normally ate cereal in the mornings.",
+        "shapes": [
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1017450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Write the correct report speech for each sentence. Follow the example. ",
+                "runs": [
+                  "A. ",
+                  "Write the correct report speech for each sentence",
+                  ". Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Write the correct report speech for each sentence. Follow the example. "
+            ],
+            "joinedText": "A. Write the correct report speech for each sentence. Follow the example."
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 993500,
+              "y": 1080235,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3993500,
+              "bottom": 4080235
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "I did not do my homework..\n\nWe will definitely get that spot.\n\nI was watching TV and you called.\n\nDon’t open the windows, please.\n\nI normally eat cereal in the mornings.\n\nWe are having a terrible day..\n\nI may call her. \n\nWe should smoke outside.\n\nI cannot take this schedule now..",
+                "runs": []
+              },
+              {
+                "text": "He said that he normally ate cereal in the mornings.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "I did not do my homework..\n\nWe will definitely get that spot.\n\nI was watching TV and you called.\n\nDon’t open the windows, please.\n\nI normally eat cereal in the mornings.\n\nWe are having a terrible day..\n\nI may call her. \n\nWe should smoke outside.\n\nI cannot take this schedule now..",
+              "He said that he normally ate cereal in the mornings."
+            ],
+            "joinedText": "I did not do my homework..\n\nWe will definitely get that spot.\n\nI was watching TV and you called.\n\nDon’t open the windows, please.\n\nI normally eat cereal in the mornings.\n\nWe are having a terrible day..\n\nI may call her. \n\nWe should smoke outside.\n\nI cannot take this schedule now..\nHe said that he normally ate cereal in the mornings.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_19",
+            "bbox": {
+              "x": 993500,
+              "y": 1080235,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3993500,
+              "bottom": 4080235
+            },
+            "columnWidths": [
+              3649075,
+              3054100
+            ],
+            "rows": [
+              {
+                "height": 204225,
+                "cells": [
+                  {
+                    "text": "I did not do my homework..\n\nWe will definitely get that spot.\n\nI was watching TV and you called.\n\nDon’t open the windows, please.\n\nI normally eat cereal in the mornings.\n\nWe are having a terrible day..\n\nI may call her. \n\nWe should smoke outside.\n\nI cannot take this schedule now..",
+                    "paragraphs": [
+                      {
+                        "text": "I did not do my homework..",
+                        "runs": [
+                          "I did not do my homework.",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "We will definitely get that spot.",
+                        "runs": [
+                          "We will definitely get that spot."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I was watching TV and you called.",
+                        "runs": [
+                          "I was watching TV and you called."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Don’t open the windows, please.",
+                        "runs": [
+                          "Don’t open the windows, please."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I normally eat cereal in the mornings.",
+                        "runs": [
+                          "I normally eat ",
+                          "cereal",
+                          " in the mornings."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "We are having a terrible day..",
+                        "runs": [
+                          "We are having a terrible day.",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I may call her. ",
+                        "runs": [
+                          "I may call her",
+                          ". "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "We should smoke outside.",
+                        "runs": [
+                          "We should ",
+                          "smoke",
+                          " outside",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I cannot take this schedule now..",
+                        "runs": [
+                          "I cannot take this schedule now.",
+                          "."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He said that he normally ate cereal in the mornings.",
+                    "paragraphs": [
+                      {
+                        "text": "He said that he normally ate cereal in the mornings.",
+                        "runs": [
+                          "He said that",
+                          " he ",
+                          "normally",
+                          " ate",
+                          " cereal in the mornings."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "A. Write the correct reported speech for each sentence. Follow the example.",
+        "visibleTexts": [
+          "A. Write the correct reported speech for each sentence. Follow the example.",
+          "I did not do my homework.. We will definitely get that spot. I was watching TV and you called. Don’t open the windows, please. I normally eat cereal in the mornings. We are having a terrible day.. I may call her. We should smoke outside. I cannot take this schedule now.. He said that he normally ate cereal in the mornings."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "B. Listen to the audio and answer the questions your teacher makes. "
+        ],
+        "joinedText": "B. Listen to the audio and answer the questions your teacher makes.",
+        "shapes": [
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1213325,
+              "y": 288325,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7336025,
+              "bottom": 889525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_32",
+            "kind": "picture",
+            "bbox": {
+              "x": 2815025,
+              "y": 1205475,
+              "cx": 2919300,
+              "cy": 2919300,
+              "right": 5734325,
+              "bottom": 4124775
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_32",
+            "bbox": {
+              "x": 2815025,
+              "y": 1205475,
+              "cx": 2919300,
+              "cy": 2919300,
+              "right": 5734325,
+              "bottom": 4124775
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "B. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "B. Listen to the audio and answer the questions your teacher makes."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZBxqTqzjucax9S-PHvck1eByK7_W9qTj7QVQhDSFS_aAwuY7xrvY4cQA8QRma8mUQbH6eTQrbRozvGxg0CkNWWj-8xkO5ilR7mOeiqnY2GXk5NZPeHilsXsZXrwPfUJO1lqp1MSAUuP5CJaRTUauI31P4Mx_V7HapKGoNZEGbOGzq1V0UXDuYu8AC2ARjtFQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "‹#›",
+          "C. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read aloud the text to your teacher.",
+          "She said she loved me: A Case of a Crime of Passion.",
+          "May 27th, 2021.",
+          "After 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found  until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. ",
+          "Roberts, J."
+        ],
+        "joinedText": "‹#›\nC. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read aloud the text to your teacher.\nShe said she loved me: A Case of a Crime of Passion.\n\nMay 27th, 2021.\n\nAfter 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found  until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. \nRoberts, J.",
+        "shapes": [
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 909800,
+              "y": 97450,
+              "cx": 7071900,
+              "cy": 1017900,
+              "right": 7981700,
+              "bottom": 1115350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read aloud the text to your teacher.",
+                "runs": [
+                  "C. Read the following paragraph and extract sentences with",
+                  " reported speech; what are they reporting? After that, read aloud the text to your teacher."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read aloud the text to your teacher."
+            ],
+            "joinedText": "C. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read aloud the text to your teacher."
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 1028700,
+              "y": 1018150,
+              "cx": 7213200,
+              "cy": 3809700,
+              "right": 8241900,
+              "bottom": 4827850
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 1400525,
+              "y": 1018175,
+              "cx": 6469500,
+              "cy": 3809700,
+              "right": 7870025,
+              "bottom": 4827875
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "She said she loved me: A Case of a Crime of Passion.",
+                "runs": [
+                  "She said she loved me: A Case of a Crime of Passion."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "May 27th, 2021.",
+                "runs": [
+                  "May 27th, 2021."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "After 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found  until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. ",
+                "runs": [
+                  "After 35 years, the police ",
+                  "department",
+                  " in our city has finally solved the ",
+                  "mysterious",
+                  " death of the famous ",
+                  "business",
+                  " woman Regina Mills. The chief of the department said that they had ",
+                  "discovered",
+                  " a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, ",
+                  "Frederick",
+                  " Thwan. Apparently, there was a note ",
+                  "from",
+                  " the ",
+                  "deceased",
+                  " that was not found  until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, ",
+                  "He knows",
+                  ". Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it ",
+                  "because",
+                  " she said she loved him but it was not true. The case was finally closed and the police told the ",
+                  "citizenry",
+                  " Mr. Thwn would never see the sun again. "
+                ]
+              },
+              {
+                "text": "Roberts, J.",
+                "runs": [
+                  "Roberts, J."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "She said she loved me: A Case of a Crime of Passion.",
+              "May 27th, 2021.",
+              "After 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found  until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. ",
+              "Roberts, J."
+            ],
+            "joinedText": "She said she loved me: A Case of a Crime of Passion.\n\nMay 27th, 2021.\n\nAfter 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found  until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. \nRoberts, J."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "15",
+        "visibleTexts": [
+          "15",
+          "C. Read the following paragraph and extract sentences with reported speech; what are they reporting? After that, read the text aloud to your teacher.",
+          "She said she loved me: A Case of a Crime of Passion. May 27th, 2021. After 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. Roberts, J."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied. ",
+          "E. Write a 150-180 word text where you right a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied.\nE. Write a 150-180 word text where you right a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1123275,
+              "y": 146675,
+              "cx": 6122700,
+              "cy": 1027500,
+              "right": 7245975,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied. ",
+                "runs": [
+                  "D. ",
+                  "Tell your teacher a story / gossip you remember from your youth",
+                  ". Where d",
+                  "id it happened? Who was involved? What happened? Use the language studied.",
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied. "
+            ],
+            "joinedText": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied."
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 150-180 word text where you right a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.",
+                "runs": [
+                  "E. Write a 150-",
+                  "180",
+                  " word text ",
+                  "where you right a news report about an important fact that happened in your city pretending you are the reporter. ",
+                  "Remember to be very detailed and use the language studied."
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 150-180 word text where you right a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied."
+            ],
+            "joinedText": "E. Write a 150-180 word text where you right a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied."
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 1070307,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2245829
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "306",
+            "shapeName": "Google Shape;306;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "305",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "305",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": null,
+        "title": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied.",
+        "visibleTexts": [
+          "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied.",
+          "E. Write an 120-160 word text where you write a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 18,
+      "native": {
+        "number": 18,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "330",
+            "shapeName": "Google Shape;330;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 18
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 18
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 18
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 18
+          }
+        ]
+      },
+      "publishedSlideNumber": 18,
+      "published": {
+        "number": 18,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbNbw65IjO1r9_p5V-3UwV28vpToFvRfc6IEuo5hCg787z9Yb7tLwtgajFl71scSM5Ao1kbP7TnNQDqN8K1kINaNmqMCp4Y8dstPo6jytdDsuSJqZ9MxFYx12ft6EJ1e87X7mJen8HyGmuYPXLcMnfcSgWUQEt3O4yjz2ns3F03pOiq7h-vIGNn9cdS8UGEfg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYpj3w5oKvKYm806KCgncwwB8wpYbvMB9glHRJkgI8_mX0FZbsGJzQIcROxSM7mm3cGvDXaOMcC4qUxIKoxbq6wOnFYFekqPOfFSvbH7SFa--cnrR7KVSUqSYWrS8PP_TTxpTf_6BJ9XtzCBvRUaWQJu1mz1-if12elPECVlAI5Ws38CU58BAgMTbGujeWwsw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY94twgcYq9JUyN2RS0BHtC4HTraDn3bMROKuoo6dczE3uAPVIS16acBUuXjxSaEAOA1EqT2JvpUOWl8JKoIik6CxYTXQfuqqtcMszLRQLsUBu-OxdjNzo56-eo4dH3doJpAT0AquQ5Dj1WVgdOsm2wWhCjEABTu8nqz3mxd2_LnLrxWo_Lrfu0zp6fRnaa3w=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

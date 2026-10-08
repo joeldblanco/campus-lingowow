@@ -1,0 +1,5575 @@
+{
+  "schemaVersion": 1,
+  "unit": 13,
+  "module": {
+    "order": 4,
+    "title": "Módulo 4",
+    "id": "cmk3z6ww10003jp043doalpcm",
+    "driveTitle": "Module 4"
+  },
+  "candidate": {
+    "id": "1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou",
+    "title": "Unit 13- I am working on it!.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "1329917",
+    "level": "A",
+    "path": [
+      "A levels",
+      "Module 4"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\A-unit-13-primary-02-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou.pptx",
+    "localBytes": 1329917,
+    "sha256": "407bab51068430ee924cf8a6bdbffb3df64d0eb45b867419dce57700b015a5a7"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\A-unit-13-primary-02-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQioodK_wN_bySUQZe3uRoSy1RPy6TOzckFhikZV9nGLbHETrb98nlDRyeMwQTI5g/pub?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQioodK_wN_bySUQZe3uRoSy1RPy6TOzckFhikZV9nGLbHETrb98nlDRyeMwQTI5g/pub?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 16,
+    "nativeSlideCount": 16,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.996162,
+    "publicTokenCoverage": 1.0,
+    "slideDifferenceCount": 2,
+    "slideDifferences": [
+      {
+        "slide": 8,
+        "nativeText": "Ongoing actions are stated through the present progressive.  Check out the following examples.\nStatements\nQuestions\nNegative statements\n1.\nI am doing my homework now.\nAre you doing your homework now?\nI am not doing my homework now.\n2.\nThey are talking on the phone right now.\nAre they talking on the phone right now?\nThey are not talking on the phone right now.\n3.\nHe is practicing for the soccer finale these days.\nIs he practicing for the soccer finale these days?\nHe is not practicing for the soccer finale these days.\n4.\nCurrently, They are rebuilding the house.\nAre they currently rebuilding the house?\nNo, they are not currently rebuilding the house.\nTO CONSIDER\n\nVerb To Be acts as an auxiliary. \n-Ing form is added to end of the main verbs. \n Do/Does are not used here.",
+        "publishedText": "Ongoing actions are stated through the present progressive. Check out the following examples. Statements Questions Negative statements 1. I am doing my homework now. Are you doing your homework now? I am not doing my homework now. 2. They are talking on the phone right now. Are they talking on the phone right now? They are not talking on the phone right now. 3. He is practicing for the soccer finale these days. Is he practicing for the soccer finale these days? He is not practicing for the soccer finale these days. 4. Currently, They are rebuilding the house. Are they currently rebuilding the house? No, they are not currently rebuilding the house. TO CONSIDER 1. Verb To Be acts as an auxiliary. 2. -Ing form is added to end of the main verbs. 3. Do/Does are not used here.",
+        "sequenceRatio": 0.994205
+      },
+      {
+        "slide": 13,
+        "nativeText": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.\nC. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.\nVacations \nDear Annie, how are you? \n\nI am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast.\n\nHow are your vacations going? Please write. \n\nLove, Laurie.\nAnnie is writing the email.\t\t\t\t(T) (F)\nShe is writing from the hotel restaurant.\t(T) (F)\nShe is having a good time.\t\t\t\t(T) (F)\nThey are getting ready now.\t\t\t(T) (F)\nThey are not going on a tour.\t\t\t(T) (F)\nHer brother is enjoying every moment.\t\t(T) (F) \nHer father is making all he can to make \nthem happy.\t\t\t\t\t\t(T) (F)\nThey are having breakfast now.\t\t\t(T) (F)",
+        "publishedText": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary. C. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher. Vacations Dear Annie, how are you? I am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast. How are your vacations going? Please write. Love, Laurie. 1. Annie is writing the email. (T) (F) 2. She is writing from the hotel restaurant. (T) (F) 3. She is having a good time. (T) (F) 4. They are getting ready now. (T) (F) 5. They are not going on a tour. (T) (F) 6. Her brother is enjoying every moment. (T) (F) 7. Her father is making all he can to make them happy. (T) (F) 8. They are having breakfast now. (T) (F)",
+        "sequenceRatio": 0.83017
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 3101,
+      "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 44182,
+      "sha256": "aab94ea3aa03acbe807372997e23437c739a71b8dbaca17bc785cb0966779ea8"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 66714,
+      "sha256": "e9f0d10e9da6352a39aa148ef2b60d566a757a8e2048c17d042d5f3313139e0e"
+    },
+    {
+      "path": "ppt/media/image12.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 53384,
+      "sha256": "ff61ceee3166a3f2f715dfc9b9fe7f3976285aeaf08424499877df69d102e806"
+    },
+    {
+      "path": "ppt/media/image13.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54643,
+      "sha256": "0f448667c37b019279cc829ff81d19a1f266db6e03bdcffc6ad45b2833d37ac6"
+    },
+    {
+      "path": "ppt/media/image3.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 20610,
+      "sha256": "42be050c0c738b0aad9ffad17b3cd872f1a4d857fa587d41594d3a14516b55f0"
+    },
+    {
+      "path": "ppt/media/image4.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 69951,
+      "sha256": "1ff4d9d9280ad63180e75571db4a5797fadd74c1585dde9a24440383cfe3f0ea"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 32921,
+      "sha256": "4dfd9aed333d6e3ac75b919bde1e64357bc9744a39223e583e95a58b7148a893"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 23512,
+      "sha256": "ba4602b9d7c88d942a3115e2e00e2d90ac794f1862d4b74b816a1242857f1e69"
+    },
+    {
+      "path": "ppt/media/image8.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 22739,
+      "sha256": "a41c4a5a06acbba33fa8a2c26fbed54b40958f6c412efb73c06dc8f5384b41e9"
+    },
+    {
+      "path": "ppt/media/image9.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 17718,
+      "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 12,
+    "bytes": 442203,
+    "byExtension": {
+      ".jpg": 7,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 12,
+    "imageBytes": 442203
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 3101,
+      "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId6",
+          "shapeId": "266",
+          "shapeName": "Google Shape;266;p4",
+          "bbox": {
+            "x": 2384250,
+            "y": 2854255,
+            "cx": 1546925,
+            "cy": 1546900,
+            "right": 3931175,
+            "bottom": 4401155
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "357",
+          "shapeName": "Google Shape;357;g719c875542_0_15",
+          "bbox": {
+            "x": 7398600,
+            "y": 69638,
+            "cx": 1079950,
+            "cy": 1079875,
+            "right": 8478550,
+            "bottom": 1149513
+          },
+          "slide": 13
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 44182,
+      "sha256": "aab94ea3aa03acbe807372997e23437c739a71b8dbaca17bc785cb0966779ea8",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "281",
+          "shapeName": "Google Shape;281;p6",
+          "bbox": {
+            "x": 335050,
+            "y": 1351449,
+            "cx": 1259606,
+            "cy": 839750,
+            "right": 1594656,
+            "bottom": 2191199
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 66714,
+      "sha256": "e9f0d10e9da6352a39aa148ef2b60d566a757a8e2048c17d042d5f3313139e0e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "265",
+          "shapeName": "Google Shape;265;p4",
+          "bbox": {
+            "x": 342426,
+            "y": 428568,
+            "cx": 2510494,
+            "cy": 1882871,
+            "right": 2852920,
+            "bottom": 2311439
+          },
+          "slide": 4
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image12.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 53384,
+      "sha256": "ff61ceee3166a3f2f715dfc9b9fe7f3976285aeaf08424499877df69d102e806",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "285",
+          "shapeName": "Google Shape;285;p6",
+          "bbox": {
+            "x": 4287039,
+            "y": 2840286,
+            "cx": 968166,
+            "cy": 1452249,
+            "right": 5255205,
+            "bottom": 4292535
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image13.png",
+      "mimeType": "image/png",
+      "bytes": 54643,
+      "sha256": "0f448667c37b019279cc829ff81d19a1f266db6e03bdcffc6ad45b2833d37ac6",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.png",
+          "relationshipId": "rId4",
+          "shapeId": "390",
+          "shapeName": "Google Shape;390;p17",
+          "bbox": {
+            "x": 3760326,
+            "y": 657650,
+            "cx": 1623347,
+            "cy": 1613891,
+            "right": 5383673,
+            "bottom": 2271541
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image3.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 20610,
+      "sha256": "42be050c0c738b0aad9ffad17b3cd872f1a4d857fa587d41594d3a14516b55f0",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.jpg",
+          "relationshipId": "rId7",
+          "shapeId": "284",
+          "shapeName": "Google Shape;284;p6",
+          "bbox": {
+            "x": 2240000,
+            "y": 2840275,
+            "cx": 968150,
+            "cy": 1452250,
+            "right": 3208150,
+            "bottom": 4292525
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image4.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 69951,
+      "sha256": "1ff4d9d9280ad63180e75571db4a5797fadd74c1585dde9a24440383cfe3f0ea",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "283",
+          "shapeName": "Google Shape;283;p6",
+          "bbox": {
+            "x": 4068850,
+            "y": 1351450,
+            "cx": 1259600,
+            "cy": 840767,
+            "right": 5328450,
+            "bottom": 2192217
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId3",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;p1",
+          "bbox": {
+            "x": 6746916,
+            "y": 166130,
+            "cx": 2150360,
+            "cy": 492268,
+            "right": 8897276,
+            "bottom": 658398
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 32921,
+      "sha256": "4dfd9aed333d6e3ac75b919bde1e64357bc9744a39223e583e95a58b7148a893",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "282",
+          "shapeName": "Google Shape;282;p6",
+          "bbox": {
+            "x": 2240038,
+            "y": 1351450,
+            "cx": 1259634,
+            "cy": 839750,
+            "right": 3499672,
+            "bottom": 2191200
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 23512,
+      "sha256": "ba4602b9d7c88d942a3115e2e00e2d90ac794f1862d4b74b816a1242857f1e69",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId9",
+          "shapeId": "286",
+          "shapeName": "Google Shape;286;p6",
+          "bbox": {
+            "x": 5897631,
+            "y": 1351443,
+            "cx": 1259632,
+            "cy": 839755,
+            "right": 7157263,
+            "bottom": 2191198
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image8.png",
+      "mimeType": "image/png",
+      "bytes": 22739,
+      "sha256": "a41c4a5a06acbba33fa8a2c26fbed54b40958f6c412efb73c06dc8f5384b41e9",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.png",
+          "relationshipId": "rId3",
+          "shapeId": "389",
+          "shapeName": "Google Shape;389;p17",
+          "bbox": {
+            "x": 2140244,
+            "y": 2277299,
+            "cx": 4863513,
+            "cy": 552271,
+            "right": 7003757,
+            "bottom": 2829570
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-13-1XQA_DHGEMRvGjUEKyIqsUImUIR_v05ou\\image9.png",
+      "mimeType": "image/png",
+      "bytes": 17718,
+      "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475",
+      "referenceCount": 14,
+      "sameDigestCountInDeck": 1,
+      "classification": "repeated-media-candidate",
+      "classificationReason": "repeated source image retained for manual template-versus-instruction review",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "249",
+          "shapeName": "Google Shape;249;p2",
+          "bbox": {
+            "x": 8640073,
+            "y": 4630990,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9050545,
+            "bottom": 5039071
+          },
+          "slide": 2
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "257",
+          "shapeName": "Google Shape;257;p3",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 3
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "262",
+          "shapeName": "Google Shape;262;p4",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "274",
+          "shapeName": "Google Shape;274;p5",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 5
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "280",
+          "shapeName": "Google Shape;280;p6",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 6
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "300",
+          "shapeName": "Google Shape;300;p7",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 7
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "305",
+          "shapeName": "Google Shape;305;p8",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 8
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "319",
+          "shapeName": "Google Shape;319;p9",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 9
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "332",
+          "shapeName": "Google Shape;332;p10",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 10
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "340",
+          "shapeName": "Google Shape;340;p11",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 11
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "346",
+          "shapeName": "Google Shape;346;p12",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 12
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "352",
+          "shapeName": "Google Shape;352;g719c875542_0_15",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 13
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "362",
+          "shapeName": "Google Shape;362;p15",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 14
+        },
+        {
+          "mediaPath": "ppt/media/image9.png",
+          "relationshipId": "rId3",
+          "shapeId": "381",
+          "shapeName": "Google Shape;381;p16",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 15
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "I am working on it! ",
+          "13",
+          "Unit"
+        ],
+        "joinedText": "I am working on it!\n13\nUnit",
+        "shapes": [
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 7134448,
+              "y": 10626,
+              "cx": 1998925,
+              "cy": 1418285,
+              "right": 9133373,
+              "bottom": 1428911
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1233650,
+              "y": 2241050,
+              "cx": 4917900,
+              "cy": 1368300,
+              "right": 6151550,
+              "bottom": 3609350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "I am working on it! ",
+                "runs": [
+                  "I am working on it! "
+                ]
+              }
+            ],
+            "texts": [
+              "I am working on it! "
+            ],
+            "joinedText": "I am working on it!"
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1233664,
+              "y": 166125,
+              "cx": 1312200,
+              "cy": 1368300,
+              "right": 2545864,
+              "bottom": 1534425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "13",
+                "runs": [
+                  "13"
+                ]
+              }
+            ],
+            "texts": [
+              "13"
+            ],
+            "joinedText": "13"
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 561740,
+              "y": 387746,
+              "cx": 892809,
+              "cy": 460215,
+              "right": 1454549,
+              "bottom": 847961
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6746916,
+              "y": 166130,
+              "cx": 2150360,
+              "cy": 492268,
+              "right": 8897276,
+              "bottom": 658398
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;p1",
+            "bbox": {
+              "x": 6746916,
+              "y": 166130,
+              "cx": 2150360,
+              "cy": 492268,
+              "right": 8897276,
+              "bottom": 658398
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "I am working on it!",
+        "visibleTexts": [
+          "I am working on it!",
+          "13",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ_f1Gwm5dxBHjA2HspKL_PRlLuHHbmpLZfUZz11Q9z5LkTQTI4zMgZ3ymXYVxjoN0URxj8Y85zYnTV__UTcZqK8t92gOSLIcIDQEljJSf2TeEB9yg06D-ZhiK3Y-ZTaJtVa0IiBtD2uQjMjMCnXF-hlsDgkVuUBPyY_Z4diW1tnYO_LQ_H-gIr4JH3=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Talk about ongoing actions. ",
+          "Competencies",
+          "Accurately understand and use the vocabulary and grammar elements necessary to express ongoing actions in basic spoken and written language."
+        ],
+        "joinedText": "Communicative Function\nTalk about ongoing actions.\nCompetencies\nAccurately understand and use the vocabulary and grammar elements necessary to express ongoing actions in basic spoken and written language.",
+        "shapes": [
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 369925,
+              "cx": 5889900,
+              "cy": 641100,
+              "right": 6501300,
+              "bottom": 1011025
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function"
+            ],
+            "joinedText": "Communicative Function"
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 1127754,
+              "cx": 5889900,
+              "cy": 408000,
+              "right": 6501300,
+              "bottom": 1535754
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Talk about ongoing actions. ",
+                "runs": [
+                  "Talk about ongoing actions. "
+                ]
+              }
+            ],
+            "texts": [
+              "Talk about ongoing actions. "
+            ],
+            "joinedText": "Talk about ongoing actions."
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 2177303,
+              "cx": 5889900,
+              "cy": 641100,
+              "right": 6501300,
+              "bottom": 2818403
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies"
+            ],
+            "joinedText": "Competencies"
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 2935124,
+              "cx": 5889900,
+              "cy": 1275000,
+              "right": 6501300,
+              "bottom": 4210124
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Accurately understand and use the vocabulary and grammar elements necessary to express ongoing actions in basic spoken and written language.",
+                "runs": [
+                  "Accurately understand and use the vocabulary and grammar elements necessary to express ongoing actions in basic spoken and written language."
+                ]
+              }
+            ],
+            "texts": [
+              "Accurately understand and use the vocabulary and grammar elements necessary to express ongoing actions in basic spoken and written language."
+            ],
+            "joinedText": "Accurately understand and use the vocabulary and grammar elements necessary to express ongoing actions in basic spoken and written language."
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;p2",
+            "kind": "picture",
+            "bbox": {
+              "x": 8640073,
+              "y": 4630990,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9050545,
+              "bottom": 5039071
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;p2",
+            "bbox": {
+              "x": 8640073,
+              "y": 4630990,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9050545,
+              "bottom": 5039071
+            },
+            "slide": 2
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 2
+          }
+        ]
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": 2,
+        "title": "Communicative Function",
+        "visibleTexts": [
+          "Communicative Function",
+          "Talk about ongoing actions.",
+          "Competencies",
+          "Accurately understand and use the vocabulary and grammar elements necessary to express ongoing actions in basic spoken and written language."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "254",
+            "shapeName": "Google Shape;254;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 4562203,
+              "y": 371611,
+              "cx": 1275651,
+              "cy": 1530828,
+              "right": 5837854,
+              "bottom": 1902439
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "255",
+            "shapeName": "Google Shape;255;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1710900,
+              "y": 2984720,
+              "cx": 5337140,
+              "cy": 1159800,
+              "right": 7048040,
+              "bottom": 4144520
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          },
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3211046,
+              "y": 1270346,
+              "cx": 1988983,
+              "cy": 1804834,
+              "right": 5200029,
+              "bottom": 3075180
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;p3",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;p3",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 3
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 3
+          }
+        ]
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": 3,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?",
+          "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+          "Write them in the chat box. / Tell your teacher."
+        ],
+        "joinedText": "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?\nB. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?\nWrite them in the chat box. / Tell your teacher.",
+        "shapes": [
+          {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 3044172,
+              "y": 960107,
+              "cx": 2601253,
+              "cy": 969411,
+              "right": 5645425,
+              "bottom": 1929518
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?",
+                "runs": [
+                  "A. Look at the picture. ",
+                  "What is it suggesting? ",
+                  "What is today’s topic?"
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?"
+            ],
+            "joinedText": "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?"
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 4344799,
+              "y": 2854249,
+              "cx": 3657205,
+              "cy": 1676277,
+              "right": 8002004,
+              "bottom": 4530526
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+                "runs": [
+                  "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?"
+                ]
+              },
+              {
+                "text": "Write them in the chat box. / Tell your teacher.",
+                "runs": [
+                  "Write them in the chat box. / Tell your teacher."
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+              "Write them in the chat box. / Tell your teacher."
+            ],
+            "joinedText": "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?\nWrite them in the chat box. / Tell your teacher."
+          },
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 342426,
+              "y": 428568,
+              "cx": 2510494,
+              "cy": 1882871,
+              "right": 2852920,
+              "bottom": 2311439
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 2384250,
+              "y": 2854255,
+              "cx": 1546925,
+              "cy": 1546900,
+              "right": 3931175,
+              "bottom": 4401155
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;p4",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;p4",
+            "bbox": {
+              "x": 342426,
+              "y": 428568,
+              "cx": 2510494,
+              "cy": 1882871,
+              "right": 2852920,
+              "bottom": 2311439
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId6",
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;p4",
+            "bbox": {
+              "x": 2384250,
+              "y": 2854255,
+              "cx": 1546925,
+              "cy": 1546900,
+              "right": 3931175,
+              "bottom": 4401155
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId4",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId6",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": 4,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details? Write them in the chat box. / Tell your teacher."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZSsvOG1uWNGnJ9mCH5MoLcpQKNwY_iWpmr6iUGEQDpIu-GCNCCVOZPQlbESXhN_1nfa-B50rpGXAPRFW-ECrFcMa326BtUDXWtCRSA67xIvKVEMEkgtBZEEQo5zveqK8bsNjJHnSq4jQOHS9BVRBr7POB6-fb4vVux6pEU5AjAnLJZPccAIKY=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "kind": "audio-icon",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "audio-icon-without-original-url"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 1,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 1419825,
+              "y": 1964350,
+              "cx": 4575000,
+              "cy": 1159800,
+              "right": 5994825,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary introduction",
+                "runs": [
+                  "Vocabulary introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary introduction"
+            ],
+            "joinedText": "Vocabulary introduction"
+          },
+          {
+            "shapeId": "272",
+            "shapeName": "Google Shape;272;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 1857375,
+              "y": 3221050,
+              "cx": 2984700,
+              "cy": 341400,
+              "right": 4842075,
+              "bottom": 3562450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "273",
+            "shapeName": "Google Shape;273;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          },
+          {
+            "shapeId": "274",
+            "shapeName": "Google Shape;274;p5",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "274",
+            "shapeName": "Google Shape;274;p5",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 5
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 5
+          }
+        ]
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": 5,
+        "title": "Vocabulary introduction",
+        "visibleTexts": [
+          "Vocabulary introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic. ",
+          "NOW",
+          "RIGHT NOW",
+          "AT THE MOMENT",
+          "CURRENTLY",
+          "IN THIS VERY INSTANT",
+          "THESE DAYS"
+        ],
+        "joinedText": "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic.\nNOW\nRIGHT NOW\nAT THE MOMENT\nCURRENTLY\nIN THIS VERY INSTANT\nTHESE DAYS",
+        "shapes": [
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 623700,
+              "y": 229450,
+              "cx": 6228000,
+              "cy": 745500,
+              "right": 6851700,
+              "bottom": 974950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic. ",
+                "runs": [
+                  "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic. "
+                ]
+              }
+            ],
+            "texts": [
+              "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic. "
+            ],
+            "joinedText": "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic."
+          },
+          {
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 335050,
+              "y": 1351449,
+              "cx": 1259606,
+              "cy": 839750,
+              "right": 1594656,
+              "bottom": 2191199
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "282",
+            "shapeName": "Google Shape;282;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 2240038,
+              "y": 1351450,
+              "cx": 1259634,
+              "cy": 839750,
+              "right": 3499672,
+              "bottom": 2191200
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 4068850,
+              "y": 1351450,
+              "cx": 1259600,
+              "cy": 840767,
+              "right": 5328450,
+              "bottom": 2192217
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 2240000,
+              "y": 2840275,
+              "cx": 968150,
+              "cy": 1452250,
+              "right": 3208150,
+              "bottom": 4292525
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 4287039,
+              "y": 2840286,
+              "cx": 968166,
+              "cy": 1452249,
+              "right": 5255205,
+              "bottom": 4292535
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 5897631,
+              "y": 1351443,
+              "cx": 1259632,
+              "cy": 839755,
+              "right": 7157263,
+              "bottom": 2191198
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 335000,
+              "y": 2143650,
+              "cx": 1259700,
+              "cy": 408000,
+              "right": 1594700,
+              "bottom": 2551650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "NOW",
+                "runs": [
+                  "NOW"
+                ]
+              }
+            ],
+            "texts": [
+              "NOW"
+            ],
+            "joinedText": "NOW"
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 2240000,
+              "y": 2143650,
+              "cx": 1259700,
+              "cy": 408000,
+              "right": 3499700,
+              "bottom": 2551650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "RIGHT NOW",
+                "runs": [
+                  "RIGHT ",
+                  "NOW"
+                ]
+              }
+            ],
+            "texts": [
+              "RIGHT NOW"
+            ],
+            "joinedText": "RIGHT NOW"
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 4068825,
+              "y": 2143650,
+              "cx": 1259700,
+              "cy": 408000,
+              "right": 5328525,
+              "bottom": 2551650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "AT THE MOMENT",
+                "runs": [
+                  "AT THE MOMENT"
+                ]
+              }
+            ],
+            "texts": [
+              "AT THE MOMENT"
+            ],
+            "joinedText": "AT THE MOMENT"
+          },
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 5897650,
+              "y": 2143650,
+              "cx": 1259700,
+              "cy": 408000,
+              "right": 7157350,
+              "bottom": 2551650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CURRENTLY",
+                "runs": [
+                  "CURRENTLY"
+                ]
+              }
+            ],
+            "texts": [
+              "CURRENTLY"
+            ],
+            "joinedText": "CURRENTLY"
+          },
+          {
+            "shapeId": "291",
+            "shapeName": "Google Shape;291;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 2240000,
+              "y": 4274525,
+              "cx": 968100,
+              "cy": 684300,
+              "right": 3208100,
+              "bottom": 4958825
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "IN THIS VERY INSTANT",
+                "runs": [
+                  "IN THIS VERY INSTANT"
+                ]
+              }
+            ],
+            "texts": [
+              "IN THIS VERY INSTANT"
+            ],
+            "joinedText": "IN THIS VERY INSTANT"
+          },
+          {
+            "shapeId": "292",
+            "shapeName": "Google Shape;292;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 4287050,
+              "y": 4292525,
+              "cx": 968100,
+              "cy": 684300,
+              "right": 5255150,
+              "bottom": 4976825
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "THESE DAYS",
+                "runs": [
+                  "THESE DAYS"
+                ]
+              }
+            ],
+            "texts": [
+              "THESE DAYS"
+            ],
+            "joinedText": "THESE DAYS"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;p6",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;p6",
+            "bbox": {
+              "x": 335050,
+              "y": 1351449,
+              "cx": 1259606,
+              "cy": 839750,
+              "right": 1594656,
+              "bottom": 2191199
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "282",
+            "shapeName": "Google Shape;282;p6",
+            "bbox": {
+              "x": 2240038,
+              "y": 1351450,
+              "cx": 1259634,
+              "cy": 839750,
+              "right": 3499672,
+              "bottom": 2191200
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image4.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;p6",
+            "bbox": {
+              "x": 4068850,
+              "y": 1351450,
+              "cx": 1259600,
+              "cy": 840767,
+              "right": 5328450,
+              "bottom": 2192217
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image3.jpg",
+            "relationshipId": "rId7",
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;p6",
+            "bbox": {
+              "x": 2240000,
+              "y": 2840275,
+              "cx": 968150,
+              "cy": 1452250,
+              "right": 3208150,
+              "bottom": 4292525
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;p6",
+            "bbox": {
+              "x": 4287039,
+              "y": 2840286,
+              "cx": 968166,
+              "cy": 1452249,
+              "right": 5255205,
+              "bottom": 4292535
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId9",
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;p6",
+            "bbox": {
+              "x": 5897631,
+              "y": 1351443,
+              "cx": 1259632,
+              "cy": 839755,
+              "right": 7157263,
+              "bottom": 2191198
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image4.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image3.jpg",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId9",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": 6,
+        "title": "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic.",
+        "visibleTexts": [
+          "When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic.",
+          "NOW",
+          "RIGHT NOW",
+          "AT THE MOMENT",
+          "CURRENTLY",
+          "IN THIS VERY INSTANT",
+          "THESE DAYS"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb-VC94F9oCFlGAkRPBFRlzLvnA1J_o1ct8BrvyhRvBxMalVqzxoKoe0ljHXO1HsuxuM3CnEP4soqWy4ib3gTdjaINS3bUr6fet6WN92Ma7w-wYOuFwbET4ecH-HAfB-r49oWDSjHvTBH7doyALV0bUX-0HLhIVgQeJEVYfn6I2D_xs5arIQ2c=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZCUr_-tGJ1IfJZ3rbH3iCRIGd1wtXv48h3SURIt0iBahdxfaFWIntyJuXYZVYes0jP4wm8qncltMylqBXnFinGhrBtgicQWM7bRDQRcA39TZom88eFcOIGsMPxYdpiMYiAAMLtL7XundnLJQOGcEfUgwCjkhcFEO6zLw7214YVGdFjZUTWDkM=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbb2sUV84Wur4rrprVgh2zXWC5E4VO2HE7rQKLLeJJohFAHbHP9S8ubU3gvNVyI9a5un6wRo-4G3mjI9TmQcyUXIhkU6vxON_ApwpnUk_10s5aKZNH8YHf-QrtJVxN2FzHuzyvRgnMBIIADh2Hu12D9MuFlSb6zoXraM0PTXfbMVEMVK9GOO9s=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaYbBuy67vgGad5V_jPNxKUAs6TND7JSWx79IKDaBRV7plUmgWdG3OatDBr52r43FpJBRKHoo_xXzTR8mExko1-1qiH7ofHE6uLXd_BJWf1uPql-gQh4yNTB0tGkO_fJKsEQrgqUyPOcOJuJiwoIVRgH_ZihS2pVOBdGBdcjh7_Zq7LUiwD=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbaLNmbUxKgo7UdEMDdACLoASSjatziSD6EoXMbMA66aQA-4MGh-gBM0hI0M1xv0g3PZJMHObgQ_RsCosFZ9aXjVS_zchHmSMmu9-1TZKHQv7OoYDISvlRV5yJxFMS-IaNwIXUUx_yWFLCt9DLeELQSNdblaKCINLFe59iQORc7MA-_eaGNAcQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZf1DXdf4RGk4VqyPJb0OAJhwpNZTj1WR6E8FwJUpriPtvszbe2FS__PV5fS-N8zCHnZvngiVM2AR6bWARLy3XsUfriGlflffmbSioYCnbUFQs9wtRJEr8OHGIarrJfa9A6MuS1cAw8x81FgkDGtKPOX1P4DtA0RFdH4qHLMgAtJQB3PeXn=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 7,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 4575000,
+              "cy": 1159800,
+              "right": 6462672,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3221050,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3562350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "299",
+            "shapeName": "Google Shape;299;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          },
+          {
+            "shapeId": "300",
+            "shapeName": "Google Shape;300;p7",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "300",
+            "shapeName": "Google Shape;300;p7",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 7
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 7
+          }
+        ]
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": 7,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Ongoing actions are stated through the present progressive.  Check out the following examples. ",
+          "Statements",
+          "Questions",
+          "Negative statements",
+          "1.",
+          "I am doing my homework now.",
+          "Are you doing your homework now?",
+          "I am not doing my homework now.",
+          "2.",
+          "They are talking on the phone right now.",
+          "Are they talking on the phone right now?",
+          "They are not talking on the phone right now.",
+          "3.",
+          "He is practicing for the soccer finale these days.",
+          "Is he practicing for the soccer finale these days?",
+          "He is not practicing for the soccer finale these days.",
+          "4.",
+          "Currently, They are rebuilding the house.",
+          "Are they currently rebuilding the house?",
+          "No, they are not currently rebuilding the house.",
+          "TO CONSIDER",
+          "Verb To Be acts as an auxiliary. ",
+          "-Ing form is added to end of the main verbs. ",
+          " Do/Does are not used here. "
+        ],
+        "joinedText": "Ongoing actions are stated through the present progressive.  Check out the following examples.\nStatements\nQuestions\nNegative statements\n1.\nI am doing my homework now.\nAre you doing your homework now?\nI am not doing my homework now.\n2.\nThey are talking on the phone right now.\nAre they talking on the phone right now?\nThey are not talking on the phone right now.\n3.\nHe is practicing for the soccer finale these days.\nIs he practicing for the soccer finale these days?\nHe is not practicing for the soccer finale these days.\n4.\nCurrently, They are rebuilding the house.\nAre they currently rebuilding the house?\nNo, they are not currently rebuilding the house.\nTO CONSIDER\n\nVerb To Be acts as an auxiliary. \n-Ing form is added to end of the main verbs. \n Do/Does are not used here.",
+        "shapes": [
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;p8",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "306",
+            "shapeName": "Google Shape;306;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 396948,
+              "y": 160852,
+              "cx": 7059900,
+              "cy": 573300,
+              "right": 7456848,
+              "bottom": 734152
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Ongoing actions are stated through the present progressive.  Check out the following examples. ",
+                "runs": [
+                  "Ongoing actions are stated through the present progressive.  Check out the following examples. "
+                ]
+              }
+            ],
+            "texts": [
+              "Ongoing actions are stated through the present progressive.  Check out the following examples. "
+            ],
+            "joinedText": "Ongoing actions are stated through the present progressive.  Check out the following examples."
+          },
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;p8",
+            "kind": "table",
+            "bbox": {
+              "x": 523541,
+              "y": 853356,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3523541,
+              "bottom": 3853356
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Statements",
+                "runs": []
+              },
+              {
+                "text": "Questions",
+                "runs": []
+              },
+              {
+                "text": "Negative statements",
+                "runs": []
+              },
+              {
+                "text": "1.",
+                "runs": []
+              },
+              {
+                "text": "I am doing my homework now.",
+                "runs": []
+              },
+              {
+                "text": "Are you doing your homework now?",
+                "runs": []
+              },
+              {
+                "text": "I am not doing my homework now.",
+                "runs": []
+              },
+              {
+                "text": "2.",
+                "runs": []
+              },
+              {
+                "text": "They are talking on the phone right now.",
+                "runs": []
+              },
+              {
+                "text": "Are they talking on the phone right now?",
+                "runs": []
+              },
+              {
+                "text": "They are not talking on the phone right now.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "He is practicing for the soccer finale these days.",
+                "runs": []
+              },
+              {
+                "text": "Is he practicing for the soccer finale these days?",
+                "runs": []
+              },
+              {
+                "text": "He is not practicing for the soccer finale these days.",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "Currently, They are rebuilding the house.",
+                "runs": []
+              },
+              {
+                "text": "Are they currently rebuilding the house?",
+                "runs": []
+              },
+              {
+                "text": "No, they are not currently rebuilding the house.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Statements",
+              "Questions",
+              "Negative statements",
+              "1.",
+              "I am doing my homework now.",
+              "Are you doing your homework now?",
+              "I am not doing my homework now.",
+              "2.",
+              "They are talking on the phone right now.",
+              "Are they talking on the phone right now?",
+              "They are not talking on the phone right now.",
+              "3.",
+              "He is practicing for the soccer finale these days.",
+              "Is he practicing for the soccer finale these days?",
+              "He is not practicing for the soccer finale these days.",
+              "4.",
+              "Currently, They are rebuilding the house.",
+              "Are they currently rebuilding the house?",
+              "No, they are not currently rebuilding the house."
+            ],
+            "joinedText": "Statements\nQuestions\nNegative statements\n1.\nI am doing my homework now.\nAre you doing your homework now?\nI am not doing my homework now.\n2.\nThey are talking on the phone right now.\nAre they talking on the phone right now?\nThey are not talking on the phone right now.\n3.\nHe is practicing for the soccer finale these days.\nIs he practicing for the soccer finale these days?\nHe is not practicing for the soccer finale these days.\n4.\nCurrently, They are rebuilding the house.\nAre they currently rebuilding the house?\nNo, they are not currently rebuilding the house.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;p8",
+            "kind": "group",
+            "bbox": {
+              "x": 1589868,
+              "y": 3353378,
+              "cx": 4249793,
+              "cy": 1744564,
+              "right": 5839661,
+              "bottom": 5097942
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6809829,
+              "y": 964323,
+              "cx": 2080172,
+              "cy": 2467206,
+              "right": 8890001,
+              "bottom": 3431529
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6527130,
+              "y": 2912263,
+              "cx": 801967,
+              "cy": 236571,
+              "right": 7329097,
+              "bottom": 3148834
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 1943100,
+              "y": 3430750,
+              "cx": 3865500,
+              "cy": 1554300,
+              "right": 5808600,
+              "bottom": 4985050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "TO CONSIDER",
+                "runs": [
+                  "TO CONSIDER"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Verb To Be acts as an auxiliary. ",
+                "runs": [
+                  "Verb To Be acts as an auxiliary. "
+                ]
+              },
+              {
+                "text": "-Ing form is added to end of the main verbs. ",
+                "runs": [
+                  "-Ing form is added to end of the main verbs. "
+                ]
+              },
+              {
+                "text": " Do/Does are not used here. ",
+                "runs": [
+                  " Do/Does are not used here. "
+                ]
+              }
+            ],
+            "texts": [
+              "TO CONSIDER",
+              "Verb To Be acts as an auxiliary. ",
+              "-Ing form is added to end of the main verbs. ",
+              " Do/Does are not used here. "
+            ],
+            "joinedText": "TO CONSIDER\n\nVerb To Be acts as an auxiliary. \n-Ing form is added to end of the main verbs. \n Do/Does are not used here."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;p8",
+            "bbox": {
+              "x": 523541,
+              "y": 853356,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3523541,
+              "bottom": 3853356
+            },
+            "columnWidths": [
+              361050,
+              2295950,
+              2395325,
+              2653750
+            ],
+            "rows": [
+              {
+                "height": 465675,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Statements",
+                    "paragraphs": [
+                      {
+                        "text": "Statements ",
+                        "runs": [
+                          "Statements "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Questions",
+                    "paragraphs": [
+                      {
+                        "text": "Questions",
+                        "runs": [
+                          "Questions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Negative statements",
+                    "paragraphs": [
+                      {
+                        "text": "Negative statements",
+                        "runs": [
+                          "Negative statements"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 364000,
+                "cells": [
+                  {
+                    "text": "1.",
+                    "paragraphs": [
+                      {
+                        "text": "1.",
+                        "runs": [
+                          "1."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I am doing my homework now.",
+                    "paragraphs": [
+                      {
+                        "text": "I am doing my homework now. ",
+                        "runs": [
+                          "I ",
+                          "am",
+                          " ",
+                          "doing",
+                          " my homework now. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Are you doing your homework now?",
+                    "paragraphs": [
+                      {
+                        "text": "Are you doing your homework now?",
+                        "runs": [
+                          "Are ",
+                          "you",
+                          " ",
+                          "doing",
+                          " your homework now?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I am not doing my homework now.",
+                    "paragraphs": [
+                      {
+                        "text": "I am not doing my homework now. ",
+                        "runs": [
+                          "I ",
+                          "am",
+                          " ",
+                          "not ",
+                          "doing",
+                          " my homework now. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 417450,
+                "cells": [
+                  {
+                    "text": "2.",
+                    "paragraphs": [
+                      {
+                        "text": "2.",
+                        "runs": [
+                          "2."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They are talking on the phone right now.",
+                    "paragraphs": [
+                      {
+                        "text": "They are talking on the phone right now. ",
+                        "runs": [
+                          "They ",
+                          "are",
+                          " ",
+                          "talking",
+                          " on the phone right now. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Are they talking on the phone right now?",
+                    "paragraphs": [
+                      {
+                        "text": "Are they talking on the phone right now?",
+                        "runs": [
+                          "Are ",
+                          "they ",
+                          "talking",
+                          " on the phone right now?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They are not talking on the phone right now.",
+                    "paragraphs": [
+                      {
+                        "text": "They are not talking on the phone right now. ",
+                        "runs": [
+                          "They ",
+                          "are",
+                          " ",
+                          "not ",
+                          "talking",
+                          " on the phone right now. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 447250,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He is practicing for the soccer finale these days.",
+                    "paragraphs": [
+                      {
+                        "text": "He is practicing for the soccer finale these days. ",
+                        "runs": [
+                          "He ",
+                          "is",
+                          " ",
+                          "practicing",
+                          " for the soccer finale these days. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Is he practicing for the soccer finale these days?",
+                    "paragraphs": [
+                      {
+                        "text": "Is he practicing for the soccer finale these days?",
+                        "runs": [
+                          "Is ",
+                          "he",
+                          " ",
+                          "practicing",
+                          " for the soccer finale these days?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He is not practicing for the soccer finale these days.",
+                    "paragraphs": [
+                      {
+                        "text": "He is not practicing for the soccer finale these days. ",
+                        "runs": [
+                          "He ",
+                          "is ",
+                          "not",
+                          " ",
+                          "practicing",
+                          " for the soccer finale these days. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 447250,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Currently, They are rebuilding the house.",
+                    "paragraphs": [
+                      {
+                        "text": "Currently, They are rebuilding the house. ",
+                        "runs": [
+                          "Currently, They ",
+                          "are",
+                          " ",
+                          "rebuilding",
+                          " the house. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Are they currently rebuilding the house?",
+                    "paragraphs": [
+                      {
+                        "text": "Are they currently rebuilding the house?",
+                        "runs": [
+                          "Are",
+                          " they currently ",
+                          "rebuilding",
+                          " the house?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "No, they are not currently rebuilding the house.",
+                    "paragraphs": [
+                      {
+                        "text": "No, they are not currently rebuilding the house.",
+                        "runs": [
+                          "No, they ",
+                          "are",
+                          " not currently ",
+                          "rebuilding",
+                          " the house."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;p8",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 8
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 8
+          }
+        ]
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": 8,
+        "title": "Ongoing actions are stated through the present progressive. Check out the following examples.",
+        "visibleTexts": [
+          "Ongoing actions are stated through the present progressive. Check out the following examples.",
+          "Statements Questions Negative statements 1. I am doing my homework now. Are you doing your homework now? I am not doing my homework now. 2. They are talking on the phone right now. Are they talking on the phone right now? They are not talking on the phone right now. 3. He is practicing for the soccer finale these days. Is he practicing for the soccer finale these days? He is not practicing for the soccer finale these days. 4. Currently, They are rebuilding the house. Are they currently rebuilding the house? No, they are not currently rebuilding the house.",
+          "TO CONSIDER 1. Verb To Be acts as an auxiliary. 2. -Ing form is added to end of the main verbs. 3. Do/Does are not used here."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 2684328,
+              "cy": 1159800,
+              "right": 4572000,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use",
+                "runs": [
+                  "Language Use"
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use"
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3124150,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3465450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;p9",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;p9",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 9
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 9
+          }
+        ]
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": 9,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Targets",
+          "Functions",
+          "Examples",
+          "1",
+          "Ongoing actions.",
+          "He is taking a shower now. / We are having English class at the moment.",
+          "2",
+          "Actions happening for a certain time period.",
+          "We are rehearsing for the recital these days. / For now, I am doing work from home.",
+          "3",
+          "Actions happening once and again.",
+          "Jake is always eating burgers. / They are always playing soccer.",
+          "When we use the present progressive we can take into account some functions.",
+          "TO CONSIDER",
+          "Time phrases may vary a little depending on the function we want to express. ",
+          "There is a fourth function related to expressing future."
+        ],
+        "joinedText": "Language Targets\nFunctions\nExamples\n1\nOngoing actions.\nHe is taking a shower now. / We are having English class at the moment.\n2\nActions happening for a certain time period.\nWe are rehearsing for the recital these days. / For now, I am doing work from home.\n3\nActions happening once and again.\nJake is always eating burgers. / They are always playing soccer.\nWhen we use the present progressive we can take into account some functions.\nTO CONSIDER\n\nTime phrases may vary a little depending on the function we want to express. \n\nThere is a fourth function related to expressing future.",
+        "shapes": [
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 1762361,
+              "y": 252004,
+              "cx": 5619279,
+              "cy": 458575,
+              "right": 7381640,
+              "bottom": 710579
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Targets",
+                "runs": [
+                  "Language Targets"
+                ]
+              }
+            ],
+            "texts": [
+              "Language Targets"
+            ],
+            "joinedText": "Language Targets"
+          },
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;p10",
+            "kind": "table",
+            "bbox": {
+              "x": 3466023,
+              "y": 943458,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 6466023,
+              "bottom": 3943458
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Ongoing actions.",
+                "runs": []
+              },
+              {
+                "text": "He is taking a shower now. / We are having English class at the moment.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Actions happening for a certain time period.",
+                "runs": []
+              },
+              {
+                "text": "We are rehearsing for the recital these days. / For now, I am doing work from home.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Actions happening once and again.",
+                "runs": []
+              },
+              {
+                "text": "Jake is always eating burgers. / They are always playing soccer.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Ongoing actions.",
+              "He is taking a shower now. / We are having English class at the moment.",
+              "2",
+              "Actions happening for a certain time period.",
+              "We are rehearsing for the recital these days. / For now, I am doing work from home.",
+              "3",
+              "Actions happening once and again.",
+              "Jake is always eating burgers. / They are always playing soccer."
+            ],
+            "joinedText": "Functions\nExamples\n1\nOngoing actions.\nHe is taking a shower now. / We are having English class at the moment.\n2\nActions happening for a certain time period.\nWe are rehearsing for the recital these days. / For now, I am doing work from home.\n3\nActions happening once and again.\nJake is always eating burgers. / They are always playing soccer.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 443250,
+              "y": 1009977,
+              "cx": 2619300,
+              "cy": 1338300,
+              "right": 3062550,
+              "bottom": 2348277
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "When we use the present progressive we can take into account some functions.",
+                "runs": [
+                  "When we use the present progressive we can take into account some functions."
+                ]
+              }
+            ],
+            "texts": [
+              "When we use the present progressive we can take into account some functions."
+            ],
+            "joinedText": "When we use the present progressive we can take into account some functions."
+          },
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;p10",
+            "kind": "group",
+            "bbox": {
+              "x": 2676906,
+              "y": 3339573,
+              "cx": 5619378,
+              "cy": 1452446,
+              "right": 8296284,
+              "bottom": 4792019
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 6809829,
+              "y": 964323,
+              "cx": 2080172,
+              "cy": 2467206,
+              "right": 8890001,
+              "bottom": 3431529
+            },
+            "parentShapeId": "327",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 6527130,
+              "y": 2912263,
+              "cx": 801967,
+              "cy": 236571,
+              "right": 7329097,
+              "bottom": 3148834
+            },
+            "parentShapeId": "327",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "330",
+            "shapeName": "Google Shape;330;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 3296800,
+              "y": 3417275,
+              "cx": 4946400,
+              "cy": 1185000,
+              "right": 8243200,
+              "bottom": 4602275
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "TO CONSIDER",
+                "runs": [
+                  "TO CONSIDER"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Time phrases may vary a little depending on the function we want to express. ",
+                "runs": [
+                  "Time phrases may vary a little depending on the function we want to express. "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "There is a fourth function related to expressing future.",
+                "runs": [
+                  "There is a fourth ",
+                  "function related to expressing future."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "TO CONSIDER",
+              "Time phrases may vary a little depending on the function we want to express. ",
+              "There is a fourth function related to expressing future."
+            ],
+            "joinedText": "TO CONSIDER\n\nTime phrases may vary a little depending on the function we want to express. \n\nThere is a fourth function related to expressing future."
+          },
+          {
+            "shapeId": "331",
+            "shapeName": "Google Shape;331;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 947944,
+              "y": 2791683,
+              "cx": 1550843,
+              "cy": 1612563,
+              "right": 2498787,
+              "bottom": 4404246
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;p10",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;p10",
+            "bbox": {
+              "x": 3466023,
+              "y": 943458,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 6466023,
+              "bottom": 3943458
+            },
+            "columnWidths": [
+              281025,
+              2286000,
+              2832650
+            ],
+            "rows": [
+              {
+                "height": 318800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples ",
+                        "runs": [
+                          "Examples "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 574025,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Ongoing actions.",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Ongoing actions. ",
+                        "runs": [
+                          "Ongoing actions. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He is taking a shower now. / We are having English class at the moment.",
+                    "paragraphs": [
+                      {
+                        "text": "He is taking a shower now. / We are having English class at the moment. ",
+                        "runs": [
+                          "He is taking a shower now. / We are having English class at the moment. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 453550,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Actions happening for a certain time period.",
+                    "paragraphs": [
+                      {
+                        "text": "Actions happening for a certain time period. ",
+                        "runs": [
+                          "Actions happening for a certain time period. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We are rehearsing for the recital these days. / For now, I am doing work from home.",
+                    "paragraphs": [
+                      {
+                        "text": "We are rehearsing for the recital these days. / For now, I am doing work from home. ",
+                        "runs": [
+                          "We are rehearsing for the recital these days. / For now, I am doing work from home. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 453550,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Actions happening once and again.",
+                    "paragraphs": [
+                      {
+                        "text": "Actions happening once and again.",
+                        "runs": [
+                          "Actions happening once and again."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Jake is always eating burgers. / They are always playing soccer.",
+                    "paragraphs": [
+                      {
+                        "text": "Jake is always eating burgers. / They are always playing soccer.",
+                        "runs": [
+                          "Jake is always eating burgers. / They are always playing soccer."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;p10",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 10
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 10
+          }
+        ]
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": 10,
+        "title": "Language Targets",
+        "visibleTexts": [
+          "Language Targets",
+          "Functions Examples 1 Ongoing actions. He is taking a shower now. / We are having English class at the moment. 2 Actions happening for a certain time period. We are rehearsing for the recital these days. / For now, I am doing work from home. 3 Actions happening once and again. Jake is always eating burgers. / They are always playing soccer.",
+          "When we use the present progressive we can take into account some functions.",
+          "TO CONSIDER Time phrases may vary a little depending on the function we want to express. There is a fourth function related to expressing future."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s\nPractice",
+          "Practice makes perfect!",
+          "4"
+        ],
+        "joinedText": "Let’s\nPractice\nPractice makes perfect!\n4",
+        "shapes": [
+          {
+            "shapeId": "337",
+            "shapeName": "Google Shape;337;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 2684328,
+              "cy": 1159800,
+              "right": 4572000,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s\nPractice",
+                "runs": [
+                  "Let’s",
+                  "Practice"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s\nPractice"
+            ],
+            "joinedText": "Let’s\nPractice"
+          },
+          {
+            "shapeId": "338",
+            "shapeName": "Google Shape;338;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3124150,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3465450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect!",
+                "runs": [
+                  "Practice makes perfect!"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect!"
+            ],
+            "joinedText": "Practice makes perfect!"
+          },
+          {
+            "shapeId": "339",
+            "shapeName": "Google Shape;339;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          },
+          {
+            "shapeId": "340",
+            "shapeName": "Google Shape;340;p11",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "340",
+            "shapeName": "Google Shape;340;p11",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 11
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 11
+          }
+        ]
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": 11,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect!",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Prompts",
+          "Sentences",
+          "0.",
+          "Jake/now/do homework.",
+          "Jake is doing homework now.",
+          "1.",
+          "Shelly / these days/ practice/ for the play.",
+          "2.",
+          "Austin / not behave / at the moment / properly.",
+          "3.",
+          "I / lunch / have / now.",
+          "4.",
+          "They / watch / in this instant / a movie.",
+          "5.",
+          "You / take / right now / classes.",
+          "6.",
+          "Joe and kate/ these months / traveling a lot",
+          "7.",
+          "Susan / bake / always / cupcakes",
+          "8.",
+          "John / right now / cook / for all",
+          "A. Read the prompts and make the correct sentences. Follow the example."
+        ],
+        "joinedText": "Prompts\nSentences\n0.\nJake/now/do homework.\nJake is doing homework now.\n1.\nShelly / these days/ practice/ for the play.\n2.\nAustin / not behave / at the moment / properly.\n3.\nI / lunch / have / now.\n4.\nThey / watch / in this instant / a movie.\n5.\nYou / take / right now / classes.\n6.\nJoe and kate/ these months / traveling a lot\n7.\nSusan / bake / always / cupcakes\n8.\nJohn / right now / cook / for all\nA. Read the prompts and make the correct sentences. Follow the example.",
+        "shapes": [
+          {
+            "shapeId": "345",
+            "shapeName": "Google Shape;345;p12",
+            "kind": "table",
+            "bbox": {
+              "x": 710790,
+              "y": 1074693,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3710790,
+              "bottom": 4074693
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Prompts",
+                "runs": []
+              },
+              {
+                "text": "Sentences",
+                "runs": []
+              },
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "Jake/now/do homework.",
+                "runs": []
+              },
+              {
+                "text": "Jake is doing homework now.",
+                "runs": []
+              },
+              {
+                "text": "1.",
+                "runs": []
+              },
+              {
+                "text": "Shelly / these days/ practice/ for the play.",
+                "runs": []
+              },
+              {
+                "text": "2.",
+                "runs": []
+              },
+              {
+                "text": "Austin / not behave / at the moment / properly.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "I / lunch / have / now.",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "They / watch / in this instant / a movie.",
+                "runs": []
+              },
+              {
+                "text": "5.",
+                "runs": []
+              },
+              {
+                "text": "You / take / right now / classes.",
+                "runs": []
+              },
+              {
+                "text": "6.",
+                "runs": []
+              },
+              {
+                "text": "Joe and kate/ these months / traveling a lot",
+                "runs": []
+              },
+              {
+                "text": "7.",
+                "runs": []
+              },
+              {
+                "text": "Susan / bake / always / cupcakes",
+                "runs": []
+              },
+              {
+                "text": "8.",
+                "runs": []
+              },
+              {
+                "text": "John / right now / cook / for all",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Prompts",
+              "Sentences",
+              "0.",
+              "Jake/now/do homework.",
+              "Jake is doing homework now.",
+              "1.",
+              "Shelly / these days/ practice/ for the play.",
+              "2.",
+              "Austin / not behave / at the moment / properly.",
+              "3.",
+              "I / lunch / have / now.",
+              "4.",
+              "They / watch / in this instant / a movie.",
+              "5.",
+              "You / take / right now / classes.",
+              "6.",
+              "Joe and kate/ these months / traveling a lot",
+              "7.",
+              "Susan / bake / always / cupcakes",
+              "8.",
+              "John / right now / cook / for all"
+            ],
+            "joinedText": "Prompts\nSentences\n0.\nJake/now/do homework.\nJake is doing homework now.\n1.\nShelly / these days/ practice/ for the play.\n2.\nAustin / not behave / at the moment / properly.\n3.\nI / lunch / have / now.\n4.\nThey / watch / in this instant / a movie.\n5.\nYou / take / right now / classes.\n6.\nJoe and kate/ these months / traveling a lot\n7.\nSusan / bake / always / cupcakes\n8.\nJohn / right now / cook / for all",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "346",
+            "shapeName": "Google Shape;346;p12",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "347",
+            "shapeName": "Google Shape;347;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 710790,
+              "y": 383472,
+              "cx": 7049938,
+              "cy": 585593,
+              "right": 7760728,
+              "bottom": 969065
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Read the prompts and make the correct sentences. Follow the example.",
+                "runs": [
+                  "A. ",
+                  "Read the prompts and make the correct sentences. Follow the example."
+                ]
+              }
+            ],
+            "texts": [
+              "A. Read the prompts and make the correct sentences. Follow the example."
+            ],
+            "joinedText": "A. Read the prompts and make the correct sentences. Follow the example."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "345",
+            "shapeName": "Google Shape;345;p12",
+            "bbox": {
+              "x": 710790,
+              "y": 1074693,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3710790,
+              "bottom": 4074693
+            },
+            "columnWidths": [
+              462025,
+              3840225,
+              3169075
+            ],
+            "rows": [
+              {
+                "height": 361425,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Prompts",
+                    "paragraphs": [
+                      {
+                        "text": "Prompts ",
+                        "runs": [
+                          "Prompts "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Sentences",
+                    "paragraphs": [
+                      {
+                        "text": "Sentences ",
+                        "runs": [
+                          "Sentences "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 299475,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Jake/now/do homework.",
+                    "paragraphs": [
+                      {
+                        "text": "Jake/now/do homework.",
+                        "runs": [
+                          "Jake/now/do homework."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Jake is doing homework now.",
+                    "paragraphs": [
+                      {
+                        "text": " Jake is doing homework now. ",
+                        "runs": [
+                          " ",
+                          "Jake is doing homework now. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 361800,
+                "cells": [
+                  {
+                    "text": "1.",
+                    "paragraphs": [
+                      {
+                        "text": "1.",
+                        "runs": [
+                          "1."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Shelly / these days/ practice/ for the play.",
+                    "paragraphs": [
+                      {
+                        "text": "Shelly / these days/ practice/ for the play.",
+                        "runs": [
+                          "Shelly / these days/ practice/ for the play."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 402675,
+                "cells": [
+                  {
+                    "text": "2.",
+                    "paragraphs": [
+                      {
+                        "text": "2.",
+                        "runs": [
+                          "2."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Austin / not behave / at the moment / properly.",
+                    "paragraphs": [
+                      {
+                        "text": "Austin / not behave / at the moment / properly.",
+                        "runs": [
+                          "Austin / not behave / at the moment / properly."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 361125,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I / lunch / have / now.",
+                    "paragraphs": [
+                      {
+                        "text": "I / lunch / have / now.",
+                        "runs": [
+                          "I / lunch / have / now."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 392300,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They / watch / in this instant / a movie.",
+                    "paragraphs": [
+                      {
+                        "text": "They / watch / in this instant / a movie. ",
+                        "runs": [
+                          "They / watch / in this instant / a movie. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 371500,
+                "cells": [
+                  {
+                    "text": "5.",
+                    "paragraphs": [
+                      {
+                        "text": "5.",
+                        "runs": [
+                          "5."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "You / take / right now / classes.",
+                    "paragraphs": [
+                      {
+                        "text": "You / take / right now / classes. ",
+                        "runs": [
+                          "You / take / right now / classes. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 371500,
+                "cells": [
+                  {
+                    "text": "6.",
+                    "paragraphs": [
+                      {
+                        "text": "6.",
+                        "runs": [
+                          "6."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Joe and kate/ these months / traveling a lot",
+                    "paragraphs": [
+                      {
+                        "text": "Joe and kate/ these months / traveling a lot",
+                        "runs": [
+                          "Joe and kate/ these months / traveling a lot"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 371500,
+                "cells": [
+                  {
+                    "text": "7.",
+                    "paragraphs": [
+                      {
+                        "text": "7.",
+                        "runs": [
+                          "7."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Susan / bake / always / cupcakes",
+                    "paragraphs": [
+                      {
+                        "text": "Susan / bake / always / cupcakes",
+                        "runs": [
+                          "Susan / bake / always / cupcakes"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 371500,
+                "cells": [
+                  {
+                    "text": "8.",
+                    "paragraphs": [
+                      {
+                        "text": "8.",
+                        "runs": [
+                          "8."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "John / right now / cook / for all",
+                    "paragraphs": [
+                      {
+                        "text": "John / right now / cook / for all",
+                        "runs": [
+                          "John / right now / cook / for all"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "346",
+            "shapeName": "Google Shape;346;p12",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 12
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 12
+          }
+        ]
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": 12,
+        "title": "Prompts Sentences 0. Jake/now/do homework. Jake is doing homework now. 1. Shelly / these days/ practice/ for the play. 2. Austin / not behave / at the moment / properly. 3. I / lunch / have / now. 4. They / watch / in this instant / a movie. 5. You / take / right now / classes. 6. Joe and kate/ these months / traveling a lot 7. Susan / bake / always / cupcakes 8. John / right now / cook / for all",
+        "visibleTexts": [
+          "Prompts Sentences 0. Jake/now/do homework. Jake is doing homework now. 1. Shelly / these days/ practice/ for the play. 2. Austin / not behave / at the moment / properly. 3. I / lunch / have / now. 4. They / watch / in this instant / a movie. 5. You / take / right now / classes. 6. Joe and kate/ these months / traveling a lot 7. Susan / bake / always / cupcakes 8. John / right now / cook / for all",
+          "A. Read the prompts and make the correct sentences. Follow the example."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.",
+          "C. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher. ",
+          "Vacations ",
+          "Dear Annie, how are you? ",
+          "I am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast.",
+          "How are your vacations going? Please write. ",
+          "Love, Laurie.",
+          "Annie is writing the email.\t\t\t\t(T) (F)",
+          "She is writing from the hotel restaurant.\t(T) (F)",
+          "She is having a good time.\t\t\t\t(T) (F)",
+          "They are getting ready now.\t\t\t(T) (F)",
+          "They are not going on a tour.\t\t\t(T) (F)",
+          "Her brother is enjoying every moment.\t\t(T) (F) ",
+          "Her father is making all he can to make ",
+          "them happy.\t\t\t\t\t\t(T) (F)",
+          "They are having breakfast now.\t\t\t(T) (F)"
+        ],
+        "joinedText": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.\nC. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.\nVacations \nDear Annie, how are you? \n\nI am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast.\n\nHow are your vacations going? Please write. \n\nLove, Laurie.\nAnnie is writing the email.\t\t\t\t(T) (F)\nShe is writing from the hotel restaurant.\t(T) (F)\nShe is having a good time.\t\t\t\t(T) (F)\nThey are getting ready now.\t\t\t(T) (F)\nThey are not going on a tour.\t\t\t(T) (F)\nHer brother is enjoying every moment.\t\t(T) (F) \nHer father is making all he can to make \nthem happy.\t\t\t\t\t\t(T) (F)\nThey are having breakfast now.\t\t\t(T) (F)",
+        "shapes": [
+          {
+            "shapeId": "352",
+            "shapeName": "Google Shape;352;g719c875542_0_15",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "353",
+            "shapeName": "Google Shape;353;g719c875542_0_15",
+            "kind": "text",
+            "bbox": {
+              "x": 275900,
+              "y": 258713,
+              "cx": 7549500,
+              "cy": 701700,
+              "right": 7825400,
+              "bottom": 960413
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.",
+                "runs": [
+                  "B. ",
+                  "Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+            ],
+            "joinedText": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+          },
+          {
+            "shapeId": "354",
+            "shapeName": "Google Shape;354;g719c875542_0_15",
+            "kind": "text",
+            "bbox": {
+              "x": 122625,
+              "y": 1622175,
+              "cx": 8496600,
+              "cy": 803400,
+              "right": 8619225,
+              "bottom": 2425575
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher. ",
+                "runs": [
+                  "C. ",
+                  "Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher. "
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher. "
+            ],
+            "joinedText": "C. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher."
+          },
+          {
+            "shapeId": "355",
+            "shapeName": "Google Shape;355;g719c875542_0_15",
+            "kind": "text",
+            "bbox": {
+              "x": 4526525,
+              "y": 2519475,
+              "cx": 4092600,
+              "cy": 2409600,
+              "right": 8619125,
+              "bottom": 4929075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vacations ",
+                "runs": [
+                  "Vacations "
+                ]
+              },
+              {
+                "text": "Dear Annie, how are you? ",
+                "runs": [
+                  "Dear Annie, how are you? "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "I am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast.",
+                "runs": [
+                  "I am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "How are your vacations going? Please write. ",
+                "runs": [
+                  "How are your vacations going? Please write. "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Love, Laurie.",
+                "runs": [
+                  "Love, Laurie."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Vacations ",
+              "Dear Annie, how are you? ",
+              "I am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast.",
+              "How are your vacations going? Please write. ",
+              "Love, Laurie."
+            ],
+            "joinedText": "Vacations \nDear Annie, how are you? \n\nI am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast.\n\nHow are your vacations going? Please write. \n\nLove, Laurie."
+          },
+          {
+            "shapeId": "356",
+            "shapeName": "Google Shape;356;g719c875542_0_15",
+            "kind": "text",
+            "bbox": {
+              "x": 122500,
+              "y": 2519475,
+              "cx": 4329900,
+              "cy": 2409600,
+              "right": 4452400,
+              "bottom": 4929075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Annie is writing the email.\t\t\t\t(T) (F)",
+                "runs": [
+                  "Annie is writing the email.\t\t\t\t(T) (F)"
+                ]
+              },
+              {
+                "text": "She is writing from the hotel restaurant.\t(T) (F)",
+                "runs": [
+                  "She is writing from the hotel restaurant.\t",
+                  "(T) (F)"
+                ]
+              },
+              {
+                "text": "She is having a good time.\t\t\t\t(T) (F)",
+                "runs": [
+                  "She is having a good time.\t\t\t\t",
+                  "(T) (F)"
+                ]
+              },
+              {
+                "text": "They are getting ready now.\t\t\t(T) (F)",
+                "runs": [
+                  "They are getting ready now.\t\t\t",
+                  "(T) (F)"
+                ]
+              },
+              {
+                "text": "They are not going on a tour.\t\t\t(T) (F)",
+                "runs": [
+                  "They are not going on a tour.\t\t\t",
+                  "(T) (F)"
+                ]
+              },
+              {
+                "text": "Her brother is enjoying every moment.\t\t(T) (F) ",
+                "runs": [
+                  "Her brother is enjoying every moment.\t\t",
+                  "(T) (F)",
+                  " "
+                ]
+              },
+              {
+                "text": "Her father is making all he can to make ",
+                "runs": [
+                  "Her father is making all he can to make "
+                ]
+              },
+              {
+                "text": "them happy.\t\t\t\t\t\t(T) (F)",
+                "runs": [
+                  "them happy.\t\t\t\t\t\t",
+                  "(T) (F)"
+                ]
+              },
+              {
+                "text": "They are having breakfast now.\t\t\t(T) (F)",
+                "runs": [
+                  "They are having breakfast now.\t\t\t",
+                  "(T) (F)"
+                ]
+              }
+            ],
+            "texts": [
+              "Annie is writing the email.\t\t\t\t(T) (F)",
+              "She is writing from the hotel restaurant.\t(T) (F)",
+              "She is having a good time.\t\t\t\t(T) (F)",
+              "They are getting ready now.\t\t\t(T) (F)",
+              "They are not going on a tour.\t\t\t(T) (F)",
+              "Her brother is enjoying every moment.\t\t(T) (F) ",
+              "Her father is making all he can to make ",
+              "them happy.\t\t\t\t\t\t(T) (F)",
+              "They are having breakfast now.\t\t\t(T) (F)"
+            ],
+            "joinedText": "Annie is writing the email.\t\t\t\t(T) (F)\nShe is writing from the hotel restaurant.\t(T) (F)\nShe is having a good time.\t\t\t\t(T) (F)\nThey are getting ready now.\t\t\t(T) (F)\nThey are not going on a tour.\t\t\t(T) (F)\nHer brother is enjoying every moment.\t\t(T) (F) \nHer father is making all he can to make \nthem happy.\t\t\t\t\t\t(T) (F)\nThey are having breakfast now.\t\t\t(T) (F)"
+          },
+          {
+            "shapeId": "357",
+            "shapeName": "Google Shape;357;g719c875542_0_15",
+            "kind": "picture",
+            "bbox": {
+              "x": 7398600,
+              "y": 69638,
+              "cx": 1079950,
+              "cy": 1079875,
+              "right": 8478550,
+              "bottom": 1149513
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "352",
+            "shapeName": "Google Shape;352;g719c875542_0_15",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "357",
+            "shapeName": "Google Shape;357;g719c875542_0_15",
+            "bbox": {
+              "x": 7398600,
+              "y": 69638,
+              "cx": 1079950,
+              "cy": 1079875,
+              "right": 8478550,
+              "bottom": 1149513
+            },
+            "slide": 13
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 13
+          }
+        ]
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.",
+        "visibleTexts": [
+          "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.",
+          "C. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.",
+          "Vacations Dear Annie, how are you? I am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast. How are your vacations going? Please write. Love, Laurie.",
+          "1. Annie is writing the email. (T) (F) 2. She is writing from the hotel restaurant. (T) (F) 3. She is having a good time. (T) (F) 4. They are getting ready now. (T) (F) 5. They are not going on a tour. (T) (F) 6. Her brother is enjoying every moment. (T) (F) 7. Her father is making all he can to make them happy. (T) (F) 8. They are having breakfast now. (T) (F)"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYGN_JWbMtDDkhaJG_qBggM7jnacaJ9JAnFpHYarLAdARllkd82gFjjKIP3-iKtLp3VIlgB2cx65P4fByXWPVSLTWt_pkchdbMpRln9DV1jDfuhE2hXaxkeOeinzU-_CxhZjjpkF72kI8GXsaR2vGxL3Wcw0StJpTfMU4WqWHqOU_eepAw4BYA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "kind": "audio-icon",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "audio-icon-without-original-url"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 1,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend. ",
+          "Let’s ",
+          "Talk",
+          "E. Write a 80 - 100 word email to your parents. Pretend you are a student in another country and you are narrating your family all about your activities. Check the reading activity as an example. \n",
+          "Let’s ",
+          "Write"
+        ],
+        "joinedText": "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend.\nLet’s \nTalk\nE. Write a 80 - 100 word email to your parents. Pretend you are a student in another country and you are narrating your family all about your activities. Check the reading activity as an example.\nLet’s \nWrite",
+        "shapes": [
+          {
+            "shapeId": "362",
+            "shapeName": "Google Shape;362;p15",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "363",
+            "shapeName": "Google Shape;363;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 425350,
+              "y": 292452,
+              "cx": 6799500,
+              "cy": 989100,
+              "right": 7224850,
+              "bottom": 1281552
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend. ",
+                "runs": [
+                  "D. ",
+                  "You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend. "
+                ]
+              }
+            ],
+            "texts": [
+              "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend. "
+            ],
+            "joinedText": "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend."
+          },
+          {
+            "shapeId": "364",
+            "shapeName": "Google Shape;364;p15",
+            "kind": "group",
+            "bbox": {
+              "x": 5052060,
+              "y": 1008845,
+              "cx": 1802415,
+              "cy": 1759571,
+              "right": 6854475,
+              "bottom": 2768416
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "365",
+            "shapeName": "Google Shape;365;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 4208423,
+              "y": 3653103,
+              "cx": 1367938,
+              "cy": 1456885,
+              "right": 5576361,
+              "bottom": 5109988
+            },
+            "parentShapeId": "364",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "366",
+            "shapeName": "Google Shape;366;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 4412381,
+              "y": 3828584,
+              "cx": 1138500,
+              "cy": 904800,
+              "right": 5550881,
+              "bottom": 4733384
+            },
+            "parentShapeId": "364",
+            "paragraphs": [
+              {
+                "text": "Let’s ",
+                "runs": [
+                  "Let’s "
+                ]
+              },
+              {
+                "text": "Talk",
+                "runs": [
+                  "Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s ",
+              "Talk"
+            ],
+            "joinedText": "Let’s \nTalk"
+          },
+          {
+            "shapeId": "367",
+            "shapeName": "Google Shape;367;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 425350,
+              "y": 2661276,
+              "cx": 6799500,
+              "cy": 764700,
+              "right": 7224850,
+              "bottom": 3425976
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 80 - 100 word email to your parents. Pretend you are a student in another country and you are narrating your family all about your activities. Check the reading activity as an example. \n",
+                "runs": [
+                  "E. ",
+                  "Write a 80 - 100 word email to your parents. Pretend you are a student in another country and you are narrating your family all about your activities. Check the reading activity as an example. "
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 80 - 100 word email to your parents. Pretend you are a student in another country and you are narrating your family all about your activities. Check the reading activity as an example. \n"
+            ],
+            "joinedText": "E. Write a 80 - 100 word email to your parents. Pretend you are a student in another country and you are narrating your family all about your activities. Check the reading activity as an example."
+          },
+          {
+            "shapeId": "368",
+            "shapeName": "Google Shape;368;p15",
+            "kind": "group",
+            "bbox": {
+              "x": 2593365,
+              "y": 3615344,
+              "cx": 2139483,
+              "cy": 1307761,
+              "right": 4732848,
+              "bottom": 4923105
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "369",
+            "shapeName": "Google Shape;369;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 3907443,
+              "y": 3379795,
+              "cx": 1351339,
+              "cy": 1673007,
+              "right": 5258782,
+              "bottom": 5052802
+            },
+            "parentShapeId": "368",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "370",
+            "shapeName": "Google Shape;370;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 5152522,
+              "y": 4212813,
+              "cx": 390525,
+              "cy": 388750,
+              "right": 5543047,
+              "bottom": 4601563
+            },
+            "parentShapeId": "368",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "371",
+            "shapeName": "Google Shape;371;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 5066087,
+              "y": 3779793,
+              "cx": 1056468,
+              "cy": 1066953,
+              "right": 6122555,
+              "bottom": 4846746
+            },
+            "parentShapeId": "368",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "372",
+            "shapeName": "Google Shape;372;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 3825088,
+              "y": 3739245,
+              "cx": 1354640,
+              "cy": 937543,
+              "right": 5179728,
+              "bottom": 4676788
+            },
+            "parentShapeId": "368",
+            "paragraphs": [
+              {
+                "text": "Let’s ",
+                "runs": [
+                  "Let’s "
+                ]
+              },
+              {
+                "text": "Write",
+                "runs": [
+                  "Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s ",
+              "Write"
+            ],
+            "joinedText": "Let’s \nWrite"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "362",
+            "shapeName": "Google Shape;362;p15",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": 15,
+        "title": "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend.",
+        "visibleTexts": [
+          "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend.",
+          "Let’s Talk",
+          "E. Write a 80 - 100 word email to your parents. Pretend you are a student in another country and you are narrating your family all about your activities. Check the reading activity as an example.",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to: ",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to: \nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "377",
+            "shapeName": "Google Shape;377;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 3240774,
+              "y": 1475375,
+              "cx": 5452463,
+              "cy": 1220100,
+              "right": 8693237,
+              "bottom": 2695475
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "378",
+            "shapeName": "Google Shape;378;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 3240775,
+              "y": 2645249,
+              "cx": 4872000,
+              "cy": 1811815,
+              "right": 8112775,
+              "bottom": 4457064
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to: ",
+                "runs": [
+                  "Remember to: "
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to: ",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to: \nRate your teacher after every lesson.\nRevise the self-study material."
+          },
+          {
+            "shapeId": "379",
+            "shapeName": "Google Shape;379;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 1234450,
+              "y": 1149387,
+              "cx": 1806651,
+              "cy": 1811815,
+              "right": 3041101,
+              "bottom": 2961202
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "380",
+            "shapeName": "Google Shape;380;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 1705484,
+              "y": 1566670,
+              "cx": 864587,
+              "cy": 798592,
+              "right": 2570071,
+              "bottom": 2365262
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "381",
+            "shapeName": "Google Shape;381;p16",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "shapeId": "381",
+            "shapeName": "Google Shape;381;p16",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 15
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.png",
+            "relationshipId": "rId3",
+            "slide": 15
+          }
+        ]
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": 16,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0EjvlzNKayTbQ5pGLkEqugQzbrv_DNKXDgkNdUvWGlyFfSEcw2YRsEPKDCpIr1pj82KkED739cgkpBC52dQ5AVfHEzEEJpWQHRe9IU3XXXjWGb8_CZivOVNsw0rfrLlZeDHSkneaCkSKWb748Qs-MvmM6cJfz-JSXNOsAHBLa1O8R3rw6UTB37d2ouDc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "© 2020 The Utterers Corner. All rights reserved",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "© 2020 The Utterers Corner. All rights reserved\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "386",
+            "shapeName": "Google Shape;386;p17",
+            "kind": "text",
+            "bbox": {
+              "x": 2775098,
+              "y": 4658581,
+              "cx": 3593805,
+              "cy": 323474,
+              "right": 6368903,
+              "bottom": 4982055
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "© 2020 The Utterers Corner. All rights reserved",
+                "runs": [
+                  "© 2020 The Utterers Corner. All rights reserved"
+                ]
+              }
+            ],
+            "texts": [
+              "© 2020 The Utterers Corner. All rights reserved"
+            ],
+            "joinedText": "© 2020 The Utterers Corner. All rights reserved"
+          },
+          {
+            "shapeId": "387",
+            "shapeName": "Google Shape;387;p17",
+            "kind": "group",
+            "bbox": {
+              "x": 1746288,
+              "y": 1080347,
+              "cx": 5651425,
+              "cy": 2049517,
+              "right": 7397713,
+              "bottom": 3129864
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "388",
+            "shapeName": "Google Shape;388;p17",
+            "kind": "text",
+            "bbox": {
+              "x": 1106100,
+              "y": 2904201,
+              "cx": 6931800,
+              "cy": 267300,
+              "right": 8037900,
+              "bottom": 3171501
+            },
+            "parentShapeId": "387",
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          },
+          {
+            "shapeId": "389",
+            "shapeName": "Google Shape;389;p17",
+            "kind": "picture",
+            "bbox": {
+              "x": 2140244,
+              "y": 2277299,
+              "cx": 4863513,
+              "cy": 552271,
+              "right": 7003757,
+              "bottom": 2829570
+            },
+            "parentShapeId": "387",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "390",
+            "shapeName": "Google Shape;390;p17",
+            "kind": "picture",
+            "bbox": {
+              "x": 3760326,
+              "y": 657650,
+              "cx": 1623347,
+              "cy": 1613891,
+              "right": 5383673,
+              "bottom": 2271541
+            },
+            "parentShapeId": "387",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image8.png",
+            "relationshipId": "rId3",
+            "shapeId": "389",
+            "shapeName": "Google Shape;389;p17",
+            "bbox": {
+              "x": 2140244,
+              "y": 2277299,
+              "cx": 4863513,
+              "cy": 552271,
+              "right": 7003757,
+              "bottom": 2829570
+            },
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image13.png",
+            "relationshipId": "rId4",
+            "shapeId": "390",
+            "shapeName": "Google Shape;390;p17",
+            "bbox": {
+              "x": 3760326,
+              "y": 657650,
+              "cx": 1623347,
+              "cy": 1613891,
+              "right": 5383673,
+              "bottom": 2271541
+            },
+            "slide": 16
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image8.png",
+            "relationshipId": "rId3",
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image13.png",
+            "relationshipId": "rId4",
+            "slide": 16
+          }
+        ]
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": 17,
+        "title": "© 2020 The Utterers Corner. All rights reserved",
+        "visibleTexts": [
+          "© 2020 The Utterers Corner. All rights reserved",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZA3xncWvOA9rDeDgzsQepBemxz0k_MRkl5txexWQ5NrQJ8PFx98fnM6gyaNMWp70r2be46cLXqdXKuuFoly5waZ5U9-yKK_Ghg-UNbZZNFMFQ0pfXSWsXUfmQjq2EwiWrUvLhoswAl359Z0NHRi3JIG6BzCTOH81aA27xU2pjvb-vcKSNBHjIrMAOrr3Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaPSXB0wDeFVAYLHlut_bYdlQ4nOihLe59cI2hyD3tmSWc1kbnZjlM9HTBGg61zQLudMWd_c1toABDTd_XMaPEr3wj464vs39_uVWfVCvBbSsPW8Y28KVHf1Ou-04pqF_dN3iwEbZSF6d8gEUukpYQFRYOQHU1nHJ_om8MlEX9ZTwdqGBFwBg0D_q5GUy8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

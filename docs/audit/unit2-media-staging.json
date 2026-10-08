@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "mode": "stage",
+  "dryRun": false,
+  "courseSlug": "course",
+  "preserveExistingAudioUrls": true,
+  "existingAudioUrls": [],
+  "audio": [
+    {
+      "status": "staged",
+      "sourceId": "1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\audio\\A-unit-02-lesson-01-1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp.mp3",
+      "sourceSha256": "facd6fb47bd391993d409191e18e44c3691e09a33371c2187255c8b3d6ba0cb0",
+      "unit": 2,
+      "slideNumber": 4,
+      "nativeTrace": {
+        "driveFileId": "1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp",
+        "sourceFilename": "Unit 2 - I come from... - Audio 1.mp3",
+        "sourceSlideNumber": 4
+      },
+      "transcript": "Hi! This tour is nice, right? Yes, New York is a beautiful city. Yes, it is. By the way, my name is Johnny. Nice to meet you, Johnny. My name is Neil. Nice to meet you, too. I come from the Netherlands. Where are you from? I'm from Australia. However, my parents are American. Great. I'm Dutch, but my mother is from Germany, so I can speak English, Dutch and German. Marvellous! Well, I can only speak English and I know some Spanish. Amazing! The tour is about to continue. We talk later. Okay, see ya!",
+      "title": "Unit 2 - I come from... - Audio 1.mp3",
+      "role": "lesson-audio-candidate",
+      "originalMediaUrl": "https://drive.google.com/file/d/1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp/view?usp=drivesdk",
+      "audioNumber": 1,
+      "publicPath": "public/audio/lessons/course/unit-02-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-02-audio-01.mp3",
+      "publicHref": "/audio/lessons/course/unit-02-audio-01.mp3",
+      "destinationPath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\public\\audio\\lessons\\course\\unit-02-audio-01.mp3"
+    },
+    {
+      "status": "staged",
+      "sourceId": "1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\audio\\A-unit-02-lesson-02-1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF.mp3",
+      "sourceSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+      "unit": 2,
+      "slideNumber": 13,
+      "nativeTrace": {
+        "driveFileId": "1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF",
+        "sourceFilename": "Unit 2 - I come from... - Audio 2.mp3",
+        "sourceSlideNumber": 13
+      },
+      "transcript": "good morning sir good morning may I see your passport certainly here you have oh you're from Venezuela yes they come from Venezuela but my dad is American oh and you are here to visit him exactly we speak very great English thanks language teacher welcome to the USA sir thanks",
+      "title": "Unit 2 - I come from... - Audio 2.mp3",
+      "role": "lesson-audio-candidate",
+      "originalMediaUrl": "https://drive.google.com/file/d/1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF/view?usp=drivesdk",
+      "audioNumber": 2,
+      "publicPath": "public/audio/lessons/course/unit-02-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-02-audio-02.mp3",
+      "publicHref": "/audio/lessons/course/unit-02-audio-02.mp3",
+      "destinationPath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\public\\audio\\lessons\\course\\unit-02-audio-02.mp3"
+    }
+  ],
+  "images": [
+    {
+      "status": "staged",
+      "sourceId": "docs\\audit\\source-originals\\images\\A-unit-02-1fEaWrxShNc26OntGuaZekRd3R8PGBLfv\\image6.jpg",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\A-unit-02-1fEaWrxShNc26OntGuaZekRd3R8PGBLfv\\image6.jpg",
+      "sourceSha256": "ca210bc894d0ba1c9ddbec1166b4cccbf324c2e1ae97c947c68434b9844c5e56",
+      "unit": 2,
+      "slideNumber": 4,
+      "nativeTrace": {
+        "source": {
+          "path": "docs\\audit\\source-originals\\A-unit-02-primary-01-1fEaWrxShNc26OntGuaZekRd3R8PGBLfv.pptx",
+          "title": "Unit 2 - I come from.pptx",
+          "sha256": "5d6b474d525af4b232d64dd0236284d03e27fbe74351c09f2ac7e6af52784800",
+          "candidateId": "1fEaWrxShNc26OntGuaZekRd3R8PGBLfv"
+        },
+        "sourceSlideNumber": 4,
+        "publishedSlideNumber": 4,
+        "bbox": {
+          "x": 2803693,
+          "y": 792943,
+          "cx": 3536613,
+          "cy": 1912895,
+          "right": 6340306,
+          "bottom": 2705838
+        },
+        "evidence": [
+          "Contact-sheet visual review classified the extracted pixels as instructional-figure.",
+          "Published/native slide purpose for Unit 2 slide 4: intro-look-at-picture.",
+          "The figure is a one-deck or two-reference asset; confirmation relies on its visible content and the source slide purpose, not recurrence.",
+          "Visible content is a concrete photo, illustration, icon or diagram used in a mapped lesson slide."
+        ]
+      },
+      "transcript": null,
+      "title": "",
+      "role": "instructional",
+      "originalMediaUrl": null,
+      "audioNumber": null,
+      "outputSha256": "fe6768657296aa0a593b2e07d9825072ddb385af000e10d38bc7b75e9b0f54b9",
+      "optimization": {
+        "status": "ready",
+        "needed": true,
+        "target": ".webp",
+        "implemented": true,
+        "quality": 90,
+        "maxDimension": 1600,
+        "originalDimensions": [
+          2500,
+          1877
+        ],
+        "outputDimensions": [
+          1600,
+          1201
+        ],
+        "preservedAlpha": false,
+        "originalSha256": "ca210bc894d0ba1c9ddbec1166b4cccbf324c2e1ae97c947c68434b9844c5e56",
+        "outputSha256": "fe6768657296aa0a593b2e07d9825072ddb385af000e10d38bc7b75e9b0f54b9"
+      },
+      "publicPath": "public/images/lessons/course/source-ca210bc894d0ba1c.webp",
+      "publicUrl": "/images/lessons/course/source-ca210bc894d0ba1c.webp",
+      "publicHref": "/images/lessons/course/source-ca210bc894d0ba1c.webp",
+      "destinationPath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\public\\images\\lessons\\course\\source-ca210bc894d0ba1c.webp"
+    }
+  ],
+  "blockers": [],
+  "counts": {
+    "audio": 2,
+    "images": 1,
+    "staged": 3,
+    "planned": 0,
+    "blocked": 0
+  }
+}

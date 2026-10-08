@@ -1,0 +1,4496 @@
+{
+  "schemaVersion": 1,
+  "unit": 47,
+  "module": {
+    "order": 12,
+    "title": "Módulo 12",
+    "id": "cmnmm9lkt000bw1qklytjtbt4",
+    "driveTitle": "Module 12"
+  },
+  "candidate": {
+    "id": "1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU",
+    "title": "If only I had called... - Unit 47.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "914270",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 12"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-47-primary-01-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU.pptx",
+    "localBytes": 914270,
+    "sha256": "8335ea28ff65ac5d6e1722db51fb518aefe0a184ac640841246df1b5c5b97578"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-47-primary-01-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSqEZZ29RAMRwYxiA4q2J48uqBbC5t_GGY6yOXTnEeWb0q4L_qtdCELEVAei8J3-A/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 19,
+    "nativeSlideCount": 19,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.745904,
+    "publicTokenCoverage": 0.974194,
+    "slideDifferenceCount": 9,
+    "slideDifferences": [
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. 4",
+        "sequenceRatio": 0.988166
+      },
+      {
+        "slide": 6,
+        "nativeText": "PHRASES\nMEANING\nEXAMPLE\nSING THE BLUES\nTo feel sorrow or being sad about something.\nYou should not have sung the blues but looking for her.\nCRY OVER SPILLED MILK\nBeing upset about something that happened and we cannot change.\nDon’t cry over spilled milk, you gotta do something now.\nEAT SOMEONE'S HEART OUT\nTo feel very sad or mentally pained.\nIt just ate my heart out to see her with someone else.\nCOLD FEET\nAttitude that prevent someone to continue with the course of an action\nRachel left Barry at the altar, she got cold feet at the last moment.\nEAT CROW\nTo admit  having been proven wrong after taking a strong position.\nHow does it feel to eat crow, John?\nLOSE ONE’S HEART\nTo give up out of despair. To lament deeply.\nI had already lost my heart waiting for an answer.\nRAW DEAL\nUnfair way of treating someone.\nThat was such a raw deal back there with Jen.\nSIT ON THE FENCE\nLack of the ability to decide something\nI regret not making my mind  up but sitting on the fence regarding Diane.\nLook at the phrases and  discuss them with your teacher. Did you know them?",
+        "publishedText": "PHRASES MEANING EXAMPLE SING THE BLUES To feel sorrow or being sad about something You should not have sung the blues but looking for her. CRY OVER SPILLED MILK Being upset about something that happened and we cannot change Don’t cry over spilled milk, you gotta do something now. EAT SOMEONE'S HEART OUT To feel very sad or mentally pained It just ate my heart out to see her with someone else. COLD FEET Attitude that prevent someone to continue with the course of an action Rachel left Barry at the altar, she got cold feet at the last moment. EAT CROW To admit having been proven wrong after taking a strong position How does it feel to eat crow, John? LOSE ONE’S HEART To give up out of despair. To lament deeply I had already lost my heart waiting for an answer. RAW DEAL Unfair way of treating someone That was such a raw deal back there with Jen. SIT ON THE FENCE Lack of the ability to decide something I regret not making my mind up but sitting on the fence regarding Diane. Look at the phrases and discuss them with your teacher. Did you know them?",
+        "sequenceRatio": 0.204331
+      },
+      {
+        "slide": 8,
+        "nativeText": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.\nSTRUCTURES\nSTATEMENTS\nQUESTIONS\nShould  Have + Past Participle\nI  should have told them the truth before,\nWhat should  you have done before?\nI shouldn’t  have said those things.\nWhat should you have said?\nIf only + Had  + Past Participle\nIf only she had acted differently, the story would be different.\nHow would this have ended up if she had acted differently?\nIf only I had  expected nothing from them. I certainly look like an idiot now.\nwould you really have expected nothing from them?\nI regret + V (ing)\nI  regret calling her and letting her know about this.\nWhat do you regret?\nThey did not regret making a scandal in front of everyone.\nWhere they even sorry about that?",
+        "publishedText": "We are able to express regrets in different ways. Check the chart. STRUCTURES STATEMENTS QUESTIONS N + Should Have + Past Participle I should have told them the truth before, What should you have done before? I shouldn’t have said those things. What should you have said? If only + N + Had + Past Participle If only she had acted differently, the story would be different. How would this have ended up if she had acted differently? If only I had expected nothing from them. I certainly look like an idiot now. Would you really have expected nothing from them? N + regret + V (ing) I regret calling her and letting her know about this. What do you regret? They did not regret making a scandal in front of everyone. Where they even sorry about that?",
+        "sequenceRatio": 0.631238
+      },
+      {
+        "slide": 9,
+        "nativeText": "To Consider\n\nThis structures do not necessarily work using the third conditional. \nShould + Have + past participle is still used here.\nWe can use yes/no questions or Wh-words to go interrogative. \nThe context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. \nAll of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically.",
+        "publishedText": "To Consider 1. This structures do not necessarily work using the third conditional. 2. Should + Have + past participle is still used here. 3. We can use yes/no questions or Wh-words to go interrogative. 4. The context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. 5. All of them state a hypothetical or unreal situation in the past, EXCEPT regret + V(ing), that can be used in different tenses logically.",
+        "sequenceRatio": 0.979809
+      },
+      {
+        "slide": 11,
+        "nativeText": "We can use these structures to state the following functions:\nFunctions\nExamples\n1\nExpress regrets life regrets.\nI  should have bought the car; now, I’m stock here..\n2\nLament on something.\nIf only they had listened to their parents, but they didn’t.\n3.\nRegret one’s doings.\nI regret inviting them so badly; They ruined our christmas party.\nTo consider \nWe can also use - wish - to talk about things we want / wanted to be different.\nPresent: I wish you did not live so far away. / I wish he’d stop talking. \nPast: They wish they hadn’t drunk so much. Now they are sick.",
+        "publishedText": "We can use these structures to state the following functions: Functions Examples 1 Express life regrets I should have bought the car; now, I’m stuck here. 2 Lament on something If only they had listened to their parents, but they didn’t. 3. Regret one’s doings I regret inviting them so badly; they ruined our christmas party. To consider We can also use - wish - to talk about things we want / wanted to be different. Present: I wish you did not live so far away. / I wish he’d stop talking. Past: They wish they hadn’t drunk so much. Now they are sick.",
+        "sequenceRatio": 0.966071
+      },
+      {
+        "slide": 13,
+        "nativeText": "A. Write 8 sentences where you include different regret as seen in the lesson. Follow the example.\n0. I  should’ve called the cops the first time; at least now, he is in Jail.",
+        "publishedText": "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example. 0. I should’ve called the cops the first time; at least now, he is in jail.",
+        "sequenceRatio": 0.997135
+      },
+      {
+        "slide": 15,
+        "nativeText": "‹#›\nC. Read the following article  and have a discussion with the teacher. After that, read aloud the text to your teacher. You can read the full version on the link provided for further activities.\nRegret can Seriously Damage your Mental Health\n\nhere was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself?\n\nThis man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood.\n\n“That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life.",
+        "publishedText": "15 C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities. Regret can Seriously Damage your Mental Health There was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself? This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood. “That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life.",
+        "sequenceRatio": 0.994851
+      },
+      {
+        "slide": 16,
+        "nativeText": "‹#›\nRegret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances.\n\nIt is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives.\n\nThe cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic.\n\nKeep reading the article here:\n\nhttps://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+        "publishedText": "16 Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances. It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives. The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic. Keep reading the article here: https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+        "sequenceRatio": 0.958385
+      },
+      {
+        "slide": 17,
+        "nativeText": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?\nE. Write a 150-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened? E. Write an 160-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied Let’s Talk Let’s Write",
+        "sequenceRatio": 0.996936
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 203973,
+      "sha256": "5937088d41b22bc331f36942dc9aad62a88100108b084a1961d13dc9d926e68a"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 6,
+    "bytes": 377822,
+    "byExtension": {
+      ".jpg": 1,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 6,
+    "imageBytes": 377822
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-47-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 6193150,
+            "y": 3106325,
+            "cx": 1402050,
+            "cy": 1402050,
+            "right": 7595200,
+            "bottom": 4508375
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "290",
+          "shapeName": "Google Shape;290;g729cfa641f_0_32",
+          "bbox": {
+            "x": 2844200,
+            "y": 1105125,
+            "cx": 3196550,
+            "cy": 3196550,
+            "right": 6040750,
+            "bottom": 4301675
+          },
+          "slide": 14
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-47-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-47-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-47-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "335",
+          "shapeName": "Google Shape;335;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 19
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-47-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "336",
+          "shapeName": "Google Shape;336;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 19
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-47-1L26vmWFIhJkGxYsBRx6nfqf586tDpjPU\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 203973,
+      "sha256": "5937088d41b22bc331f36942dc9aad62a88100108b084a1961d13dc9d926e68a",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710727,
+            "right": 8055748,
+            "bottom": 2245202
+          },
+          "slide": 4
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "47",
+          "If only I had called!",
+          "Unit"
+        ],
+        "joinedText": "47\nIf only I had called!\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2977500,
+              "cy": 1649100,
+              "right": 3788450,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "47",
+                "runs": [
+                  "4",
+                  "7"
+                ]
+              }
+            ],
+            "texts": [
+              "47"
+            ],
+            "joinedText": "47"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1400525,
+              "y": 2449025,
+              "cx": 6271500,
+              "cy": 1159800,
+              "right": 7672025,
+              "bottom": 3608825
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "If only I had called!",
+                "runs": [
+                  "If only I had called!"
+                ]
+              }
+            ],
+            "texts": [
+              "If only I had called!"
+            ],
+            "joinedText": "If only I had called!"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 210350,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1299350,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "47",
+        "visibleTexts": [
+          "47",
+          "If only I had called!",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbuM0v4-ufJsmSOzZSZv-B7tql1jrwzSzzBLpmrUynMqBmWf9QKRghtAQHuqIVuYLp5uCbwOTOoqLFOK6XI5PrhX-9euK_zG8fciTYsWieGxv5SdFijdzYLc1hUdHC2Jds105VNlF8I1Eev26L-3IdkCokv6plrJn9_Za1HSIGP3HUqHedQ_FZP73cdjAPBDg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Competencies",
+          "understand and express life regrets in written and spoken English.",
+          "Communicative Function",
+          "State and express oneself and others’ life regrets."
+        ],
+        "joinedText": "Competencies\nunderstand and express life regrets in written and spoken English.\nCommunicative Function\nState and express oneself and others’ life regrets.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 5275500,
+              "cy": 2053500,
+              "right": 6727125,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "understand and express life regrets in written and spoken English.",
+                "runs": [
+                  "understand and express life regrets in written and spoken English."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "understand and express life regrets in written and spoken English."
+            ],
+            "joinedText": "Competencies\nunderstand and express life regrets in written and spoken English."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "State and express oneself and others’ life regrets.",
+                "runs": [
+                  "State and express oneself and others’ life regrets."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "State and express oneself and others’ life regrets."
+            ],
+            "joinedText": "Communicative Function\nState and express oneself and others’ life regrets."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Competencies Understand and express life regrets in written and spoken English.",
+        "visibleTexts": [
+          "Competencies Understand and express life regrets in written and spoken English.",
+          "Communicative Function State and express oneself and others’ life regrets."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710727,
+              "right": 8055748,
+              "bottom": 2245202
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 6193150,
+              "y": 3106325,
+              "cx": 1402050,
+              "cy": 1402050,
+              "right": 7595200,
+              "bottom": 4508375
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710727,
+              "right": 8055748,
+              "bottom": 2245202
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 6193150,
+              "y": 3106325,
+              "cx": 1402050,
+              "cy": 1402050,
+              "right": 7595200,
+              "bottom": 4508375
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY7KqKi772aF1sIoiPrgfumR7k_4N7QD8tuEgbYX2kflPXUq7Gb0bLLlHgG0N5X3KAobWhf5qjb0gKuzi8BE21WV9UKBIFUI9FUCNtjhtPCE-B5DbDlLf1bt-WwPkVUzChFOyZa5dC_9m1t4JGt82PVnCWe7SVCTVxwdpxYrjfPwDQ3KySuC8s_Se8V_FRuiA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYTaKvi00rsIXhVpMnNa7r03YgzV40wTUQ9gRiNuPz5y5V06AZ5mfmz3u01wFt3VpuHbbG7MovdSlfZXovHTeYu5t1VKDMKrE4DGXI9057G6pF71PcMdUq1BpNO1xwbpTy4mFLT-88izvL6K9pKRy20nSxgLkpYsbVHqX0bdm4kKwlkx5vmBTE4H3DMJeMLYA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "PHRASES",
+          "MEANING",
+          "EXAMPLE",
+          "SING THE BLUES",
+          "To feel sorrow or being sad about something.",
+          "You should not have sung the blues but looking for her.",
+          "CRY OVER SPILLED MILK",
+          "Being upset about something that happened and we cannot change.",
+          "Don’t cry over spilled milk, you gotta do something now.",
+          "EAT SOMEONE'S HEART OUT",
+          "To feel very sad or mentally pained.",
+          "It just ate my heart out to see her with someone else.",
+          "COLD FEET",
+          "Attitude that prevent someone to continue with the course of an action",
+          "Rachel left Barry at the altar, she got cold feet at the last moment.",
+          "EAT CROW",
+          "To admit  having been proven wrong after taking a strong position.",
+          "How does it feel to eat crow, John?",
+          "LOSE ONE’S HEART",
+          "To give up out of despair. To lament deeply.",
+          "I had already lost my heart waiting for an answer.",
+          "RAW DEAL",
+          "Unfair way of treating someone.",
+          "That was such a raw deal back there with Jen.",
+          "SIT ON THE FENCE",
+          "Lack of the ability to decide something",
+          "I regret not making my mind  up but sitting on the fence regarding Diane.",
+          "Look at the phrases and  discuss them with your teacher. Did you know them?"
+        ],
+        "joinedText": "PHRASES\nMEANING\nEXAMPLE\nSING THE BLUES\nTo feel sorrow or being sad about something.\nYou should not have sung the blues but looking for her.\nCRY OVER SPILLED MILK\nBeing upset about something that happened and we cannot change.\nDon’t cry over spilled milk, you gotta do something now.\nEAT SOMEONE'S HEART OUT\nTo feel very sad or mentally pained.\nIt just ate my heart out to see her with someone else.\nCOLD FEET\nAttitude that prevent someone to continue with the course of an action\nRachel left Barry at the altar, she got cold feet at the last moment.\nEAT CROW\nTo admit  having been proven wrong after taking a strong position.\nHow does it feel to eat crow, John?\nLOSE ONE’S HEART\nTo give up out of despair. To lament deeply.\nI had already lost my heart waiting for an answer.\nRAW DEAL\nUnfair way of treating someone.\nThat was such a raw deal back there with Jen.\nSIT ON THE FENCE\nLack of the ability to decide something\nI regret not making my mind  up but sitting on the fence regarding Diane.\nLook at the phrases and  discuss them with your teacher. Did you know them?",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "kind": "table",
+            "bbox": {
+              "x": 515613,
+              "y": 638460,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3515613,
+              "bottom": 3638460
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "PHRASES",
+                "runs": []
+              },
+              {
+                "text": "MEANING",
+                "runs": []
+              },
+              {
+                "text": "EXAMPLE",
+                "runs": []
+              },
+              {
+                "text": "SING THE BLUES",
+                "runs": []
+              },
+              {
+                "text": "To feel sorrow or being sad about something.",
+                "runs": []
+              },
+              {
+                "text": "You should not have sung the blues but looking for her.",
+                "runs": []
+              },
+              {
+                "text": "CRY OVER SPILLED MILK",
+                "runs": []
+              },
+              {
+                "text": "Being upset about something that happened and we cannot change.",
+                "runs": []
+              },
+              {
+                "text": "Don’t cry over spilled milk, you gotta do something now.",
+                "runs": []
+              },
+              {
+                "text": "EAT SOMEONE'S HEART OUT",
+                "runs": []
+              },
+              {
+                "text": "To feel very sad or mentally pained.",
+                "runs": []
+              },
+              {
+                "text": "It just ate my heart out to see her with someone else.",
+                "runs": []
+              },
+              {
+                "text": "COLD FEET",
+                "runs": []
+              },
+              {
+                "text": "Attitude that prevent someone to continue with the course of an action",
+                "runs": []
+              },
+              {
+                "text": "Rachel left Barry at the altar, she got cold feet at the last moment.",
+                "runs": []
+              },
+              {
+                "text": "EAT CROW",
+                "runs": []
+              },
+              {
+                "text": "To admit  having been proven wrong after taking a strong position.",
+                "runs": []
+              },
+              {
+                "text": "How does it feel to eat crow, John?",
+                "runs": []
+              },
+              {
+                "text": "LOSE ONE’S HEART",
+                "runs": []
+              },
+              {
+                "text": "To give up out of despair. To lament deeply.",
+                "runs": []
+              },
+              {
+                "text": "I had already lost my heart waiting for an answer.",
+                "runs": []
+              },
+              {
+                "text": "RAW DEAL",
+                "runs": []
+              },
+              {
+                "text": "Unfair way of treating someone.",
+                "runs": []
+              },
+              {
+                "text": "That was such a raw deal back there with Jen.",
+                "runs": []
+              },
+              {
+                "text": "SIT ON THE FENCE",
+                "runs": []
+              },
+              {
+                "text": "Lack of the ability to decide something",
+                "runs": []
+              },
+              {
+                "text": "I regret not making my mind  up but sitting on the fence regarding Diane.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "PHRASES",
+              "MEANING",
+              "EXAMPLE",
+              "SING THE BLUES",
+              "To feel sorrow or being sad about something.",
+              "You should not have sung the blues but looking for her.",
+              "CRY OVER SPILLED MILK",
+              "Being upset about something that happened and we cannot change.",
+              "Don’t cry over spilled milk, you gotta do something now.",
+              "EAT SOMEONE'S HEART OUT",
+              "To feel very sad or mentally pained.",
+              "It just ate my heart out to see her with someone else.",
+              "COLD FEET",
+              "Attitude that prevent someone to continue with the course of an action",
+              "Rachel left Barry at the altar, she got cold feet at the last moment.",
+              "EAT CROW",
+              "To admit  having been proven wrong after taking a strong position.",
+              "How does it feel to eat crow, John?",
+              "LOSE ONE’S HEART",
+              "To give up out of despair. To lament deeply.",
+              "I had already lost my heart waiting for an answer.",
+              "RAW DEAL",
+              "Unfair way of treating someone.",
+              "That was such a raw deal back there with Jen.",
+              "SIT ON THE FENCE",
+              "Lack of the ability to decide something",
+              "I regret not making my mind  up but sitting on the fence regarding Diane."
+            ],
+            "joinedText": "PHRASES\nMEANING\nEXAMPLE\nSING THE BLUES\nTo feel sorrow or being sad about something.\nYou should not have sung the blues but looking for her.\nCRY OVER SPILLED MILK\nBeing upset about something that happened and we cannot change.\nDon’t cry over spilled milk, you gotta do something now.\nEAT SOMEONE'S HEART OUT\nTo feel very sad or mentally pained.\nIt just ate my heart out to see her with someone else.\nCOLD FEET\nAttitude that prevent someone to continue with the course of an action\nRachel left Barry at the altar, she got cold feet at the last moment.\nEAT CROW\nTo admit  having been proven wrong after taking a strong position.\nHow does it feel to eat crow, John?\nLOSE ONE’S HEART\nTo give up out of despair. To lament deeply.\nI had already lost my heart waiting for an answer.\nRAW DEAL\nUnfair way of treating someone.\nThat was such a raw deal back there with Jen.\nSIT ON THE FENCE\nLack of the ability to decide something\nI regret not making my mind  up but sitting on the fence regarding Diane.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;gd6c0dc1310_0_17",
+            "kind": "text",
+            "bbox": {
+              "x": 656875,
+              "y": 181850,
+              "cx": 7835100,
+              "cy": 685200,
+              "right": 8491975,
+              "bottom": 867050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the phrases and  discuss them with your teacher. Did you know them?",
+                "runs": [
+                  "Look at the phrases and  discuss them with your teacher. Did you know them?"
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the phrases and  discuss them with your teacher. Did you know them?"
+            ],
+            "joinedText": "Look at the phrases and  discuss them with your teacher. Did you know them?"
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "bbox": {
+              "x": 515613,
+              "y": 638460,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3515613,
+              "bottom": 3638460
+            },
+            "columnWidths": [
+              1351275,
+              3225425,
+              3399725
+            ],
+            "rows": [
+              {
+                "height": 402650,
+                "cells": [
+                  {
+                    "text": "PHRASES",
+                    "paragraphs": [
+                      {
+                        "text": "PHRASES",
+                        "runs": [
+                          "PHRASES"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "MEANING",
+                    "paragraphs": [
+                      {
+                        "text": "MEANING",
+                        "runs": [
+                          "MEANING"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "EXAMPLE",
+                    "paragraphs": [
+                      {
+                        "text": "EXAMPLE",
+                        "runs": [
+                          "EXAMPLE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "SING THE BLUES",
+                    "paragraphs": [
+                      {
+                        "text": "SING THE BLUES",
+                        "runs": [
+                          "SING THE BLUES"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To feel sorrow or being sad about something.",
+                    "paragraphs": [
+                      {
+                        "text": "To feel sorrow or being sad about something.",
+                        "runs": [
+                          "To feel sorrow or being sad about something."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "You should not have sung the blues but looking for her.",
+                    "paragraphs": [
+                      {
+                        "text": "You should not have sung the blues but looking for her.",
+                        "runs": [
+                          "You should",
+                          " not have sung the blues but looking for her."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "CRY OVER SPILLED MILK",
+                    "paragraphs": [
+                      {
+                        "text": "CRY OVER SPILLED MILK",
+                        "runs": [
+                          "CRY OVER SPILLED MILK"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Being upset about something that happened and we cannot change.",
+                    "paragraphs": [
+                      {
+                        "text": "Being upset about something that happened and we cannot change.",
+                        "runs": [
+                          "Being upset about something that happened and we cannot change."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Don’t cry over spilled milk, you gotta do something now.",
+                    "paragraphs": [
+                      {
+                        "text": "Don’t cry over spilled milk, you gotta do something now. ",
+                        "runs": [
+                          "Don’t cry over spilled milk, you gotta do something now. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "EAT SOMEONE'S HEART OUT",
+                    "paragraphs": [
+                      {
+                        "text": "EAT SOMEONE'S HEART OUT",
+                        "runs": [
+                          "EAT ",
+                          "SOMEONE'S",
+                          " HEART OUT"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To feel very sad or mentally pained.",
+                    "paragraphs": [
+                      {
+                        "text": "To feel very sad or mentally pained. ",
+                        "runs": [
+                          "To ",
+                          "feel very sad or mentally pained. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "It just ate my heart out to see her with someone else.",
+                    "paragraphs": [
+                      {
+                        "text": "It just ate my heart out to see her with someone else. ",
+                        "runs": [
+                          "It just ate my heart out to see her with someone else. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "COLD FEET",
+                    "paragraphs": [
+                      {
+                        "text": "COLD FEET",
+                        "runs": [
+                          "COLD FEET"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Attitude that prevent someone to continue with the course of an action",
+                    "paragraphs": [
+                      {
+                        "text": "Attitude that prevent someone to continue with the course of an action",
+                        "runs": [
+                          "Attitude",
+                          " that prevent ",
+                          "someone",
+                          " to ",
+                          "continue",
+                          " with the course of an action"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Rachel left Barry at the altar, she got cold feet at the last moment.",
+                    "paragraphs": [
+                      {
+                        "text": "Rachel left Barry at the altar, she got cold feet at the last moment. ",
+                        "runs": [
+                          "Rachel left Barry at the altar, she got cold feet at the last moment. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "EAT CROW",
+                    "paragraphs": [
+                      {
+                        "text": "EAT CROW",
+                        "runs": [
+                          "EAT CROW"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To admit  having been proven wrong after taking a strong position.",
+                    "paragraphs": [
+                      {
+                        "text": "To admit  having been proven wrong after taking a strong position. ",
+                        "runs": [
+                          "To admit  having been proven wrong after taking a strong position. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "How does it feel to eat crow, John?",
+                    "paragraphs": [
+                      {
+                        "text": "How does it feel to eat crow, John?",
+                        "runs": [
+                          "How does it feel to eat crow, John?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "LOSE ONE’S HEART",
+                    "paragraphs": [
+                      {
+                        "text": "LOSE ONE’S HEART",
+                        "runs": [
+                          "LOSE ONE’S HEART"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To give up out of despair. To lament deeply.",
+                    "paragraphs": [
+                      {
+                        "text": "To give up out of despair. To lament deeply.",
+                        "runs": [
+                          "To give up out of ",
+                          "despair. To lament deeply."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I had already lost my heart waiting for an answer.",
+                    "paragraphs": [
+                      {
+                        "text": "I had already lost my heart waiting for an answer. ",
+                        "runs": [
+                          "I had already lost my heart waiting for an answer. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "RAW DEAL",
+                    "paragraphs": [
+                      {
+                        "text": "RAW DEAL",
+                        "runs": [
+                          "RAW DEAL"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Unfair way of treating someone.",
+                    "paragraphs": [
+                      {
+                        "text": "Unfair way of treating someone.",
+                        "runs": [
+                          "Unfair way of treating someone."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "That was such a raw deal back there with Jen.",
+                    "paragraphs": [
+                      {
+                        "text": "That was such a raw deal back there with Jen. ",
+                        "runs": [
+                          "That was such a raw deal back there with Jen. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "SIT ON THE FENCE",
+                    "paragraphs": [
+                      {
+                        "text": "SIT ON THE FENCE",
+                        "runs": [
+                          "SIT ON THE FENCE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Lack of the ability to decide something",
+                    "paragraphs": [
+                      {
+                        "text": "Lack of the ability to decide something ",
+                        "runs": [
+                          "Lack of the ability to decide something "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I regret not making my mind  up but sitting on the fence regarding Diane.",
+                    "paragraphs": [
+                      {
+                        "text": "I regret not making my mind  up but sitting on the fence regarding Diane.",
+                        "runs": [
+                          "I regret not making my mind  up but ",
+                          "sitting",
+                          " on the fence ",
+                          "regarding",
+                          " Diane."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "PHRASES MEANING EXAMPLE SING THE BLUES To feel sorrow or being sad about something You should not have sung the blues but looking for her. CRY OVER SPILLED MILK Being upset about something that happened and we cannot change Don’t cry over spilled milk, you gotta do something now. EAT SOMEONE'S HEART OUT To feel very sad or mentally pained It just ate my heart out to see her with someone else. COLD FEET Attitude that prevent someone to continue with the course of an action Rachel left Barry at the altar, she got cold feet at the last moment. EAT CROW To admit having been proven wrong after taking a strong position How does it feel to eat crow, John? LOSE ONE’S HEART To give up out of despair. To lament deeply I had already lost my heart waiting for an answer. RAW DEAL Unfair way of treating someone That was such a raw deal back there with Jen. SIT ON THE FENCE Lack of the ability to decide something I regret not making my mind up but sitting on the fence regarding Diane.",
+        "visibleTexts": [
+          "PHRASES MEANING EXAMPLE SING THE BLUES To feel sorrow or being sad about something You should not have sung the blues but looking for her. CRY OVER SPILLED MILK Being upset about something that happened and we cannot change Don’t cry over spilled milk, you gotta do something now. EAT SOMEONE'S HEART OUT To feel very sad or mentally pained It just ate my heart out to see her with someone else. COLD FEET Attitude that prevent someone to continue with the course of an action Rachel left Barry at the altar, she got cold feet at the last moment. EAT CROW To admit having been proven wrong after taking a strong position How does it feel to eat crow, John? LOSE ONE’S HEART To give up out of despair. To lament deeply I had already lost my heart waiting for an answer. RAW DEAL Unfair way of treating someone That was such a raw deal back there with Jen. SIT ON THE FENCE Lack of the ability to decide something I regret not making my mind up but sitting on the fence regarding Diane.",
+          "Look at the phrases and discuss them with your teacher. Did you know them?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart. ",
+          "STRUCTURES",
+          "STATEMENTS",
+          "QUESTIONS",
+          "Should  Have + Past Participle",
+          "I  should have told them the truth before,",
+          "What should  you have done before?",
+          "I shouldn’t  have said those things.",
+          "What should you have said?",
+          "If only + Had  + Past Participle",
+          "If only she had acted differently, the story would be different.",
+          "How would this have ended up if she had acted differently?",
+          "If only I had  expected nothing from them. I certainly look like an idiot now.",
+          "would you really have expected nothing from them?",
+          "I regret + V (ing)",
+          "I  regret calling her and letting her know about this.",
+          "What do you regret?",
+          "They did not regret making a scandal in front of everyone.",
+          "Where they even sorry about that?"
+        ],
+        "joinedText": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.\nSTRUCTURES\nSTATEMENTS\nQUESTIONS\nShould  Have + Past Participle\nI  should have told them the truth before,\nWhat should  you have done before?\nI shouldn’t  have said those things.\nWhat should you have said?\nIf only + Had  + Past Participle\nIf only she had acted differently, the story would be different.\nHow would this have ended up if she had acted differently?\nIf only I had  expected nothing from them. I certainly look like an idiot now.\nwould you really have expected nothing from them?\nI regret + V (ing)\nI  regret calling her and letting her know about this.\nWhat do you regret?\nThey did not regret making a scandal in front of everyone.\nWhere they even sorry about that?",
+        "shapes": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 793225,
+              "y": -46750,
+              "cx": 7919700,
+              "cy": 699900,
+              "right": 8712925,
+              "bottom": 653150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart. ",
+                "runs": [
+                  "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart. "
+                ]
+              }
+            ],
+            "texts": [
+              "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart. "
+            ],
+            "joinedText": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart."
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 282913,
+              "y": 891150,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3282913,
+              "bottom": 3891150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "STRUCTURES",
+                "runs": []
+              },
+              {
+                "text": "STATEMENTS",
+                "runs": []
+              },
+              {
+                "text": "QUESTIONS",
+                "runs": []
+              },
+              {
+                "text": "Should  Have + Past Participle",
+                "runs": []
+              },
+              {
+                "text": "I  should have told them the truth before,",
+                "runs": []
+              },
+              {
+                "text": "What should  you have done before?",
+                "runs": []
+              },
+              {
+                "text": "I shouldn’t  have said those things.",
+                "runs": []
+              },
+              {
+                "text": "What should you have said?",
+                "runs": []
+              },
+              {
+                "text": "If only + Had  + Past Participle",
+                "runs": []
+              },
+              {
+                "text": "If only she had acted differently, the story would be different.",
+                "runs": []
+              },
+              {
+                "text": "How would this have ended up if she had acted differently?",
+                "runs": []
+              },
+              {
+                "text": "If only I had  expected nothing from them. I certainly look like an idiot now.",
+                "runs": []
+              },
+              {
+                "text": "would you really have expected nothing from them?",
+                "runs": []
+              },
+              {
+                "text": "I regret + V (ing)",
+                "runs": []
+              },
+              {
+                "text": "I  regret calling her and letting her know about this.",
+                "runs": []
+              },
+              {
+                "text": "What do you regret?",
+                "runs": []
+              },
+              {
+                "text": "They did not regret making a scandal in front of everyone.",
+                "runs": []
+              },
+              {
+                "text": "Where they even sorry about that?",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "STRUCTURES",
+              "STATEMENTS",
+              "QUESTIONS",
+              "Should  Have + Past Participle",
+              "I  should have told them the truth before,",
+              "What should  you have done before?",
+              "I shouldn’t  have said those things.",
+              "What should you have said?",
+              "If only + Had  + Past Participle",
+              "If only she had acted differently, the story would be different.",
+              "How would this have ended up if she had acted differently?",
+              "If only I had  expected nothing from them. I certainly look like an idiot now.",
+              "would you really have expected nothing from them?",
+              "I regret + V (ing)",
+              "I  regret calling her and letting her know about this.",
+              "What do you regret?",
+              "They did not regret making a scandal in front of everyone.",
+              "Where they even sorry about that?"
+            ],
+            "joinedText": "STRUCTURES\nSTATEMENTS\nQUESTIONS\nShould  Have + Past Participle\nI  should have told them the truth before,\nWhat should  you have done before?\nI shouldn’t  have said those things.\nWhat should you have said?\nIf only + Had  + Past Participle\nIf only she had acted differently, the story would be different.\nHow would this have ended up if she had acted differently?\nIf only I had  expected nothing from them. I certainly look like an idiot now.\nwould you really have expected nothing from them?\nI regret + V (ing)\nI  regret calling her and letting her know about this.\nWhat do you regret?\nThey did not regret making a scandal in front of everyone.\nWhere they even sorry about that?",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 282913,
+              "y": 891150,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3282913,
+              "bottom": 3891150
+            },
+            "columnWidths": [
+              1825375,
+              3636375,
+              3152250
+            ],
+            "rows": [
+              {
+                "height": 547450,
+                "cells": [
+                  {
+                    "text": "STRUCTURES",
+                    "paragraphs": [
+                      {
+                        "text": "STRUCTURES",
+                        "runs": [
+                          "STRUCTURES"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "STATEMENTS",
+                    "paragraphs": [
+                      {
+                        "text": "STATEMENTS",
+                        "runs": [
+                          "STATEMENTS"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "QUESTIONS",
+                    "paragraphs": [
+                      {
+                        "text": "QUESTIONS",
+                        "runs": [
+                          "QUESTIONS"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Should  Have + Past Participle",
+                    "paragraphs": [
+                      {
+                        "text": "Should  Have + Past Participle",
+                        "runs": [
+                          "Should  Have + Past Participle"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I  should have told them the truth before,",
+                    "paragraphs": [
+                      {
+                        "text": "I  should have told them the truth before, ",
+                        "runs": [
+                          "I ",
+                          " ",
+                          "should have",
+                          " told ",
+                          "them the truth before,",
+                          " "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "What should  you have done before?",
+                    "paragraphs": [
+                      {
+                        "text": "What should  you have done before?",
+                        "runs": [
+                          "What",
+                          " should",
+                          " ",
+                          " you ",
+                          "have done",
+                          " before?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "I shouldn’t  have said those things.",
+                    "paragraphs": [
+                      {
+                        "text": " I shouldn’t  have said those things.",
+                        "runs": [
+                          " I ",
+                          "shouldn",
+                          "’t ",
+                          " have ",
+                          "said",
+                          " ",
+                          "those things."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "What should you have said?",
+                    "paragraphs": [
+                      {
+                        "text": "What should you have said?",
+                        "runs": [
+                          "What",
+                          " should",
+                          " ",
+                          "you ",
+                          "have ",
+                          "said",
+                          "?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "If only + Had  + Past Participle",
+                    "paragraphs": [
+                      {
+                        "text": "If only + Had  + Past Participle",
+                        "runs": [
+                          "If only",
+                          " + Had ",
+                          " + Past Participle"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "If only she had acted differently, the story would be different.",
+                    "paragraphs": [
+                      {
+                        "text": "If only she had acted differently, the story would be different. ",
+                        "runs": [
+                          "If only",
+                          " she ",
+                          "ha",
+                          "d",
+                          " ",
+                          "acted",
+                          " ",
+                          "differently, the story would be different. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "How would this have ended up if she had acted differently?",
+                    "paragraphs": [
+                      {
+                        "text": "How would this have ended up if she had acted differently?",
+                        "runs": [
+                          "How",
+                          " ",
+                          "would ",
+                          "this",
+                          " have",
+                          " ",
+                          "ended",
+                          " up if she had acted differently?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "If only I had  expected nothing from them. I certainly look like an idiot now.",
+                    "paragraphs": [
+                      {
+                        "text": "If only I had  expected nothing from them. I certainly look like an idiot now.",
+                        "runs": [
+                          "If only",
+                          " I ",
+                          "had ",
+                          " expected ",
+                          "nothing from them. I certainly look like an idiot now."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "would you really have expected nothing from them?",
+                    "paragraphs": [
+                      {
+                        "text": "would you really have expected nothing from them?",
+                        "runs": [
+                          "would ",
+                          "you really ",
+                          "have expected ",
+                          "nothing from them?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "I regret + V (ing)",
+                    "paragraphs": [
+                      {
+                        "text": "I regret + V (ing)",
+                        "runs": [
+                          "I regret + V (ing)"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I  regret calling her and letting her know about this.",
+                    "paragraphs": [
+                      {
+                        "text": "I  regret calling her and letting her know about this.",
+                        "runs": [
+                          "I ",
+                          " ",
+                          "regret calling her ",
+                          "and letting her know about this."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "What do you regret?",
+                    "paragraphs": [
+                      {
+                        "text": "What do you regret?",
+                        "runs": [
+                          "W",
+                          "hat ",
+                          "do you ",
+                          "regret",
+                          "?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "They did not regret making a scandal in front of everyone.",
+                    "paragraphs": [
+                      {
+                        "text": "They did not regret making a scandal in front of everyone. ",
+                        "runs": [
+                          "They ",
+                          "did not regret making",
+                          " a scandal in front of everyone. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Where they even sorry about that?",
+                    "paragraphs": [
+                      {
+                        "text": "Where they even sorry about that?",
+                        "runs": [
+                          "Where they even sorry about that?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "We are able to express regrets in different ways. Check the chart.",
+        "visibleTexts": [
+          "We are able to express regrets in different ways. Check the chart.",
+          "STRUCTURES STATEMENTS QUESTIONS N + Should Have + Past Participle I should have told them the truth before, What should you have done before? I shouldn’t have said those things. What should you have said? If only + N + Had + Past Participle If only she had acted differently, the story would be different. How would this have ended up if she had acted differently? If only I had expected nothing from them. I certainly look like an idiot now. Would you really have expected nothing from them? N + regret + V (ing) I regret calling her and letting her know about this. What do you regret? They did not regret making a scandal in front of everyone. Where they even sorry about that?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "table-or-chart-mentioned-without-table-semantics"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "To Consider\n\nThis structures do not necessarily work using the third conditional. \nShould + Have + past participle is still used here.\nWe can use yes/no questions or Wh-words to go interrogative. \nThe context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. \nAll of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically."
+        ],
+        "joinedText": "To Consider\n\nThis structures do not necessarily work using the third conditional. \nShould + Have + past participle is still used here.\nWe can use yes/no questions or Wh-words to go interrogative. \nThe context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. \nAll of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically.",
+        "shapes": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;gdcdadc1522_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 472488,
+              "y": 1235400,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3472488,
+              "bottom": 4235400
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "To Consider\n\nThis structures do not necessarily work using the third conditional. \nShould + Have + past participle is still used here.\nWe can use yes/no questions or Wh-words to go interrogative. \nThe context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. \nAll of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "To Consider\n\nThis structures do not necessarily work using the third conditional. \nShould + Have + past participle is still used here.\nWe can use yes/no questions or Wh-words to go interrogative. \nThe context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. \nAll of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically."
+            ],
+            "joinedText": "To Consider\n\nThis structures do not necessarily work using the third conditional. \nShould + Have + past participle is still used here.\nWe can use yes/no questions or Wh-words to go interrogative. \nThe context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. \nAll of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;gdcdadc1522_0_0",
+            "bbox": {
+              "x": 472488,
+              "y": 1235400,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3472488,
+              "bottom": 4235400
+            },
+            "columnWidths": [
+              2110400,
+              2719250,
+              3412525
+            ],
+            "rows": [
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "To Consider\n\nThis structures do not necessarily work using the third conditional. \nShould + Have + past participle is still used here.\nWe can use yes/no questions or Wh-words to go interrogative. \nThe context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. \nAll of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically.",
+                    "paragraphs": [
+                      {
+                        "text": "To Consider",
+                        "runs": [
+                          "To Consider"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "This structures do not necessarily work using the third conditional. ",
+                        "runs": [
+                          "This structures do not necessarily work using the third conditional. "
+                        ]
+                      },
+                      {
+                        "text": "Should + Have + past participle is still used here.",
+                        "runs": [
+                          "Should",
+                          " + Have + past participle",
+                          " ",
+                          "is ",
+                          "still",
+                          " used here."
+                        ]
+                      },
+                      {
+                        "text": "We can use yes/no questions or Wh-words to go interrogative. ",
+                        "runs": [
+                          "We can use ",
+                          "yes/no questions or Wh-words",
+                          " to go interrogative. "
+                        ]
+                      },
+                      {
+                        "text": "The context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. ",
+                        "runs": [
+                          "The context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. "
+                        ]
+                      },
+                      {
+                        "text": "All of them state a hypothetical or unreal situation in the past, EXCEPT -regret + V(ing) - that can be used in different tenses logically. ",
+                        "runs": [
+                          "All of them state a hypothetical or unreal situation in the past",
+                          ", ",
+                          "EXCEPT -regret + V(ing) -",
+                          " that can be used in different tenses logically. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "To Consider 1. This structures do not necessarily work using the third conditional. 2. Should + Have + past participle is still used here. 3. We can use yes/no questions or Wh-words to go interrogative. 4. The context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. 5. All of them state a hypothetical or unreal situation in the past, EXCEPT regret + V(ing), that can be used in different tenses logically.",
+        "visibleTexts": [
+          "To Consider 1. This structures do not necessarily work using the third conditional. 2. Should + Have + past participle is still used here. 3. We can use yes/no questions or Wh-words to go interrogative. 4. The context or the joining statements attached to these grammar structures are important and they need to be cohesive and logical. 5. All of them state a hypothetical or unreal situation in the past, EXCEPT regret + V(ing), that can be used in different tenses logically."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "259",
+            "shapeName": "Google Shape;259;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "260",
+            "shapeName": "Google Shape;260;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "We can use these structures to state the following functions:",
+          "Functions",
+          "Examples",
+          "1",
+          "Express regrets life regrets.",
+          "I  should have bought the car; now, I’m stock here..",
+          "2",
+          "Lament on something.",
+          "If only they had listened to their parents, but they didn’t.",
+          "3.",
+          "Regret one’s doings.",
+          "I regret inviting them so badly; They ruined our christmas party.",
+          "To consider ",
+          "We can also use - wish - to talk about things we want / wanted to be different.",
+          "Present: I wish you did not live so far away. / I wish he’d stop talking. ",
+          "Past: They wish they hadn’t drunk so much. Now they are sick. "
+        ],
+        "joinedText": "We can use these structures to state the following functions:\nFunctions\nExamples\n1\nExpress regrets life regrets.\nI  should have bought the car; now, I’m stock here..\n2\nLament on something.\nIf only they had listened to their parents, but they didn’t.\n3.\nRegret one’s doings.\nI regret inviting them so badly; They ruined our christmas party.\nTo consider \nWe can also use - wish - to talk about things we want / wanted to be different.\nPresent: I wish you did not live so far away. / I wish he’d stop talking. \nPast: They wish they hadn’t drunk so much. Now they are sick.",
+        "shapes": [
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1387351,
+              "y": 328500,
+              "cx": 7230600,
+              "cy": 584700,
+              "right": 8617951,
+              "bottom": 913200
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can use these structures to state the following functions:",
+                "runs": [
+                  "We can use these structures to state the following functions:"
+                ]
+              }
+            ],
+            "texts": [
+              "We can use these structures to state the following functions:"
+            ],
+            "joinedText": "We can use these structures to state the following functions:"
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 711450,
+              "y": 1044025,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3711450,
+              "bottom": 4044025
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Express regrets life regrets.",
+                "runs": []
+              },
+              {
+                "text": "I  should have bought the car; now, I’m stock here..",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Lament on something.",
+                "runs": []
+              },
+              {
+                "text": "If only they had listened to their parents, but they didn’t.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "Regret one’s doings.",
+                "runs": []
+              },
+              {
+                "text": "I regret inviting them so badly; They ruined our christmas party.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Express regrets life regrets.",
+              "I  should have bought the car; now, I’m stock here..",
+              "2",
+              "Lament on something.",
+              "If only they had listened to their parents, but they didn’t.",
+              "3.",
+              "Regret one’s doings.",
+              "I regret inviting them so badly; They ruined our christmas party."
+            ],
+            "joinedText": "Functions\nExamples\n1\nExpress regrets life regrets.\nI  should have bought the car; now, I’m stock here..\n2\nLament on something.\nIf only they had listened to their parents, but they didn’t.\n3.\nRegret one’s doings.\nI regret inviting them so badly; They ruined our christmas party.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "267",
+            "shapeName": "Google Shape;267;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 819275,
+              "y": 3088671,
+              "cx": 7286318,
+              "cy": 1775697,
+              "right": 8105593,
+              "bottom": 4864368
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "268",
+            "shapeName": "Google Shape;268;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 693826,
+              "y": 1704261,
+              "cx": 7286318,
+              "cy": 4962808,
+              "right": 7980144,
+              "bottom": 6667069
+            },
+            "parentShapeId": "267"
+          },
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "268",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 776779,
+              "y": 2772286,
+              "cx": 7273200,
+              "cy": 3246000,
+              "right": 8049979,
+              "bottom": 6018286
+            },
+            "parentShapeId": "268",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 693826,
+              "y": 1704249,
+              "cx": 6758400,
+              "cy": 4962600,
+              "right": 7452226,
+              "bottom": 6666849
+            },
+            "parentShapeId": "267",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "We can also use - wish - to talk about things we want / wanted to be different.",
+                "runs": [
+                  "We can also use ",
+                  "- wish -",
+                  " to talk about things we want / ",
+                  "wanted",
+                  " to be different."
+                ]
+              },
+              {
+                "text": "Present: I wish you did not live so far away. / I wish he’d stop talking. ",
+                "runs": [
+                  "Present",
+                  ": I ",
+                  "wish",
+                  " you ",
+                  "did not ",
+                  "live so far away. / I ",
+                  "wish ",
+                  "he",
+                  "’d",
+                  " stop talking. "
+                ]
+              },
+              {
+                "text": "Past: They wish they hadn’t drunk so much. Now they are sick. ",
+                "runs": [
+                  "Past",
+                  ": They ",
+                  "wish",
+                  " they",
+                  " hadn’t drunk",
+                  " so much. Now they are sick. "
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "We can also use - wish - to talk about things we want / wanted to be different.",
+              "Present: I wish you did not live so far away. / I wish he’d stop talking. ",
+              "Past: They wish they hadn’t drunk so much. Now they are sick. "
+            ],
+            "joinedText": "To consider \nWe can also use - wish - to talk about things we want / wanted to be different.\nPresent: I wish you did not live so far away. / I wish he’d stop talking. \nPast: They wish they hadn’t drunk so much. Now they are sick."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "bbox": {
+              "x": 711450,
+              "y": 1044025,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3711450,
+              "bottom": 4044025
+            },
+            "columnWidths": [
+              417750,
+              3468050,
+              4020700
+            ],
+            "rows": [
+              {
+                "height": 174625,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Express regrets life regrets.",
+                    "paragraphs": [
+                      {
+                        "text": "Express regrets life regrets.",
+                        "runs": [
+                          "Express regrets life regrets."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I  should have bought the car; now, I’m stock here..",
+                    "paragraphs": [
+                      {
+                        "text": "I  should have bought the car; now, I’m stock here..",
+                        "runs": [
+                          "I ",
+                          " ",
+                          "should have bought ",
+                          "the car; now, I’m stock here.",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Lament on something.",
+                    "paragraphs": [
+                      {
+                        "text": "Lament on something. ",
+                        "runs": [
+                          "Lament on something. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "If only they had listened to their parents, but they didn’t.",
+                    "paragraphs": [
+                      {
+                        "text": "If only they had listened to their parents, but they didn’t. ",
+                        "runs": [
+                          "If only ",
+                          "they ",
+                          "had listened ",
+                          "to their parents, but they didn’t. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Regret one’s doings.",
+                    "paragraphs": [
+                      {
+                        "text": "Regret one’s doings.",
+                        "runs": [
+                          "Regret one’s doings."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I regret inviting them so badly; They ruined our christmas party.",
+                    "paragraphs": [
+                      {
+                        "text": "I regret inviting them so badly; They ruined our christmas party. ",
+                        "runs": [
+                          "I",
+                          " ",
+                          "regret",
+                          " inviting ",
+                          "them so badly; They ruined our christmas party. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "We can use these structures to state the following functions:",
+        "visibleTexts": [
+          "We can use these structures to state the following functions:",
+          "Functions Examples 1 Express life regrets I should have bought the car; now, I’m stuck here. 2 Lament on something If only they had listened to their parents, but they didn’t. 3. Regret one’s doings I regret inviting them so badly; they ruined our christmas party.",
+          "To consider We can also use - wish - to talk about things we want / wanted to be different. Present: I wish you did not live so far away. / I wish he’d stop talking. Past: They wish they hadn’t drunk so much. Now they are sick."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "A. Write 8 sentences where you include different regret as seen in the lesson. Follow the example. ",
+          "0. I  should’ve called the cops the first time; at least now, he is in Jail."
+        ],
+        "joinedText": "A. Write 8 sentences where you include different regret as seen in the lesson. Follow the example.\n0. I  should’ve called the cops the first time; at least now, he is in Jail.",
+        "shapes": [
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1017450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Write 8 sentences where you include different regret as seen in the lesson. Follow the example. ",
+                "runs": [
+                  "A. Write 8 sentences where you include",
+                  " different regret as seen in the lesson. ",
+                  "Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Write 8 sentences where you include different regret as seen in the lesson. Follow the example. "
+            ],
+            "joinedText": "A. Write 8 sentences where you include different regret as seen in the lesson. Follow the example."
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 1101225,
+              "y": 2021825,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4101225,
+              "bottom": 5021825
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0. I  should’ve called the cops the first time; at least now, he is in Jail.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0. I  should’ve called the cops the first time; at least now, he is in Jail."
+            ],
+            "joinedText": "0. I  should’ve called the cops the first time; at least now, he is in Jail.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_19",
+            "bbox": {
+              "x": 1101225,
+              "y": 2021825,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4101225,
+              "bottom": 5021825
+            },
+            "columnWidths": [
+              7239000
+            ],
+            "rows": [
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "0. I  should’ve called the cops the first time; at least now, he is in Jail.",
+                    "paragraphs": [
+                      {
+                        "text": "0. I  should’ve called the cops the first time; at least now, he is in Jail.",
+                        "runs": [
+                          "0. ",
+                          "I ",
+                          " ",
+                          "should’ve called",
+                          " ",
+                          "the cops the first time; at least now, he is in Jail."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example.",
+        "visibleTexts": [
+          "A. Write 8 sentences where you include different regrets as seen in the lesson. Follow the example.",
+          "0. I should’ve called the cops the first time; at least now, he is in jail."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "B. Listen to the audio and answer the questions your teacher makes. "
+        ],
+        "joinedText": "B. Listen to the audio and answer the questions your teacher makes.",
+        "shapes": [
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1213325,
+              "y": 288325,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7336025,
+              "bottom": 889525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_32",
+            "kind": "picture",
+            "bbox": {
+              "x": 2844200,
+              "y": 1105125,
+              "cx": 3196550,
+              "cy": 3196550,
+              "right": 6040750,
+              "bottom": 4301675
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_32",
+            "bbox": {
+              "x": 2844200,
+              "y": 1105125,
+              "cx": 3196550,
+              "cy": 3196550,
+              "right": 6040750,
+              "bottom": 4301675
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "B. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "B. Listen to the audio and answer the questions your teacher makes."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbz0L12N63lBnB0KyVjs0DrJSbM9CHVOtfmOYoOZdccnQYPxTj_uy_s_XczaNSp90AoVFSLVvZg-6hhsVwgNnMcTrEbKvXEc-4WwpCpLQJSlU15vdj0pIhoScbciXreXr3KKg5Zy0vKSa8Vr_Q-fI2BKe5M82XqgxA73UbnUFAN_yOLARO3tI_tQWJo_x9FBg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "‹#›",
+          "C. Read the following article  and have a discussion with the teacher. After that, read aloud the text to your teacher. You can read the full version on the link provided for further activities.",
+          "Regret can Seriously Damage your Mental Health",
+          "here was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself?",
+          "This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood.",
+          "“That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life."
+        ],
+        "joinedText": "‹#›\nC. Read the following article  and have a discussion with the teacher. After that, read aloud the text to your teacher. You can read the full version on the link provided for further activities.\nRegret can Seriously Damage your Mental Health\n\nhere was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself?\n\nThis man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood.\n\n“That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life.",
+        "shapes": [
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 176350,
+              "y": 83050,
+              "cx": 8555400,
+              "cy": 658500,
+              "right": 8731750,
+              "bottom": 741550
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following article  and have a discussion with the teacher. After that, read aloud the text to your teacher. You can read the full version on the link provided for further activities.",
+                "runs": [
+                  "C. Read the following ",
+                  "article ",
+                  " and have a discussion with the teacher. After that, read aloud the text to your teacher. You can read ",
+                  "the full version on the link provided for further activities."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following article  and have a discussion with the teacher. After that, read aloud the text to your teacher. You can read the full version on the link provided for further activities."
+            ],
+            "joinedText": "C. Read the following article  and have a discussion with the teacher. After that, read aloud the text to your teacher. You can read the full version on the link provided for further activities."
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 1028700,
+              "y": 669275,
+              "cx": 7213200,
+              "cy": 4338000,
+              "right": 8241900,
+              "bottom": 5007275
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 1146450,
+              "y": 602525,
+              "cx": 6977700,
+              "cy": 4687200,
+              "right": 8124150,
+              "bottom": 5289725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Regret can Seriously Damage your Mental Health",
+                "runs": [
+                  "Regret can Seriously Damage your Mental Health"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "here was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself?",
+                "runs": [
+                  "here was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself?"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood.",
+                "runs": [
+                  "This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "“That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life.",
+                "runs": [
+                  "“That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Regret can Seriously Damage your Mental Health",
+              "here was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself?",
+              "This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood.",
+              "“That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life."
+            ],
+            "joinedText": "Regret can Seriously Damage your Mental Health\n\nhere was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself?\n\nThis man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood.\n\n“That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "15",
+        "visibleTexts": [
+          "15",
+          "C. Read the following article and have a discussion with the teacher. After that, read the text aloud to your teacher. You can read the full version on the link provided for further activities.",
+          "Regret can Seriously Damage your Mental Health There was once a banker in his 50s who had worked seven days a week for 25 years and become a very wealthy man. Then, at the apex of his career, he looked around him and realised that he had entirely neglected his family; as a result, his family had rejected him. The regret was overwhelming, and came out in panic attacks every Sunday. Would this man be able to find a way out of this cruel place he had created for himself? This man was a patient of the psychoanalyst David Morgan, of the Institute of Psychoanalysis, who spent several years helping him explore what had compelled him to work so hard and to ignore his children (he has been anonymised and gave Morgan permission to use his case). It became clear that this need to become richer than everyone else had roots in his very early childhood, when he watched his parents nearly starve to death during the 1980s miners’ strike. He had, unconsciously, repeated this by impoverishing his children by not being there for them, in turn impoverishing himself of these loving relationships, in his efforts to overcome the traumatic poverty of his childhood. “That complicated understanding,” Morgan explains, “freed things up, setting his regret in a generational context so he didn’t have to feel quite so guilty for acting something out, because it was beyond his ken. It doesn’t mean that he can’t feel real pain, but that pain is given a sense of history.” This meant his regret could be understood and given meaning – and that changed his life."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "‹#›",
+          "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances.",
+          "It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives.",
+          "The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic.\n\nKeep reading the article here:",
+          "\nhttps://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind"
+        ],
+        "joinedText": "‹#›\nRegret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances.\n\nIt is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives.\n\nThe cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic.\n\nKeep reading the article here:\n\nhttps://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+        "shapes": [
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g109f79cffad_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g109f79cffad_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 1028700,
+              "y": 135875,
+              "cx": 7213200,
+              "cy": 4768200,
+              "right": 8241900,
+              "bottom": 4904075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g109f79cffad_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 994050,
+              "y": 614825,
+              "cx": 7213200,
+              "cy": 3810300,
+              "right": 8207250,
+              "bottom": 4425125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances.",
+                "runs": [
+                  "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives.",
+                "runs": [
+                  "It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic.\n\nKeep reading the article here:",
+                "runs": [
+                  "The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic.",
+                  "Keep reading the article here:"
+                ]
+              },
+              {
+                "text": "\nhttps://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+                "runs": [
+                  "https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances.",
+              "It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives.",
+              "The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic.\n\nKeep reading the article here:",
+              "\nhttps://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind"
+            ],
+            "joinedText": "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances.\n\nIt is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives.\n\nThe cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic.\n\nKeep reading the article here:\n\nhttps://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": null,
+        "title": "16",
+        "visibleTexts": [
+          "16",
+          "Regret can be all-consuming, and it can destroy lives. We can see it all around us, whether it is the man who cannot forgive himself for cheating on his first girlfriend and has not had a serious relationship in 30 years. Or the woman who is so tied up in wishing she’d had a child with her ex-partner, instead of breaking up with him, that she cannot find happiness in her current circumstances. It is not unusual for patients to seek therapy because they feel plagued by regret and unable to live full lives because of it, says Morgan, whether it is over affairs, career choices or relationships. The kind of regret that brings people to his consulting room is “paranoid and persecutory. It’s: ‘Oh God, I’m so terrible, I’m dreadful,’” he says. It is self-flagellation, and it can be incredibly damaging to our mental health. It is exhausting, it sucks all joy and fulfilment from our days and it leaves us stuck, always looking backwards and unable to move forward in our lives. The cognitive behaviour therapist Windy Dryden says that, when we are trapped in this cycle of regret, characterised by rigidity and inflexibility, we only seem able to blame ourselves for what has happened, rather than seeing our behaviour in a wider context and understanding why we took the path we did based on the information we had at the time. Under these conditions, regret will become toxic. Keep reading the article here: https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+          "https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind"
+        ],
+        "links": [
+          {
+            "url": "https://www.theguardian.com/lifeandstyle/2019/jun/27/regret-can-seriously-damage-your-mental-health-heres-how-to-leave-it-behind",
+            "kind": "link",
+            "source": "anchor"
+          }
+        ],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?",
+          "E. Write a 150-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?\nE. Write a 150-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 793575,
+              "y": 146675,
+              "cx": 7547700,
+              "cy": 1027500,
+              "right": 8341275,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?",
+                "runs": [
+                  "D. Based on the topic presented in the reading section, ",
+                  "how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?"
+                ]
+              }
+            ],
+            "texts": [
+              "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?"
+            ],
+            "joinedText": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?"
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 446175,
+              "y": 2414150,
+              "cx": 8613900,
+              "cy": 1163700,
+              "right": 9060075,
+              "bottom": 3577850
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 150-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied",
+                "runs": [
+                  "E. Write a 150-200 word text about s",
+                  "omeone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied"
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 150-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied"
+            ],
+            "joinedText": "E. Write a 150-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied"
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 1070307,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2245829
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "313",
+            "shapeName": "Google Shape;313;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "312",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "314",
+            "shapeName": "Google Shape;314;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "312",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "315",
+            "shapeName": "Google Shape;315;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": null,
+        "title": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?",
+        "visibleTexts": [
+          "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?",
+          "E. Write an 160-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 18,
+      "native": {
+        "number": 18,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "326",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "326",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 18,
+      "published": {
+        "number": 18,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 19,
+      "native": {
+        "number": 19,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "334",
+            "shapeName": "Google Shape;334;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "335",
+            "shapeName": "Google Shape;335;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "336",
+            "shapeName": "Google Shape;336;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "337",
+            "shapeName": "Google Shape;337;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "335",
+            "shapeName": "Google Shape;335;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 19
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "336",
+            "shapeName": "Google Shape;336;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 19
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 19
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 19
+          }
+        ]
+      },
+      "publishedSlideNumber": 19,
+      "published": {
+        "number": 19,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbwtODMOJSN32lu5k-KbCmqRjNtsUscy2uW1-h0OYTwS4aZpiP7MxZLJpZaoSQOeFkCgGvaKZyzu1xAC7e_etEmV5aMO2S231ikbOSQej3g_pmvWRS5U3frr85a1cXVVGlnDGl6Ue48wuUReFDlBWOLOk0yZtTmfb1C4hhA4oIeOPs68bQmjjFc5Q39F_8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYPFZ9iZ6U7qm1AchJpRUfLlZoaUnTRZWH4L6OlA7mraWahtbeSQtioyfN1VuCJGljSivFJIz4-K5ZLiB2bnhXSLGuhfqZbkICdPUqDTcdyw5xxPJEiCOp2JAXF99y2lolA4fON-QAeEKFIDx-vSlsgGuf-IyTtGnDR1si3e5It9iImoIQg60d0zWexJME=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaX_i1j9Q_kSs18iyeUjhwmUapdCTF3EM9ZvJbYvJrqP1eaNVG-387tPHRx5kvjJGZ6SPHsKE01YKbu77M-lm_ZuqFYPG457ctoYG_FItC5R451B3C86Zup_VaD0VNvCeN_j9pVbiODwkj9KGfOhz2iFHE033rNIARlqVXhPoFAj1gvY8T4VCNiZFsieVl8rQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

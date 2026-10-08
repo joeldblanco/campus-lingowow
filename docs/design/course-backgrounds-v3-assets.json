@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "catalog": "course-backgrounds-v3",
+  "purpose": "Four additional complete painted environments for the guided course background catalog after the related-figure continuity audit.",
+  "scope": {
+    "assetCount": 4,
+    "ownership": "Only the four new WebP backgrounds and this asset report are included in this task.",
+    "requestedThemes": [
+      "museum-gallery",
+      "lakeside-reading-terrace",
+      "music-room",
+      "village-square"
+    ],
+    "noRuntimeWiring": true,
+    "noDatabaseOrDeployment": true
+  },
+  "references": {
+    "approvedGuide": [
+      "docs/design/graphic-guide-v1/README.md",
+      "docs/design/graphic-guide-v1/scenes-ui.webp",
+      "docs/design/graphic-guide-v1/runtime-scenes-v3.json",
+      "docs/design/graphic-guide-v1/scene-acceptance-v4.md"
+    ],
+    "existingCatalogReport": "docs/design/course-backgrounds-v2-assets.json",
+    "inspectedExistingBackgrounds": [
+      "public/images/lessons/backgrounds/art-studio.webp",
+      "public/images/lessons/backgrounds/mountain-cabin.webp",
+      "public/images/lessons/backgrounds/flower-courtyard.webp",
+      "public/images/lessons/backgrounds/airport-lounge.webp",
+      "public/images/lessons/backgrounds/science-lab.webp",
+      "public/images/lessons/backgrounds/harbor-promenade.webp",
+      "public/images/lessons/backgrounds/community-bookshop.webp"
+    ]
+  },
+  "requirements": {
+    "medium": "Painted semi-realistic editorial illustration with subtle gouache/watercolor brush texture, natural proportions, and matte light.",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "format": "WEBP",
+      "quality": 90,
+      "maxEdge": 1600
+    },
+    "composition": "Complete environment edge to edge; meaningful detail across the right two thirds; calm pale left 35–40% reserved for the white fade and live lesson text.",
+    "avoid": [
+      "people",
+      "portraits",
+      "readable text",
+      "logos",
+      "watermarks",
+      "UI",
+      "speech bubbles",
+      "abstract CSS shapes",
+      "gradient-only backgrounds",
+      "photographic treatment"
+    ]
+  },
+  "generation": {
+    "method": "built-in image_gen",
+    "generatedCanvasObserved": {
+      "width": 1672,
+      "height": 941,
+      "format": "PNG"
+    },
+    "optimization": "Pillow resize to 1600x900 with Lanczos; WebP quality 90, method 6.",
+    "evidenceOriginals": "C:/Users/ACER/.codex/visualizations/2026/10/08/course-backgrounds-v3-originals",
+    "contactSheet": "C:/Users/ACER/.codex/visualizations/2026/10/08/course-backgrounds-v3-originals/contact-sheet.webp",
+    "contactSheetBytes": 423182
+  },
+  "review": {
+    "status": "reviewed-actual-output",
+    "reviewDate": "2026-10-08",
+    "inspector": "view_image",
+    "checks": {
+      "allFourRenderedAndInspected": true,
+      "allExact1600x900": true,
+      "allWebPQuality90": true,
+      "allCompleteEnvironments": true,
+      "allHaveRightSideDetailAndLeftFadeSpace": true,
+      "allNoPeoplePortraitsTextLogosUi": true,
+      "allDistinctFromInspectedReferences": true
+    }
+  },
+  "assets": [
+    {
+      "filename": "museum-gallery.webp",
+      "theme": "museum-gallery",
+      "promptSummary": "Airy museum gallery with abstract paintings, sculptures, arches, skylights, plants, bench, and polished floor.",
+      "distinctFrom": [
+        "art-studio.webp",
+        "library.webp",
+        "community-bookshop.webp"
+      ],
+      "path": "public/images/lessons/backgrounds/museum-gallery.webp",
+      "format": "WEBP",
+      "width": 1600,
+      "height": 900,
+      "quality": 90,
+      "bytes": 197458,
+      "sha256": "6974fbb30faf9cf985ea9fa7b8886ca052f7a1dc829c0a396be0763dcfb74293",
+      "originalPngPath": "C:/Users/ACER/.codex/visualizations/2026/10/08/course-backgrounds-v3-originals/museum-gallery-original.png",
+      "originalPngBytes": 2282291,
+      "originalPngSha256": "7bba7f8ae4669897616f48929fcb1dc36dd0b856819b968830bb4d5d1968ad48",
+      "review": {
+        "actualOutputInspected": true,
+        "completeEnvironment": true,
+        "rightTwoThirdsDetailed": true,
+        "leftWhiteFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "peopleOrPortraits": false,
+        "readableTextLogosOrUI": false,
+        "abstractGradientOnly": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "filename": "lakeside-reading-terrace.webp",
+      "theme": "lakeside-reading-terrace",
+      "promptSummary": "Stone lakeside terrace with pergola, blank open book, table and chairs, climbing plants, lake, and layered hills.",
+      "distinctFrom": [
+        "seaside.webp",
+        "harbor-promenade.webp",
+        "mountain-cabin.webp"
+      ],
+      "path": "public/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+      "format": "WEBP",
+      "width": 1600,
+      "height": 900,
+      "quality": 90,
+      "bytes": 378942,
+      "sha256": "3c16168fb9cae8cfd5252ae2e2b2afaa310366ac7ea51ae4775455964427e034",
+      "originalPngPath": "C:/Users/ACER/.codex/visualizations/2026/10/08/course-backgrounds-v3-originals/lakeside-reading-terrace-original.png",
+      "originalPngBytes": 2860781,
+      "originalPngSha256": "d35948bb4f2b3c138a45fc2b71e5b8c95c51b2992f56adc67b8c432eab23f39d",
+      "review": {
+        "actualOutputInspected": true,
+        "completeEnvironment": true,
+        "rightTwoThirdsDetailed": true,
+        "leftWhiteFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "peopleOrPortraits": false,
+        "readableTextLogosOrUI": false,
+        "abstractGradientOnly": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "filename": "music-room.webp",
+      "theme": "music-room",
+      "promptSummary": "Warm rehearsal room with upright piano, violin, guitar, instrument case, blank notebook, window, bookshelves, and plants.",
+      "distinctFrom": [
+        "listening-lounge.webp",
+        "workshop.webp",
+        "art-studio.webp"
+      ],
+      "path": "public/images/lessons/backgrounds/music-room.webp",
+      "format": "WEBP",
+      "width": 1600,
+      "height": 900,
+      "quality": 90,
+      "bytes": 289982,
+      "sha256": "2fa9fdfb5f15771e8b003ee7613df81e5bd0a5231485334217d77252b24879ff",
+      "originalPngPath": "C:/Users/ACER/.codex/visualizations/2026/10/08/course-backgrounds-v3-originals/music-room-original.png",
+      "originalPngBytes": 2569614,
+      "originalPngSha256": "653e6e8bc81ef9b34b83811cbb07840cf4806f483e8b838769ee04e7e4cb22b4",
+      "review": {
+        "actualOutputInspected": true,
+        "completeEnvironment": true,
+        "rightTwoThirdsDetailed": true,
+        "leftWhiteFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "peopleOrPortraits": false,
+        "readableTextLogosOrUI": false,
+        "abstractGradientOnly": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "filename": "village-square.webp",
+      "theme": "village-square",
+      "promptSummary": "Sunlit stone village square with fountain, arcades, flower and produce tables without signage, citrus trees, lane, and hills.",
+      "distinctFrom": [
+        "town-park.webp",
+        "market.webp",
+        "flower-courtyard.webp"
+      ],
+      "path": "public/images/lessons/backgrounds/village-square.webp",
+      "format": "WEBP",
+      "width": 1600,
+      "height": 900,
+      "quality": 90,
+      "bytes": 398236,
+      "sha256": "194b641f04a0a9be008936339eef69bae97985a36ec9a422d9489f6ccb8118b2",
+      "originalPngPath": "C:/Users/ACER/.codex/visualizations/2026/10/08/course-backgrounds-v3-originals/village-square-original.png",
+      "originalPngBytes": 2974524,
+      "originalPngSha256": "3bf818ffa234e078c1b4cc5c2c467fe6c378a9d7d9fe87377661b365ac38f324",
+      "review": {
+        "actualOutputInspected": true,
+        "completeEnvironment": true,
+        "rightTwoThirdsDetailed": true,
+        "leftWhiteFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "peopleOrPortraits": false,
+        "readableTextLogosOrUI": false,
+        "abstractGradientOnly": false,
+        "distinctEnvironment": true
+      }
+    }
+  ]
+}

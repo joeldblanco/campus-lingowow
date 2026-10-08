@@ -5,6 +5,34 @@ import {
   GUIDED_MATCH_CORRECT_FEEDBACK_MS,
   GUIDED_MATCH_WRONG_FEEDBACK_MS,
 } from './block-preview'
+import { ClassroomSyncContext } from '@/components/classroom/use-classroom-sync'
+
+describe('guided source truth labels', () => {
+  it('expands reviewed T/F labels while keeping the original answer IDs', () => {
+    const options = [{ id: 'true', text: 'T' }, { id: 'false', text: 'F' }]
+    render(<BlockPreview guidedAppearance block={{ id: 'source-truth', type: 'multiple_choice', order: 0, question: 'Joe likes animals.', options, correctOptionId: 'true' }} />)
+    const correct = screen.getByRole('button', { name: 'Verdadero' })
+    expect(screen.getByRole('button', { name: 'Falso' })).toBeVisible()
+    fireEvent.click(correct)
+    expect(correct).toHaveAttribute('aria-pressed', 'true')
+    expect(correct).toHaveAttribute('data-guided-choice-state', 'correct')
+    expect(correct).toHaveAttribute('data-guided-choice', 'true')
+    expect(options).toEqual([{ id: 'true', text: 'T' }, { id: 'false', text: 'F' }])
+  })
+  it('leaves actual letter-choice questions unchanged', () => {
+    render(<BlockPreview guidedAppearance block={{ id: 'letters', type: 'multiple_choice', order: 0, question: 'Choose the letter.', options: [{ id: 'letter-t', text: 'T' }, { id: 'letter-f', text: 'F' }], correctOptionId: 'letter-t' }} />)
+    expect(screen.getByRole('button', { name: 'T' })).toBeVisible()
+    expect(screen.getByRole('button', { name: 'F' })).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Verdadero' })).not.toBeInTheDocument()
+  })
+})
+
+vi.mock('next/image', () => ({
+  default: ({ src, alt, onError }: { src: string; alt: string; onError?: () => void }) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt} data-src={src} onError={() => onError?.()} />
+  ),
+}))
 
 vi.mock('@/components/lessons/essay-ai-grading', () => ({
   EssayAIGrading: ({
@@ -128,6 +156,51 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByRole('button', { name: 'Reproducir audio' })).toBeInTheDocument()
   })
 
+  it('hides the repeated video title in guided mode while keeping the authored thumbnail', () => {
+    const video = {
+      id: 'video',
+      type: 'video' as const,
+      order: 0,
+      title: 'Watch the conversation about introductions',
+      url: 'https://youtu.be/EMWmCb1CIdc',
+    }
+
+    const { rerender } = render(<BlockPreview guidedAppearance block={video} />)
+
+    expect(
+      screen.queryByRole('heading', { name: 'Watch the conversation about introductions' })
+    ).not.toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Watch the conversation about introductions' })).toHaveAttribute(
+      'data-src',
+      'https://img.youtube.com/vi/EMWmCb1CIdc/hqdefault.jpg'
+    )
+
+    rerender(<BlockPreview block={video} />)
+    expect(
+      screen.getByRole('heading', { name: 'Watch the conversation about introductions' })
+    ).toBeInTheDocument()
+  })
+
+  it('keeps the original video URL in an accessible fallback when the thumbnail fails', () => {
+    const video = {
+      id: 'video-fallback',
+      type: 'video' as const,
+      order: 0,
+      title: 'Watch the conversation about introductions',
+      url: 'https://youtu.be/EMWmCb1CIdc',
+    }
+
+    render(<BlockPreview guidedAppearance block={video} />)
+
+    fireEvent.error(screen.getByRole('img', { name: video.title }))
+
+    expect(screen.queryByRole('img', { name: video.title })).not.toBeInTheDocument()
+    const fallback = screen.getByRole('link', { name: `Abrir video original: ${video.title}` })
+    expect(fallback).toHaveAttribute('href', video.url)
+    expect(fallback).toHaveAttribute('data-video-thumbnail-fallback', 'true')
+    expect(fallback).toHaveTextContent('Abrir video original')
+  })
+
   it('hydrates guided audio duration from an already-loaded media element', () => {
     const durationDescriptor = Object.getOwnPropertyDescriptor(
       HTMLMediaElement.prototype,
@@ -236,6 +309,186 @@ describe('BlockPreview guided appearance', () => {
     expect(complete).toHaveBeenLastCalledWith(false)
     act(() => vi.advanceTimersByTime(900))
     expect(complete).toHaveBeenLastCalledWith(true)
+  })
+
+  it('sends guided true/false feedback and navigation with retained answers in student classroom mode', () => {
+    vi.useFakeTimers()
+    const sendBlockResponse = vi.fn()
+    const syncBlockNavigation = vi.fn()
+    const classroom = {
+      isInClassroom: true,
+      isTeacher: false,
+      remoteBlockNavigation: new Map(),
+      sendBlockResponse,
+      syncBlockNavigation,
+    }
+
+    render(
+      <ClassroomSyncContext.Provider value={classroom}>
+        <BlockPreview
+          guidedAppearance
+          block={{
+            id: 'student-tf',
+            type: 'true_false',
+            order: 0,
+            items: [
+              { id: 'first', statement: 'First statement.', correctAnswer: true },
+              { id: 'second', statement: 'Second statement.', correctAnswer: false },
+            ],
+          }}
+        />
+      </ClassroomSyncContext.Provider>
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Verdadero' }))
+    expect(sendBlockResponse).toHaveBeenCalledWith(
+      'student-tf',
+      'true_false',
+      { itemId: 'first', answer: true, isCorrect: true },
+      true,
+      1
+    )
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-tf',
+      0,
+      2,
+      true,
+      false,
+      { first: 'true' }
+    )
+
+    act(() => vi.advanceTimersByTime(900))
+    expect(screen.getByText('Second statement.')).toBeInTheDocument()
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-tf',
+      1,
+      2,
+      true,
+      false,
+      { first: 'true' }
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Falso' }))
+    act(() => vi.advanceTimersByTime(900))
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-tf',
+      1,
+      2,
+      true,
+      true,
+      { first: 'true', second: 'false' }
+    )
+  })
+
+  it('sends guided multiple-choice feedback while leaving the classic teacher renderer intact', () => {
+    vi.useFakeTimers()
+    const sendBlockResponse = vi.fn()
+    const syncBlockNavigation = vi.fn()
+    const classroom = {
+      isInClassroom: true,
+      isTeacher: false,
+      remoteBlockNavigation: new Map(),
+      sendBlockResponse,
+      syncBlockNavigation,
+    }
+
+    render(
+      <ClassroomSyncContext.Provider value={classroom}>
+        <BlockPreview
+          guidedAppearance
+          block={{
+            id: 'student-mc',
+            type: 'multiple_choice',
+            order: 0,
+            items: [
+              {
+                id: 'first',
+                question: 'Which answer is first?',
+                options: [
+                  { id: 'alpha', text: 'Alpha' },
+                  { id: 'beta', text: 'Beta' },
+                ],
+                correctOptionId: 'alpha',
+              },
+              {
+                id: 'second',
+                question: 'Which answer is second?',
+                options: [
+                  { id: 'gamma', text: 'Gamma' },
+                  { id: 'delta', text: 'Delta' },
+                ],
+                correctOptionId: 'gamma',
+              },
+            ],
+          }}
+        />
+      </ClassroomSyncContext.Provider>
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Alpha' }))
+    expect(sendBlockResponse).toHaveBeenCalledWith(
+      'student-mc',
+      'multiple_choice',
+      { itemId: 'first', answer: 'alpha', isCorrect: true },
+      true,
+      1
+    )
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-mc',
+      0,
+      2,
+      true,
+      false,
+      { first: 'alpha' }
+    )
+  })
+
+  it('keeps the teacher true/false renderer on the student navigation and answers', () => {
+    const sendBlockResponse = vi.fn()
+    const syncBlockNavigation = vi.fn()
+    const classroom = {
+      isInClassroom: true,
+      isTeacher: true,
+      remoteBlockNavigation: new Map([
+        [
+          'teacher-tf',
+          {
+            blockId: 'teacher-tf',
+            currentStep: 1,
+            totalSteps: 2,
+            hasStarted: true,
+            isCompleted: false,
+            participantName: 'Student',
+            timestamp: Date.now(),
+            currentAnswers: { first: 'true', second: 'false' },
+          },
+        ],
+      ]),
+      sendBlockResponse,
+      syncBlockNavigation,
+    }
+
+    render(
+      <ClassroomSyncContext.Provider value={classroom}>
+        <BlockPreview
+          guidedAppearance
+          block={{
+            id: 'teacher-tf',
+            type: 'true_false',
+            order: 0,
+            items: [
+              { id: 'first', statement: 'First statement.', correctAnswer: true },
+              { id: 'second', statement: 'Second statement.', correctAnswer: false },
+            ],
+          }}
+        />
+      </ClassroomSyncContext.Provider>
+    )
+
+    expect(screen.getByText('Second statement.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Falso' })).toHaveAttribute('aria-pressed', 'true')
+    expect(sendBlockResponse).not.toHaveBeenCalled()
+    expect(syncBlockNavigation).not.toHaveBeenCalled()
   })
 
   const guidedPairs = [

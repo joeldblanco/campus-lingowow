@@ -5,7 +5,13 @@ import { revalidatePath } from 'next/cache'
 import { CreateLessonSchema, EditLessonSchema } from '@/schemas/lessons'
 import * as z from 'zod'
 import { auth } from '@/auth'
-import { computeModuleLockState } from '@/lib/course-progression'
+import {
+  computeModuleLockState,
+  getCompletedVisibleContentIds,
+  getConvertedEmbedSourceIds,
+  getVisibleContentIds,
+  summarizeCourseProgress,
+} from '@/lib/course-progression'
 
 const accessibleEnrollmentStatuses = ['ACTIVE', 'PENDING', 'PAUSED', 'COMPLETED'] as const
 
@@ -23,7 +29,7 @@ async function getPublishedCourseLessons(courseId: string) {
     select: {
       id: true,
       contents: {
-        select: { id: true },
+        select: { id: true, data: true },
       },
     },
     orderBy: [{ module: { order: 'asc' } }, { order: 'asc' }, { createdAt: 'asc' }],
@@ -40,21 +46,39 @@ export async function getCourseLessonNavigation(
 
   if (currentIndex === -1) return null
 
-  const contentIds = lessons[currentIndex].contents.map((content) => content.id)
-  const completedContents = contentIds.length
-    ? await prisma.userContent.count({
-        where: {
-          userId,
-          contentId: { in: contentIds },
-          completed: true,
-        },
-      })
-    : 0
+  const currentLesson = lessons[currentIndex]
+  const contentIds = getVisibleContentIds(currentLesson)
+  const convertedSourceIds = getConvertedEmbedSourceIds(currentLesson, { courseId })
+  let isCompleted = contentIds.length === 0
+
+  if (contentIds.length > 0 && convertedSourceIds.length > 0) {
+    const completedContents = await prisma.userContent.findMany({
+      where: {
+        userId,
+        contentId: { in: [...contentIds, ...convertedSourceIds] },
+        completed: true,
+      },
+      select: { contentId: true, completed: true },
+    })
+    const completedVisibleIds = new Set(
+      getCompletedVisibleContentIds([{ lessons: [currentLesson] }], completedContents, { courseId })
+    )
+    isCompleted = contentIds.every((contentId) => completedVisibleIds.has(contentId))
+  } else if (contentIds.length > 0) {
+    const completedContents = await prisma.userContent.count({
+      where: {
+        userId,
+        contentId: { in: contentIds },
+        completed: true,
+      },
+    })
+    isCompleted = completedContents === contentIds.length
+  }
 
   return {
     prevLessonId: lessons[currentIndex - 1]?.id ?? null,
     nextLessonId: lessons[currentIndex + 1]?.id ?? null,
-    isCompleted: contentIds.length === 0 || completedContents === contentIds.length,
+    isCompleted,
   }
 }
 
@@ -135,8 +159,11 @@ export async function completeCourseLesson(courseId: string, lessonId: string) {
   }
 
   const now = new Date()
-  const currentContentIds = lessons[currentIndex].contents.map((content) => content.id)
-  const courseContentIds = lessons.flatMap((entry) => entry.contents.map((content) => content.id))
+  const currentContentIds = getVisibleContentIds(lessons[currentIndex])
+  const courseContentIds = lessons.flatMap((entry) => getVisibleContentIds(entry))
+  const convertedSourceIds = lessons.flatMap((entry) =>
+    getConvertedEmbedSourceIds(entry, { courseId })
+  )
 
   if (currentContentIds.length > 0) {
     await prisma.$transaction([
@@ -164,18 +191,28 @@ export async function completeCourseLesson(courseId: string, lessonId: string) {
     ])
   }
 
-  const completedContents = courseContentIds.length
-    ? await prisma.userContent.count({
-        where: {
-          userId,
-          contentId: { in: courseContentIds },
-          completed: true,
-        },
-      })
-    : 0
-  const courseProgress = courseContentIds.length
-    ? Math.round((completedContents / courseContentIds.length) * 100)
-    : 0
+  let courseProgress = 0
+  if (courseContentIds.length > 0 && convertedSourceIds.length > 0) {
+    const completedContents = await prisma.userContent.findMany({
+      where: {
+        userId,
+        contentId: { in: [...courseContentIds, ...convertedSourceIds] },
+        completed: true,
+      },
+      select: { contentId: true, completed: true },
+    })
+    const summary = summarizeCourseProgress([{ lessons }], completedContents, { courseId })
+    courseProgress = summary.progressPercentage
+  } else if (courseContentIds.length > 0) {
+    const completedContents = await prisma.userContent.count({
+      where: {
+        userId,
+        contentId: { in: courseContentIds },
+        completed: true,
+      },
+    })
+    courseProgress = Math.round((completedContents / courseContentIds.length) * 100)
+  }
 
   await prisma.enrollment.update({
     where: { id: enrollment.id },

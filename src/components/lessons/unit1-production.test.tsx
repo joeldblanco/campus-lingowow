@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { Block } from '@/types/course-builder'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
 import { Unit1Production, isUnit1ProductionBlock } from './unit1-production'
+import recordingControlStyles from './unit1-production.module.css'
 
 type EssayGradingProps = {
   label?: string
@@ -184,6 +185,35 @@ describe('Unit 1 sentence production', () => {
 })
 
 describe('Unit 1 conversation production', () => {
+  it('describes a teacher-led presentation as an activity rather than question turns', () => {
+    const block: Block = {
+      id: 'family-presentation', type: 'recording', order: 0,
+      instruction: 'Talk about your family. Present a family tree to your teacher.',
+      data: { learningRevision: 'course-guided-v1', guidedRole: 'conversation' },
+    }
+    render(<Unit1Production block={block} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Con mi profesora' }))
+    expect(screen.getByText('Realiza la actividad con tu profesora.')).toBeVisible()
+    expect(screen.getByRole('list', { name: 'Actividad para practicar con tu profesora' })).toBeVisible()
+    expect(screen.queryByText('Pregunten y respondan por turnos.')).not.toBeInTheDocument()
+  })
+  it('uses the reviewed course scenario and authored turn count in both study modes', () => {
+    const block: Block = {
+      id: 'unit-two-conversation', type: 'recording', order: 0,
+      instruction: 'Introduce yourself to a classmate and discuss your origins.',
+      data: {
+        learningRevision: 'course-guided-v1', guidedRole: 'conversation',
+        turns: [{ id: 'origins', question: 'Where does your family come from?' }],
+      },
+    }
+    render(<Unit1Production block={block} />)
+    expect(screen.getByText('Where does your family come from?')).toBeVisible()
+    expect(screen.getByText('Turno 1 de 1')).toBeVisible()
+    expect(screen.queryByText('What is your name?')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Con mi profesora' }))
+    expect(screen.getByText('Where does your family come from?')).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Grabar respuesta' })).not.toBeInTheDocument()
+  })
   it('offers a teacher mode without recording or automatic grading, with explicit completion', () => {
     const target = document.createElement('div')
     const onCompletion = vi.fn()
@@ -248,8 +278,12 @@ describe('Unit 1 conversation production', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Grabar respuesta' }))
+    const recordButton = screen.getByRole('button', { name: 'Grabar respuesta' })
+    expect(recordButton).toHaveClass(recordingControlStyles.recordButton)
+    expect(recordButton).toHaveAttribute('data-unit1-recording-control', 'circle')
+    fireEvent.click(recordButton)
     await waitFor(() => expect(screen.getByRole('button', { name: 'Detener grabación' })).toBeInTheDocument())
+    expect(screen.getByRole('button', { name: 'Detener grabación' })).toHaveClass(recordingControlStyles.recordButton)
     fireEvent.click(screen.getByRole('button', { name: 'Detener grabación' }))
     await waitFor(() => expect(target.querySelector('button')).toHaveTextContent('Enviar respuesta'))
     expect(onRecordingStateChange).toHaveBeenCalledWith(true)

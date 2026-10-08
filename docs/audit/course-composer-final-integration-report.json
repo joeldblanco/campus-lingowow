@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Read-only final composer integration preflight for Units 2-52.",
+  "scope": {
+    "publishedSources": 51,
+    "audioRecordsReady": 103,
+    "figureReferencesReady": 303,
+    "uniqueFigureSourcesReady": 301,
+    "databaseOrPublicWrites": false
+  },
+  "composer": {
+    "blockers": 0,
+    "tableReviewApplied": 10,
+    "teacherNotesApplied": 16,
+    "unit38ErrataApplied": 1,
+    "unit6RecoveryApplied": 1,
+    "unit7Replacement": "Audio 1 at published slide 15"
+  },
+  "mainBuilderPreflight": {
+    "builderScript": "C:/Users/ACER/.codex/worktrees/lesson-guided-pilot/web/scripts/content/build-course-learning.py",
+    "commit": "88957f7",
+    "publishablePlans": 46,
+    "blockedPlans": 5,
+    "blockersByCode": {
+      "native-figure-required": 5
+    },
+    "output": "%TEMP%/course-final-preflight-20261008c/builder.json"
+  },
+  "remainingBlockers": [
+    {
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "unit": 3,
+      "publishedSlide": 4,
+      "classification": "source-asset-gap",
+      "detail": "Published prompt asks the learner to look at a picture, but the primary native slide media is only a template/person and audio icon; no confirmed instructional figure was admitted."
+    },
+    {
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "unit": 5,
+      "publishedSlide": 4,
+      "classification": "native-alignment-contract",
+      "detail": "Confirmed family-portrait source asset is staged and attached, but the latest builder strict native text matcher rejects the native supplement at coverage 0.878 because the published prompt has a longer joined text than the native split text."
+    },
+    {
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "unit": 30,
+      "publishedSlide": 15,
+      "classification": "builder-picture-regex",
+      "detail": "Writing prompt contains “picture him/her”; no picture activity or confirmed figure is present. The builder picture detector treats the prose use as a required figure."
+    },
+    {
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "unit": 40,
+      "publishedSlide": 13,
+      "classification": "builder-picture-regex",
+      "detail": "Vocabulary item “PHOTOGRAPH” triggers the picture detector; the slide has no picture activity or confirmed figure."
+    },
+    {
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "unit": 50,
+      "publishedSlide": 8,
+      "classification": "builder-picture-regex",
+      "detail": "Grammar example “Just picture how awkward it would be” triggers the picture detector; the slide has no picture activity or confirmed figure."
+    }
+  ],
+  "verification": {
+    "focusedTests": "python -m unittest tests/content/test_compose_course_builder_inputs.py -q",
+    "focusedTestCount": 16,
+    "contentTestCount": 50,
+    "pyCompile": "python -m py_compile scripts/content/compose-course-builder-inputs.py",
+    "gitDiffCheck": "git diff --check"
+  }
+}

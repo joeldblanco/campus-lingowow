@@ -1,0 +1,4784 @@
+{
+  "schemaVersion": 1,
+  "unit": 44,
+  "module": {
+    "order": 11,
+    "title": "Módulo 11",
+    "id": "cmnmm9lep0009w1qknpan2awr",
+    "driveTitle": "Module 11"
+  },
+  "candidate": {
+    "id": "1RJ3ngD99Le513vEz8korDh0fSbX--KSs",
+    "title": "Great Minds Think Alike - Unit 44.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1RJ3ngD99Le513vEz8korDh0fSbX--KSs/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "916781",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 11"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-44-primary-01-1RJ3ngD99Le513vEz8korDh0fSbX--KSs.pptx",
+    "localBytes": 916781,
+    "sha256": "bebd9880eb255b749bfd4f2318895f690e1224008f2e71c3ab9225ec93188ccf"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-44-primary-01-1RJ3ngD99Le513vEz8korDh0fSbX--KSs.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSIB-tzusORvj7s0t4PDV4cJwsSBuvX3_KQvd2TS0Gkts-upwplF2ydLq07geouTw/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSIB-tzusORvj7s0t4PDV4cJwsSBuvX3_KQvd2TS0Gkts-upwplF2ydLq07geouTw/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 18,
+    "nativeSlideCount": 18,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.395224,
+    "publicTokenCoverage": 0.947368,
+    "slideDifferenceCount": 9,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nDescribe what things are made of, who they are done by and how they are done.\nCompetencies\nDescribe what things are made of, who they are done by and how they are done in written and spoken English.",
+        "publishedText": "Competencies Describe what things are made of, who they are done by, and how they are done in written and spoken English. Communicative Function Describe what things are made of, who they are done by and how they are done.",
+        "sequenceRatio": 0.451467
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his /her questions. 4",
+        "sequenceRatio": 0.973761
+      },
+      {
+        "slide": 6,
+        "nativeText": "PHRASES\nMEANING\nEXAMPLE\nAT THE BACK OF YOUR MIND\nSomething that you are not thinking about right now but is in your thoughts.\nAt the back of my mind is the fear of failing the exam.\nA BEE IN ONE’S BONNET\nAn idea which constantly occupies your thoughts.\nEva's got a bee in her bonnet about moving to New York.\nLIVE / BE CLOUD CUCKOO\nIt refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.\nIt was not that serious. Stom making a storm in a teacup.\nA FLIGHT OF FANCY\nIt means that something  is very imaginative but not at all practical or sensible.\nJimmy often has good ideas but his latest proposal is just a flight of fancy!\nA LIGHT BULB MOMENT\nA sudden moment of inspiration, comprehension or realisation.\nHarry had a light-bulb moment when he finally realised what was blocking the mechanism.\nBEAR/KEEP IN MIND\nTo remember something.\nBear in mind that no food will be served on board.\nTOY WITH THE IDEA\nIT means not to seriously think about something.\nSally has often toyed with the idea of moving abroad, but she's still here!\nBE ALL IN YOUR HEAD\nWhen something is just product of your imagination. It is not real.\nDon't be silly. Nobody is trying to harm you. It's all in your head!\nLook at the phrases and  discuss them with your teacher. Did you know them?",
+        "publishedText": "Look at the phrases and discuss them with your teacher. Did you know them? PHRASES MEANING EXAMPLE AT THE BACK OF YOUR MIND Something that you are not thinking about right now but is in your thoughts At the back of my mind is the fear of failing the exam. A BEE IN ONE’S BONNET An idea which constantly occupies your thoughts Eva's got a bee in her bonnet about moving to New York. LIVE / BE CLOUD CUCKOO It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen I was living in cloud-cuckoo land about my marriage. A FLIGHT OF FANCY It means that something is very imaginative but not at all practical or sensible Jimmy often has good ideas but his latest proposal is just a flight of fancy! A LIGHT BULB MOMENT A sudden moment of inspiration, comprehension or realisation Harry had a light-bulb moment when he finally realised what was blocking the mechanism. BEAR/KEEP IN MIND To remember something Bear in mind that no food will be served on board. TOY WITH THE IDEA It means not to seriously think about something Sally has often toyed with the idea of moving abroad, but she's still here! BE ALL IN YOUR HEAD When something is just product of your imagination. It is not real. Don't be silly. Nobody is trying to harm you. It's all in your head!",
+        "sequenceRatio": 0.594325
+      },
+      {
+        "slide": 8,
+        "nativeText": "STRUCTURES\nACTIVE VOICE\nPASSIVE VOICE\nTo be + Past Participle\nThey build the building in glass.\nThe building is built in glass.\nSomeone stole my car yesterday.\nMy car was stolen yesterday.\nThose are plastic chairs.\nThose chairs are plastic-made.\nTo be + Past Participle + by\nAlex will finish the job tonight.\nThe job will be finished by Alex tonight.\nJohn has done the house chores lately.\nThe house chores have been done by John lately.\nTim had borne in mind this idea for ages.\nThis idea had been borne in mind by Tim for ages.\nWe use passive voice when we want to explain how something is done, what it is made of and who has done it.",
+        "publishedText": "STRUCTURES ACTIVE VOICE PASSIVE VOICE To be + Past Participle They built the building in glass. The building was built in glass. Someone stole my car yesterday. My car was stolen yesterday. Those are plastic chairs. Those chairs are plastic-made. To be + Past Participle + by Alex will finish the job tonight. The job will be finished by Alex tonight. John has done the house chores lately. The house chores have been done by John lately. Tim had borne in mind this idea for ages. This idea had been borne in mind by Tim for ages. We use passive voice when we want to explain how something is done, what it is made of, and who has done it.",
+        "sequenceRatio": 0.904389
+      },
+      {
+        "slide": 9,
+        "nativeText": "Structures\nACTIVE VOICE\nPASSIVE VOICE\nProgressive Tenses\nThe boys are painting the house.\nThe house is being painted by the boys.\nShe was preparing dinner for us.\nDinner was being prepared for us.\nTo Consider\n\nIn active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.\nIt is considered to be used in formal contexts; however, its use is very common.\nIn passive voice, the who / what makes the action can be omitted. \nIn perfect tenses, we need to add the word been before the participle.\nThe most common progressive tenses using passive voice are present and past.\nWhen using present and past progressive, we use the verb to be + being + the participle.\nPerfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music.",
+        "publishedText": "Structures ACTIVE VOICE PASSIVE VOICE Progressive Tenses The boys are painting the house. The house is being painted by the boys. She was preparing dinner for us. Dinner was being prepared for us. To Consider 1. In active voice, we focus on who /what does the action but in passive voice the focus goes on the object. 2. It is considered to be used in formal contexts; however, its use is very common. 3. In passive voice, the who / what makes the action can be omitted. 4. In perfect tenses, we need to add the word been before the participle. 5. The most common progressive tenses using passive voice are present and past. 6. When using present and past progressive, we use the verb to be + being + the participle. 7. Perfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door. → The man next door has been being annoyed by our music.",
+        "sequenceRatio": 0.303063
+      },
+      {
+        "slide": 11,
+        "nativeText": "We can use passive voice for the following functions:\nFunctions\nExamples\n1\nState what things are made of\nThe legs of the table are iron-made.\nThe spoon was handcrafted in wood.\n2\nDeclare when things are made / done.\nThe meeting will be set for tomorrow.\nIs this piano being played this week?\n3\nPoint who things are made / done by.\nThey were married, weren’t they?\nYou have not told them, have you?\n4.\nFocus on objects rather than subjects in general actions.\nWhy was my burger eaten from the fridge?\nFive points will be taken from your test for cheating.\nTo consider \nPassive voice is not only used for the first three asécts; It can also be implemented in regular actions or everyday matters.",
+        "publishedText": "We can use passive voice for the following functions: Functions Examples 1 State what things are made of The legs of the table are iron-made. The spoon was handcrafted in wood. 2 Declare when things are made / done The meeting will be set for tomorrow. Is this piano being played this week? 3 Point who things are made / done by The stuffed clams were made by Jake. Those dresses will be designed by Ericka. 4. Focus on objects rather than subjects in general actions Why was my burger eaten from the fridge? Five points will be taken from your test for cheating. To consider Passive voice is not only used for the first three aspects; it can also be implemented in regular actions or everyday matters.",
+        "sequenceRatio": 0.572453
+      },
+      {
+        "slide": 13,
+        "nativeText": "A. Write the corresponding passive voice for each of the sentences listed. Follow the example.\nYou will buy all the ingredients for the cake.\n\nI am preparing lunch for my family. \n\nThe have worked in the report for days.\n\nJake and Jill were buying a house in Miami.\n\nI normally clean my house twice a week.\n\nJosh usually calls his family on Saturdays.\n\nThe factory made the fabric elastic.. \n\nWe had bought the yacht before Christmas.\n\nThey finally finished the paper last night.\nMy house is normally cleaned twice a week (by me).",
+        "publishedText": "A. Write the corresponding passive voice for each of the sentences listed. Follow the example. You will buy all the ingredients for the cake. I am preparing lunch for my family. The have worked in the report for days. Jake and Jill were buying a house in Miami. I normally clean my house twice a week. Josh usually calls his family on Saturdays. The factory made the fabric elastic. We had bought the yacht before Christmas. They finally finished the paper last night. My house is normally cleaned twice a week (by me).",
+        "sequenceRatio": 0.999038
+      },
+      {
+        "slide": 15,
+        "nativeText": "‹#›\nC. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read aloud the text to your teacher.\nHong Kong on The Loop.\n\nThe shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. \n\nAnalysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets.\n\nTemperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there,  more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories.\n\nAdapted from https://www.eltbase.com/worksheet-714-news-stories",
+        "publishedText": "15 C. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read the text aloud to your teacher. Hong Kong on The Loop. The shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. Analysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets. Temperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there, more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories. Adapted from https://www.eltbase.com/worksheet-714-news-stories https://www.eltbase.com/worksheet-714-news-stories",
+        "sequenceRatio": 0.977288
+      },
+      {
+        "slide": 16,
+        "nativeText": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied.\nE. Write a 150-180 word text about  a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied. E. Write an 120-160 word text about a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.994629
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 192049,
+      "sha256": "af102fdda85f8cf7da397aee855cba5043b9a1d80ec89827eaf00a886ef457ee"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 6,
+    "bytes": 365898,
+    "byExtension": {
+      ".jpg": 1,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 6,
+    "imageBytes": 365898
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-44-1RJ3ngD99Le513vEz8korDh0fSbX--KSs\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 6180525,
+            "y": 2958925,
+            "cx": 1288300,
+            "cy": 1288300,
+            "right": 7468825,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "290",
+          "shapeName": "Google Shape;290;g729cfa641f_0_32",
+          "bbox": {
+            "x": 3109575,
+            "y": 1382375,
+            "cx": 2679175,
+            "cy": 2679175,
+            "right": 5788750,
+            "bottom": 4061550
+          },
+          "slide": 14
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-44-1RJ3ngD99Le513vEz8korDh0fSbX--KSs\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image2.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-44-1RJ3ngD99Le513vEz8korDh0fSbX--KSs\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-44-1RJ3ngD99Le513vEz8korDh0fSbX--KSs\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "328",
+          "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 18
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-44-1RJ3ngD99Le513vEz8korDh0fSbX--KSs\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "329",
+          "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 18
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-44-1RJ3ngD99Le513vEz8korDh0fSbX--KSs\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 192049,
+      "sha256": "af102fdda85f8cf7da397aee855cba5043b9a1d80ec89827eaf00a886ef457ee",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710726,
+            "right": 8055748,
+            "bottom": 2245201
+          },
+          "slide": 4
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "44",
+          "Great Minds Think Alike",
+          "Unit"
+        ],
+        "joinedText": "44\nGreat Minds Think Alike\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2977500,
+              "cy": 1649100,
+              "right": 3788450,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "44",
+                "runs": [
+                  "4",
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "44"
+            ],
+            "joinedText": "44"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1400525,
+              "y": 2449025,
+              "cx": 6271500,
+              "cy": 1159800,
+              "right": 7672025,
+              "bottom": 3608825
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Great Minds Think Alike",
+                "runs": [
+                  "Great Minds Think Alike"
+                ]
+              }
+            ],
+            "texts": [
+              "Great Minds Think Alike"
+            ],
+            "joinedText": "Great Minds Think Alike"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 210350,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1299350,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "44",
+        "visibleTexts": [
+          "44",
+          "Great Minds Think Alike",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYzdTzjK9Hs6L6NFsYryE1RLl6zgOAwjTNSDVfG6WCGDdd4X0-pxniuPnTKgVsDEkDcoNaXfsGn1DbvYwWD3o2yQBCx4u9o32q_asTc277uTLeMl4y3aMn8KQrHQM7DpTbwQmw9m3X4FIxMnoPJk39m8fqA0DeifS5h4qvX_nh8nf3lfnmKLyDsH0AwYkhTQQ=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Describe what things are made of, who they are done by and how they are done.",
+          "Competencies",
+          "Describe what things are made of, who they are done by and how they are done in written and spoken English."
+        ],
+        "joinedText": "Communicative Function\nDescribe what things are made of, who they are done by and how they are done.\nCompetencies\nDescribe what things are made of, who they are done by and how they are done in written and spoken English.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Describe what things are made of, who they are done by and how they are done.",
+                "runs": [
+                  "Describe what things are made of, who they are done by and how they are done."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Describe what things are made of, who they are done by and how they are done."
+            ],
+            "joinedText": "Communicative Function\nDescribe what things are made of, who they are done by and how they are done."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 5275500,
+              "cy": 2053500,
+              "right": 6727125,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Describe what things are made of, who they are done by and how they are done in written and spoken English.",
+                "runs": [
+                  "Describe what things are made of, who they are done by and how they are done",
+                  " in written and spoken English."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Describe what things are made of, who they are done by and how they are done in written and spoken English."
+            ],
+            "joinedText": "Competencies\nDescribe what things are made of, who they are done by and how they are done in written and spoken English."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Competencies Describe what things are made of, who they are done by, and how they are done in written and spoken English.",
+        "visibleTexts": [
+          "Competencies Describe what things are made of, who they are done by, and how they are done in written and spoken English.",
+          "Communicative Function Describe what things are made of, who they are done by and how they are done."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710726,
+              "right": 8055748,
+              "bottom": 2245201
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 6180525,
+              "y": 2958925,
+              "cx": 1288300,
+              "cy": 1288300,
+              "right": 7468825,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710726,
+              "right": 8055748,
+              "bottom": 2245201
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 6180525,
+              "y": 2958925,
+              "cx": 1288300,
+              "cy": 1288300,
+              "right": 7468825,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his /her questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbU6FowFykBrKrGv7jWNHW9SwZ7YXVBmYnM0Bn5hIkqxV3FfdYC5NMP7ypYL833tJahsBSzCGUt6aOWsXzxEcuVaLS3DabSYE2gYT5laSVDKqIOzQvHuEw-jYpndaGg38m2IQONFTd0D9z-dKKUrokYXM5lgD7w9HNDeN3MdyilCugtuxFPtI-XKLnA30V-dw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ2zZ9wna9ZnfIJolXQfg4OJEeH0E_N9rQwocr5pBSNc7qLcPoDzGt0W_R7A6o2dgW6wdqje5BL5DcvWIT4Vo1kuymGpxpiWNBoz3RyoIpfu8ruLU-upQKumAfFknKnBNhca-jqltUpLARptZat6r7B7IyIXueWgLNHJdxX0iz-1kc9apea2-Hhcx9DzH6Fgg=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "PHRASES",
+          "MEANING",
+          "EXAMPLE",
+          "AT THE BACK OF YOUR MIND",
+          "Something that you are not thinking about right now but is in your thoughts.",
+          "At the back of my mind is the fear of failing the exam.",
+          "A BEE IN ONE’S BONNET",
+          "An idea which constantly occupies your thoughts.",
+          "Eva's got a bee in her bonnet about moving to New York.",
+          "LIVE / BE CLOUD CUCKOO",
+          "It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.",
+          "It was not that serious. Stom making a storm in a teacup.",
+          "A FLIGHT OF FANCY",
+          "It means that something  is very imaginative but not at all practical or sensible.",
+          "Jimmy often has good ideas but his latest proposal is just a flight of fancy!",
+          "A LIGHT BULB MOMENT",
+          "A sudden moment of inspiration, comprehension or realisation.",
+          "Harry had a light-bulb moment when he finally realised what was blocking the mechanism.",
+          "BEAR/KEEP IN MIND",
+          "To remember something.",
+          "Bear in mind that no food will be served on board.",
+          "TOY WITH THE IDEA",
+          "IT means not to seriously think about something.",
+          "Sally has often toyed with the idea of moving abroad, but she's still here!",
+          "BE ALL IN YOUR HEAD",
+          "When something is just product of your imagination. It is not real.",
+          "Don't be silly. Nobody is trying to harm you. It's all in your head!",
+          "Look at the phrases and  discuss them with your teacher. Did you know them?"
+        ],
+        "joinedText": "PHRASES\nMEANING\nEXAMPLE\nAT THE BACK OF YOUR MIND\nSomething that you are not thinking about right now but is in your thoughts.\nAt the back of my mind is the fear of failing the exam.\nA BEE IN ONE’S BONNET\nAn idea which constantly occupies your thoughts.\nEva's got a bee in her bonnet about moving to New York.\nLIVE / BE CLOUD CUCKOO\nIt refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.\nIt was not that serious. Stom making a storm in a teacup.\nA FLIGHT OF FANCY\nIt means that something  is very imaginative but not at all practical or sensible.\nJimmy often has good ideas but his latest proposal is just a flight of fancy!\nA LIGHT BULB MOMENT\nA sudden moment of inspiration, comprehension or realisation.\nHarry had a light-bulb moment when he finally realised what was blocking the mechanism.\nBEAR/KEEP IN MIND\nTo remember something.\nBear in mind that no food will be served on board.\nTOY WITH THE IDEA\nIT means not to seriously think about something.\nSally has often toyed with the idea of moving abroad, but she's still here!\nBE ALL IN YOUR HEAD\nWhen something is just product of your imagination. It is not real.\nDon't be silly. Nobody is trying to harm you. It's all in your head!\nLook at the phrases and  discuss them with your teacher. Did you know them?",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "kind": "table",
+            "bbox": {
+              "x": 515613,
+              "y": 638460,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3515613,
+              "bottom": 3638460
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "PHRASES",
+                "runs": []
+              },
+              {
+                "text": "MEANING",
+                "runs": []
+              },
+              {
+                "text": "EXAMPLE",
+                "runs": []
+              },
+              {
+                "text": "AT THE BACK OF YOUR MIND",
+                "runs": []
+              },
+              {
+                "text": "Something that you are not thinking about right now but is in your thoughts.",
+                "runs": []
+              },
+              {
+                "text": "At the back of my mind is the fear of failing the exam.",
+                "runs": []
+              },
+              {
+                "text": "A BEE IN ONE’S BONNET",
+                "runs": []
+              },
+              {
+                "text": "An idea which constantly occupies your thoughts.",
+                "runs": []
+              },
+              {
+                "text": "Eva's got a bee in her bonnet about moving to New York.",
+                "runs": []
+              },
+              {
+                "text": "LIVE / BE CLOUD CUCKOO",
+                "runs": []
+              },
+              {
+                "text": "It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.",
+                "runs": []
+              },
+              {
+                "text": "It was not that serious. Stom making a storm in a teacup.",
+                "runs": []
+              },
+              {
+                "text": "A FLIGHT OF FANCY",
+                "runs": []
+              },
+              {
+                "text": "It means that something  is very imaginative but not at all practical or sensible.",
+                "runs": []
+              },
+              {
+                "text": "Jimmy often has good ideas but his latest proposal is just a flight of fancy!",
+                "runs": []
+              },
+              {
+                "text": "A LIGHT BULB MOMENT",
+                "runs": []
+              },
+              {
+                "text": "A sudden moment of inspiration, comprehension or realisation.",
+                "runs": []
+              },
+              {
+                "text": "Harry had a light-bulb moment when he finally realised what was blocking the mechanism.",
+                "runs": []
+              },
+              {
+                "text": "BEAR/KEEP IN MIND",
+                "runs": []
+              },
+              {
+                "text": "To remember something.",
+                "runs": []
+              },
+              {
+                "text": "Bear in mind that no food will be served on board.",
+                "runs": []
+              },
+              {
+                "text": "TOY WITH THE IDEA",
+                "runs": []
+              },
+              {
+                "text": "IT means not to seriously think about something.",
+                "runs": []
+              },
+              {
+                "text": "Sally has often toyed with the idea of moving abroad, but she's still here!",
+                "runs": []
+              },
+              {
+                "text": "BE ALL IN YOUR HEAD",
+                "runs": []
+              },
+              {
+                "text": "When something is just product of your imagination. It is not real.",
+                "runs": []
+              },
+              {
+                "text": "Don't be silly. Nobody is trying to harm you. It's all in your head!",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "PHRASES",
+              "MEANING",
+              "EXAMPLE",
+              "AT THE BACK OF YOUR MIND",
+              "Something that you are not thinking about right now but is in your thoughts.",
+              "At the back of my mind is the fear of failing the exam.",
+              "A BEE IN ONE’S BONNET",
+              "An idea which constantly occupies your thoughts.",
+              "Eva's got a bee in her bonnet about moving to New York.",
+              "LIVE / BE CLOUD CUCKOO",
+              "It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.",
+              "It was not that serious. Stom making a storm in a teacup.",
+              "A FLIGHT OF FANCY",
+              "It means that something  is very imaginative but not at all practical or sensible.",
+              "Jimmy often has good ideas but his latest proposal is just a flight of fancy!",
+              "A LIGHT BULB MOMENT",
+              "A sudden moment of inspiration, comprehension or realisation.",
+              "Harry had a light-bulb moment when he finally realised what was blocking the mechanism.",
+              "BEAR/KEEP IN MIND",
+              "To remember something.",
+              "Bear in mind that no food will be served on board.",
+              "TOY WITH THE IDEA",
+              "IT means not to seriously think about something.",
+              "Sally has often toyed with the idea of moving abroad, but she's still here!",
+              "BE ALL IN YOUR HEAD",
+              "When something is just product of your imagination. It is not real.",
+              "Don't be silly. Nobody is trying to harm you. It's all in your head!"
+            ],
+            "joinedText": "PHRASES\nMEANING\nEXAMPLE\nAT THE BACK OF YOUR MIND\nSomething that you are not thinking about right now but is in your thoughts.\nAt the back of my mind is the fear of failing the exam.\nA BEE IN ONE’S BONNET\nAn idea which constantly occupies your thoughts.\nEva's got a bee in her bonnet about moving to New York.\nLIVE / BE CLOUD CUCKOO\nIt refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.\nIt was not that serious. Stom making a storm in a teacup.\nA FLIGHT OF FANCY\nIt means that something  is very imaginative but not at all practical or sensible.\nJimmy often has good ideas but his latest proposal is just a flight of fancy!\nA LIGHT BULB MOMENT\nA sudden moment of inspiration, comprehension or realisation.\nHarry had a light-bulb moment when he finally realised what was blocking the mechanism.\nBEAR/KEEP IN MIND\nTo remember something.\nBear in mind that no food will be served on board.\nTOY WITH THE IDEA\nIT means not to seriously think about something.\nSally has often toyed with the idea of moving abroad, but she's still here!\nBE ALL IN YOUR HEAD\nWhen something is just product of your imagination. It is not real.\nDon't be silly. Nobody is trying to harm you. It's all in your head!",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;gd6c0dc1310_0_17",
+            "kind": "text",
+            "bbox": {
+              "x": 656875,
+              "y": 181850,
+              "cx": 7835100,
+              "cy": 685200,
+              "right": 8491975,
+              "bottom": 867050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the phrases and  discuss them with your teacher. Did you know them?",
+                "runs": [
+                  "Look at the phrases and  discuss them with your teacher. Did you know them?"
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the phrases and  discuss them with your teacher. Did you know them?"
+            ],
+            "joinedText": "Look at the phrases and  discuss them with your teacher. Did you know them?"
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "bbox": {
+              "x": 515613,
+              "y": 638460,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3515613,
+              "bottom": 3638460
+            },
+            "columnWidths": [
+              1351275,
+              3225425,
+              3399725
+            ],
+            "rows": [
+              {
+                "height": 402650,
+                "cells": [
+                  {
+                    "text": "PHRASES",
+                    "paragraphs": [
+                      {
+                        "text": "PHRASES",
+                        "runs": [
+                          "PHRASES"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "MEANING",
+                    "paragraphs": [
+                      {
+                        "text": "MEANING",
+                        "runs": [
+                          "MEANING"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "EXAMPLE",
+                    "paragraphs": [
+                      {
+                        "text": "EXAMPLE",
+                        "runs": [
+                          "EXAMPLE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "AT THE BACK OF YOUR MIND",
+                    "paragraphs": [
+                      {
+                        "text": "AT THE BACK OF YOUR MIND",
+                        "runs": [
+                          "AT THE BACK OF YOUR MIND"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Something that you are not thinking about right now but is in your thoughts.",
+                    "paragraphs": [
+                      {
+                        "text": "Something that you are not thinking about right now but is in your thoughts.",
+                        "runs": [
+                          "Something that you are not thinking about right now but is in your thoughts."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "At the back of my mind is the fear of failing the exam.",
+                    "paragraphs": [
+                      {
+                        "text": "At the back of my mind is the fear of failing the exam.",
+                        "runs": [
+                          "At the back of my mind is the fear of failing the exam."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "A BEE IN ONE’S BONNET",
+                    "paragraphs": [
+                      {
+                        "text": "A BEE IN ONE’S BONNET",
+                        "runs": [
+                          "A",
+                          " BEE IN ONE’S BONNET"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "An idea which constantly occupies your thoughts.",
+                    "paragraphs": [
+                      {
+                        "text": "An idea which constantly occupies your thoughts.",
+                        "runs": [
+                          "An idea which constantly occupies your thoughts."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Eva's got a bee in her bonnet about moving to New York.",
+                    "paragraphs": [
+                      {
+                        "text": "Eva's got a bee in her bonnet about moving to New York.",
+                        "runs": [
+                          "Eva's got a bee in her bonnet about moving to New York."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "LIVE / BE CLOUD CUCKOO",
+                    "paragraphs": [
+                      {
+                        "text": "LIVE / BE CLOUD CUCKOO",
+                        "runs": [
+                          "LIVE / BE CLOUD CUCKOO"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.",
+                    "paragraphs": [
+                      {
+                        "text": "It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen.",
+                        "runs": [
+                          "It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "It was not that serious. Stom making a storm in a teacup.",
+                    "paragraphs": [
+                      {
+                        "text": "It was not that serious. Stom making a storm in a teacup.",
+                        "runs": [
+                          "It was not that serious. Stom making a storm in a teacup."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "A FLIGHT OF FANCY",
+                    "paragraphs": [
+                      {
+                        "text": "A FLIGHT OF FANCY",
+                        "runs": [
+                          "A ",
+                          "FLIGHT OF FANCY"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "It means that something  is very imaginative but not at all practical or sensible.",
+                    "paragraphs": [
+                      {
+                        "text": "It means that something  is very imaginative but not at all practical or sensible.",
+                        "runs": [
+                          "It means that something  is very imaginative but not at all practical or sensible."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Jimmy often has good ideas but his latest proposal is just a flight of fancy!",
+                    "paragraphs": [
+                      {
+                        "text": "Jimmy often has good ideas but his latest proposal is just a flight of fancy!",
+                        "runs": [
+                          "Jimmy often has good ideas but his latest proposal is just a flight of fancy!"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "A LIGHT BULB MOMENT",
+                    "paragraphs": [
+                      {
+                        "text": "A LIGHT BULB MOMENT",
+                        "runs": [
+                          "A LI",
+                          "GHT BULB MOMENT"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "A sudden moment of inspiration, comprehension or realisation.",
+                    "paragraphs": [
+                      {
+                        "text": "A sudden moment of inspiration, comprehension or realisation.",
+                        "runs": [
+                          "A sudden moment of inspiration, comprehension or realisation."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Harry had a light-bulb moment when he finally realised what was blocking the mechanism.",
+                    "paragraphs": [
+                      {
+                        "text": "Harry had a light-bulb moment when he finally realised what was blocking the mechanism.",
+                        "runs": [
+                          "Harry had a light-bulb moment when he finally realised what was blocking the mechanism."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "BEAR/KEEP IN MIND",
+                    "paragraphs": [
+                      {
+                        "text": "BEAR/KEEP IN MIND",
+                        "runs": [
+                          "BEAR/KEEP IN MIND"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To remember something.",
+                    "paragraphs": [
+                      {
+                        "text": "To remember something.",
+                        "runs": [
+                          "To remember ",
+                          "something",
+                          "."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Bear in mind that no food will be served on board.",
+                    "paragraphs": [
+                      {
+                        "text": "Bear in mind that no food will be served on board.",
+                        "runs": [
+                          "Bear in mind that no food will be served on board."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "TOY WITH THE IDEA",
+                    "paragraphs": [
+                      {
+                        "text": "TOY WITH THE IDEA",
+                        "runs": [
+                          "TOY WITH THE IDEA"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "IT means not to seriously think about something.",
+                    "paragraphs": [
+                      {
+                        "text": "IT means not to seriously think about something.",
+                        "runs": [
+                          "IT means not to seriously think about something."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Sally has often toyed with the idea of moving abroad, but she's still here!",
+                    "paragraphs": [
+                      {
+                        "text": "Sally has often toyed with the idea of moving abroad, but she's still here!",
+                        "runs": [
+                          "Sally has often toyed with the idea of moving abroad, but she's still here!"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "BE ALL IN YOUR HEAD",
+                    "paragraphs": [
+                      {
+                        "text": "BE ALL IN YOUR HEAD",
+                        "runs": [
+                          "BE ALL IN YOUR HEAD"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "When something is just product of your imagination. It is not real.",
+                    "paragraphs": [
+                      {
+                        "text": "When something is just product of your imagination. It is not real.",
+                        "runs": [
+                          "When something is just product of your imagination. It is not real."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Don't be silly. Nobody is trying to harm you. It's all in your head!",
+                    "paragraphs": [
+                      {
+                        "text": "Don't be silly. Nobody is trying to harm you. It's all in your head!",
+                        "runs": [
+                          "Don't be silly. Nobody is trying to harm you. It's all in your head!"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the phrases and discuss them with your teacher. Did you know them?",
+        "visibleTexts": [
+          "Look at the phrases and discuss them with your teacher. Did you know them?",
+          "PHRASES MEANING EXAMPLE AT THE BACK OF YOUR MIND Something that you are not thinking about right now but is in your thoughts At the back of my mind is the fear of failing the exam. A BEE IN ONE’S BONNET An idea which constantly occupies your thoughts Eva's got a bee in her bonnet about moving to New York. LIVE / BE CLOUD CUCKOO It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen I was living in cloud-cuckoo land about my marriage. A FLIGHT OF FANCY It means that something is very imaginative but not at all practical or sensible Jimmy often has good ideas but his latest proposal is just a flight of fancy! A LIGHT BULB MOMENT A sudden moment of inspiration, comprehension or realisation Harry had a light-bulb moment when he finally realised what was blocking the mechanism. BEAR/KEEP IN MIND To remember something Bear in mind that no food will be served on board. TOY WITH THE IDEA It means not to seriously think about something Sally has often toyed with the idea of moving abroad, but she's still here! BE ALL IN YOUR HEAD When something is just product of your imagination. It is not real. Don't be silly. Nobody is trying to harm you. It's all in your head!"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "STRUCTURES",
+          "ACTIVE VOICE",
+          "PASSIVE VOICE",
+          "To be + Past Participle",
+          "They build the building in glass.",
+          "The building is built in glass.",
+          "Someone stole my car yesterday.",
+          "My car was stolen yesterday.",
+          "Those are plastic chairs.",
+          "Those chairs are plastic-made.",
+          "To be + Past Participle + by",
+          "Alex will finish the job tonight.",
+          "The job will be finished by Alex tonight.",
+          "John has done the house chores lately.",
+          "The house chores have been done by John lately.",
+          "Tim had borne in mind this idea for ages.",
+          "This idea had been borne in mind by Tim for ages.",
+          "We use passive voice when we want to explain how something is done, what it is made of and who has done it."
+        ],
+        "joinedText": "STRUCTURES\nACTIVE VOICE\nPASSIVE VOICE\nTo be + Past Participle\nThey build the building in glass.\nThe building is built in glass.\nSomeone stole my car yesterday.\nMy car was stolen yesterday.\nThose are plastic chairs.\nThose chairs are plastic-made.\nTo be + Past Participle + by\nAlex will finish the job tonight.\nThe job will be finished by Alex tonight.\nJohn has done the house chores lately.\nThe house chores have been done by John lately.\nTim had borne in mind this idea for ages.\nThis idea had been borne in mind by Tim for ages.\nWe use passive voice when we want to explain how something is done, what it is made of and who has done it.",
+        "shapes": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 98363,
+              "y": 859450,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3098363,
+              "bottom": 3859450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "STRUCTURES",
+                "runs": []
+              },
+              {
+                "text": "ACTIVE VOICE",
+                "runs": []
+              },
+              {
+                "text": "PASSIVE VOICE",
+                "runs": []
+              },
+              {
+                "text": "To be + Past Participle",
+                "runs": []
+              },
+              {
+                "text": "They build the building in glass.",
+                "runs": []
+              },
+              {
+                "text": "The building is built in glass.",
+                "runs": []
+              },
+              {
+                "text": "Someone stole my car yesterday.",
+                "runs": []
+              },
+              {
+                "text": "My car was stolen yesterday.",
+                "runs": []
+              },
+              {
+                "text": "Those are plastic chairs.",
+                "runs": []
+              },
+              {
+                "text": "Those chairs are plastic-made.",
+                "runs": []
+              },
+              {
+                "text": "To be + Past Participle + by",
+                "runs": []
+              },
+              {
+                "text": "Alex will finish the job tonight.",
+                "runs": []
+              },
+              {
+                "text": "The job will be finished by Alex tonight.",
+                "runs": []
+              },
+              {
+                "text": "John has done the house chores lately.",
+                "runs": []
+              },
+              {
+                "text": "The house chores have been done by John lately.",
+                "runs": []
+              },
+              {
+                "text": "Tim had borne in mind this idea for ages.",
+                "runs": []
+              },
+              {
+                "text": "This idea had been borne in mind by Tim for ages.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "STRUCTURES",
+              "ACTIVE VOICE",
+              "PASSIVE VOICE",
+              "To be + Past Participle",
+              "They build the building in glass.",
+              "The building is built in glass.",
+              "Someone stole my car yesterday.",
+              "My car was stolen yesterday.",
+              "Those are plastic chairs.",
+              "Those chairs are plastic-made.",
+              "To be + Past Participle + by",
+              "Alex will finish the job tonight.",
+              "The job will be finished by Alex tonight.",
+              "John has done the house chores lately.",
+              "The house chores have been done by John lately.",
+              "Tim had borne in mind this idea for ages.",
+              "This idea had been borne in mind by Tim for ages."
+            ],
+            "joinedText": "STRUCTURES\nACTIVE VOICE\nPASSIVE VOICE\nTo be + Past Participle\nThey build the building in glass.\nThe building is built in glass.\nSomeone stole my car yesterday.\nMy car was stolen yesterday.\nThose are plastic chairs.\nThose chairs are plastic-made.\nTo be + Past Participle + by\nAlex will finish the job tonight.\nThe job will be finished by Alex tonight.\nJohn has done the house chores lately.\nThe house chores have been done by John lately.\nTim had borne in mind this idea for ages.\nThis idea had been borne in mind by Tim for ages.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 793225,
+              "y": 105650,
+              "cx": 7919700,
+              "cy": 699900,
+              "right": 8712925,
+              "bottom": 805550
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We use passive voice when we want to explain how something is done, what it is made of and who has done it.",
+                "runs": [
+                  "We use passive voice when we want to ",
+                  "explain",
+                  " how something is done, what it is made of and who has done it."
+                ]
+              }
+            ],
+            "texts": [
+              "We use passive voice when we want to explain how something is done, what it is made of and who has done it."
+            ],
+            "joinedText": "We use passive voice when we want to explain how something is done, what it is made of and who has done it."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 98363,
+              "y": 859450,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3098363,
+              "bottom": 3859450
+            },
+            "columnWidths": [
+              2308700,
+              2979525,
+              3697600
+            ],
+            "rows": [
+              {
+                "height": 547450,
+                "cells": [
+                  {
+                    "text": "STRUCTURES",
+                    "paragraphs": [
+                      {
+                        "text": "STRUCTURES",
+                        "runs": [
+                          "S",
+                          "TRUCTURES"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "ACTIVE VOICE",
+                    "paragraphs": [
+                      {
+                        "text": "ACTIVE VOICE",
+                        "runs": [
+                          "ACTIVE VOICE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "PASSIVE VOICE",
+                    "paragraphs": [
+                      {
+                        "text": "PASSIVE VOICE",
+                        "runs": [
+                          "PASSIVE VOICE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "To be + Past Participle",
+                    "paragraphs": [
+                      {
+                        "text": "To be + Past Participle ",
+                        "runs": [
+                          "To be + Past Participle "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They build the building in glass.",
+                    "paragraphs": [
+                      {
+                        "text": "They build the building in glass.",
+                        "runs": [
+                          "They build the building in glass."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The building is built in glass.",
+                    "paragraphs": [
+                      {
+                        "text": "The building is built in glass.",
+                        "runs": [
+                          "The building",
+                          " is built",
+                          " in glass."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Someone stole my car yesterday.",
+                    "paragraphs": [
+                      {
+                        "text": "Someone stole my car yesterday.",
+                        "runs": [
+                          "Someone stole my car yesterday."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "My car was stolen yesterday.",
+                    "paragraphs": [
+                      {
+                        "text": "My car was stolen yesterday.",
+                        "runs": [
+                          "My car ",
+                          "was stolen",
+                          " yesterday."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Those are plastic chairs.",
+                    "paragraphs": [
+                      {
+                        "text": "Those are plastic chairs.",
+                        "runs": [
+                          "Those are plastic chairs."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Those chairs are plastic-made.",
+                    "paragraphs": [
+                      {
+                        "text": "Those chairs are plastic-made.",
+                        "runs": [
+                          "Those chairs",
+                          " ",
+                          "are plastic-made",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "To be + Past Participle + by",
+                    "paragraphs": [
+                      {
+                        "text": "To be + Past Participle + by",
+                        "runs": [
+                          "To be + Past Participle + by"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Alex will finish the job tonight.",
+                    "paragraphs": [
+                      {
+                        "text": "Alex will finish the job tonight.",
+                        "runs": [
+                          "Alex will ",
+                          "finish",
+                          " the job tonight."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The job will be finished by Alex tonight.",
+                    "paragraphs": [
+                      {
+                        "text": "The job will be finished by Alex tonight.",
+                        "runs": [
+                          "The job ",
+                          "will be finished ",
+                          "by ",
+                          "Alex tonight."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "John has done the house chores lately.",
+                    "paragraphs": [
+                      {
+                        "text": "John has done the house chores lately.",
+                        "runs": [
+                          "John has done the house chores lately."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The house chores have been done by John lately.",
+                    "paragraphs": [
+                      {
+                        "text": "The house chores have been done by John lately.",
+                        "runs": [
+                          "The house chores",
+                          " ",
+                          "have been done",
+                          " ",
+                          "by",
+                          " John lately."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Tim had borne in mind this idea for ages.",
+                    "paragraphs": [
+                      {
+                        "text": "Tim had borne in mind this idea for ages.",
+                        "runs": [
+                          "Tim had borne in mind this idea for ages."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "This idea had been borne in mind by Tim for ages.",
+                    "paragraphs": [
+                      {
+                        "text": "This idea had been borne in mind by Tim for ages.",
+                        "runs": [
+                          "This idea ",
+                          "had been borne in mind",
+                          " by ",
+                          "Tim for ages."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "STRUCTURES ACTIVE VOICE PASSIVE VOICE To be + Past Participle They built the building in glass. The building was built in glass. Someone stole my car yesterday. My car was stolen yesterday. Those are plastic chairs. Those chairs are plastic-made. To be + Past Participle + by Alex will finish the job tonight. The job will be finished by Alex tonight. John has done the house chores lately. The house chores have been done by John lately. Tim had borne in mind this idea for ages. This idea had been borne in mind by Tim for ages.",
+        "visibleTexts": [
+          "STRUCTURES ACTIVE VOICE PASSIVE VOICE To be + Past Participle They built the building in glass. The building was built in glass. Someone stole my car yesterday. My car was stolen yesterday. Those are plastic chairs. Those chairs are plastic-made. To be + Past Participle + by Alex will finish the job tonight. The job will be finished by Alex tonight. John has done the house chores lately. The house chores have been done by John lately. Tim had borne in mind this idea for ages. This idea had been borne in mind by Tim for ages.",
+          "We use passive voice when we want to explain how something is done, what it is made of, and who has done it."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Structures",
+          "ACTIVE VOICE",
+          "PASSIVE VOICE",
+          "Progressive Tenses",
+          "The boys are painting the house.",
+          "The house is being painted by the boys.",
+          "She was preparing dinner for us.",
+          "Dinner was being prepared for us.",
+          "To Consider\n\nIn active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.\nIt is considered to be used in formal contexts; however, its use is very common.\nIn passive voice, the who / what makes the action can be omitted. \nIn perfect tenses, we need to add the word been before the participle.\nThe most common progressive tenses using passive voice are present and past.\nWhen using present and past progressive, we use the verb to be + being + the participle.\nPerfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music."
+        ],
+        "joinedText": "Structures\nACTIVE VOICE\nPASSIVE VOICE\nProgressive Tenses\nThe boys are painting the house.\nThe house is being painted by the boys.\nShe was preparing dinner for us.\nDinner was being prepared for us.\nTo Consider\n\nIn active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.\nIt is considered to be used in formal contexts; however, its use is very common.\nIn passive voice, the who / what makes the action can be omitted. \nIn perfect tenses, we need to add the word been before the participle.\nThe most common progressive tenses using passive voice are present and past.\nWhen using present and past progressive, we use the verb to be + being + the participle.\nPerfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music.",
+        "shapes": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;gdcdadc1522_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 243888,
+              "y": 549600,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3243888,
+              "bottom": 3549600
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Structures",
+                "runs": []
+              },
+              {
+                "text": "ACTIVE VOICE",
+                "runs": []
+              },
+              {
+                "text": "PASSIVE VOICE",
+                "runs": []
+              },
+              {
+                "text": "Progressive Tenses",
+                "runs": []
+              },
+              {
+                "text": "The boys are painting the house.",
+                "runs": []
+              },
+              {
+                "text": "The house is being painted by the boys.",
+                "runs": []
+              },
+              {
+                "text": "She was preparing dinner for us.",
+                "runs": []
+              },
+              {
+                "text": "Dinner was being prepared for us.",
+                "runs": []
+              },
+              {
+                "text": "To Consider\n\nIn active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.\nIt is considered to be used in formal contexts; however, its use is very common.\nIn passive voice, the who / what makes the action can be omitted. \nIn perfect tenses, we need to add the word been before the participle.\nThe most common progressive tenses using passive voice are present and past.\nWhen using present and past progressive, we use the verb to be + being + the participle.\nPerfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Structures",
+              "ACTIVE VOICE",
+              "PASSIVE VOICE",
+              "Progressive Tenses",
+              "The boys are painting the house.",
+              "The house is being painted by the boys.",
+              "She was preparing dinner for us.",
+              "Dinner was being prepared for us.",
+              "To Consider\n\nIn active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.\nIt is considered to be used in formal contexts; however, its use is very common.\nIn passive voice, the who / what makes the action can be omitted. \nIn perfect tenses, we need to add the word been before the participle.\nThe most common progressive tenses using passive voice are present and past.\nWhen using present and past progressive, we use the verb to be + being + the participle.\nPerfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music."
+            ],
+            "joinedText": "Structures\nACTIVE VOICE\nPASSIVE VOICE\nProgressive Tenses\nThe boys are painting the house.\nThe house is being painted by the boys.\nShe was preparing dinner for us.\nDinner was being prepared for us.\nTo Consider\n\nIn active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.\nIt is considered to be used in formal contexts; however, its use is very common.\nIn passive voice, the who / what makes the action can be omitted. \nIn perfect tenses, we need to add the word been before the participle.\nThe most common progressive tenses using passive voice are present and past.\nWhen using present and past progressive, we use the verb to be + being + the participle.\nPerfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;gdcdadc1522_0_0",
+            "bbox": {
+              "x": 243888,
+              "y": 549600,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3243888,
+              "bottom": 3549600
+            },
+            "columnWidths": [
+              2110400,
+              2719250,
+              3412525
+            ],
+            "rows": [
+              {
+                "height": 547450,
+                "cells": [
+                  {
+                    "text": "Structures",
+                    "paragraphs": [
+                      {
+                        "text": "Structures",
+                        "runs": [
+                          "Structures"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "ACTIVE VOICE",
+                    "paragraphs": [
+                      {
+                        "text": "ACTIVE VOICE",
+                        "runs": [
+                          "ACTIVE VOICE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "PASSIVE VOICE",
+                    "paragraphs": [
+                      {
+                        "text": "PASSIVE VOICE",
+                        "runs": [
+                          "PASSIVE VOICE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "Progressive Tenses",
+                    "paragraphs": [
+                      {
+                        "text": "Progressive Tenses",
+                        "runs": [
+                          "Progressive Tenses"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The boys are painting the house.",
+                    "paragraphs": [
+                      {
+                        "text": "The boys are painting the house.",
+                        "runs": [
+                          "The boys are ",
+                          "painting",
+                          " the house."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The house is being painted by the boys.",
+                    "paragraphs": [
+                      {
+                        "text": "The house is being painted by the boys.",
+                        "runs": [
+                          "The house",
+                          " ",
+                          "is being painted",
+                          " by the boys."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "She was preparing dinner for us.",
+                    "paragraphs": [
+                      {
+                        "text": "She was preparing dinner for us.",
+                        "runs": [
+                          "She was preparing dinner for us."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Dinner was being prepared for us.",
+                    "paragraphs": [
+                      {
+                        "text": "Dinner was being prepared for us.",
+                        "runs": [
+                          "Dinner",
+                          " ",
+                          "was being prepared",
+                          " for us."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "To Consider\n\nIn active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.\nIt is considered to be used in formal contexts; however, its use is very common.\nIn passive voice, the who / what makes the action can be omitted. \nIn perfect tenses, we need to add the word been before the participle.\nThe most common progressive tenses using passive voice are present and past.\nWhen using present and past progressive, we use the verb to be + being + the participle.\nPerfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music.",
+                    "paragraphs": [
+                      {
+                        "text": "To Consider",
+                        "runs": [
+                          "To Consider"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "In active voice, we focus on who / what makes the action but in passive voice the focus goes on the object.",
+                        "runs": [
+                          "In ",
+                          "active ",
+                          "voice",
+                          ", we focus on ",
+                          "who",
+                          " ",
+                          "/ ",
+                          "what",
+                          " makes the action",
+                          " but in ",
+                          "passive voice",
+                          " the focus goes ",
+                          "on the object",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "It is considered to be used in formal contexts; however, its use is very common.",
+                        "runs": [
+                          "It is considered to be used in formal contexts; however, its use is very common."
+                        ]
+                      },
+                      {
+                        "text": "In passive voice, the who / what makes the action can be omitted. ",
+                        "runs": [
+                          "In passive voice",
+                          ", the",
+                          " who",
+                          " / ",
+                          "what",
+                          " makes the action can be omitted. "
+                        ]
+                      },
+                      {
+                        "text": "In perfect tenses, we need to add the word been before the participle.",
+                        "runs": [
+                          "I",
+                          "n perfect tenses, we need to add the word ",
+                          "been",
+                          " before ",
+                          "the participle",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "The most common progressive tenses using passive voice are present and past.",
+                        "runs": [
+                          "The most common progressive tenses using passive voice are present and past."
+                        ]
+                      },
+                      {
+                        "text": "When using present and past progressive, we use the verb to be + being + the participle.",
+                        "runs": [
+                          "When using present and past progressive, we use the ",
+                          "verb to be + being + the participle",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "Perfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door - The man next door has been being annoyed by our music. ",
+                        "runs": [
+                          "Perfect progressive tenses",
+                          " may also work with passive voice; however, they are not very common. ",
+                          "E.G.",
+                          " Our music ",
+                          "has been annoying",
+                          " the man next door - The man next door",
+                          " has been being annoyed ",
+                          "by our music. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "Structures ACTIVE VOICE PASSIVE VOICE Progressive Tenses The boys are painting the house. The house is being painted by the boys. She was preparing dinner for us. Dinner was being prepared for us. To Consider 1. In active voice, we focus on who /what does the action but in passive voice the focus goes on the object. 2. It is considered to be used in formal contexts; however, its use is very common. 3. In passive voice, the who / what makes the action can be omitted. 4. In perfect tenses, we need to add the word been before the participle. 5. The most common progressive tenses using passive voice are present and past. 6. When using present and past progressive, we use the verb to be + being + the participle. 7. Perfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door. → The man next door has been being annoyed by our music.",
+        "visibleTexts": [
+          "Structures ACTIVE VOICE PASSIVE VOICE Progressive Tenses The boys are painting the house. The house is being painted by the boys. She was preparing dinner for us. Dinner was being prepared for us. To Consider 1. In active voice, we focus on who /what does the action but in passive voice the focus goes on the object. 2. It is considered to be used in formal contexts; however, its use is very common. 3. In passive voice, the who / what makes the action can be omitted. 4. In perfect tenses, we need to add the word been before the participle. 5. The most common progressive tenses using passive voice are present and past. 6. When using present and past progressive, we use the verb to be + being + the participle. 7. Perfect progressive tenses may also work with passive voice; however, they are not very common. E.G. Our music has been annoying the man next door. → The man next door has been being annoyed by our music."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "259",
+            "shapeName": "Google Shape;259;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "260",
+            "shapeName": "Google Shape;260;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "We can use passive voice for the following functions:",
+          "Functions",
+          "Examples",
+          "1",
+          "State what things are made of",
+          "The legs of the table are iron-made.\nThe spoon was handcrafted in wood.",
+          "2",
+          "Declare when things are made / done.",
+          "The meeting will be set for tomorrow.\nIs this piano being played this week?",
+          "3",
+          "Point who things are made / done by.",
+          "They were married, weren’t they?\nYou have not told them, have you?",
+          "4.",
+          "Focus on objects rather than subjects in general actions.",
+          "Why was my burger eaten from the fridge?\nFive points will be taken from your test for cheating.",
+          "To consider ",
+          "Passive voice is not only used for the first three asécts; It can also be implemented in regular actions or everyday matters. "
+        ],
+        "joinedText": "We can use passive voice for the following functions:\nFunctions\nExamples\n1\nState what things are made of\nThe legs of the table are iron-made.\nThe spoon was handcrafted in wood.\n2\nDeclare when things are made / done.\nThe meeting will be set for tomorrow.\nIs this piano being played this week?\n3\nPoint who things are made / done by.\nThey were married, weren’t they?\nYou have not told them, have you?\n4.\nFocus on objects rather than subjects in general actions.\nWhy was my burger eaten from the fridge?\nFive points will be taken from your test for cheating.\nTo consider \nPassive voice is not only used for the first three asécts; It can also be implemented in regular actions or everyday matters.",
+        "shapes": [
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1643496,
+              "y": 43426,
+              "cx": 5316300,
+              "cy": 584700,
+              "right": 6959796,
+              "bottom": 628126
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can use passive voice for the following functions:",
+                "runs": [
+                  "We can use ",
+                  "passive voice ",
+                  "for the following functions:"
+                ]
+              }
+            ],
+            "texts": [
+              "We can use passive voice for the following functions:"
+            ],
+            "joinedText": "We can use passive voice for the following functions:"
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 860175,
+              "y": 399525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3860175,
+              "bottom": 3399525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "State what things are made of",
+                "runs": []
+              },
+              {
+                "text": "The legs of the table are iron-made.\nThe spoon was handcrafted in wood.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Declare when things are made / done.",
+                "runs": []
+              },
+              {
+                "text": "The meeting will be set for tomorrow.\nIs this piano being played this week?",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Point who things are made / done by.",
+                "runs": []
+              },
+              {
+                "text": "They were married, weren’t they?\nYou have not told them, have you?",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "Focus on objects rather than subjects in general actions.",
+                "runs": []
+              },
+              {
+                "text": "Why was my burger eaten from the fridge?\nFive points will be taken from your test for cheating.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "State what things are made of",
+              "The legs of the table are iron-made.\nThe spoon was handcrafted in wood.",
+              "2",
+              "Declare when things are made / done.",
+              "The meeting will be set for tomorrow.\nIs this piano being played this week?",
+              "3",
+              "Point who things are made / done by.",
+              "They were married, weren’t they?\nYou have not told them, have you?",
+              "4.",
+              "Focus on objects rather than subjects in general actions.",
+              "Why was my burger eaten from the fridge?\nFive points will be taken from your test for cheating."
+            ],
+            "joinedText": "Functions\nExamples\n1\nState what things are made of\nThe legs of the table are iron-made.\nThe spoon was handcrafted in wood.\n2\nDeclare when things are made / done.\nThe meeting will be set for tomorrow.\nIs this piano being played this week?\n3\nPoint who things are made / done by.\nThey were married, weren’t they?\nYou have not told them, have you?\n4.\nFocus on objects rather than subjects in general actions.\nWhy was my burger eaten from the fridge?\nFive points will be taken from your test for cheating.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "267",
+            "shapeName": "Google Shape;267;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 1041099,
+              "y": 3020039,
+              "cx": 7373094,
+              "cy": 1193820,
+              "right": 8414193,
+              "bottom": 4213859
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "268",
+            "shapeName": "Google Shape;268;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 693800,
+              "y": 3470422,
+              "cx": 7286344,
+              "cy": 1761297,
+              "right": 7980144,
+              "bottom": 5231719
+            },
+            "parentShapeId": "267"
+          },
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "268",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 776753,
+              "y": 3927474,
+              "cx": 7273200,
+              "cy": 1152000,
+              "right": 8049953,
+              "bottom": 5079474
+            },
+            "parentShapeId": "268",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 607050,
+              "y": 3505150,
+              "cx": 6758400,
+              "cy": 1761300,
+              "right": 7365450,
+              "bottom": 5266450
+            },
+            "parentShapeId": "267",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "Passive voice is not only used for the first three asécts; It can also be implemented in regular actions or everyday matters. ",
+                "runs": [
+                  "Passive voice is not only used ",
+                  "for",
+                  " the ",
+                  "first",
+                  " three asécts; It can also be implemented in regular actions or ",
+                  "everyday",
+                  " matters. "
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "Passive voice is not only used for the first three asécts; It can also be implemented in regular actions or everyday matters. "
+            ],
+            "joinedText": "To consider \nPassive voice is not only used for the first three asécts; It can also be implemented in regular actions or everyday matters."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "bbox": {
+              "x": 860175,
+              "y": 399525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3860175,
+              "bottom": 3399525
+            },
+            "columnWidths": [
+              417750,
+              3468050,
+              4020700
+            ],
+            "rows": [
+              {
+                "height": 174625,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "State what things are made of",
+                    "paragraphs": [
+                      {
+                        "text": "State what things are made of",
+                        "runs": [
+                          "State what things are made of"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The legs of the table are iron-made.\nThe spoon was handcrafted in wood.",
+                    "paragraphs": [
+                      {
+                        "text": "The legs of the table are iron-made.",
+                        "runs": [
+                          "The legs of the table ",
+                          "are iron-made",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "The spoon was handcrafted in wood.",
+                        "runs": [
+                          "The spoon",
+                          " ",
+                          "was handcrafted in wood",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Declare when things are made / done.",
+                    "paragraphs": [
+                      {
+                        "text": "Declare when things are made / done.",
+                        "runs": [
+                          "Declare when things are made / done."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The meeting will be set for tomorrow.\nIs this piano being played this week?",
+                    "paragraphs": [
+                      {
+                        "text": "The meeting will be set for tomorrow.",
+                        "runs": [
+                          "The meeting",
+                          " will be set for tomorrow",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "Is this piano being played this week?",
+                        "runs": [
+                          "Is this ",
+                          "piano",
+                          " ",
+                          "being played this week",
+                          "?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Point who things are made / done by.",
+                    "paragraphs": [
+                      {
+                        "text": "Point who things are made / done by. ",
+                        "runs": [
+                          "Point who things are made / done by. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They were married, weren’t they?\nYou have not told them, have you?",
+                    "paragraphs": [
+                      {
+                        "text": "They were married, weren’t they?",
+                        "runs": [
+                          "They were married, ",
+                          "weren’t they?"
+                        ]
+                      },
+                      {
+                        "text": "You have not told them, have you?",
+                        "runs": [
+                          "You have not told them, ",
+                          "have you?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Focus on objects rather than subjects in general actions.",
+                    "paragraphs": [
+                      {
+                        "text": "Focus on objects rather than subjects in general actions.",
+                        "runs": [
+                          "Focus on objects rather than subjects in general actions."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Why was my burger eaten from the fridge?\nFive points will be taken from your test for cheating.",
+                    "paragraphs": [
+                      {
+                        "text": "Why was my burger eaten from the fridge?",
+                        "runs": [
+                          "Why ",
+                          "was my burger eaten",
+                          " from the fridge?"
+                        ]
+                      },
+                      {
+                        "text": "Five points will be taken from your test for cheating.",
+                        "runs": [
+                          "Five points ",
+                          "will",
+                          " be taken ",
+                          "from your test for cheating."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "We can use passive voice for the following functions:",
+        "visibleTexts": [
+          "We can use passive voice for the following functions:",
+          "Functions Examples 1 State what things are made of The legs of the table are iron-made. The spoon was handcrafted in wood. 2 Declare when things are made / done The meeting will be set for tomorrow. Is this piano being played this week? 3 Point who things are made / done by The stuffed clams were made by Jake. Those dresses will be designed by Ericka. 4. Focus on objects rather than subjects in general actions Why was my burger eaten from the fridge? Five points will be taken from your test for cheating.",
+          "To consider Passive voice is not only used for the first three aspects; it can also be implemented in regular actions or everyday matters."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "table-or-chart-mentioned-without-table-semantics"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "A. Write the corresponding passive voice for each of the sentences listed. Follow the example. ",
+          "You will buy all the ingredients for the cake.\n\nI am preparing lunch for my family. \n\nThe have worked in the report for days.\n\nJake and Jill were buying a house in Miami.\n\nI normally clean my house twice a week.\n\nJosh usually calls his family on Saturdays.\n\nThe factory made the fabric elastic.. \n\nWe had bought the yacht before Christmas.\n\nThey finally finished the paper last night.",
+          "My house is normally cleaned twice a week (by me)."
+        ],
+        "joinedText": "A. Write the corresponding passive voice for each of the sentences listed. Follow the example.\nYou will buy all the ingredients for the cake.\n\nI am preparing lunch for my family. \n\nThe have worked in the report for days.\n\nJake and Jill were buying a house in Miami.\n\nI normally clean my house twice a week.\n\nJosh usually calls his family on Saturdays.\n\nThe factory made the fabric elastic.. \n\nWe had bought the yacht before Christmas.\n\nThey finally finished the paper last night.\nMy house is normally cleaned twice a week (by me).",
+        "shapes": [
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1017450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Write the corresponding passive voice for each of the sentences listed. Follow the example. ",
+                "runs": [
+                  "A. Write the corresponding ",
+                  "passive voice ",
+                  "for each of the ",
+                  "sentences ",
+                  "listed. Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Write the corresponding passive voice for each of the sentences listed. Follow the example. "
+            ],
+            "joinedText": "A. Write the corresponding passive voice for each of the sentences listed. Follow the example."
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 993500,
+              "y": 1080235,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3993500,
+              "bottom": 4080235
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "You will buy all the ingredients for the cake.\n\nI am preparing lunch for my family. \n\nThe have worked in the report for days.\n\nJake and Jill were buying a house in Miami.\n\nI normally clean my house twice a week.\n\nJosh usually calls his family on Saturdays.\n\nThe factory made the fabric elastic.. \n\nWe had bought the yacht before Christmas.\n\nThey finally finished the paper last night.",
+                "runs": []
+              },
+              {
+                "text": "My house is normally cleaned twice a week (by me).",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "You will buy all the ingredients for the cake.\n\nI am preparing lunch for my family. \n\nThe have worked in the report for days.\n\nJake and Jill were buying a house in Miami.\n\nI normally clean my house twice a week.\n\nJosh usually calls his family on Saturdays.\n\nThe factory made the fabric elastic.. \n\nWe had bought the yacht before Christmas.\n\nThey finally finished the paper last night.",
+              "My house is normally cleaned twice a week (by me)."
+            ],
+            "joinedText": "You will buy all the ingredients for the cake.\n\nI am preparing lunch for my family. \n\nThe have worked in the report for days.\n\nJake and Jill were buying a house in Miami.\n\nI normally clean my house twice a week.\n\nJosh usually calls his family on Saturdays.\n\nThe factory made the fabric elastic.. \n\nWe had bought the yacht before Christmas.\n\nThey finally finished the paper last night.\nMy house is normally cleaned twice a week (by me).",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_19",
+            "bbox": {
+              "x": 993500,
+              "y": 1080235,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3993500,
+              "bottom": 4080235
+            },
+            "columnWidths": [
+              4132425,
+              3054100
+            ],
+            "rows": [
+              {
+                "height": 204225,
+                "cells": [
+                  {
+                    "text": "You will buy all the ingredients for the cake.\n\nI am preparing lunch for my family. \n\nThe have worked in the report for days.\n\nJake and Jill were buying a house in Miami.\n\nI normally clean my house twice a week.\n\nJosh usually calls his family on Saturdays.\n\nThe factory made the fabric elastic.. \n\nWe had bought the yacht before Christmas.\n\nThey finally finished the paper last night.",
+                    "paragraphs": [
+                      {
+                        "text": "You will buy all the ingredients for the cake.",
+                        "runs": [
+                          "You will buy all the ingredients for the cake."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I am preparing lunch for my family. ",
+                        "runs": [
+                          "I am preparing ",
+                          "lunch",
+                          " for my family. "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "The have worked in the report for days.",
+                        "runs": [
+                          "The have worked in the report for days."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Jake and Jill were buying a house in Miami.",
+                        "runs": [
+                          "Jake and Jill were buying a house in Miami."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I normally clean my house twice a week.",
+                        "runs": [
+                          "I normally clean my house twice a week."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Josh usually calls his family on Saturdays.",
+                        "runs": [
+                          "Josh usually calls his family on Saturdays."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "The factory made the fabric elastic.. ",
+                        "runs": [
+                          "The factory made the fabric elastic",
+                          ".. "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "We had bought the yacht before Christmas.",
+                        "runs": [
+                          "We had bought ",
+                          "the",
+                          " ",
+                          "yacht before Christmas."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "They finally finished the paper last night.",
+                        "runs": [
+                          "They finally finished the paper last night."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "My house is normally cleaned twice a week (by me).",
+                    "paragraphs": [
+                      {
+                        "text": "My house is normally cleaned twice a week (by me). ",
+                        "runs": [
+                          "My house ",
+                          "is",
+                          " normally ",
+                          "cleaned",
+                          " ",
+                          "twice a week (by me). "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "A. Write the corresponding passive voice for each of the sentences listed. Follow the example.",
+        "visibleTexts": [
+          "A. Write the corresponding passive voice for each of the sentences listed. Follow the example.",
+          "You will buy all the ingredients for the cake. I am preparing lunch for my family. The have worked in the report for days. Jake and Jill were buying a house in Miami. I normally clean my house twice a week. Josh usually calls his family on Saturdays. The factory made the fabric elastic. We had bought the yacht before Christmas. They finally finished the paper last night. My house is normally cleaned twice a week (by me)."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "B. Listen to the audio and answer the questions your teacher makes. "
+        ],
+        "joinedText": "B. Listen to the audio and answer the questions your teacher makes.",
+        "shapes": [
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1213325,
+              "y": 288325,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7336025,
+              "bottom": 889525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_32",
+            "kind": "picture",
+            "bbox": {
+              "x": 3109575,
+              "y": 1382375,
+              "cx": 2679175,
+              "cy": 2679175,
+              "right": 5788750,
+              "bottom": 4061550
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_32",
+            "bbox": {
+              "x": 3109575,
+              "y": 1382375,
+              "cx": 2679175,
+              "cy": 2679175,
+              "right": 5788750,
+              "bottom": 4061550
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "B. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "B. Listen to the audio and answer the questions your teacher makes."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbrKl82JRUJEnzfaeNMLVDis29DLqXyGcqHLGnUdf1xgAuz9ye1NihfWHg5G8nQvUbxRGyd8OAjA0UVgFN9DofRe3v8zujRrqoObvXIAjBSZJOfp5BEiBtPFx-5J6tPDoEipZtkDSUYDzwgMEv7gKv4jIDJ9zt4PfZDfbz0Xbh3H8QH6n0Ad-sXNHWw2KJ0bA=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "‹#›",
+          "C. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read aloud the text to your teacher.",
+          "Hong Kong on The Loop.",
+          "The shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. ",
+          "Analysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets.",
+          "Temperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there,  more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories.",
+          "Adapted from https://www.eltbase.com/worksheet-714-news-stories"
+        ],
+        "joinedText": "‹#›\nC. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read aloud the text to your teacher.\nHong Kong on The Loop.\n\nThe shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. \n\nAnalysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets.\n\nTemperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there,  more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories.\n\nAdapted from https://www.eltbase.com/worksheet-714-news-stories",
+        "shapes": [
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 786950,
+              "y": 83050,
+              "cx": 7944600,
+              "cy": 658500,
+              "right": 8731550,
+              "bottom": 741550
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read aloud the text to your teacher.",
+                "runs": [
+                  "C. Read the following paragraph and ",
+                  "identify the sentences in passive voice",
+                  ". What function are they representing. After that, read aloud the text to your teacher."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read aloud the text to your teacher."
+            ],
+            "joinedText": "C. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read aloud the text to your teacher."
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 1028700,
+              "y": 669275,
+              "cx": 7213200,
+              "cy": 4158600,
+              "right": 8241900,
+              "bottom": 4827875
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 1146450,
+              "y": 892375,
+              "cx": 6977700,
+              "cy": 4086300,
+              "right": 8124150,
+              "bottom": 4978675
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Hong Kong on The Loop.",
+                "runs": [
+                  "Hong Kong on The Loop."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "The shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. ",
+                "runs": [
+                  "The shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong ",
+                  "Ship Owners",
+                  " Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Analysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets.",
+                "runs": [
+                  "Analysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Temperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there,  more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories.",
+                "runs": [
+                  "Temperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there,  more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Adapted from https://www.eltbase.com/worksheet-714-news-stories",
+                "runs": [
+                  "Adapted from https://www.eltbase.com/worksheet-714-news-stories"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Hong Kong on The Loop.",
+              "The shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. ",
+              "Analysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets.",
+              "Temperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there,  more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories.",
+              "Adapted from https://www.eltbase.com/worksheet-714-news-stories"
+            ],
+            "joinedText": "Hong Kong on The Loop.\n\nThe shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. \n\nAnalysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets.\n\nTemperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there,  more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories.\n\nAdapted from https://www.eltbase.com/worksheet-714-news-stories"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "15",
+        "visibleTexts": [
+          "15",
+          "C. Read the following paragraph and identify the sentences in passive voice. What function are they representing. After that, read the text aloud to your teacher.",
+          "Hong Kong on The Loop. The shipping industry says it's been hit by the global financial crisis and the recent spate of piracy attacks off Somalia. The chairman of the Hong Kong Ship Owners Association and chief executive of the Anglo-Eastern Group, Peter Cremers said ships are wary of sailing through the Gulf of Aden which has boosted costs as vessels are diverted. Analysts polled by Reuters news agency say they believe China's economy grew by just seven per cent in the last quarter of last year. If borne out by official data, this would be the worst figure in a decade. The Chinese authorities believe a minimum growth rate of eight per cent is needed to avoid severe unemployment and social disruption. China's manufacturing sector has been badly hit by recession in its main export markets. Temperatures over Hong Kong dipped on Sunday morning with the mercury plunging to minus one degree celsius in Ta Kwu Ling. A spokesman for the Observatory said it was the lowest temperature recorded in Ta Kwu Ling since a weather station was set up there, more than two decades ago. The Observatory says the average temperature recorded in the urban areas was 10 degrees. But, it was considerably colder in some parts of the New Territories. Adapted from https://www.eltbase.com/worksheet-714-news-stories",
+          "https://www.eltbase.com/worksheet-714-news-stories"
+        ],
+        "links": [
+          {
+            "url": "https://www.eltbase.com/worksheet-714-news-stories",
+            "kind": "link",
+            "source": "anchor"
+          }
+        ],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied. ",
+          "E. Write a 150-180 word text about  a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied.\nE. Write a 150-180 word text about  a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1123275,
+              "y": 146675,
+              "cx": 7218000,
+              "cy": 1027500,
+              "right": 8341275,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied. ",
+                "runs": [
+                  "D. ",
+                  "Based on the topic presented ",
+                  "in the reading section",
+                  ", what other crisis do you think are being faced ",
+                  "globally",
+                  "? What are they? Who were they caused by? ",
+                  "Use the language studied. "
+                ]
+              }
+            ],
+            "texts": [
+              "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied. "
+            ],
+            "joinedText": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied."
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 446175,
+              "y": 2414150,
+              "cx": 8613900,
+              "cy": 1163700,
+              "right": 9060075,
+              "bottom": 3577850
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 150-180 word text about  a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.",
+                "runs": [
+                  "E. Write a 150-",
+                  "180",
+                  " word text about ",
+                  " a human invention that brought terrible things to humanity ",
+                  "itself",
+                  ", that has been implemented for years and what other issues will be brought to us through means of this. ",
+                  "Remember to be very detailed and use the language studied."
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 150-180 word text about  a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied."
+            ],
+            "joinedText": "E. Write a 150-180 word text about  a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied."
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 1070307,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2245829
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "306",
+            "shapeName": "Google Shape;306;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "305",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "305",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": null,
+        "title": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied.",
+        "visibleTexts": [
+          "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied.",
+          "E. Write an 120-160 word text about a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 18,
+      "native": {
+        "number": 18,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "330",
+            "shapeName": "Google Shape;330;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 18
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 18
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 18
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 18
+          }
+        ]
+      },
+      "publishedSlideNumber": 18,
+      "published": {
+        "number": 18,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FAyg47Vf_NNJvbORGNeSdaSn6--xo7b4MCcCMkvkX5cz-qHSHTA1G_bcch5yfzbxaLgwRI2ZlZaFQYcNa9WfCwzPklfZXL-GEk3s6hQ-2i4_6HLeMsfOMRNHeZgt3GpTE4oLTkLjfPcHfpLxocS1yD7VuBpZn-UsipDDH5W_TVUTnDjBwvIv1GygzXmQjw=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZDL1b1l_J6kqXHLKsu42laVLJNRxmNP0FLV6MTbg5z7JfeYpV7ph24bwS8ebIC1WlDwVyV_Mgp0dtsLXsLl2CwBRaOhSkUJ_iQPDtKdvXCNtT_IHkox906fG7Md0YirZ8RqFqVMH10yC3pTvQiu0TfIG88YW7XXOToL3ToNtqRynEEBy0oYnH4FrGUv0XeVg=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSayTHu4swpSpOwMNV7sr3zIRHvpO7GfWuaxYibpTyKtgJnFuphjprkIO8b66HyYHSaPrMi9oYOcDgrCDjjPnkiZ1CUPCfPH3ODNX6OUBmhOML5oLL1hwJc0aTns3uQIbHlVopg_RYmY1Jf7mafBZODulIV4iBg8YZ2qnqeJmrSPohVTkRch7urc5WSlSVA=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

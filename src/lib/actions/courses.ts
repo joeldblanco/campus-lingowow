@@ -8,6 +8,7 @@ import { auditLog } from '@/lib/audit-log'
 import { auth } from '@/auth'
 import {
   buildModuleProgressView,
+  isLearnerVisibleContent,
   summarizeCourseProgress,
   type ModuleWithProgress,
 } from '@/lib/course-progression'
@@ -672,6 +673,7 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
                     description: true,
                     contentType: true,
                     order: true,
+                    data: true,
                   },
                   orderBy: {
                     order: 'asc',
@@ -843,6 +845,21 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
 
     const enrollments = userId ? course.enrollments : []
     const preferredEnrollment = userId ? pickPreferredEnrollment(enrollments) : null
+    const learnerModules = course.modules.map((courseModule) => ({
+      ...courseModule,
+      lessons: courseModule.lessons.map((lesson) => ({
+        ...lesson,
+        contents: lesson.contents
+          .filter(isLearnerVisibleContent)
+          .map((content) => ({
+            id: content.id,
+            title: content.title,
+            description: content.description,
+            contentType: content.contentType,
+            order: content.order,
+          })),
+      })),
+    }))
     const studentLessons =
       userId && course.isPersonalized
         ? (
@@ -900,6 +917,7 @@ export async function getCourseForPublicView(courseId: string, userId?: string) 
 
     return {
       ...course,
+      modules: learnerModules,
       exams: examsWithStats,
       isEnrolled: userId ? enrollments.length > 0 : false,
       enrollment: preferredEnrollment
@@ -983,6 +1001,7 @@ export async function getCourseProgress(
                     contents: {
                       select: {
                         id: true,
+                        data: true,
                       },
                     },
                   },
@@ -1003,11 +1022,25 @@ export async function getCourseProgress(
 
     const progress = summarizeCourseProgress(
       enrollmentWithDetails.course.modules,
-      enrollmentWithDetails.student.completedContents
+      enrollmentWithDetails.student.completedContents,
+      { courseId }
     )
+    const learnerEnrollment = {
+      ...enrollmentWithDetails,
+      course: {
+        ...enrollmentWithDetails.course,
+        modules: enrollmentWithDetails.course.modules.map((courseModule) => ({
+          ...courseModule,
+          lessons: courseModule.lessons.map((lesson) => ({
+            ...lesson,
+            contents: lesson.contents.filter(isLearnerVisibleContent).map(({ id }) => ({ id })),
+          })),
+        })),
+      },
+    }
 
     return {
-      enrollment: enrollmentWithDetails,
+      enrollment: learnerEnrollment,
       ...progress,
       completedActivities: enrollmentWithDetails.student.activities.filter(
         (a) => a.status === 'COMPLETED'
@@ -1041,7 +1074,7 @@ export async function getCourseModuleProgress(
           title: true,
           lessons: {
             where: { isPublished: true },
-            select: { id: true, contents: { select: { id: true } } },
+            select: { id: true, contents: { select: { id: true, data: true } } },
           },
         },
       }),
@@ -1067,7 +1100,8 @@ export async function getCourseModuleProgress(
       modules,
       completed.map((c) => c.contentId),
       exams,
-      attempts
+      attempts,
+      { courseId }
     )
   } catch (error) {
     console.error('Error fetching course module progress:', error)

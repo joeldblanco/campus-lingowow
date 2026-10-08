@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "catalog": "course-backgrounds-v2",
+  "purpose": "Seven additional illustrated full-environment backgrounds for the guided course catalog.",
+  "references": [
+    "docs/design/graphic-guide-v1/",
+    "docs/design/content-format-mockups/v3/",
+    "public/images/lessons/backgrounds/campus.webp",
+    "public/images/lessons/backgrounds/library.webp",
+    "public/images/lessons/backgrounds/garden.webp"
+  ],
+  "requirements": {
+    "medium": "Painted semi-realistic editorial illustration with gentle gouache/watercolor texture, matching the existing course backgrounds.",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "format": "webp",
+      "quality": 90,
+      "maxEdge": 1600
+    },
+    "composition": "Complete environment with meaningful detail across the right two thirds and calm pale negative space across the left 35–40% for the white fade.",
+    "constraints": [
+      "No characters or portraits.",
+      "No readable text, logos, watermarks or UI.",
+      "No photographs, flat vector art, abstract CSS shapes or gradients."
+    ]
+  },
+  "review": {
+    "method": "Generated with built-in image_gen, resized to 1600x900, encoded as WebP quality 90, and reviewed as an actual contact sheet.",
+    "contactSheetExternal": "C:/Users/ACER/AppData/Local/Temp/course-backgrounds-v2-contact-sheet.webp",
+    "generatedEvidenceDir": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8",
+    "allAssetsReviewed": true,
+    "notes": [
+      "All seven assets are separate complete environments with distinct themes.",
+      "The left fade area remains visually calm and legible for lesson content.",
+      "Generated PNG evidence remains outside the repository; only optimized WebP deliverables are tracked."
+    ]
+  },
+  "assets": [
+    {
+      "id": "art-studio",
+      "theme": "Art studio",
+      "path": "public/images/lessons/backgrounds/art-studio.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 259754,
+      "sha256": "4c21c0a215c2cd9c762cd0e601ab59be43727295cd57b0459ed8ae27b807a10c",
+      "sourceGeneratedPng": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8/exec-4f4cf685-12b3-4285-ac71-e8f0579fa7be.png",
+      "promptSummary": "A calm studio with easels, paint tools, worktable, shelves, window and plants.",
+      "review": {
+        "fullEnvironment": true,
+        "leftFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "characters": false,
+        "readableTextLogosUi": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "id": "mountain-cabin",
+      "theme": "Mountain cabin",
+      "path": "public/images/lessons/backgrounds/mountain-cabin.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 302588,
+      "sha256": "ba98dcbefa0f1cc29bf2c0225479c8c32c5693f32f3786b4fca3fa3ea3b40c9a",
+      "sourceGeneratedPng": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8/exec-11663ff1-def5-4be0-9679-dfbeeadd4cf7.png",
+      "promptSummary": "A timber cabin with fireplace, mountain window, study table, books and wool textiles.",
+      "review": {
+        "fullEnvironment": true,
+        "leftFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "characters": false,
+        "readableTextLogosUi": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "id": "flower-courtyard",
+      "theme": "Flower courtyard",
+      "path": "public/images/lessons/backgrounds/flower-courtyard.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 334404,
+      "sha256": "93681dcb6b42ae30f443d3899ebd8400ada22ab79b99ff3089483cfaa95a5d1b",
+      "sourceGeneratedPng": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8/exec-3ff26549-e90c-4e05-8391-3c86f9983911.png",
+      "promptSummary": "A Mediterranean courtyard with arches, fountain, flowering vines, tiled floor and study table.",
+      "review": {
+        "fullEnvironment": true,
+        "leftFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "characters": false,
+        "readableTextLogosUi": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "id": "airport-lounge",
+      "theme": "Airport lounge",
+      "path": "public/images/lessons/backgrounds/airport-lounge.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 188780,
+      "sha256": "8b9f4fb7a00e9fbb926d9ad745285a4f47e6fc0752d274e8a08e320bd1bf5063",
+      "sourceGeneratedPng": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8/exec-cdfa7fef-2a06-4423-bb78-3d8d3b6cd610.png",
+      "promptSummary": "A quiet terminal lounge with runway window, seating, luggage, coffee station and plants.",
+      "review": {
+        "fullEnvironment": true,
+        "leftFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "characters": false,
+        "readableTextLogosUi": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "id": "science-lab",
+      "theme": "Science lab",
+      "path": "public/images/lessons/backgrounds/science-lab.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 205664,
+      "sha256": "be0c11fead16a058fb31559338297b9e67fc29a7735d826720bbc11b05f6ce72",
+      "sourceGeneratedPng": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8/exec-51284bee-69f0-4633-a6c9-7a3eb9e72b27.png",
+      "promptSummary": "A bright educational laboratory with benches, microscope, glassware, plants and globe.",
+      "review": {
+        "fullEnvironment": true,
+        "leftFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "characters": false,
+        "readableTextLogosUi": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "id": "harbor-promenade",
+      "theme": "Harbor promenade",
+      "path": "public/images/lessons/backgrounds/harbor-promenade.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 261364,
+      "sha256": "c7400eb1c413deb67ef88efc6fa198a34fc03e47aaa84aa21c1c38b959c536eb",
+      "sourceGeneratedPng": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8/exec-7c925705-b9b5-4157-8ad7-e881da9f7581.png",
+      "promptSummary": "A calm boardwalk with boats, lighthouse, water, ropes, harbor building and bench.",
+      "review": {
+        "fullEnvironment": true,
+        "leftFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "characters": false,
+        "readableTextLogosUi": false,
+        "distinctEnvironment": true
+      }
+    },
+    {
+      "id": "community-bookshop",
+      "theme": "Community bookshop",
+      "path": "public/images/lessons/backgrounds/community-bookshop.webp",
+      "format": "webp",
+      "width": 1600,
+      "height": 900,
+      "bytes": 297382,
+      "sha256": "35481b5f957e6df4a38753c4da8da15c403eb839fae571c2a22572ee43930f33",
+      "sourceGeneratedPng": "C:/Users/ACER/.codex/generated_images/01a1195d-11de-7e11-98c6-f727b12935d8/exec-d1c45cd9-195e-46e3-bcfe-04aed7b182a3.png",
+      "promptSummary": "A neighborhood bookshop with wooden shelves, reading nook, window, café counter and study table.",
+      "review": {
+        "fullEnvironment": true,
+        "leftFadeSpace": true,
+        "paintedSemiRealistic": true,
+        "characters": false,
+        "readableTextLogosUi": false,
+        "distinctEnvironment": true
+      }
+    }
+  ]
+}

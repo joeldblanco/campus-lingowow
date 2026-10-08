@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Read-only recovery record for the Unit 6 slide previously classified as missing from the exercise-review source manifest.",
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "unit": 6,
+  "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+  "blockerCode": "exercise-review-slide-missing",
+  "recoveryStatus": "recovered-source-slide",
+  "sourcePolicy": {
+    "publishedDeckReadOnly": true,
+    "sourceFileReadOnly": true,
+    "noSourceArchiveWrites": true,
+    "noSyntheticExerciseItem": true,
+    "noSyntheticAnswerKey": true,
+    "originalMediaPreserved": true
+  },
+  "publishedDeck": {
+    "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS2SkpEvv-4pNugWriBeDaC5uB0S3T1NEoHg0SyEYtWI7ZJ18C7KeRgaF97nzG7dQ/pub?start=false&loop=false&delayms=3000",
+    "observedUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS2SkpEvv-4pNugWriBeDaC5uB0S3T1NEoHg0SyEYtWI7ZJ18C7KeRgaF97nzG7dQ/pub?start=false&loop=false&delayms=3000&slide=id.p6",
+    "deckTitle": "Unit 6 - What do you do.pptx",
+    "observedSlideNumber": 6,
+    "observedSlideLabel": "Slide 6 of 20: Look at the pictures and repeat the words you hear.",
+    "screenshotEvidence": {
+      "captured": true,
+      "captureMethod": "Chrome published Google Slides tab, advanced with the visible Next control to slide 6",
+      "tabTitle": "Unit 6 - What do you do.pptx - Google Slides",
+      "visibleHeading": "Look at the pictures and repeat the words you hear.",
+      "figureLabelsInVisualOrder": [
+        "CHEF",
+        "MECHANIC",
+        "FARMER",
+        "TEACHER",
+        "PILOT",
+        "CHEMIST",
+        "FIREFIGHTER",
+        "DOCTOR"
+      ],
+      "visibleUsefulExpressions": "I am a doctor / She works as a waitress / He bakes cakes.",
+      "note": "The screenshot was captured during the browser review and is represented here by its exact visible text and figure inventory; no screenshot or source media was copied into the source archive."
+    }
+  },
+  "sourceManifest": {
+    "file": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+    "sha256": "edd9a665774097c5f7aadb760d89adcf3dd36c83670acba362ed8d7b05a95a37",
+    "contentId": "block_1767602602393",
+    "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS2SkpEvv-4pNugWriBeDaC5uB0S3T1NEoHg0SyEYtWI7ZJ18C7KeRgaF97nzG7dQ/pub?start=false&loop=false&delayms=3000",
+    "deckTitle": "Unit 6 - What do you do.pptx",
+    "slideCount": 20,
+    "slide": {
+      "number": 6,
+      "internalPageId": 6,
+      "title": "FARMER",
+      "visibleTexts": [
+        "FARMER",
+        "FIREFIGHTER",
+        "MECHANIC",
+        "CHEMIST",
+        "CHEF",
+        "PILOT",
+        "TEACHER",
+        "DOCTOR",
+        "Look at the pictures and repeat the words you hear.",
+        "Useful expressions: I am a doctor / She works as a waitress / He bakes cakes."
+      ],
+      "figureLabels": [
+        "FARMER",
+        "FIREFIGHTER",
+        "MECHANIC",
+        "CHEMIST",
+        "CHEF",
+        "PILOT",
+        "TEACHER",
+        "DOCTOR"
+      ],
+      "mediaSummary": {
+        "audioUrls": [],
+        "videoUrls": [],
+        "audioIconCount": 0,
+        "renderedSlideImageCount": 9,
+        "tableCount": 0
+      }
+    }
+  },
+  "sourceEvidence": [
+    "Look at the pictures and repeat the words you hear.",
+    "FARMER",
+    "FIREFIGHTER",
+    "MECHANIC",
+    "CHEMIST",
+    "CHEF",
+    "PILOT",
+    "TEACHER",
+    "DOCTOR",
+    "Useful expressions: I am a doctor / She works as a waitress / He bakes cakes."
+  ],
+  "comparison": {
+    "sourceFileContainsSlide6": true,
+    "sourceFileInternalPageId": 6,
+    "publishedSlideId": "p6",
+    "observedSlideMatchesSourceFile": true,
+    "observedTextMatchesSourceFile": true,
+    "observedFigureLabelsMatchSourceFile": true,
+    "observedNativeRenderedImageCount": 9,
+    "result": "The prior missing-slide classification was an extraction/audit gap. Slide 6 is recoverable from the published deck and the read-only source file without inventing content."
+  },
+  "exerciseUse": {
+    "itemId": null,
+    "status": "source-slide-recovered-no-exercise-answer-key",
+    "responseMode": "source-content",
+    "answerItems": [],
+    "rationale": "This is a vocabulary repeat slide, not a missing answer-key exercise. Restore the exact source slide content if the composer needs slide 6; do not synthesize a review item or gradeable key."
+  }
+}

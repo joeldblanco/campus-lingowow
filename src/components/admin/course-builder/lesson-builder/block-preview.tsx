@@ -75,6 +75,7 @@ import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 import { GuidedChoiceActivity } from './guided-choice-activity'
 import { GuidedFillActivity } from './guided-fill-activity'
+import { GuidedShortAnswerActivity } from './guided-short-answer'
 import { canUseAIGrading, recordAIGradingUsage } from '@/lib/actions/ai-grading-limits'
 
 interface BlockPreviewProps {
@@ -212,9 +213,15 @@ export function BlockPreview({
       case 'text':
         return <TextBlockPreview block={block as TextBlock} hideHeader={hideBlockHeader} />
       case 'video':
-        return <VideoBlockPreview block={block as VideoBlock} hideHeader={hideBlockHeader} />
+        return (
+          <VideoBlockPreview
+            block={block as VideoBlock}
+            hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+          />
+        )
       case 'image':
-        return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} />
+        return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} guidedAppearance={guidedAppearance} />
       case 'audio':
         return (
           <AudioBlockPreview
@@ -304,6 +311,10 @@ export function BlockPreview({
             block={block as ShortAnswerBlock}
             isExamMode={isExamMode}
             hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'multi_select':
@@ -458,7 +469,15 @@ function TextBlockPreview({ block, hideHeader }: { block: TextBlock; hideHeader?
 }
 
 // Video Block Preview
-function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeader?: boolean }) {
+function VideoBlockPreview({
+  block,
+  hideHeader,
+  guidedAppearance = false,
+}: {
+  block: VideoBlock
+  hideHeader?: boolean
+  guidedAppearance?: boolean
+}) {
   // Extract YouTube video ID for thumbnail
   const getYouTubeThumbnail = (url: string) => {
     if (!url) return null
@@ -467,6 +486,15 @@ function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeade
   }
 
   const thumbnail = block.url ? getYouTubeThumbnail(block.url) : null
+  const [thumbnailUnavailable, setThumbnailUnavailable] = useState(false)
+
+  useEffect(() => {
+    setThumbnailUnavailable(false)
+  }, [thumbnail])
+
+  const originalVideoLabel = block.title
+    ? `Abrir video original: ${block.title}`
+    : 'Abrir video original'
 
   return (
     <div className={hideHeader ? '' : 'space-y-4'}>
@@ -477,7 +505,7 @@ function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeade
         </div>
       )}
 
-      {block.title && (
+      {block.title && !guidedAppearance && (
         <div>
           <h3 className="text-xl font-bold">{block.title}</h3>
         </div>
@@ -492,21 +520,34 @@ function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeade
         <>
           <div className="relative group">
             <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-              {thumbnail ? (
+              {thumbnail && !thumbnailUnavailable ? (
                 <Image
                   src={thumbnail}
                   alt={block.title || 'Video thumbnail'}
                   className="w-full h-full object-cover"
                   width={800}
                   height={450}
+                  onError={() => setThumbnailUnavailable(true)}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Video className="h-16 w-16 text-muted-foreground" />
-                </div>
+                <a
+                  href={block.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={originalVideoLabel}
+                  data-video-thumbnail-fallback="true"
+                  className="flex h-full w-full items-center justify-center bg-[#10245C] text-white transition-colors hover:bg-[#1C3A87] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F4C95D] focus-visible:ring-inset"
+                >
+                  <span className="flex items-center gap-3 rounded-full bg-white/15 px-5 py-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F4C95D] text-[#10245C]">
+                      <Play className="h-5 w-5 fill-current" aria-hidden="true" />
+                    </span>
+                    <span className="font-semibold">Abrir video original</span>
+                  </span>
+                </a>
               )}
             </div>
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
               <Play className="h-12 w-12 text-white" />
             </div>
           </div>
@@ -523,7 +564,7 @@ function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeade
 }
 
 // Image Block Preview
-function ImageBlockPreview({ block, hideHeader }: { block: ImageBlock; hideHeader?: boolean }) {
+function ImageBlockPreview({ block, hideHeader, guidedAppearance }: { block: ImageBlock; hideHeader?: boolean; guidedAppearance?: boolean }) {
   return (
     <div className={hideHeader ? '' : 'space-y-4'}>
       {!hideHeader && (
@@ -544,7 +585,7 @@ function ImageBlockPreview({ block, hideHeader }: { block: ImageBlock; hideHeade
             <Image
               src={block.url}
               alt={block.alt || ''}
-              className="w-full rounded-lg shadow-sm"
+              className={guidedAppearance ? 'h-auto max-h-[60vh] w-auto max-w-full rounded-lg object-contain shadow-sm' : 'w-full rounded-lg shadow-sm'}
               width={800}
               height={600}
             />
@@ -3613,8 +3654,68 @@ function ClassicMatchBlockPreview({
   )
 }
 
+function useGuidedChoiceClassroomSync(
+  classroom: ReturnType<typeof useClassroomSync>,
+  blockId: string,
+  blockType: string,
+  total: number,
+  answerForResponse: (choiceId: string) => unknown = (choiceId) => choiceId
+) {
+  const currentIndexRef = useRef(0)
+  const answersRef = useRef<Record<string, string>>({})
+
+  const syncNavigation = (index: number, stepTotal: number, isCompleted = false) => {
+    currentIndexRef.current = index
+    if (!classroom.canInteract) return
+    classroom.syncBlockNavigation(
+      blockId,
+      index,
+      stepTotal,
+      true,
+      isCompleted,
+      answersRef.current
+    )
+  }
+
+  const handleAnswer = (questionId: string, choiceId: string, isCorrect: boolean) => {
+    answersRef.current = { ...answersRef.current, [questionId]: choiceId }
+    if (!classroom.canInteract) return
+
+    classroom.sendBlockResponse(
+      blockId,
+      blockType,
+      {
+        itemId: questionId,
+        answer: answerForResponse(choiceId),
+        isCorrect,
+      },
+      isCorrect,
+      isCorrect ? 1 : 0
+    )
+    syncNavigation(currentIndexRef.current, total)
+  }
+
+  const handleCompletion = (completed: boolean) => {
+    if (completed) syncNavigation(currentIndexRef.current, total, true)
+  }
+
+  return {
+    handleAnswer,
+    handleNavigation: (index: number, stepTotal: number) => syncNavigation(index, stepTotal),
+    handleCompletion,
+  }
+}
+
 function TrueFalseBlockPreview(props: Parameters<typeof ClassicTrueFalseBlockPreview>[0]) {
   const classroom = useClassroomSync()
+  const items = props.block.items || []
+  const guidedClassroomSync = useGuidedChoiceClassroomSync(
+    classroom,
+    props.block.id,
+    'true_false',
+    items.length,
+    (choiceId) => choiceId === 'true'
+  )
   const automatic = Boolean(
     props.guidedAppearance &&
       !props.isExamMode &&
@@ -3622,12 +3723,17 @@ function TrueFalseBlockPreview(props: Parameters<typeof ClassicTrueFalseBlockPre
   )
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
   return automatic ? <GuidedChoiceActivity
-    questions={(props.block.items || []).map(item => ({
+    questions={items.map(item => ({
       id: item.id, prompt: item.statement,
       choices: [{ id: 'true', text: 'Verdadero' }, { id: 'false', text: 'Falso' }],
       correctChoiceId: String(item.correctAnswer),
     }))}
-    onCompletionChange={props.onGuidedCompletionChange}
+    onAnswer={guidedClassroomSync.handleAnswer}
+    onNavigation={guidedClassroomSync.handleNavigation}
+    onCompletionChange={(completed) => {
+      props.onGuidedCompletionChange?.(completed)
+      guidedClassroomSync.handleCompletion(completed)
+    }}
   /> : <ClassicTrueFalseBlockPreview {...props} />
 }
 
@@ -4767,7 +4873,40 @@ interface AIGradingResult {
   suggestedCorrection?: string
 }
 
-function ShortAnswerBlockPreview({
+type ShortAnswerBlockPreviewProps = {
+  block: ShortAnswerBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
+}
+
+function ShortAnswerBlockPreview(props: ShortAnswerBlockPreviewProps) {
+  const classroom = useClassroomSync()
+  const automatic = Boolean(
+    props.guidedAppearance &&
+      !props.isExamMode &&
+      (!classroom.isInClassroom || !classroom.isTeacher)
+  )
+
+  return automatic ? (
+    <GuidedShortAnswerActivity
+      blockId={props.block.id}
+      items={props.block.items || []}
+      caseSensitive={props.block.caseSensitive}
+      context={props.block.context}
+      guidedActionTarget={props.guidedActionTarget}
+      onGuidedActionPresence={props.onGuidedActionPresence}
+      onCompletionChange={props.onGuidedCompletionChange}
+    />
+  ) : (
+    <ClassicShortAnswerBlockPreview {...props} />
+  )
+}
+
+function ClassicShortAnswerBlockPreview({
   block,
   isExamMode,
   hideHeader,
@@ -5320,24 +5459,43 @@ function MultiSelectBlockPreview({
   )
 }
 
+function guidedTruthOptionLabels(options: NonNullable<MultipleChoiceBlock['options']>) {
+  if (options.length !== 2 ||
+      !options.some((option) => option.id === 'true' && /^(t|true)$/i.test(option.text.trim())) ||
+      !options.some((option) => option.id === 'false' && /^(f|false)$/i.test(option.text.trim()))) return options
+  return options.map((option) => ({ ...option, text: option.id === 'true' ? 'Verdadero' : 'Falso' }))
+}
+
 function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoiceBlockPreview>[0]) {
   const classroom = useClassroomSync()
+  const items = props.block.items?.length ? props.block.items : props.block.question ? [{
+    id: props.block.id, question: props.block.question,
+    options: props.block.options || [], correctOptionId: props.block.correctOptionId || '',
+  }] : []
+  const guidedClassroomSync = useGuidedChoiceClassroomSync(
+    classroom,
+    props.block.id,
+    'multiple_choice',
+    items.length
+  )
   const automatic = Boolean(
     props.guidedAppearance &&
       !props.isExamMode &&
       (!classroom.isInClassroom || !classroom.isTeacher)
   )
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
-  const items = props.block.items?.length ? props.block.items : props.block.question ? [{
-    id: props.block.id, question: props.block.question,
-    options: props.block.options || [], correctOptionId: props.block.correctOptionId || '',
-  }] : []
   return automatic ? <GuidedChoiceActivity
+    shuffleChoices
     questions={items.map(item => ({
-      id: item.id, prompt: item.question, choices: item.options,
+      id: item.id, prompt: item.question, choices: guidedTruthOptionLabels(item.options),
       correctChoiceId: item.correctOptionId, explanation: props.block.explanation,
     }))}
-    onCompletionChange={props.onGuidedCompletionChange}
+    onAnswer={guidedClassroomSync.handleAnswer}
+    onNavigation={guidedClassroomSync.handleNavigation}
+    onCompletionChange={(completed) => {
+      props.onGuidedCompletionChange?.(completed)
+      guidedClassroomSync.handleCompletion(completed)
+    }}
   /> : <ClassicMultipleChoiceBlockPreview {...props} />
 }
 

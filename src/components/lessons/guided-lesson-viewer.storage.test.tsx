@@ -28,6 +28,7 @@ describe('GuidedLessonViewer illustrated position storage', () => {
         blocks={[block('text', 'reading'), block('essay', 'writing')]}
         storageKey="illustrated-position"
         illustratedContent
+        unitOneAuthored
       />
     )
 
@@ -40,6 +41,7 @@ describe('GuidedLessonViewer illustrated position storage', () => {
         blocks={[block('text', 'reading'), block('essay', 'writing')]}
         storageKey="illustrated-position"
         illustratedContent
+        unitOneAuthored
       />
     )
 
@@ -57,7 +59,7 @@ describe('GuidedLessonViewer illustrated position storage', () => {
     }
 
     const { container } = render(
-      <GuidedLessonViewer blocks={[vocabulary]} storageKey="illustrated-peter" illustratedContent />
+      <GuidedLessonViewer blocks={[vocabulary]} storageKey="illustrated-peter" illustratedContent unitOneAuthored />
     )
 
     expect(screen.getByTestId('illustration')).toHaveAttribute(

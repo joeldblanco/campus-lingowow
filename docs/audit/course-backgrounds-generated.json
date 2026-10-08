@@ -1,0 +1,102 @@
+[
+  {
+    "name": "family-living-room",
+    "scene": "Warm family living room, a sofa with sage and navy cushions, framed small family silhouettes at distance with no identifiable faces, an open picture album on a wooden side table, indoor plants and a bright garden window",
+    "prompt": "Create a new environment variant by transforming the reference setting into: Warm family living room, a sofa with sage and navy cushions, framed small family silhouettes at distance with no identifiable faces, an open picture album on a wooden side table, indoor plants and a bright garden window. Reference is ONLY visual-style and composition guide: preserve the same richly painted editorial semi-realistic illustration, tactile wood, soft brush details, warm ivory/navy/sage palette, natural light and depth. Full wide 16:9 room/environment, not a crop, not a panel or blob. The left 40% remains a quiet light painted wall or calm low-contrast scenery to support live lesson text; the right 60% contains the main complete detailed environment. Illustration extends to every edge. No interface, letters, captions, logos, symbols or readable writing; no foreground people, no identifiable characters. This is a production background asset for Lingowow learning lesson canvas.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-5528ee2f-151c-4b48-bcd3-f5936a9588ea.png",
+    "asset": "/images/lessons/backgrounds/family-living-room.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 235780
+  },
+  {
+    "name": "daily-kitchen",
+    "scene": "Bright cozy home kitchen and breakfast nook, sunlit window, wooden table with bowl of fruit, ceramic teapot, an ordinary wall clock, plants and warm cream cabinetry",
+    "prompt": "Create a new environment variant by transforming the reference setting into: Bright cozy home kitchen and breakfast nook, sunlit window, wooden table with bowl of fruit, ceramic teapot, an ordinary wall clock, plants and warm cream cabinetry. Reference is ONLY visual-style and composition guide: preserve the same richly painted editorial semi-realistic illustration, tactile wood, soft brush details, warm ivory/navy/sage palette, natural light and depth. Full wide 16:9 room/environment, not a crop, not a panel or blob. The left 40% remains a quiet light painted wall or calm low-contrast scenery to support live lesson text; the right 60% contains the main complete detailed environment. Illustration extends to every edge. No interface, letters, captions, logos, symbols or readable writing; no foreground people, no identifiable characters. This is a production background asset for Lingowow learning lesson canvas.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-6df90666-e6fb-4b7c-a03a-7fccce075573.png",
+    "asset": "/images/lessons/backgrounds/daily-kitchen.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 217642
+  },
+  {
+    "name": "city-directions",
+    "scene": "Beautiful walkable neighborhood street corner, small cafe awnings, clear intersecting paths, a bicycle beside a bench, trees and charming residential architecture, no signage text",
+    "prompt": "Create a new environment variant by transforming the reference setting into: Beautiful walkable neighborhood street corner, small cafe awnings, clear intersecting paths, a bicycle beside a bench, trees and charming residential architecture, no signage text. Reference is ONLY visual-style and composition guide: preserve the same richly painted editorial semi-realistic illustration, tactile wood, soft brush details, warm ivory/navy/sage palette, natural light and depth. Full wide 16:9 room/environment, not a crop, not a panel or blob. The left 40% remains a quiet light painted wall or calm low-contrast scenery to support live lesson text; the right 60% contains the main complete detailed environment. Illustration extends to every edge. No interface, letters, captions, logos, symbols or readable writing; no foreground people, no identifiable characters. This is a production background asset for Lingowow learning lesson canvas.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-7470d5b7-fc3b-4c15-b218-ecef5a5125d3.png",
+    "asset": "/images/lessons/backgrounds/city-directions.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 261966
+  },
+  {
+    "name": "travel-station",
+    "scene": "Peaceful elegant railway station platform with a large arched window and distant train, suitcase beside a wooden bench and green plants, suggesting travel and origins",
+    "prompt": "Create a new environment variant by transforming the reference setting into: Peaceful elegant railway station platform with a large arched window and distant train, suitcase beside a wooden bench and green plants, suggesting travel and origins. Reference is ONLY visual-style and composition guide: preserve the same richly painted editorial semi-realistic illustration, tactile wood, soft brush details, warm ivory/navy/sage palette, natural light and depth. Full wide 16:9 room/environment, not a crop, not a panel or blob. The left 40% remains a quiet light painted wall or calm low-contrast scenery to support live lesson text; the right 60% contains the main complete detailed environment. Illustration extends to every edge. No interface, letters, captions, logos, symbols or readable writing; no foreground people, no identifiable characters. This is a production background asset for Lingowow learning lesson canvas.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-05ac74e6-6d99-4d75-a077-50d1b35f53f3.png",
+    "asset": "/images/lessons/backgrounds/travel-station.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 209504
+  },
+  {
+    "name": "market",
+    "scene": "Neighborhood farmers market in a sunny square, tidy stalls with fruit vegetables and bread, woven basket and flowers, detailed streetscape with gentle colorful awnings",
+    "prompt": "Transform the reference environment into a new scene: Neighborhood farmers market in a sunny square, tidy stalls with fruit vegetables and bread, woven basket and flowers, detailed streetscape with gentle colorful awnings. Match reference's warm richly painted editorial semi-realistic illustration, soft tactile brushwork, ivory/navy/sage accents, natural sunlight, full environment depth. Wide 16:9 full-canvas production lesson backdrop, all edges filled with the setting. Left 40% is quieter pale low-contrast scenery supporting live lesson text; right 60% contains the primary detailed environment. No people, no interface, no text, letters, captions, logos, signs or readable writing. No abstract blobs or cropped panels. Same cohesive style as Lingowow Unit1.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-0b297b09-38be-4c15-9d2d-3b9f8e61bbb8.png",
+    "asset": "/images/lessons/backgrounds/market.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 295136
+  },
+  {
+    "name": "seaside",
+    "scene": "Quiet seaside promenade with ocean hills boats at distance, terracotta houses, a wooden bench with a travel journal and a ceramic cup, vines and bougainvillea",
+    "prompt": "Transform the reference environment into a new scene: Quiet seaside promenade with ocean hills boats at distance, terracotta houses, a wooden bench with a travel journal and a ceramic cup, vines and bougainvillea. Match reference's warm richly painted editorial semi-realistic illustration, soft tactile brushwork, ivory/navy/sage accents, natural sunlight, full environment depth. Wide 16:9 full-canvas production lesson backdrop, all edges filled with the setting. Left 40% is quieter pale low-contrast scenery supporting live lesson text; right 60% contains the primary detailed environment. No people, no interface, no text, letters, captions, logos, signs or readable writing. No abstract blobs or cropped panels. Same cohesive style as Lingowow Unit1.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-fd8cf1bd-ade2-4d29-8cec-d32bb8f66200.png",
+    "asset": "/images/lessons/backgrounds/seaside.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 303744
+  },
+  {
+    "name": "workshop",
+    "scene": "Bright creative workplace studio with tidy wooden workbench, drawing tools books and plants, warm afternoon light and tall windows, complete room",
+    "prompt": "Transform the reference environment into a new scene: Bright creative workplace studio with tidy wooden workbench, drawing tools books and plants, warm afternoon light and tall windows, complete room. Match reference's warm richly painted editorial semi-realistic illustration, soft tactile brushwork, ivory/navy/sage accents, natural sunlight, full environment depth. Wide 16:9 full-canvas production lesson backdrop, all edges filled with the setting. Left 40% is quieter pale low-contrast scenery supporting live lesson text; right 60% contains the primary detailed environment. No people, no interface, no text, letters, captions, logos, signs or readable writing. No abstract blobs or cropped panels. Same cohesive style as Lingowow Unit1.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-2ab905fa-c944-406c-bf00-eaba2a06c92f.png",
+    "asset": "/images/lessons/backgrounds/workshop.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 237428
+  },
+  {
+    "name": "restaurant",
+    "scene": "Inviting restaurant dining room with a softly set wooden table, simple white plates water glasses, sage curtains and fresh herbs, charming terrace beyond the window",
+    "prompt": "Transform the reference environment into a new scene: Inviting restaurant dining room with a softly set wooden table, simple white plates water glasses, sage curtains and fresh herbs, charming terrace beyond the window. Match reference's warm richly painted editorial semi-realistic illustration, soft tactile brushwork, ivory/navy/sage accents, natural sunlight, full environment depth. Wide 16:9 full-canvas production lesson backdrop, all edges filled with the setting. Left 40% is quieter pale low-contrast scenery supporting live lesson text; right 60% contains the primary detailed environment. No people, no interface, no text, letters, captions, logos, signs or readable writing. No abstract blobs or cropped panels. Same cohesive style as Lingowow Unit1.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-74465fc5-900e-403b-97a5-2c5278c8d180.png",
+    "asset": "/images/lessons/backgrounds/restaurant.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 218322
+  },
+  {
+    "name": "garden",
+    "scene": "Lush peaceful home garden with a wooden patio table, watering can, open notebook and potted flowers, a little glass greenhouse and soft sunlight",
+    "prompt": "Transform the reference environment into a new setting: Lush peaceful home garden with a wooden patio table, watering can, open notebook and potted flowers, a little glass greenhouse and soft sunlight. Match reference richly painted editorial semi-realistic illustration, tactile soft brush details, warm ivory/navy/sage palette, realistic natural sunlight and depth. Wide 16:9 complete environment all canvas edges filled, no panels, no shapes. Left40% quiet lowcontrast pale scenery for live lesson text; right60% primary detailed setting. No people, no UI, letters, captions, readable writing, logos or watermarks. Production background for Lingowow lessons.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-0c640446-dff8-4042-9b2f-bc773d76a589.png",
+    "asset": "/images/lessons/backgrounds/garden.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 313538
+  },
+  {
+    "name": "town-park",
+    "scene": "Calm town park with a leafy path, wooden bench, picnic basket and distant library building, late afternoon sunshine filtering through trees",
+    "prompt": "Transform the reference environment into a new setting: Calm town park with a leafy path, wooden bench, picnic basket and distant library building, late afternoon sunshine filtering through trees. Match reference richly painted editorial semi-realistic illustration, tactile soft brush details, warm ivory/navy/sage palette, realistic natural sunlight and depth. Wide 16:9 complete environment all canvas edges filled, no panels, no shapes. Left40% quiet lowcontrast pale scenery for live lesson text; right60% primary detailed setting. No people, no UI, letters, captions, readable writing, logos or watermarks. Production background for Lingowow lessons.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-9b473d44-91b9-468e-ac1f-4090a9223f43.png",
+    "asset": "/images/lessons/backgrounds/town-park.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 273918
+  }
+]

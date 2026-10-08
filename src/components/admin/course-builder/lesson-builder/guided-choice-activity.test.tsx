@@ -6,6 +6,7 @@ import {
   WRONG_FEEDBACK_MS,
   type GuidedChoiceQuestion,
 } from './guided-choice-activity'
+import motion from './guided-choice-activity.module.css'
 
 const questions: GuidedChoiceQuestion[] = [
   {
@@ -45,7 +46,10 @@ describe('GuidedChoiceActivity', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Her' }))
 
     expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
-    expect(screen.getByRole('button', { name: 'Her' })).toBeDisabled()
+    const correctChoice = screen.getByRole('button', { name: 'Her' })
+    expect(correctChoice).toBeDisabled()
+    expect(correctChoice).toHaveAttribute('data-guided-choice-celebrating', 'true')
+    expect(correctChoice).toHaveClass(motion.correctChoice)
     expect(screen.getByText('She is Ana. ___ name is Ana.')).toBeInTheDocument()
 
     act(() => vi.advanceTimersByTime(CORRECT_FEEDBACK_MS - 1))
@@ -70,6 +74,9 @@ describe('GuidedChoiceActivity', () => {
     expect(container.querySelector('[data-guided-choice="her"]')).toHaveAttribute(
       'data-guided-choice-state',
       'correct'
+    )
+    expect(container.querySelector('[data-guided-choice="her"]')).not.toHaveAttribute(
+      'data-guided-choice-celebrating'
     )
     expect(
       screen.queryByRole('button', { name: /comprobar|siguiente|anterior|reintentar/i })
@@ -166,5 +173,60 @@ describe('GuidedChoiceActivity', () => {
     expect(vi.getTimerCount()).toBe(0)
     act(() => vi.runOnlyPendingTimers())
     expect(onCompletionChange).not.toHaveBeenLastCalledWith(true)
+  })
+
+  it('reports the selected answer and the next question to classroom callbacks', () => {
+    vi.useFakeTimers()
+    const onAnswer = vi.fn()
+    const onNavigation = vi.fn()
+
+    render(
+      <GuidedChoiceActivity
+        questions={questions}
+        onAnswer={onAnswer}
+        onNavigation={onNavigation}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'His' }))
+    expect(onAnswer).toHaveBeenCalledWith('pronoun-1', 'his', false)
+    expect(onNavigation).not.toHaveBeenCalled()
+
+    act(() => vi.advanceTimersByTime(WRONG_FEEDBACK_MS))
+    expect(onNavigation).toHaveBeenLastCalledWith(1, 2)
+    expect(screen.getByText('They are students. ___ teacher is kind.')).toBeInTheDocument()
+  })
+
+  it('keeps feedback and retained answers when an unrelated remote update repeats the same index', () => {
+    vi.useFakeTimers()
+    const { rerender } = render(
+      <GuidedChoiceActivity questions={questions} remoteIndex={0} />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'His' }))
+    rerender(<GuidedChoiceActivity questions={questions} remoteIndex={0} />)
+    expect(screen.getByRole('status')).toHaveTextContent('Respuesta incorrecta.')
+
+    act(() => vi.advanceTimersByTime(WRONG_FEEDBACK_MS - 1))
+    expect(screen.getByText('She is Ana. ___ name is Ana.')).toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(1))
+    expect(screen.getByText('They are students. ___ teacher is kind.')).toBeInTheDocument()
+  })
+
+  it('follows a changed remote index without discarding the completed question answer', () => {
+    vi.useFakeTimers()
+    const { rerender } = render(
+      <GuidedChoiceActivity questions={questions} remoteIndex={0} />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'His' }))
+    rerender(<GuidedChoiceActivity questions={questions} remoteIndex={1} />)
+    expect(screen.getByText('They are students. ___ teacher is kind.')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'My' }))
+    act(() => vi.advanceTimersByTime(WRONG_FEEDBACK_MS))
+    expect(screen.getByRole('heading', { name: 'Resumen' })).toBeInTheDocument()
+    expect(screen.getByText('His')).toBeInTheDocument()
+    expect(screen.getByText('My')).toBeInTheDocument()
   })
 })

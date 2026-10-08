@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { GuidedLessonViewer } from './guided-lesson-viewer'
 import { buildCourseCompletionUrl } from '@/lib/course-completion'
 import { UNIT_ONE_LESSON_ID } from '@/lib/unit-one-learning'
+import { isGuidedLessonPilot } from '@/lib/lesson-pilot'
 
 interface LessonContentProps {
   lesson: LessonForView
@@ -65,9 +66,15 @@ export function LessonContent({
     mapContentToBlock(content as Parameters<typeof mapContentToBlock>[0])
   )
 
+  const lessonCourseId = courseId || lesson.module?.course?.id
+  const guidedCourseLesson = Boolean(lessonCourseId && isGuidedLessonPilot(lesson.id, lessonCourseId, lesson.contents ?? []))
   const unitOneClassroom = lesson.id === UNIT_ONE_LESSON_ID && Boolean(isTeacher || isClassroom)
-  const viewerStorageKey = guidedStorageKey || `unit1:${lesson.id}`
-  if ((guidedStorageKey && !isTeacher && !isClassroom || unitOneClassroom) && !lesson.videoUrl && blocks.length > 0) {
+  const guidedClassroomLesson = guidedCourseLesson && Boolean(isTeacher || isClassroom)
+  const useGuidedViewer = Boolean(guidedStorageKey && !isTeacher && !isClassroom) || unitOneClassroom || guidedClassroomLesson
+  const viewerStorageKey = guidedStorageKey || (lesson.id === UNIT_ONE_LESSON_ID
+    ? `unit1:${lesson.id}`
+    : `guided:${lessonCourseId}:${lesson.id}`)
+  if (useGuidedViewer && !lesson.videoUrl && blocks.length > 0) {
     return (
       <GuidedLessonViewer
         key={viewerStorageKey}
@@ -77,6 +84,7 @@ export function LessonContent({
         isPending={isPending}
         isCompleted={isCompleted}
         illustratedContent
+        unitOneAuthored={lesson.id === UNIT_ONE_LESSON_ID}
         isTeacher={isTeacher}
         isClassroom={isClassroom}
       />

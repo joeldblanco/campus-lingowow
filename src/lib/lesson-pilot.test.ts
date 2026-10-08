@@ -15,4 +15,12 @@ describe('guided lesson pilot eligibility', () => {
     expect(key).not.toBe(guidedLessonStorageKey('student-a', 'course', 'other-lesson'))
     expect(key).toContain('v1')
   })
+
+  it('enables reviewed native course content while preserving embeds and other courses', () => {
+    const contents = [{ data: { type: 'text', data: { learningRevision: 'course-guided-v1' } } }]
+    expect(isGuidedLessonPilot('unit-two', 'cmjnr0g5x0001jp04fsw2fejs', contents)).toBe(true)
+    expect(isGuidedLessonPilot('unit-two', 'other-course', contents)).toBe(false)
+    expect(isGuidedLessonPilot('unit-two', 'cmjnr0g5x0001jp04fsw2fejs', [{ data: { type: 'embed' } }])).toBe(false)
+    expect(isGuidedLessonPilot('unit-two', 'cmjnr0g5x0001jp04fsw2fejs', [{ data: null }])).toBe(false)
+  })
 })

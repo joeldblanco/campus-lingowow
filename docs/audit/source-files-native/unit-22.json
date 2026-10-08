@@ -1,0 +1,4631 @@
+{
+  "schemaVersion": 1,
+  "unit": 22,
+  "module": {
+    "order": 6,
+    "title": "Módulo 6",
+    "id": "cmkpwx52f0001w1awwjku5com",
+    "driveTitle": "Module 6"
+  },
+  "candidate": {
+    "id": "13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB",
+    "title": "Behaving Properly - Unit 22.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "1529690",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 6"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-22-primary-02-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB.pptx",
+    "localBytes": 1529690,
+    "sha256": "5a8b9e5ebeb1d95c39b8c33f4ec844ad139b89a9c7651154dad21fd01cd9828d"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-22-primary-02-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSnE7nV13b3CHtxW--tM13-EZPfNSDRJ1M0Pw8OoIQjSsK6zMKkvKdF6DxRgzhaiQ/pub?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSnE7nV13b3CHtxW--tM13-EZPfNSDRJ1M0Pw8OoIQjSsK6zMKkvKdF6DxRgzhaiQ/pub?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 16,
+    "nativeSlideCount": 16,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.999439,
+    "publicTokenCoverage": 1.0,
+    "slideDifferenceCount": 1,
+    "slideDifferences": [
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. 4",
+        "sequenceRatio": 0.988166
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 99751,
+      "sha256": "5a3e10c0d6402a548466fbdf0c42f8f839760a669d50e232a34e42abdad12801"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 183370,
+      "sha256": "cf1a7744da68e33548133834599c07fc633c64919cd328460af620e8dc44a154"
+    },
+    {
+      "path": "ppt/media/image12.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126076,
+      "sha256": "b3455fc7d4c61977def999017f0900bac3a4eae7e917104a2af3c5887435aee5"
+    },
+    {
+      "path": "ppt/media/image13.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 172679,
+      "sha256": "fad308302e847d89fb56ba635f8fb02a475fa2ca1a71fc33c5c4ed2d251e24dc"
+    },
+    {
+      "path": "ppt/media/image14.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 296011,
+      "sha256": "ea14d1dbd3f52ae082ab9a062c00661cd8f6108abf243b4e70ee6b64341c47ed"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 64626,
+      "sha256": "80cae609e4449034e66f7561ef00502feb36fb91e2fd7bc10c4a014e29a49c5e"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 60575,
+      "sha256": "02befd2b3d0dd0de886465c56f72aa4cbb814eed18baa1243f110ad900e71696"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 130208,
+      "sha256": "7278ba0e5cecca87b66a25148f666394e19072e0f48a34b98ac7e930cdcd74e0"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 144251,
+      "sha256": "84c0a93b334fd921520d3025b924538c0045c06d2651393d73367f156aba322f"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 14,
+    "bytes": 1451396,
+    "byExtension": {
+      ".jpg": 9,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 14,
+    "imageBytes": 1451396
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5604075,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6619875,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "302",
+          "shapeName": "Google Shape;302;g729cfa641f_0_19",
+          "bbox": {
+            "x": 3982150,
+            "y": 698025,
+            "cx": 925875,
+            "cy": 925875,
+            "right": 4908025,
+            "bottom": 1623900
+          },
+          "slide": 12
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 99751,
+      "sha256": "5a3e10c0d6402a548466fbdf0c42f8f839760a669d50e232a34e42abdad12801",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "239",
+          "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4743397,
+            "y": 1111361,
+            "cx": 1485990,
+            "cy": 842419,
+            "right": 6229387,
+            "bottom": 1953780
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 183370,
+      "sha256": "cf1a7744da68e33548133834599c07fc633c64919cd328460af620e8dc44a154",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "238",
+          "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2913289,
+            "y": 1103451,
+            "cx": 1485990,
+            "cy": 850323,
+            "right": 4399279,
+            "bottom": 1953774
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image12.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126076,
+      "sha256": "b3455fc7d4c61977def999017f0900bac3a4eae7e917104a2af3c5887435aee5",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "237",
+          "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123479,
+            "y": 1111355,
+            "cx": 1445673,
+            "cy": 850314,
+            "right": 2569152,
+            "bottom": 1961669
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image13.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 172679,
+      "sha256": "fad308302e847d89fb56ba635f8fb02a475fa2ca1a71fc33c5c4ed2d251e24dc",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4743401,
+            "y": 2822340,
+            "cx": 1486037,
+            "cy": 891594,
+            "right": 6229438,
+            "bottom": 3713934
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image14.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image14.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 296011,
+      "sha256": "ea14d1dbd3f52ae082ab9a062c00661cd8f6108abf243b4e70ee6b64341c47ed",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image14.jpg",
+          "relationshipId": "rId10",
+          "shapeId": "247",
+          "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6513097,
+            "y": 1135759,
+            "cx": 1445833,
+            "cy": 842412,
+            "right": 7958930,
+            "bottom": 1978171
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId4",
+          "shapeId": "341",
+          "shapeName": "Google Shape;341;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId3",
+          "shapeId": "340",
+          "shapeName": "Google Shape;340;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 64626,
+      "sha256": "80cae609e4449034e66f7561ef00502feb36fb91e2fd7bc10c4a014e29a49c5e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId9",
+          "shapeId": "243",
+          "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6534643,
+            "y": 2779832,
+            "cx": 1486031,
+            "cy": 930937,
+            "right": 8020674,
+            "bottom": 3710769
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 60575,
+      "sha256": "02befd2b3d0dd0de886465c56f72aa4cbb814eed18baa1243f110ad900e71696",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "242",
+          "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2979728,
+            "y": 2788622,
+            "cx": 1445831,
+            "cy": 930937,
+            "right": 4425559,
+            "bottom": 3719559
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 130208,
+      "sha256": "7278ba0e5cecca87b66a25148f666394e19072e0f48a34b98ac7e930cdcd74e0",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId7",
+          "shapeId": "241",
+          "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123479,
+            "y": 2781062,
+            "cx": 1445677,
+            "cy": 930937,
+            "right": 2569156,
+            "bottom": 3711999
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 144251,
+      "sha256": "84c0a93b334fd921520d3025b924538c0045c06d2651393d73367f156aba322f",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "221",
+          "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5604075,
+            "y": 583075,
+            "cx": 2054025,
+            "cy": 2059077,
+            "right": 7658100,
+            "bottom": 2642152
+          },
+          "slide": 4
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "22",
+          "Behaving",
+          "Properly",
+          "Unit"
+        ],
+        "joinedText": "22\nBehaving\nProperly\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1039550,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3343850,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "22",
+                "runs": [
+                  "2",
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "22"
+            ],
+            "joinedText": "22"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 2255425,
+              "y": 2296625,
+              "cx": 5340300,
+              "cy": 1159800,
+              "right": 7595725,
+              "bottom": 3456425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Behaving",
+                "runs": [
+                  "Behaving"
+                ]
+              },
+              {
+                "text": "Properly",
+                "runs": [
+                  "Properly"
+                ]
+              }
+            ],
+            "texts": [
+              "Behaving",
+              "Properly"
+            ],
+            "joinedText": "Behaving\nProperly"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 438950,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1527950,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "22",
+        "visibleTexts": [
+          "22",
+          "Behaving Properly",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbuUZ5Qe8W_1o66uyUw1pLzcaaqC8vbEC2zCEe2y6UKZf1-YU1VkJaDFXJw0HSlB9qjjTtH4WhDIoD_7y_GADqmwGGrM9Ty8Hywe9jyNNj-J38BE0hKL_HcDaaGWsGH3G4n_hnapDSaBBC45HkiJdGsCzWxAJ5QN4EY-t9kHTwA1QZ1MQxjfdflZnOJ2LA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Talk about people’s behavior in places and under circumstances.",
+          "Competencies",
+          "Manage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language."
+        ],
+        "joinedText": "Communicative Function\nTalk about people’s behavior in places and under circumstances.\nCompetencies\nManage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Talk about people’s behavior in places and under circumstances.",
+                "runs": [
+                  "Talk about people’s behavior in places and under circumstances."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Talk about people’s behavior in places and under circumstances."
+            ],
+            "joinedText": "Communicative Function\nTalk about people’s behavior in places and under circumstances."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 5499900,
+              "cy": 2053500,
+              "right": 6951525,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Manage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language.",
+                "runs": [
+                  "Manage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Manage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language."
+            ],
+            "joinedText": "Competencies\nManage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Communicative Function Talk about people’s behavior in places and under circumstances.",
+        "visibleTexts": [
+          "Communicative Function Talk about people’s behavior in places and under circumstances.",
+          "Competencies Manage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 3231425,
+              "cx": 4293900,
+              "cy": 1015800,
+              "right": 5330575,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5604075,
+              "y": 583075,
+              "cx": 2054025,
+              "cy": 2059077,
+              "right": 7658100,
+              "bottom": 2642152
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5604075,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6619875,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5604075,
+              "y": 583075,
+              "cx": 2054025,
+              "cy": 2059077,
+              "right": 7658100,
+              "bottom": 2642152
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5604075,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6619875,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYezGBQHlDaeJIHmLAQ0J5WOK5ljOidNNzw8jL7Ac2G-mH2F6O0Fi2yomG-3z-X_bKlme8YQZTFBDj0KFpa2OtIHCmZ4_6kPzZ7QfuO4ATxuNzqblA1ywMy4T_ExS0M39T_K1XjvKUIFA6AP-MWo-_pUznlPWH_hy2vHCx1R-o5Ytfk8Alma7g=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "kind": "audio-icon",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "audio-icon-without-original-url"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 1,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+          "We can also include other type of vocabulary evoking nice feelings and behaviour. ",
+          "RUDE",
+          "MOODY",
+          "SPOILED",
+          "DISRESPECTFUL",
+          "CARELESS",
+          "HYPOCRITE",
+          "UNGRATEFUL",
+          "GOSSIPER"
+        ],
+        "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nWe can also include other type of vocabulary evoking nice feelings and behaviour.\nRUDE\nMOODY\nSPOILED\nDISRESPECTFUL\nCARELESS\nHYPOCRITE\nUNGRATEFUL\nGOSSIPER",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+                "runs": [
+                  "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+            ],
+            "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1057650,
+              "y": 4557350,
+              "cx": 7028700,
+              "cy": 307800,
+              "right": 8086350,
+              "bottom": 4865150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can also include other type of vocabulary evoking nice feelings and behaviour. ",
+                "runs": [
+                  "We can also include other type of vocabulary ",
+                  "evoking nice feelings and behaviour.",
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "We can also include other type of vocabulary evoking nice feelings and behaviour. "
+            ],
+            "joinedText": "We can also include other type of vocabulary evoking nice feelings and behaviour."
+          },
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "kind": "group",
+            "bbox": {
+              "x": 1123325,
+              "y": 1103451,
+              "cx": 6897349,
+              "cy": 3153620,
+              "right": 8020674,
+              "bottom": 4257071
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123479,
+              "y": 1111355,
+              "cx": 1445673,
+              "cy": 850314,
+              "right": 2569152,
+              "bottom": 1961669
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2913289,
+              "y": 1103451,
+              "cx": 1485990,
+              "cy": 850323,
+              "right": 4399279,
+              "bottom": 1953774
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4743397,
+              "y": 1111361,
+              "cx": 1485990,
+              "cy": 842419,
+              "right": 6229387,
+              "bottom": 1953780
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4743401,
+              "y": 2822340,
+              "cx": 1486037,
+              "cy": 891594,
+              "right": 6229438,
+              "bottom": 3713934
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123479,
+              "y": 2781062,
+              "cx": 1445677,
+              "cy": 930937,
+              "right": 2569156,
+              "bottom": 3711999
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2979728,
+              "y": 2788622,
+              "cx": 1445831,
+              "cy": 930937,
+              "right": 4425559,
+              "bottom": 3719559
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6534643,
+              "y": 2779832,
+              "cx": 1486031,
+              "cy": 930937,
+              "right": 8020674,
+              "bottom": 3710769
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123325,
+              "y": 1953769,
+              "cx": 1445700,
+              "cy": 546300,
+              "right": 2569025,
+              "bottom": 2500069
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "RUDE",
+                "runs": [
+                  "RUDE"
+                ]
+              }
+            ],
+            "texts": [
+              "RUDE"
+            ],
+            "joinedText": "RUDE"
+          },
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2913277,
+              "y": 1934712,
+              "cx": 1485900,
+              "cy": 546300,
+              "right": 4399177,
+              "bottom": 2481012
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "MOODY",
+                "runs": [
+                  "MOODY"
+                ]
+              }
+            ],
+            "texts": [
+              "MOODY"
+            ],
+            "joinedText": "MOODY"
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4743401,
+              "y": 1953764,
+              "cx": 1485900,
+              "cy": 506100,
+              "right": 6229301,
+              "bottom": 2459864
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "SPOILED",
+                "runs": [
+                  "SPOILED"
+                ]
+              }
+            ],
+            "texts": [
+              "SPOILED"
+            ],
+            "joinedText": "SPOILED"
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6513097,
+              "y": 1135759,
+              "cx": 1445833,
+              "cy": 842412,
+              "right": 7958930,
+              "bottom": 1978171
+            },
+            "parentShapeId": "236",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6513005,
+              "y": 1953769,
+              "cx": 1445700,
+              "cy": 506100,
+              "right": 7958705,
+              "bottom": 2459869
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "DISRESPECTFUL",
+                "runs": [
+                  "DISRESPECTFUL"
+                ]
+              }
+            ],
+            "texts": [
+              "DISRESPECTFUL"
+            ],
+            "joinedText": "DISRESPECTFUL"
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123325,
+              "y": 3710770,
+              "cx": 1445700,
+              "cy": 546300,
+              "right": 2569025,
+              "bottom": 4257070
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "CARELESS",
+                "runs": [
+                  "CARELESS"
+                ]
+              }
+            ],
+            "texts": [
+              "CARELESS"
+            ],
+            "joinedText": "CARELESS"
+          },
+          {
+            "shapeId": "250",
+            "shapeName": "Google Shape;250;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2992392,
+              "y": 3710771,
+              "cx": 1445700,
+              "cy": 546300,
+              "right": 4438092,
+              "bottom": 4257071
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "HYPOCRITE",
+                "runs": [
+                  "HYPOCRITE"
+                ]
+              }
+            ],
+            "texts": [
+              "HYPOCRITE"
+            ],
+            "joinedText": "HYPOCRITE"
+          },
+          {
+            "shapeId": "251",
+            "shapeName": "Google Shape;251;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4743401,
+              "y": 3710766,
+              "cx": 1485900,
+              "cy": 546300,
+              "right": 6229301,
+              "bottom": 4257066
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "UNGRATEFUL",
+                "runs": [
+                  "UNGRATEFUL"
+                ]
+              }
+            ],
+            "texts": [
+              "UNGRATEFUL"
+            ],
+            "joinedText": "UNGRATEFUL"
+          },
+          {
+            "shapeId": "252",
+            "shapeName": "Google Shape;252;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6534613,
+              "y": 3710768,
+              "cx": 1485900,
+              "cy": 546300,
+              "right": 8020513,
+              "bottom": 4257068
+            },
+            "parentShapeId": "236",
+            "paragraphs": [
+              {
+                "text": "GOSSIPER",
+                "runs": [
+                  "GOSSIPER"
+                ]
+              }
+            ],
+            "texts": [
+              "GOSSIPER"
+            ],
+            "joinedText": "GOSSIPER"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123479,
+              "y": 1111355,
+              "cx": 1445673,
+              "cy": 850314,
+              "right": 2569152,
+              "bottom": 1961669
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2913289,
+              "y": 1103451,
+              "cx": 1485990,
+              "cy": 850323,
+              "right": 4399279,
+              "bottom": 1953774
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4743397,
+              "y": 1111361,
+              "cx": 1485990,
+              "cy": 842419,
+              "right": 6229387,
+              "bottom": 1953780
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4743401,
+              "y": 2822340,
+              "cx": 1486037,
+              "cy": 891594,
+              "right": 6229438,
+              "bottom": 3713934
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId7",
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123479,
+              "y": 2781062,
+              "cx": 1445677,
+              "cy": 930937,
+              "right": 2569156,
+              "bottom": 3711999
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2979728,
+              "y": 2788622,
+              "cx": 1445831,
+              "cy": 930937,
+              "right": 4425559,
+              "bottom": 3719559
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId9",
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6534643,
+              "y": 2779832,
+              "cx": 1486031,
+              "cy": 930937,
+              "right": 8020674,
+              "bottom": 3710769
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId10",
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6513097,
+              "y": 1135759,
+              "cx": 1445833,
+              "cy": 842412,
+              "right": 7958930,
+              "bottom": 1978171
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId9",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId10",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+        "visibleTexts": [
+          "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+          "We can also include other type of vocabulary evoking nice feelings and behaviour.",
+          "RUDE",
+          "MOODY",
+          "SPOILED",
+          "DISRESPECTFUL",
+          "CARELESS",
+          "HYPOCRITE",
+          "UNGRATEFUL",
+          "GOSSIPER"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYnVGLD5eR1IKD9nCaN_iZftglmPWEVESRrFKQnLe_slCeKpazyhuwaaMNImea7XRsfayQrT7VoXKX0sC_KANp6yjUjkiVVASRg_FJM8y8Ev9RtAzqFQvQ3Nji2Uh96LuB-LjkuZMGhQY3xWoRPXj2xLurbqVi_zajQuR_By9fOabm5Mjk6fV8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYPEfFiYFuqzLBD-w3xZYu0ekSr0eQI_l9le83CZWkABl6vgfGbuMK-xmyHboGceI-BsBq_c5JtwBC4MPNbG7NiyPxPCCESS6Ucu8tL_nve4R1ShHytRD7HfQIA0g8ib3LqC2Ci2e64WkxlUvHmMsQRS1mZ73KADQ0MOuMWrmNgs_bihR1l_Bo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa_ZD371g6BeSSgMGvVTfN2XgVxMC1wQljfMb6UQyaGgz-H20_uDANx0KqvrLrBtUvHxMjmR2TOTo0oOcjaOGAq7HVYgSr1o_wKIeGmSNFGaqIORtiycr7j-hpD45q09bPxcrPSZe9xFyU-2KoOwFpVNjdFR6a06AE5CJE0MIAMoxHd7nuY=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbo5TWkDKEensKf4zQHZHhYcJKy4mdolvID_kDP-E24GnyV2tdL4foA6y0UvD6EAwSeqa6C67DEu9KETy0A4-RDLXgnElstClfPUSHjbBCHjMiKotd9trBNszwwNPI7NAZJDb736jfi8UF76rmCnoXYdZDTJRquzJDbgujF82nUFIs-BpbnMOQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZs_jqqL_m3bgEtriHL6RGmk6NXVqopN1BeGyGJWtd2rtye9w4eMK379uHToMf2BdrOE4g8aoOU8phyO-SYgzHwtLCQ9OGOzZ6JGf90cuQriueUl2Bs_E_xC9mVOyIiKdAAz3Rl3d-YlAxYfeiJADhBLTjKglH8kQtNCUzP3zHmGHkdNDoh=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZno_11CEbzetzavf5Ws2S-7mqwJ8oyAdCicMJXUhunLGfOf6Gzpi4-kxUsqjZKPiEZdUEHJ8ZWAktUtdzxyYwMh9kbNlIP4a4KblzUNpYbIIAxYWzr3Rh8I9VipRudT7Rk8cO-GkV0NPaRTMfjL1GdyIUZdxLka2XMC5dcdWuFs8dxX_hX=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_l_OwTurBW4rC7rxWoBlrcLRtbNOP1dq06OT1Vsw5_Qil1ySJI2MSsL2Xqm4Ro7i1Iu62vqHoI3liiWxFncKpre6t64xMXuCqRk4VOM-G_16gBpRMwqlwzl2_bk0ZvECGmzWK12zZ82jhcDcXusqo4Iz1RLKD2-7Nnmya2tMftoFkj54ZrE8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb7Y0rgA1xeEoBLkBVs1xJdQvSOku33JckY8pC_sjD1Wlw4AS5JDY06w1LZ5IEGM-ntuXhLoTgY73f_AMP6KXJbanrPdLtmTJbCLYlBmffh5nAVpMV7f6qqiIq0waCibzQgwNyxkGiIJdPIpr8Zv41af74AIyllTjR3Jr8g9ru65H_I7JbF9EM=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 9,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "259",
+            "shapeName": "Google Shape;259;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Statements",
+          "Questions",
+          "Answers",
+          "1",
+          "You should talk to her.",
+          "Should I talk to her?",
+          "Yes, you should talk to her.",
+          "2",
+          "We have to be nice to them.",
+          "Do you have to be nice to them?",
+          "No, we don’t have to be nice to them.",
+          "3",
+          "She must be careful now.",
+          "Must she be careful now?",
+          "No, she mustn't be careful now.",
+          "4",
+          "They can’t act like children.",
+          "Can they act like children?",
+          "Yes, they can act like children.",
+          "We can talk about people’s behaviour and how they are supposed to act by using modals.",
+          "To consider ",
+          "1. All verbs go in simple form after a modal.",
+          "2. Modals work with all pronouns with no problem.",
+          "3. Modals affect the main verbs according to the speaker's intention.",
+          "4. Would is also a common modal; You’ll hear more of it in an upcoming lesson."
+        ],
+        "joinedText": "Statements\nQuestions\nAnswers\n1\nYou should talk to her.\nShould I talk to her?\nYes, you should talk to her.\n2\nWe have to be nice to them.\nDo you have to be nice to them?\nNo, we don’t have to be nice to them.\n3\nShe must be careful now.\nMust she be careful now?\nNo, she mustn't be careful now.\n4\nThey can’t act like children.\nCan they act like children?\nYes, they can act like children.\nWe can talk about people’s behaviour and how they are supposed to act by using modals.\nTo consider \n1. All verbs go in simple form after a modal.\n2. Modals work with all pronouns with no problem.\n3. Modals affect the main verbs according to the speaker's intention.\n4. Would is also a common modal; You’ll hear more of it in an upcoming lesson.",
+        "shapes": [
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 469375,
+              "y": 970425,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3469375,
+              "bottom": 3970425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Statements",
+                "runs": []
+              },
+              {
+                "text": "Questions",
+                "runs": []
+              },
+              {
+                "text": "Answers",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "You should talk to her.",
+                "runs": []
+              },
+              {
+                "text": "Should I talk to her?",
+                "runs": []
+              },
+              {
+                "text": "Yes, you should talk to her.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "We have to be nice to them.",
+                "runs": []
+              },
+              {
+                "text": "Do you have to be nice to them?",
+                "runs": []
+              },
+              {
+                "text": "No, we don’t have to be nice to them.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "She must be careful now.",
+                "runs": []
+              },
+              {
+                "text": "Must she be careful now?",
+                "runs": []
+              },
+              {
+                "text": "No, she mustn't be careful now.",
+                "runs": []
+              },
+              {
+                "text": "4",
+                "runs": []
+              },
+              {
+                "text": "They can’t act like children.",
+                "runs": []
+              },
+              {
+                "text": "Can they act like children?",
+                "runs": []
+              },
+              {
+                "text": "Yes, they can act like children.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Statements",
+              "Questions",
+              "Answers",
+              "1",
+              "You should talk to her.",
+              "Should I talk to her?",
+              "Yes, you should talk to her.",
+              "2",
+              "We have to be nice to them.",
+              "Do you have to be nice to them?",
+              "No, we don’t have to be nice to them.",
+              "3",
+              "She must be careful now.",
+              "Must she be careful now?",
+              "No, she mustn't be careful now.",
+              "4",
+              "They can’t act like children.",
+              "Can they act like children?",
+              "Yes, they can act like children."
+            ],
+            "joinedText": "Statements\nQuestions\nAnswers\n1\nYou should talk to her.\nShould I talk to her?\nYes, you should talk to her.\n2\nWe have to be nice to them.\nDo you have to be nice to them?\nNo, we don’t have to be nice to them.\n3\nShe must be careful now.\nMust she be careful now?\nNo, she mustn't be careful now.\n4\nThey can’t act like children.\nCan they act like children?\nYes, they can act like children.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can talk about people’s behaviour and how they are supposed to act by using modals.",
+                "runs": [
+                  "We can talk about people’s behaviour and how they are supposed to act by using modals."
+                ]
+              }
+            ],
+            "texts": [
+              "We can talk about people’s behaviour and how they are supposed to act by using modals."
+            ],
+            "joinedText": "We can talk about people’s behaviour and how they are supposed to act by using modals."
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g72967b2bcc_0_86",
+            "kind": "group",
+            "bbox": {
+              "x": 978849,
+              "y": 3273628,
+              "cx": 7075918,
+              "cy": 1758503,
+              "right": 8054767,
+              "bottom": 5032131
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "267",
+            "shapeName": "Google Shape;267;g72967b2bcc_0_86",
+            "kind": "group",
+            "bbox": {
+              "x": 904225,
+              "y": 3470421,
+              "cx": 7075918,
+              "cy": 1546183,
+              "right": 7980143,
+              "bottom": 5016604
+            },
+            "parentShapeId": "266"
+          },
+          {
+            "shapeId": "268",
+            "shapeName": "Google Shape;268;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "267",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "267",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 967626,
+              "y": 3574467,
+              "cx": 6741300,
+              "cy": 1546200,
+              "right": 7708926,
+              "bottom": 5120667
+            },
+            "parentShapeId": "266",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "1. All verbs go in simple form after a modal.",
+                "runs": [
+                  "1. ",
+                  "All verbs go in simple form after a modal."
+                ]
+              },
+              {
+                "text": "2. Modals work with all pronouns with no problem.",
+                "runs": [
+                  "2.",
+                  " ",
+                  "Modals work with all pronouns with no problem."
+                ]
+              },
+              {
+                "text": "3. Modals affect the main verbs according to the speaker's intention.",
+                "runs": [
+                  "3. ",
+                  "Modals affect the main verbs according to the speaker's intention."
+                ]
+              },
+              {
+                "text": "4. Would is also a common modal; You’ll hear more of it in an upcoming lesson.",
+                "runs": [
+                  "4. ",
+                  "Would",
+                  " is also a common modal; You’ll hear more of it in an upcoming lesson."
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "1. All verbs go in simple form after a modal.",
+              "2. Modals work with all pronouns with no problem.",
+              "3. Modals affect the main verbs according to the speaker's intention.",
+              "4. Would is also a common modal; You’ll hear more of it in an upcoming lesson."
+            ],
+            "joinedText": "To consider \n1. All verbs go in simple form after a modal.\n2. Modals work with all pronouns with no problem.\n3. Modals affect the main verbs according to the speaker's intention.\n4. Would is also a common modal; You’ll hear more of it in an upcoming lesson."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 469375,
+              "y": 970425,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3469375,
+              "bottom": 3970425
+            },
+            "columnWidths": [
+              386300,
+              2299500,
+              2549850,
+              2969600
+            ],
+            "rows": [
+              {
+                "height": 414050,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Statements",
+                    "paragraphs": [
+                      {
+                        "text": "Statements",
+                        "runs": [
+                          "Statements"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Questions",
+                    "paragraphs": [
+                      {
+                        "text": "Questions",
+                        "runs": [
+                          "Questions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Answers",
+                    "paragraphs": [
+                      {
+                        "text": "Answers",
+                        "runs": [
+                          "Answers"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 429775,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "You should talk to her.",
+                    "paragraphs": [
+                      {
+                        "text": "You should talk to her.",
+                        "runs": [
+                          "You ",
+                          "should",
+                          " ",
+                          "talk to her."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Should I talk to her?",
+                    "paragraphs": [
+                      {
+                        "text": "Should I talk to her?",
+                        "runs": [
+                          "Should",
+                          " ",
+                          "I talk to her?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Yes, you should talk to her.",
+                    "paragraphs": [
+                      {
+                        "text": "Yes, you should talk to her.",
+                        "runs": [
+                          "Yes, you ",
+                          "should",
+                          " ",
+                          "talk to her."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 429775,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We have to be nice to them.",
+                    "paragraphs": [
+                      {
+                        "text": "We have to be nice to them.",
+                        "runs": [
+                          "We ",
+                          "have to",
+                          " be nice to them."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Do you have to be nice to them?",
+                    "paragraphs": [
+                      {
+                        "text": "Do you have to be nice to them?",
+                        "runs": [
+                          "Do you ",
+                          "have to",
+                          " be nice to them?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "No, we don’t have to be nice to them.",
+                    "paragraphs": [
+                      {
+                        "text": "No, we don’t have to be nice to them.",
+                        "runs": [
+                          "No, we don’t ",
+                          "have to",
+                          " be nice to them."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 429775,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She must be careful now.",
+                    "paragraphs": [
+                      {
+                        "text": "She must be careful now.",
+                        "runs": [
+                          "She ",
+                          "must ",
+                          "be careful now."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Must she be careful now?",
+                    "paragraphs": [
+                      {
+                        "text": "Must she be careful now?",
+                        "runs": [
+                          "Must ",
+                          "she be careful now?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "No, she mustn't be careful now.",
+                    "paragraphs": [
+                      {
+                        "text": "No, she mustn't be careful now. ",
+                        "runs": [
+                          "No, she ",
+                          "mustn't",
+                          " ",
+                          "be careful now. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 429775,
+                "cells": [
+                  {
+                    "text": "4",
+                    "paragraphs": [
+                      {
+                        "text": "4",
+                        "runs": [
+                          "4"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They can’t act like children.",
+                    "paragraphs": [
+                      {
+                        "text": "They can’t act like children.",
+                        "runs": [
+                          "They ",
+                          "can’t",
+                          " ",
+                          "act like children."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Can they act like children?",
+                    "paragraphs": [
+                      {
+                        "text": "Can they act like children?",
+                        "runs": [
+                          "Can",
+                          " ",
+                          "they act like children?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Yes, they can act like children.",
+                    "paragraphs": [
+                      {
+                        "text": "Yes, they can act like children.",
+                        "runs": [
+                          "Yes, they ",
+                          "can",
+                          " ",
+                          "act like children."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "Statements Questions Answers 1 You should talk to her. Should I talk to her? Yes, you should talk to her. 2 We have to be nice to them. Do you have to be nice to them? No, we don’t have to be nice to them. 3 She must be careful now. Must she be careful now? No, she mustn't be careful now. 4 They can’t act like children. Can they act like children? Yes, they can act like children.",
+        "visibleTexts": [
+          "Statements Questions Answers 1 You should talk to her. Should I talk to her? Yes, you should talk to her. 2 We have to be nice to them. Do you have to be nice to them? No, we don’t have to be nice to them. 3 She must be careful now. Must she be careful now? No, she mustn't be careful now. 4 They can’t act like children. Can they act like children? Yes, they can act like children.",
+          "We can talk about people’s behaviour and how they are supposed to act by using modals.",
+          "To consider 1. All verbs go in simple form after a modal. 2. Modals work with all pronouns with no problem. 3. Modals affect the main verbs according to the speaker's intention. 4. Would is also a common modal; You’ll hear more of it in an upcoming lesson."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "275",
+            "shapeName": "Google Shape;275;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "We can use the modals to indicate different meanings in messages.",
+          "Functions",
+          "Examples",
+          "1",
+          "Suggestions",
+          "They should not talk loud.",
+          "2",
+          "Responsibility",
+          "She has to finish his homework.",
+          "3",
+          "Obligation",
+          "I must act normal before her.",
+          "4",
+          "Prohibition",
+          "You must not hit your sister.\n\nYou can’t yell at your mum.",
+          "To consider ",
+          "1. There are other uses for each of the modals.",
+          "2. Can also works with abilities."
+        ],
+        "joinedText": "We can use the modals to indicate different meanings in messages.\nFunctions\nExamples\n1\nSuggestions\nThey should not talk loud.\n2\nResponsibility\nShe has to finish his homework.\n3\nObligation\nI must act normal before her.\n4\nProhibition\nYou must not hit your sister.\n\nYou can’t yell at your mum.\nTo consider \n1. There are other uses for each of the modals.\n2. Can also works with abilities.",
+        "shapes": [
+          {
+            "shapeId": "282",
+            "shapeName": "Google Shape;282;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1643496,
+              "y": 43426,
+              "cx": 5316300,
+              "cy": 584700,
+              "right": 6959796,
+              "bottom": 628126
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can use the modals to indicate different meanings in messages.",
+                "runs": [
+                  "We can use the modals to indicate different meanings in messages."
+                ]
+              }
+            ],
+            "texts": [
+              "We can use the modals to indicate different meanings in messages."
+            ],
+            "joinedText": "We can use the modals to indicate different meanings in messages."
+          },
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Suggestions",
+                "runs": []
+              },
+              {
+                "text": "They should not talk loud.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Responsibility",
+                "runs": []
+              },
+              {
+                "text": "She has to finish his homework.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Obligation",
+                "runs": []
+              },
+              {
+                "text": "I must act normal before her.",
+                "runs": []
+              },
+              {
+                "text": "4",
+                "runs": []
+              },
+              {
+                "text": "Prohibition",
+                "runs": []
+              },
+              {
+                "text": "You must not hit your sister.\n\nYou can’t yell at your mum.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Suggestions",
+              "They should not talk loud.",
+              "2",
+              "Responsibility",
+              "She has to finish his homework.",
+              "3",
+              "Obligation",
+              "I must act normal before her.",
+              "4",
+              "Prohibition",
+              "You must not hit your sister.\n\nYou can’t yell at your mum."
+            ],
+            "joinedText": "Functions\nExamples\n1\nSuggestions\nThey should not talk loud.\n2\nResponsibility\nShe has to finish his homework.\n3\nObligation\nI must act normal before her.\n4\nProhibition\nYou must not hit your sister.\n\nYou can’t yell at your mum.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 978849,
+              "y": 3485917,
+              "cx": 7075918,
+              "cy": 1124693,
+              "right": 8054767,
+              "bottom": 4610610
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 904225,
+              "y": 3470422,
+              "cx": 7075918,
+              "cy": 1546183,
+              "right": 7980143,
+              "bottom": 5016605
+            },
+            "parentShapeId": "284"
+          },
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "285",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "285",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 967626,
+              "y": 3498272,
+              "cx": 6600000,
+              "cy": 1313700,
+              "right": 7567626,
+              "bottom": 4811972
+            },
+            "parentShapeId": "284",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "1. There are other uses for each of the modals.",
+                "runs": [
+                  "1. ",
+                  "There are other uses for each of the modals."
+                ]
+              },
+              {
+                "text": "2. Can also works with abilities.",
+                "runs": [
+                  "2. ",
+                  "Can ",
+                  "also works with abilities."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "1. There are other uses for each of the modals.",
+              "2. Can also works with abilities."
+            ],
+            "joinedText": "To consider \n1. There are other uses for each of the modals.\n2. Can also works with abilities."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;g729cfa641f_0_0",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "columnWidths": [
+              541675,
+              3133400,
+              2265300
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Suggestions",
+                    "paragraphs": [
+                      {
+                        "text": "Suggestions",
+                        "runs": [
+                          "Suggestions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They should not talk loud.",
+                    "paragraphs": [
+                      {
+                        "text": "They should not talk loud.",
+                        "runs": [
+                          "They ",
+                          "should ",
+                          "not talk loud."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Responsibility",
+                    "paragraphs": [
+                      {
+                        "text": "Responsibility",
+                        "runs": [
+                          "Responsibility"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She has to finish his homework.",
+                    "paragraphs": [
+                      {
+                        "text": "She has to finish his homework.",
+                        "runs": [
+                          "She ",
+                          "has",
+                          " ",
+                          "to",
+                          " finish his homework."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Obligation",
+                    "paragraphs": [
+                      {
+                        "text": "Obligation",
+                        "runs": [
+                          "Obligation"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I must act normal before her.",
+                    "paragraphs": [
+                      {
+                        "text": "I must act normal before her.",
+                        "runs": [
+                          "I ",
+                          "must ",
+                          "act normal before her."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "4",
+                    "paragraphs": [
+                      {
+                        "text": "4",
+                        "runs": [
+                          "4"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Prohibition",
+                    "paragraphs": [
+                      {
+                        "text": "Prohibition",
+                        "runs": [
+                          "Prohibition"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "You must not hit your sister.\n\nYou can’t yell at your mum.",
+                    "paragraphs": [
+                      {
+                        "text": "You must not hit your sister.",
+                        "runs": [
+                          "You ",
+                          "must not ",
+                          "hit your sister."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "You can’t yell at your mum.",
+                        "runs": [
+                          "You ",
+                          "can’t ",
+                          "yell at your mum."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "We can use the modals to indicate different meanings in messages.",
+        "visibleTexts": [
+          "We can use the modals to indicate different meanings in messages.",
+          "Functions Examples 1 Suggestions They should not talk loud. 2 Responsibility She has to finish his homework. 3 Obligation I must act normal before her. 4 Prohibition You must not hit your sister. You can’t yell at your mum.",
+          "To consider 1. There are other uses for each of the modals. 2. Can also works with abilities."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "293",
+            "shapeName": "Google Shape;293;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "294",
+            "shapeName": "Google Shape;294;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "A. Listen to the audio and answer the questions your teacher makes. ",
+          "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly.  "
+        ],
+        "joinedText": "A. Listen to the audio and answer the questions your teacher makes.\nB. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly.",
+        "shapes": [
+          {
+            "shapeId": "300",
+            "shapeName": "Google Shape;300;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1017450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "A. L",
+                  "isten to the audio and answer the questions your teacher makes",
+                  ". "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "A. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 2071800,
+              "cx": 6496200,
+              "cy": 999900,
+              "right": 7820100,
+              "bottom": 3071700
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly.  ",
+                "runs": [
+                  "B",
+                  ". ",
+                  "Write 8 sentences addressing children’s behaviour at home, in public, at school, etc",
+                  ". Remember to use the different modals and to contextualize the ",
+                  "sentences properly.",
+                  "  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly.  "
+            ],
+            "joinedText": "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly."
+          },
+          {
+            "shapeId": "302",
+            "shapeName": "Google Shape;302;g729cfa641f_0_19",
+            "kind": "picture",
+            "bbox": {
+              "x": 3982150,
+              "y": 698025,
+              "cx": 925875,
+              "cy": 925875,
+              "right": 4908025,
+              "bottom": 1623900
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "302",
+            "shapeName": "Google Shape;302;g729cfa641f_0_19",
+            "bbox": {
+              "x": 3982150,
+              "y": 698025,
+              "cx": 925875,
+              "cy": 925875,
+              "right": 4908025,
+              "bottom": 1623900
+            },
+            "slide": 12
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 12
+          }
+        ]
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "A. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "A. Listen to the audio and answer the questions your teacher makes.",
+          "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "kind": "audio-icon",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "audio-icon-without-original-url"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 1,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "C. Read the following paragraph, extract sentences with the functions studied  and locate them in the space provided.",
+          "An insight",
+          "I always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me.",
+          "Suggestions",
+          "Responsibility",
+          "Obligation",
+          "Prohibition"
+        ],
+        "joinedText": "C. Read the following paragraph, extract sentences with the functions studied  and locate them in the space provided.\nAn insight\n\nI always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me.\nSuggestions\nResponsibility\nObligation\nProhibition",
+        "shapes": [
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 421700,
+              "y": 1059900,
+              "cx": 4769400,
+              "cy": 3325200,
+              "right": 5191100,
+              "bottom": 4385100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1163775,
+              "y": 233250,
+              "cx": 6816300,
+              "cy": 691500,
+              "right": 7980075,
+              "bottom": 924750
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph, extract sentences with the functions studied  and locate them in the space provided.",
+                "runs": [
+                  "C",
+                  ". ",
+                  "Read the following paragraph, extract sentences with the functions studied ",
+                  " and locate them in the space provided."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph, extract sentences with the functions studied  and locate them in the space provided."
+            ],
+            "joinedText": "C. Read the following paragraph, extract sentences with the functions studied  and locate them in the space provided."
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 529475,
+              "y": 1089650,
+              "cx": 4585500,
+              "cy": 3233100,
+              "right": 5114975,
+              "bottom": 4322750
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "An insight",
+                "runs": [
+                  "An insight"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "I always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me.",
+                "runs": [
+                  "I always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me."
+                ]
+              }
+            ],
+            "texts": [
+              "An insight",
+              "I always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me."
+            ],
+            "joinedText": "An insight\n\nI always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me."
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_32",
+            "kind": "table",
+            "bbox": {
+              "x": 5377675,
+              "y": 1372800,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 8377675,
+              "bottom": 4372800
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Suggestions",
+                "runs": []
+              },
+              {
+                "text": "Responsibility",
+                "runs": []
+              },
+              {
+                "text": "Obligation",
+                "runs": []
+              },
+              {
+                "text": "Prohibition",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Suggestions",
+              "Responsibility",
+              "Obligation",
+              "Prohibition"
+            ],
+            "joinedText": "Suggestions\nResponsibility\nObligation\nProhibition",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_32",
+            "bbox": {
+              "x": 5377675,
+              "y": 1372800,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 8377675,
+              "bottom": 4372800
+            },
+            "columnWidths": [
+              1359650,
+              2106350
+            ],
+            "rows": [
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "Suggestions",
+                    "paragraphs": [
+                      {
+                        "text": "Suggestions",
+                        "runs": [
+                          "Suggestions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "Responsibility",
+                    "paragraphs": [
+                      {
+                        "text": "Responsibility",
+                        "runs": [
+                          "Responsibility"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "Obligation",
+                    "paragraphs": [
+                      {
+                        "text": "Obligation",
+                        "runs": [
+                          "Obligation"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "Prohibition",
+                    "paragraphs": [
+                      {
+                        "text": "Prohibition",
+                        "runs": [
+                          "Prohibition"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+        "visibleTexts": [
+          "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+          "An insight I always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me.",
+          "Suggestions Responsibility Obligation Prohibition"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting.",
+          "E. Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs.  Try to use examples or anecdotes to support your ideas.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting.\nE. Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs.  Try to use examples or anecdotes to support your ideas.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "315",
+            "shapeName": "Google Shape;315;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1123275,
+              "y": 146675,
+              "cx": 6867300,
+              "cy": 1027500,
+              "right": 7990575,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting.",
+                "runs": [
+                  "D. ",
+                  "Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting."
+                ]
+              }
+            ],
+            "texts": [
+              "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting."
+            ],
+            "joinedText": "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting."
+          },
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs.  Try to use examples or anecdotes to support your ideas.",
+                "runs": [
+                  "E. ",
+                  "Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs.  Try to use examples or anecdotes to support your ideas."
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs.  Try to use examples or anecdotes to support your ideas."
+            ],
+            "joinedText": "E. Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs.  Try to use examples or anecdotes to support your ideas."
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 917907,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2093429
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "317",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "317",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 5161000,
+              "y": 3746180,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 7202998,
+              "bottom": 4941223
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "320",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "320",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "320",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "320",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting.",
+        "visibleTexts": [
+          "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting.",
+          "E. Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs. Try to use examples or anecdotes to support your ideas.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "330",
+            "shapeName": "Google Shape;330;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "331",
+            "shapeName": "Google Shape;331;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "331",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "333",
+            "shapeName": "Google Shape;333;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "331",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "334",
+            "shapeName": "Google Shape;334;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "339",
+            "shapeName": "Google Shape;339;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "340",
+            "shapeName": "Google Shape;340;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "341",
+            "shapeName": "Google Shape;341;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "342",
+            "shapeName": "Google Shape;342;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "shapeId": "340",
+            "shapeName": "Google Shape;340;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "shapeId": "341",
+            "shapeName": "Google Shape;341;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 16
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "slide": 16
+          }
+        ]
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbMmFueL-2lmTBENcnmhcwMWgO2PO4uIBvjaGqBGKhm7EKvdATIbaSwtN69YuKFKAemspKRy6s-Ug8WMMYc5sU5v23kn0xJcJ03hUZe_Gw7CYT1xEJY6bfw8FpDaoDUr3icSV8cahddeiXLmxQI22YhJjRmEW-Wx5-Maju0qye35t7doa0CwacbbM7Y=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZV8dDmGyNn5ED_TI18P9nf6BLq107fkG3cuW6kISIAqYNzTmIhEadL0pLu5QtMPcNewi7plR7_n5IiH0YLWicI4jDNtrN6iTmUDnlYFDde6u1khGB6wqaXvbVXxa8et4G1AH0OmEUay9Wamm7Z5yLpBmCAlN7Hp5oUyjAPMHSKuGjh5UtzjlIq47ZgK6o=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ1GVzd9t98FikoZJigCxRcfIviO8Rfjn3WPieeGNWKaAU12FbIX3aFCmsj_beWCXsUQ-cUovRuxhZqdXCjZ262_mZZDTGQC8LGF983aRziAEGmgNQT3VGACObdAYloDebCT-e0v8O7xnRAxkeiB0IlyPTHWQtSFVsDIeJXh5rK76d7A86qEgKN8e0UzGI=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

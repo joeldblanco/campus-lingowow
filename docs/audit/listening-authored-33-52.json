@@ -1,0 +1,2901 @@
+{
+  "schemaVersion": 1,
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "units": [
+    33,
+    52
+  ],
+  "exercises": [
+    {
+      "key": {
+        "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+        "slideNumber": 12,
+        "unit": 33,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "unit": 33,
+      "lessonTitle": "Unit 33",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850",
+      "sourceFilename": "Module 9 - Unit 33 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-33-lesson-02-1oP0RhxIqeg0IDWN7SSczkwR1ZcI5PAhz.mp3",
+      "sourceExactTexts": [
+        "A. Write 8 sentences comparing customs and expectations from your country and another one you know. Follow the example.",
+        "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary.",
+        "0. It is the custom to practice hospitality in my country, but not in the one I live now."
+      ],
+      "sourceItemIds": [
+        "u33-s12-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9974727034568787,
+        "avgLogprob": -0.1772576115877476,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u33-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "How does the speaker describe Venezuelans?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Happy",
+            "Reserved",
+            "Unfriendly",
+            "Silent"
+          ],
+          "correct": "Happy",
+          "evidence": "we Venezuelans are happy people",
+          "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Happy",
+              "accepted": [
+                "Happy"
+              ],
+              "evidence": "we Venezuelans are happy people",
+              "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u33-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What is expected when visiting a home?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Eating a lot",
+            "Leaving immediately",
+            "Bringing work",
+            "Avoiding conversation"
+          ],
+          "correct": "Eating a lot",
+          "evidence": "if you visit a home, you are expected to be hungry and eat a lot",
+          "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Eating a lot",
+              "accepted": [
+                "Eating a lot"
+              ],
+              "evidence": "if you visit a home, you are expected to be hungry and eat a lot",
+              "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u33-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Where is laughing out loud considered okay?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "In the inner circle",
+            "In every workplace",
+            "During every ceremony",
+            "Only when alone"
+          ],
+          "correct": "In the inner circle",
+          "evidence": "it is completely okay to laugh out loud in your inner circle",
+          "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "In the inner circle",
+              "accepted": [
+                "In the inner circle"
+              ],
+              "evidence": "it is completely okay to laugh out loud in your inner circle",
+              "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u33-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What can happen after a family gathering?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Several goodbyes",
+            "An immediate silent departure",
+            "A business meeting",
+            "A formal examination"
+          ],
+          "correct": "Several goodbyes",
+          "evidence": "say goodbye like four different times in different places of the house",
+          "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Several goodbyes",
+              "accepted": [
+                "Several goodbyes"
+              ],
+              "evidence": "say goodbye like four different times in different places of the house",
+              "sourceAudioSha256": "7d88c5f82f65996836649eb04759c8c9a1cdd17227d77acbcd9bb09b35f09850"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+        "slideNumber": 13,
+        "unit": 34,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "unit": 34,
+      "lessonTitle": "Unit 34",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a",
+      "sourceFilename": "Module 9 - Unit 34 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-34-lesson-03-1cN2fTxrYtSyYVPpwSqxZHOeK10B9UTdo.mp3",
+      "sourceExactTexts": [
+        "A. Describe how 5 different objects, gadgets, events, movements etc. have evolved in time. Follow the example.",
+        "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary.",
+        "0. Back in the 90s, cell phones were a great gadget even when they were huge and heavy. Nowadays, we have small, light smart phones with internet, so one may wonder what cell phones will be like in 10 years."
+      ],
+      "sourceItemIds": [
+        "u34-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9984625577926636,
+        "avgLogprob": -0.2587565805053427,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u34-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What mattered greatly to the speaker’s generation?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Respect",
+            "Competition",
+            "Shopping",
+            "Technology"
+          ],
+          "correct": "Respect",
+          "evidence": "respect was a big part of our generation",
+          "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Respect",
+              "accepted": [
+                "Respect"
+              ],
+              "evidence": "respect was a big part of our generation",
+              "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u34-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "How does the speaker describe childhood behavior?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Well-behaved",
+            "Always rebellious",
+            "Completely independent",
+            "Uninterested in family"
+          ],
+          "correct": "Well-behaved",
+          "evidence": "we were very well-behaved children",
+          "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Well-behaved",
+              "accepted": [
+                "Well-behaved"
+              ],
+              "evidence": "we were very well-behaved children",
+              "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u34-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Where does the speaker mention children making scenes?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Supermarkets",
+            "Libraries",
+            "Offices",
+            "Airports"
+          ],
+          "correct": "Supermarkets",
+          "evidence": "children making a scene at supermarkets",
+          "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Supermarkets",
+              "accepted": [
+                "Supermarkets"
+              ],
+              "evidence": "children making a scene at supermarkets",
+              "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u34-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "Who does the speaker say should take action?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Families and parents",
+            "Only schoolchildren",
+            "Only employers",
+            "Only shop assistants"
+          ],
+          "correct": "Families and parents",
+          "evidence": "Families, parents themselves need to do something about it",
+          "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Families and parents",
+              "accepted": [
+                "Families and parents"
+              ],
+              "evidence": "Families, parents themselves need to do something about it",
+              "sourceAudioSha256": "e5bb7cc1ecf39e85b43398a5c17ddbf64cb89bb4f7682a27dd9f953a3967342a"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+        "slideNumber": 12,
+        "unit": 35,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+      "unit": 35,
+      "lessonTitle": "Unit 35",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28",
+      "sourceFilename": "Module 9 - Unit 35 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-35-lesson-03-1ER1deT6b3kOBn3si9fJajmDMdDaF6zf9.mp3",
+      "sourceExactTexts": [
+        "A.Use the vocabulary and language studied to write 8 sentences to express probability. Follow the example.",
+        "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary.",
+        "0. You’ve got all the qualifications, so you might get the scholarship."
+      ],
+      "sourceItemIds": [
+        "u35-s12-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.992470383644104,
+        "avgLogprob": -0.13268149156850415,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u35-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Why does one student refuse to skip class?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "He wants a scholarship",
+            "He has lost his phone",
+            "He dislikes his friends",
+            "He must travel abroad"
+          ],
+          "correct": "He wants a scholarship",
+          "evidence": "I want this scholarship and I might get it",
+          "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "He wants a scholarship",
+              "accepted": [
+                "He wants a scholarship"
+              ],
+              "evidence": "I want this scholarship and I might get it",
+              "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u35-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Which day is mentioned for skipping class?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Friday",
+            "Monday",
+            "Tuesday",
+            "Wednesday"
+          ],
+          "correct": "Friday",
+          "evidence": "you're not skipping class on Friday",
+          "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Friday",
+              "accepted": [
+                "Friday"
+              ],
+              "evidence": "you're not skipping class on Friday",
+              "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u35-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What school record does the student want?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "A straight record",
+            "A record of absences",
+            "An incomplete record",
+            "A record of punishments"
+          ],
+          "correct": "A straight record",
+          "evidence": "I need a straight record in school",
+          "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "A straight record",
+              "accepted": [
+                "A straight record"
+              ],
+              "evidence": "I need a straight record in school",
+              "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u35-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "When might he join his friends?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "After school",
+            "Before class",
+            "During class",
+            "At lunchtime in class"
+          ],
+          "correct": "After school",
+          "evidence": "after school. That's my final offer",
+          "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "After school",
+              "accepted": [
+                "After school"
+              ],
+              "evidence": "after school. That's my final offer",
+              "sourceAudioSha256": "dc5c735e823fbbf06dbeed3a851314a78267ebaac9f607fe9319781be7409e28"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+        "slideNumber": 12,
+        "unit": 36,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "unit": 36,
+      "lessonTitle": "Unit 36",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d",
+      "sourceFilename": "Unit 36 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-36-lesson-02-1ZZEKXtMrRNLAVv3jDDZQh9210sG1D_2I.mp3",
+      "sourceExactTexts": [
+        "A.Use the vocabulary and language studied to write 8 sentences to express ideas or suggestions. Follow the example.",
+        "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary.",
+        "0. We’d better hurry, or there won’t be any cake left."
+      ],
+      "sourceItemIds": [
+        "u36-s12-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9830088019371033,
+        "avgLogprob": -0.2444957302110951,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u36-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "When is the appointment?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Saturday",
+            "Monday",
+            "Tuesday",
+            "Thursday"
+          ],
+          "correct": "Saturday",
+          "evidence": "the appointment we have on Saturday",
+          "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Saturday",
+              "accepted": [
+                "Saturday"
+              ],
+              "evidence": "the appointment we have on Saturday",
+              "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u36-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Which restaurant do they consider?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "A Japanese restaurant",
+            "An Italian restaurant",
+            "A Mexican restaurant",
+            "A French restaurant"
+          ],
+          "correct": "A Japanese restaurant",
+          "evidence": "a very expensive Japanese restaurant",
+          "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "A Japanese restaurant",
+              "accepted": [
+                "A Japanese restaurant"
+              ],
+              "evidence": "a very expensive Japanese restaurant",
+              "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u36-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "How much time do they still have?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Two days",
+            "Two weeks",
+            "One month",
+            "One year"
+          ],
+          "correct": "Two days",
+          "evidence": "We still have two days to go",
+          "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Two days",
+              "accepted": [
+                "Two days"
+              ],
+              "evidence": "We still have two days to go",
+              "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u36-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What might happen if they close the deal?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "They may get a raise",
+            "They will change careers immediately",
+            "They will cancel the meeting",
+            "They will leave the country"
+          ],
+          "correct": "They may get a raise",
+          "evidence": "We're going to get a raise",
+          "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "They may get a raise",
+              "accepted": [
+                "They may get a raise"
+              ],
+              "evidence": "We're going to get a raise",
+              "sourceAudioSha256": "de7f0135948f3740aa0c0c8bf4a2a41ac44ba139b0310bcdab956b4ede50b58d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+        "slideNumber": 14,
+        "unit": 37,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "unit": 37,
+      "lessonTitle": "Unit 37",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e",
+      "sourceFilename": "Unit 37 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-37-lesson-02-11ni6lLZN9Wo0Dd93SqZOwOAk2RPlLh_Q.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "Have you gotten it yet? One of the most difficult decisions in life is choosing who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own.",
+        "C. Read the following paragraph and extract sentences with the functions studied. Locate them in the space provided."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9923105239868164,
+        "avgLogprob": -0.17020258864136878,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u37-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "When does the speaker especially value company?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "During difficult times",
+            "Only during holidays",
+            "Only while shopping",
+            "Only at celebrations"
+          ],
+          "correct": "During difficult times",
+          "evidence": "Everyone likes to have people around in difficult times",
+          "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "During difficult times",
+              "accepted": [
+                "During difficult times"
+              ],
+              "evidence": "Everyone likes to have people around in difficult times",
+              "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u37-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What does the speaker personally appreciate?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "People by their side",
+            "Complete isolation",
+            "Avoiding every issue",
+            "Keeping all worries secret"
+          ],
+          "correct": "People by their side",
+          "evidence": "I love to have people by my side",
+          "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "People by their side",
+              "accepted": [
+                "People by their side"
+              ],
+              "evidence": "I love to have people by my side",
+              "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u37-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What can a pat on the shoulder communicate?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Encouragement to continue",
+            "A request to leave",
+            "A demand for payment",
+            "A warning to stop learning"
+          ],
+          "correct": "Encouragement to continue",
+          "evidence": "a pat on the shoulder telling them to continue",
+          "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Encouragement to continue",
+              "accepted": [
+                "Encouragement to continue"
+              ],
+              "evidence": "a pat on the shoulder telling them to continue",
+              "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u37-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What is the main topic?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Supporting others",
+            "Organizing holidays",
+            "Choosing a profession",
+            "Buying gifts"
+          ],
+          "correct": "Supporting others",
+          "evidence": "Being there for others",
+          "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Supporting others",
+              "accepted": [
+                "Supporting others"
+              ],
+              "evidence": "Being there for others",
+              "sourceAudioSha256": "7a6944f6592c017e308c9ced65c598ec2ff67e2ecfdfcac23252ff23eb783b3e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+        "slideNumber": 14,
+        "unit": 38,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "unit": 38,
+      "lessonTitle": "Unit 38",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5",
+      "sourceFilename": "Unit 38 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-38-lesson-02-1qu4jRXJKxNhyj-QFgR3ncqpkFO7WXUvo.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "Do it yourself It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for or to you does not always end well. Get people to work or do things the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, getting others to know you, and getting to know them will make things easier in dealing with different situations that may occur. Whatever it is, professional or personal, having others do things for us, or getting things done by others is something challenging.",
+        "C. Read the following paragraph and extract sentences with the functions studied. Locate them in the space provided."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9901706576347351,
+        "avgLogprob": -0.16192726059788815,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u38-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Who received the final project draft?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "The boss",
+            "A customer",
+            "A journalist",
+            "A student"
+          ],
+          "correct": "The boss",
+          "evidence": "I had Jonas send it to our boss",
+          "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "The boss",
+              "accepted": [
+                "The boss"
+              ],
+              "evidence": "I had Jonas send it to our boss",
+              "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u38-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What do they hope will happen to the project?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "It will be approved",
+            "It will be forgotten",
+            "It will be cancelled",
+            "It will be hidden"
+          ],
+          "correct": "It will be approved",
+          "evidence": "have it approved soon",
+          "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "It will be approved",
+              "accepted": [
+                "It will be approved"
+              ],
+              "evidence": "have it approved soon",
+              "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u38-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Who will make the dinner reservation?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "The secretary",
+            "The boss",
+            "The customer",
+            "The waiter"
+          ],
+          "correct": "The secretary",
+          "evidence": "I'll have my secretary make the reservation",
+          "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "The secretary",
+              "accepted": [
+                "The secretary"
+              ],
+              "evidence": "I'll have my secretary make the reservation",
+              "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u38-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "Why is one man chosen to have dinner with Jane?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "He is single",
+            "He owns the restaurant",
+            "He wrote the menu",
+            "He is leaving the company"
+          ],
+          "correct": "He is single",
+          "evidence": "you are the single one",
+          "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "He is single",
+              "accepted": [
+                "He is single"
+              ],
+              "evidence": "you are the single one",
+              "sourceAudioSha256": "bf92ccefd64a7df8cec3b6f25716bc1cfedee44154e455e4059944455a55f7c5"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+        "slideNumber": 14,
+        "unit": 39,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "unit": 39,
+      "lessonTitle": "Unit 39",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96",
+      "sourceFilename": "Unit 39 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-39-lesson-02-1bUa99FEZ49bIoYAhlYqJQF33w-e0fyD7.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "Knock it off! Have you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries.",
+        "C. Read the following paragraph and extract the phrasal verbs. What do they mean in the context. After that, Practice reading aloud."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.985934317111969,
+        "avgLogprob": -0.20329130028246992,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u39-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Which sport are the friends discussing?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Baseball",
+            "Basketball",
+            "Tennis",
+            "Football"
+          ],
+          "correct": "Baseball",
+          "evidence": "the baseball matches Sunday",
+          "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Baseball",
+              "accepted": [
+                "Baseball"
+              ],
+              "evidence": "the baseball matches Sunday",
+              "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u39-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "When are the matches?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Sunday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday"
+          ],
+          "correct": "Sunday",
+          "evidence": "the baseball matches Sunday",
+          "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Sunday",
+              "accepted": [
+                "Sunday"
+              ],
+              "evidence": "the baseball matches Sunday",
+              "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u39-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Who will be told that the speaker is off?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "His assistant",
+            "His teacher",
+            "His neighbor",
+            "His doctor"
+          ],
+          "correct": "His assistant",
+          "evidence": "my assistant to tell her this weekend I'm off",
+          "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "His assistant",
+              "accepted": [
+                "His assistant"
+              ],
+              "evidence": "my assistant to tell her this weekend I'm off",
+              "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u39-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What does the friend celebrate at the end?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "A free weekend",
+            "A new job",
+            "A new apartment",
+            "A university degree"
+          ],
+          "correct": "A free weekend",
+          "evidence": "get away with a free weekend",
+          "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "A free weekend",
+              "accepted": [
+                "A free weekend"
+              ],
+              "evidence": "get away with a free weekend",
+              "sourceAudioSha256": "563130139e0689a8223b4be3e4ac54f43ffe44a24dbc6ace94f4155c3c7f0c96"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+        "slideNumber": 14,
+        "unit": 40,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "unit": 40,
+      "lessonTitle": "Unit 40",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb",
+      "sourceFilename": "Unit 40 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-40-lesson-02-1xeuLMUi2Mtz87MNM4i65VDXU_bT_BsNZ.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "Work-life balance I work for a global IT company, but because their headquarters is in the States, I do all my work online from home. That means that I don't waste time commuting or making idle chit-chat with colleagues. I work on a project basis, and this flexibility is very valuable to me because it means that I can easily take some time off when my children need me to go to their school performances, or if I need to make an appointment with the dentist. The downside is that without clear office hours, I tend to work well into the evening, sometimes without having dinner to finish a task. It can also get quite lonely working on my own, and I sometimes miss sharing ideas with colleagues. Adapted from https://learnenglish.britishcouncil.org/skills/reading/upper-intermediate-b2/work-life-balance",
+        "https://learnenglish.britishcouncil.org/skills/reading/upper-intermediate-b2/work-life-balance",
+        "C. Read the following paragraph and extract sentences with the delexical verbs and tell your teacher what their intended meaning is."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9752702116966248,
+        "avgLogprob": -0.2373175664870727,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u40-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What is Ralph about to do?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Take a shower",
+            "Cook dinner",
+            "Go to bed",
+            "Start working"
+          ],
+          "correct": "Take a shower",
+          "evidence": "I'm about to take a shower",
+          "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Take a shower",
+              "accepted": [
+                "Take a shower"
+              ],
+              "evidence": "I'm about to take a shower",
+              "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u40-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What does he ask Eric to give him?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "A few minutes",
+            "A ticket",
+            "Some money",
+            "A new phone"
+          ],
+          "correct": "A few minutes",
+          "evidence": "give me some minutes",
+          "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "A few minutes",
+              "accepted": [
+                "A few minutes"
+              ],
+              "evidence": "give me some minutes",
+              "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u40-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Where are they going?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "To Mark’s",
+            "To the office",
+            "To a supermarket",
+            "To a museum"
+          ],
+          "correct": "To Mark’s",
+          "evidence": "We're going to Mark's",
+          "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "To Mark’s",
+              "accepted": [
+                "To Mark’s"
+              ],
+              "evidence": "We're going to Mark's",
+              "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u40-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "When will Ralph notify his friend?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "When he is ready",
+            "After the weekend",
+            "During the next class",
+            "The following month"
+          ],
+          "correct": "When he is ready",
+          "evidence": "I'll give you a shout when I'm ready",
+          "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "When he is ready",
+              "accepted": [
+                "When he is ready"
+              ],
+              "evidence": "I'll give you a shout when I'm ready",
+              "sourceAudioSha256": "d11689575310dd9a3cc0d33a4f72e30ada7efd30d890b6465cf1b228d5c408cb"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+        "slideNumber": 14,
+        "unit": 41,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "unit": 41,
+      "lessonTitle": "Unit 41",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd",
+      "sourceFilename": "Unit 41 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-41-lesson-02-1ZtXCAxT8Fvh5Gailz_1nJ_XTG_Gi6SFu.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u41-s14-review"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.994649350643158,
+        "avgLogprob": -0.12502504898155312,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u41-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Which language had Daniel learned by age ten?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "English",
+            "Italian",
+            "Japanese",
+            "Arabic"
+          ],
+          "correct": "English",
+          "evidence": "By the time I was 10, I had already learned English",
+          "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "English",
+              "accepted": [
+                "English"
+              ],
+              "evidence": "By the time I was 10, I had already learned English",
+              "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u41-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Which two languages had he mastered before college?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "French and German",
+            "Spanish and Portuguese",
+            "Italian and Russian",
+            "Japanese and Chinese"
+          ],
+          "correct": "French and German",
+          "evidence": "when I got to college I had already mastered French and German",
+          "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "French and German",
+              "accepted": [
+                "French and German"
+              ],
+              "evidence": "when I got to college I had already mastered French and German",
+              "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u41-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "About how many courses had he taken by graduation?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Thirty",
+            "Three",
+            "Ten",
+            "Fifty"
+          ],
+          "correct": "Thirty",
+          "evidence": "around 30 different courses",
+          "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Thirty",
+              "accepted": [
+                "Thirty"
+              ],
+              "evidence": "around 30 different courses",
+              "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u41-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What had happened before he left university?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "He had gotten engaged",
+            "He had retired",
+            "He had moved to Japan",
+            "He had become a doctor"
+          ],
+          "correct": "He had gotten engaged",
+          "evidence": "Before I left university, I had also gotten engaged",
+          "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "He had gotten engaged",
+              "accepted": [
+                "He had gotten engaged"
+              ],
+              "evidence": "Before I left university, I had also gotten engaged",
+              "sourceAudioSha256": "bcd64ae576ba51da24896dfc3d3e618a4a8db574ea483c1cedeada33c6f38edd"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+        "slideNumber": 14,
+        "unit": 42,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "unit": 42,
+      "lessonTitle": "Unit 42",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694",
+      "sourceFilename": "Unit 42 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-42-lesson-02-1tfUkAsskPE_UojtVpPJoahlZ_AAPZtxu.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u42-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9874265193939209,
+        "avgLogprob": -0.16978263906932836,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u42-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What rumor are the speakers discussing?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Winning the lottery",
+            "Moving abroad",
+            "Getting married",
+            "Starting a business"
+          ],
+          "correct": "Winning the lottery",
+          "evidence": "she had won the lottery",
+          "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Winning the lottery",
+              "accepted": [
+                "Winning the lottery"
+              ],
+              "evidence": "she had won the lottery",
+              "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u42-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "How was the woman’s actual financial situation described?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Very difficult",
+            "Completely secure",
+            "Improving rapidly",
+            "Unchanged for years"
+          ],
+          "correct": "Very difficult",
+          "evidence": "never had such a bad economic situation",
+          "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Very difficult",
+              "accepted": [
+                "Very difficult"
+              ],
+              "evidence": "never had such a bad economic situation",
+              "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u42-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What might she have to sell?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Her car",
+            "Her house",
+            "Her computer",
+            "Her bicycle"
+          ],
+          "correct": "Her car",
+          "evidence": "I will probably have to sell my car",
+          "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Her car",
+              "accepted": [
+                "Her car"
+              ],
+              "evidence": "I will probably have to sell my car",
+              "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u42-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What warning does the speaker give?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Confirm information before sharing it",
+            "Believe every rumor",
+            "Avoid talking to friends",
+            "Buy a lottery ticket"
+          ],
+          "correct": "Confirm information before sharing it",
+          "evidence": "stop spilling the beans without confirmation",
+          "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Confirm information before sharing it",
+              "accepted": [
+                "Confirm information before sharing it"
+              ],
+              "evidence": "stop spilling the beans without confirmation",
+              "sourceAudioSha256": "ca94b0c383073d4b35e9cfb93b03d29ba38bcc594c26a3c9edae4f8c01d36694"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+        "slideNumber": 14,
+        "unit": 43,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "unit": 43,
+      "lessonTitle": "Unit 43",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef",
+      "sourceFilename": "Unit 43-audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-43-lesson-02-1BCCROHIHrg4l9LyW6oY0hIsihQqe4gyH.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u43-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.8336107134819031,
+        "avgLogprob": -0.14896950859693125,
+        "uncertaintyFlags": [
+          "low-language-probability"
+        ]
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u43-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Who did James text?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "His ex",
+            "His boss",
+            "His teacher",
+            "His cousin"
+          ],
+          "correct": "His ex",
+          "evidence": "you texted your ex",
+          "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "His ex",
+              "accepted": [
+                "His ex"
+              ],
+              "evidence": "you texted your ex",
+              "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u43-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Where did the friend see a post?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Social media",
+            "A newspaper",
+            "A classroom noticeboard",
+            "A magazine"
+          ],
+          "correct": "Social media",
+          "evidence": "a post on social media",
+          "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Social media",
+              "accepted": [
+                "Social media"
+              ],
+              "evidence": "a post on social media",
+              "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u43-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What worries the friend?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "James could be hurt again",
+            "James might miss a flight",
+            "James could lose his passport",
+            "James might change schools"
+          ],
+          "correct": "James could be hurt again",
+          "evidence": "I just hope you don't get hurt again",
+          "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "James could be hurt again",
+              "accepted": [
+                "James could be hurt again"
+              ],
+              "evidence": "I just hope you don't get hurt again",
+              "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u43-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "How many times does the friend say this has happened?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "About three times",
+            "Only once",
+            "Ten times",
+            "Twenty times"
+          ],
+          "correct": "About three times",
+          "evidence": "the third time something like this happens",
+          "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "About three times",
+              "accepted": [
+                "About three times"
+              ],
+              "evidence": "the third time something like this happens",
+              "sourceAudioSha256": "7b10cb9f1329297a0775b74de13380998993167ad968122f0f8b6cc0380478ef"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+        "slideNumber": 14,
+        "unit": 44,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "unit": 44,
+      "lessonTitle": "Unit 44",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e",
+      "sourceFilename": "Unit 44- Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-44-lesson-02-1vWd-XyGqrkS_qYgtKlBVAriyFQmJ6QxR.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u44-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.971825361251831,
+        "avgLogprob": -0.20001790233938002,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u44-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What are they preparing a video for?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "An event",
+            "A driving lesson",
+            "A medical appointment",
+            "A school exam"
+          ],
+          "correct": "An event",
+          "evidence": "the video for the event",
+          "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "An event",
+              "accepted": [
+                "An event"
+              ],
+              "evidence": "the video for the event",
+              "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u44-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Why is the video not completely finished?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "They are waiting for material",
+            "They have no camera",
+            "The event was cancelled",
+            "The computer was sold"
+          ],
+          "correct": "They are waiting for material",
+          "evidence": "we're still waiting for some material",
+          "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "They are waiting for material",
+              "accepted": [
+                "They are waiting for material"
+              ],
+              "evidence": "we're still waiting for some material",
+              "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u44-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What other part of the event do they discuss?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "The scenery",
+            "The school timetable",
+            "A train reservation",
+            "A sports uniform"
+          ],
+          "correct": "The scenery",
+          "evidence": "is the scenery set",
+          "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "The scenery",
+              "accepted": [
+                "The scenery"
+              ],
+              "evidence": "is the scenery set",
+              "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u44-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What kind of event is it?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "A charity event",
+            "A graduation exam",
+            "A job interview",
+            "A medical conference"
+          ],
+          "correct": "A charity event",
+          "evidence": "this charity event will be a total success",
+          "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "A charity event",
+              "accepted": [
+                "A charity event"
+              ],
+              "evidence": "this charity event will be a total success",
+              "sourceAudioSha256": "4ec9c4833d5937da3f84488178c20fd7d28bfb5be48f1507b3888cd12a1cfb8e"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9t2a0025w1qk877v6313",
+        "slideNumber": 13,
+        "unit": 45,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "unit": 45,
+      "lessonTitle": "Unit 45",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad",
+      "sourceFilename": "Unit 45 - Audio 2 .mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-45-lesson-02-1tCENU2NlFV7gHzZZLRvYBcERobjFZRoA.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u45-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9790682792663574,
+        "avgLogprob": -0.1602983866686322,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u45-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Who was not hired to play at the party?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Jill and her band",
+            "A classical orchestra",
+            "A school choir",
+            "A solo pianist"
+          ],
+          "correct": "Jill and her band",
+          "evidence": "they did not hire Jill",
+          "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Jill and her band",
+              "accepted": [
+                "Jill and her band"
+              ],
+              "evidence": "they did not hire Jill",
+              "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u45-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What would Josh have done if he had known?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "He would not have gone",
+            "He would have bought more tickets",
+            "He would have cooked dinner",
+            "He would have rented a car"
+          ],
+          "correct": "He would not have gone",
+          "evidence": "I would have never gone",
+          "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "He would not have gone",
+              "accepted": [
+                "He would not have gone"
+              ],
+              "evidence": "I would have never gone",
+              "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u45-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Who has some control over the club?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Dylan",
+            "The waiter",
+            "The teacher",
+            "The neighbor"
+          ],
+          "correct": "Dylan",
+          "evidence": "Dylan kind of has control over the club",
+          "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Dylan",
+              "accepted": [
+                "Dylan"
+              ],
+              "evidence": "Dylan kind of has control over the club",
+              "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u45-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What does Josh plan to do next?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Call Jill",
+            "Move abroad",
+            "Sell his car",
+            "Cancel his studies"
+          ],
+          "correct": "Call Jill",
+          "evidence": "I'm planning to call her",
+          "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Call Jill",
+              "accepted": [
+                "Call Jill"
+              ],
+              "evidence": "I'm planning to call her",
+              "sourceAudioSha256": "e21776a7c2add641e29e7db40b348f63c4b12aa6d2c380d1b24739c9f1f32fad"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+        "slideNumber": 14,
+        "unit": 46,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "unit": 46,
+      "lessonTitle": "Unit 46",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908",
+      "sourceFilename": "Unit 46 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-46-lesson-02-1oAyiWnlR24bE4Vx-XLo04ZNF8fDDe2zO.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9985198378562927,
+        "avgLogprob": -0.13546113734651907,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u46-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What does the speaker reflect on?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Past decisions",
+            "A shopping list",
+            "A holiday route",
+            "A sports result"
+          ],
+          "correct": "Past decisions",
+          "evidence": "you should have acted differently",
+          "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Past decisions",
+              "accepted": [
+                "Past decisions"
+              ],
+              "evidence": "you should have acted differently",
+              "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u46-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What does the speaker say about outcomes?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "They may differ from what we want",
+            "They always match our wishes",
+            "They never change",
+            "They depend only on luck"
+          ],
+          "correct": "They may differ from what we want",
+          "evidence": "turn out to be completely different",
+          "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "They may differ from what we want",
+              "accepted": [
+                "They may differ from what we want"
+              ],
+              "evidence": "turn out to be completely different",
+              "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u46-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Which expression appears in the audio?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Cry over spilled milk",
+            "Break the ice",
+            "Hit the road",
+            "Under the weather"
+          ],
+          "correct": "Cry over spilled milk",
+          "evidence": "one cannot cry over spilled milk",
+          "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Cry over spilled milk",
+              "accepted": [
+                "Cry over spilled milk"
+              ],
+              "evidence": "one cannot cry over spilled milk",
+              "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u46-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What can difficult situations help us assess?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Our lives and how we live",
+            "Only the weather",
+            "Only our clothing",
+            "Only travel prices"
+          ],
+          "correct": "Our lives and how we live",
+          "evidence": "our lives and the way we live them",
+          "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Our lives and how we live",
+              "accepted": [
+                "Our lives and how we live"
+              ],
+              "evidence": "our lives and the way we live them",
+              "sourceAudioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+        "slideNumber": 14,
+        "unit": 47,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "unit": 47,
+      "lessonTitle": "Unit 47",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23",
+      "sourceFilename": "Unit 47 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-47-lesson-03-1pNQsmxwwYgi4cpGt0lvFSUCjr4S90XOM.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9953574538230896,
+        "avgLogprob": -0.11520760680913512,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u47-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What does Joshua wish he had completed?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "School",
+            "A marathon",
+            "A building project",
+            "A driving course"
+          ],
+          "correct": "School",
+          "evidence": "I did not finish school, I wish I had done it",
+          "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "School",
+              "accepted": [
+                "School"
+              ],
+              "evidence": "I did not finish school, I wish I had done it",
+              "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u47-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Whose advice does he wish he had followed?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "His parents’",
+            "His employer’s",
+            "His neighbor’s",
+            "His classmates’"
+          ],
+          "correct": "His parents’",
+          "evidence": "I should have listened to my parents",
+          "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "His parents’",
+              "accepted": [
+                "His parents’"
+              ],
+              "evidence": "I should have listened to my parents",
+              "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u47-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What did he gain from the difficult experience?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Lessons about life",
+            "A university diploma",
+            "A lottery prize",
+            "A new business"
+          ],
+          "correct": "Lessons about life",
+          "evidence": "life has taught me a lot",
+          "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Lessons about life",
+              "accepted": [
+                "Lessons about life"
+              ],
+              "evidence": "life has taught me a lot",
+              "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u47-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What does he recommend doing about regrets?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Taking action",
+            "Only complaining",
+            "Ignoring every decision",
+            "Blaming strangers"
+          ],
+          "correct": "Taking action",
+          "evidence": "acting on it as well",
+          "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Taking action",
+              "accepted": [
+                "Taking action"
+              ],
+              "evidence": "acting on it as well",
+              "sourceAudioSha256": "e1b165bcef35af02ec5dca2779c0c4fbd0a86060ec9e4eed030a1a416887ec23"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+        "slideNumber": 14,
+        "unit": 48,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "unit": 48,
+      "lessonTitle": "Unit 48",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be",
+      "sourceFilename": "Unit 48 - Audio 2 .mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-48-lesson-02-1iB5zhFhu07eexKp8wmOCNUGWEZAjjIDo.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9883756637573242,
+        "avgLogprob": -0.141878516777702,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u48-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What was the speaker doing with the emails?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Editing them",
+            "Deleting all of them",
+            "Printing them for a class",
+            "Translating them into French"
+          ],
+          "correct": "Editing them",
+          "evidence": "I was just editing them",
+          "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Editing them",
+              "accepted": [
+                "Editing them"
+              ],
+              "evidence": "I was just editing them",
+              "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u48-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What writing difficulties are mentioned?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Spelling and grammar",
+            "Handwriting only",
+            "Using a printer",
+            "Choosing paper"
+          ],
+          "correct": "Spelling and grammar",
+          "evidence": "with a spelling and grammar",
+          "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Spelling and grammar",
+              "accepted": [
+                "Spelling and grammar"
+              ],
+              "evidence": "with a spelling and grammar",
+              "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u48-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "How soon are the emails requested?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "As soon as possible",
+            "Next month",
+            "After the holidays",
+            "At the end of the year"
+          ],
+          "correct": "As soon as possible",
+          "evidence": "please send them ASAP",
+          "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "As soon as possible",
+              "accepted": [
+                "As soon as possible"
+              ],
+              "evidence": "please send them ASAP",
+              "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u48-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "Why does the other speaker apologize?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "He did not know the reason for the delay",
+            "He lost the emails",
+            "He cancelled a meeting",
+            "He broke the computer"
+          ],
+          "correct": "He did not know the reason for the delay",
+          "evidence": "I did not know you could not have sent them before because of that",
+          "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "He did not know the reason for the delay",
+              "accepted": [
+                "He did not know the reason for the delay"
+              ],
+              "evidence": "I did not know you could not have sent them before because of that",
+              "sourceAudioSha256": "a2c09ee07ded4585bc2eb3c612f8a3c745a06c36e8f60511d4eb2018f36d64be"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+        "slideNumber": 13,
+        "unit": 49,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "unit": 49,
+      "lessonTitle": "Unit 49",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0",
+      "sourceFilename": "Unit 49 - Audio 2 .mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-49-lesson-03-1x2hWsG22ADaD2EBgs4tPwFqwyI0fgjj4.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u49-s13-b"
+      ],
+      "sourcePrompts": [
+        "Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9808744788169861,
+        "avgLogprob": -0.2106862774925854,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u49-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "How is the possible criminal connection presented?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "As a rumor",
+            "As a confirmed court ruling",
+            "As a personal confession",
+            "As a newspaper correction"
+          ],
+          "correct": "As a rumor",
+          "evidence": "rumor has it",
+          "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "As a rumor",
+              "accepted": [
+                "As a rumor"
+              ],
+              "evidence": "rumor has it",
+              "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u49-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Which financial problem is mentioned?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Gambling",
+            "A student loan",
+            "A mortgage application",
+            "An unpaid holiday"
+          ],
+          "correct": "Gambling",
+          "evidence": "money issues. Gambling actually",
+          "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Gambling",
+              "accepted": [
+                "Gambling"
+              ],
+              "evidence": "money issues. Gambling actually",
+              "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u49-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What do they think might be in danger?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "His life",
+            "His school timetable",
+            "His sports team",
+            "His computer files"
+          ],
+          "correct": "His life",
+          "evidence": "His life may be in danger",
+          "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "His life",
+              "accepted": [
+                "His life"
+              ],
+              "evidence": "His life may be in danger",
+              "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u49-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What do the speakers hope?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Nothing terrible will happen",
+            "He will gamble more",
+            "He will ignore the problem",
+            "He will leave every friend"
+          ],
+          "correct": "Nothing terrible will happen",
+          "evidence": "I hope nothing terrible happens",
+          "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Nothing terrible will happen",
+              "accepted": [
+                "Nothing terrible will happen"
+              ],
+              "evidence": "I hope nothing terrible happens",
+              "sourceAudioSha256": "7e82d7465f7db639892c4866ce9eff5ed8fe0ebce6ee603f82d4b6b4f548bde0"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+        "slideNumber": 13,
+        "unit": 50,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "unit": 50,
+      "lessonTitle": "Unit 50",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d",
+      "sourceFilename": "Unit 50 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-50-lesson-02-1uoLf0eoX2eOizG5Pyikn_6rMuF8YbGXh.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u50-s13-b"
+      ],
+      "sourcePrompts": [
+        "Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.989069938659668,
+        "avgLogprob": -0.08460392460183423,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u50-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What does the speaker wish people had more of?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Perspective",
+            "Free tickets",
+            "Shopping discounts",
+            "Private cars"
+          ],
+          "correct": "Perspective",
+          "evidence": "If only we had more perspective",
+          "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Perspective",
+              "accepted": [
+                "Perspective"
+              ],
+              "evidence": "If only we had more perspective",
+              "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u50-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Who should world leaders put first, in the speaker’s view?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Their people",
+            "Only themselves",
+            "Only celebrities",
+            "Only visitors"
+          ],
+          "correct": "Their people",
+          "evidence": "world leaders did put their people first",
+          "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Their people",
+              "accepted": [
+                "Their people"
+              ],
+              "evidence": "world leaders did put their people first",
+              "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u50-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What could help people act better?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Thinking things through",
+            "Acting without reflection",
+            "Waiting without doing anything",
+            "Avoiding every responsibility"
+          ],
+          "correct": "Thinking things through",
+          "evidence": "What if we thought things thoroughly? We could act better",
+          "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Thinking things through",
+              "accepted": [
+                "Thinking things through"
+              ],
+              "evidence": "What if we thought things thoroughly? We could act better",
+              "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u50-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What is needed besides wishing?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "A plan and action",
+            "Only more wishes",
+            "Only more promises",
+            "Only more complaints"
+          ],
+          "correct": "A plan and action",
+          "evidence": "wishing is not enough",
+          "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "A plan and action",
+              "accepted": [
+                "A plan and action"
+              ],
+              "evidence": "wishing is not enough",
+              "sourceAudioSha256": "24c674c7e13996a2d83db3909ecffba151850c2a9bf9998655afbf783288011d"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+        "slideNumber": 13,
+        "unit": 51,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "unit": 51,
+      "lessonTitle": "Unit 51",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6",
+      "sourceFilename": "Unit 51 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-51-lesson-02-1C6lVZIbNBwuCIC4tuIQiJZ7gh4i8KILq.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u51-s13-b"
+      ],
+      "sourcePrompts": [
+        "Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9952132701873779,
+        "avgLogprob": -0.13285929110603056,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u51-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Which opportunities does the speaker mention?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "The Internet and mass media",
+            "Space travel and robots",
+            "New sports stadiums",
+            "Modern restaurants"
+          ],
+          "correct": "The Internet and mass media",
+          "evidence": "the Internet and the mass media",
+          "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "The Internet and mass media",
+              "accepted": [
+                "The Internet and mass media"
+              ],
+              "evidence": "the Internet and the mass media",
+              "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u51-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What does the speaker say every generation has?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Pros and cons",
+            "Exactly the same technology",
+            "No difficulties",
+            "The same childhood"
+          ],
+          "correct": "Pros and cons",
+          "evidence": "every generation gets what it needs and that comes with pros and cons",
+          "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Pros and cons",
+              "accepted": [
+                "Pros and cons"
+              ],
+              "evidence": "every generation gets what it needs and that comes with pros and cons",
+              "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u51-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What might phones have caused them to miss?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Their great childhood",
+            "A business contract",
+            "A university exam",
+            "A train connection"
+          ],
+          "correct": "Their great childhood",
+          "evidence": "we might have missed the great childhood we had",
+          "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Their great childhood",
+              "accepted": [
+                "Their great childhood"
+              ],
+              "evidence": "we might have missed the great childhood we had",
+              "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u51-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "How does the speaker finally describe that childhood?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Not so boring",
+            "Completely miserable",
+            "Entirely forgotten",
+            "Exactly like childhood today"
+          ],
+          "correct": "Not so boring",
+          "evidence": "we did not have such a boring childhood",
+          "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Not so boring",
+              "accepted": [
+                "Not so boring"
+              ],
+              "evidence": "we did not have such a boring childhood",
+              "sourceAudioSha256": "d3706bc0d2babe3cf0a42bb808f9a9cded5a6c2c0eb8af78b570e45a0a9b72b6"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9vfh002qw1qknevwf813",
+        "slideNumber": 13,
+        "unit": 52,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "unit": 52,
+      "lessonTitle": "Unit 52",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b",
+      "sourceFilename": "Unit 52 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-52-lesson-02-1EHXYdf4KyFr5-NIrYMcVth-0e4EWIqd5.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u52-s13-b"
+      ],
+      "sourcePrompts": [
+        "Listen to the audio and answer teacher questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9957077503204346,
+        "avgLogprob": -0.1384831698539628,
+        "uncertaintyFlags": []
+      },
+      "originalQuestionsOmitted": [],
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u52-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Which time period does the speaker imagine first?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "A thousand years ahead",
+            "Tomorrow morning",
+            "Next weekend",
+            "Last century"
+          ],
+          "correct": "A thousand years ahead",
+          "evidence": "in a thousand years time",
+          "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "A thousand years ahead",
+              "accepted": [
+                "A thousand years ahead"
+              ],
+              "evidence": "in a thousand years time",
+              "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u52-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "Which possible development does the speaker mention?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Flying cars",
+            "Underwater schools",
+            "New sports rules",
+            "Shorter working days"
+          ],
+          "correct": "Flying cars",
+          "evidence": "Will we be flying cars",
+          "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Flying cars",
+              "accepted": [
+                "Flying cars"
+              ],
+              "evidence": "Will we be flying cars",
+              "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u52-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What does the speaker hope humanity will learn?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "To coexist without harming others",
+            "To avoid all cooperation",
+            "To compete without limits",
+            "To stop asking questions"
+          ],
+          "correct": "To coexist without harming others",
+          "evidence": "coexist without harming the neighbor",
+          "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "To coexist without harming others",
+              "accepted": [
+                "To coexist without harming others"
+              ],
+              "evidence": "coexist without harming the neighbor",
+              "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u52-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What concern is raised about the future?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Continued selfishness",
+            "A lack of holiday destinations",
+            "Too many sports events",
+            "Fewer restaurants"
+          ],
+          "correct": "Continued selfishness",
+          "evidence": "the same selfish way we have so far",
+          "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Continued selfishness",
+              "accepted": [
+                "Continued selfishness"
+              ],
+              "evidence": "the same selfish way we have so far",
+              "sourceAudioSha256": "cd6a487989a53ed2b5ab73d668aa658fb8481a83e7bf4fb83602dcb5edc02d2b"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions replace mechanical transcript-fragment checks. Original source prompts remain archived; original audio bytes are unchanged.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+    }
+  ]
+}

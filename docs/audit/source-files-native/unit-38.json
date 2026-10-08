@@ -1,0 +1,4939 @@
+{
+  "schemaVersion": 1,
+  "unit": 38,
+  "module": {
+    "order": 10,
+    "title": "Módulo 10",
+    "id": "cmnmm9l8k0007w1qkkkfxljmb",
+    "driveTitle": "Module 10"
+  },
+  "candidate": {
+    "id": "1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC",
+    "title": "Can you do it for me? - Unit 38.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "2188991",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 10"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-38-primary-01-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC.pptx",
+    "localBytes": 2188991,
+    "sha256": "9049b95c4ac4cd6879d3e4dacdaeb4a5fd4982d959a42b1a3d86e20a3a3d5af6"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-38-primary-01-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTRpvGytWJK57nUqkzdpf9JCTBi5ZA9GWqK1BeQ7v2VRQWW-Ae17Vo6j2Iumgqz6g/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTRpvGytWJK57nUqkzdpf9JCTBi5ZA9GWqK1BeQ7v2VRQWW-Ae17Vo6j2Iumgqz6g/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 17,
+    "nativeSlideCount": 17,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.276742,
+    "publicTokenCoverage": 0.933673,
+    "slideDifferenceCount": 7,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nTalk about things people have others do.\nCompetencies\nManage to use and understand language in written texts and conversations to talk about things we have others do..",
+        "publishedText": "Communicative Function Talk about things people have others do. Competencies Manage to use and understand language in written texts and conversations to talk about things we have others do.",
+        "sequenceRatio": 0.997361
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. 4",
+        "sequenceRatio": 0.976608
+      },
+      {
+        "slide": 8,
+        "nativeText": "Structures\nExamples\nObservations\n1\nHave someone do something\nWill you have Jade do the dinner?\n\nThey have had Ericka clean the house for years.\nHave + N + V (simple form)\n-This may vary depending on the tenses. -\n2\nHave something done\nShe *got her eyes operated last week.\n\nThey will have the car fixed by noon.\nHave + N + V (Past participle)\n\n-This may vary depending on the tenses.-\n3\nGet someone / Something to...\nMy dad got Jane to teach me math.\n\nI have gotten Annie to buy the apartment. She finally crossed the Rubicon.\nGet + N +  Non finite clause.\nThere are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative.",
+        "publishedText": "Structures Examples Observations 1 Have someone do something Will you have Jade do the dinner? They have had Ericka clean the house for years. Have + N + V (simple form) This may vary depending on the tenses. 2 Have something done She *got her eyes operated last week. They will have the car fixed by noon. Have + N + V (Past participle) This may vary depending on the tenses. 3 Get someone / Something to ... My dad got Jane to teach me math. I have gotten Annie to buy the apartment. She finally crossed the Rubicon. Get + N + Non-finite clause There are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative.",
+        "sequenceRatio": 0.472242
+      },
+      {
+        "slide": 9,
+        "nativeText": "To Consider \n1. We need to pay attention to the tenses in order to make the structures work correctly. \n2. *GET sometimes is used to substituted HAVE to make very emphatic another subject makes the action. See example in row 2.\n\n3. We can also used GET with participles. E.G. Get the clock fixed now!\n     *Get + Adjectives can also be used here.",
+        "publishedText": "To Consider 1. We need to pay attention to the tenses in order to make the structures work correctly. 2. *GET sometimes is used to substitute HAVE to be very emphatic of making another subject do the action. See example in row 2. 3. We can also use GET with participles. E.G. Get the clock fixed now! *Get + Adjectives can also be used here. E.G: I need to get the tank full",
+        "sequenceRatio": 0.921348
+      },
+      {
+        "slide": 11,
+        "nativeText": "Working with these structures we can board some functions-\nFunctions\nExamples\n1\nState things people do for others.\nJill had John call Mary to apologize.\nI will have Annie finish this pie tonight.\n2\nTalk about things done in our behalf or for us.\nThe school had the hall painted by the students.\nWe will have the speech addressed by Joshua.\n3\nGive instructions\nJohn, please, get it to work. We need the coffee maker.\nTo consider \nWe need to remember that there are many other ways in which we can ask or have others do things for us.",
+        "publishedText": "Working with these structures we can have some functions. Functions Examples 1 State things people do for others Jill had John call Mary to apologize. I will have Annie finish this pie tonight. 2 Talk about things done in our behalf or for us The school had the hall painted by the students. We will have the speech addressed by Joshua. 3 Give instructions John, please, get it to work. We need the coffee maker. To consider We need to remember that there are many other ways in which we can ask or have others do things for us, like using modals to be polite: Could you please open this for me?",
+        "sequenceRatio": 0.577265
+      },
+      {
+        "slide": 14,
+        "nativeText": "B. Listen to the audio and answer the questions your teacher makes.\nDo it yourself\n\nIt is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for / to you does not always end well. Get people to work or do things  the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, get others to know you and get to know them will make things easier in dealing with different situations that may present. Whatever it is, professional or personal, have others do things for us or get things done by others is something challenging.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "publishedText": "B. Listen to the audio and answer the questions your teacher makes. Do it yourself It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for or to you does not always end well. Get people to work or do things the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, getting others to know you, and getting to know them will make things easier in dealing with different situations that may occur. Whatever it is, professional or personal, having others do things for us, or getting things done by others is something challenging. C. Read the following paragraph and extract sentences with the functions studied. Locate them in the space provided.",
+        "sequenceRatio": 0.930705
+      },
+      {
+        "slide": 15,
+        "nativeText": "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?\nE. Write a text where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be ok or not? Have you had a good or  terrible experience? Write about it too.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters? E. Write a text between 120 - 160 words where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be okay or not? Have you had a good or terrible experience? Write about it too. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.969484
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 123005,
+      "sha256": "8c9d2b409d27515c7bbf2d954d2ffafe9ee28fc45d760316ed78d8fa09459ccd"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 153032,
+      "sha256": "9dd971da60f99039a457c0bb43194302fd9549bb21e1faa9a00633a660b4c0f4"
+    },
+    {
+      "path": "ppt/media/image12.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 127498,
+      "sha256": "d02fa3735f1779209fb92723871101b13f6771aa43b5ac0b8693573b545843c3"
+    },
+    {
+      "path": "ppt/media/image13.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 81869,
+      "sha256": "14dbd29c0153a824c77247919929a9f0c9ca2ddfb245e989fef60c80d790c682"
+    },
+    {
+      "path": "ppt/media/image14.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 305082,
+      "sha256": "c462e78e08e518655312fa56e012610c9eac9c31b8be6b703c1e2b7929c24177"
+    },
+    {
+      "path": "ppt/media/image15.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126456,
+      "sha256": "91f74ab6c1f44183c09784e09e4b09adb088847c0028fa64ee7a4ee481ae5126"
+    },
+    {
+      "path": "ppt/media/image2.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 38458,
+      "sha256": "540e6abf8067d3bf05b4eb799a86a056a7d84e400bb95f3cd98299b0fa79d8ad"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image6.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 332809,
+      "sha256": "66c83fc311da798e79dbe5f8f899b3fe05c4e94c7c1c7338f528e43cde7df2a9"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 31031,
+      "sha256": "2808fc5e10914fb3ebe8596e3a7ebb7ae980bbd7425e3c3fa3a1b661fc5bb184"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 216482,
+      "sha256": "d32c81c9e6f004d61561c2ef65537b174159da3d1a239f31274a380c5df8400f"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 15,
+    "bytes": 1709571,
+    "byExtension": {
+      ".jpg": 10,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 15,
+    "imageBytes": 1709571
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5870900,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6886700,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "314",
+          "shapeName": "Google Shape;314;g729cfa641f_0_32",
+          "bbox": {
+            "x": 1350950,
+            "y": 1007925,
+            "cx": 880000,
+            "cy": 880000,
+            "right": 2230950,
+            "bottom": 1887925
+          },
+          "slide": 14
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 123005,
+      "sha256": "8c9d2b409d27515c7bbf2d954d2ffafe9ee28fc45d760316ed78d8fa09459ccd",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710725,
+            "right": 8055748,
+            "bottom": 2245200
+          },
+          "slide": 4
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 153032,
+      "sha256": "9dd971da60f99039a457c0bb43194302fd9549bb21e1faa9a00633a660b4c0f4",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId7",
+          "shapeId": "239",
+          "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754794,
+            "y": 2846030,
+            "cx": 1490704,
+            "cy": 903883,
+            "right": 6245498,
+            "bottom": 3749913
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image12.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 127498,
+      "sha256": "d02fa3735f1779209fb92723871101b13f6771aa43b5ac0b8693573b545843c3",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123491,
+            "y": 2851732,
+            "cx": 1450223,
+            "cy": 903880,
+            "right": 2573714,
+            "bottom": 3755612
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image13.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 81869,
+      "sha256": "14dbd29c0153a824c77247919929a9f0c9ca2ddfb245e989fef60c80d790c682",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "238",
+          "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754790,
+            "y": 1111469,
+            "cx": 1490657,
+            "cy": 854029,
+            "right": 6245447,
+            "bottom": 1965498
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image14.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image14.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 305082,
+      "sha256": "c462e78e08e518655312fa56e012610c9eac9c31b8be6b703c1e2b7929c24177",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image14.jpg",
+          "relationshipId": "rId9",
+          "shapeId": "241",
+          "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2998175,
+            "y": 2847275,
+            "cx": 1450500,
+            "cy": 912775,
+            "right": 4448675,
+            "bottom": 3760050
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image15.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image15.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126456,
+      "sha256": "91f74ab6c1f44183c09784e09e4b09adb088847c0028fa64ee7a4ee481ae5126",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image15.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "235",
+          "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123492,
+            "y": 1111463,
+            "cx": 1450223,
+            "cy": 862034,
+            "right": 2573715,
+            "bottom": 1973497
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image2.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 38458,
+      "sha256": "540e6abf8067d3bf05b4eb799a86a056a7d84e400bb95f3cd98299b0fa79d8ad",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image2.jpg",
+          "relationshipId": "rId11",
+          "shapeId": "246",
+          "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6530057,
+            "y": 1136204,
+            "cx": 1490607,
+            "cy": 854026,
+            "right": 8020664,
+            "bottom": 1990230
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId3",
+          "shapeId": "344",
+          "shapeName": "Google Shape;344;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image6.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId4",
+          "shapeId": "345",
+          "shapeName": "Google Shape;345;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 332809,
+      "sha256": "66c83fc311da798e79dbe5f8f899b3fe05c4e94c7c1c7338f528e43cde7df2a9",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "237",
+          "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2918750,
+            "y": 1104575,
+            "cx": 1491000,
+            "cy": 843300,
+            "right": 4409750,
+            "bottom": 1947875
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 31031,
+      "sha256": "2808fc5e10914fb3ebe8596e3a7ebb7ae980bbd7425e3c3fa3a1b661fc5bb184",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "236",
+          "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2918925,
+            "y": 1103450,
+            "cx": 1490700,
+            "cy": 842700,
+            "right": 4409625,
+            "bottom": 1946150
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-38-1OYRallyFCWiZn1FERyMt1xnaIk3LbdkC\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 216482,
+      "sha256": "d32c81c9e6f004d61561c2ef65537b174159da3d1a239f31274a380c5df8400f",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId10",
+          "shapeId": "242",
+          "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6551667,
+            "y": 2842820,
+            "cx": 1450194,
+            "cy": 903880,
+            "right": 8001861,
+            "bottom": 3746700
+          },
+          "slide": 6
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "38",
+          "Can you do it for me?",
+          "Unit"
+        ],
+        "joinedText": "38\nCan you do it for me?\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3115250,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "38",
+                "runs": [
+                  "38"
+                ]
+              }
+            ],
+            "texts": [
+              "38"
+            ],
+            "joinedText": "38"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 0,
+              "y": 2296625,
+              "cx": 8876700,
+              "cy": 1159800,
+              "right": 8876700,
+              "bottom": 3456425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Can you do it for me?",
+                "runs": [
+                  "Can you do it for me?"
+                ]
+              }
+            ],
+            "texts": [
+              "Can you do it for me?"
+            ],
+            "joinedText": "Can you do it for me?"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 286550,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1375550,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "38",
+        "visibleTexts": [
+          "38",
+          "Can you do it for me?",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaLM93o0UHQhrwgDMvvAtqZx62eAP9RR2S8T_KOGlXyUJSK4hSdL7_Xp05SF4HI0uVWU95bz5p6pnb5uabXpSvZkUCNuU3JVlIZ7Ks74ZCMzTrdZT9HF-AIKnq7I9jUfenZyj3RlqMn3hOYM2FeZ7_WK4C_ENQlf2csyNiKY4xTZYj7H8onidHJury-a9tDfw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Talk about things people have others do.",
+          "Competencies",
+          "Manage to use and understand language in written texts and conversations to talk about things we have others do.."
+        ],
+        "joinedText": "Communicative Function\nTalk about things people have others do.\nCompetencies\nManage to use and understand language in written texts and conversations to talk about things we have others do..",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Talk about things people have others do.",
+                "runs": [
+                  "Talk about ",
+                  "things people have others do."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Talk about things people have others do."
+            ],
+            "joinedText": "Communicative Function\nTalk about things people have others do."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 5275500,
+              "cy": 2053500,
+              "right": 6727125,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Manage to use and understand language in written texts and conversations to talk about things we have others do..",
+                "runs": [
+                  "Manage to use and understand language in written texts and conversations to talk about things we have others do.",
+                  "."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Manage to use and understand language in written texts and conversations to talk about things we have others do.."
+            ],
+            "joinedText": "Competencies\nManage to use and understand language in written texts and conversations to talk about things we have others do.."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Communicative Function Talk about things people have others do.",
+        "visibleTexts": [
+          "Communicative Function Talk about things people have others do.",
+          "Competencies Manage to use and understand language in written texts and conversations to talk about things we have others do."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710725,
+              "right": 8055748,
+              "bottom": 2245200
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710725,
+              "right": 8055748,
+              "bottom": 2245200
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbSt1flZ1SGa7PalG2tRPskjh_DdqlFGa0iVJy42iAFZA3odpaG4G9h_HDCbvAPlkU7AYooHhPhEdxluRJthmsDTIfUG1BNlTdUVNqaEAwfs2n9EnjWqK0-Caqwk3qr3xldG8jRC2in63EJInAD4djeYsEhTadBhP8OboZQljIHxJAwSPHBk3ZkCgdoP3zapA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaaLnhVuFR-tXJkC0NfiI7uF6AdbZjUZYIU3L_TijZO09h8BGUW5UyY2pypOWeT_KM2qm5JKbA9gRSc4DJ-pcoa4rPPs6Mm4DEmrS_6Wn_qwdnhE0nmiPvCu1bHV68NCIo-ksajOSvan4WzTDpUnff4UXhlLSZ-KeHIkUYDmgHQkKssjkAtX6O6f5xWMVuBhw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+          "THE BIGGEST PIECE OF THE ACTION",
+          "CARROT AND STICK APPROACH",
+          "CHANCE YOUR ARM",
+          "CHIME IN",
+          "CLIP SOMEONE’S WINGS",
+          "CUT THE CACKLE",
+          "DIG YOUR OWN GRAVE",
+          "CROSS THE RUBICON"
+        ],
+        "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nTHE BIGGEST PIECE OF THE ACTION\nCARROT AND STICK APPROACH\nCHANCE YOUR ARM\nCHIME IN\nCLIP SOMEONE’S WINGS\nCUT THE CACKLE\nDIG YOUR OWN GRAVE\nCROSS THE RUBICON",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+                "runs": [
+                  "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+            ],
+            "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450223,
+              "cy": 862034,
+              "right": 2573715,
+              "bottom": 1973497
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2918925,
+              "y": 1103450,
+              "cx": 1490700,
+              "cy": 842700,
+              "right": 4409625,
+              "bottom": 1946150
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2918750,
+              "y": 1104575,
+              "cx": 1491000,
+              "cy": 843300,
+              "right": 4409750,
+              "bottom": 1947875
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754794,
+              "y": 2846030,
+              "cx": 1490704,
+              "cy": 903883,
+              "right": 6245498,
+              "bottom": 3749913
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450223,
+              "cy": 903880,
+              "right": 2573714,
+              "bottom": 3755612
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2998175,
+              "y": 2847275,
+              "cx": 1450500,
+              "cy": 912775,
+              "right": 4448675,
+              "bottom": 3760050
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 1965488,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 2519288
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "THE BIGGEST PIECE OF THE ACTION",
+                "runs": [
+                  "THE BIGGEST PIECE OF THE ACTION"
+                ]
+              }
+            ],
+            "texts": [
+              "THE BIGGEST PIECE OF THE ACTION"
+            ],
+            "joinedText": "THE BIGGEST PIECE OF THE ACTION"
+          },
+          {
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2918917,
+              "y": 1946168,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 4409617,
+              "bottom": 2499968
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CARROT AND STICK APPROACH",
+                "runs": [
+                  "CARROT AND STICK APPROACH"
+                ]
+              }
+            ],
+            "texts": [
+              "CARROT AND STICK APPROACH"
+            ],
+            "joinedText": "CARROT AND STICK APPROACH"
+          },
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 1965483,
+              "cx": 1490700,
+              "cy": 513000,
+              "right": 6245494,
+              "bottom": 2478483
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CHANCE YOUR ARM",
+                "runs": [
+                  "CHANCE YOUR ARM"
+                ]
+              }
+            ],
+            "texts": [
+              "CHANCE YOUR ARM"
+            ],
+            "joinedText": "CHANCE YOUR ARM"
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490607,
+              "cy": 854026,
+              "right": 8020664,
+              "bottom": 1990230
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6529962,
+              "y": 1965488,
+              "cx": 1490400,
+              "cy": 513000,
+              "right": 8020362,
+              "bottom": 2478488
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CHIME IN",
+                "runs": [
+                  "CHIME IN"
+                ]
+              }
+            ],
+            "texts": [
+              "CHIME IN"
+            ],
+            "joinedText": "CHIME IN"
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CLIP SOMEONE’S WINGS",
+                "runs": [
+                  "CLIP SOMEONE’S WINGS"
+                ]
+              }
+            ],
+            "texts": [
+              "CLIP SOMEONE’S WINGS"
+            ],
+            "joinedText": "CLIP SOMEONE’S WINGS"
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2998280,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 4448780,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CUT THE CACKLE",
+                "runs": [
+                  "CUT THE CACKLE"
+                ]
+              }
+            ],
+            "texts": [
+              "CUT THE CACKLE"
+            ],
+            "joinedText": "CUT THE CACKLE"
+          },
+          {
+            "shapeId": "250",
+            "shapeName": "Google Shape;250;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 3746700,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 6245494,
+              "bottom": 4300500
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "DIG YOUR OWN GRAVE",
+                "runs": [
+                  "DIG YOUR OWN GRAVE"
+                ]
+              }
+            ],
+            "texts": [
+              "DIG YOUR OWN GRAVE"
+            ],
+            "joinedText": "DIG YOUR OWN GRAVE"
+          },
+          {
+            "shapeId": "251",
+            "shapeName": "Google Shape;251;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6551637,
+              "y": 3746701,
+              "cx": 1449900,
+              "cy": 553800,
+              "right": 8001537,
+              "bottom": 4300501
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CROSS THE RUBICON",
+                "runs": [
+                  "CROSS THE ",
+                  "RUBICON"
+                ]
+              }
+            ],
+            "texts": [
+              "CROSS THE RUBICON"
+            ],
+            "joinedText": "CROSS THE RUBICON"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image15.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450223,
+              "cy": 862034,
+              "right": 2573715,
+              "bottom": 1973497
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2918925,
+              "y": 1103450,
+              "cx": 1490700,
+              "cy": 842700,
+              "right": 4409625,
+              "bottom": 1946150
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2918750,
+              "y": 1104575,
+              "cx": 1491000,
+              "cy": 843300,
+              "right": 4409750,
+              "bottom": 1947875
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId7",
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754794,
+              "y": 2846030,
+              "cx": 1490704,
+              "cy": 903883,
+              "right": 6245498,
+              "bottom": 3749913
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450223,
+              "cy": 903880,
+              "right": 2573714,
+              "bottom": 3755612
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId9",
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2998175,
+              "y": 2847275,
+              "cx": 1450500,
+              "cy": 912775,
+              "right": 4448675,
+              "bottom": 3760050
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId10",
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image2.jpg",
+            "relationshipId": "rId11",
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490607,
+              "cy": 854026,
+              "right": 8020664,
+              "bottom": 1990230
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image15.jpg",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId9",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId10",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image2.jpg",
+            "relationshipId": "rId11",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+        "visibleTexts": [
+          "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+          "THE BIGGEST PIECE OF THE ACTION",
+          "CARROT AND STICK APPROACH",
+          "CHANCE YOUR ARM",
+          "CHIME IN",
+          "CLIP SOMEONE’S WINGS",
+          "CUT THE CACKLE",
+          "DIG YOUR OWN GRAVE",
+          "CROSS THE RUBICON"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaUbtE5kFHFEX6a-Kz491AYD6kab72C7BqmtYqfL3t0Da7KN0_f-jyoDzGw1f1asW9Z0A7A4ijkfo7fhmLJ1ihwD7G5eyYvig33Mk2d7dCoWJfsj4q-GTUtqjQHXQT4oRwkDM3nAcgk_sqRhOW1jxLMT2cVToBxylNBxsyIibYY53ILP3_XERBxZtl4x4AQpw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ4vArA-u5dfsE5-iax9p2-MUMNAXAUn-kgFVXykK3ZKt_MSk1oEsjX0CTuppcY0f8aAAbsW9xxpCHmupvZtx0x0HCZ5fI0IkdAv1ax-29fZRzsHo3C83BOwJ3ET37XzPKtm-QIn7AlRuZGzEbGogkFrARSsgmG_U4a7t6Iz9GZE6LwKfHxe_4sXCMtAsY=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbq9d0p66ow4KiIvSOCyuqzo8UDantlWgH27LBeskb83YR_l5dkuPPJxw7tXVoAg4cqH0M4TpQMuosmcW281xaut4NvS5YVCnVVq4S5eoXI3m9WzTZTyeJ3QwSK--O2i5KBFj8MeSK5EL3kF3wLaxOEZ1_k7ZCcDV63q0SEOz4L2nMT95uZP02Z8Sa_nGP8BQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaYSXgUjbAIvX9QYquN_aA3hPRjB7v0uCfnP3BkxRoOTR_az77wKGTnr7SmxSpph0QHKZDL9ioNrIBtt6xEqJgdrU4ORT-wdjzXsBW-IGYc7Sp-BgQf8no6ex-ZY70VaXZZbUn8a-TXyy_RfHOo_XjDlaCMeb_7KEGOUOBok0k7H4qdSo-OoDifyubbIU6gMg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZMEI_EoweqqayCSEN7DZMjRQ0HGsZvEbx6zPX5s4vSoCovV3toSu73RMqNlnZ79l9_vAUTkmpT0x8COmASfCgxxNRFnf0rK_drX91iDPkeFqB96DUk-kGbtlYMujbf8n1t_YFOcvbSuv86z4H22ri3DzOena5KFBVRsELrYSZzMe6Ki8SCBdXf4W_Uuwo_0Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZb8KaIPz7xgPZ0-0yvclYyesH78yvWqvjBMcBJyvEt2klC3piviNjxs02kTcvO7penueEJGvDzG3cZ0hCHIe16SWOPw5USH9y7Euu-ug4vyRGVSywnjQ-CBv5pcApTD5TH7RPN2bVE0C1H3y8_Io0VA_IS-Lf-dxCtiTCsqhhFDTMIqMy7umxrnkfvWbg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZdSsdhMUjZ0ucHrCS6bYXm12ndUm7Rvz9z1XjFKReR1Jai6olaxO4guuWA0br-FMfrd6qis5GhtJ57BlVbsOfwgNNWkbSL4tXTwjBLZQIBQG0Pdp63LKqLFmNrjkob37K4q4qtyLu9k2GphP_OsL0eqCPrg1zqt1IQ67wluHNmm5xpKzHD5Lwf4pRv_dc=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYrPkjxHBYaN-Tea5ph8hdwvTq72qDsFetbq736D1kqzv5LaH4djRGxX0SB88R5t_r01K2mmd8C8aIlKNdz2xlXBKAwFscgc1DZIjb2d4OAGqCOafhifUQmHnSiqsE0jnmhQCDHiHg2oUFfsGTwsOsWjO1vEHyxrXqAVOxESmHDzXH1IJf6OXqiHKer14s=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZOCSIhMxOREE5Qh3JkUyNTFDKpbibaohW_k3XdHguSnUs80dbH2jypgEoOc1luIn721NgU_cWQ89EWUtqdKZ-pbiIq1vzcX3ehisR4R4AqeVtXkhbK1BtU4HcN7mWLSW9WcAWZhM9_howMLCcqWroxhMOXn8zVuKjVv9oG8ALQ_bO6fXeeQlqCjKsnFOr8Rg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 10,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Structures",
+          "Examples",
+          "Observations",
+          "1",
+          "Have someone do something",
+          "Will you have Jade do the dinner?\n\nThey have had Ericka clean the house for years.",
+          "Have + N + V (simple form)\n-This may vary depending on the tenses. -",
+          "2",
+          "Have something done",
+          "She *got her eyes operated last week.\n\nThey will have the car fixed by noon.",
+          "Have + N + V (Past participle)\n\n-This may vary depending on the tenses.-",
+          "3",
+          "Get someone / Something to...",
+          "My dad got Jane to teach me math.\n\nI have gotten Annie to buy the apartment. She finally crossed the Rubicon.",
+          "Get + N +  Non finite clause.",
+          "There are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative."
+        ],
+        "joinedText": "Structures\nExamples\nObservations\n1\nHave someone do something\nWill you have Jade do the dinner?\n\nThey have had Ericka clean the house for years.\nHave + N + V (simple form)\n-This may vary depending on the tenses. -\n2\nHave something done\nShe *got her eyes operated last week.\n\nThey will have the car fixed by noon.\nHave + N + V (Past participle)\n\n-This may vary depending on the tenses.-\n3\nGet someone / Something to...\nMy dad got Jane to teach me math.\n\nI have gotten Annie to buy the apartment. She finally crossed the Rubicon.\nGet + N +  Non finite clause.\nThere are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative.",
+        "shapes": [
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 910550,
+              "y": 970425,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3910550,
+              "bottom": 3970425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Structures",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "Observations",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Have someone do something",
+                "runs": []
+              },
+              {
+                "text": "Will you have Jade do the dinner?\n\nThey have had Ericka clean the house for years.",
+                "runs": []
+              },
+              {
+                "text": "Have + N + V (simple form)\n-This may vary depending on the tenses. -",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Have something done",
+                "runs": []
+              },
+              {
+                "text": "She *got her eyes operated last week.\n\nThey will have the car fixed by noon.",
+                "runs": []
+              },
+              {
+                "text": "Have + N + V (Past participle)\n\n-This may vary depending on the tenses.-",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Get someone / Something to...",
+                "runs": []
+              },
+              {
+                "text": "My dad got Jane to teach me math.\n\nI have gotten Annie to buy the apartment. She finally crossed the Rubicon.",
+                "runs": []
+              },
+              {
+                "text": "Get + N +  Non finite clause.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Structures",
+              "Examples",
+              "Observations",
+              "1",
+              "Have someone do something",
+              "Will you have Jade do the dinner?\n\nThey have had Ericka clean the house for years.",
+              "Have + N + V (simple form)\n-This may vary depending on the tenses. -",
+              "2",
+              "Have something done",
+              "She *got her eyes operated last week.\n\nThey will have the car fixed by noon.",
+              "Have + N + V (Past participle)\n\n-This may vary depending on the tenses.-",
+              "3",
+              "Get someone / Something to...",
+              "My dad got Jane to teach me math.\n\nI have gotten Annie to buy the apartment. She finally crossed the Rubicon.",
+              "Get + N +  Non finite clause."
+            ],
+            "joinedText": "Structures\nExamples\nObservations\n1\nHave someone do something\nWill you have Jade do the dinner?\n\nThey have had Ericka clean the house for years.\nHave + N + V (simple form)\n-This may vary depending on the tenses. -\n2\nHave something done\nShe *got her eyes operated last week.\n\nThey will have the car fixed by noon.\nHave + N + V (Past participle)\n\n-This may vary depending on the tenses.-\n3\nGet someone / Something to...\nMy dad got Jane to teach me math.\n\nI have gotten Annie to buy the apartment. She finally crossed the Rubicon.\nGet + N +  Non finite clause.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1026575,
+              "y": 29450,
+              "cx": 7503900,
+              "cy": 972600,
+              "right": 8530475,
+              "bottom": 1002050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "There are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative.",
+                "runs": [
+                  "There are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative."
+                ]
+              }
+            ],
+            "texts": [
+              "There are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative."
+            ],
+            "joinedText": "There are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 910550,
+              "y": 970425,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3910550,
+              "bottom": 3970425
+            },
+            "columnWidths": [
+              386300,
+              2299500,
+              2269275,
+              2108225
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Structures",
+                    "paragraphs": [
+                      {
+                        "text": "Structures ",
+                        "runs": [
+                          "Structures "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Observations",
+                    "paragraphs": [
+                      {
+                        "text": "Observations",
+                        "runs": [
+                          "Observations"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Have someone do something",
+                    "paragraphs": [
+                      {
+                        "text": "Have someone do something",
+                        "runs": [
+                          "Have someone do ",
+                          "something"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Will you have Jade do the dinner?\n\nThey have had Ericka clean the house for years.",
+                    "paragraphs": [
+                      {
+                        "text": "Will you have Jade do the dinner?",
+                        "runs": [
+                          "Will you ",
+                          "have Jade do",
+                          " the dinner",
+                          "?"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "They have had Ericka clean the house for years.",
+                        "runs": [
+                          "They ",
+                          "have had Ericka clean ",
+                          "the house for years."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Have + N + V (simple form)\n-This may vary depending on the tenses. -",
+                    "paragraphs": [
+                      {
+                        "text": "Have + N + V (simple form)",
+                        "runs": [
+                          "Have + N + V (simple form)"
+                        ]
+                      },
+                      {
+                        "text": "-This may vary depending on the tenses. -",
+                        "runs": [
+                          "-This may vary depending on the tenses. -"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Have something done",
+                    "paragraphs": [
+                      {
+                        "text": "Have something done",
+                        "runs": [
+                          "Have something done"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She *got her eyes operated last week.\n\nThey will have the car fixed by noon.",
+                    "paragraphs": [
+                      {
+                        "text": "She *got her eyes operated last week.",
+                        "runs": [
+                          "She ",
+                          "*got her eyes operated",
+                          " last week."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "They will have the car fixed by noon.",
+                        "runs": [
+                          "They ",
+                          "will have the car fixed ",
+                          "by noon."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Have + N + V (Past participle)\n\n-This may vary depending on the tenses.-",
+                    "paragraphs": [
+                      {
+                        "text": "Have + N + V (Past participle)",
+                        "runs": [
+                          "Have + N + V (Past participle)"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "-This may vary depending on the tenses.-",
+                        "runs": [
+                          "-This may vary depending on the tenses",
+                          ".-"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 712650,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Get someone / Something to...",
+                    "paragraphs": [
+                      {
+                        "text": "Get someone / Something to...",
+                        "runs": [
+                          "Get someone / Something to..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "My dad got Jane to teach me math.\n\nI have gotten Annie to buy the apartment. She finally crossed the Rubicon.",
+                    "paragraphs": [
+                      {
+                        "text": "My dad got Jane to teach me math.",
+                        "runs": [
+                          "My dad ",
+                          "got Jane to teach",
+                          " me math."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I have gotten Annie to buy the apartment. She finally crossed the Rubicon.",
+                        "runs": [
+                          "I ",
+                          "have gotten Annie to buy",
+                          " the ",
+                          "apartment",
+                          ". She finally crossed the Rubicon."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Get + N +  Non finite clause.",
+                    "paragraphs": [
+                      {
+                        "text": "Get + N +  Non finite clause. ",
+                        "runs": [
+                          "Get + N +  Non finite clause. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "Structures Examples Observations 1 Have someone do something Will you have Jade do the dinner? They have had Ericka clean the house for years. Have + N + V (simple form) This may vary depending on the tenses. 2 Have something done She *got her eyes operated last week. They will have the car fixed by noon. Have + N + V (Past participle) This may vary depending on the tenses. 3 Get someone / Something to ... My dad got Jane to teach me math. I have gotten Annie to buy the apartment. She finally crossed the Rubicon. Get + N + Non-finite clause",
+        "visibleTexts": [
+          "Structures Examples Observations 1 Have someone do something Will you have Jade do the dinner? They have had Ericka clean the house for years. Have + N + V (simple form) This may vary depending on the tenses. 2 Have something done She *got her eyes operated last week. They will have the car fixed by noon. Have + N + V (Past participle) This may vary depending on the tenses. 3 Get someone / Something to ... My dad got Jane to teach me math. I have gotten Annie to buy the apartment. She finally crossed the Rubicon. Get + N + Non-finite clause",
+          "There are many ways in which we can say someone does something for us or in our behalf; however, check this chart to learn a new one where we work with causative."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "table-or-chart-mentioned-without-table-semantics"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "To Consider ",
+          "1. We need to pay attention to the tenses in order to make the structures work correctly. ",
+          "2. *GET sometimes is used to substituted HAVE to make very emphatic another subject makes the action. See example in row 2.",
+          "3. We can also used GET with participles. E.G. Get the clock fixed now!",
+          "     *Get + Adjectives can also be used here. "
+        ],
+        "joinedText": "To Consider \n1. We need to pay attention to the tenses in order to make the structures work correctly. \n2. *GET sometimes is used to substituted HAVE to make very emphatic another subject makes the action. See example in row 2.\n\n3. We can also used GET with participles. E.G. Get the clock fixed now!\n     *Get + Adjectives can also be used here.",
+        "shapes": [
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g89bded71de_0_1",
+            "kind": "group",
+            "bbox": {
+              "x": 904224,
+              "y": 727189,
+              "cx": 7075942,
+              "cy": 2538874,
+              "right": 7980166,
+              "bottom": 3266063
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g89bded71de_0_1",
+            "kind": "group",
+            "bbox": {
+              "x": 904224,
+              "y": 727225,
+              "cx": 7075942,
+              "cy": 1995186,
+              "right": 7980166,
+              "bottom": 2722411
+            },
+            "parentShapeId": "269"
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 7251427,
+              "y": 3927475,
+              "cx": 798600,
+              "cy": 391500,
+              "right": 8050027,
+              "bottom": 4318975
+            },
+            "parentShapeId": "270",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "272",
+            "shapeName": "Google Shape;272;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "270",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "273",
+            "shapeName": "Google Shape;273;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 967625,
+              "y": 763150,
+              "cx": 6212400,
+              "cy": 1859100,
+              "right": 7180025,
+              "bottom": 2622250
+            },
+            "parentShapeId": "269",
+            "paragraphs": [
+              {
+                "text": "To Consider ",
+                "runs": [
+                  "To Consider "
+                ]
+              },
+              {
+                "text": "1. We need to pay attention to the tenses in order to make the structures work correctly. ",
+                "runs": [
+                  "1. ",
+                  "We need to pay attention to the tenses in order to make the structures work correctly. "
+                ]
+              },
+              {
+                "text": "2. *GET sometimes is used to substituted HAVE to make very emphatic another subject makes the action. See example in row 2.",
+                "runs": [
+                  "2. *GET",
+                  " ",
+                  "sometimes",
+                  " is used to substituted ",
+                  "HAVE",
+                  " to make very ",
+                  "emphatic",
+                  " another subject makes the action. ",
+                  "See example in row 2",
+                  "."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "3. We can also used GET with participles. E.G. Get the clock fixed now!",
+                "runs": [
+                  "3. We can also used ",
+                  "GET",
+                  " with ",
+                  "participles",
+                  ". ",
+                  "E.G",
+                  ". ",
+                  "Get",
+                  " the clock ",
+                  "fixed",
+                  " now!"
+                ]
+              },
+              {
+                "text": "     *Get + Adjectives can also be used here. ",
+                "runs": [
+                  "     ",
+                  "*Get + Adjectives can also be used here. "
+                ]
+              }
+            ],
+            "texts": [
+              "To Consider ",
+              "1. We need to pay attention to the tenses in order to make the structures work correctly. ",
+              "2. *GET sometimes is used to substituted HAVE to make very emphatic another subject makes the action. See example in row 2.",
+              "3. We can also used GET with participles. E.G. Get the clock fixed now!",
+              "     *Get + Adjectives can also be used here. "
+            ],
+            "joinedText": "To Consider \n1. We need to pay attention to the tenses in order to make the structures work correctly. \n2. *GET sometimes is used to substituted HAVE to make very emphatic another subject makes the action. See example in row 2.\n\n3. We can also used GET with participles. E.G. Get the clock fixed now!\n     *Get + Adjectives can also be used here."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "To Consider 1. We need to pay attention to the tenses in order to make the structures work correctly. 2. *GET sometimes is used to substitute HAVE to be very emphatic of making another subject do the action. See example in row 2. 3. We can also use GET with participles. E.G. Get the clock fixed now! *Get + Adjectives can also be used here. E.G: I need to get the tank full",
+        "visibleTexts": [
+          "To Consider 1. We need to pay attention to the tenses in order to make the structures work correctly. 2. *GET sometimes is used to substitute HAVE to be very emphatic of making another subject do the action. See example in row 2. 3. We can also use GET with participles. E.G. Get the clock fixed now! *Get + Adjectives can also be used here. E.G: I need to get the tank full"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Working with these structures we can board some functions-",
+          "Functions",
+          "Examples",
+          "1",
+          "State things people do for others.",
+          "Jill had John call Mary to apologize.",
+          "I will have Annie finish this pie tonight.",
+          "2",
+          "Talk about things done in our behalf or for us.",
+          "The school had the hall painted by the students.",
+          "We will have the speech addressed by Joshua.",
+          "3",
+          "Give instructions",
+          "John, please, get it to work. We need the coffee maker.",
+          "To consider ",
+          "We need to remember that there are many other ways in which we can ask or have others do things for us."
+        ],
+        "joinedText": "Working with these structures we can board some functions-\nFunctions\nExamples\n1\nState things people do for others.\nJill had John call Mary to apologize.\nI will have Annie finish this pie tonight.\n2\nTalk about things done in our behalf or for us.\nThe school had the hall painted by the students.\nWe will have the speech addressed by Joshua.\n3\nGive instructions\nJohn, please, get it to work. We need the coffee maker.\nTo consider \nWe need to remember that there are many other ways in which we can ask or have others do things for us.",
+        "shapes": [
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1481900,
+              "y": 119625,
+              "cx": 5782800,
+              "cy": 584700,
+              "right": 7264700,
+              "bottom": 704325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Working with these structures we can board some functions-",
+                "runs": [
+                  "W",
+                  "orking with these structures we can board some functions-"
+                ]
+              }
+            ],
+            "texts": [
+              "Working with these structures we can board some functions-"
+            ],
+            "joinedText": "Working with these structures we can board some functions-"
+          },
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 831700,
+              "y": 704325,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3831700,
+              "bottom": 3704325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "State things people do for others.",
+                "runs": []
+              },
+              {
+                "text": "Jill had John call Mary to apologize.",
+                "runs": []
+              },
+              {
+                "text": "I will have Annie finish this pie tonight.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Talk about things done in our behalf or for us.",
+                "runs": []
+              },
+              {
+                "text": "The school had the hall painted by the students.",
+                "runs": []
+              },
+              {
+                "text": "We will have the speech addressed by Joshua.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Give instructions",
+                "runs": []
+              },
+              {
+                "text": "John, please, get it to work. We need the coffee maker.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "State things people do for others.",
+              "Jill had John call Mary to apologize.",
+              "I will have Annie finish this pie tonight.",
+              "2",
+              "Talk about things done in our behalf or for us.",
+              "The school had the hall painted by the students.",
+              "We will have the speech addressed by Joshua.",
+              "3",
+              "Give instructions",
+              "John, please, get it to work. We need the coffee maker."
+            ],
+            "joinedText": "Functions\nExamples\n1\nState things people do for others.\nJill had John call Mary to apologize.\nI will have Annie finish this pie tonight.\n2\nTalk about things done in our behalf or for us.\nThe school had the hall painted by the students.\nWe will have the speech addressed by Joshua.\n3\nGive instructions\nJohn, please, get it to work. We need the coffee maker.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 936774,
+              "y": 3900224,
+              "cx": 7075918,
+              "cy": 993428,
+              "right": 8012692,
+              "bottom": 4893652
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 904225,
+              "y": 3470422,
+              "cx": 7075918,
+              "cy": 1546183,
+              "right": 7980143,
+              "bottom": 5016605
+            },
+            "parentShapeId": "287"
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "288",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "288",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "291",
+            "shapeName": "Google Shape;291;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 967626,
+              "y": 3372128,
+              "cx": 6600000,
+              "cy": 1240200,
+              "right": 7567626,
+              "bottom": 4612328
+            },
+            "parentShapeId": "287",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "We need to remember that there are many other ways in which we can ask or have others do things for us.",
+                "runs": [
+                  "We need to remember that there are many other ways in which we can ask or have others do things for us."
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "We need to remember that there are many other ways in which we can ask or have others do things for us."
+            ],
+            "joinedText": "To consider \nWe need to remember that there are many other ways in which we can ask or have others do things for us."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;g729cfa641f_0_0",
+            "bbox": {
+              "x": 831700,
+              "y": 704325,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3831700,
+              "bottom": 3704325
+            },
+            "columnWidths": [
+              375750,
+              2499925,
+              4432100
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "State things people do for others.",
+                    "paragraphs": [
+                      {
+                        "text": "State things people do for others. ",
+                        "runs": [
+                          "State things people do for others. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Jill had John call Mary to apologize.",
+                    "paragraphs": [
+                      {
+                        "text": "Jill had John call Mary to apologize. ",
+                        "runs": [
+                          "Jill ",
+                          "had John call",
+                          " Mary to apologize. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "I will have Annie finish this pie tonight.",
+                    "paragraphs": [
+                      {
+                        "text": "I will have Annie finish this pie tonight.",
+                        "runs": [
+                          "I ",
+                          "will have Annie finish ",
+                          "this pie tonight."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Talk about things done in our behalf or for us.",
+                    "paragraphs": [
+                      {
+                        "text": "Talk about things done in our behalf or for us. ",
+                        "runs": [
+                          "Talk about things done in our behalf or for us. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The school had the hall painted by the students.",
+                    "paragraphs": [
+                      {
+                        "text": "The school had the hall painted by the students. ",
+                        "runs": [
+                          "The school",
+                          " had the hall painted ",
+                          "by the students. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "We will have the speech addressed by Joshua.",
+                    "paragraphs": [
+                      {
+                        "text": "We will have the speech addressed by Joshua.",
+                        "runs": [
+                          "We ",
+                          "will have the speech addressed ",
+                          "by Joshua."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Give instructions",
+                    "paragraphs": [
+                      {
+                        "text": "Give instructions ",
+                        "runs": [
+                          "Give instructions "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "John, please, get it to work. We need the coffee maker.",
+                    "paragraphs": [
+                      {
+                        "text": "John, please, get it to work. We need the coffee maker.",
+                        "runs": [
+                          "John, please, ",
+                          "get it to work",
+                          ". We need the coffee maker."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "Working with these structures we can have some functions.",
+        "visibleTexts": [
+          "Working with these structures we can have some functions.",
+          "Functions Examples 1 State things people do for others Jill had John call Mary to apologize. I will have Annie finish this pie tonight. 2 Talk about things done in our behalf or for us The school had the hall painted by the students. We will have the speech addressed by Joshua. 3 Give instructions John, please, get it to work. We need the coffee maker.",
+          "To consider We need to remember that there are many other ways in which we can ask or have others do things for us, like using modals to be polite: Could you please open this for me?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example. ",
+          "0.",
+          "Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk.",
+          "1.",
+          "Clayton got the copier fixed yesterday.",
+          "2.",
+          "I will had John come for the dinner party.",
+          "3.",
+          "I have chance my arm so long for this company.",
+          "4.",
+          "Danny always has Daniel help him with his homework.",
+          "5.",
+          "Get the homework ready and you can go out.",
+          "6.",
+          "I was having Jake cleaned the house and he fell over.",
+          "7.",
+          "The company most of the staff fired for corruption.",
+          "8.",
+          "I will have Jimmy buy our food tonight."
+        ],
+        "joinedText": "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example.\n0.\nDexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk.\n1.\nClayton got the copier fixed yesterday.\n2.\nI will had John come for the dinner party.\n3.\nI have chance my arm so long for this company.\n4.\nDanny always has Daniel help him with his homework.\n5.\nGet the homework ready and you can go out.\n6.\nI was having Jake cleaned the house and he fell over.\n7.\nThe company most of the staff fired for corruption.\n8.\nI will have Jimmy buy our food tonight.",
+        "shapes": [
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1017450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example. ",
+                "runs": [
+                  "A. Look at the ",
+                  "sentences and identify where the mistakes are if there are any. After that fix them",
+                  ". Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example. "
+            ],
+            "joinedText": "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example."
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 538100,
+              "y": 1120635,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3538100,
+              "bottom": 4120635
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk.",
+                "runs": []
+              },
+              {
+                "text": "1.",
+                "runs": []
+              },
+              {
+                "text": "Clayton got the copier fixed yesterday.",
+                "runs": []
+              },
+              {
+                "text": "2.",
+                "runs": []
+              },
+              {
+                "text": "I will had John come for the dinner party.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "I have chance my arm so long for this company.",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "Danny always has Daniel help him with his homework.",
+                "runs": []
+              },
+              {
+                "text": "5.",
+                "runs": []
+              },
+              {
+                "text": "Get the homework ready and you can go out.",
+                "runs": []
+              },
+              {
+                "text": "6.",
+                "runs": []
+              },
+              {
+                "text": "I was having Jake cleaned the house and he fell over.",
+                "runs": []
+              },
+              {
+                "text": "7.",
+                "runs": []
+              },
+              {
+                "text": "The company most of the staff fired for corruption.",
+                "runs": []
+              },
+              {
+                "text": "8.",
+                "runs": []
+              },
+              {
+                "text": "I will have Jimmy buy our food tonight.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0.",
+              "Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk.",
+              "1.",
+              "Clayton got the copier fixed yesterday.",
+              "2.",
+              "I will had John come for the dinner party.",
+              "3.",
+              "I have chance my arm so long for this company.",
+              "4.",
+              "Danny always has Daniel help him with his homework.",
+              "5.",
+              "Get the homework ready and you can go out.",
+              "6.",
+              "I was having Jake cleaned the house and he fell over.",
+              "7.",
+              "The company most of the staff fired for corruption.",
+              "8.",
+              "I will have Jimmy buy our food tonight."
+            ],
+            "joinedText": "0.\nDexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk.\n1.\nClayton got the copier fixed yesterday.\n2.\nI will had John come for the dinner party.\n3.\nI have chance my arm so long for this company.\n4.\nDanny always has Daniel help him with his homework.\n5.\nGet the homework ready and you can go out.\n6.\nI was having Jake cleaned the house and he fell over.\n7.\nThe company most of the staff fired for corruption.\n8.\nI will have Jimmy buy our food tonight.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1839775,
+              "y": 1162425,
+              "cx": 1630500,
+              "cy": 231300,
+              "right": 3470275,
+              "bottom": 1393725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_19",
+            "bbox": {
+              "x": 538100,
+              "y": 1120635,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3538100,
+              "bottom": 4120635
+            },
+            "columnWidths": [
+              490275,
+              7262250
+            ],
+            "rows": [
+              {
+                "height": 204225,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk.",
+                    "paragraphs": [
+                      {
+                        "text": "Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk.",
+                        "runs": [
+                          "Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "1.",
+                    "paragraphs": [
+                      {
+                        "text": "1.",
+                        "runs": [
+                          "1."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Clayton got the copier fixed yesterday.",
+                    "paragraphs": [
+                      {
+                        "text": "Clayton got the copier fixed yesterday.",
+                        "runs": [
+                          "Clayton got the copier fixed yesterday."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "2.",
+                    "paragraphs": [
+                      {
+                        "text": "2.",
+                        "runs": [
+                          "2."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I will had John come for the dinner party.",
+                    "paragraphs": [
+                      {
+                        "text": "I will had John come for the dinner party. ",
+                        "runs": [
+                          "I will had John come for the dinner party. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I have chance my arm so long for this company.",
+                    "paragraphs": [
+                      {
+                        "text": "I have chance my arm so long for this company.",
+                        "runs": [
+                          "I have chance my arm so long for this company."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Danny always has Daniel help him with his homework.",
+                    "paragraphs": [
+                      {
+                        "text": "Danny always has Daniel help him with his homework.",
+                        "runs": [
+                          "Danny always has Daniel help him with his homework."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "5.",
+                    "paragraphs": [
+                      {
+                        "text": "5.",
+                        "runs": [
+                          "5."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Get the homework ready and you can go out.",
+                    "paragraphs": [
+                      {
+                        "text": "Get the homework ready and you can go out. ",
+                        "runs": [
+                          "Get the homework ready and you can go out. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "6.",
+                    "paragraphs": [
+                      {
+                        "text": "6.",
+                        "runs": [
+                          "6."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I was having Jake cleaned the house and he fell over.",
+                    "paragraphs": [
+                      {
+                        "text": "I was having Jake cleaned the house and he fell over.",
+                        "runs": [
+                          "I was having Jake cleaned the house and he fell over."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "7.",
+                    "paragraphs": [
+                      {
+                        "text": "7.",
+                        "runs": [
+                          "7."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The company most of the staff fired for corruption.",
+                    "paragraphs": [
+                      {
+                        "text": "The company most of the staff fired for corruption.",
+                        "runs": [
+                          "The company most of the staff fired for corruption."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "8.",
+                    "paragraphs": [
+                      {
+                        "text": "8.",
+                        "runs": [
+                          "8."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I will have Jimmy buy our food tonight.",
+                    "paragraphs": [
+                      {
+                        "text": "I will have Jimmy buy our food tonight. ",
+                        "runs": [
+                          "I will have Jimmy buy our food tonight. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example.",
+        "visibleTexts": [
+          "A. Look at the sentences and identify where the mistakes are if there are any. After that fix them. Follow the example.",
+          "0. Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk. 1. Clayton got the copier fixed yesterday. 2. I will had John come for the dinner party. 3. I have chance my arm so long for this company. 4. Danny always has Daniel help him with his homework. 5. Get the homework ready and you can go out. 6. I was having Jake cleaned the house and he fell over. 7. The company most of the staff fired for corruption. 8. I will have Jimmy buy our food tonight."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "B. Listen to the audio and answer the questions your teacher makes. ",
+          "Do it yourself",
+          "It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for / to you does not always end well. Get people to work or do things  the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, get others to know you and get to know them will make things easier in dealing with different situations that may present. Whatever it is, professional or personal, have others do things for us or get things done by others is something challenging. ",
+          "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+        ],
+        "joinedText": "B. Listen to the audio and answer the questions your teacher makes.\nDo it yourself\n\nIt is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for / to you does not always end well. Get people to work or do things  the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, get others to know you and get to know them will make things easier in dealing with different situations that may present. Whatever it is, professional or personal, have others do things for us or get things done by others is something challenging.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "shapes": [
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 3611700,
+              "y": 1007925,
+              "cx": 4769400,
+              "cy": 3325200,
+              "right": 8381100,
+              "bottom": 4333125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 984725,
+              "y": 233250,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7107425,
+              "bottom": 834450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 3719475,
+              "y": 1037675,
+              "cx": 4585500,
+              "cy": 3233100,
+              "right": 8304975,
+              "bottom": 4270775
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Do it yourself",
+                "runs": [
+                  "Do it yourself"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for / to you does not always end well. Get people to work or do things  the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, get others to know you and get to know them will make things easier in dealing with different situations that may present. Whatever it is, professional or personal, have others do things for us or get things done by others is something challenging. ",
+                "runs": [
+                  "It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for / to you does not always end well. Get people to work or do things  the way you want has always been kind of a challenge. If we refer to a professional area, you ",
+                  "need",
+                  " to have people trained so they know what you want and expect. On a more personal level, get others to know you and get to know them will make things easier in dealing with different situations that may present. Whatever it is, professional or personal, have others do things for us or get things done by others is something challenging. "
+                ]
+              }
+            ],
+            "texts": [
+              "Do it yourself",
+              "It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for / to you does not always end well. Get people to work or do things  the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, get others to know you and get to know them will make things easier in dealing with different situations that may present. Whatever it is, professional or personal, have others do things for us or get things done by others is something challenging. "
+            ],
+            "joinedText": "Do it yourself\n\nIt is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for / to you does not always end well. Get people to work or do things  the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, get others to know you and get to know them will make things easier in dealing with different situations that may present. Whatever it is, professional or personal, have others do things for us or get things done by others is something challenging."
+          },
+          {
+            "shapeId": "313",
+            "shapeName": "Google Shape;313;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 723900,
+              "y": 2607575,
+              "cx": 2819400,
+              "cy": 1789500,
+              "right": 3543300,
+              "bottom": 4397075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  ",
+                "runs": [
+                  "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+            ],
+            "joinedText": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+          },
+          {
+            "shapeId": "314",
+            "shapeName": "Google Shape;314;g729cfa641f_0_32",
+            "kind": "picture",
+            "bbox": {
+              "x": 1350950,
+              "y": 1007925,
+              "cx": 880000,
+              "cy": 880000,
+              "right": 2230950,
+              "bottom": 1887925
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "314",
+            "shapeName": "Google Shape;314;g729cfa641f_0_32",
+            "bbox": {
+              "x": 1350950,
+              "y": 1007925,
+              "cx": 880000,
+              "cy": 880000,
+              "right": 2230950,
+              "bottom": 1887925
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "B. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "B. Listen to the audio and answer the questions your teacher makes.",
+          "Do it yourself It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for or to you does not always end well. Get people to work or do things the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, getting others to know you, and getting to know them will make things easier in dealing with different situations that may occur. Whatever it is, professional or personal, having others do things for us, or getting things done by others is something challenging.",
+          "C. Read the following paragraph and extract sentences with the functions studied. Locate them in the space provided."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZO2IiBVblTlNDAZYEvK3gMEi_wBbc9twCZgOZeQzuDog8LGSbTe9n_8g_ZX9yVbjnDTwFmacXVqlXAqL8Wu-4GvKqCj5Ce161xe0IGSNwki4T5slrVKmC1Ge1zuMjMDGL6azi29szUJ35DL1aKGoNcOpcDSef1_iLrMGqp0pNiWcYOZY7-vM9kP2HKj62YVA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?",
+          "E. Write a text where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be ok or not? Have you had a good or  terrible experience? Write about it too.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?\nE. Write a text where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be ok or not? Have you had a good or  terrible experience? Write about it too.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1123275,
+              "y": 146675,
+              "cx": 6122700,
+              "cy": 1027500,
+              "right": 7245975,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?",
+                "runs": [
+                  "D. Following the example from the previous activity, ",
+                  "What would you say are the most common things people have others do? How often do you ask for help and in which matters?"
+                ]
+              }
+            ],
+            "texts": [
+              "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?"
+            ],
+            "joinedText": "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?"
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a text where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be ok or not? Have you had a good or  terrible experience? Write about it too.",
+                "runs": [
+                  "E. Write a ",
+                  "text where you talk about the chores or activities bosses normally have people do at their jobs. What things do ",
+                  "you",
+                  " consider to be ok or not? Have you had a good or  ",
+                  "terrible",
+                  " experience? Write about it too."
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a text where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be ok or not? Have you had a good or  terrible experience? Write about it too."
+            ],
+            "joinedText": "E. Write a text where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be ok or not? Have you had a good or  terrible experience? Write about it too."
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 1070307,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2245829
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "321",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "321",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "324",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "324",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "324",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "324",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?",
+        "visibleTexts": [
+          "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?",
+          "E. Write a text between 120 - 160 words where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be okay or not? Have you had a good or terrible experience? Write about it too.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "333",
+            "shapeName": "Google Shape;333;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "334",
+            "shapeName": "Google Shape;334;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "335",
+            "shapeName": "Google Shape;335;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "336",
+            "shapeName": "Google Shape;336;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "335",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "337",
+            "shapeName": "Google Shape;337;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "335",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "338",
+            "shapeName": "Google Shape;338;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "343",
+            "shapeName": "Google Shape;343;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "344",
+            "shapeName": "Google Shape;344;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "345",
+            "shapeName": "Google Shape;345;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "346",
+            "shapeName": "Google Shape;346;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "shapeId": "344",
+            "shapeName": "Google Shape;344;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId4",
+            "shapeId": "345",
+            "shapeName": "Google Shape;345;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 17
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId4",
+            "slide": 17
+          }
+        ]
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY_Mwqc4Au5nqarAPNAGPsnw5suCd4sclY7BctP7dEBYeZDxEKIq2HzmuCzfNAEgDKVA7L6LgIRluM5qLnBrkBLKpFxeDqLsCbZ8howoV8e6KeMKgBda5bXLe2JePyPenZj6MKITQG3JP90OKPDAJtX7TB6x-8UwbrGJgWrMq7afHuhYQ-QOWYzhn9AqnHc2Q=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZKvmEUMB5h-3Nzd2crfNd_R9try31CvtKA-x5SvMpqEzeIQ64h-vXyzz8wXr6gL5w2X2Z34MT-57hkpi00Z6nSCY09lANqd2EA5lq2S6aS4yYU1IbIPh51d1Q_SP60osuNxjwm6KM7GYQ6Dxe7LS4WfIOSgu1kk8byAj9qNciy1wFhr-pzlz9mfRtr2FE=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbHhZLt8nOCt_pOEAe18B4s2bekdI1Ynk4UsfhjYWpoyCBw03sfsMcXGegNhAt-WJ_agQ8QYnckEeIelH5qDrTXlsIEqNQyMsAOOHEx1FHu2MK6Z-MEnKysjYZc0o_3uCHdzCbyT1zLm6I0xvzuairl6FJlYAWHe0JGWUd4DDsfd5iXyFO-pWMmMx2NSqSIgA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

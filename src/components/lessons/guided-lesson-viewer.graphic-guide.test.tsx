@@ -53,6 +53,7 @@ describe('GuidedLessonViewer graphic guide shell', () => {
         blocks={[block('text', 'reading'), block('grammar-visualizer', 'grammar')]}
         storageKey="guide-art"
         illustratedContent
+        unitOneAuthored
       />
     )
 
@@ -93,6 +94,7 @@ describe('GuidedLessonViewer graphic guide shell', () => {
         blocks={[block('text', 'reading'), block('essay', 'writing')]}
         storageKey="guide-responsive-order"
         illustratedContent
+        unitOneAuthored
       />
     )
 

@@ -1,0 +1,770 @@
+{
+  "schemaVersion": 1,
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "scope": {
+    "units": [
+      6,
+      14
+    ],
+    "audioIndex": 3,
+    "purpose": "Manual pronunciation review for source Audio3 word lists only."
+  },
+  "sourcePolicy": {
+    "audio": "Original source Audio3 files and URLs are preserved; this artifact records evidence only.",
+    "wordSelection": "Use only clear word identities present in the corresponding transcript; omitted or garbled slots remain unresolved.",
+    "questionAuthoring": "Use semantic multiple-choice prompts with four unique source words and one supported correct answer.",
+    "soundNotation": "The source uses /ǝz/ and /əd/; authored prompts use the corresponding /ɪz/ and /ɪd/ labels and retain the source labels.",
+    "activation": "Unit 6 slots 6 and 7 stay blocked for manual audio review; no missing word is inferred."
+  },
+  "counts": {
+    "exerciseSets": 2,
+    "reviewedSets": 2,
+    "completeSourceSlotSets": 1,
+    "partialSourceSlotSets": 1,
+    "reviewedItems": 6,
+    "blockedItems": 0,
+    "unresolvedAudioSlots": 2,
+    "optionsPerItem": 4
+  },
+  "exercises": [
+    {
+      "key": {
+        "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+        "unit": 6,
+        "slideNumber": 15,
+        "audioIndex": 3
+      },
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "unit": 6,
+      "lessonTitle": "What do you do?",
+      "slideNumber": 15,
+      "audioIndex": 3,
+      "sourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873",
+      "sourceFilename": "Unit 6 - What do you do - Audio 3.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-06-lesson-03-1eongcFCiDoQc9Br_x1MwNg4aGEOKlu9c.mp3",
+      "sourceBytes": 741456,
+      "sourceDeck": {
+        "driveId": "1GL4F7oCpmezDITqEksts6Lu4WGsw5lYu",
+        "title": "Unit 6 - What do you do.pptx",
+        "localPath": "docs/audit/source-originals/A-unit-06-primary-01-1GL4F7oCpmezDITqEksts6Lu4WGsw5lYu.pptx",
+        "sha256": "b036f83823f4cafe23ae07da7ba021a90202a067498fb96f54ab8d4d926b24d6"
+      },
+      "sourceSlide": {
+        "slideNumber": 15,
+        "nativePrompt": "C. Listen to the audio and mark which is the corresponding inflectional ending for each word pronounced. After that, practice pronouncing them with your teacher. 0. /s/ /z/ /ǝz/ 1. /s/ /z/ /ǝz/ 2. /s/ /z/ /ǝz/ 3. /s/ /z/ /ǝz/ 4. /s/ /z/ /ǝz/ 5. /s/ /z/ /ǝz/ 6. /s/ /z/ /ǝz/ 7. /s/ /z/ /ǝz/ 8. /s/ /z/ /ǝz/",
+        "publishedVisibleText": "C. Listen to the audio and mark which is the corresponding inflectional ending for each word pronounced. After that, practice pronouncing them with your teacher. 0. /s/ /z/ /ǝz/ 1. /s/ /z/ /ǝz/ 2. /s/ /z/ /ǝz/ 3. /s/ /z/ /ǝz/ 4. /s/ /z/ /ǝz/ 5. /s/ /z/ /ǝz/ 6. /s/ /z/ /ǝz/ 7. /s/ /z/ /ǝz/ 8. /s/ /z/ /ǝz/",
+        "nativeTable": {
+          "shapeName": "Google Shape;397;ge7374edca2_0_0",
+          "rowSlots": [
+            {
+              "slot": 0,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 1,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 2,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 3,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 4,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 5,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 6,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 7,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            },
+            {
+              "slot": 8,
+              "choices": [
+                "/s/",
+                "/z/",
+                "/ǝz/"
+              ]
+            }
+          ],
+          "note": "The native source table supplies numbered slots and category choices; it does not print the word spellings."
+        },
+        "nativeExactTexts": [
+          "‹#›",
+          "C. Listen to the audio and mark which is the corresponding inflectional ending for each word pronounced. After that, practice pronouncing them with your teacher.",
+          "0.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "1.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "2.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "3.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "4.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "5.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "6.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "7.",
+          "/s/",
+          "/z/",
+          "/ǝz/",
+          "8.",
+          "/s/",
+          "/z/",
+          "/ǝz/"
+        ],
+        "publishedVisibleTexts": [
+          "15",
+          "C. Listen to the audio and mark which is the corresponding inflectional ending for each word pronounced. After that, practice pronouncing them with your teacher.",
+          "0. /s/ /z/ /ǝz/ 1. /s/ /z/ /ǝz/ 2. /s/ /z/ /ǝz/ 3. /s/ /z/ /ǝz/ 4. /s/ /z/ /ǝz/ 5. /s/ /z/ /ǝz/ 6. /s/ /z/ /ǝz/ 7. /s/ /z/ /ǝz/ 8. /s/ /z/ /ǝz/"
+        ]
+      },
+      "transcriptConfidence": {
+        "language": "en",
+        "languageProbability": 0.993691086769104,
+        "avgLogprob": -0.12121064132866216,
+        "uncertaintyFlags": []
+      },
+      "clipWordInventory": [
+        {
+          "slot": 0,
+          "word": "Faces",
+          "status": "clear",
+          "targetSound": "/ɪz/",
+          "sourceCategory": "/ǝz/",
+          "transcriptEvidence": "Number 0. Example. Faces."
+        },
+        {
+          "slot": 1,
+          "word": "Strikes",
+          "status": "clear",
+          "targetSound": "/s/",
+          "sourceCategory": "/s/",
+          "transcriptEvidence": "Number 1. Strikes."
+        },
+        {
+          "slot": 2,
+          "word": "Rugs",
+          "status": "clear",
+          "targetSound": "/z/",
+          "sourceCategory": "/z/",
+          "transcriptEvidence": "Number 2. Rugs."
+        },
+        {
+          "slot": 3,
+          "word": "Ditches",
+          "status": "clear",
+          "targetSound": "/ɪz/",
+          "sourceCategory": "/ǝz/",
+          "transcriptEvidence": "Number 3. Ditches."
+        },
+        {
+          "slot": 4,
+          "word": "Phones",
+          "status": "clear",
+          "targetSound": "/z/",
+          "sourceCategory": "/z/",
+          "transcriptEvidence": "Number 4. Phones."
+        },
+        {
+          "slot": 5,
+          "word": "Plots",
+          "status": "clear",
+          "targetSound": "/s/",
+          "sourceCategory": "/s/",
+          "transcriptEvidence": "Number 5. Plots."
+        },
+        {
+          "slot": 8,
+          "word": "Lurks",
+          "status": "clear",
+          "targetSound": "/s/",
+          "sourceCategory": "/s/",
+          "transcriptEvidence": "Number 8. Lurks."
+        }
+      ],
+      "unresolvedAudioSlots": [
+        {
+          "slot": 6,
+          "status": "blocked-manual",
+          "reason": "The transcript contains “Number 6.” but no following word before “Number 8.”; no word is invented."
+        },
+        {
+          "slot": 7,
+          "status": "blocked-manual",
+          "reason": "The transcript contains no clear “Number 7” word; no word is invented."
+        }
+      ],
+      "sourceItemId": "u06-s15-c",
+      "sourcePrompt": "C. Listen to the audio and identify each inflectional ending.",
+      "reviewStatus": "reviewed",
+      "coverageStatus": "partial-source-slots",
+      "manualReviewRequired": true,
+      "manualReviewNote": "Three semantic MC items cover /s/, /z/, and /ɪz/ using only clear Audio3 words. Source slots 6 and 7 remain blocked because their words are absent from the transcript.",
+      "authoringStatus": "manual-semantic-phonology",
+      "items": [
+        {
+          "id": "phonology-mc-s-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which word ends with the /s/ sound?",
+          "targetSound": "/s/",
+          "sourceCategory": "/s/",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Strikes",
+              "accepted": [
+                "Strikes"
+              ],
+              "evidence": "Number 1. Strikes.",
+              "sourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873"
+            }
+          ],
+          "explicitOptions": [
+            "Strikes",
+            "Rugs",
+            "Ditches",
+            "Phones"
+          ],
+          "correct": "Strikes",
+          "evidence": "Number 1. Strikes.",
+          "sourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873",
+          "originalQuestion": null,
+          "sourceEvidence": {
+            "nativeDeckSha256": "b036f83823f4cafe23ae07da7ba021a90202a067498fb96f54ab8d4d926b24d6",
+            "nativeSlideNumber": 15,
+            "nativeTableShape": "Google Shape;397;ge7374edca2_0_0",
+            "nativeCategoryChoices": [
+              "/s/",
+              "/z/",
+              "/ǝz/"
+            ],
+            "clipWordEvidence": "Number 1. Strikes.",
+            "clipSourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873"
+          },
+          "manualAuthoring": true,
+          "rationale": "Semantic phonology question authored from a clear source clip word and the native category table; all four options are words present in the same clip and exactly one matches the target sound."
+        },
+        {
+          "id": "phonology-mc-z-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which word ends with the /z/ sound?",
+          "targetSound": "/z/",
+          "sourceCategory": "/z/",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Rugs",
+              "accepted": [
+                "Rugs"
+              ],
+              "evidence": "Number 2. Rugs.",
+              "sourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873"
+            }
+          ],
+          "explicitOptions": [
+            "Rugs",
+            "Strikes",
+            "Ditches",
+            "Plots"
+          ],
+          "correct": "Rugs",
+          "evidence": "Number 2. Rugs.",
+          "sourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873",
+          "originalQuestion": null,
+          "sourceEvidence": {
+            "nativeDeckSha256": "b036f83823f4cafe23ae07da7ba021a90202a067498fb96f54ab8d4d926b24d6",
+            "nativeSlideNumber": 15,
+            "nativeTableShape": "Google Shape;397;ge7374edca2_0_0",
+            "nativeCategoryChoices": [
+              "/s/",
+              "/z/",
+              "/ǝz/"
+            ],
+            "clipWordEvidence": "Number 2. Rugs.",
+            "clipSourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873"
+          },
+          "manualAuthoring": true,
+          "rationale": "Semantic phonology question authored from a clear source clip word and the native category table; all four options are words present in the same clip and exactly one matches the target sound."
+        },
+        {
+          "id": "phonology-mc-iz-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which word ends with the /ɪz/ sound?",
+          "targetSound": "/ɪz/",
+          "sourceCategory": "/ǝz/",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Ditches",
+              "accepted": [
+                "Ditches"
+              ],
+              "evidence": "Number 3. Ditches.",
+              "sourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873"
+            }
+          ],
+          "explicitOptions": [
+            "Ditches",
+            "Rugs",
+            "Strikes",
+            "Plots"
+          ],
+          "correct": "Ditches",
+          "evidence": "Number 3. Ditches.",
+          "sourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873",
+          "originalQuestion": null,
+          "sourceEvidence": {
+            "nativeDeckSha256": "b036f83823f4cafe23ae07da7ba021a90202a067498fb96f54ab8d4d926b24d6",
+            "nativeSlideNumber": 15,
+            "nativeTableShape": "Google Shape;397;ge7374edca2_0_0",
+            "nativeCategoryChoices": [
+              "/s/",
+              "/z/",
+              "/ǝz/"
+            ],
+            "clipWordEvidence": "Number 3. Ditches.",
+            "clipSourceAudioSha256": "780a6443841e4d1a3c93d4cb50cb0d9e07f60f8decba8205c9f547c90b8e7873"
+          },
+          "manualAuthoring": true,
+          "rationale": "Semantic phonology question authored from a clear source clip word and the native category table; all four options are words present in the same clip and exactly one matches the target sound."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zr60x0001l804vyj6hctk",
+        "unit": 14,
+        "slideNumber": 13,
+        "audioIndex": 3
+      },
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "unit": 14,
+      "lessonTitle": "Back then…!",
+      "slideNumber": 13,
+      "audioIndex": 3,
+      "sourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce",
+      "sourceFilename": "Unit 14 - Back then - Audio 3.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-14-lesson-03-16NsO8B-44HvSLbSvjLLAqr6TtzBi7mJ3.mp3",
+      "sourceBytes": 218846,
+      "sourceDeck": {
+        "driveId": "1brueP2eW7yejRK1FjUkITpne92Xz5kKS",
+        "title": "Unit 14 - Back then...!.pptx",
+        "localPath": "docs/audit/source-originals/A-unit-14-primary-02-1brueP2eW7yejRK1FjUkITpne92Xz5kKS.pptx",
+        "sha256": "05f2722f125e62e323d823b22cd5cd4c207c3b5c1f62d9f976d2ee90e5a889d3"
+      },
+      "sourceSlide": {
+        "slideNumber": 13,
+        "nativePrompt": "B. Listen to the audio with a list of words. Identify to which inflectional ending each word belongs to /t/ /d/ or /әd/. Follow the example. Take notes if necessary. 0 /t/ /d/ /əd/ 1 /t/ /d/ /əd/ 2 /t/ /d/ /əd/ 3 /t/ /d/ /əd/ 4 /t/ /d/ /əd/ 5 /t/ /d/ /əd/ 6 /t/ /d/ /əd/ 7 /t/ /d/ /əd/ 8 /t/ /d/ /əd/",
+        "publishedVisibleText": "B. Listen to the audio with a list of words. Identify to which inflectional ending each word belongs to /t/ /d/ or /әd/. Follow the example. Take notes if necessary. 0 /t/ /d/ /əd/ 1 /t/ /d/ /əd/ 2 /t/ /d/ /əd/ 3 /t/ /d/ /əd/ 4 /t/ /d/ /əd/ 5 /t/ /d/ /əd/ 6 /t/ /d/ /əd/ 7 /t/ /d/ /əd/ 8 /t/ /d/ /əd/",
+        "nativeTable": {
+          "shapeName": "Google Shape;372;p13",
+          "rowSlots": [
+            {
+              "slot": 0,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 1,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 2,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 3,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 4,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 5,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 6,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 7,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            },
+            {
+              "slot": 8,
+              "choices": [
+                "/t/",
+                "/d/",
+                "/əd/"
+              ]
+            }
+          ],
+          "note": "The native source table supplies numbered slots and category choices; it does not print the word spellings."
+        },
+        "nativeExactTexts": [
+          "B. Listen to the audio with a list of words. Identify to which inflectional ending each word belongs to /t/ /d/ or /әd/. Follow the example. Take notes if necessary.",
+          "0",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "1",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "2",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "3",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "4",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "5",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "6",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "7",
+          "/t/",
+          "/d/",
+          "/əd/",
+          "8",
+          "/t/",
+          "/d/",
+          "/əd/"
+        ],
+        "publishedVisibleTexts": [
+          "B. Listen to the audio with a list of words. Identify to which inflectional ending each word belongs to /t/ /d/ or /әd/. Follow the example. Take notes if necessary.",
+          "0 /t/ /d/ /əd/ 1 /t/ /d/ /əd/ 2 /t/ /d/ /əd/ 3 /t/ /d/ /əd/ 4 /t/ /d/ /əd/ 5 /t/ /d/ /əd/ 6 /t/ /d/ /əd/ 7 /t/ /d/ /əd/ 8 /t/ /d/ /əd/"
+        ]
+      },
+      "transcriptConfidence": {
+        "language": "en",
+        "languageProbability": 0.9965984225273132,
+        "avgLogprob": -0.25879023106474625,
+        "uncertaintyFlags": []
+      },
+      "clipWordInventory": [
+        {
+          "slot": 0,
+          "word": "Abandoned",
+          "status": "clear-example",
+          "targetSound": "/ɪd/",
+          "sourceCategory": "/əd/",
+          "transcriptEvidence": "0. Example. Abandoned."
+        },
+        {
+          "slot": 1,
+          "word": "Dragged",
+          "status": "clear",
+          "targetSound": "/d/",
+          "sourceCategory": "/d/",
+          "transcriptEvidence": "Number 1. Dragged."
+        },
+        {
+          "slot": 2,
+          "word": "Aided",
+          "status": "clear",
+          "targetSound": "/ɪd/",
+          "sourceCategory": "/əd/",
+          "transcriptEvidence": "Number 2. Aided."
+        },
+        {
+          "slot": 3,
+          "word": "Ducked",
+          "status": "clear",
+          "targetSound": "/t/",
+          "sourceCategory": "/t/",
+          "transcriptEvidence": "Number 3. Ducked."
+        },
+        {
+          "slot": 4,
+          "word": "Flattered",
+          "status": "clear",
+          "targetSound": "/ɪd/",
+          "sourceCategory": "/əd/",
+          "transcriptEvidence": "Number 4. Flattered."
+        },
+        {
+          "slot": 5,
+          "word": "Locked",
+          "status": "clear",
+          "targetSound": "/t/",
+          "sourceCategory": "/t/",
+          "transcriptEvidence": "Number 5. Locked."
+        },
+        {
+          "slot": 6,
+          "word": "Melted",
+          "status": "clear",
+          "targetSound": "/ɪd/",
+          "sourceCategory": "/əd/",
+          "transcriptEvidence": "Number 6. Melted."
+        },
+        {
+          "slot": 7,
+          "word": "Switched",
+          "status": "clear",
+          "targetSound": "/t/",
+          "sourceCategory": "/t/",
+          "transcriptEvidence": "Number 7. Switched."
+        },
+        {
+          "slot": 8,
+          "word": "Aimed",
+          "status": "clear",
+          "targetSound": "/d/",
+          "sourceCategory": "/d/",
+          "transcriptEvidence": "Number 8. Aimed."
+        }
+      ],
+      "unresolvedAudioSlots": [],
+      "sourceItemId": "u14-s13-b",
+      "sourcePrompt": "B. Listen to the word list and classify the inflectional ending.",
+      "reviewStatus": "reviewed",
+      "coverageStatus": "complete-source-slots",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-phonology",
+      "items": [
+        {
+          "id": "phonology-mc-t-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which word ends with the /t/ sound?",
+          "targetSound": "/t/",
+          "sourceCategory": "/t/",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Ducked",
+              "accepted": [
+                "Ducked"
+              ],
+              "evidence": "Number 3. Ducked.",
+              "sourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce"
+            }
+          ],
+          "explicitOptions": [
+            "Ducked",
+            "Dragged",
+            "Aided",
+            "Aimed"
+          ],
+          "correct": "Ducked",
+          "evidence": "Number 3. Ducked.",
+          "sourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce",
+          "originalQuestion": null,
+          "sourceEvidence": {
+            "nativeDeckSha256": "05f2722f125e62e323d823b22cd5cd4c207c3b5c1f62d9f976d2ee90e5a889d3",
+            "nativeSlideNumber": 13,
+            "nativeTableShape": "Google Shape;372;p13",
+            "nativeCategoryChoices": [
+              "/t/",
+              "/d/",
+              "/əd/"
+            ],
+            "clipWordEvidence": "Number 3. Ducked.",
+            "clipSourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce"
+          },
+          "manualAuthoring": true,
+          "rationale": "Semantic phonology question authored from a clear source clip word and the native category table; all four options are words present in the same clip and exactly one matches the target sound."
+        },
+        {
+          "id": "phonology-mc-d-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which word ends with the /d/ sound?",
+          "targetSound": "/d/",
+          "sourceCategory": "/d/",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Dragged",
+              "accepted": [
+                "Dragged"
+              ],
+              "evidence": "Number 1. Dragged.",
+              "sourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce"
+            }
+          ],
+          "explicitOptions": [
+            "Dragged",
+            "Ducked",
+            "Aided",
+            "Flattered"
+          ],
+          "correct": "Dragged",
+          "evidence": "Number 1. Dragged.",
+          "sourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce",
+          "originalQuestion": null,
+          "sourceEvidence": {
+            "nativeDeckSha256": "05f2722f125e62e323d823b22cd5cd4c207c3b5c1f62d9f976d2ee90e5a889d3",
+            "nativeSlideNumber": 13,
+            "nativeTableShape": "Google Shape;372;p13",
+            "nativeCategoryChoices": [
+              "/t/",
+              "/d/",
+              "/əd/"
+            ],
+            "clipWordEvidence": "Number 1. Dragged.",
+            "clipSourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce"
+          },
+          "manualAuthoring": true,
+          "rationale": "Semantic phonology question authored from a clear source clip word and the native category table; all four options are words present in the same clip and exactly one matches the target sound."
+        },
+        {
+          "id": "phonology-mc-id-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which word ends with the /ɪd/ sound?",
+          "targetSound": "/ɪd/",
+          "sourceCategory": "/əd/",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Aided",
+              "accepted": [
+                "Aided"
+              ],
+              "evidence": "Number 2. Aided.",
+              "sourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce"
+            }
+          ],
+          "explicitOptions": [
+            "Aided",
+            "Dragged",
+            "Ducked",
+            "Switched"
+          ],
+          "correct": "Aided",
+          "evidence": "Number 2. Aided.",
+          "sourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce",
+          "originalQuestion": null,
+          "sourceEvidence": {
+            "nativeDeckSha256": "05f2722f125e62e323d823b22cd5cd4c207c3b5c1f62d9f976d2ee90e5a889d3",
+            "nativeSlideNumber": 13,
+            "nativeTableShape": "Google Shape;372;p13",
+            "nativeCategoryChoices": [
+              "/t/",
+              "/d/",
+              "/əd/"
+            ],
+            "clipWordEvidence": "Number 2. Aided.",
+            "clipSourceAudioSha256": "0eca9016ce6adc5e24be2ad06061d480298bb3ae13700972e4de5c7354a1b9ce"
+          },
+          "manualAuthoring": true,
+          "rationale": "Semantic phonology question authored from a clear source clip word and the native category table; all four options are words present in the same clip and exactly one matches the target sound."
+        }
+      ]
+    }
+  ]
+}

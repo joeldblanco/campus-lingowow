@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "unit": 3,
+    "lessonId": "cmk0vi2e30003l404hjqaqibj",
+    "publishedSlide": 4,
+    "nativeSlide": 4,
+    "reviewDate": "2026-10-08",
+    "sourcePolicy": [
+      "Published slide is authoritative for visible wording and learner intent.",
+      "Native PPTX supplies editable shape boundaries and joined run text.",
+      "No times, actions, people, or image assets are inferred beyond the authored schedule words."
+    ]
+  },
+  "source": {
+    "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQZD_yEu7BqadWPb9vuZA3gzbu1YbGWjXxNmgLcmNerMU4LScFt1bcYPmBLHKAK0A/pub?start=false&loop=false&delayms=3000",
+    "observedSlideUrlSuffix": "slide=id.p4",
+    "publishedDeckTitle": "Unit 3 - Every day I.pptx",
+    "publishedSlideTextSha256": "59487a080c170da823b0e89010e2ccee58a548a07ff6aabcff285865247b5157",
+    "publishedVisibleTexts": [
+      "Week",
+      "SUNDAY",
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "DINNER AT MOM’S",
+      "SCHOOL MEETING",
+      "PROJECT PRESENTATION",
+      "DAVID’S CONCERT",
+      "CHESS TOURNAMENT",
+      "BREAKFAST W/ CLIENTS",
+      "FAMILY NIGHT",
+      "A. Look at the picture. What does it talk about? What is the information on it?",
+      "B. Listen to the audio and tell your teacher the activities the man makes.",
+      "👨"
+    ],
+    "publishedMedia": [
+      {
+        "kind": "rendered-slide-image",
+        "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+        "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475",
+        "role": "template-logo"
+      },
+      {
+        "kind": "audio-icon",
+        "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+        "role": "audio-icon"
+      }
+    ]
+  },
+  "native": {
+    "driveFileId": "1XyJQLPMputviAvZkXAGFLIEwUFNHuEax",
+    "title": "Unit 3 - Every day I.pptx",
+    "presentationSha256": "7e6b9948e217cbc613092b4d19ad120ad35618726b4676397f439f833127ebb2",
+    "path": "docs/audit/source-originals/A-unit-03-primary-02-1XyJQLPMputviAvZkXAGFLIEwUFNHuEax.pptx",
+    "slideTextSha256": "6e9f404c1a548cbc9488f12ee91f927ea5e66cfe2497e7fa320cbe754c2eb706",
+    "joinedTextSha256": "2550d23051174616f068cb282aa9bac43aac6a9e16156edf59134619fbe8f56b",
+    "joinedText": "Week\nSUNDAY\nMONDAY\nTUESDAY\nWEDNESDAY\nTHURSDAY\nFRIDAY\nSATURDAY\nDINNER AT MOM’S\nSCHOOL MEETING\nPROJECT PRESENTATION\nDAVID’S CONCERT\nCHESS TOURNAMENT\nBREAKFAST W/ CLIENTS\nFAMILY \nNIGHT\nA. Look at the picture. What does it talk about? What is the information on it?\nB. Listen to the audio and tell your teacher the activities the man makes.\n👨",
+    "excludedRasterRefs": [
+      {
+        "mediaPath": "ppt/media/image11.png",
+        "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475",
+        "role": "template-logo"
+      },
+      {
+        "mediaPath": "ppt/media/image1.png",
+        "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0",
+        "role": "audio-icon"
+      }
+    ]
+  },
+  "slide": {
+    "publishedSlide": 4,
+    "nativeSlide": 4,
+    "titleShape": {
+      "shapeId": "235",
+      "text": "Week",
+      "bbox": {"x": 0, "y": 0, "cx": 4415961, "cy": 537402, "right": 4415961, "bottom": 537402}
+    },
+    "weekdayShapes": [
+      {"label": "SUNDAY", "shapeId": "237", "bbox": {"x": 539, "y": 547464, "cx": 630697, "cy": 1940279, "right": 631236, "bottom": 2487743}},
+      {"label": "MONDAY", "shapeId": "239", "bbox": {"x": 631236, "y": 547464, "cx": 630697, "cy": 1940279, "right": 1261933, "bottom": 2487743}},
+      {"label": "TUESDAY", "shapeId": "241", "bbox": {"x": 1261934, "y": 547464, "cx": 630697, "cy": 1940279, "right": 1892631, "bottom": 2487743}},
+      {"label": "WEDNESDAY", "shapeId": "243", "bbox": {"x": 1892631, "y": 547464, "cx": 630697, "cy": 1940279, "right": 2523328, "bottom": 2487743}},
+      {"label": "THURSDAY", "shapeId": "245", "bbox": {"x": 2523329, "y": 547464, "cx": 630697, "cy": 1940279, "right": 3154026, "bottom": 2487743}},
+      {"label": "FRIDAY", "shapeId": "247", "bbox": {"x": 3154026, "y": 547464, "cx": 630697, "cy": 1940279, "right": 3784723, "bottom": 2487743}},
+      {"label": "SATURDAY", "shapeId": "249", "bbox": {"x": 3784724, "y": 547464, "cx": 630697, "cy": 1940279, "right": 4415421, "bottom": 2487743}}
+    ],
+    "activityShapes": [
+      {"day": "SUNDAY", "text": "DINNER AT MOM’S", "shapeId": "272", "bbox": {"x": 261801, "y": 1977837, "cx": 576098, "cy": 276999, "right": 837899, "bottom": 2254836}},
+      {"day": "MONDAY", "text": "PROJECT PRESENTATION", "shapeId": "274", "bbox": {"x": 827109, "y": 1410430, "cx": 741395, "cy": 276999, "right": 1568504, "bottom": 1687429}},
+      {"day": "TUESDAY", "text": "SCHOOL MEETING", "shapeId": "273", "bbox": {"x": 1491401, "y": 1193666, "cx": 576098, "cy": 276999, "right": 2067499, "bottom": 1470665}},
+      {"day": "WEDNESDAY", "text": "DAVID’S CONCERT", "shapeId": "275", "bbox": {"x": 2060576, "y": 2211373, "cx": 741395, "cy": 276999, "right": 2801971, "bottom": 2488372}},
+      {"day": "THURSDAY", "text": "CHESS TOURNAMENT", "shapeId": "276", "bbox": {"x": 2654052, "y": 1370297, "cx": 741395, "cy": 276999, "right": 3395447, "bottom": 1647296}},
+      {"day": "FRIDAY", "text": "BREAKFAST W/ CLIENTS", "shapeId": "277", "bbox": {"x": 3304378, "y": 1011316, "cx": 741395, "cy": 276999, "right": 4045773, "bottom": 1288315}},
+      {"day": "SATURDAY", "text": "FAMILY NIGHT", "shapeId": "278", "sourceRuns": ["FAMILY ", "NIGHT"], "bbox": {"x": 3948226, "y": 2222359, "cx": 741395, "cy": 276999, "right": 4689621, "bottom": 2499358}}
+    ],
+    "promptShapes": [
+      {"shapeId": "279", "text": "A. Look at the picture. What does it talk about? What is the information on it?", "bbox": {"x": 4801717, "y": 163783, "cx": 3342823, "cy": 846310, "right": 8144540, "bottom": 1010093}},
+      {"shapeId": "280", "text": "B. Listen to the audio and tell your teacher the activities the man makes.", "bbox": {"x": 1291782, "y": 3309596, "cx": 5558035, "cy": 609310, "right": 6849817, "bottom": 3918906}},
+      {"shapeId": "281", "text": "👨", "bbox": {"x": 5547844, "y": 3963796, "cx": 1021217, "cy": 1107996, "right": 6569061, "bottom": 5071792}}
+    ]
+  },
+  "structuredContent": {
+    "nativeType": "structured-content",
+    "sourceRole": "native-vector-calendar",
+    "content": {
+      "headers": ["DAY", "ACTIVITIES"],
+      "rows": [
+        ["SUNDAY", "DINNER AT MOM’S"],
+        ["MONDAY", "PROJECT PRESENTATION"],
+        ["TUESDAY", "SCHOOL MEETING"],
+        ["WEDNESDAY", "DAVID’S CONCERT"],
+        ["THURSDAY", "CHESS TOURNAMENT"],
+        ["FRIDAY", "BREAKFAST W/ CLIENTS"],
+        ["SATURDAY", "FAMILY NIGHT"]
+      ]
+    },
+    "tables": [
+      [
+        ["DAY", "ACTIVITIES"],
+        ["SUNDAY", "DINNER AT MOM’S"],
+        ["MONDAY", "PROJECT PRESENTATION"],
+        ["TUESDAY", "SCHOOL MEETING"],
+        ["WEDNESDAY", "DAVID’S CONCERT"],
+        ["THURSDAY", "CHESS TOURNAMENT"],
+        ["FRIDAY", "BREAKFAST W/ CLIENTS"],
+        ["SATURDAY", "FAMILY NIGHT"]
+      ]
+    ],
+    "data": {
+      "tableGroups": [
+        {
+          "key": "week-overview",
+          "sourceHeader": "Week",
+          "headers": ["DAY", "ACTIVITIES"],
+          "layout": "compact-two-column",
+          "rows": [
+            ["SUNDAY", "DINNER AT MOM’S"],
+            ["MONDAY", "PROJECT PRESENTATION"],
+            ["TUESDAY", "SCHOOL MEETING"],
+            ["WEDNESDAY", "DAVID’S CONCERT"],
+            ["THURSDAY", "CHESS TOURNAMENT"],
+            ["FRIDAY", "BREAKFAST W/ CLIENTS"],
+            ["SATURDAY", "FAMILY NIGHT"]
+          ],
+          "rowShapeTrace": [
+            {"day": "SUNDAY", "headerShapeId": "237", "activityShapeId": "272"},
+            {"day": "MONDAY", "headerShapeId": "239", "activityShapeId": "274"},
+            {"day": "TUESDAY", "headerShapeId": "241", "activityShapeId": "273"},
+            {"day": "WEDNESDAY", "headerShapeId": "243", "activityShapeId": "275"},
+            {"day": "THURSDAY", "headerShapeId": "245", "activityShapeId": "276"},
+            {"day": "FRIDAY", "headerShapeId": "247", "activityShapeId": "277"},
+            {"day": "SATURDAY", "headerShapeId": "249", "activityShapeId": "278", "sourceRuns": ["FAMILY ", "NIGHT"]}
+          ]
+        }
+      ],
+      "figureProof": {
+      "kind": "native-vector",
+      "visualRole": "week-calendar",
+      "confirmedInstructional": true,
+      "rasterRequired": false,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "publishedObservedSlideUrlSuffix": "slide=id.p4",
+      "sourcePresentationSha256": "7e6b9948e217cbc613092b4d19ad120ad35618726b4676397f439f833127ebb2",
+      "publishedSlideTextSha256": "59487a080c170da823b0e89010e2ccee58a548a07ff6aabcff285865247b5157",
+      "nativeSlideTextSha256": "6e9f404c1a548cbc9488f12ee91f927ea5e66cfe2497e7fa320cbe754c2eb706",
+      "sourceShapeIds": ["235", "237", "239", "241", "243", "245", "247", "249", "272", "274", "273", "275", "276", "277", "278"],
+      "visualEvidence": "Live published slide visibly shows the seven-day schedule board referenced by the authored A prompt. No human raster is substituted."
+      }
+    },
+    "figureProof": {
+      "kind": "native-vector",
+      "visualRole": "week-calendar",
+      "confirmedInstructional": true,
+      "rasterRequired": false,
+      "sourceSlideNumber": 4,
+      "publishedSlideNumber": 4,
+      "publishedObservedSlideUrlSuffix": "slide=id.p4",
+      "sourcePresentationSha256": "7e6b9948e217cbc613092b4d19ad120ad35618726b4676397f439f833127ebb2",
+      "publishedSlideTextSha256": "59487a080c170da823b0e89010e2ccee58a548a07ff6aabcff285865247b5157",
+      "nativeSlideTextSha256": "6e9f404c1a548cbc9488f12ee91f927ea5e66cfe2497e7fa320cbe754c2eb706",
+      "sourceShapeIds": ["235", "237", "239", "241", "243", "245", "247", "249", "272", "274", "273", "275", "276", "277", "278"],
+      "visualEvidence": "Live published slide visibly shows the seven-day schedule board referenced by the authored A prompt. No human raster is substituted."
+    }
+  }
+}

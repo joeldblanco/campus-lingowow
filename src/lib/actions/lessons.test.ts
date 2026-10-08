@@ -24,6 +24,7 @@ vi.mock('@/lib/db', () => ({
       createMany: vi.fn(),
       updateMany: vi.fn(),
       count: vi.fn(),
+      findMany: vi.fn(),
     },
     $transaction: vi.fn(),
   },
@@ -38,7 +39,10 @@ describe('completeCourseLesson', () => {
     vi.clearAllMocks()
     vi.mocked(auth).mockResolvedValue({ user: { id: 'student-1' } } as never)
     vi.mocked(db.enrollment.findFirst).mockResolvedValue({ id: 'enrollment-1' } as never)
-    vi.mocked(db.lesson.findFirst).mockResolvedValue({ id: 'lesson-1', moduleId: 'module-1' } as never)
+    vi.mocked(db.lesson.findFirst).mockResolvedValue({
+      id: 'lesson-1',
+      moduleId: 'module-1',
+    } as never)
     vi.mocked(db.module.findMany).mockResolvedValue([{ id: 'module-1', order: 1 }] as never)
     vi.mocked(db.exam.findMany).mockResolvedValue([])
     vi.mocked(db.examAttempt.findMany).mockResolvedValue([])
@@ -132,6 +136,59 @@ describe('completeCourseLesson', () => {
     expect(db.userContent.createMany).not.toHaveBeenCalled()
     expect(db.enrollment.update).not.toHaveBeenCalled()
   })
+
+  it('completes visible converted contents from a completed original embed without writing archive rows', async () => {
+    const archive = {
+      id: 'archive-embed',
+      data: {
+        type: 'teacher_notes',
+        learningRevision: 'course-guided-v1',
+        courseId: 'course-1',
+        lessonId: 'lesson-1',
+        originalSource: { type: 'embed', contentId: 'archive-embed' },
+      },
+    }
+    const teacherNotes = { id: 'teacher-note', data: { type: 'teacher_notes' } }
+    const active = [
+      { id: 'new-1', data: { type: 'text' } },
+      { id: 'new-2', data: { type: 'text' } },
+      { id: 'new-3', data: { type: 'text' } },
+    ]
+    vi.mocked(db.lesson.findMany).mockResolvedValue([
+      { id: 'lesson-1', contents: [archive, ...active, teacherNotes] },
+    ] as never)
+    vi.mocked(db.userContent.findMany).mockResolvedValue([
+      { contentId: 'archive-embed', completed: true },
+    ] as never)
+
+    await expect(completeCourseLesson('course-1', 'lesson-1')).resolves.toEqual({
+      success: true,
+      nextLessonId: null,
+      courseProgress: 100,
+    })
+
+    expect(db.userContent.createMany).toHaveBeenCalledWith({
+      data: active.map(({ id }) =>
+        expect.objectContaining({
+          userId: 'student-1',
+          contentId: id,
+          completed: true,
+          percentage: 100,
+        })
+      ),
+      skipDuplicates: true,
+    })
+    expect(db.userContent.updateMany).toHaveBeenCalledWith({
+      where: { userId: 'student-1', contentId: { in: active.map(({ id }) => id) } },
+      data: expect.objectContaining({ completed: true, percentage: 100 }),
+    })
+    expect(vi.mocked(db.userContent.createMany).mock.calls[0]![0]!.data).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ contentId: 'archive-embed' })])
+    )
+    expect(vi.mocked(db.userContent.createMany).mock.calls[0]![0]!.data).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ contentId: 'teacher-note' })])
+    )
+  })
 })
 
 describe('getCourseLessonNavigation', () => {
@@ -159,5 +216,39 @@ describe('getCourseLessonNavigation', () => {
         completed: true,
       },
     })
+  })
+
+  it('uses a completed original embed as virtual completion for converted visible contents', async () => {
+    vi.mocked(db.lesson.findMany).mockResolvedValue([
+      {
+        id: 'lesson-1',
+        contents: [
+          {
+            id: 'archive-embed',
+            data: {
+              type: 'teacher_notes',
+              learningRevision: 'course-guided-v1',
+              courseId: 'course-1',
+              lessonId: 'lesson-1',
+              originalSource: { type: 'embed', contentId: 'archive-embed' },
+            },
+          },
+          { id: 'new-1', data: { type: 'text' } },
+          { id: 'new-2', data: { type: 'text' } },
+          { id: 'new-3', data: { type: 'text' } },
+          { id: 'teacher-note', data: { type: 'teacher_notes' } },
+        ],
+      },
+    ] as never)
+    vi.mocked(db.userContent.findMany).mockResolvedValue([
+      { contentId: 'archive-embed', completed: true },
+    ] as never)
+
+    await expect(getCourseLessonNavigation('course-1', 'lesson-1', 'student-1')).resolves.toEqual({
+      prevLessonId: null,
+      nextLessonId: null,
+      isCompleted: true,
+    })
+    expect(db.userContent.count).not.toHaveBeenCalled()
   })
 })

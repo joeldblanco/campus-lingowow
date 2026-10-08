@@ -287,6 +287,7 @@ export interface ShortAnswerItem {
   id: string
   question: string
   correctAnswer: string
+  acceptedAnswers?: string[]
   aiInstructions?: string // Instructions for AI to grade the answer
 }
 
