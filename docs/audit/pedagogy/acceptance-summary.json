@@ -89,7 +89,7 @@
       "reference": "docs/design/graphic-guide-v1/auto-grammar-reference.png"
     }
   ],
-  "databaseApplied": false,
+  "databaseApplied": true,
   "productionTouched": false,
   "technicalChecks": {
     "unitFiles": 169,
@@ -100,5 +100,14 @@
     "pythonTests": 202,
     "pythonTestsPassed": true
   },
-  "transactionalRehearsalsPassed": true
+  "transactionalRehearsalsPassed": true,
+  "postApplyVerification": {
+    "publishedLessons": 56,
+    "exactRowsVerified": 1935,
+    "changedRowsVerified": 152,
+    "originalAudioURLsUnchanged": 113,
+    "sourceAndMediaPreserved": "Exact reviewed-plan match and recursive protection; audio files not modified",
+    "studentHistory": "Both guarded transactions confirmed unchanged",
+    "productionTouched": false
+  }
 }
