@@ -148,6 +148,91 @@ class ComposeCourseBuilderInputsTests(unittest.TestCase):
         self.assertEqual(counts["normalizedRecords"], 1)
         self.assertNotIn("audio-public-url-missing", [item["code"] for item in blockers])
 
+    def test_exercise_review_moves_explicit_item_to_its_published_slide(self) -> None:
+        source = {
+            "deck": {
+                "deckTitle": "Unit 29 - Source.pptx",
+                "slides": [
+                    {"number": 13, "visibleTexts": ["Complete the paragraph."]},
+                    {"number": 14, "visibleTexts": ["B. Listen to the audio and answer the questions your teacher makes."]},
+                ],
+            }
+        }
+        review = {
+            "sourceUrl": "https://example.test/unit-29",
+            "slides": {
+                "13": {
+                    "source": {"number": 13},
+                    "items": [
+                        {
+                            "id": "u29-s13-a",
+                            "sourceEvidence": ["Complete the paragraph."],
+                        },
+                        {
+                            "id": "u29-s14-b",
+                            "sourceEvidence": ["B. Listen to the audio and answer the questions your teacher makes."],
+                        },
+                        {
+                            "id": "u29-s13-b",
+                            "sourceEvidence": ["B. Listen to the audio and answer the questions your teacher makes."],
+                        },
+                    ],
+                },
+                "14": {"source": {"number": 14}, "items": []},
+            },
+        }
+        normalized, fixes = composer._normalise_review_placements("lesson-29", review, source)
+
+        self.assertEqual([item["id"] for item in normalized["slides"]["13"]["items"]], ["u29-s13-a"])
+        self.assertEqual(
+            [item["id"] for item in normalized["slides"]["14"]["items"]],
+            ["u29-s14-b", "u29-s13-b"],
+        )
+        self.assertEqual([fix["itemId"] for fix in fixes], ["u29-s14-b", "u29-s13-b"])
+        self.assertTrue(all(fix["evidenceMatchedPublishedSource"] for fix in fixes))
+
+    def test_listening_review_rejects_slide_ordinal_digest_mismatch(self) -> None:
+        blockers = []
+        result = composer._normalize_listening(
+            [
+                {
+                    "exercises": [
+                        {
+                            "lessonId": "lesson-7",
+                            "unit": 7,
+                            "slideNumber": 15,
+                            "audioIndex": 2,
+                            "sourceAudioSha256": "b" * 64,
+                            "items": [],
+                        }
+                    ]
+                }
+            ],
+            {"lesson-7": {"deck": {"deckTitle": "Unit 7 - Source.pptx", "slides": [{"number": 15}]}}},
+            [
+                {
+                    "lessonId": "lesson-7",
+                    "unit": 7,
+                    "audioNumber": 1,
+                    "slideNumber": 15,
+                    "sourceSha256": "a" * 64,
+                },
+                {
+                    "lessonId": "lesson-7",
+                    "unit": 7,
+                    "audioNumber": 2,
+                    "slideNumber": 4,
+                    "sourceSha256": "b" * 64,
+                },
+            ],
+            blockers,
+        )
+
+        self.assertEqual(result["exercises"], [])
+        self.assertEqual(result["rejectedEntries"][0]["compositionStatus"], "rejected-source-audio-mismatch")
+        self.assertEqual([item["code"] for item in blockers], ["listening-source-audio-mismatch"])
+        self.assertEqual(blockers[0]["observedAudio"][1]["slideNumber"], 4)
+
 
 if __name__ == "__main__":
     unittest.main()

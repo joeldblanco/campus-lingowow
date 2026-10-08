@@ -30,6 +30,7 @@ UNIT_LAST = 52
 READY_MEDIA_STATUSES = {"planned", "staged", "already-staged", "ready"}
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$", re.IGNORECASE)
 UNIT_RE = re.compile(r"\bunit\s*[-#]?\s*(\d{1,3})\b", re.IGNORECASE)
+REVIEW_ITEM_ID_RE = re.compile(r"^u(?P<unit>\d+)[-_]s(?P<slide>\d+)(?:[-_]|$)", re.IGNORECASE)
 
 
 class ComposeError(ValueError):
@@ -133,6 +134,49 @@ def _source_slides(source: Mapping[str, Any]) -> list[Mapping[str, Any]]:
 
 def _source_slide(source: Mapping[str, Any], number: int) -> Mapping[str, Any] | None:
     return next((item for item in _source_slides(source) if _int(item.get("number")) == number), None)
+
+
+def _normalise_review_text(value: Any) -> str:
+    """Collapse published text for a conservative source-evidence comparison."""
+
+    return " ".join(_text(value).split()).casefold()
+
+
+def _review_item_evidence(item: Mapping[str, Any]) -> list[str]:
+    values = [_text(value) for value in _as_list(item.get("sourceEvidence")) if _text(value)]
+    for answer in _as_list(item.get("answerItems")):
+        if isinstance(answer, Mapping):
+            values.extend(_text(value) for value in _as_list(answer.get("evidence")) if _text(value))
+    return values
+
+
+def _review_item_source_slide(item: Mapping[str, Any], unit: int | None) -> int | None:
+    """Read the explicit ``uNN-sNN`` source identity when it is trustworthy."""
+
+    match = REVIEW_ITEM_ID_RE.match(_text(item.get("id")))
+    if not match or unit is None or int(match.group("unit")) != unit:
+        return None
+    return int(match.group("slide"))
+
+
+def _review_item_matches_slide(item: Mapping[str, Any], slide: Mapping[str, Any]) -> bool:
+    """Require an exact published evidence substring before moving an item."""
+
+    haystack = _normalise_review_text("\n".join(_as_list(slide.get("visibleTexts"))))
+    if not haystack:
+        return False
+    return any(_normalise_review_text(value) in haystack for value in _review_item_evidence(item))
+
+
+def _review_item_matching_slides(
+    item: Mapping[str, Any],
+    published_slides: Mapping[int, Mapping[str, Any]],
+) -> list[int]:
+    return [
+        number
+        for number, slide in published_slides.items()
+        if _review_item_matches_slide(item, slide)
+    ]
 
 
 def _snapshot_lessons(snapshot: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
@@ -753,6 +797,93 @@ def _compose_native_audit(
     }
 
 
+def _normalise_review_placements(
+    lesson_id: str,
+    lesson_review: Mapping[str, Any],
+    source: Mapping[str, Any],
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Repair only deterministic source-item placement errors.
+
+    The review export occasionally nests an item under the preceding slide
+    while its stable ``uNN-sNN`` id and source evidence identify the next
+    published slide.  Moving that item is metadata normalization: the item
+    text, answer, status, and evidence remain byte-for-byte unchanged.  A
+    move is admitted only when the target slide exists and one of the item's
+    evidence strings is an exact published-text substring.  Ambiguous entries
+    stay where they were and remain subject to the builder's blockers.
+    """
+
+    result = copy.deepcopy(dict(lesson_review))
+    raw_slides = result.get("slides")
+    if not isinstance(raw_slides, Mapping):
+        return result, []
+    unit = _unit_from_value(_source_deck(source))
+    published_slides = {
+        number: slide
+        for number in (_int(item.get("number")) for item in _source_slides(source))
+        if number is not None
+        for slide in [_source_slide(source, number)]
+        if slide is not None
+    }
+    slides = {str(key): copy.deepcopy(value) for key, value in raw_slides.items()}
+    moves: list[tuple[str, str, dict[str, Any]]] = []
+    fixes: list[dict[str, Any]] = []
+    for raw_key, raw_slide in slides.items():
+        current = _int(raw_key)
+        if current is None or not isinstance(raw_slide, Mapping):
+            continue
+        items = raw_slide.get("items")
+        if not isinstance(items, list):
+            continue
+        kept: list[Any] = []
+        for raw_item in items:
+            if not isinstance(raw_item, Mapping):
+                kept.append(raw_item)
+                continue
+            target = _review_item_source_slide(raw_item, unit)
+            evidence_targets = _review_item_matching_slides(raw_item, published_slides)
+            # A few source exports have a stable item id with the preceding
+            # slide number (for example ``u46-s13-b``), while the exact source
+            # evidence occurs on the following published slide.  Use that
+            # unique evidence location only when the current slide does not
+            # match and no competing slide matches.
+            if not _review_item_matches_slide(raw_item, published_slides.get(current, {})) and len(evidence_targets) == 1:
+                target = evidence_targets[0]
+            if (
+                target is None
+                or target == current
+                or target not in published_slides
+                or not _review_item_matches_slide(raw_item, published_slides[target])
+            ):
+                kept.append(raw_item)
+                continue
+            target_key = str(target)
+            moves.append((raw_key, target_key, copy.deepcopy(dict(raw_item))))
+            fixes.append(
+                {
+                    "lessonId": lesson_id,
+                    "itemId": _text(raw_item.get("id")),
+                    "fromSlide": current,
+                    "toSlide": target,
+                    "evidenceMatchedPublishedSource": True,
+                }
+            )
+        raw_slide["items"] = kept
+    for _from_key, target_key, item in moves:
+        target_slide = slides.get(target_key)
+        if not isinstance(target_slide, Mapping):
+            # The target was checked against the published source above. Keep
+            # this defensive branch so a malformed review map cannot drop an
+            # item during normalization.
+            continue
+        target_items = target_slide.get("items")
+        if not isinstance(target_items, list):
+            target_slide["items"] = []
+        target_slide["items"].append(item)
+    result["slides"] = slides
+    return result, fixes
+
+
 def _normalize_exercise_review(
     exercise_review: Mapping[str, Any] | None,
     source_by_lesson: Mapping[str, Mapping[str, Any]],
@@ -770,6 +901,7 @@ def _normalize_exercise_review(
         blockers.append({"kind": "exercise", "code": "exercise-review-lessons-missing"})
         return {"schemaVersion": 1, "courseId": COURSE_ID, "lessons": {}}
     lessons: dict[str, Any] = {}
+    placement_fixes: list[dict[str, Any]] = []
     for raw_id, value in iterable:
         lesson_id = _text(raw_id) or (_text(value.get("lessonId")) if isinstance(value, Mapping) else "")
         if lesson_id not in source_by_lesson:
@@ -777,7 +909,9 @@ def _normalize_exercise_review(
         if not isinstance(value, Mapping):
             blockers.append({"kind": "exercise", "lessonId": lesson_id, "code": "exercise-review-entry-invalid"})
             continue
-        lessons[lesson_id] = copy.deepcopy(dict(value))
+        normalized, fixes = _normalise_review_placements(lesson_id, value, source_by_lesson[lesson_id])
+        lessons[lesson_id] = normalized
+        placement_fixes.extend(fixes)
     expected = set(source_by_lesson)
     missing = sorted(expected - set(lessons))
     for lesson_id in missing:
@@ -787,6 +921,7 @@ def _normalize_exercise_review(
         "courseId": _text(exercise_review.get("courseId")) or COURSE_ID,
         "sourcePolicy": copy.deepcopy(exercise_review.get("sourcePolicy")),
         "lessons": lessons,
+        "placementFixes": placement_fixes,
     }
 
 
@@ -800,6 +935,7 @@ def _normalize_listening(
     for item in audio:
         audio_by_lesson[_text(item.get("lessonId"))].append(item)
     exercises: list[dict[str, Any]] = []
+    rejected: list[dict[str, Any]] = []
     for document in documents:
         for raw in _as_list(document.get("exercises")):
             if not isinstance(raw, Mapping):
@@ -843,8 +979,49 @@ def _normalize_listening(
                         "code": "listening-slide-missing",
                     }
                 )
+            # A listening review is source-scoped by all three immutable
+            # coordinates: published slide, 1-based audio ordinal, and audio
+            # digest.  Do not retarget a reviewed question by filename or by
+            # digest alone when those coordinates disagree.  Keep the full
+            # rejected record in the materialized audit so the source issue is
+            # reviewable without allowing the builder to consume it.
+            audio_index = _int(entry.get("audioIndex"))
+            digest = _text(entry.get("sourceAudioSha256")).casefold()
+            if slide is not None and audio_index is not None and digest:
+                scoped = [
+                    item
+                    for item in audio_by_lesson.get(lesson_id, [])
+                    if _int(item.get("slideNumber")) == slide
+                    and _int(item.get("audioNumber") or item.get("audioIndex")) == audio_index
+                    and _record_sha(item).casefold() == digest
+                ]
+                if not scoped:
+                    observed = [
+                        {
+                            "audioIndex": _int(item.get("audioNumber") or item.get("audioIndex")),
+                            "slideNumber": _int(item.get("slideNumber")),
+                            "sourceAudioSha256": _record_sha(item),
+                        }
+                        for item in audio_by_lesson.get(lesson_id, [])
+                    ]
+                    blockers.append(
+                        {
+                            "kind": "listening",
+                            "unit": _int(entry.get("unit")),
+                            "lessonId": lesson_id,
+                            "slide": slide,
+                            "audioIndex": audio_index,
+                            "sourceAudioSha256": _text(entry.get("sourceAudioSha256")),
+                            "observedAudio": observed,
+                            "code": "listening-source-audio-mismatch",
+                            "detail": "Reviewed listening coordinates do not identify the same source audio record at the published slide.",
+                        }
+                    )
+                    entry["compositionStatus"] = "rejected-source-audio-mismatch"
+                    rejected.append(entry)
+                    continue
             exercises.append(entry)
-    return {"schemaVersion": 1, "exercises": exercises}
+    return {"schemaVersion": 1, "exercises": exercises, "rejectedEntries": rejected}
 
 
 def _blocker_summary(blockers: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
@@ -901,6 +1078,9 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     native_match = _load_json(args.native_match) if args.native_match else None
     exercise_review = _load_json(args.exercise_review) if args.exercise_review else None
     listening_documents = [_load_json(path) for path in args.listening_review]
+    pronunciation_review = getattr(args, "pronunciation_review", None)
+    if pronunciation_review:
+        listening_documents.append(_load_json(pronunciation_review))
 
     if not isinstance(snapshot, Mapping) or not isinstance(source_manifest, Mapping):
         raise ComposeError("snapshot and source manifest must contain objects")
@@ -987,6 +1167,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "nativeMatch": str(args.native_match) if args.native_match else None,
             "exerciseReview": str(args.exercise_review) if args.exercise_review else None,
             "listeningReview": [str(path) for path in args.listening_review],
+            "pronunciationReview": str(pronunciation_review) if pronunciation_review else None,
         },
         "materializedInputs": {
             "sourceDir": str(source_dir),
@@ -1019,6 +1200,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "figures": figure_counts,
             "exerciseReviewLessons": len(normalized_exercise["lessons"]),
             "listeningReviewEntries": len(normalized_listening["exercises"]),
+            "listeningReviewRejectedEntries": len(normalized_listening.get("rejectedEntries", [])),
             "listeningReviewItems": sum(
                 len(_as_list(entry.get("items")))
                 for entry in normalized_listening["exercises"]
@@ -1117,6 +1299,11 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument("--native-match", type=Path)
     parser.add_argument("--exercise-review", type=Path)
     parser.add_argument("--listening-review", type=Path, action="append", default=[])
+    parser.add_argument(
+        "--pronunciation-review",
+        type=Path,
+        help="optional pronunciation review artifact; appended as a listening-review document",
+    )
     parser.add_argument("--asset-root", type=Path, action="append", default=[Path.cwd()])
     parser.add_argument("--materialized-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True, help="draft composed inputs JSON")
