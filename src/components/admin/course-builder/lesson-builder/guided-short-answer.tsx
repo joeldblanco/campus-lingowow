@@ -285,7 +285,7 @@ export function GuidedShortAnswerActivity({
       </p>
 
       {context && (
-        <div className="rounded-2xl border border-[#EEE8FA] bg-white p-4 text-base leading-7 shadow-sm sm:p-6">
+        <div className="text-base leading-7 text-[#506187]">
           {context}
         </div>
       )}
