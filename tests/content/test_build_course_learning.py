@@ -252,6 +252,30 @@ class BuildCourseLearningTests(unittest.TestCase):
         audio = next(row for row in plan["nextRows"] if row.get("data", {}).get("type") == "audio")
         self.assertEqual(audio["data"]["mediaDigest"], "audio-sha256-nested")
 
+    def test_staged_audio_uses_public_playback_and_retains_drive_provenance(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"][5]["media"] = [
+            {
+                "kind": "audio",
+                "originalMediaUrl": "https://drive.google.com/file/d/drive-audio/view",
+                "publicHref": "/audio/lessons/course/unit-01-audio-01.mp3",
+                "sourceSha256": "audio-sha256-staged",
+                "transcript": "I come from Peru.",
+            }
+        ]
+        lesson = snapshot_fixture()["modules"][0]["lessons"][0]
+        plan = builder.build_plan(lesson, source)
+
+        self.assertTrue(plan["publishable"])
+        audio = next(row for row in plan["nextRows"] if row.get("data", {}).get("type") == "audio")
+        self.assertEqual(audio["data"]["url"], "/audio/lessons/course/unit-01-audio-01.mp3")
+        self.assertNotIn("drive.google.com/file/d/", audio["data"]["url"])
+        self.assertEqual(audio["data"]["mediaDigest"], "audio-sha256-staged")
+        self.assertEqual(
+            audio["data"]["data"]["originalSource"]["audio"]["originalMediaUrl"],
+            "https://drive.google.com/file/d/drive-audio/view",
+        )
+
     def test_answer_key_is_never_invented_for_an_exercise_prompt(self) -> None:
         source = source_fixture(complete_audio=True)
         source["deck"]["slideCount"] = 9
@@ -619,6 +643,344 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertFalse(plan["publishable"])
         self.assertTrue(any(blocker["code"] == "native-figure-required" and blocker["slide"] == 1 for blocker in plan["blockers"]))
         self.assertFalse(any(blocker["code"] == "native-figure-untraceable" for blocker in plan["blockers"]))
+
+    def test_exercise_review_maps_distinct_reading_questions_and_accepted_answers(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [copy.deepcopy(source["deck"]["slides"][3])]
+        source["deck"]["slideCount"] = 1
+        source_slide = source["deck"]["slides"][0]
+        review = {
+            "schemaVersion": 1,
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        str(source_slide["number"]): {
+                            "source": copy.deepcopy(source_slide),
+                            "items": [
+                                {
+                                    "id": "u02-s04-q1",
+                                    "kind": "reading-comprehension",
+                                    "prompt": "What country is Maria from?",
+                                    "responseMode": "typed-short-answer",
+                                    "reviewStatus": "reviewed",
+                                    "answerItems": [
+                                        {
+                                            "id": "answer",
+                                            "canonical": "Peru",
+                                            "accepted": ["Peru", "the country of Peru"],
+                                            "evidence": "Maria is from Peru.",
+                                        }
+                                    ],
+                                    "sourceEvidence": ["Maria is from Peru."],
+                                },
+                                {
+                                    "id": "u02-s04-q2",
+                                    "kind": "reading-comprehension",
+                                    "prompt": "Where does Joao come from?",
+                                    "responseMode": "typed-short-answer",
+                                    "reviewStatus": "reviewed",
+                                    "answerItems": [
+                                        {
+                                            "id": "answer",
+                                            "canonical": "Brazil",
+                                            "accepted": ["Brazil"],
+                                            "evidence": "Joao is from Brazil.",
+                                        }
+                                    ],
+                                    "sourceEvidence": ["Joao is from Brazil."],
+                                },
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        short_answer = next(row for row in plan["nextRows"] if row["data"].get("type") == "short_answer")
+        self.assertEqual([item["question"] for item in short_answer["data"]["items"]], ["What country is Maria from?", "Where does Joao come from?"])
+        self.assertEqual(short_answer["data"]["items"][0]["correctAnswer"], "Peru")
+        self.assertEqual(short_answer["data"]["items"][0]["acceptedAnswers"], ["Peru", "the country of Peru"])
+        self.assertEqual(short_answer["data"]["data"]["exerciseReviewItems"][0]["id"], "u02-s04-q1")
+
+    def test_exercise_review_maps_grammar_transform_to_labeled_items_and_preserves_options(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [{"number": 12, "title": "Grammar practice", "visibleTexts": ["Grammar practice", "Jared comes from Morocco."]}]
+        source["deck"]["slideCount"] = 1
+        source_slide = source["deck"]["slides"][0]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "12": {
+                            "source": copy.deepcopy(source_slide),
+                            "items": [
+                                {
+                                    "id": "u02-s12-a1",
+                                    "kind": "grammar-transform",
+                                    "prompt": "Jared comes from Morocco.",
+                                    "reviewStatus": "reviewed",
+                                    "answerItems": [
+                                        {"id": "interrogative", "canonical": "Does Jared come from Morocco?", "accepted": ["Does Jared come from Morocco?"], "evidence": "Jared comes from Morocco."},
+                                        {"id": "negative", "canonical": "Jared does not come from Morocco.", "accepted": ["Jared does not come from Morocco.", "Jared doesn't come from Morocco."], "evidence": "Jared comes from Morocco."},
+                                    ],
+                                    "sourceEvidence": ["Jared comes from Morocco."],
+                                },
+                                {
+                                    "id": "u02-s12-choice",
+                                    "kind": "grammar-choice",
+                                    "prompt": "Choose the correct subject.",
+                                    "reviewStatus": "reviewed",
+                                    "builderHints": {
+                                        "_explicit_options": [
+                                            {"id": "a", "text": "Jared"},
+                                            {"id": "b", "text": "Morocco"},
+                                            {"id": "c", "text": "comes"},
+                                            {"id": "d", "text": "from"},
+                                        ],
+                                        "_explicit_answer_key": "a",
+                                    },
+                                    "answerItems": [{"id": "answer", "canonical": "Jared", "accepted": ["Jared"], "evidence": "Jared comes from Morocco."}],
+                                    "sourceEvidence": ["Jared comes from Morocco."],
+                                },
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        short_answer = next(row for row in plan["nextRows"] if row["data"].get("type") == "short_answer")
+        self.assertEqual([item["question"] for item in short_answer["data"]["items"]], ["Interrogative: Jared comes from Morocco.", "Negative: Jared comes from Morocco."])
+        multiple_choice = next(row for row in plan["nextRows"] if row["data"].get("type") == "multiple_choice")
+        self.assertEqual([option["text"] for option in multiple_choice["data"]["options"]], ["Jared", "Morocco", "comes", "from"])
+        self.assertEqual(multiple_choice["data"]["correctOptionId"], "a")
+
+    def test_exercise_review_keeps_ambiguous_answer_out_of_native_key(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [{"number": 12, "title": "Grammar practice", "visibleTexts": ["Grammar practice", "Correct the sentence."]}]
+        source["deck"]["slideCount"] = 1
+        source_slide = source["deck"]["slides"][0]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "12": {
+                            "source": copy.deepcopy(source_slide),
+                            "items": [
+                                {
+                                    "id": "u02-s12-correction",
+                                    "kind": "grammar-correction",
+                                    "prompt": "Correct the sentence.",
+                                    "responseMode": "typed-short-answer",
+                                    "reviewStatus": "reviewed",
+                                    "answerItems": [
+                                        {
+                                            "id": "item-1",
+                                            "canonical": "Source wording is insufficient to determine a unique correction.",
+                                            "accepted": [],
+                                            "status": "source-ambiguous",
+                                            "evidence": "Correct the sentence.",
+                                        }
+                                    ],
+                                    "sourceEvidence": ["Correct the sentence."],
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "exercise-review-answer-ambiguous" for blocker in plan["blockers"]))
+        self.assertFalse(any(row["data"].get("type") == "short_answer" for row in plan["nextRows"]))
+
+    def test_exercise_review_does_not_downgrade_unmatched_choice_key(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [{"number": 12, "title": "Choice", "visibleTexts": ["Choice", "Choose the correct answer."]}]
+        source["deck"]["slideCount"] = 1
+        source_slide = source["deck"]["slides"][0]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "12": {
+                            "source": copy.deepcopy(source_slide),
+                            "items": [
+                                {
+                                    "id": "u02-s12-choice",
+                                    "kind": "multiple-choice",
+                                    "prompt": "Choose the correct answer.",
+                                    "reviewStatus": "reviewed",
+                                    "builderHints": {
+                                        "_explicit_options": [{"id": "a", "text": "A"}, {"id": "b", "text": "B"}],
+                                        "_explicit_answer_key": "missing-option",
+                                    },
+                                    "answerItems": [{"id": "answer", "canonical": "A", "accepted": ["A"], "evidence": "Choose the correct answer."}],
+                                    "sourceEvidence": ["Choose the correct answer."],
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "exercise-review-answer-unmatched" for blocker in plan["blockers"]))
+        choice_rows = [
+            row
+            for row in plan["nextRows"]
+            if row["data"].get("type") in {"multiple_choice", "short_answer"}
+            and row["data"].get("data", {}).get("sourceSlides") == [12]
+        ]
+        self.assertEqual(choice_rows, [])
+
+    def test_exercise_review_rejects_source_url_text_and_digest_mismatch(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [{"number": 4, "title": "Reading", "visibleTexts": ["Reading", "Maria is from Peru."]}]
+        source["deck"]["slideCount"] = 1
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": "https://slides.example/different-source",
+                    "slides": {
+                        "4": {
+                            "source": {
+                                "number": 4,
+                                "title": "Changed title",
+                                "visibleTexts": ["Changed title", "Different evidence"],
+                                "slideTextDigest": "0" * 64,
+                            },
+                            "items": [],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        codes = {blocker["code"] for blocker in plan["blockers"]}
+        self.assertIn("exercise-review-source-url-mismatch", codes)
+        self.assertIn("exercise-review-slide-text-mismatch", codes)
+        self.assertIn("exercise-review-slide-digest-mismatch", codes)
+
+    def test_blocked_listening_review_never_emits_playable_audio(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 6,
+                "title": "Listening",
+                "visibleTexts": ["Listening", "Listen to the audio and answer the question."],
+                "media": [{"kind": "audio", "url": "https://audio.example/original.mp3"}],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "6": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u02-s06-a",
+                                    "kind": "listening",
+                                    "prompt": "Listen to the audio and answer the question.",
+                                    "responseMode": "teacher-listening",
+                                    "reviewStatus": "blocked-awaiting-transcript",
+                                    "answerItems": [],
+                                    "sourceEvidence": ["Listen to the audio and answer the question."],
+                                    "blocker": "Transcript is not available.",
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "exercise-review-listening-blocked" for blocker in plan["blockers"]))
+        self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
+
+    def test_exercise_review_keeps_roleplay_and_writing_as_separate_open_blocks(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 5,
+                "title": "Practice",
+                "visibleTexts": ["Practice", "Act out the situation with your teacher and write a 30-50 word paragraph."],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "5": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u02-s05-roleplay-writing",
+                                    "kind": "roleplay-and-writing",
+                                    "prompt": "Act out the situation with your teacher and write a 30-50 word paragraph.",
+                                    "responseMode": "open-response",
+                                    "reviewStatus": "open-response-preserved",
+                                    "answerItems": [],
+                                    "sourceEvidence": ["Act out the situation with your teacher and write a 30-50 word paragraph."],
+                                    "doNotAutoGrade": True,
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        generated_types = [row["data"].get("type") for row in plan["nextRows"]]
+        self.assertIn("recording", generated_types)
+        self.assertIn("essay", generated_types)
+        recording = next(row for row in plan["nextRows"] if row["data"].get("type") == "recording")
+        essay = next(row for row in plan["nextRows"] if row["data"].get("type") == "essay")
+        self.assertIn("Act out the situation", recording["data"]["instruction"])
+        self.assertEqual(recording["data"]["data"]["guidedRole"], "conversation")
+        self.assertEqual(recording["data"]["data"]["turns"][0]["question"], review["lessons"][LESSON_ID]["slides"]["5"]["items"][0]["prompt"])
+        self.assertEqual(recording["data"]["data"]["turns"][0]["answerPrompt"], "Responde a la situación.")
+        self.assertIn("30-50 word paragraph", essay["data"]["prompt"])
+        self.assertEqual(essay["data"]["minWords"], 30)
+        self.assertEqual(essay["data"]["maxWords"], 50)
 
     def test_audio_manifest_with_wrong_lesson_or_slide_is_not_attached(self) -> None:
         source = source_fixture()

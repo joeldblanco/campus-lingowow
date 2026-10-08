@@ -441,15 +441,38 @@ def _native_figures(slide: Mapping[str, Any]) -> list[Mapping[str, Any]]:
 
 
 def _audio_url(item: Mapping[str, Any]) -> str:
-    for key in ("originalMediaUrl", "originalMediaURL", "mediaUrl", "mediaURL", "url", "sourceUrl", "href"):
+    # Staged media exposes a browser-safe playback URL alongside the original
+    # Drive asset. Prefer the staged/runtime URL so a Drive UI page is never
+    # placed in an audio src. Existing direct media URLs remain supported.
+    for key in (
+        "playbackUrl",
+        "playbackURL",
+        "publicHref",
+        "publicUrl",
+        "publicURL",
+        "runtimeUrl",
+        "runtimeURL",
+        "mediaUrl",
+        "mediaURL",
+        "url",
+        "sourceUrl",
+        "href",
+        "originalMediaUrl",
+        "originalMediaURL",
+    ):
         value = _text(item.get(key))
-        if value:
+        if value and not _is_drive_ui_url(value):
             return value
     return ""
 
 
+def _is_drive_ui_url(value: str) -> bool:
+    lowered = value.casefold()
+    return "drive.google.com/file/d/" in lowered or "drive.google.com/open?id=" in lowered
+
+
 def _audio_digest(item: Mapping[str, Any]) -> str:
-    for key in ("mediaDigest", "digest", "sha256", "mediaSHA256", "sha256Digest", "sourceDigest"):
+    for key in ("mediaDigest", "digest", "sha256", "sourceSha256", "sourceSHA256", "mediaSHA256", "sha256Digest", "sourceDigest"):
         value = _text(item.get(key))
         if value:
             return value
@@ -462,6 +485,26 @@ def _audio_transcript(item: Mapping[str, Any]) -> str:
         if value:
             return value
     return ""
+
+
+def _audio_provenance(item: Mapping[str, Any]) -> dict[str, str]:
+    fields: dict[str, str] = {}
+    for key in (
+        "originalMediaUrl",
+        "originalMediaURL",
+        "sourceUrl",
+        "mediaUrl",
+        "mediaURL",
+        "playbackUrl",
+        "playbackURL",
+        "publicHref",
+        "publicUrl",
+        "publicURL",
+    ):
+        value = _text(item.get(key))
+        if value:
+            fields[key] = value
+    return fields
 
 
 def _native_audio_items(slide: Mapping[str, Any]) -> list[Mapping[str, Any]]:
@@ -1152,6 +1195,215 @@ def _add_blocker(blockers: list[dict[str, Any]], value: dict[str, Any]) -> None:
         blockers.append(value)
 
 
+def _exercise_review_text_signature(slide: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "number": _slide_number(slide),
+        "title": _normalise(slide.get("title")),
+        "visibleTexts": _unique_texts(_slide_texts(slide)),
+    }
+
+
+def _exercise_review_text_digest_variants(slide: Mapping[str, Any]) -> set[str]:
+    signature = _exercise_review_text_signature(slide)
+    visible_texts = signature["visibleTexts"]
+    raw_visible_texts = _unique_texts([*_as_list(slide.get("visibleTexts")), *_as_list(slide.get("texts"))])
+    if not raw_visible_texts and slide.get("text") is not None:
+        raw_visible_texts = _unique_texts([slide.get("text")])
+    payloads: list[Any] = [
+        signature,
+        {"title": signature["title"], "visibleTexts": visible_texts},
+        visible_texts,
+        "\n".join(visible_texts),
+        raw_visible_texts,
+        "\n".join(raw_visible_texts),
+    ]
+    variants = {_canonical_digest(payload) for payload in payloads}
+    for payload in payloads:
+        if isinstance(payload, str):
+            variants.add(hashlib.sha256(payload.encode("utf-8")).hexdigest())
+    return variants
+
+
+def _exercise_review_evidence_matches(evidence: Any, slide: Mapping[str, Any]) -> bool:
+    needle = _normalise(evidence).casefold()
+    if not needle:
+        return False
+    haystack = _normalise("\n".join(_slide_texts(slide))).casefold()
+    if needle in haystack:
+        return True
+    chunks = [chunk.strip() for chunk in re.split(r"(?:\.\.\.|…)", needle) if chunk.strip()]
+    if len(chunks) > 1 and all(chunk in haystack for chunk in chunks):
+        return True
+    tokens = [token for token in re.findall(r"[a-z0-9']+", needle) if len(token) > 2]
+    if not tokens:
+        return False
+    matched = sum(token in haystack for token in tokens)
+    if len(tokens) <= 4:
+        return matched == len(tokens)
+    return matched >= max(3, int(len(tokens) * 0.65))
+
+
+def _exercise_review_item_evidence(item: Mapping[str, Any]) -> list[str]:
+    evidence = [_text(value) for value in _as_list(item.get("sourceEvidence")) if _text(value)]
+    for answer_item in _as_list(item.get("answerItems")):
+        if isinstance(answer_item, Mapping):
+            evidence.extend(_text(value) for value in _as_list(answer_item.get("evidence")) if _text(value))
+    return _unique_texts(evidence)
+
+
+def _exercise_review_required_for_slide(slide: Mapping[str, Any]) -> bool:
+    """Require review only for authored activity cues, not explanatory charts.
+
+    Grammar reference slides often contain example questions, ``complete`` in
+    explanatory prose, or the word ``conversation`` in their objectives. Those
+    are source material but not exercise items in the review manifest. Require
+    a review entry when the slide has a direct activity instruction or
+    confirmed listening/image evidence.
+    """
+
+    prompt = _prompt_text(slide, _meaningful_texts(slide))
+    picture_activity = bool(
+        re.search(
+            r"\b(?:look\s+at|match|choose|select|identify|describe)\b[^\n]{0,120}\b(?:picture|pictures|image|images|photo|photos|illustration)\b",
+            prompt,
+            re.IGNORECASE,
+        )
+    )
+    direct_instruction = bool(
+        re.search(
+            r"(?:^|\n)\s*(?:[A-Z]\.)?\s*(?:answer|complete|fill(?:\s+in)?|change|transform|identify|state\s+whether|true\s+or\s+false|choose|select|pick|match|write|create|act\s+out|improvise|role[- ]?play|talk\s+with|speak\s+with|record|read\s+[^\n]{0,40}\s+aloud)\b",
+            prompt,
+            re.IGNORECASE,
+        )
+    )
+    return bool(
+        _is_audio_required(slide)
+        or picture_activity
+        or direct_instruction
+    )
+
+
+def _exercise_review_index(
+    exercise_review: Any,
+    source: Mapping[str, Any],
+    lesson_id: str,
+    blockers: list[dict[str, Any]],
+) -> dict[int, list[Mapping[str, Any]]]:
+    """Validate and index reviewed exercises by their published slide number."""
+
+    if exercise_review is None:
+        return {}
+    if not isinstance(exercise_review, Mapping):
+        _add_blocker(blockers, _blocker("exercise-review-invalid", detail="Exercise review must contain an object."))
+        return {}
+    review_course_id = _text(exercise_review.get("courseId"))
+    if not review_course_id:
+        _add_blocker(blockers, _blocker("exercise-review-course-missing", detail="Exercise review has no course id."))
+    elif review_course_id != COURSE_ID:
+        _add_blocker(
+            blockers,
+            _blocker("exercise-review-course-mismatch", detail=f"Exercise review is for course {review_course_id!r}.")
+        )
+    lessons = exercise_review.get("lessons")
+    if not isinstance(lessons, Mapping):
+        _add_blocker(blockers, _blocker("exercise-review-lessons-missing", detail="Exercise review has no lesson map."))
+        return {}
+    review_lesson = lessons.get(lesson_id)
+    if not isinstance(review_lesson, Mapping):
+        _add_blocker(
+            blockers,
+            _blocker("exercise-review-lesson-missing", detail=f"No exercise review entry matched lesson {lesson_id!r}."),
+        )
+        return {}
+    expected_source_url = _source_url(source)
+    review_source_url = _text(review_lesson.get("sourceUrl") or review_lesson.get("sourceURL"))
+    if not review_source_url or review_source_url != expected_source_url:
+        _add_blocker(
+            blockers,
+            _blocker(
+                "exercise-review-source-url-mismatch",
+                detail=f"Exercise review source URL {review_source_url!r} does not match {expected_source_url!r}.",
+            ),
+        )
+    review_slides = review_lesson.get("slides")
+    if not isinstance(review_slides, Mapping):
+        _add_blocker(blockers, _blocker("exercise-review-slides-missing", detail="Exercise review lesson has no slide map."))
+        return {}
+    source_slides = {_slide_number(slide): slide for slide in _slides(source)}
+    indexed: dict[int, list[Mapping[str, Any]]] = {}
+    for raw_key, raw_entry in review_slides.items():
+        if not isinstance(raw_entry, Mapping):
+            _add_blocker(blockers, _blocker("exercise-review-slide-invalid", detail=f"Review slide {raw_key!r} is not an object."))
+            continue
+        reviewed_source = raw_entry.get("source") if isinstance(raw_entry.get("source"), Mapping) else raw_entry
+        number_value = reviewed_source.get("number", raw_entry.get("slideNumber", raw_key))
+        try:
+            number = int(number_value)
+        except (TypeError, ValueError):
+            _add_blocker(blockers, _blocker("exercise-review-slide-invalid", detail=f"Review slide {raw_key!r} has no numeric number."))
+            continue
+        try:
+            if int(raw_key) != number:
+                _add_blocker(
+                    blockers,
+                    _blocker("exercise-review-slide-key-mismatch", number, f"Review key {raw_key!r} does not match slide number {number}."),
+                )
+        except (TypeError, ValueError):
+            _add_blocker(blockers, _blocker("exercise-review-slide-key-mismatch", number, f"Review key {raw_key!r} is not numeric."))
+        actual_slide = source_slides.get(number)
+        if actual_slide is None:
+            _add_blocker(blockers, _blocker("exercise-review-slide-missing", number, "Reviewed slide is absent from the published source."))
+            continue
+        expected_title = _normalise(reviewed_source.get("title"))
+        expected_texts = _unique_texts(_as_list(reviewed_source.get("visibleTexts")))
+        if expected_title and expected_title not in expected_texts:
+            expected_texts.insert(0, expected_title)
+        actual_signature = _exercise_review_text_signature(actual_slide)
+        if expected_title and expected_title != actual_signature["title"]:
+            _add_blocker(blockers, _blocker("exercise-review-slide-text-mismatch", number, "Reviewed slide title does not match the published source."))
+        if expected_texts and expected_texts != actual_signature["visibleTexts"]:
+            _add_blocker(blockers, _blocker("exercise-review-slide-text-mismatch", number, "Reviewed slide visible text does not match the published source."))
+        if not expected_title and not expected_texts:
+            _add_blocker(blockers, _blocker("exercise-review-slide-evidence-missing", number, "Reviewed slide has no title, visible text, or digest evidence."))
+        digest_value = _text(
+            reviewed_source.get("slideTextDigest")
+            or reviewed_source.get("sourceTextDigest")
+            or reviewed_source.get("textDigest")
+            or reviewed_source.get("digest")
+            or raw_entry.get("slideTextDigest")
+        )
+        if digest_value and digest_value.casefold() not in _exercise_review_text_digest_variants(actual_slide):
+            _add_blocker(blockers, _blocker("exercise-review-slide-digest-mismatch", number, "Reviewed slide text digest does not match the published source."))
+        raw_items = raw_entry.get("items")
+        if not isinstance(raw_items, list):
+            _add_blocker(blockers, _blocker("exercise-review-items-missing", number, "Reviewed exercise slide has no item list."))
+            indexed[number] = []
+            continue
+        valid_items: list[Mapping[str, Any]] = []
+        for item in raw_items:
+            if not isinstance(item, Mapping):
+                _add_blocker(blockers, _blocker("exercise-review-item-invalid", number, "Reviewed exercise item is not an object."))
+                continue
+            item_id = _text(item.get("id")) or "unnamed"
+            evidence = _exercise_review_item_evidence(item)
+            if not evidence:
+                _add_blocker(blockers, _blocker("exercise-review-evidence-missing", number, f"Exercise review item {item_id!r} has no source evidence."))
+            elif not any(_exercise_review_evidence_matches(value, actual_slide) for value in evidence):
+                _add_blocker(
+                    blockers,
+                    _blocker("exercise-review-evidence-mismatch", number, f"Exercise review item {item_id!r} has no matching published evidence."),
+                )
+            valid_items.append(item)
+        indexed[number] = valid_items
+    for number, actual_slide in source_slides.items():
+        if _exercise_review_required_for_slide(actual_slide) and number not in indexed:
+            _add_blocker(
+                blockers,
+                _blocker("exercise-review-slide-missing", number, "Published exercise content has no reviewed exercise entry."),
+            )
+    return indexed
+
+
 def _original_source(
     source: Mapping[str, Any],
     lesson_id: str,
@@ -1176,11 +1428,30 @@ def _original_source(
         "media": copy.deepcopy(_as_list(slide.get("media"))),
     }
     if audio is not None:
-        result["audio"] = {
+        audio_source = {
             "url": _audio_url(audio),
             "digest": _audio_digest(audio),
             "transcript": _audio_transcript(audio),
         }
+        # Keep the immutable source identity and staged playback provenance
+        # together. ``url`` is the verified browser playback URL; the original
+        # Drive URL is metadata only and never substitutes for playback.
+        for key in (
+            "originalMediaUrl",
+            "originalMediaURL",
+            "sourceUrl",
+            "mediaUrl",
+            "mediaURL",
+            "playbackUrl",
+            "playbackURL",
+            "publicHref",
+            "publicUrl",
+            "publicURL",
+        ):
+            value = _text(audio.get(key))
+            if value:
+                audio_source[key] = value
+        result["audio"] = audio_source
     native = _native_audit_payload(slide)
     if native is not None:
         result["nativeEvidence"] = {
@@ -1195,12 +1466,217 @@ def _original_source(
     return result
 
 
+def _exercise_review_metadata(item: Mapping[str, Any]) -> dict[str, Any]:
+    return {"exerciseReview": copy.deepcopy(dict(item))}
+
+
+def _exercise_review_answer_key(item: Mapping[str, Any]) -> Any:
+    hints = item.get("builderHints") if isinstance(item.get("builderHints"), Mapping) else {}
+    if isinstance(hints, Mapping) and hints.get("_explicit_answer_key") not in (None, "", [], {}):
+        return copy.deepcopy(hints.get("_explicit_answer_key"))
+    answer_items = [value for value in _as_list(item.get("answerItems")) if isinstance(value, Mapping)]
+    if answer_items:
+        answer = answer_items[0]
+        accepted = answer.get("accepted")
+        accepted_value = accepted[0] if isinstance(accepted, (list, tuple)) and accepted else accepted
+        return copy.deepcopy(answer.get("canonical") or answer.get("correctAnswer") or accepted_value)
+    return None
+
+
+def _exercise_review_options(item: Mapping[str, Any]) -> Any:
+    hints = item.get("builderHints") if isinstance(item.get("builderHints"), Mapping) else {}
+    if isinstance(hints, Mapping) and hints.get("_explicit_options") not in (None, "", [], {}):
+        return copy.deepcopy(hints.get("_explicit_options"))
+    return copy.deepcopy(item.get("options") or item.get("sourceOptions"))
+
+
+def _exercise_review_open_parts(item: Mapping[str, Any]) -> list[tuple[str, str]]:
+    prompt = _text(item.get("prompt"))
+    if not prompt:
+        return []
+    kind = _text(item.get("kind")).casefold()
+    speaking = (
+        any(token in kind for token in ("roleplay", "role-play", "conversation"))
+        or _is_speaking_prompt(prompt)
+        or "record" in _text(item.get("responseMode")).casefold()
+    )
+    writing_match = re.search(r"\b(?:and\s+)?write\b", prompt, re.IGNORECASE)
+    if speaking and writing_match and writing_match.start() > 0:
+        before = prompt[: writing_match.start()].strip(" ;,.")
+        after = prompt[writing_match.start() :].strip()
+        if before and after:
+            return [("recording", before), ("essay", after)]
+    if speaking:
+        return [("recording", prompt)]
+    return [("essay", prompt)]
+
+
+def _exercise_review_conversation_metadata(item: Mapping[str, Any]) -> dict[str, Any]:
+    """Preserve a reviewed role-play as a reusable conversation scenario."""
+
+    prompt = _text(item.get("prompt"))
+    raw_turns = item.get("turns") or item.get("questions")
+    turns: list[dict[str, str]] = []
+    for index, raw_turn in enumerate(_as_list(raw_turns), start=1):
+        if not isinstance(raw_turn, Mapping):
+            continue
+        question = _text(raw_turn.get("question") or raw_turn.get("prompt"))
+        if not question:
+            continue
+        turns.append(
+            {
+                "id": _text(raw_turn.get("id")) or f"turn-{index}",
+                "question": question,
+                "answerPrompt": _text(raw_turn.get("answerPrompt")) or "Responde a la situación.",
+            }
+        )
+    if not turns and prompt:
+        turns = [{"id": "scenario", "question": prompt, "answerPrompt": "Responde a la situación."}]
+    return {
+        "guidedRole": "conversation",
+        "turns": turns,
+        "originalPromptAIContext": prompt,
+    }
+
+
+def _exercise_review_specs(
+    slide: Mapping[str, Any],
+    review_items: Sequence[Mapping[str, Any]],
+    blockers: list[dict[str, Any]],
+) -> tuple[list[tuple[str, dict[str, Any]]], bool]:
+    """Map reviewed exercise items without collapsing distinct prompts or answers."""
+
+    number = _slide_number(slide)
+    short_items: list[dict[str, Any]] = []
+    multiple_specs: list[tuple[str, dict[str, Any]]] = []
+    open_specs: list[tuple[str, dict[str, Any]]] = []
+    listening_blocked = False
+    for item in review_items:
+        status = _text(item.get("reviewStatus")).casefold()
+        item_id = _text(item.get("id")) or f"slide-{number}-item"
+        kind = _text(item.get("kind")).casefold()
+        response_mode = _text(item.get("responseMode")).casefold()
+        if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"}:
+            if "listen" in kind or "audio" in response_mode or response_mode == "teacher-listening":
+                listening_blocked = True
+                code = "exercise-review-listening-blocked"
+            else:
+                code = "exercise-review-item-blocked"
+            _add_blocker(blockers, _blocker(code, number, _text(item.get("blocker")) or f"Exercise review item {item_id!r} is blocked."))
+            continue
+        if status in {"source-ambiguous", "ambiguous"}:
+            _add_blocker(blockers, _blocker("exercise-review-ambiguous", number, _text(item.get("blocker")) or f"Exercise review item {item_id!r} is ambiguous."))
+            continue
+        if status not in {"reviewed", "reviewed-with-open-completions", "reviewed-with-source-label-mismatch", "open-response-preserved"}:
+            _add_blocker(blockers, _blocker("exercise-review-status-missing", number, f"Exercise review item {item_id!r} has unsupported status {status!r}."))
+            continue
+        if status == "reviewed-with-source-label-mismatch":
+            _add_blocker(blockers, _blocker("exercise-review-source-label-mismatch", number, _text(item.get("blocker")) or f"Exercise review item {item_id!r} has a source label mismatch."))
+
+        options = _exercise_review_options(item)
+        answer_key = _exercise_review_answer_key(item)
+        if options and status == "reviewed":
+            choice_options, correct_option_id = _multiple_choice_options(options, answer_key, number)
+            if not correct_option_id or correct_option_id not in {option["id"] for option in choice_options}:
+                _add_blocker(blockers, _blocker("exercise-review-answer-unmatched", number, f"Reviewed answer for item {item_id!r} does not match its source options."))
+                # Do not silently downgrade a malformed reviewed choice into a
+                # short-answer key; the source option/key relationship needs
+                # human review first.
+                continue
+            else:
+                multiple_specs.append(
+                    (
+                        "multiple_choice",
+                        {
+                            "question": _text(item.get("prompt")),
+                            "options": choice_options,
+                            "correctOptionId": correct_option_id,
+                            "data": _exercise_review_metadata(item),
+                        },
+                    )
+                )
+                continue
+
+        answer_items = [value for value in _as_list(item.get("answerItems")) if isinstance(value, Mapping)]
+        canonical_items: list[dict[str, Any]] = []
+        ambiguous_answer = False
+        for answer_index, answer_item in enumerate(answer_items, start=1):
+            answer_status = _text(answer_item.get("status")).casefold()
+            if answer_status in {"source-ambiguous", "ambiguous", "blocked"}:
+                ambiguous_answer = True
+                _add_blocker(
+                    blockers,
+                    _blocker(
+                        "exercise-review-answer-ambiguous" if answer_status != "blocked" else "exercise-review-answer-blocked",
+                        number,
+                        _text(answer_item.get("rationale")) or f"Reviewed answer for item {item_id!r} is not deterministic.",
+                    ),
+                )
+                continue
+            canonical = _text(answer_item.get("canonical") or answer_item.get("correctAnswer"))
+            if not canonical:
+                continue
+            accepted = _unique_texts(answer_item.get("accepted")) or [canonical]
+            label = _text(answer_item.get("id"))
+            question = _text(item.get("prompt"))
+            if kind == "grammar-transform" and label:
+                question = f"{label.replace('-', ' ').replace('_', ' ').title()}: {question}"
+            canonical_items.append(
+                {
+                    "id": f"course-short-answer-{number}-{item_id}-{answer_index:03d}",
+                    "question": question,
+                    "correctAnswer": canonical,
+                    "acceptedAnswers": accepted,
+                    "sourceReviewId": item_id,
+                }
+            )
+        short_items.extend(canonical_items)
+        if not canonical_items and not ambiguous_answer:
+            for native_type, prompt in _exercise_review_open_parts(item):
+                min_words, max_words = _word_limits(prompt)
+                payload: dict[str, Any] = {
+                    "data": _exercise_review_metadata(item),
+                    "reviewStatus": status,
+                    "sourceReviewId": item_id,
+                    "doNotAutoGrade": True,
+                }
+                if native_type == "recording":
+                    kind = _text(item.get("kind")).casefold()
+                    if any(token in kind for token in ("roleplay", "role-play", "conversation")):
+                        payload["data"].update(_exercise_review_conversation_metadata(item))
+                    payload.update({"instruction": prompt, "mode": "teacher-and-self-study", "aiGrading": False})
+                else:
+                    payload.update({"prompt": prompt, "aiGrading": False})
+                    if min_words is not None:
+                        payload["minWords"] = min_words
+                    if max_words is not None:
+                        payload["maxWords"] = max_words
+                open_specs.append((native_type, payload))
+    specs: list[tuple[str, dict[str, Any]]] = []
+    if short_items:
+        specs.append(
+            (
+                "short_answer",
+                {
+                    "question": short_items[0]["question"],
+                    "items": short_items,
+                    "context": "\n".join(_unique_texts(_text(item.get("prompt")) for item in review_items if _text(item.get("prompt")))),
+                    "data": {"exerciseReviewItems": copy.deepcopy([dict(item) for item in review_items])},
+                },
+            )
+        )
+    specs.extend(multiple_specs)
+    specs.extend(open_specs)
+    return specs, listening_blocked
+
+
 def _native_block_specs(
     source: Mapping[str, Any],
     slide: Mapping[str, Any],
     lesson_id: str,
     source_digest: str,
     audio_manifest: Any,
+    exercise_items: Sequence[Mapping[str, Any]] | None,
     blockers: list[dict[str, Any]],
 ) -> list[tuple[str, dict[str, Any]]]:
     number = _slide_number(slide)
@@ -1219,6 +1695,11 @@ def _native_block_specs(
     video_urls = _video_urls(slide)
     native_figures = _native_figures(slide)
     native_evidence = _native_audit_payload(slide)
+    review_supplied = exercise_items is not None
+    review_specs: list[tuple[str, dict[str, Any]]] = []
+    review_listening_blocked = False
+    if review_supplied:
+        review_specs, review_listening_blocked = _exercise_review_specs(slide, exercise_items or [], blockers)
     if _is_picture_prompt_required(slide) and not native_figures and not (
         native_evidence and native_evidence.get("figureEvidencePresent")
     ):
@@ -1303,8 +1784,8 @@ def _native_block_specs(
             )
         )
 
-    explicit_answer = _explicit_answer_key(slide)
-    explicit_options = _explicit_options(slide)
+    explicit_answer = None if review_supplied else _explicit_answer_key(slide)
+    explicit_options = None if review_supplied else _explicit_options(slide)
     closed_answer_blocked = False
     if explicit_answer is not None:
         if explicit_options:
@@ -1343,7 +1824,8 @@ def _native_block_specs(
                 )
             )
 
-    if audio_required and audio_item is not None and _audio_url(audio_item) and _audio_digest(audio_item) and _audio_transcript(audio_item):
+    if not review_listening_blocked and audio_required and audio_item is not None and _audio_url(audio_item) and _audio_digest(audio_item) and _audio_transcript(audio_item):
+        audio_provenance = _audio_provenance(audio_item)
         specs.append(
             (
                 "audio",
@@ -1353,6 +1835,7 @@ def _native_block_specs(
                     "url": _audio_url(audio_item),
                     "transcript": _audio_transcript(audio_item),
                     "mediaDigest": _audio_digest(audio_item),
+                    **({"data": {"audioProvenance": audio_provenance}} if audio_provenance else {}),
                 },
             )
         )
@@ -1386,7 +1869,7 @@ def _native_block_specs(
             )
         )
 
-    if _is_speaking_prompt(prompt_text):
+    if not review_supplied and _is_speaking_prompt(prompt_text):
         recording_time_limit = _time_limit(prompt_text)
         specs.append(
             (
@@ -1404,7 +1887,7 @@ def _native_block_specs(
             )
         )
 
-    if explicit_answer is None and _is_closed_answer_prompt(prompt_text):
+    if not review_supplied and explicit_answer is None and _is_closed_answer_prompt(prompt_text):
         closed_answer_blocked = True
         _add_blocker(
             blockers,
@@ -1414,7 +1897,7 @@ def _native_block_specs(
                 "Closed-answer activity has no reviewed authored answer key; it remains a source instruction until reviewed.",
             ),
         )
-    elif _is_essay_prompt(prompt_text):
+    elif not review_supplied and _is_essay_prompt(prompt_text):
         min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
@@ -1431,7 +1914,7 @@ def _native_block_specs(
                 },
             )
         )
-    elif explicit_answer is None and _is_short_answer_prompt(prompt_text):
+    elif not review_supplied and explicit_answer is None and _is_short_answer_prompt(prompt_text):
         min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
@@ -1448,6 +1931,9 @@ def _native_block_specs(
                 },
             )
         )
+
+    if review_supplied:
+        specs.extend(review_specs)
 
     # Preserve a long authored reading passage as readable HTML even when the
     # same slide also has questions or a read-aloud instruction.
@@ -1562,11 +2048,17 @@ def _native_row(
     row_id = f"{ROW_ID_PREFIX}{lesson_id}-{slug}-{sequence:03d}"
     audio_evidence = None
     if native_type == "audio":
+        payload_metadata = payload.get("data") if isinstance(payload.get("data"), Mapping) else {}
+        provenance = payload_metadata.get("audioProvenance") if isinstance(payload_metadata, Mapping) else {}
         audio_evidence = {
             "url": _text(payload.get("url")),
             "digest": _text(payload.get("mediaDigest")),
             "transcript": _text(payload.get("transcript")),
         }
+        if isinstance(provenance, Mapping):
+            audio_evidence.update(
+                {key: _text(value) for key, value in provenance.items() if _text(value)}
+            )
     metadata = _row_data_metadata(source, source_digest, lesson_id, slide, native_type, audio_evidence)
     data = copy.deepcopy(dict(payload))
     existing_metadata = data.pop("metadata", None)
@@ -1688,6 +2180,7 @@ def build_plan(
     source: Mapping[str, Any],
     audio_manifest: Any = None,
     native_audit: Any = None,
+    exercise_review: Any = None,
 ) -> dict[str, Any]:
     """Build one deterministic plan while preserving the existing row identities."""
 
@@ -1698,6 +2191,7 @@ def build_plan(
     _validate_course_id(source.get("courseId"))
     source_digest = _source_digest(source)
     blockers: list[dict[str, Any]] = []
+    exercise_review_index = _exercise_review_index(exercise_review, source, lesson_id, blockers)
     source_with_native = _prepare_native_audit(source, native_audit, blockers)
     if lesson is None:
         _add_blocker(blockers, _blocker("lesson-missing-from-snapshot", detail=f"No snapshot lesson matched {source_lesson_id}."))
@@ -1733,7 +2227,12 @@ def build_plan(
     unsupported_slides: list[dict[str, Any]] = []
     for slide in slides:
         number = _slide_number(slide)
-        specs = _native_block_specs(source_with_native, slide, lesson_id, source_digest, audio_manifest, blockers)
+        # Once a review manifest is supplied, every slide is considered reviewed
+        # input, including an empty entry. This prevents the generic source
+        # heuristics from inventing an answer or activity when the review is
+        # incomplete; the index validator has already recorded the blocker.
+        review_items = exercise_review_index.get(number, []) if exercise_review is not None else None
+        specs = _native_block_specs(source_with_native, slide, lesson_id, source_digest, audio_manifest, review_items, blockers)
         source_has_content = bool(
             _evidence_texts(slide)
             or _tables(slide)
@@ -1781,6 +2280,7 @@ def build_plans(
     sources: Sequence[Mapping[str, Any]],
     audio_manifest: Any = None,
     native_audit: Any = None,
+    exercise_review: Any = None,
 ) -> list[dict[str, Any]]:
     """Build source plans sorted by stable lesson/module/source identifiers."""
 
@@ -1797,7 +2297,7 @@ def build_plans(
     for source in ordered_sources:
         source_lesson_id = _source_lesson_id(source)
         lesson = _lesson_from_snapshot(snapshot, source_lesson_id)
-        plans.append(build_plan(lesson, source, audio_manifest, native_audit))
+        plans.append(build_plan(lesson, source, audio_manifest, native_audit, exercise_review))
     return plans
 
 
@@ -1865,8 +2365,9 @@ def build_manifest(
     audio_manifest: Any = None,
     expected_source_count: int | None = None,
     native_audit: Any = None,
+    exercise_review: Any = None,
 ) -> dict[str, Any]:
-    plans = build_plans(snapshot, sources, audio_manifest, native_audit)
+    plans = build_plans(snapshot, sources, audio_manifest, native_audit, exercise_review)
     inventory_blockers: list[dict[str, Any]] = []
     if expected_source_count is not None and len(sources) != expected_source_count:
         inventory_blockers.append(
@@ -1915,6 +2416,7 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument("--output", required=True, type=Path, help="plan manifest JSON output")
     parser.add_argument("--audio-manifest", type=Path, help="optional original media URL/digest/transcript manifest")
     parser.add_argument("--native-audit", type=Path, help="optional native PPTX audit/enrichment JSON")
+    parser.add_argument("--exercise-review", type=Path, help="optional reviewed exercise semantics JSON")
     parser.add_argument("--expected-source-count", type=int, default=55)
     parser.add_argument("--require-ready", action="store_true", help="exit nonzero when inventory or plan blockers exist")
     return parser.parse_args(argv)
@@ -1928,6 +2430,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             raise PlanError("snapshot must contain an object")
         sources = load_sources(args.source_dir)
         audio_manifest = load_json(args.audio_manifest) if args.audio_manifest else None
+        exercise_review = load_json(args.exercise_review) if args.exercise_review else None
         native_audit = None
         if args.native_audit:
             loaded_native_audit = load_json(args.native_audit)
@@ -1942,6 +2445,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             audio_manifest,
             args.expected_source_count,
             native_audit,
+            exercise_review,
         )
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
