@@ -19,8 +19,8 @@ type Feedback = {
 }
 
 function normalizeAnswer(value: string, caseSensitive: boolean) {
-  const trimmed = value.trim()
-  return caseSensitive ? trimmed : trimmed.toLocaleLowerCase()
+  const trimmed = value.trim().replace(/[‘’]/g, "'").replace(/\s+/g, ' ')
+  return caseSensitive ? trimmed : trimmed.replace(/[.!?]+$/u, '').trim().toLocaleLowerCase()
 }
 
 function answerIsCorrect(item: ShortAnswerItem, answer: string, caseSensitive: boolean) {

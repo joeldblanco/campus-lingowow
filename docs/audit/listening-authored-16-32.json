@@ -257,7 +257,7 @@
         {
           "id": "audio-mc-u17-2",
           "kind": "multiple-choice",
-          "prompt": "How long did the planned hitch-hiking trip last?",
+          "prompt": "How long do they plan to hitch-hike?",
           "reviewStatus": "reviewed",
           "answerItems": [
             {
@@ -380,7 +380,7 @@
         {
           "id": "audio-mc-u18-1",
           "kind": "multiple-choice",
-          "prompt": "When was the graduation ceremony?",
+          "prompt": "When is the graduation ceremony?",
           "reviewStatus": "reviewed",
           "answerItems": [
             {
@@ -1130,7 +1130,7 @@
         {
           "id": "audio-mc-u23-1",
           "kind": "multiple-choice",
-          "prompt": "Whose party was the speaker attending?",
+          "prompt": "Whose party is the speaker attending?",
           "reviewStatus": "reviewed",
           "answerItems": [
             {
@@ -1307,7 +1307,7 @@
         {
           "id": "audio-mc-u24-2",
           "kind": "multiple-choice",
-          "prompt": "When was the ranch being sold?",
+          "prompt": "When will the ranch be sold?",
           "reviewStatus": "reviewed",
           "answerItems": [
             {
@@ -2586,3 +2586,4 @@
     }
   ]
 }
+

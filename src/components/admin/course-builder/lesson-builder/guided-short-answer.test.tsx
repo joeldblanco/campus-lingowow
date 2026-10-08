@@ -29,6 +29,16 @@ const answerItems = [
 ]
 
 describe('GuidedShortAnswerActivity', () => {
+  it('accepts a reviewed contraction with typographic punctuation without losing negation', () => {
+    render(<GuidedShortAnswerActivity blockId="grammar-variant" items={[{
+      id: 'negative', question: 'Make the sentence negative', correctAnswer: 'She does not come from France.',
+      acceptedAnswers: ["She doesn't come from France."],
+    }]} />)
+    const input = screen.getByRole('textbox', { name: 'Make the sentence negative' })
+    fireEvent.change(input, { target: { value: 'She doesn’t come from France' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+    expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
+  })
   it('accepts reviewed answer variants and completes after the 900ms feedback pause', () => {
     vi.useFakeTimers()
     const onCompletionChange = vi.fn()
