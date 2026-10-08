@@ -199,6 +199,7 @@ def _evidence_texts(slide: Mapping[str, Any]) -> list[str]:
 
 
 _TECHNICAL_LABELS = {
+    "unit",
     "introduction",
     "vocabulary introduction",
     "grammar analysis",
@@ -216,7 +217,7 @@ _TECHNICAL_LABELS = {
 
 
 def _is_technical_text(value: str) -> bool:
-    lowered = _normalise(value).casefold()
+    lowered = _normalise(value).casefold().replace("�", "'").replace("’", "'")
     if not lowered:
         return True
     if lowered in _TECHNICAL_LABELS:
@@ -244,6 +245,61 @@ def _meaningful_texts(slide: Mapping[str, Any]) -> list[str]:
         if not _is_technical_text(value):
             result.append(value)
     return _unique_texts(result)
+
+
+_SOURCE_DIVIDER_TITLES = {
+    "introduction",
+    "vocabulary introduction",
+    "grammar analysis",
+    "grammar focus",
+    "language use",
+    "language targets",
+    "language bricks",
+    "functional english",
+    "let's practice",
+}
+
+
+def _is_overhead_source_slide(slide: Mapping[str, Any]) -> bool:
+    """Identify clearly noninstructional cover/divider/closing source slides."""
+
+    raw_texts = _slide_texts(slide)
+    if not raw_texts:
+        return False
+    raw = " ".join(raw_texts)
+    lowered = raw.casefold()
+    if re.search(r"(?:all rights reserved|copyright|©)", lowered):
+        return True
+    if re.search(r"\b(?:congrats|congratulations|lesson complete|end of (?:the )?lesson)\b", lowered):
+        return True
+    if _tables(slide) or _is_audio_required(slide) or _is_picture_prompt_required(slide):
+        return False
+
+    title = _normalise(slide.get("title")).casefold().replace("�", "'").replace("’", "'")
+    meaningful = _meaningful_texts(slide)
+    if title in _SOURCE_DIVIDER_TITLES:
+        # Keep a bare section heading out of the learner stream. If the slide
+        # has a short authored subtitle, retain it as teacher-only provenance;
+        # actionable text remains learner-facing below.
+        if not meaningful:
+            return False
+        if _extract_pairs(meaningful) or re.search(
+            r"\b(?:complete|answer|choose|describe|discuss|identify|listen|match|read|select|talk|write)\b",
+            " ".join(meaningful),
+            flags=re.IGNORECASE,
+        ):
+            return False
+        return True
+
+    # Unit title covers generally appear at the start of a deck and contain no
+    # authored task. Keep the complete source text in teacher notes while
+    # avoiding false positives for instructional objectives.
+    if _slide_number(slide) <= 2 and re.search(r"\bunit\b", lowered) and re.search(r"\b\d{1,3}\b", lowered):
+        return not re.search(
+            r"\b(?:objective|competenc|goal|learn|complete|answer|choose|describe|discuss|listen|match|read|select|talk|write)\w*\b",
+            lowered,
+        )
+    return False
 
 
 def _prompt_text(slide: Mapping[str, Any], texts: Sequence[str] | None = None) -> str:
@@ -695,9 +751,48 @@ def _alignment_texts(value: Any) -> list[str]:
     return _unique_texts(_nested_text(item) for item in _as_list(value))
 
 
+def _alignment_match_texts(value: Any) -> list[str]:
+    """Return authored slide text used to align supplemental native evidence.
+
+    Native audits can carry paragraphs and tables that the published
+    extraction missed.  Those payloads are supplemental and therefore are
+    deliberately excluded from the first-pass slide match.  A native slide
+    whose authored text itself differs still fails the strict match before any
+    supplemental evidence can be merged.
+    """
+
+    if isinstance(value, Mapping):
+        values: list[Any] = []
+        for key in ("visibleTexts", "texts", "title", "text"):
+            if key in value:
+                values.extend(_as_list(value.get(key)))
+        return _unique_texts(_nested_text(item) for item in values)
+    return _unique_texts(_nested_text(item) for item in _as_list(value))
+
+
+def _alignment_metrics(published: Mapping[str, Any], native: Mapping[str, Any]) -> tuple[float, float, float]:
+    """Return published coverage, native precision, and text sequence scores."""
+
+    published_text = " ".join(_alignment_match_texts(published)).casefold()
+    native_text = " ".join(_alignment_match_texts(native)).casefold()
+    published_text = _normalise(re.sub(r"[^\w\s]", " ", published_text, flags=re.UNICODE))
+    native_text = _normalise(re.sub(r"[^\w\s]", " ", native_text, flags=re.UNICODE))
+    if not published_text or not native_text:
+        return 0.0, 0.0, 0.0
+    published_tokens = set(published_text.split())
+    native_tokens = set(native_text.split())
+    if not published_tokens or not native_tokens:
+        return 0.0, 0.0, 0.0
+    overlap = len(published_tokens & native_tokens)
+    coverage = overlap / len(published_tokens)
+    precision = overlap / len(native_tokens)
+    sequence = SequenceMatcher(None, published_text, native_text).ratio()
+    return coverage, precision, sequence
+
+
 def _alignment_score(published: Mapping[str, Any], native: Mapping[str, Any]) -> float:
-    published_text = " ".join(_alignment_texts(published)).casefold()
-    native_text = " ".join(_alignment_texts(native)).casefold()
+    published_text = " ".join(_alignment_match_texts(published)).casefold()
+    native_text = " ".join(_alignment_match_texts(native)).casefold()
     published_text = re.sub(r"[^\w\s]", " ", published_text, flags=re.UNICODE)
     native_text = re.sub(r"[^\w\s]", " ", native_text, flags=re.UNICODE)
     published_text = _normalise(published_text)
@@ -706,12 +801,7 @@ def _alignment_score(published: Mapping[str, Any], native: Mapping[str, Any]) ->
         return 0.0
     if published_text == native_text:
         return 1.0
-    published_tokens = set(published_text.split())
-    native_tokens = set(native_text.split())
-    if not published_tokens or not native_tokens:
-        return 0.0
-    coverage = len(published_tokens & native_tokens) / len(published_tokens)
-    sequence = SequenceMatcher(None, published_text, native_text).ratio()
+    coverage, _precision, sequence = _alignment_metrics(published, native)
     same_number = _slide_number(published) == _slide_number(native)
     score = max(sequence, coverage * 0.92)
     if same_number:
@@ -729,6 +819,15 @@ def _native_slide_matches(
         candidates: list[tuple[float, int, Mapping[str, Any]]] = []
         for index, native in enumerate(native_slides):
             if index in used:
+                continue
+            if _slide_number(published) != _slide_number(native):
+                continue
+            coverage, precision, sequence = _alignment_metrics(published, native)
+            # Native evidence is supplemental. Require the strict per-slide
+            # evidence bar used by the audit review before attaching it. A
+            # low-confidence native slide is ignored so published content can
+            # still produce readable source blocks.
+            if min(coverage, precision, sequence) < 0.90:
                 continue
             score = _alignment_score(published, native)
             if score >= 0.76:
@@ -838,6 +937,39 @@ def _resolve_native_asset_path(
     return None
 
 
+def _native_figure_browser_url(figure: Mapping[str, Any], asset_path: str) -> str | None:
+    """Resolve a browser-safe image URL while retaining the local asset path."""
+
+    for key in ("playbackUrl", "playbackURL", "publicHref", "publicUrl", "publicURL", "browserUrl", "src", "url"):
+        candidate = _text(figure.get(key))
+        if not candidate or _is_drive_ui_url(candidate):
+            continue
+        lowered = candidate.casefold()
+        if lowered.startswith("public/"):
+            return "/" + candidate[7:].lstrip("/").replace("\\", "/")
+        if lowered.startswith(("/", "http://", "https://")):
+            return candidate
+        if lowered.startswith(("images/", "audio/")):
+            return "/" + candidate.replace("\\", "/")
+
+    # Staged local assets live under the repository's public directory. Derive
+    # the browser path only for that explicit public root; a private temporary
+    # filesystem path cannot be published safely.
+    try:
+        resolved = Path(asset_path).resolve()
+    except OSError:
+        return None
+    for parent in (resolved, *resolved.parents):
+        if parent.name.casefold() != "public":
+            continue
+        try:
+            relative = resolved.relative_to(parent)
+        except ValueError:
+            continue
+        return "/" + relative.as_posix().lstrip("/")
+    return None
+
+
 def _prepare_native_audit(
     source: Mapping[str, Any],
     native_audit: Any,
@@ -850,11 +982,16 @@ def _prepare_native_audit(
         return copied
     record, error = _select_native_record(native_audit, source)
     if record is None:
-        _add_blocker(blockers, _blocker("native-audit-missing", detail=error or "No native audit record matched the source."))
+        # Native extraction is an optional enrichment. A missing or unrelated
+        # record must not make the published text unpublishable; required
+        # authored media/table evidence is validated from the published source
+        # below.
         return copied
     status = _text(record.get("status")).casefold()
     if status and status not in {"ok", "ready", "published"}:
-        _add_blocker(blockers, _blocker("native-source-not-ready", detail=f"Native audit status is {record.get('status')!r}."))
+        # Keep the record unavailable as supplemental evidence, while letting
+        # the published extraction proceed through its own readiness checks.
+        return copied
     native = _native_record_native(record)
     native_slides = [item for item in _as_list(native.get("slides")) if isinstance(item, Mapping)]
     source_slides = _slides(copied)
@@ -862,19 +999,13 @@ def _prepare_native_audit(
     audit_path = _text(native_audit.get("_auditPath")) if isinstance(native_audit, Mapping) else ""
     candidate = record.get("candidate") if isinstance(record.get("candidate"), Mapping) else {}
     record_id = _text(candidate.get("id") or record.get("id"))
-    comparison = record.get("publishedComparison") if isinstance(record.get("publishedComparison"), Mapping) else {}
-    comparison_status = _text(comparison.get("status")).casefold()
-    if comparison_status in {"mismatch", "unmatched", "slide-count-diff-partial-overlap"}:
-        _add_blocker(
-            blockers,
-            _blocker("native-source-mismatch", detail=f"Native audit comparison status is {comparison.get('status')!r}."),
-        )
     for slide in source_slides:
         number = _slide_number(slide)
         native_slide = matched.get(number)
         if native_slide is None:
-            if _meaningful_texts(slide) or _tables(slide) or _is_audio_required(slide):
-                _add_blocker(blockers, _blocker("native-slide-mismatch", number, "Published slide text did not align to native audit text."))
+            # A mismatched native slide is discarded as supplemental evidence.
+            # The published extraction remains authoritative and is still
+            # converted below; required media/table evidence is checked there.
             continue
         paragraphs = _unique_texts(
             _nested_text(value)
@@ -886,20 +1017,37 @@ def _prepare_native_audit(
                 paragraphs = _unique_texts([*paragraphs, *(_nested_text(value) for value in _as_list(shape.get("paragraphs")))])
         native_tables = _native_tables_payload(native_slide)
         figures: list[dict[str, Any]] = []
+        required_figure = _is_picture_prompt_required(slide)
         figure_entries = _native_figure_entries(native_slide)
         for figure in figure_entries:
             figure_lesson = _text(figure.get("lessonId") or figure.get("sourceLessonId"))
             figure_slide = figure.get("slideNumber", figure.get("slide", figure.get("slideNo")))
             if figure_lesson and figure_lesson != _source_lesson_id(source):
-                _add_blocker(blockers, _blocker("native-figure-mismatch", number, "Native figure evidence is scoped to another lesson."))
+                if required_figure:
+                    _add_blocker(blockers, _blocker("native-figure-mismatch", number, "Native figure evidence is scoped to another lesson."))
                 continue
             if figure_slide is not None:
                 try:
                     if int(figure_slide) != number:
-                        _add_blocker(blockers, _blocker("native-figure-mismatch", number, "Native figure evidence is scoped to another slide."))
+                        if required_figure:
+                            _add_blocker(blockers, _blocker("native-figure-mismatch", number, "Native figure evidence is scoped to another slide."))
                         continue
                 except (TypeError, ValueError):
-                    _add_blocker(blockers, _blocker("native-figure-mismatch", number, "Native figure slide scope is invalid."))
+                    if required_figure:
+                        _add_blocker(blockers, _blocker("native-figure-mismatch", number, "Native figure slide scope is invalid."))
+                    continue
+            source_purpose = _text(figure.get("sourcePurpose") or figure.get("sourcePrompt") or figure.get("sourceQuestion"))
+            if source_purpose:
+                purpose_key = _normalise(re.sub(r"[^\w\s]", " ", source_purpose, flags=re.UNICODE)).casefold()
+                published_key = _normalise(
+                    re.sub(r"[^\w\s]", " ", " ".join(_alignment_match_texts(slide)), flags=re.UNICODE)
+                ).casefold()
+                if purpose_key not in published_key and published_key not in purpose_key:
+                    if required_figure:
+                        _add_blocker(
+                            blockers,
+                            _blocker("native-figure-mismatch", number, "Native figure purpose does not match the published slide."),
+                        )
                     continue
             path_value = ""
             for key in ("localPath", "assetPath", "filePath", "imagePath", "mediaPath", "path", "src", "url"):
@@ -908,16 +1056,27 @@ def _prepare_native_audit(
                     break
             asset_path = _resolve_native_asset_path(path_value, record, native_slide, audit_path)
             if not asset_path:
-                _add_blocker(
-                    blockers,
-                    _blocker("native-figure-untraceable", number, "Instructional figure has no traceable local asset path."),
-                )
+                if required_figure:
+                    _add_blocker(
+                        blockers,
+                        _blocker("native-figure-untraceable", number, "Instructional figure has no traceable local asset path."),
+                    )
+                continue
+            browser_url = _native_figure_browser_url(figure, asset_path)
+            if not browser_url:
+                if required_figure:
+                    _add_blocker(
+                        blockers,
+                        _blocker("native-figure-unpublishable", number, "Instructional figure has no public browser URL."),
+                    )
                 continue
             figures.append(
                 {
                     "assetPath": asset_path,
+                    "url": browser_url,
                     "alt": _text(figure.get("alt") or figure.get("description")) or _text(slide.get("title")) or "Source figure",
                     **({"caption": _text(figure.get("caption"))} if _text(figure.get("caption")) else {}),
+                    **({"sourcePurpose": source_purpose} if source_purpose else {}),
                 }
             )
         audio_entries: list[Mapping[str, Any]] = []
@@ -933,14 +1092,16 @@ def _prepare_native_audit(
                 except (TypeError, ValueError):
                     slide_mismatch = True
             if slide_mismatch:
-                _add_blocker(
-                    blockers,
-                    _blocker("native-audio-mismatch", number, "Native audio evidence is scoped to another lesson or slide."),
-                )
+                if _is_audio_required(slide):
+                    _add_blocker(
+                        blockers,
+                        _blocker("native-audio-mismatch", number, "Native audio evidence is scoped to another lesson or slide."),
+                    )
                 continue
             audio_entries.append(audio_entry)
         if native_tables is not None and not _tables({"tables": native_tables}):
-            _add_blocker(blockers, _blocker("native-table-unreadable", number, "Native audit table evidence has no usable cells."))
+            if re.search(r"\b(?:table|chart|grid|columns?)\b", " ".join(_meaningful_texts(slide)).casefold()):
+                _add_blocker(blockers, _blocker("native-table-unreadable", number, "Native audit table evidence has no usable cells."))
             native_tables = None
         slide["_nativeAudit"] = {
             "recordId": record_id,
@@ -1700,9 +1861,7 @@ def _native_block_specs(
     review_listening_blocked = False
     if review_supplied:
         review_specs, review_listening_blocked = _exercise_review_specs(slide, exercise_items or [], blockers)
-    if _is_picture_prompt_required(slide) and not native_figures and not (
-        native_evidence and native_evidence.get("figureEvidencePresent")
-    ):
+    if _is_picture_prompt_required(slide) and not native_figures:
         _add_blocker(
             blockers,
             _blocker(
@@ -1736,6 +1895,19 @@ def _native_block_specs(
         "sourceText": texts,
         "sourceTitle": _text(slide.get("title")),
     }
+    if _is_overhead_source_slide(slide):
+        return [
+            (
+                "teacher_notes",
+                {
+                    **common,
+                    "content": _readable_html(_slide_texts(slide)),
+                    "format": "html",
+                    "hiddenFromLearners": True,
+                    "sourceRole": "noninstructional-overhead",
+                },
+            )
+        ]
     native_paragraphs = _native_paragraphs(slide)
     if native_paragraphs:
         common["nativeParagraphs"] = copy.deepcopy(native_paragraphs)
@@ -1757,10 +1929,11 @@ def _native_block_specs(
                 },
             )
         )
-    warning_text = " ".join(_slide_warning_codes(slide))
-    if not tables and re.search(r"\b(?:table|chart|grid|columns?)\b", full_text.casefold()) and any(
-        token in warning_text for token in ("table", "chart", "semantic")
-    ):
+    table_reference = re.search(
+        r"\b(?:table|chart|grid|columns?)\b",
+        f"{_text(slide.get('title'))} {full_text}".casefold(),
+    )
+    if not tables and table_reference:
         _add_blocker(
             blockers,
             _blocker("table-semantics-missing", number, "The source mentions a table or chart without authored cell semantics."),
@@ -1854,17 +2027,19 @@ def _native_block_specs(
 
     for figure in native_figures:
         asset_path = _text(figure.get("assetPath"))
-        if not asset_path:
+        browser_url = _text(figure.get("url") or figure.get("publicHref") or figure.get("publicUrl"))
+        if not asset_path or not browser_url:
             continue
         specs.append(
             (
                 "image",
                 {
                     **common,
-                    "url": asset_path,
+                    "url": browser_url,
                     "assetPath": asset_path,
                     "alt": _text(figure.get("alt")) or _text(slide.get("title")) or "Source figure",
                     **({"caption": _text(figure.get("caption"))} if _text(figure.get("caption")) else {}),
+                    **({"sourcePurpose": _text(figure.get("sourcePurpose"))} if _text(figure.get("sourcePurpose")) else {}),
                 },
             )
         )
@@ -2115,15 +2290,18 @@ def _validate_course_id(value: Any) -> None:
 
 def _validate_native_payload(data: Mapping[str, Any], row_id: str) -> None:
     native_type = _text(data.get("type"))
-    if native_type == "text":
+    if native_type in {"text", "teacher_notes"}:
         if not isinstance(data.get("content"), str):
-            raise PlanError(f"text row has no string content: {row_id}")
+            raise PlanError(f"{native_type} row has no string content: {row_id}")
     elif native_type == "video":
         if not isinstance(data.get("url"), str) or not data.get("url"):
             raise PlanError(f"video row has no source URL: {row_id}")
     elif native_type == "image":
         if not all(isinstance(data.get(key), str) and data.get(key) for key in ("url", "assetPath", "alt")):
             raise PlanError(f"image row has no traceable asset path and alt text: {row_id}")
+        image_url = data["url"].casefold()
+        if not (image_url.startswith("/") or image_url.startswith("http://") or image_url.startswith("https://")):
+            raise PlanError(f"image row has no browser-safe URL: {row_id}")
         try:
             if not Path(data["assetPath"]).is_file():
                 raise PlanError(f"image row asset path does not exist: {row_id}")

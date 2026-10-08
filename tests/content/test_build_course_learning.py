@@ -196,7 +196,13 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(recording["data"]["aiGrading"])
 
         self.assertNotIn(7, first["sourceSlideNumbers"])
-        self.assertNotIn(8, first["sourceSlideNumbers"])
+        self.assertIn(8, first["sourceSlideNumbers"])
+        copyright_note = next(
+            row
+            for row in generated
+            if row["data"]["type"] == "teacher_notes" and row["data"]["data"]["sourceSlides"] == [8]
+        )
+        self.assertTrue(copyright_note["data"]["hiddenFromLearners"])
 
     def test_snapshot_rows_without_lesson_id_are_normalized_to_verified_parent(self) -> None:
         snapshot = snapshot_fixture()
@@ -476,7 +482,13 @@ class BuildCourseLearningTests(unittest.TestCase):
                                 {
                                     "number": 4,
                                     "texts": ["Picture"],
-                                    "figures": [{"localPath": str(asset), "alt": "Original instructional figure"}],
+                                    "figures": [
+                                        {
+                                            "localPath": str(asset),
+                                            "publicUrl": "/images/lessons/course/native-fixture.png",
+                                            "alt": "Original instructional figure",
+                                        }
+                                    ],
                                 },
                             ]
                         },
@@ -500,6 +512,7 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertEqual(audio["data"]["transcript"], "Repeat the original recording.")
         image = next(row for row in generated if row["data"]["type"] == "image")
         self.assertEqual(image["data"]["assetPath"], str(asset.resolve()))
+        self.assertEqual(image["data"]["url"], "/images/lessons/course/native-fixture.png")
         self.assertNotIn("slides-images-rt", image["data"]["assetPath"])
         self.assertEqual(image["data"]["data"]["originalSource"]["nativeEvidence"]["figures"][0]["assetPath"], str(asset.resolve()))
 
@@ -549,10 +562,138 @@ class BuildCourseLearningTests(unittest.TestCase):
 
         self.assertFalse(plan["publishable"])
         self.assertTrue(any(blocker["code"] == "native-figure-untraceable" and blocker["slide"] == 1 for blocker in plan["blockers"]))
-        self.assertTrue(any(blocker["code"] == "native-audio-mismatch" and blocker["slide"] == 1 for blocker in plan["blockers"]))
-        self.assertTrue(any(blocker["code"] == "native-slide-mismatch" and blocker["slide"] == 2 for blocker in plan["blockers"]))
+        self.assertTrue(any(blocker["code"] == "native-figure-required" and blocker["slide"] == 1 for blocker in plan["blockers"]))
+        self.assertTrue(any(blocker["code"] == "audio-media-missing" and blocker["slide"] == 2 for blocker in plan["blockers"]))
+        self.assertFalse(any(blocker["code"] in {"native-source-mismatch", "native-slide-mismatch", "native-audio-mismatch"} for blocker in plan["blockers"]))
         self.assertFalse(any(row["data"].get("type") == "image" for row in plan["nextRows"]))
         self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
+        published_listening = next(
+            row
+            for row in plan["nextRows"]
+            if row["data"].get("type") == "text" and row["data"]["data"].get("sourceSlides") == [2]
+        )
+        self.assertIn("Listen to the audio.", published_listening["data"]["content"])
+
+    def test_conflicting_native_reading_is_discarded_but_published_passage_remains(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "sourceUrl": "https://slides.example/native-reading-priority",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 33 - This is how we do it!.pptx",
+                "slideCount": 1,
+                "slides": [
+                    {
+                        "number": 13,
+                        "title": "Reading",
+                        "visibleTexts": [
+                            "Read the following passage about a student living in Scotland.",
+                            "I was not prepared for the cold weather in Scotland.",
+                        ],
+                    }
+                ],
+            },
+        }
+        native_audit = {
+            "records": [
+                {
+                    "unit": 33,
+                    "status": "ok",
+                    "candidate": {"id": "native-reading-priority-33", "title": "Unit 33 - This is how we do it!.pptx"},
+                    "native": {
+                        "slides": [
+                            {
+                                "number": 13,
+                                "texts": [
+                                    "Cultural Shock",
+                                    "I went to study in Taiwan and discovered a different culture.",
+                                ],
+                                "paragraphs": ["The Taiwan passage is supplemental evidence for a different source."],
+                            }
+                        ]
+                    },
+                }
+            ]
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertTrue(plan["publishable"])
+        self.assertFalse(any(blocker["code"] in {"native-source-mismatch", "native-slide-mismatch"} for blocker in plan["blockers"]))
+        reading = next(row for row in plan["nextRows"] if row["data"].get("type") == "text")
+        self.assertIn("Scotland", reading["data"]["content"])
+        self.assertNotIn("Taiwan", reading["data"]["content"])
+        self.assertNotIn("nativeParagraphs", reading["data"])
+
+    def test_conflicting_native_slide_keeps_required_picture_evidence_blocker(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "sourceUrl": "https://slides.example/native-picture-priority",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 2 - Where are you from?.pptx",
+                "slideCount": 1,
+                "slides": [
+                    {
+                        "number": 4,
+                        "title": "Picture",
+                        "visibleTexts": ["Look at the picture and answer the question."],
+                    }
+                ],
+            },
+        }
+        native_audit = {
+            "records": [
+                {
+                    "unit": 2,
+                    "status": "ok",
+                    "candidate": {"id": "native-picture-priority-2", "title": "Unit 2 - Where are you from?.pptx"},
+                    "native": {"slides": [{"number": 4, "texts": ["A different grammar exercise."]}]},
+                }
+            ]
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "native-figure-required" and blocker["slide"] == 4 for blocker in plan["blockers"]))
+        published = next(
+            row
+            for row in plan["nextRows"]
+            if row["data"].get("data", {}).get("sourceSlides") == [4]
+        )
+        self.assertIn("Look at the picture", str(published["data"]))
+
+    def test_conflicting_native_chart_keeps_required_table_blocker(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "sourceUrl": "https://slides.example/native-chart-priority",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 2 - Where are you from?.pptx",
+                "slideCount": 1,
+                "slides": [{"number": 2, "title": "Grammar chart", "visibleTexts": ["Grammar chart", "Check the chart below."]}],
+            },
+        }
+        native_audit = {
+            "records": [
+                {
+                    "unit": 2,
+                    "status": "ok",
+                    "candidate": {"id": "native-chart-priority-2", "title": "Unit 2 - Where are you from?.pptx"},
+                    "native": {"slides": [{"number": 2, "texts": ["A different reading passage."]}]},
+                }
+            ]
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "table-semantics-missing" and blocker["slide"] == 2 for blocker in plan["blockers"]))
+        self.assertFalse(any(blocker["code"] in {"native-source-mismatch", "native-slide-mismatch"} for blocker in plan["blockers"]))
 
     def test_native_image_refs_require_confirmed_instructional_role(self) -> None:
         source = {
@@ -583,7 +724,12 @@ class BuildCourseLearningTests(unittest.TestCase):
                                     "imageRefs": [
                                         {"localPath": str(Path(directory) / "missing-logo.png"), "role": "logo"},
                                         {"localPath": str(Path(directory) / "missing-candidate.png"), "role": "instructional-candidate"},
-                                        {"localPath": str(asset), "classification": "figure", "alt": "Confirmed figure"},
+                                    {
+                                        "localPath": str(asset),
+                                        "publicUrl": "/images/lessons/course/confirmed.png",
+                                        "classification": "figure",
+                                        "alt": "Confirmed figure",
+                                    },
                                     ],
                                 }
                             ]
@@ -599,6 +745,7 @@ class BuildCourseLearningTests(unittest.TestCase):
         images = [row for row in plan["nextRows"] if row["data"].get("type") == "image"]
         self.assertEqual(len(images), 1)
         self.assertEqual(images[0]["data"]["assetPath"], str(asset.resolve()))
+        self.assertEqual(images[0]["data"]["url"], "/images/lessons/course/confirmed.png")
         self.assertEqual(images[0]["data"]["alt"], "Confirmed figure")
 
     def test_required_picture_prompt_blocks_without_confirmed_figure_evidence(self) -> None:
