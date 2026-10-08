@@ -182,10 +182,10 @@ describe('completeCourseLesson', () => {
       where: { userId: 'student-1', contentId: { in: active.map(({ id }) => id) } },
       data: expect.objectContaining({ completed: true, percentage: 100 }),
     })
-    expect(db.userContent.createMany.mock.calls[0][0].data).not.toEqual(
+    expect(vi.mocked(db.userContent.createMany).mock.calls[0]![0]!.data).not.toEqual(
       expect.arrayContaining([expect.objectContaining({ contentId: 'archive-embed' })])
     )
-    expect(db.userContent.createMany.mock.calls[0][0].data).not.toEqual(
+    expect(vi.mocked(db.userContent.createMany).mock.calls[0]![0]!.data).not.toEqual(
       expect.arrayContaining([expect.objectContaining({ contentId: 'teacher-note' })])
     )
   })

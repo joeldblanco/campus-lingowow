@@ -26,6 +26,7 @@ const archive = {
     courseId: 'course-1',
     lessonId: 'lesson-1',
     originalSource: { type: 'embed', contentId: 'archive-embed' },
+    answerKeys: ['private-answer'],
   },
 }
 const learnerContents = [
@@ -72,6 +73,13 @@ describe('course progress actions', () => {
       progressPercentage: 100,
       completedContentIds: ['new-1', 'new-2', 'new-3'],
     })
+    expect(JSON.stringify(result?.enrollment)).not.toContain('originalSource')
+    expect(JSON.stringify(result?.enrollment)).not.toContain('private-answer')
+    expect(result?.enrollment?.course.modules[0].lessons[0].contents).toEqual([
+      { id: 'new-1' },
+      { id: 'new-2' },
+      { id: 'new-3' },
+    ])
   })
 
   it('uses converted legacy completion for module progress and ignores notes', async () => {

@@ -81,6 +81,9 @@ export function isVisibleLearnerContent(content: ProgressContent): boolean {
   return !isTeacherNotesContent(content) && !isHiddenFromLearners(content)
 }
 
+/** Backwards-compatible name for callers that describe the learner view. */
+export const isLearnerVisibleContent = isVisibleLearnerContent
+
 /**
  * Returns the original embed content id for a converted archive row when the
  * row is explicitly scoped to this course and lesson.

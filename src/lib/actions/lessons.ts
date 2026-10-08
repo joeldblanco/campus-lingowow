@@ -196,7 +196,7 @@ export async function completeCourseLesson(courseId: string, lessonId: string) {
     const completedContents = await prisma.userContent.findMany({
       where: {
         userId,
-        contentId: [...courseContentIds, ...convertedSourceIds],
+        contentId: { in: [...courseContentIds, ...convertedSourceIds] },
         completed: true,
       },
       select: { contentId: true, completed: true },

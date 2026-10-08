@@ -164,4 +164,95 @@ describe('getCourseForPublicView exam progress metadata', () => {
 
     expect(result?.exams[0].hasPassed).toBe(false)
   })
+
+  it('returns only learner contents while using converted archive metadata server-side', async () => {
+    const archiveData = {
+      type: 'teacher_notes',
+      learningRevision: 'course-guided-v1',
+      courseId: 'course-1',
+      lessonId: 'lesson-1',
+      originalSource: { type: 'embed', contentId: 'archive-embed' },
+      answerKeys: ['private-answer'],
+    }
+    const course = {
+      ...makeCourse({}),
+      modules: [
+        {
+          id: 'module-1',
+          title: 'Module 1',
+          description: null,
+          level: 'A1',
+          order: 1,
+          isPublished: true,
+          lessons: [
+            {
+              id: 'lesson-1',
+              title: 'Lesson 1',
+              description: null,
+              order: 1,
+              contents: [
+                {
+                  id: 'archive-embed',
+                  title: 'Teacher archive',
+                  description: null,
+                  contentType: 'OTHER',
+                  order: 0,
+                  data: archiveData,
+                },
+                {
+                  id: 'new-1',
+                  title: 'Guided content',
+                  description: null,
+                  contentType: 'RICH_TEXT',
+                  order: 1,
+                  data: { type: 'text' },
+                },
+                {
+                  id: 'hidden-note',
+                  title: 'Hidden note',
+                  description: null,
+                  contentType: 'RICH_TEXT',
+                  order: 2,
+                  data: { type: 'text', hiddenFromLearners: true },
+                },
+              ],
+            },
+          ],
+          _count: { lessons: 1 },
+        },
+      ],
+    }
+    vi.mocked(db.course.findUnique).mockResolvedValue(course as never)
+
+    const result = await getCourseForPublicView('course-1', 'student-1')
+
+    expect(result?.modules[0].lessons[0].contents).toEqual([
+      {
+        id: 'new-1',
+        title: 'Guided content',
+        description: null,
+        contentType: 'RICH_TEXT',
+        order: 1,
+      },
+    ])
+    expect(JSON.stringify(result)).not.toContain('originalSource')
+    expect(JSON.stringify(result)).not.toContain('private-answer')
+    expect(db.course.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        include: expect.objectContaining({
+          modules: expect.objectContaining({
+            select: expect.objectContaining({
+              lessons: expect.objectContaining({
+                select: expect.objectContaining({
+                  contents: expect.objectContaining({
+                    select: expect.objectContaining({ data: true }),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      })
+    )
+  })
 })
