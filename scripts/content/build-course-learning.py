@@ -2459,6 +2459,23 @@ def _exercise_review_open_parts(item: Mapping[str, Any]) -> list[tuple[str, str]
     return [("essay", prompt)]
 
 
+def _exercise_review_ambiguous_open_response(
+    item: Mapping[str, Any],
+    source_prompt: str,
+) -> tuple[str, str, str]:
+    """Read a reviewed ambiguous item as formative open response metadata."""
+
+    config = item.get("openResponse") if isinstance(item.get("openResponse"), Mapping) else {}
+    learner_prompt = _text(config.get("prompt")) or "Prop\u00f3n una correcci\u00f3n clara."
+    original_prompt = _text(config.get("sourcePrompt")) or source_prompt or _text(item.get("prompt"))
+    feedback_context = _text(
+        config.get("feedbackContext")
+        or config.get("aiGradingContext")
+        or item.get("sourceContext")
+    )
+    return learner_prompt, original_prompt, feedback_context
+
+
 def _exercise_review_conversation_metadata(item: Mapping[str, Any]) -> dict[str, Any]:
     """Preserve a reviewed role-play as a reusable conversation scenario."""
 
@@ -2567,18 +2584,33 @@ def _exercise_review_specs(
         answer_items = [value for value in _as_list(item.get("answerItems")) if isinstance(value, Mapping)]
         canonical_items: list[dict[str, Any]] = []
         ambiguous_answer = False
+        ambiguous_source_prompt = ""
         for answer_index, answer_item in enumerate(answer_items, start=1):
             answer_status = _text(answer_item.get("status")).casefold()
-            if answer_status in {"source-ambiguous", "ambiguous", "blocked"}:
-                ambiguous_answer = True
+            if answer_status == "blocked":
                 _add_blocker(
                     blockers,
                     _blocker(
-                        "exercise-review-answer-ambiguous" if answer_status != "blocked" else "exercise-review-answer-blocked",
+                        "exercise-review-answer-blocked",
                         number,
-                        _text(answer_item.get("rationale")) or f"Reviewed answer for item {item_id!r} is not deterministic.",
+                        _text(answer_item.get("rationale")) or f"Reviewed answer for item {item_id!r} is blocked.",
                     ),
                 )
+                continue
+            if answer_status in {"source-ambiguous", "ambiguous"}:
+                ambiguous_answer = True
+                ambiguous_source_prompt = ambiguous_source_prompt or _text(
+                    answer_item.get("sourcePrompt") or answer_item.get("evidence")
+                )
+                if status not in {"reviewed-with-open-completions", "open-response-preserved"}:
+                    _add_blocker(
+                        blockers,
+                        _blocker(
+                            "exercise-review-answer-ambiguous" if answer_status != "blocked" else "exercise-review-answer-blocked",
+                            number,
+                            _text(answer_item.get("rationale")) or f"Reviewed answer for item {item_id!r} is not deterministic.",
+                        ),
+                    )
                 continue
             canonical = _text(answer_item.get("canonical") or answer_item.get("correctAnswer"))
             if not canonical:
@@ -2586,6 +2618,8 @@ def _exercise_review_specs(
             accepted = _unique_texts(answer_item.get("accepted")) or [canonical]
             label = _text(answer_item.get("id"))
             question = _text(item.get("prompt"))
+            if kind == "grammar-correction":
+                question = _text(answer_item.get("evidence")) or question
             if kind == "grammar-transform" and label:
                 prompt_item = dict(item)
                 prompt_item["_answerLabel"] = label.replace("-", " ").replace("_", " ")
@@ -2601,7 +2635,53 @@ def _exercise_review_specs(
                 }
             )
         short_items.extend(canonical_items)
-        if not canonical_items and not ambiguous_answer:
+        if ambiguous_answer and status in {"reviewed-with-open-completions", "open-response-preserved"}:
+            config = item.get("openResponse")
+            feedback_context = (
+                _text(config.get("feedbackContext") or config.get("aiGradingContext"))
+                if isinstance(config, Mapping)
+                else ""
+            )
+            if (
+                not isinstance(config, Mapping)
+                or not _text(config.get("prompt"))
+                or not _text(config.get("sourcePrompt"))
+                or not feedback_context
+            ):
+                _add_blocker(
+                    blockers,
+                    _blocker(
+                        "exercise-review-open-response-metadata-missing",
+                        number,
+                        f"Ambiguous reviewed item {item_id!r} needs an explicit openResponse prompt, source prompt, and formative feedback context.",
+                    ),
+                )
+            else:
+                learner_prompt, original_prompt, feedback_context = _exercise_review_ambiguous_open_response(
+                    item,
+                    ambiguous_source_prompt,
+                )
+                context_item = dict(item)
+                context_item["prompt"] = original_prompt
+                context_item["sourceContext"] = feedback_context
+                ai_context = _exercise_review_ai_context(slide, context_item, learner_prompt, audio_item, source)
+                payload: dict[str, Any] = {
+                    "prompt": learner_prompt,
+                    "sourcePrompt": original_prompt,
+                    "aiGrading": True,
+                    "data": _exercise_review_metadata(item),
+                    "reviewStatus": status,
+                    "sourceReviewId": item_id,
+                }
+                payload["data"]["aiGradingContext"] = ai_context
+                payload["data"]["responseMode"] = "formative-open-response"
+                payload["data"]["ambiguousSource"] = {
+                    "sourcePrompt": original_prompt,
+                    "feedbackContext": feedback_context,
+                    "canonicalAnswer": None,
+                }
+                open_specs.append(("essay", payload))
+        elif not canonical_items and not ambiguous_answer:
             for native_type, prompt in _exercise_review_open_parts(item):
                 learner_prompt = reflection_prompt or prompt
                 min_words, max_words = _word_limits(prompt)

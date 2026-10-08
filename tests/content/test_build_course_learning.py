@@ -1793,6 +1793,146 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(any(blocker["code"] == "exercise-review-answer-ambiguous" for blocker in plan["blockers"]))
         self.assertFalse(any(row["data"].get("type") == "short_answer" for row in plan["nextRows"]))
 
+    def test_ambiguous_review_item_becomes_formative_open_response_beside_seven_keys(self) -> None:
+        source = source_fixture()
+        original_sentence = "I have chance my arm so long for this company."
+        source["deck"]["slides"] = [
+            {
+                "number": 13,
+                "title": "Correct the causative-verb sentences.",
+                "visibleTexts": [
+                    "Correct the causative-verb sentences.",
+                    "0. Dexter had chime in Mary at the talk. / Dexter had Mary chime in at the talk. "
+                    "1. Clayton got the copier fixed yesterday. 2. I will had John come for the dinner party. "
+                    f"3. {original_sentence} 4. Danny always has Daniel help him with his homework. "
+                    "5. Get the homework ready and you can go out. 6. I was having Jake cleaned the house and he fell over. "
+                    "7. The company most of the staff fired for corruption. 8. I will have Jimmy buy our food tonight.",
+                ],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        source_slide = source["deck"]["slides"][0]
+        answer_items = [
+            {
+                "id": f"item-{index}",
+                "canonical": answer,
+                "accepted": [answer],
+                "evidence": evidence,
+            }
+            for index, (answer, evidence) in enumerate(
+                [
+                    ("Clayton got the copier fixed yesterday.", "Clayton got the copier fixed yesterday."),
+                    ("I will have John come for the dinner party.", "I will had John come for the dinner party."),
+                    ("Danny always has Daniel help him with his homework.", "Danny always has Daniel help him with his homework."),
+                    ("Get the homework ready and you can go out.", "Get the homework ready and you can go out."),
+                    ("I was having Jake clean the house and he fell over.", "I was having Jake cleaned the house and he fell over."),
+                    ("The company had most of the staff fired for corruption.", "The company most of the staff fired for corruption."),
+                    ("I will have Jimmy buy our food tonight.", "I will have Jimmy buy our food tonight."),
+                ],
+                start=1,
+            )
+        ]
+        answer_items.insert(
+            2,
+            {
+                "id": "item-3",
+                "status": "source-ambiguous",
+                "evidence": original_sentence,
+                "rationale": "The published sentence admits multiple meanings and valid repairs.",
+            },
+        )
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "13": {
+                            "source": copy.deepcopy(source_slide),
+                            "items": [
+                                {
+                                    "id": "u38-s13-a",
+                                    "kind": "grammar-correction",
+                                    "prompt": "Correct the causative-verb sentences where needed.",
+                                    "responseMode": "typed-short-answer",
+                                    "reviewStatus": "reviewed-with-open-completions",
+                                    "answerItems": answer_items,
+                                    "sourceEvidence": ["Correct the causative-verb sentences where needed."],
+                                    "openResponse": {
+                                        "prompt": "Prop\u00f3n una correcci\u00f3n clara.",
+                                        "sourcePrompt": original_sentence,
+                                        "feedbackContext": "La redacci\u00f3n publicada admite m\u00faltiples significados y reparaciones v\u00e1lidas; no hay una correcci\u00f3n can\u00f3nica \u00fanica.",
+                                    },
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        self.assertFalse(any(blocker["code"] == "exercise-review-answer-ambiguous" for blocker in plan["blockers"]))
+        short_answer = next(row for row in plan["nextRows"] if row["data"].get("type") == "short_answer")
+        self.assertEqual(len(short_answer["data"]["items"]), 7)
+        self.assertEqual(
+            [item["question"] for item in short_answer["data"]["items"]],
+            [
+                "Clayton got the copier fixed yesterday.",
+                "I will had John come for the dinner party.",
+                "Danny always has Daniel help him with his homework.",
+                "Get the homework ready and you can go out.",
+                "I was having Jake cleaned the house and he fell over.",
+                "The company most of the staff fired for corruption.",
+                "I will have Jimmy buy our food tonight.",
+            ],
+        )
+        self.assertNotIn(original_sentence, [item["correctAnswer"] for item in short_answer["data"]["items"]])
+        essay = next(row for row in plan["nextRows"] if row["data"].get("type") == "essay")
+        self.assertEqual(essay["data"]["prompt"], "Prop\u00f3n una correcci\u00f3n clara.")
+        self.assertEqual(essay["data"]["sourcePrompt"], original_sentence)
+        self.assertTrue(essay["data"]["aiGrading"])
+        self.assertNotIn("correctAnswer", essay["data"])
+        self.assertNotIn("acceptedAnswers", essay["data"])
+        self.assertIn(original_sentence, essay["data"]["data"]["aiGradingContext"])
+        self.assertIn("m\u00faltiples significados", essay["data"]["data"]["aiGradingContext"])
+        self.assertIsNone(essay["data"]["data"]["ambiguousSource"]["canonicalAnswer"])
+        self.assertEqual(
+            essay["data"]["data"]["exerciseReview"]["answerItems"][2]["evidence"],
+            original_sentence,
+        )
+        review_without_open_response = copy.deepcopy(review)
+        del review_without_open_response["lessons"][LESSON_ID]["slides"]["13"]["items"][0]["openResponse"]
+        blocked_plan = builder.build_plan(
+            snapshot_fixture()["modules"][0]["lessons"][0],
+            source,
+            exercise_review=review_without_open_response,
+        )
+        self.assertFalse(blocked_plan["publishable"])
+        self.assertTrue(
+            any(
+                blocker["code"] == "exercise-review-open-response-metadata-missing"
+                for blocker in blocked_plan["blockers"]
+            )
+        )
+
+    def test_unit38_errata_patch_contract_has_no_fabricated_key(self) -> None:
+        patch_path = Path(__file__).resolve().parents[2] / "docs" / "audit" / "course-exercise-review-unit38-s13-errata.json"
+        patch = json.loads(patch_path.read_text(encoding="utf-8"))
+        record = patch["patches"][0]
+
+        self.assertEqual(record["lessonId"], "cmnmm9qog001kw1qkht1v6i81")
+        self.assertEqual(record["slideNumber"], 13)
+        self.assertEqual(record["sourcePrompt"], "I have chance my arm so long for this company.")
+        self.assertEqual(record["openResponse"]["prompt"], "Prop\u00f3n una correcci\u00f3n clara.")
+        self.assertEqual(len(record["deterministicItems"]), 7)
+        self.assertIsNone(record["answerPolicy"]["canonicalAnswer"])
+        self.assertEqual(record["answerPolicy"]["acceptedAnswers"], [])
+        self.assertTrue(record["answerPolicy"]["preserveOriginalItem"])
+        self.assertTrue(record["mergeContract"]["archiveOriginalPromptInMetadata"])
+
     def test_exercise_review_does_not_downgrade_unmatched_choice_key(self) -> None:
         source = source_fixture()
         source["deck"]["slides"] = [{"number": 12, "title": "Choice", "visibleTexts": ["Choice", "Choose the correct answer."]}]
