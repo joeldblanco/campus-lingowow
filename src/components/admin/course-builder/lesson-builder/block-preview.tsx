@@ -221,7 +221,7 @@ export function BlockPreview({
           />
         )
       case 'image':
-        return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} />
+        return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} guidedAppearance={guidedAppearance} />
       case 'audio':
         return (
           <AudioBlockPreview
@@ -564,7 +564,7 @@ function VideoBlockPreview({
 }
 
 // Image Block Preview
-function ImageBlockPreview({ block, hideHeader }: { block: ImageBlock; hideHeader?: boolean }) {
+function ImageBlockPreview({ block, hideHeader, guidedAppearance }: { block: ImageBlock; hideHeader?: boolean; guidedAppearance?: boolean }) {
   return (
     <div className={hideHeader ? '' : 'space-y-4'}>
       {!hideHeader && (
@@ -585,7 +585,7 @@ function ImageBlockPreview({ block, hideHeader }: { block: ImageBlock; hideHeade
             <Image
               src={block.url}
               alt={block.alt || ''}
-              className="w-full rounded-lg shadow-sm"
+              className={guidedAppearance ? 'h-auto max-h-[60vh] w-auto max-w-full rounded-lg object-contain shadow-sm' : 'w-full rounded-lg shadow-sm'}
               width={800}
               height={600}
             />

@@ -63,3 +63,26 @@ equivalent, redundant exercise context, and the native black short-answer focus
 outline. The short-answer primary action also needs the shared footer placement.
 These discrepancies are being repaired; this plan is not visually accepted or
 published. Teacher and final mobile/table comparisons remain pending.
+
+## Follow-up actual checks — 8 October
+
+The Unit 2 duplicate goals, four-column chart, duplicated blank worksheet,
+exercise context card, black input outline and duplicated primary action have
+been repaired. `unit2-grammar-desktop.png`, `unit2-grammar-mobile.png`,
+`unit2-worked-example-desktop.png` and `unit2-short-answer-desktop.png` show the
+actual implementation. These checks do not establish complete source coverage.
+
+| Screen | Approved composition requirement | Actual evidence | Result |
+| --- | --- | --- | --- |
+| Unit 3 source calendar | Complete original seven-day content, readable mobile columns, full painted environment, one primary | unit3-calendar-desktop.png; unit3-calendar-mobile.png | Calendar and mobile words pass; heading correction pending refreshed capture |
+| Unit 5 original instructional photograph | Preserve complete figure, no crop; environment fills canvas; controls remain reachable | unit5-original-family-desktop.png; unit5-original-family-mobile.png | Pass; photograph fits within 60vh, all four people retained |
+
+The source composer now reports 51 eligible plans with no hard source/asset
+blockers. A separate learner-visible audit found missing reading passages and
+final writing/recording activities in some plans. Those omissions are release
+blockers despite the technical preflight passing. Corrections, advanced visual
+checks, teacher mode and the final reference comparison remain pending.
+
+Units 53–56 remain outside this release plan: original downloadable audio bytes
+have not been obtained. Unit 53's published player was observed playing; this is
+an access/retrieval limitation, not evidence that its audio is absent.
