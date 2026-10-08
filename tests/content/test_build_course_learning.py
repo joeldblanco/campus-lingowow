@@ -345,6 +345,164 @@ class BuildCourseLearningTests(unittest.TestCase):
             self.assertEqual(status, 2)
             self.assertTrue(output_path.exists())
 
+    def test_native_audit_merges_aligned_table_paragraph_figure_and_audio_evidence(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "contentId": "source-native-fixture",
+            "sourceUrl": "https://slides.example/native-fixture",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 2 - Where are you from?.pptx",
+                "slideCount": 4,
+                "slides": [
+                    {"number": 1, "title": "Grammar chart", "visibleTexts": ["Grammar chart"]},
+                    {"number": 2, "title": "Reading", "visibleTexts": ["Reading"]},
+                    {
+                        "number": 3,
+                        "title": "Listening",
+                        "visibleTexts": ["Listening", "Listen to the audio and repeat."],
+                        "media": [{"kind": "audio-icon"}],
+                    },
+                    {"number": 4, "title": "Picture", "visibleTexts": ["Picture"]},
+                ],
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            asset = Path(directory) / "instructional-figure.png"
+            asset.write_bytes(b"fixture image")
+            native_audit = {
+                "_auditPath": str(Path(directory) / "native-audit.json"),
+                "records": [
+                    {
+                        "unit": 2,
+                        "status": "ok",
+                        "candidate": {"id": "native-fixture-2", "title": "Unit 2 - Where are you from?.pptx"},
+                        "native": {
+                            "slides": [
+                                {
+                                    "number": 1,
+                                    "texts": ["Grammar chart"],
+                                    "tables": {"rows": [["Subject", "Verb"], ["I", "am"]]},
+                                },
+                                {
+                                    "number": 2,
+                                    "texts": ["Reading"],
+                                    "paragraphs": ["The native paragraph remains readable and traceable."],
+                                },
+                                {
+                                    "number": 3,
+                                    "texts": ["Listening", "Listen to the audio and repeat."],
+                                    "audio": [
+                                        {
+                                            "originalMediaURL": "https://drive.example/audio-3.mp3",
+                                            "sha256": "native-audio-digest",
+                                            "transcript": "Repeat the original recording.",
+                                        }
+                                    ],
+                                },
+                                {
+                                    "number": 4,
+                                    "texts": ["Picture"],
+                                    "figures": [{"localPath": str(asset), "alt": "Original instructional figure"}],
+                                },
+                            ]
+                        },
+                    }
+                ],
+            }
+
+            plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertTrue(plan["publishable"])
+        self.assertEqual(plan["blockers"], [])
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        structured = next(row for row in generated if row["data"]["type"] == "structured-content")
+        self.assertEqual(structured["data"]["content"]["rows"], [["I", "am"]])
+        reading = next(row for row in generated if row["data"]["type"] == "text" and row["data"]["data"]["sourceSlides"] == [2])
+        self.assertIn("native paragraph remains readable", reading["data"]["content"])
+        self.assertEqual(reading["data"]["nativeParagraphs"], ["The native paragraph remains readable and traceable."])
+        audio = next(row for row in generated if row["data"]["type"] == "audio")
+        self.assertEqual(audio["data"]["url"], "https://drive.example/audio-3.mp3")
+        self.assertEqual(audio["data"]["mediaDigest"], "native-audio-digest")
+        self.assertEqual(audio["data"]["transcript"], "Repeat the original recording.")
+        image = next(row for row in generated if row["data"]["type"] == "image")
+        self.assertEqual(image["data"]["assetPath"], str(asset.resolve()))
+        self.assertNotIn("slides-images-rt", image["data"]["assetPath"])
+        self.assertEqual(image["data"]["data"]["originalSource"]["nativeEvidence"]["figures"][0]["assetPath"], str(asset.resolve()))
+
+    def test_native_audit_rejects_slide_mismatch_and_untraceable_figure(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "sourceUrl": "https://slides.example/native-rejection",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 2 - Where are you from?.pptx",
+                "slideCount": 2,
+                "slides": [
+                    {"number": 1, "title": "Picture", "visibleTexts": ["Picture"]},
+                    {"number": 2, "title": "Listening", "visibleTexts": ["Listening", "Listen to the audio."]},
+                ],
+            },
+        }
+        native_audit = {
+            "records": [
+                {
+                    "unit": 2,
+                    "status": "ok",
+                    "candidate": {"id": "native-rejection-2", "title": "Unit 2 - Where are you from?.pptx"},
+                    "native": {
+                        "slides": [
+                            {
+                                "number": 1,
+                                "texts": ["Picture"],
+                                "figures": [{"url": "https://docs.google.com/slides-images-rt/rendered-slide.png"}],
+                                "audio": [
+                                    {
+                                        "slideNumber": 99,
+                                        "originalMediaURL": "https://audio.example/mismatch.mp3",
+                                        "sha256": "mismatch-digest",
+                                        "transcript": "Mismatched audio.",
+                                    }
+                                ],
+                            },
+                            {"number": 2, "texts": ["A different listening prompt"]},
+                        ]
+                    },
+                }
+            ]
+        }
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "native-figure-untraceable" and blocker["slide"] == 1 for blocker in plan["blockers"]))
+        self.assertTrue(any(blocker["code"] == "native-audio-mismatch" and blocker["slide"] == 1 for blocker in plan["blockers"]))
+        self.assertTrue(any(blocker["code"] == "native-slide-mismatch" and blocker["slide"] == 2 for blocker in plan["blockers"]))
+        self.assertFalse(any(row["data"].get("type") == "image" for row in plan["nextRows"]))
+        self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
+
+    def test_audio_manifest_with_wrong_lesson_or_slide_is_not_attached(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"][5].pop("media")
+        manifest = {
+            "entries": [
+                {
+                    "lessonId": "another-lesson",
+                    "slideNumber": 6,
+                    "originalMediaUrl": "https://audio.example/wrong.mp3",
+                    "sha256": "wrong-digest",
+                    "transcript": "Wrong lesson transcript.",
+                }
+            ]
+        }
+        lesson = snapshot_fixture()["modules"][0]["lessons"][0]
+        plan = builder.build_plan(lesson, source, manifest)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "audio-media-missing" and blocker["slide"] == 6 for blocker in plan["blockers"]))
+        self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
+
 
 if __name__ == "__main__":
     unittest.main()
