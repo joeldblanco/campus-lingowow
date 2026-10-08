@@ -11,13 +11,14 @@
     "transcriptSource": "docs/audit/unit53-56-audio-transcripts.json",
     "reviewSource": "docs/audit/unit53-56-listening-recovery-review.json",
     "answerEvidence": "Every authored answer is backed by an exact substring of its matching original-audio transcript.",
-    "unsupportedContent": "No uncertain ASR fragment, inferred answer key, replacement audio, or absent Audio 2 is authored."
+    "unsupportedContent": "No uncertain ASR fragment, inferred answer key, replacement audio, or unverified audio is authored.",
+    "recoveryPolicy": "A corrected Drive URL is accepted only after original bytes and SHA-256 are verified."
   },
   "counts": {
     "expectedExercises": 8,
-    "reviewedExercises": 7,
-    "blockedExercises": 1,
-    "authoredItems": 28
+    "reviewedExercises": 8,
+    "blockedExercises": 0,
+    "authoredItems": 32
   },
   "exercises": [
     {
@@ -115,23 +116,23 @@
         {
           "id": "u53-listening-3",
           "kind": "multiple-choice",
-          "prompt": "What would have happened if they hadn't done that?",
+          "prompt": "What would have happened without their consent?",
           "reviewStatus": "reviewed",
           "explicitOptions": [
-            "She would have been dead now.",
+            "She would be dead now.",
             "She would have attended the meeting.",
             "She would have signed the petitions.",
             "She would have gone home."
           ],
-          "correct": "She would have been dead now.",
+          "correct": "She would be dead now.",
           "evidence": "If they hadn't done that, she would be dead now.",
           "sourceAudioSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
           "answerItems": [
             {
               "id": "answer",
-              "canonical": "She would have been dead now.",
+              "canonical": "She would be dead now.",
               "accepted": [
-                "She would have been dead now."
+                "She would be dead now."
               ],
               "evidence": "If they hadn't done that, she would be dead now.",
               "sourceAudioSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98"
@@ -168,7 +169,8 @@
         }
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
-      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L/view"
     },
     {
       "key": {
@@ -316,7 +318,8 @@
         }
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
-      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ/view"
     },
     {
       "key": {
@@ -466,7 +469,8 @@
         }
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
-      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq/view"
     },
     {
       "key": {
@@ -614,7 +618,8 @@
         }
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
-      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ/view"
     },
     {
       "key": {
@@ -764,7 +769,8 @@
         }
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
-      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/16vlShb_LW0tpQjPyM13l2TomvtxP1l_W/view"
     },
     {
       "key": {
@@ -778,9 +784,9 @@
       "lessonTitle": "Unit 55",
       "slideNumber": 13,
       "audioIndex": 2,
-      "sourceAudioSha256": null,
+      "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
       "sourceFilename": "Auido 2 - Unit 55.mp3",
-      "sourcePath": null,
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
       "sourcePublishedSlide": 13,
       "sourceExactTexts": [
         "B. Listen to the audio and answer the questions your teacher makes."
@@ -792,21 +798,128 @@
         "B. Listen to the audio and answer the questions your teacher makes."
       ],
       "transcriptConfidence": {
-        "status": "blocked-source-not-found",
-        "languageProbability": null,
-        "uncertaintyFlags": [
-          "audio-not-found",
-          "transcript-unavailable"
-        ]
+        "languageProbability": 0.9799962043762207,
+        "uncertaintyFlags": []
       },
       "originalQuestionsOmitted": [],
-      "reviewStatus": "blocked-source-not-found",
-      "manualReviewRequired": true,
-      "doNotAutoAuthorKeys": true,
-      "blocker": "Original Drive audio source returned Page Not Found; no transcript or answer key is available, so no semantic questions are authored.",
-      "items": [],
-      "revisionRationale": "Original authored listening prompt and blocked-source evidence are retained; no substitute audio, transcript, or answer key is permitted.",
-      "reviewMethod": "Blocked; no semantic items authored without the original audio."
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "items": [
+        {
+          "id": "u55-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "What had not everyone sent?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Their documents",
+            "A message to a client",
+            "Party invitations",
+            "A petition"
+          ],
+          "correct": "Their documents",
+          "evidence": "did everyone send their documents? Not everyone, but all of them are here.",
+          "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Their documents",
+              "accepted": [
+                "Their documents"
+              ],
+              "evidence": "did everyone send their documents? Not everyone, but all of them are here.",
+              "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u55-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What was the main issue?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Having all documents on time and sent",
+            "Having a free ride",
+            "Taking advantage of someone",
+            "Sending people home"
+          ],
+          "correct": "Having all documents on time and sent",
+          "evidence": "the main issue was to have all documents on time and sent.",
+          "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Having all documents on time and sent",
+              "accepted": [
+                "Having all documents on time and sent"
+              ],
+              "evidence": "the main issue was to have all documents on time and sent.",
+              "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u55-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "What really annoys the speaker?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "People taking advantage of him",
+            "People sending documents on time",
+            "People giving free rides",
+            "People attending a party"
+          ],
+          "correct": "People taking advantage of him",
+          "evidence": "What really annoys me is people taking advantage of him.",
+          "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "People taking advantage of him",
+              "accepted": [
+                "People taking advantage of him"
+              ],
+              "evidence": "What really annoys me is people taking advantage of him.",
+              "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        },
+        {
+          "id": "u55-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "What would the boss have done already under the mentioned condition?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Sent some of them home",
+            "Sent all the documents",
+            "Given everyone a free ride",
+            "Called the teacher"
+          ],
+          "correct": "Sent some of them home",
+          "evidence": "the boss would have sent some of them home already.",
+          "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Sent some of them home",
+              "accepted": [
+                "Sent some of them home"
+              ],
+              "evidence": "the boss would have sent some of them home already.",
+              "sourceAudioSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301"
+            }
+          ],
+          "rationale": "Comprehension of an explicit audio fact or a clearly attributed speaker opinion; unclear ASR phrases are excluded."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh/view?usp=sharing",
+      "sourceDriveId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "sourceBytes": 756259,
+      "sourceDurationSeconds": 47.182948
     },
     {
       "key": {
@@ -956,7 +1069,8 @@
         }
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
-      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj/view"
     },
     {
       "key": {
@@ -1104,7 +1218,8 @@
         }
       ],
       "revisionRationale": "Four concise comprehension questions are authored only from explicit transcript clauses; original source prompts and original audio bytes remain archived.",
-      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording."
+      "reviewMethod": "Semantic authoring against explicit transcript clauses; no claim of independent listening to the recording.",
+      "sourceViewerUrl": "https://drive.google.com/file/d/1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ/view"
     }
   ]
 }

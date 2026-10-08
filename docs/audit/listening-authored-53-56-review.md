@@ -11,20 +11,21 @@ This review extends `listening-authored-33-52.json` with the recovered original 
 | 54 | `cmnmm9w6q002ww1qkmhschbtj` | 4 | 1 | `3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab` | 4 | reviewed |
 | 54 | `cmnmm9w6q002ww1qkmhschbtj` | 13 | 2 | `0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6` | 4 | reviewed |
 | 55 | `cmnmm9wiv002zw1qkz23p6kdp` | 4 | 1 | `693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5` | 4 | reviewed |
-| 55 | `cmnmm9wiv002zw1qkz23p6kdp` | 13 | 2 | `unavailable` | 0 | blocked-source-not-found |
+| 55 | `cmnmm9wiv002zw1qkz23p6kdp` | 13 | 2 | `4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301` | 4 | reviewed |
 | 56 | `cmnmm9wv00032w1qkxr02azgp` | 4 | 1 | `55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b` | 4 | reviewed |
 | 56 | `cmnmm9wv00032w1qkxr02azgp` | 13 | 2 | `6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1` | 4 | reviewed |
 
-- Seven recovered clips have 28 reviewed four-option multiple-choice items (four per clip). Every item has exactly four distinct options, one canonical answer, and an exact transcript evidence substring.
-- Unit 55 Audio 2 (slide 13) is intentionally blocked. The observed source ID `1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ` returns Drive “Page Not Found”; it has no SHA, transcript, items, or substitute.
+- Eight recovered clips have 32 reviewed four-option multiple-choice items (four per clip). Every item has exactly four distinct options, one canonical answer, and an exact transcript evidence substring.
+- Unit 55 Audio 2 (slide 13) is now recovered from the corrected Drive URL ending in `...6hQh`; the verified source SHA is `4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301` (756,259 bytes).
 
 ## Evidence and uncertainty
 
 - The source prompts and visible text are copied from the published source JSON for each target slide. The original prompt IDs are retained in `sourceItemIds`.
 - Answer keys are semantic review of explicit transcript clauses. No raw ASR fragment is used as a question, and no claim of independent listening is made.
+- U53 Audio 1 item 3 uses the consent context and the exact transcript answer “she would be dead now.”
 - U53 Audio 2 has a media-recovery placement discrepancy: the recovered Drive metadata reports `publishedSlide: 12`, while the authored listening prompt is the published slide 13 “B. Listen…” prompt. The manifest preserves both `slideNumber: 13` and `sourcePublishedSlide: 12`; the audio SHA is unchanged. Parent composer should keep this mapping explicit when attaching staged audio.
 - U54 Audio 2 contains sparse punctuation and speaker names in the transcript; questions avoid assigning uncertain speaker identities and use only clear event facts.
-- Unit 55 Audio 1 has a lower transcript language probability than the other recovered clips, but all four selected evidence clauses are explicit and unambiguous. Unit 55 Audio 2 remains blocked regardless of the Audio 1 review.
+- Unit 55 Audio 1 has a lower transcript language probability than the other recovered clips, but all four selected evidence clauses are explicit and unambiguous. Unit 55 Audio 2 is now similarly reviewed from its verified transcript; its four items avoid the uncertain “free ride” and “tensing his arm” wording except where the selected evidence is a direct, explicit clause.
 
 ## Source authority
 
