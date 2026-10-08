@@ -1,0 +1,5521 @@
+{
+  "schemaVersion": 1,
+  "unit": 16,
+  "module": {
+    "order": 4,
+    "title": "Módulo 4",
+    "id": "cmk3z6ww10003jp043doalpcm",
+    "driveTitle": "Module 4"
+  },
+  "candidate": {
+    "id": "1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs",
+    "title": "Unit 16- When you called....pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "3015421",
+    "level": "A",
+    "path": [
+      "A levels",
+      "Module 4"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\A-unit-16-primary-02-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs.pptx",
+    "localBytes": 3015421,
+    "sha256": "53a2ddc029bd6b7ced8269565099009c9915da172c599cb281adeec81a3f5ba3"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\A-unit-16-primary-02-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTqcWtk7AmO2HPyY-8Czels8guag_sW9SbzS6BC7mfLPr8iSjEZHS8IoCgOK_bKEw/pub?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTqcWtk7AmO2HPyY-8Czels8guag_sW9SbzS6BC7mfLPr8iSjEZHS8IoCgOK_bKEw/pub?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 16,
+    "nativeSlideCount": 16,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.984325,
+    "publicTokenCoverage": 1.0,
+    "slideDifferenceCount": 1,
+    "slideDifferences": [
+      {
+        "slide": 8,
+        "nativeText": "When we talk about actions happening in the past, we need to use the past progressive tense.\nTO CONSIDER\n\nWe use the verb to be as auxiliary. In both forms: was / were.\nThe main verb takes the –ing form as seen in the examples. \nWhen is used to connect two ideas; in this case it presents an action that interrupts another one. \nWhile is used to state two actions happening simultaneously. \nNegative forms are wasn’t / weren’t.\nPast Progressive tense\nI was eating when the earthquake started.\nWere you eating when the earthquake started?\nThey were relaxing at the beach when they gave the tsunami alert.\nWere they relaxing at the beach when they gave the tsunami alert?\nHe was running fast while the tornado was chasing him.\nWas he running fast while the tornado was chasing him?",
+        "publishedText": "When we talk about actions happening in the past, we need to use the past progressive tense. TO CONSIDER 1. We use the verb to be as auxiliary. In both forms: was / were. 2. The main verb takes the –ing form as seen in the examples. 3. When is used to connect two ideas; in this case it presents an action that interrupts another one. 4. While is used to state two actions happening simultaneously. 5. Negative forms are wasn’t / weren’t. Past Progressive tense I was eating when the earthquake started. Were you eating when the earthquake started? They were relaxing at the beach when they gave the tsunami alert. Were they relaxing at the beach when they gave the tsunami alert? He was running fast while the tornado was chasing him. Was he running fast while the tornado was chasing him?",
+        "sequenceRatio": 0.990415
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 3101,
+      "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 46305,
+      "sha256": "70829ab70185b188c0480ebe3565b179c667f94aaa1d1f54fd8fe3824a7863f9"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 94752,
+      "sha256": "74852472d096638d01b27c4b337aa56fce8aa28ffc338bd1a92f1f868e94e75e"
+    },
+    {
+      "path": "ppt/media/image12.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 17718,
+      "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475"
+    },
+    {
+      "path": "ppt/media/image13.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 22739,
+      "sha256": "a41c4a5a06acbba33fa8a2c26fbed54b40958f6c412efb73c06dc8f5384b41e9"
+    },
+    {
+      "path": "ppt/media/image14.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54643,
+      "sha256": "0f448667c37b019279cc829ff81d19a1f266db6e03bdcffc6ad45b2833d37ac6"
+    },
+    {
+      "path": "ppt/media/image2.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 99311,
+      "sha256": "014d32939224cc3fcfb898233d822b05e4d5986c73e86b312a497ff113b45b82"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image4.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 81708,
+      "sha256": "a5e7446e5d54a75ea68c113cd1fb632252b868b8ae9476acfe3718237407c8ac"
+    },
+    {
+      "path": "ppt/media/image5.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 70834,
+      "sha256": "eb1fb0c82bc96bb6d4f3bb5d7d321231db3cedc49dc543fb2693b730f5ec0325"
+    },
+    {
+      "path": "ppt/media/image6.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 1274268,
+      "sha256": "02e4de4a7c185aed2d084da57ae5a08f79174d3c4510c2bd9b53ab9de261fc61"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 115510,
+      "sha256": "ad40a5dcf2a3928c284e1a201830b636618673649c688fb2c298c13428523c68"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 110627,
+      "sha256": "2b58ac1199f602f24d5fee9b6c9836d6777f6902965116d753fe13e13a25f085"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 103208,
+      "sha256": "50a4bdd4905ddff9e285c4e5ae1f1e66edf236be7fdf63fbe6d16ff9e1fd3ba7"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 14,
+    "bytes": 2127452,
+    "byExtension": {
+      ".jpg": 8,
+      ".png": 6
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 14,
+    "imageBytes": 2127452
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 3101,
+      "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId6",
+          "shapeId": "266",
+          "shapeName": "Google Shape;266;p4",
+          "bbox": {
+            "x": 2506175,
+            "y": 2854246,
+            "cx": 1676275,
+            "cy": 1676275,
+            "right": 4182450,
+            "bottom": 4530521
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "362",
+          "shapeName": "Google Shape;362;p12",
+          "bbox": {
+            "x": 2999450,
+            "y": 4387475,
+            "cx": 622000,
+            "cy": 622000,
+            "right": 3621450,
+            "bottom": 5009475
+          },
+          "slide": 12
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 46305,
+      "sha256": "70829ab70185b188c0480ebe3565b179c667f94aaa1d1f54fd8fe3824a7863f9",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "286",
+          "shapeName": "Google Shape;286;p6",
+          "bbox": {
+            "x": 3352007,
+            "y": 735075,
+            "cx": 1708387,
+            "cy": 984736,
+            "right": 5060394,
+            "bottom": 1719811
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 94752,
+      "sha256": "74852472d096638d01b27c4b337aa56fce8aa28ffc338bd1a92f1f868e94e75e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId7",
+          "shapeId": "292",
+          "shapeName": "Google Shape;292;p6",
+          "bbox": {
+            "x": 1188050,
+            "y": 2106675,
+            "cx": 1708376,
+            "cy": 984725,
+            "right": 2896426,
+            "bottom": 3091400
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image12.png",
+      "mimeType": "image/png",
+      "bytes": 17718,
+      "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475",
+      "referenceCount": 14,
+      "sameDigestCountInDeck": 1,
+      "classification": "repeated-media-candidate",
+      "classificationReason": "repeated source image retained for manual template-versus-instruction review",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "249",
+          "shapeName": "Google Shape;249;p2",
+          "bbox": {
+            "x": 8640073,
+            "y": 4630990,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9050545,
+            "bottom": 5039071
+          },
+          "slide": 2
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "257",
+          "shapeName": "Google Shape;257;p3",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 3
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "262",
+          "shapeName": "Google Shape;262;p4",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "274",
+          "shapeName": "Google Shape;274;p5",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 5
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "281",
+          "shapeName": "Google Shape;281;p6",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 6
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "313",
+          "shapeName": "Google Shape;313;p7",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 7
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "318",
+          "shapeName": "Google Shape;318;p8",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 8
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "332",
+          "shapeName": "Google Shape;332;p9",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 9
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "345",
+          "shapeName": "Google Shape;345;p10",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 10
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "353",
+          "shapeName": "Google Shape;353;p11",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 11
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "359",
+          "shapeName": "Google Shape;359;p12",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 12
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "367",
+          "shapeName": "Google Shape;367;p14",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 13
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "375",
+          "shapeName": "Google Shape;375;p15",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 14
+        },
+        {
+          "mediaPath": "ppt/media/image12.png",
+          "relationshipId": "rId3",
+          "shapeId": "394",
+          "shapeName": "Google Shape;394;p16",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 15
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image13.png",
+      "mimeType": "image/png",
+      "bytes": 22739,
+      "sha256": "a41c4a5a06acbba33fa8a2c26fbed54b40958f6c412efb73c06dc8f5384b41e9",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.png",
+          "relationshipId": "rId3",
+          "shapeId": "402",
+          "shapeName": "Google Shape;402;p17",
+          "bbox": {
+            "x": 2140244,
+            "y": 2277299,
+            "cx": 4863513,
+            "cy": 552271,
+            "right": 7003757,
+            "bottom": 2829570
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image14.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image14.png",
+      "mimeType": "image/png",
+      "bytes": 54643,
+      "sha256": "0f448667c37b019279cc829ff81d19a1f266db6e03bdcffc6ad45b2833d37ac6",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image14.png",
+          "relationshipId": "rId4",
+          "shapeId": "403",
+          "shapeName": "Google Shape;403;p17",
+          "bbox": {
+            "x": 3760326,
+            "y": 657650,
+            "cx": 1623347,
+            "cy": 1613891,
+            "right": 5383673,
+            "bottom": 2271541
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image2.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 99311,
+      "sha256": "014d32939224cc3fcfb898233d822b05e4d5986c73e86b312a497ff113b45b82",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image2.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "265",
+          "shapeName": "Google Shape;265;p4",
+          "bbox": {
+            "x": 224601,
+            "y": 562625,
+            "cx": 2646575,
+            "cy": 1764377,
+            "right": 2871176,
+            "bottom": 2327002
+          },
+          "slide": 4
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;p1",
+          "bbox": {
+            "x": 6746916,
+            "y": 166130,
+            "cx": 2150360,
+            "cy": 492268,
+            "right": 8897276,
+            "bottom": 658398
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image4.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 81708,
+      "sha256": "a5e7446e5d54a75ea68c113cd1fb632252b868b8ae9476acfe3718237407c8ac",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "295",
+          "shapeName": "Google Shape;295;p6",
+          "bbox": {
+            "x": 3344537,
+            "y": 2110775,
+            "cx": 1712565,
+            "cy": 984725,
+            "right": 5057102,
+            "bottom": 3095500
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image5.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 70834,
+      "sha256": "eb1fb0c82bc96bb6d4f3bb5d7d321231db3cedc49dc543fb2693b730f5ec0325",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "283",
+          "shapeName": "Google Shape;283;p6",
+          "bbox": {
+            "x": 1188050,
+            "y": 735075,
+            "cx": 1708387,
+            "cy": 984736,
+            "right": 2896437,
+            "bottom": 1719811
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image6.png",
+      "mimeType": "image/png",
+      "bytes": 1274268,
+      "sha256": "02e4de4a7c185aed2d084da57ae5a08f79174d3c4510c2bd9b53ab9de261fc61",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId9",
+          "shapeId": "298",
+          "shapeName": "Google Shape;298;p6",
+          "bbox": {
+            "x": 5471475,
+            "y": 2110775,
+            "cx": 1708374,
+            "cy": 984726,
+            "right": 7179849,
+            "bottom": 3095501
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 115510,
+      "sha256": "ad40a5dcf2a3928c284e1a201830b636618673649c688fb2c298c13428523c68",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId11",
+          "shapeId": "304",
+          "shapeName": "Google Shape;304;p6",
+          "bbox": {
+            "x": 4939525,
+            "y": 3584725,
+            "cx": 1712574,
+            "cy": 1004491,
+            "right": 6652099,
+            "bottom": 4589216
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 110627,
+      "sha256": "2b58ac1199f602f24d5fee9b6c9836d6777f6902965116d753fe13e13a25f085",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "289",
+          "shapeName": "Google Shape;289;p6",
+          "bbox": {
+            "x": 5471463,
+            "y": 735075,
+            "cx": 1708387,
+            "cy": 1005275,
+            "right": 7179850,
+            "bottom": 1740350
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-16-1k7Pj62D6ug6N1EC9SscMIqqqLDAOAmHs\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 103208,
+      "sha256": "50a4bdd4905ddff9e285c4e5ae1f1e66edf236be7fdf63fbe6d16ff9e1fd3ba7",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId10",
+          "shapeId": "301",
+          "shapeName": "Google Shape;301;p6",
+          "bbox": {
+            "x": 1891525,
+            "y": 3584725,
+            "cx": 1708376,
+            "cy": 982850,
+            "right": 3599901,
+            "bottom": 4567575
+          },
+          "slide": 6
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "When you called...",
+          "16",
+          "Unit"
+        ],
+        "joinedText": "When you called...\n16\nUnit",
+        "shapes": [
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 7134448,
+              "y": 10626,
+              "cx": 1998925,
+              "cy": 1418285,
+              "right": 9133373,
+              "bottom": 1428911
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1233638,
+              "y": 2241043,
+              "cx": 4998228,
+              "cy": 1368164,
+              "right": 6231866,
+              "bottom": 3609207
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "When you called...",
+                "runs": [
+                  "When you called..."
+                ]
+              }
+            ],
+            "texts": [
+              "When you called..."
+            ],
+            "joinedText": "When you called..."
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1233648,
+              "y": 166125,
+              "cx": 1257300,
+              "cy": 1368300,
+              "right": 2490948,
+              "bottom": 1534425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "16",
+                "runs": [
+                  "16"
+                ]
+              }
+            ],
+            "texts": [
+              "16"
+            ],
+            "joinedText": "16"
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 561740,
+              "y": 387746,
+              "cx": 892809,
+              "cy": 460215,
+              "right": 1454549,
+              "bottom": 847961
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6746916,
+              "y": 166130,
+              "cx": 2150360,
+              "cy": 492268,
+              "right": 8897276,
+              "bottom": 658398
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;p1",
+            "bbox": {
+              "x": 6746916,
+              "y": 166130,
+              "cx": 2150360,
+              "cy": 492268,
+              "right": 8897276,
+              "bottom": 658398
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "When you called...",
+        "visibleTexts": [
+          "When you called...",
+          "16",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY1_qELq9NJlWqBkNghXvOB8uEs8xdZ5QTYQhygUeIW8rSnkdfHApzvfZdJv0TBz4_JoLkTRjjLeab3lh1z_0fCpqqGsDSv1f99QQScURA1nNShqEZQLlJt5QW9Dcjh0bwXVR3YnkugtCS_Zi5oOcpYWLgG0hQUp0fZSUckVNbA_f2DYmUKSSN0PRzL=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "State actions happening in the past.",
+          "Competencies",
+          "Accurately understand and use the vocabulary and grammar elements necessary to express actions happening in the past in basic spoken and written language."
+        ],
+        "joinedText": "Communicative Function\nState actions happening in the past.\nCompetencies\nAccurately understand and use the vocabulary and grammar elements necessary to express actions happening in the past in basic spoken and written language.",
+        "shapes": [
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 369925,
+              "cx": 5889900,
+              "cy": 641100,
+              "right": 6501300,
+              "bottom": 1011025
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function"
+            ],
+            "joinedText": "Communicative Function"
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 1127750,
+              "cx": 5889900,
+              "cy": 641100,
+              "right": 6501300,
+              "bottom": 1768850
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "State actions happening in the past.",
+                "runs": [
+                  "State actions happening in the past."
+                ]
+              }
+            ],
+            "texts": [
+              "State actions happening in the past."
+            ],
+            "joinedText": "State actions happening in the past."
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 2177303,
+              "cx": 5889900,
+              "cy": 641100,
+              "right": 6501300,
+              "bottom": 2818403
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies"
+            ],
+            "joinedText": "Competencies"
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 2935122,
+              "cx": 5889900,
+              "cy": 1449900,
+              "right": 6501300,
+              "bottom": 4385022
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Accurately understand and use the vocabulary and grammar elements necessary to express actions happening in the past in basic spoken and written language.",
+                "runs": [
+                  "Accurately understand and use the vocabulary and grammar elements necessary to express actions happening in the past in basic spoken and written language."
+                ]
+              }
+            ],
+            "texts": [
+              "Accurately understand and use the vocabulary and grammar elements necessary to express actions happening in the past in basic spoken and written language."
+            ],
+            "joinedText": "Accurately understand and use the vocabulary and grammar elements necessary to express actions happening in the past in basic spoken and written language."
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;p2",
+            "kind": "picture",
+            "bbox": {
+              "x": 8640073,
+              "y": 4630990,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9050545,
+              "bottom": 5039071
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;p2",
+            "bbox": {
+              "x": 8640073,
+              "y": 4630990,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9050545,
+              "bottom": 5039071
+            },
+            "slide": 2
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 2
+          }
+        ]
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": 2,
+        "title": "Communicative Function",
+        "visibleTexts": [
+          "Communicative Function",
+          "State actions happening in the past.",
+          "Competencies",
+          "Accurately understand and use the vocabulary and grammar elements necessary to express actions happening in the past in basic spoken and written language."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "254",
+            "shapeName": "Google Shape;254;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 4562203,
+              "y": 371611,
+              "cx": 1275651,
+              "cy": 1530828,
+              "right": 5837854,
+              "bottom": 1902439
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "255",
+            "shapeName": "Google Shape;255;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1710900,
+              "y": 2984720,
+              "cx": 5337140,
+              "cy": 1159800,
+              "right": 7048040,
+              "bottom": 4144520
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          },
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3211046,
+              "y": 1270346,
+              "cx": 1988983,
+              "cy": 1804834,
+              "right": 5200029,
+              "bottom": 3075180
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;p3",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;p3",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 3
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 3
+          }
+        ]
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": 3,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?",
+          "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+          "Write them in the chat box. / Tell your teacher."
+        ],
+        "joinedText": "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?\nB. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?\nWrite them in the chat box. / Tell your teacher.",
+        "shapes": [
+          {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 3044172,
+              "y": 960107,
+              "cx": 2601253,
+              "cy": 969411,
+              "right": 5645425,
+              "bottom": 1929518
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?",
+                "runs": [
+                  "A. Look at the picture. ",
+                  "What is it suggesting? ",
+                  "What is today’s topic?"
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?"
+            ],
+            "joinedText": "A. Look at the picture. \nWhat is it suggesting? \nWhat is today’s topic?"
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 4344799,
+              "y": 2854249,
+              "cx": 3657205,
+              "cy": 1676277,
+              "right": 8002004,
+              "bottom": 4530526
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+                "runs": [
+                  "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?"
+                ]
+              },
+              {
+                "text": "Write them in the chat box. / Tell your teacher.",
+                "runs": [
+                  "Write them in the chat box. / Tell your teacher."
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+              "Write them in the chat box. / Tell your teacher."
+            ],
+            "joinedText": "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?\nWrite them in the chat box. / Tell your teacher."
+          },
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 224601,
+              "y": 562625,
+              "cx": 2646575,
+              "cy": 1764377,
+              "right": 2871176,
+              "bottom": 2327002
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 2506175,
+              "y": 2854246,
+              "cx": 1676275,
+              "cy": 1676275,
+              "right": 4182450,
+              "bottom": 4530521
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;p4",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image2.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;p4",
+            "bbox": {
+              "x": 224601,
+              "y": 562625,
+              "cx": 2646575,
+              "cy": 1764377,
+              "right": 2871176,
+              "bottom": 2327002
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId6",
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;p4",
+            "bbox": {
+              "x": 2506175,
+              "y": 2854246,
+              "cx": 1676275,
+              "cy": 1676275,
+              "right": 4182450,
+              "bottom": 4530521
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image2.jpg",
+            "relationshipId": "rId4",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId6",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": 4,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details? Write them in the chat box. / Tell your teacher."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY4Mmgl1N36hb_Q5l1xt2ypNqIkzD7A_nJQv8ni20n8VsLedNSRCHHlXdmg5Ei5inkFHpRQaj-Zz7EvYVbCNQbn6ZoWr6KFj9Av2H17cH22lIsUHeRMMIxdRTZfFH8PDTp0KnKx_36cvScSjzwQKCy02O5SUOBolFCLxInbUBiNBx3QFdrZo7E=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "kind": "audio-icon",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "audio-icon-without-original-url"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 1,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 1419825,
+              "y": 1964350,
+              "cx": 4575000,
+              "cy": 1159800,
+              "right": 5994825,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary introduction",
+                "runs": [
+                  "Vocabulary introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary introduction"
+            ],
+            "joinedText": "Vocabulary introduction"
+          },
+          {
+            "shapeId": "272",
+            "shapeName": "Google Shape;272;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 1857375,
+              "y": 3221050,
+              "cx": 2714625,
+              "cy": 341300,
+              "right": 4572000,
+              "bottom": 3562350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "273",
+            "shapeName": "Google Shape;273;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          },
+          {
+            "shapeId": "274",
+            "shapeName": "Google Shape;274;p5",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "274",
+            "shapeName": "Google Shape;274;p5",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 5
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 5
+          }
+        ]
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": 5,
+        "title": "Vocabulary introduction",
+        "visibleTexts": [
+          "Vocabulary introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Disasters and Accidents ",
+          "TSUNAMI",
+          "TORNADO",
+          "EARTHQUAKE",
+          "FIRE",
+          "PLANE CRASH",
+          "FLOOD",
+          "ERUPTION",
+          "CAR CRASH"
+        ],
+        "joinedText": "Disasters and Accidents\nTSUNAMI\nTORNADO\nEARTHQUAKE\nFIRE\nPLANE CRASH\nFLOOD\nERUPTION\nCAR CRASH",
+        "shapes": [
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 576625,
+              "y": 196050,
+              "cx": 7265400,
+              "cy": 4809000,
+              "right": 7842025,
+              "bottom": 5005050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 1289950,
+              "y": 166924,
+              "cx": 5889900,
+              "cy": 408000,
+              "right": 7179850,
+              "bottom": 574924
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Disasters and Accidents ",
+                "runs": [
+                  "Disasters and Accidents "
+                ]
+              }
+            ],
+            "texts": [
+              "Disasters and Accidents "
+            ],
+            "joinedText": "Disasters and Accidents"
+          },
+          {
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "282",
+            "shapeName": "Google Shape;282;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 1183750,
+              "y": 735075,
+              "cx": 1712700,
+              "cy": 1213400,
+              "right": 2896450,
+              "bottom": 1948475
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 1188050,
+              "y": 735075,
+              "cx": 1708387,
+              "cy": 984736,
+              "right": 2896437,
+              "bottom": 1719811
+            },
+            "parentShapeId": "282",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 1183750,
+              "y": 1695275,
+              "cx": 1712700,
+              "cy": 253200,
+              "right": 2896450,
+              "bottom": 1948475
+            },
+            "parentShapeId": "282",
+            "paragraphs": [
+              {
+                "text": "TSUNAMI",
+                "runs": [
+                  "TSUNAMI"
+                ]
+              }
+            ],
+            "texts": [
+              "TSUNAMI"
+            ],
+            "joinedText": "TSUNAMI"
+          },
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 3351975,
+              "y": 735075,
+              "cx": 1708500,
+              "cy": 1213400,
+              "right": 5060475,
+              "bottom": 1948475
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 3352007,
+              "y": 735075,
+              "cx": 1708387,
+              "cy": 984736,
+              "right": 5060394,
+              "bottom": 1719811
+            },
+            "parentShapeId": "285",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 3351975,
+              "y": 1695275,
+              "cx": 1708500,
+              "cy": 253200,
+              "right": 5060475,
+              "bottom": 1948475
+            },
+            "parentShapeId": "285",
+            "paragraphs": [
+              {
+                "text": "TORNADO",
+                "runs": [
+                  "TORNADO"
+                ]
+              }
+            ],
+            "texts": [
+              "TORNADO"
+            ],
+            "joinedText": "TORNADO"
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 5469313,
+              "y": 735075,
+              "cx": 1712700,
+              "cy": 1213400,
+              "right": 7182013,
+              "bottom": 1948475
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 5471463,
+              "y": 735075,
+              "cx": 1708387,
+              "cy": 1005275,
+              "right": 7179850,
+              "bottom": 1740350
+            },
+            "parentShapeId": "288",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 5469313,
+              "y": 1695275,
+              "cx": 1712700,
+              "cy": 253200,
+              "right": 7182013,
+              "bottom": 1948475
+            },
+            "parentShapeId": "288",
+            "paragraphs": [
+              {
+                "text": "EARTHQUAKE",
+                "runs": [
+                  "EARTHQUAKE"
+                ]
+              }
+            ],
+            "texts": [
+              "EARTHQUAKE"
+            ],
+            "joinedText": "EARTHQUAKE"
+          },
+          {
+            "shapeId": "291",
+            "shapeName": "Google Shape;291;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 1185888,
+              "y": 2106675,
+              "cx": 1712700,
+              "cy": 1242025,
+              "right": 2898588,
+              "bottom": 3348700
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "292",
+            "shapeName": "Google Shape;292;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 1188050,
+              "y": 2106675,
+              "cx": 1708376,
+              "cy": 984725,
+              "right": 2896426,
+              "bottom": 3091400
+            },
+            "parentShapeId": "291",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "293",
+            "shapeName": "Google Shape;293;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 1185888,
+              "y": 3095500,
+              "cx": 1712700,
+              "cy": 253200,
+              "right": 2898588,
+              "bottom": 3348700
+            },
+            "parentShapeId": "291",
+            "paragraphs": [
+              {
+                "text": "FIRE",
+                "runs": [
+                  "FIRE"
+                ]
+              }
+            ],
+            "texts": [
+              "FIRE"
+            ],
+            "joinedText": "FIRE"
+          },
+          {
+            "shapeId": "294",
+            "shapeName": "Google Shape;294;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 3344537,
+              "y": 2110775,
+              "cx": 1718038,
+              "cy": 1237925,
+              "right": 5062575,
+              "bottom": 3348700
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 3344537,
+              "y": 2110775,
+              "cx": 1712565,
+              "cy": 984725,
+              "right": 5057102,
+              "bottom": 3095500
+            },
+            "parentShapeId": "294",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 3349875,
+              "y": 3095500,
+              "cx": 1712700,
+              "cy": 253200,
+              "right": 5062575,
+              "bottom": 3348700
+            },
+            "parentShapeId": "294",
+            "paragraphs": [
+              {
+                "text": "PLANE CRASH",
+                "runs": [
+                  "PLANE CRASH"
+                ]
+              }
+            ],
+            "texts": [
+              "PLANE CRASH"
+            ],
+            "joinedText": "PLANE CRASH"
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 5469313,
+              "y": 2110775,
+              "cx": 1712700,
+              "cy": 1237925,
+              "right": 7182013,
+              "bottom": 3348700
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 5471475,
+              "y": 2110775,
+              "cx": 1708374,
+              "cy": 984726,
+              "right": 7179849,
+              "bottom": 3095501
+            },
+            "parentShapeId": "297",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "299",
+            "shapeName": "Google Shape;299;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 5469313,
+              "y": 3095500,
+              "cx": 1712700,
+              "cy": 253200,
+              "right": 7182013,
+              "bottom": 3348700
+            },
+            "parentShapeId": "297",
+            "paragraphs": [
+              {
+                "text": "FLOOD",
+                "runs": [
+                  "FLOOD"
+                ]
+              }
+            ],
+            "texts": [
+              "FLOOD"
+            ],
+            "joinedText": "FLOOD"
+          },
+          {
+            "shapeId": "300",
+            "shapeName": "Google Shape;300;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 1889363,
+              "y": 3584725,
+              "cx": 1712700,
+              "cy": 1257700,
+              "right": 3602063,
+              "bottom": 4842425
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 1891525,
+              "y": 3584725,
+              "cx": 1708376,
+              "cy": 982850,
+              "right": 3599901,
+              "bottom": 4567575
+            },
+            "parentShapeId": "300",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "302",
+            "shapeName": "Google Shape;302;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 1889363,
+              "y": 4589225,
+              "cx": 1712700,
+              "cy": 253200,
+              "right": 3602063,
+              "bottom": 4842425
+            },
+            "parentShapeId": "300",
+            "paragraphs": [
+              {
+                "text": "ERUPTION",
+                "runs": [
+                  "ERUPTION"
+                ]
+              }
+            ],
+            "texts": [
+              "ERUPTION"
+            ],
+            "joinedText": "ERUPTION"
+          },
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;p6",
+            "kind": "group",
+            "bbox": {
+              "x": 4939463,
+              "y": 3584725,
+              "cx": 1712700,
+              "cy": 1257700,
+              "right": 6652163,
+              "bottom": 4842425
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 4939525,
+              "y": 3584725,
+              "cx": 1712574,
+              "cy": 1004491,
+              "right": 6652099,
+              "bottom": 4589216
+            },
+            "parentShapeId": "303",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 4939463,
+              "y": 4589225,
+              "cx": 1712700,
+              "cy": 253200,
+              "right": 6652163,
+              "bottom": 4842425
+            },
+            "parentShapeId": "303",
+            "paragraphs": [
+              {
+                "text": "CAR CRASH",
+                "runs": [
+                  "CAR CRASH"
+                ]
+              }
+            ],
+            "texts": [
+              "CAR CRASH"
+            ],
+            "joinedText": "CAR CRASH"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;p6",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image5.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;p6",
+            "bbox": {
+              "x": 1188050,
+              "y": 735075,
+              "cx": 1708387,
+              "cy": 984736,
+              "right": 2896437,
+              "bottom": 1719811
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;p6",
+            "bbox": {
+              "x": 3352007,
+              "y": 735075,
+              "cx": 1708387,
+              "cy": 984736,
+              "right": 5060394,
+              "bottom": 1719811
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;p6",
+            "bbox": {
+              "x": 5471463,
+              "y": 735075,
+              "cx": 1708387,
+              "cy": 1005275,
+              "right": 7179850,
+              "bottom": 1740350
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId7",
+            "shapeId": "292",
+            "shapeName": "Google Shape;292;p6",
+            "bbox": {
+              "x": 1188050,
+              "y": 2106675,
+              "cx": 1708376,
+              "cy": 984725,
+              "right": 2896426,
+              "bottom": 3091400
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image4.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;p6",
+            "bbox": {
+              "x": 3344537,
+              "y": 2110775,
+              "cx": 1712565,
+              "cy": 984725,
+              "right": 5057102,
+              "bottom": 3095500
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId9",
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;p6",
+            "bbox": {
+              "x": 5471475,
+              "y": 2110775,
+              "cx": 1708374,
+              "cy": 984726,
+              "right": 7179849,
+              "bottom": 3095501
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId10",
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;p6",
+            "bbox": {
+              "x": 1891525,
+              "y": 3584725,
+              "cx": 1708376,
+              "cy": 982850,
+              "right": 3599901,
+              "bottom": 4567575
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId11",
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;p6",
+            "bbox": {
+              "x": 4939525,
+              "y": 3584725,
+              "cx": 1712574,
+              "cy": 1004491,
+              "right": 6652099,
+              "bottom": 4589216
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image5.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image4.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId9",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId10",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId11",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": 6,
+        "title": "Disasters and Accidents",
+        "visibleTexts": [
+          "Disasters and Accidents",
+          "TSUNAMI",
+          "TORNADO",
+          "EARTHQUAKE",
+          "FIRE",
+          "PLANE CRASH",
+          "FLOOD",
+          "ERUPTION",
+          "CAR CRASH"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYGlt5wJPWDJzQhcDWlEWYNOXFTCc4HwqwguWPwJEYru_jOS90lWXla9eJCb9XImDBk04wWKYlXzZsEMwAFOPlN8jQuYL-LrWKjhhwyzfktsJFzDHpAVH6YUQ0hEIaZ6xLf3aWxFmLl2548K3zRHvr5YURl67KeKjNbd7OjLncwaUuvv0hmM7I=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaWSfbDHrv0uw5c_c8fY6-UCymq0Gj9lpghaaQ0sDxj1_l-fhlX008x0sMeExnV-8R393_CTqwqawRDrU49M5oHi9rEMIACqVhTHXpfi-LMm7HIy5Gm0u9beX9VBTgadbU69rBTIloGpGs9L5ODBCuzMF6CXVatYZqEbojM_xlMmb4LuGD-lRA=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ1k2wHxV3IzpNbVvqFLGRk4BzQGomFjMjeuh74hkgMlW4x0Pt_HAHQGnI5lit65nykNHYgQtCce4ae0UA8pkAr1qNlXxjIQpH1VWpmdOvaILfR6pLeQ12WnEglGvWGm-eAdpqCx-EBrrFb4RF25pUs-TEpEbQZPape92F6NWiDgmWUk8W2Xy0=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZRZUxjLOSIfhZvV-yqgOETdrzQN2avTyTthBDEo5mOAoLJc5-66igTqwN_JulLGVcAU1Z45EwA8V7S6ZB6075Lg5yyzaP6sRveGcZXy3s7EJz66iVNX3mA4WTTK-Zvjcxkw2xrMXmr56ABeprDawd1XANEziwAXXfvs8AWsbA01UQikSnfJno=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSampZD7jfVxt5TeWXsycU9xoHqIrx2B91NCU-aAICDRVV7-98AAA-8AjgTU9_k06zDffDv5htWNNzmZcgB_7KJ-bH8KRO3bcja4EHnMBRcq256IS-boKtqLu39s1yal7xTMeMHELaUqLOUwzBWiHb0S0PTuhTIGJphvBQUI2ywRvsR3c9guypg=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY-mgiUeKkfh-sUnnT4Sbib4TBOYwHrNvjtU_L6p7i7Z5XcsiU7X_eHgq_R3ROzYZ4AAoxuZrw_xrisd9dHCLCNzRrLkjH28ZhyUGX1hhaEasvXCt60yifsKo4wJUT9KLt2JEnAL8X35NGA3Uzl-pjtNhHQLwJLFPz53nOYGqdwSAA4UCzq4KY=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZSAnolLL_zwFaPqXvFzNS99LWRDS7T0C6TToREf7T20lSl-kvOm9XmcGDF7v8wL49vOk0h7ocQ9ZH25R3dcD2AoFo_jmxByb_gjcXY8OM_RGrSUoGVtq_cSmnOMWO8RX38e14sgY25T2i3ft8lc6p2JpOVmtFcM6yAe5wCx_JIVZkdzShcFLA=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbYSraSIwFz7hXeVIRsiFmMoAnvnmHMn2GV9qdcreu2QG7vCZ7PDWZ5C-EnBPFcvYFgoy1vVMnMuji0nbRXyovUhBZWZqRl5DJSFhwtXTzC26uXiRCsw3pS4iI3yBl4mJtgdLDw8NoUB1taPtsL7rO7nMAy5ocb_VTDiJlXGDXjWMWEYHsiBRM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 9,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 4575000,
+              "cy": 1159800,
+              "right": 6462672,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3221050,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3562350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          },
+          {
+            "shapeId": "313",
+            "shapeName": "Google Shape;313;p7",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "313",
+            "shapeName": "Google Shape;313;p7",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 7
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 7
+          }
+        ]
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": 7,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "When we talk about actions happening in the past, we need to use the past progressive tense. ",
+          "TO CONSIDER",
+          "We use the verb to be as auxiliary. In both forms: was / were.",
+          "The main verb takes the –ing form as seen in the examples. ",
+          "When is used to connect two ideas; in this case it presents an action that interrupts another one. ",
+          "While is used to state two actions happening simultaneously. ",
+          "Negative forms are wasn’t / weren’t.",
+          "Past Progressive tense",
+          "I was eating when the earthquake started.",
+          "Were you eating when the earthquake started?",
+          "They were relaxing at the beach when they gave the tsunami alert.",
+          "Were they relaxing at the beach when they gave the tsunami alert?",
+          "He was running fast while the tornado was chasing him.",
+          "Was he running fast while the tornado was chasing him?"
+        ],
+        "joinedText": "When we talk about actions happening in the past, we need to use the past progressive tense.\nTO CONSIDER\n\nWe use the verb to be as auxiliary. In both forms: was / were.\nThe main verb takes the –ing form as seen in the examples. \nWhen is used to connect two ideas; in this case it presents an action that interrupts another one. \nWhile is used to state two actions happening simultaneously. \nNegative forms are wasn’t / weren’t.\nPast Progressive tense\nI was eating when the earthquake started.\nWere you eating when the earthquake started?\nThey were relaxing at the beach when they gave the tsunami alert.\nWere they relaxing at the beach when they gave the tsunami alert?\nHe was running fast while the tornado was chasing him.\nWas he running fast while the tornado was chasing him?",
+        "shapes": [
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;p8",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 396948,
+              "y": 313252,
+              "cx": 7060020,
+              "cy": 573324,
+              "right": 7456968,
+              "bottom": 886576
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "When we talk about actions happening in the past, we need to use the past progressive tense. ",
+                "runs": [
+                  "When we talk about actions happening in the past, we need to use the past progressive tense. "
+                ]
+              }
+            ],
+            "texts": [
+              "When we talk about actions happening in the past, we need to use the past progressive tense. "
+            ],
+            "joinedText": "When we talk about actions happening in the past, we need to use the past progressive tense."
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;p8",
+            "kind": "group",
+            "bbox": {
+              "x": 159838,
+              "y": 1299929,
+              "cx": 4110213,
+              "cy": 2390479,
+              "right": 4270051,
+              "bottom": 3690408
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6809829,
+              "y": 964323,
+              "cx": 2080172,
+              "cy": 2467206,
+              "right": 8890001,
+              "bottom": 3431529
+            },
+            "parentShapeId": "320",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6527130,
+              "y": 2912263,
+              "cx": 801967,
+              "cy": 236571,
+              "right": 7329097,
+              "bottom": 3148834
+            },
+            "parentShapeId": "320",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 622725,
+              "y": 1377625,
+              "cx": 3647700,
+              "cy": 2232000,
+              "right": 4270425,
+              "bottom": 3609625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "TO CONSIDER",
+                "runs": [
+                  "TO CONSIDER"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "We use the verb to be as auxiliary. In both forms: was / were.",
+                "runs": [
+                  "We use the verb to be as auxiliary. In both forms: ",
+                  "was",
+                  " / ",
+                  "were",
+                  "."
+                ]
+              },
+              {
+                "text": "The main verb takes the –ing form as seen in the examples. ",
+                "runs": [
+                  "The ",
+                  "main verb takes the –ing",
+                  " form as seen in the examples. "
+                ]
+              },
+              {
+                "text": "When is used to connect two ideas; in this case it presents an action that interrupts another one. ",
+                "runs": [
+                  "When is used to connect two ideas; in this case it presents an action that interrupts another one. "
+                ]
+              },
+              {
+                "text": "While is used to state two actions happening simultaneously. ",
+                "runs": [
+                  "While is used to state two actions happening simultaneously. "
+                ]
+              },
+              {
+                "text": "Negative forms are wasn’t / weren’t.",
+                "runs": [
+                  "Negative forms are ",
+                  "wasn’t ",
+                  "/ ",
+                  "weren’t."
+                ]
+              }
+            ],
+            "texts": [
+              "TO CONSIDER",
+              "We use the verb to be as auxiliary. In both forms: was / were.",
+              "The main verb takes the –ing form as seen in the examples. ",
+              "When is used to connect two ideas; in this case it presents an action that interrupts another one. ",
+              "While is used to state two actions happening simultaneously. ",
+              "Negative forms are wasn’t / weren’t."
+            ],
+            "joinedText": "TO CONSIDER\n\nWe use the verb to be as auxiliary. In both forms: was / were.\nThe main verb takes the –ing form as seen in the examples. \nWhen is used to connect two ideas; in this case it presents an action that interrupts another one. \nWhile is used to state two actions happening simultaneously. \nNegative forms are wasn’t / weren’t."
+          },
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;p8",
+            "kind": "table",
+            "bbox": {
+              "x": 4587566,
+              "y": 1377617,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 7587566,
+              "bottom": 4377617
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Past Progressive tense",
+                "runs": []
+              },
+              {
+                "text": "I was eating when the earthquake started.",
+                "runs": []
+              },
+              {
+                "text": "Were you eating when the earthquake started?",
+                "runs": []
+              },
+              {
+                "text": "They were relaxing at the beach when they gave the tsunami alert.",
+                "runs": []
+              },
+              {
+                "text": "Were they relaxing at the beach when they gave the tsunami alert?",
+                "runs": []
+              },
+              {
+                "text": "He was running fast while the tornado was chasing him.",
+                "runs": []
+              },
+              {
+                "text": "Was he running fast while the tornado was chasing him?",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Past Progressive tense",
+              "I was eating when the earthquake started.",
+              "Were you eating when the earthquake started?",
+              "They were relaxing at the beach when they gave the tsunami alert.",
+              "Were they relaxing at the beach when they gave the tsunami alert?",
+              "He was running fast while the tornado was chasing him.",
+              "Was he running fast while the tornado was chasing him?"
+            ],
+            "joinedText": "Past Progressive tense\nI was eating when the earthquake started.\nWere you eating when the earthquake started?\nThey were relaxing at the beach when they gave the tsunami alert.\nWere they relaxing at the beach when they gave the tsunami alert?\nHe was running fast while the tornado was chasing him.\nWas he running fast while the tornado was chasing him?",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;p8",
+            "bbox": {
+              "x": 4587566,
+              "y": 1377617,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 7587566,
+              "bottom": 4377617
+            },
+            "columnWidths": [
+              2125250,
+              2175800
+            ],
+            "rows": [
+              {
+                "height": 308100,
+                "cells": [
+                  {
+                    "text": "Past Progressive tense",
+                    "paragraphs": [
+                      {
+                        "text": "Past Progressive tense",
+                        "runs": [
+                          "Past Progressive tense"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 412975,
+                "cells": [
+                  {
+                    "text": "I was eating when the earthquake started.",
+                    "paragraphs": [
+                      {
+                        "text": "I was eating when the earthquake started. ",
+                        "runs": [
+                          "I ",
+                          "was eating ",
+                          "when ",
+                          "the earthquake started",
+                          ". "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Were you eating when the earthquake started?",
+                    "paragraphs": [
+                      {
+                        "text": "Were you eating when the earthquake started? ",
+                        "runs": [
+                          "Were you eating ",
+                          "when ",
+                          "the earthquake started",
+                          "? "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 586875,
+                "cells": [
+                  {
+                    "text": "They were relaxing at the beach when they gave the tsunami alert.",
+                    "paragraphs": [
+                      {
+                        "text": "They were relaxing at the beach when they gave the tsunami alert. ",
+                        "runs": [
+                          "They ",
+                          "were relaxing ",
+                          "at the beach when ",
+                          "they gave the tsunami alert",
+                          ". "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Were they relaxing at the beach when they gave the tsunami alert?",
+                    "paragraphs": [
+                      {
+                        "text": "Were they relaxing at the beach when they gave the tsunami alert? ",
+                        "runs": [
+                          "Were they relaxing ",
+                          "at the beach when ",
+                          "they gave the tsunami alert",
+                          "? "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 586875,
+                "cells": [
+                  {
+                    "text": "He was running fast while the tornado was chasing him.",
+                    "paragraphs": [
+                      {
+                        "text": "He was running fast while the tornado was chasing him. ",
+                        "runs": [
+                          "He ",
+                          "was running ",
+                          "fast while ",
+                          "the tornado was chasing him",
+                          ". "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Was he running fast while the tornado was chasing him?",
+                    "paragraphs": [
+                      {
+                        "text": "Was he running fast while the tornado was chasing him? ",
+                        "runs": [
+                          "Was he running fast ",
+                          "while ",
+                          "the tornado was chasing him",
+                          "? "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;p8",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 8
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 8
+          }
+        ]
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": 8,
+        "title": "When we talk about actions happening in the past, we need to use the past progressive tense.",
+        "visibleTexts": [
+          "When we talk about actions happening in the past, we need to use the past progressive tense.",
+          "TO CONSIDER 1. We use the verb to be as auxiliary. In both forms: was / were. 2. The main verb takes the –ing form as seen in the examples. 3. When is used to connect two ideas; in this case it presents an action that interrupts another one. 4. While is used to state two actions happening simultaneously. 5. Negative forms are wasn’t / weren’t.",
+          "Past Progressive tense I was eating when the earthquake started. Were you eating when the earthquake started? They were relaxing at the beach when they gave the tsunami alert. Were they relaxing at the beach when they gave the tsunami alert? He was running fast while the tornado was chasing him. Was he running fast while the tornado was chasing him?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 2684328,
+              "cy": 1159800,
+              "right": 4572000,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use",
+                "runs": [
+                  "Language Use"
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use"
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "330",
+            "shapeName": "Google Shape;330;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3124150,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3465450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "331",
+            "shapeName": "Google Shape;331;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          },
+          {
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;p9",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;p9",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 9
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 9
+          }
+        ]
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": 9,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Targets",
+          "Functions",
+          "Examples",
+          "1",
+          "Actions happening in the past interrupted by another one.",
+          "I was having breakfast when all started to move.",
+          "2",
+          "Actions happening simultaneously in the past.",
+          "John was screaming while I was pulling him back into the house.",
+          "When using past progressive we can consider two main functions about actions happening in the past. ",
+          "TO CONSIDER",
+          "Both use the same structure but the difference is given by the connector."
+        ],
+        "joinedText": "Language Targets\nFunctions\nExamples\n1\nActions happening in the past interrupted by another one.\nI was having breakfast when all started to move.\n2\nActions happening simultaneously in the past.\nJohn was screaming while I was pulling him back into the house.\nWhen using past progressive we can consider two main functions about actions happening in the past.\nTO CONSIDER\n\nBoth use the same structure but the difference is given by the connector.",
+        "shapes": [
+          {
+            "shapeId": "337",
+            "shapeName": "Google Shape;337;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 1762361,
+              "y": 252004,
+              "cx": 5619279,
+              "cy": 458575,
+              "right": 7381640,
+              "bottom": 710579
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Targets",
+                "runs": [
+                  "Language Targets"
+                ]
+              }
+            ],
+            "texts": [
+              "Language Targets"
+            ],
+            "joinedText": "Language Targets"
+          },
+          {
+            "shapeId": "338",
+            "shapeName": "Google Shape;338;p10",
+            "kind": "table",
+            "bbox": {
+              "x": 3466023,
+              "y": 943458,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 6466023,
+              "bottom": 3943458
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Actions happening in the past interrupted by another one.",
+                "runs": []
+              },
+              {
+                "text": "I was having breakfast when all started to move.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Actions happening simultaneously in the past.",
+                "runs": []
+              },
+              {
+                "text": "John was screaming while I was pulling him back into the house.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Actions happening in the past interrupted by another one.",
+              "I was having breakfast when all started to move.",
+              "2",
+              "Actions happening simultaneously in the past.",
+              "John was screaming while I was pulling him back into the house."
+            ],
+            "joinedText": "Functions\nExamples\n1\nActions happening in the past interrupted by another one.\nI was having breakfast when all started to move.\n2\nActions happening simultaneously in the past.\nJohn was screaming while I was pulling him back into the house.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "339",
+            "shapeName": "Google Shape;339;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 443255,
+              "y": 1009987,
+              "cx": 2619259,
+              "cy": 1604295,
+              "right": 3062514,
+              "bottom": 2614282
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "When using past progressive we can consider two main functions about actions happening in the past. ",
+                "runs": [
+                  "When using past progressive we can consider two main functions about actions happening in the past. "
+                ]
+              }
+            ],
+            "texts": [
+              "When using past progressive we can consider two main functions about actions happening in the past. "
+            ],
+            "joinedText": "When using past progressive we can consider two main functions about actions happening in the past."
+          },
+          {
+            "shapeId": "340",
+            "shapeName": "Google Shape;340;p10",
+            "kind": "group",
+            "bbox": {
+              "x": 4220997,
+              "y": 3339607,
+              "cx": 3160641,
+              "cy": 1452498,
+              "right": 7381638,
+              "bottom": 4792105
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "341",
+            "shapeName": "Google Shape;341;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 6809829,
+              "y": 964323,
+              "cx": 2080172,
+              "cy": 2467206,
+              "right": 8890001,
+              "bottom": 3431529
+            },
+            "parentShapeId": "340",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "342",
+            "shapeName": "Google Shape;342;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 6527130,
+              "y": 2912263,
+              "cx": 801967,
+              "cy": 236571,
+              "right": 7329097,
+              "bottom": 3148834
+            },
+            "parentShapeId": "340",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "343",
+            "shapeName": "Google Shape;343;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 4648378,
+              "y": 3417264,
+              "cx": 2604053,
+              "cy": 1184940,
+              "right": 7252431,
+              "bottom": 4602204
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "TO CONSIDER",
+                "runs": [
+                  "TO CONSIDER"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Both use the same structure but the difference is given by the connector.",
+                "runs": [
+                  "Both use the same structure but the difference is given by the connector."
+                ]
+              }
+            ],
+            "texts": [
+              "TO CONSIDER",
+              "Both use the same structure but the difference is given by the connector."
+            ],
+            "joinedText": "TO CONSIDER\n\nBoth use the same structure but the difference is given by the connector."
+          },
+          {
+            "shapeId": "344",
+            "shapeName": "Google Shape;344;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 947944,
+              "y": 2791683,
+              "cx": 1550843,
+              "cy": 1612563,
+              "right": 2498787,
+              "bottom": 4404246
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "345",
+            "shapeName": "Google Shape;345;p10",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "338",
+            "shapeName": "Google Shape;338;p10",
+            "bbox": {
+              "x": 3466023,
+              "y": 943458,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 6466023,
+              "bottom": 3943458
+            },
+            "columnWidths": [
+              281025,
+              2286000,
+              2832650
+            ],
+            "rows": [
+              {
+                "height": 318800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples ",
+                        "runs": [
+                          "Examples "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 193450,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Actions happening in the past interrupted by another one.",
+                    "paragraphs": [
+                      {
+                        "text": "Actions happening in the past interrupted by another one. ",
+                        "runs": [
+                          "Actions happening in the past interrupted by another one. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I was having breakfast when all started to move.",
+                    "paragraphs": [
+                      {
+                        "text": "I was having breakfast when all started to move. ",
+                        "runs": [
+                          "I was having breakfast ",
+                          "when",
+                          " ",
+                          "all started to move",
+                          ". "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 107425,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Actions happening simultaneously in the past.",
+                    "paragraphs": [
+                      {
+                        "text": "Actions happening simultaneously in the past. ",
+                        "runs": [
+                          "Actions happening simultaneously in the past. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "John was screaming while I was pulling him back into the house.",
+                    "paragraphs": [
+                      {
+                        "text": "John was screaming while I was pulling him back into the house. ",
+                        "runs": [
+                          "John was screaming ",
+                          "while",
+                          " ",
+                          "I was pulling him back ",
+                          "into",
+                          " the house",
+                          ". "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "345",
+            "shapeName": "Google Shape;345;p10",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 10
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 10
+          }
+        ]
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": 10,
+        "title": "Language Targets",
+        "visibleTexts": [
+          "Language Targets",
+          "Functions Examples 1 Actions happening in the past interrupted by another one. I was having breakfast when all started to move. 2 Actions happening simultaneously in the past. John was screaming while I was pulling him back into the house.",
+          "When using past progressive we can consider two main functions about actions happening in the past.",
+          "TO CONSIDER Both use the same structure but the difference is given by the connector."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s\nPractice",
+          "Practice makes perfect!",
+          "4"
+        ],
+        "joinedText": "Let’s\nPractice\nPractice makes perfect!\n4",
+        "shapes": [
+          {
+            "shapeId": "350",
+            "shapeName": "Google Shape;350;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 2684328,
+              "cy": 1159800,
+              "right": 4572000,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s\nPractice",
+                "runs": [
+                  "Let’s",
+                  "Practice"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s\nPractice"
+            ],
+            "joinedText": "Let’s\nPractice"
+          },
+          {
+            "shapeId": "351",
+            "shapeName": "Google Shape;351;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3124150,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3465450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect!",
+                "runs": [
+                  "Practice makes perfect!"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect!"
+            ],
+            "joinedText": "Practice makes perfect!"
+          },
+          {
+            "shapeId": "352",
+            "shapeName": "Google Shape;352;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          },
+          {
+            "shapeId": "353",
+            "shapeName": "Google Shape;353;p11",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "353",
+            "shapeName": "Google Shape;353;p11",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 11
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 11
+          }
+        ]
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": 11,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect!",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Sentences",
+          "Questions",
+          "0.",
+          "I was calling him when the tornado took him away.",
+          "Were you calling him when the tornado took him away?",
+          "1.",
+          "She was eating lunch when the wave crashed the land.",
+          "2.",
+          "They were watching the volcano while it was making eruption.",
+          "3.",
+          "You were driving too fast when you crashed into his car.",
+          "4.",
+          "It was raining a lot while the city was flooding.",
+          "5.",
+          "We were having a good time when the fire started.",
+          "A. Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences.",
+          "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary. "
+        ],
+        "joinedText": "Sentences\nQuestions\n0.\nI was calling him when the tornado took him away.\nWere you calling him when the tornado took him away?\n1.\nShe was eating lunch when the wave crashed the land.\n2.\nThey were watching the volcano while it was making eruption.\n3.\nYou were driving too fast when you crashed into his car.\n4.\nIt was raining a lot while the city was flooding.\n5.\nWe were having a good time when the fire started.\nA. Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences.\nB. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.",
+        "shapes": [
+          {
+            "shapeId": "358",
+            "shapeName": "Google Shape;358;p12",
+            "kind": "table",
+            "bbox": {
+              "x": 304840,
+              "y": 693693,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3304840,
+              "bottom": 3693693
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Sentences",
+                "runs": []
+              },
+              {
+                "text": "Questions",
+                "runs": []
+              },
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "I was calling him when the tornado took him away.",
+                "runs": []
+              },
+              {
+                "text": "Were you calling him when the tornado took him away?",
+                "runs": []
+              },
+              {
+                "text": "1.",
+                "runs": []
+              },
+              {
+                "text": "She was eating lunch when the wave crashed the land.",
+                "runs": []
+              },
+              {
+                "text": "2.",
+                "runs": []
+              },
+              {
+                "text": "They were watching the volcano while it was making eruption.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "You were driving too fast when you crashed into his car.",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "It was raining a lot while the city was flooding.",
+                "runs": []
+              },
+              {
+                "text": "5.",
+                "runs": []
+              },
+              {
+                "text": "We were having a good time when the fire started.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Sentences",
+              "Questions",
+              "0.",
+              "I was calling him when the tornado took him away.",
+              "Were you calling him when the tornado took him away?",
+              "1.",
+              "She was eating lunch when the wave crashed the land.",
+              "2.",
+              "They were watching the volcano while it was making eruption.",
+              "3.",
+              "You were driving too fast when you crashed into his car.",
+              "4.",
+              "It was raining a lot while the city was flooding.",
+              "5.",
+              "We were having a good time when the fire started."
+            ],
+            "joinedText": "Sentences\nQuestions\n0.\nI was calling him when the tornado took him away.\nWere you calling him when the tornado took him away?\n1.\nShe was eating lunch when the wave crashed the land.\n2.\nThey were watching the volcano while it was making eruption.\n3.\nYou were driving too fast when you crashed into his car.\n4.\nIt was raining a lot while the city was flooding.\n5.\nWe were having a good time when the fire started.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "359",
+            "shapeName": "Google Shape;359;p12",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "360",
+            "shapeName": "Google Shape;360;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 304925,
+              "y": 204175,
+              "cx": 7937100,
+              "cy": 408000,
+              "right": 8242025,
+              "bottom": 612175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences.",
+                "runs": [
+                  "A. ",
+                  "Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences."
+                ]
+              }
+            ],
+            "texts": [
+              "A. Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences."
+            ],
+            "joinedText": "A. Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences."
+          },
+          {
+            "shapeId": "361",
+            "shapeName": "Google Shape;361;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 305000,
+              "y": 3957350,
+              "cx": 7937100,
+              "cy": 777900,
+              "right": 8242100,
+              "bottom": 4735250
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary. ",
+                "runs": [
+                  "B. ",
+                  "Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary. "
+            ],
+            "joinedText": "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+          },
+          {
+            "shapeId": "362",
+            "shapeName": "Google Shape;362;p12",
+            "kind": "picture",
+            "bbox": {
+              "x": 2999450,
+              "y": 4387475,
+              "cx": 622000,
+              "cy": 622000,
+              "right": 3621450,
+              "bottom": 5009475
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "358",
+            "shapeName": "Google Shape;358;p12",
+            "bbox": {
+              "x": 304840,
+              "y": 693693,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3304840,
+              "bottom": 3693693
+            },
+            "columnWidths": [
+              496850,
+              3369925,
+              4070375
+            ],
+            "rows": [
+              {
+                "height": 361425,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Sentences",
+                    "paragraphs": [
+                      {
+                        "text": "Sentences ",
+                        "runs": [
+                          "Sentences "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Questions",
+                    "paragraphs": [
+                      {
+                        "text": "Questions ",
+                        "runs": [
+                          "Questions "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 292725,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I was calling him when the tornado took him away.",
+                    "paragraphs": [
+                      {
+                        "text": "I was calling him when the tornado took him away.",
+                        "runs": [
+                          "I was calling him when the tornado took him away."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Were you calling him when the tornado took him away?",
+                    "paragraphs": [
+                      {
+                        "text": "Were you calling him when the tornado took him away?",
+                        "runs": [
+                          "Were you calling him when the tornado took him away?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 315800,
+                "cells": [
+                  {
+                    "text": "1.",
+                    "paragraphs": [
+                      {
+                        "text": "1.",
+                        "runs": [
+                          "1."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She was eating lunch when the wave crashed the land.",
+                    "paragraphs": [
+                      {
+                        "text": "She was eating lunch when the wave crashed the land. ",
+                        "runs": [
+                          "She was eating lunch when the wave crashed the land. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304825,
+                "cells": [
+                  {
+                    "text": "2.",
+                    "paragraphs": [
+                      {
+                        "text": "2.",
+                        "runs": [
+                          "2."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They were watching the volcano while it was making eruption.",
+                    "paragraphs": [
+                      {
+                        "text": "They were watching the volcano while it was making eruption. ",
+                        "runs": [
+                          "They were watching the volcano while it was making eruption. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 224125,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "You were driving too fast when you crashed into his car.",
+                    "paragraphs": [
+                      {
+                        "text": "You were driving too fast when you crashed into his car. ",
+                        "runs": [
+                          "You were driving too fast when you crashed into his car. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 178000,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "It was raining a lot while the city was flooding.",
+                    "paragraphs": [
+                      {
+                        "text": "It was raining a lot while the city was flooding.",
+                        "runs": [
+                          "It was raining a lot while the city was flooding."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 293300,
+                "cells": [
+                  {
+                    "text": "5.",
+                    "paragraphs": [
+                      {
+                        "text": "5.",
+                        "runs": [
+                          "5."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We were having a good time when the fire started.",
+                    "paragraphs": [
+                      {
+                        "text": "We were having a good time when the fire started. ",
+                        "runs": [
+                          "We were having a good time when the fire started. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "359",
+            "shapeName": "Google Shape;359;p12",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 12
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "362",
+            "shapeName": "Google Shape;362;p12",
+            "bbox": {
+              "x": 2999450,
+              "y": 4387475,
+              "cx": 622000,
+              "cy": 622000,
+              "right": 3621450,
+              "bottom": 5009475
+            },
+            "slide": 12
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 12
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 12
+          }
+        ]
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": 12,
+        "title": "Sentences Questions 0. I was calling him when the tornado took him away. Were you calling him when the tornado took him away? 1. She was eating lunch when the wave crashed the land. 2. They were watching the volcano while it was making eruption. 3. You were driving too fast when you crashed into his car. 4. It was raining a lot while the city was flooding. 5. We were having a good time when the fire started.",
+        "visibleTexts": [
+          "Sentences Questions 0. I was calling him when the tornado took him away. Were you calling him when the tornado took him away? 1. She was eating lunch when the wave crashed the land. 2. They were watching the volcano while it was making eruption. 3. You were driving too fast when you crashed into his car. 4. It was raining a lot while the city was flooding. 5. We were having a good time when the fire started.",
+          "A. Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences.",
+          "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "kind": "audio-icon",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "audio-icon-without-original-url"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 1,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "Survivors!",
+          "2 years ago, my family and I went to Thailand ",
+          "for spending our holidays. We were having a good ",
+          "time and the city was giving us all what we expected. ",
+          "When we arrived, we were having problems to find the ",
+          "hotel, but a woman helped us and we got safe. ",
+          "The days were passing by while we were having the ",
+          "greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived. ",
+          "C. Read the following paragraph and extract the sentences to put them under the corresponding function.",
+          "Actions happening in the past. / Actions happening in the past interrupted by another one.",
+          "Actions happening simultaneously in the past."
+        ],
+        "joinedText": "Survivors!\n\n2 years ago, my family and I went to Thailand \nfor spending our holidays. We were having a good \ntime and the city was giving us all what we expected. \nWhen we arrived, we were having problems to find the \nhotel, but a woman helped us and we got safe. \nThe days were passing by while we were having the \ngreatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived.\nC. Read the following paragraph and extract the sentences to put them under the corresponding function.\nActions happening in the past. / Actions happening in the past interrupted by another one.\nActions happening simultaneously in the past.",
+        "shapes": [
+          {
+            "shapeId": "367",
+            "shapeName": "Google Shape;367;p14",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "368",
+            "shapeName": "Google Shape;368;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 144250,
+              "y": 95751,
+              "cx": 8549100,
+              "cy": 3182400,
+              "right": 8693350,
+              "bottom": 3278151
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Survivors!",
+                "runs": [
+                  "Survivors!"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "2 years ago, my family and I went to Thailand ",
+                "runs": [
+                  "2 years ago, my family and I went to Thailand "
+                ]
+              },
+              {
+                "text": "for spending our holidays. We were having a good ",
+                "runs": [
+                  "for spending our holidays. We were having a good "
+                ]
+              },
+              {
+                "text": "time and the city was giving us all what we expected. ",
+                "runs": [
+                  "time and the city was giving us all what we expected. "
+                ]
+              },
+              {
+                "text": "When we arrived, we were having problems to find the ",
+                "runs": [
+                  "When we arrived, we were having problems to find the "
+                ]
+              },
+              {
+                "text": "hotel, but a woman helped us and we got safe. ",
+                "runs": [
+                  "hotel, but a woman helped us and we got safe. "
+                ]
+              },
+              {
+                "text": "The days were passing by while we were having the ",
+                "runs": [
+                  "The days were passing by while we were having the "
+                ]
+              },
+              {
+                "text": "greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived. ",
+                "runs": [
+                  "greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and ",
+                  "lots",
+                  " of water was running over people while they were trying to ",
+                  "escape",
+                  "… fortunately, we could get to high hill and survived. "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Survivors!",
+              "2 years ago, my family and I went to Thailand ",
+              "for spending our holidays. We were having a good ",
+              "time and the city was giving us all what we expected. ",
+              "When we arrived, we were having problems to find the ",
+              "hotel, but a woman helped us and we got safe. ",
+              "The days were passing by while we were having the ",
+              "greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived. "
+            ],
+            "joinedText": "Survivors!\n\n2 years ago, my family and I went to Thailand \nfor spending our holidays. We were having a good \ntime and the city was giving us all what we expected. \nWhen we arrived, we were having problems to find the \nhotel, but a woman helped us and we got safe. \nThe days were passing by while we were having the \ngreatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived."
+          },
+          {
+            "shapeId": "369",
+            "shapeName": "Google Shape;369;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 5039139,
+              "y": 268356,
+              "cx": 3458818,
+              "cy": 1639958,
+              "right": 8497957,
+              "bottom": 1908314
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and extract the sentences to put them under the corresponding function.",
+                "runs": [
+                  "C. ",
+                  "Read the following paragraph and extract the sentences to put them under the corresponding function."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and extract the sentences to put them under the corresponding function."
+            ],
+            "joinedText": "C. Read the following paragraph and extract the sentences to put them under the corresponding function."
+          },
+          {
+            "shapeId": "370",
+            "shapeName": "Google Shape;370;p14",
+            "kind": "table",
+            "bbox": {
+              "x": 799300,
+              "y": 3410775,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3799300,
+              "bottom": 6410775
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Actions happening in the past. / Actions happening in the past interrupted by another one.",
+                "runs": []
+              },
+              {
+                "text": "Actions happening simultaneously in the past.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Actions happening in the past. / Actions happening in the past interrupted by another one.",
+              "Actions happening simultaneously in the past."
+            ],
+            "joinedText": "Actions happening in the past. / Actions happening in the past interrupted by another one.\nActions happening simultaneously in the past.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "370",
+            "shapeName": "Google Shape;370;p14",
+            "bbox": {
+              "x": 799300,
+              "y": 3410775,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3799300,
+              "bottom": 6410775
+            },
+            "columnWidths": [
+              3619500,
+              3619500
+            ],
+            "rows": [
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "Actions happening in the past. / Actions happening in the past interrupted by another one.",
+                    "paragraphs": [
+                      {
+                        "text": "Actions happening in the past. / Actions happening in the past interrupted by another one.",
+                        "runs": [
+                          "Actions happening in the past. / Actions happening in the past interrupted by another one."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Actions happening simultaneously in the past.",
+                    "paragraphs": [
+                      {
+                        "text": "Actions happening simultaneously in the past. ",
+                        "runs": [
+                          "Actions happening simultaneously in the past. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "367",
+            "shapeName": "Google Shape;367;p14",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 13
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 13
+          }
+        ]
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": 14,
+        "title": "Survivors! 2 years ago, my family and I went to Thailand for spending our holidays. We were having a good time and the city was giving us all what we expected. When we arrived, we were having problems to find the hotel, but a woman helped us and we got safe. The days were passing by while we were having the greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived.",
+        "visibleTexts": [
+          "Survivors! 2 years ago, my family and I went to Thailand for spending our holidays. We were having a good time and the city was giving us all what we expected. When we arrived, we were having problems to find the hotel, but a woman helped us and we got safe. The days were passing by while we were having the greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived.",
+          "C. Read the following paragraph and extract the sentences to put them under the corresponding function.",
+          "Actions happening in the past. / Actions happening in the past interrupted by another one. Actions happening simultaneously in the past."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience? ",
+          "Let’s ",
+          "Talk",
+          "E. Write a 80 - 100 word paragraph talking about your last vacations. ",
+          "Where were you? What were you doing there? Were you having a good time? Be very detailed. \n",
+          "Let’s ",
+          "Write"
+        ],
+        "joinedText": "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience?\nLet’s \nTalk\nE. Write a 80 - 100 word paragraph talking about your last vacations. \nWhere were you? What were you doing there? Were you having a good time? Be very detailed.\nLet’s \nWrite",
+        "shapes": [
+          {
+            "shapeId": "375",
+            "shapeName": "Google Shape;375;p15",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "376",
+            "shapeName": "Google Shape;376;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 425350,
+              "y": 292451,
+              "cx": 6799500,
+              "cy": 722400,
+              "right": 7224850,
+              "bottom": 1014851
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience? ",
+                "runs": [
+                  "D. ",
+                  "Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience? "
+                ]
+              }
+            ],
+            "texts": [
+              "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience? "
+            ],
+            "joinedText": "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience?"
+          },
+          {
+            "shapeId": "377",
+            "shapeName": "Google Shape;377;p15",
+            "kind": "group",
+            "bbox": {
+              "x": 4366158,
+              "y": 703971,
+              "cx": 1802401,
+              "cy": 1759507,
+              "right": 6168559,
+              "bottom": 2463478
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "378",
+            "shapeName": "Google Shape;378;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 4208424,
+              "y": 3493439,
+              "cx": 1367935,
+              "cy": 1456893,
+              "right": 5576359,
+              "bottom": 4950332
+            },
+            "parentShapeId": "377",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "379",
+            "shapeName": "Google Shape;379;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 4412381,
+              "y": 3668936,
+              "cx": 1138533,
+              "cy": 904831,
+              "right": 5550914,
+              "bottom": 4573767
+            },
+            "parentShapeId": "377",
+            "paragraphs": [
+              {
+                "text": "Let’s ",
+                "runs": [
+                  "Let’s "
+                ]
+              },
+              {
+                "text": "Talk",
+                "runs": [
+                  "Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s ",
+              "Talk"
+            ],
+            "joinedText": "Let’s \nTalk"
+          },
+          {
+            "shapeId": "380",
+            "shapeName": "Google Shape;380;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 349150,
+              "y": 2585075,
+              "cx": 7880400,
+              "cy": 771900,
+              "right": 8229550,
+              "bottom": 3356975
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 80 - 100 word paragraph talking about your last vacations. ",
+                "runs": [
+                  "E. ",
+                  "Write a 80 - 100 word paragraph talking about your last vacations. "
+                ]
+              },
+              {
+                "text": "Where were you? What were you doing there? Were you having a good time? Be very detailed. \n",
+                "runs": [
+                  "Where were you? What were you doing there? Were you having a good time? Be very detailed. "
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 80 - 100 word paragraph talking about your last vacations. ",
+              "Where were you? What were you doing there? Were you having a good time? Be very detailed. \n"
+            ],
+            "joinedText": "E. Write a 80 - 100 word paragraph talking about your last vacations. \nWhere were you? What were you doing there? Were you having a good time? Be very detailed."
+          },
+          {
+            "shapeId": "381",
+            "shapeName": "Google Shape;381;p15",
+            "kind": "group",
+            "bbox": {
+              "x": 2593365,
+              "y": 3615344,
+              "cx": 2139483,
+              "cy": 1307761,
+              "right": 4732848,
+              "bottom": 4923105
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "382",
+            "shapeName": "Google Shape;382;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 3907443,
+              "y": 3379795,
+              "cx": 1351339,
+              "cy": 1673007,
+              "right": 5258782,
+              "bottom": 5052802
+            },
+            "parentShapeId": "381",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "383",
+            "shapeName": "Google Shape;383;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 5152522,
+              "y": 4212813,
+              "cx": 390525,
+              "cy": 388750,
+              "right": 5543047,
+              "bottom": 4601563
+            },
+            "parentShapeId": "381",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "384",
+            "shapeName": "Google Shape;384;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 5066087,
+              "y": 3779793,
+              "cx": 1056468,
+              "cy": 1066953,
+              "right": 6122555,
+              "bottom": 4846746
+            },
+            "parentShapeId": "381",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "385",
+            "shapeName": "Google Shape;385;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 3825088,
+              "y": 3739245,
+              "cx": 1354640,
+              "cy": 937543,
+              "right": 5179728,
+              "bottom": 4676788
+            },
+            "parentShapeId": "381",
+            "paragraphs": [
+              {
+                "text": "Let’s ",
+                "runs": [
+                  "Let’s "
+                ]
+              },
+              {
+                "text": "Write",
+                "runs": [
+                  "Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s ",
+              "Write"
+            ],
+            "joinedText": "Let’s \nWrite"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "375",
+            "shapeName": "Google Shape;375;p15",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": 15,
+        "title": "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience?",
+        "visibleTexts": [
+          "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience?",
+          "Let’s Talk",
+          "E. Write a 80 - 100 word paragraph talking about your last vacations. Where were you? What were you doing there? Were you having a good time? Be very detailed.",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to: ",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to: \nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "390",
+            "shapeName": "Google Shape;390;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 3240774,
+              "y": 1475375,
+              "cx": 5452463,
+              "cy": 1220100,
+              "right": 8693237,
+              "bottom": 2695475
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "391",
+            "shapeName": "Google Shape;391;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 3240775,
+              "y": 2645249,
+              "cx": 4872000,
+              "cy": 1811815,
+              "right": 8112775,
+              "bottom": 4457064
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to: ",
+                "runs": [
+                  "Remember to: "
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to: ",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to: \nRate your teacher after every lesson.\nRevise the self-study material."
+          },
+          {
+            "shapeId": "392",
+            "shapeName": "Google Shape;392;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 1234450,
+              "y": 1149387,
+              "cx": 1806651,
+              "cy": 1811815,
+              "right": 3041101,
+              "bottom": 2961202
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "393",
+            "shapeName": "Google Shape;393;p16",
+            "kind": "text",
+            "bbox": {
+              "x": 1705484,
+              "y": 1566670,
+              "cx": 864587,
+              "cy": 798592,
+              "right": 2570071,
+              "bottom": 2365262
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "394",
+            "shapeName": "Google Shape;394;p16",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "shapeId": "394",
+            "shapeName": "Google Shape;394;p16",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 15
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.png",
+            "relationshipId": "rId3",
+            "slide": 15
+          }
+        ]
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": 16,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZhkEKzeBHZ8Bs4duBJ8nvmAjySf_UKe_HU27Qyfv6PqD8Flymh3oFdPZmzAzhOvRO8KAPP2UUTGENhOXzqOoIZnOggzJ4BUIH3jZtgRpJM9TN2J0L2tUx9GMFYFh1sC5OaOyskMUUQgLN6yNG-wdqbJ5-iYP7jjx4rgIa6JYf1rtJT8pUd8BcHJOcgJVM=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "© 2020 The Utterers Corner. All rights reserved",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "© 2020 The Utterers Corner. All rights reserved\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "399",
+            "shapeName": "Google Shape;399;p17",
+            "kind": "text",
+            "bbox": {
+              "x": 2775098,
+              "y": 4658581,
+              "cx": 3593805,
+              "cy": 323474,
+              "right": 6368903,
+              "bottom": 4982055
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "© 2020 The Utterers Corner. All rights reserved",
+                "runs": [
+                  "© 2020 The Utterers Corner. All rights reserved"
+                ]
+              }
+            ],
+            "texts": [
+              "© 2020 The Utterers Corner. All rights reserved"
+            ],
+            "joinedText": "© 2020 The Utterers Corner. All rights reserved"
+          },
+          {
+            "shapeId": "400",
+            "shapeName": "Google Shape;400;p17",
+            "kind": "group",
+            "bbox": {
+              "x": 1746288,
+              "y": 1080347,
+              "cx": 5651425,
+              "cy": 2049517,
+              "right": 7397713,
+              "bottom": 3129864
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "401",
+            "shapeName": "Google Shape;401;p17",
+            "kind": "text",
+            "bbox": {
+              "x": 1106100,
+              "y": 2904201,
+              "cx": 6931800,
+              "cy": 267300,
+              "right": 8037900,
+              "bottom": 3171501
+            },
+            "parentShapeId": "400",
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          },
+          {
+            "shapeId": "402",
+            "shapeName": "Google Shape;402;p17",
+            "kind": "picture",
+            "bbox": {
+              "x": 2140244,
+              "y": 2277299,
+              "cx": 4863513,
+              "cy": 552271,
+              "right": 7003757,
+              "bottom": 2829570
+            },
+            "parentShapeId": "400",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "403",
+            "shapeName": "Google Shape;403;p17",
+            "kind": "picture",
+            "bbox": {
+              "x": 3760326,
+              "y": 657650,
+              "cx": 1623347,
+              "cy": 1613891,
+              "right": 5383673,
+              "bottom": 2271541
+            },
+            "parentShapeId": "400",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image13.png",
+            "relationshipId": "rId3",
+            "shapeId": "402",
+            "shapeName": "Google Shape;402;p17",
+            "bbox": {
+              "x": 2140244,
+              "y": 2277299,
+              "cx": 4863513,
+              "cy": 552271,
+              "right": 7003757,
+              "bottom": 2829570
+            },
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image14.png",
+            "relationshipId": "rId4",
+            "shapeId": "403",
+            "shapeName": "Google Shape;403;p17",
+            "bbox": {
+              "x": 3760326,
+              "y": 657650,
+              "cx": 1623347,
+              "cy": 1613891,
+              "right": 5383673,
+              "bottom": 2271541
+            },
+            "slide": 16
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image13.png",
+            "relationshipId": "rId3",
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image14.png",
+            "relationshipId": "rId4",
+            "slide": 16
+          }
+        ]
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": 17,
+        "title": "© 2020 The Utterers Corner. All rights reserved",
+        "visibleTexts": [
+          "© 2020 The Utterers Corner. All rights reserved",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaEFi064EfvCA5jDyiJqgamGjGbGqbMmqQaNURLSvpj3j8tlN4d6ZVEv_YYiXHwtS2udI0iK6gYcnS08clKH6LgfgearF2CFML4Gr5SYbiMTFaMZ7CL9sOcjqh6zRI5gGTp2bpyPgndRQKdPgRBlsao2LcrI1j7sXlymbyHHmMCKXGXWbwsdaw-gz1iqiI=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYYVCYOyRIlEG8HwU7zYmEuxKGdHb1F_tqPZQyowSmSd_ViWE7MGIaxk1_mRdl5lCqg7xURojBKcnGA_RsRe6t22_N4QydjYN7TBgF2mrqTgz2wpZTZWrx4ZVN-DNj32tBJ0tWTjm90xYKj-1yT8W4DJZVarln--VvNlPOMhk5pl_EY2XuLjOqpx2xyov4=nw",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

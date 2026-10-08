@@ -1,0 +1,4615 @@
+{
+  "schemaVersion": 1,
+  "unit": 30,
+  "module": {
+    "order": 8,
+    "title": "Módulo 8",
+    "id": "cmnmm9kwb0003w1qks40rabax",
+    "driveTitle": "Module 8"
+  },
+  "candidate": {
+    "id": "1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe",
+    "title": "She looks great but... - Unit 30.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "1457982",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 8"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-30-primary-01-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe.pptx",
+    "localBytes": 1457982,
+    "sha256": "b95dec3199b80335a79c131c2784759214ee0dcc8e3eff3641f1bda60d4d508a"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-30-primary-01-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQCDq5x08HEL-ydsrMOVi0tunUp53obrniBBikC0Eqi-cR1ydtNPhTvrB2K__t8rw/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQCDq5x08HEL-ydsrMOVi0tunUp53obrniBBikC0Eqi-cR1ydtNPhTvrB2K__t8rw/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 17,
+    "nativeSlideCount": 17,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.933515,
+    "publicTokenCoverage": 0.971014,
+    "slideDifferenceCount": 7,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nDescribe how people look like and how they are.\nCompetencies\nManage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language..",
+        "publishedText": "Competencies Manage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language.. Communicative Function Describe how people look like and how they are.",
+        "sequenceRatio": 0.714859
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. 4",
+        "sequenceRatio": 0.976608
+      },
+      {
+        "slide": 8,
+        "nativeText": "We need to consider the following chart.\nHeight\nSize\nHe is… They are… I am...\nShort\nAverage height\nTall\nWeight\nWeight\nWe are… He is… You are\nThin, Slim, Skinny\nAverage, Well-built\nChubby, Fat\nComplexion\nSkin tone / Color\nJoe has got… They have...\nLight complexion\nDark complexion\nHair\nLength\nType\nColor\nNoun\nYou have...\nShort, Long, Shoulder length\nStraight, Wavy, Curly\nBlack, Brown, Blond, Red...\nHair\nEyes\nSize\nShape\nColor\nNoun\nThey have got...\nBig, Small, Large\nRound, Almond shape, Asian\nBlac, Brown, Green, Blue...\nEyes",
+        "publishedText": "We need to consider the following chart. Height Size He is… They are… I am... Short Average height Tall Weight Weight We are… He is… You are Thin, Slim, Skinny Average, Well-built Chubby, Fat Complexion Skin tone / Color Joe has got… They have... Light complexion Dark complexion Hair Length Type Color Noun You have... Short, Long, Bob, Shoulder length Straight, Wavy, Curly Black, Brown, Blond, Red... Hair Eyes Size Shape Color Noun They have got... Big, Small, Large Round, Almond shape, Asian Blac, Brown, Green, Blue... Eyes",
+        "sequenceRatio": 0.995261
+      },
+      {
+        "slide": 9,
+        "nativeText": "‹#›\nTo consider \nWhen describing noses, you can use the adjectives hooked, pointy, flat, button. \nLips are describe as thin or thick. Also, full. \nEyebrows can also be described as thick, thin or bushy. \nIf you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl.",
+        "publishedText": "9 To consider 1. When describing noses, you can use the adjectives hooked, pointy, flat, button. 2. Lips are described as thin or thick. Also, full. 3. Eyebrows can also be described as thick, thin or bushy. 4. If you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl.",
+        "sequenceRatio": 0.745587
+      },
+      {
+        "slide": 13,
+        "nativeText": "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class.\n0.\nSean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys.\nB. Listen to the audio and answer the questions your teacher makes.",
+        "publishedText": "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class. 0. Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing a comfortable pair of blue American jeans with a single white cotton shirt. He seems to be a nice guy. B. Listen to the audio and answer the questions your teacher makes.",
+        "sequenceRatio": 0.996355
+      },
+      {
+        "slide": 14,
+        "nativeText": "-Lauren: Hey, Liam. How are you?\n-Liam: Doing great. How about you?\n-Lauren: Great as well. Wow you look good.\n-Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip.\n-Lauren: It is beautiful and it does match your big, round, blue eyes. \n-Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party?\n-Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly.\n-Liam: No way, he is super friendly and quite fun. \n-Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular?\n-Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. \n-Lauren: Great, then. Wear something nice. \n-Liam: I always do.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "publishedText": "-Lauren: Hey, Liam. How are you? -Liam: Doing great. How about you? -Lauren: Great as well. Wow, you look good! -Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip. -Lauren: It is beautiful and it does match your big, round, blue eyes. -Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party? -Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly. -Liam: No way, he is super friendly and quite fun. -Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular? -Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. -Lauren: Great, then. Wear something nice. -Liam: I always do. C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "sequenceRatio": 0.998207
+      },
+      {
+        "slide": 15,
+        "nativeText": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up.\nE. Write a 100 to 150 word text where you can describe your ideal partner; the way he/she looks, how he/she is what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up. E. Write an 80 to 120 word text where you can describe your ideal partner; the way he/she looks, how he/she is, what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.979394
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 192144,
+      "sha256": "e9e40e1dbb30be70d6ebbefb9d1863c1862e9fb3649e208eba633933ce6579d4"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 113226,
+      "sha256": "f9c241d52ad14eaa42b98ebed772ce5b5925d741f0be1936fc10abe1597a7e14"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 78872,
+      "sha256": "01526a3573d50b39e09b3eac41e774dcd56018e08fa85ad1c86e7e0263bfad1d"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 96317,
+      "sha256": "d0e0c3e5e865d907a39683a7b1997e8b75a68fbea026e16df6b145828585c481"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 289536,
+      "sha256": "21fbe18c82c47536494a9381bf2531f474dcdfd7d6d4c6ae5ac68391d2d201fc"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 10,
+    "bytes": 943944,
+    "byExtension": {
+      ".jpg": 5,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 10,
+    "imageBytes": 943944
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5816450,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6832250,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId7",
+          "shapeId": "289",
+          "shapeName": "Google Shape;289;ga8f26b7cbc_0_5",
+          "bbox": {
+            "x": 6508020,
+            "y": 4156325,
+            "cx": 836400,
+            "cy": 836400,
+            "right": 7344420,
+            "bottom": 4992725
+          },
+          "slide": 13
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 192144,
+      "sha256": "e9e40e1dbb30be70d6ebbefb9d1863c1862e9fb3649e208eba633933ce6579d4",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "slide": 4
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "326",
+          "shapeName": "Google Shape;326;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "327",
+          "shapeName": "Google Shape;327;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 113226,
+      "sha256": "f9c241d52ad14eaa42b98ebed772ce5b5925d741f0be1936fc10abe1597a7e14",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "287",
+          "shapeName": "Google Shape;287;ga8f26b7cbc_0_5",
+          "bbox": {
+            "x": 6128250,
+            "y": 1996500,
+            "cx": 1367632,
+            "cy": 1945226,
+            "right": 7495882,
+            "bottom": 3941726
+          },
+          "slide": 13
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 78872,
+      "sha256": "01526a3573d50b39e09b3eac41e774dcd56018e08fa85ad1c86e7e0263bfad1d",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "286",
+          "shapeName": "Google Shape;286;ga8f26b7cbc_0_5",
+          "bbox": {
+            "x": 3660023,
+            "y": 1946500,
+            "cx": 1297325,
+            "cy": 1945226,
+            "right": 4957348,
+            "bottom": 3891726
+          },
+          "slide": 13
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 96317,
+      "sha256": "d0e0c3e5e865d907a39683a7b1997e8b75a68fbea026e16df6b145828585c481",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "288",
+          "shapeName": "Google Shape;288;ga8f26b7cbc_0_5",
+          "bbox": {
+            "x": 946650,
+            "y": 1996500,
+            "cx": 1367625,
+            "cy": 1945274,
+            "right": 2314275,
+            "bottom": 3941774
+          },
+          "slide": 13
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-30-1VBNsvw0rx4ycYHsHIQfhIA69GNIafzGe\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 289536,
+      "sha256": "21fbe18c82c47536494a9381bf2531f474dcdfd7d6d4c6ae5ac68391d2d201fc",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "236",
+          "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6168325,
+            "y": 867043,
+            "cx": 2152500,
+            "cy": 2870186,
+            "right": 8320825,
+            "bottom": 3737229
+          },
+          "slide": 6
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "30",
+          "She looks great but...",
+          "Unit"
+        ],
+        "joinedText": "30\nShe looks great but...\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3115250,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "30",
+                "runs": [
+                  "30"
+                ]
+              }
+            ],
+            "texts": [
+              "30"
+            ],
+            "joinedText": "30"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 867575,
+              "y": 2316275,
+              "cx": 8390700,
+              "cy": 1649100,
+              "right": 9258275,
+              "bottom": 3965375
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "She looks great but...",
+                "runs": [
+                  "She looks great but..."
+                ]
+              }
+            ],
+            "texts": [
+              "She looks great but..."
+            ],
+            "joinedText": "She looks great but..."
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 210350,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1299350,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "30",
+        "visibleTexts": [
+          "30",
+          "She looks great but...",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYtRL57VXVOIKIpcdIu3dipz1teJlGLyynPlMAUczVcDIBfoB6tEgaS1oGva0iybv6HqiYizeJwDFnspOoqyRmJCEUmCTDi5X6o83Q6cen61yCFzNhW_qjjh1EDAxu0g25i3Q1H0UiiOKwy-nWAzSwfKT84dF2-lDVaIdmM14XHa2CoTK0IAm-gqRbQ-O9puw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Describe how people look like and how they are.",
+          "Competencies",
+          "Manage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language.."
+        ],
+        "joinedText": "Communicative Function\nDescribe how people look like and how they are.\nCompetencies\nManage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language..",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Describe how people look like and how they are.",
+                "runs": [
+                  "Describe",
+                  " how people look like and how they are."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Describe how people look like and how they are."
+            ],
+            "joinedText": "Communicative Function\nDescribe how people look like and how they are."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 6579600,
+              "cy": 2243700,
+              "right": 8031225,
+              "bottom": 4783925
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Manage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language..",
+                "runs": [
+                  "Manage the necessary vocabulary and grammatical aspects to express ",
+                  "physical",
+                  " ",
+                  "appearance and personality related to himself and others in written and spoken language.",
+                  "."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Manage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language.."
+            ],
+            "joinedText": "Competencies\nManage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language.."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Competencies Manage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language..",
+        "visibleTexts": [
+          "Competencies Manage the necessary vocabulary and grammatical aspects to express physical appearance and personality related to himself and others in written and spoken language..",
+          "Communicative Function Describe how people look like and how they are."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5816450,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6832250,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5816450,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6832250,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbOnFXO-fGaQMAIJzHpCJGhoBpCFmuVhHLrHHBJloRDruH0TBoLTIIA05HVny_UWCIcw-trXF68zCDQMRC4REaulcN8LpmLilKwWatB_a6ePnPZYyxipIgknY2Bk0XRynyUySx5XBFhTDS2cVFgAqhNC6CGXbDYvS38-zkiMLby2Tzx2iK1qaFUHEP0lXs=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYARxcC97i-bO2rBLEuDN9lGF96RH7wUKlsgbTjU-DC45-YZ_ti2N0bGlHXaTc4R9K4lMwcLasmDbIRxU8flcFkfhQa0sOjoN3RHHUERtxoY3LiFouBmBpu6a8poApjyInui6v0oCIGI5r3_RKI7OM6t7gLrABGMO6RXg8ZGPluteOgdyQ-RY-dgLTQloHenA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "When we describe people, we can talk about their appearance and personality. ",
+          "APPEARANCE",
+          "Height",
+          "Weight",
+          "Complexion",
+          "Hair",
+          "Eyes",
+          "Nose",
+          "Lips",
+          "Features",
+          "Outfit",
+          "She is a tall, thin woman with light complexion. She has shoulder-length, blond, straight hair and big, round, blue eyes. Also, she has a pointy nose and full red lips. She is wearing a plain white, cotton blouse. Finally, we can say she is not an easy person.",
+          "PERSONALITY",
+          "Kind",
+          "Nice",
+          "Hideous",
+          "Difficult",
+          "Lively",
+          "Self-centered",
+          "Helpful",
+          "Daring",
+          "Adventurous"
+        ],
+        "joinedText": "When we describe people, we can talk about their appearance and personality.\nAPPEARANCE\nHeight\nWeight\nComplexion\nHair\nEyes\nNose\nLips\nFeatures\nOutfit\nShe is a tall, thin woman with light complexion. She has shoulder-length, blond, straight hair and big, round, blue eyes. Also, she has a pointy nose and full red lips. She is wearing a plain white, cotton blouse. Finally, we can say she is not an easy person.\nPERSONALITY\nKind\nNice\nHideous\nDifficult\nLively\nSelf-centered\nHelpful\nDaring\nAdventurous",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "When we describe people, we can talk about their appearance and personality. ",
+                "runs": [
+                  "When we describe people, we can talk about their ",
+                  "appearance",
+                  " and personality. "
+                ]
+              }
+            ],
+            "texts": [
+              "When we describe people, we can talk about their appearance and personality. "
+            ],
+            "joinedText": "When we describe people, we can talk about their appearance and personality."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 823500,
+              "y": 1131550,
+              "cx": 2152500,
+              "cy": 2129700,
+              "right": 2976000,
+              "bottom": 3261250
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "APPEARANCE",
+                "runs": [
+                  "APPEARANCE"
+                ]
+              },
+              {
+                "text": "Height",
+                "runs": [
+                  "Height"
+                ]
+              },
+              {
+                "text": "Weight",
+                "runs": [
+                  "Weight"
+                ]
+              },
+              {
+                "text": "Complexion",
+                "runs": [
+                  "Complexion"
+                ]
+              },
+              {
+                "text": "Hair",
+                "runs": [
+                  "Hair"
+                ]
+              },
+              {
+                "text": "Eyes",
+                "runs": [
+                  "Eyes"
+                ]
+              },
+              {
+                "text": "Nose",
+                "runs": [
+                  "Nose"
+                ]
+              },
+              {
+                "text": "Lips",
+                "runs": [
+                  "Lips"
+                ]
+              },
+              {
+                "text": "Features",
+                "runs": [
+                  "Features"
+                ]
+              },
+              {
+                "text": "Outfit",
+                "runs": [
+                  "Outfit"
+                ]
+              }
+            ],
+            "texts": [
+              "APPEARANCE",
+              "Height",
+              "Weight",
+              "Complexion",
+              "Hair",
+              "Eyes",
+              "Nose",
+              "Lips",
+              "Features",
+              "Outfit"
+            ],
+            "joinedText": "APPEARANCE\nHeight\nWeight\nComplexion\nHair\nEyes\nNose\nLips\nFeatures\nOutfit"
+          },
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6168325,
+              "y": 867043,
+              "cx": 2152500,
+              "cy": 2870186,
+              "right": 8320825,
+              "bottom": 3737229
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1061900,
+              "y": 3377600,
+              "cx": 3951000,
+              "cy": 1477500,
+              "right": 5012900,
+              "bottom": 4855100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "She is a tall, thin woman with light complexion. She has shoulder-length, blond, straight hair and big, round, blue eyes. Also, she has a pointy nose and full red lips. She is wearing a plain white, cotton blouse. Finally, we can say she is not an easy person.",
+                "runs": [
+                  "She is a ",
+                  "tall",
+                  ", ",
+                  "thin ",
+                  "woman with ",
+                  "light",
+                  " ",
+                  "complexion",
+                  ". She has ",
+                  "shoulder-length",
+                  ",",
+                  " blond",
+                  ", ",
+                  "straight",
+                  " hair and ",
+                  "big",
+                  ", ",
+                  "round",
+                  ", ",
+                  "blue",
+                  " eyes. Also, she has a ",
+                  "pointy",
+                  " nose and ",
+                  "full red ",
+                  "lips. She is wearing a ",
+                  "plain",
+                  " ",
+                  "white",
+                  ", ",
+                  "cotton",
+                  " blouse. Finally, we can say she is not an ",
+                  "easy",
+                  " person."
+                ]
+              }
+            ],
+            "texts": [
+              "She is a tall, thin woman with light complexion. She has shoulder-length, blond, straight hair and big, round, blue eyes. Also, she has a pointy nose and full red lips. She is wearing a plain white, cotton blouse. Finally, we can say she is not an easy person."
+            ],
+            "joinedText": "She is a tall, thin woman with light complexion. She has shoulder-length, blond, straight hair and big, round, blue eyes. Also, she has a pointy nose and full red lips. She is wearing a plain white, cotton blouse. Finally, we can say she is not an easy person."
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 3245925,
+              "y": 1131550,
+              "cx": 2152500,
+              "cy": 2129700,
+              "right": 5398425,
+              "bottom": 3261250
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "PERSONALITY",
+                "runs": [
+                  "PERSONALITY"
+                ]
+              },
+              {
+                "text": "Kind",
+                "runs": [
+                  "Kind"
+                ]
+              },
+              {
+                "text": "Nice",
+                "runs": [
+                  "Nice"
+                ]
+              },
+              {
+                "text": "Hideous",
+                "runs": [
+                  "Hideous"
+                ]
+              },
+              {
+                "text": "Difficult",
+                "runs": [
+                  "Difficult"
+                ]
+              },
+              {
+                "text": "Lively",
+                "runs": [
+                  "Lively"
+                ]
+              },
+              {
+                "text": "Self-centered",
+                "runs": [
+                  "Self-centered"
+                ]
+              },
+              {
+                "text": "Helpful",
+                "runs": [
+                  "Helpful"
+                ]
+              },
+              {
+                "text": "Daring",
+                "runs": [
+                  "Daring"
+                ]
+              },
+              {
+                "text": "Adventurous",
+                "runs": [
+                  "Adventurous"
+                ]
+              }
+            ],
+            "texts": [
+              "PERSONALITY",
+              "Kind",
+              "Nice",
+              "Hideous",
+              "Difficult",
+              "Lively",
+              "Self-centered",
+              "Helpful",
+              "Daring",
+              "Adventurous"
+            ],
+            "joinedText": "PERSONALITY\nKind\nNice\nHideous\nDifficult\nLively\nSelf-centered\nHelpful\nDaring\nAdventurous"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6168325,
+              "y": 867043,
+              "cx": 2152500,
+              "cy": 2870186,
+              "right": 8320825,
+              "bottom": 3737229
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId3",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "When we describe people, we can talk about their appearance and personality.",
+        "visibleTexts": [
+          "When we describe people, we can talk about their appearance and personality.",
+          "APPEARANCE Height Weight Complexion Hair Eyes Nose Lips Features Outfit",
+          "She is a tall, thin woman with light complexion. She has shoulder-length, blond, straight hair and big, round, blue eyes. Also, she has a pointy nose and full red lips. She is wearing a plain white, cotton blouse. Finally, we can say she is not an easy person.",
+          "PERSONALITY Kind Nice Hideous Difficult Lively Self-centered Helpful Daring Adventurous"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaQmcqytqz87bpLXZMjWM0W7bU04a4JTpoQN9ntYtRCWs7Hsv_JKjQFLJppSNE7LRZDyKJF-QrDNoT5CmT93i0Wc51rwESQUECl9nz5rsT64ioKlbGEwKvr5zaAd_UIjr2XNmr_NB8Z6iWOXT3n3jQouBV7fJFRZrbBGC0osHGb-EzXmNusyyB12KVZpUsevQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "We need to consider the following chart.",
+          "Height",
+          "Size",
+          "He is… They are… I am...",
+          "Short",
+          "Average height",
+          "Tall",
+          "Weight",
+          "Weight",
+          "We are… He is… You are",
+          "Thin, Slim, Skinny",
+          "Average, Well-built",
+          "Chubby, Fat",
+          "Complexion",
+          "Skin tone / Color",
+          "Joe has got… They have...",
+          "Light complexion",
+          "Dark complexion",
+          "Hair",
+          "Length",
+          "Type",
+          "Color",
+          "Noun",
+          "You have...",
+          "Short, Long, Shoulder length",
+          "Straight, Wavy, Curly",
+          "Black, Brown, Blond, Red...",
+          "Hair",
+          "Eyes",
+          "Size",
+          "Shape",
+          "Color",
+          "Noun",
+          "They have got...",
+          "Big, Small, Large",
+          "Round, Almond shape, Asian",
+          "Blac, Brown, Green, Blue...",
+          "Eyes"
+        ],
+        "joinedText": "We need to consider the following chart.\nHeight\nSize\nHe is… They are… I am...\nShort\nAverage height\nTall\nWeight\nWeight\nWe are… He is… You are\nThin, Slim, Skinny\nAverage, Well-built\nChubby, Fat\nComplexion\nSkin tone / Color\nJoe has got… They have...\nLight complexion\nDark complexion\nHair\nLength\nType\nColor\nNoun\nYou have...\nShort, Long, Shoulder length\nStraight, Wavy, Curly\nBlack, Brown, Blond, Red...\nHair\nEyes\nSize\nShape\nColor\nNoun\nThey have got...\nBig, Small, Large\nRound, Almond shape, Asian\nBlac, Brown, Green, Blue...\nEyes",
+        "shapes": [
+          {
+            "shapeId": "250",
+            "shapeName": "Google Shape;250;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 29450,
+              "cx": 6960900,
+              "cy": 415800,
+              "right": 8052450,
+              "bottom": 445250
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We need to consider the following chart.",
+                "runs": [
+                  "We need to consider the following chart."
+                ]
+              }
+            ],
+            "texts": [
+              "We need to consider the following chart."
+            ],
+            "joinedText": "We need to consider the following chart."
+          },
+          {
+            "shapeId": "251",
+            "shapeName": "Google Shape;251;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 723900,
+              "y": 552450,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3723900,
+              "bottom": 3552450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Height",
+                "runs": []
+              },
+              {
+                "text": "Size",
+                "runs": []
+              },
+              {
+                "text": "He is… They are… I am...",
+                "runs": []
+              },
+              {
+                "text": "Short",
+                "runs": []
+              },
+              {
+                "text": "Average height",
+                "runs": []
+              },
+              {
+                "text": "Tall",
+                "runs": []
+              },
+              {
+                "text": "Weight",
+                "runs": []
+              },
+              {
+                "text": "Weight",
+                "runs": []
+              },
+              {
+                "text": "We are… He is… You are",
+                "runs": []
+              },
+              {
+                "text": "Thin, Slim, Skinny",
+                "runs": []
+              },
+              {
+                "text": "Average, Well-built",
+                "runs": []
+              },
+              {
+                "text": "Chubby, Fat",
+                "runs": []
+              },
+              {
+                "text": "Complexion",
+                "runs": []
+              },
+              {
+                "text": "Skin tone / Color",
+                "runs": []
+              },
+              {
+                "text": "Joe has got… They have...",
+                "runs": []
+              },
+              {
+                "text": "Light complexion",
+                "runs": []
+              },
+              {
+                "text": "Dark complexion",
+                "runs": []
+              },
+              {
+                "text": "Hair",
+                "runs": []
+              },
+              {
+                "text": "Length",
+                "runs": []
+              },
+              {
+                "text": "Type",
+                "runs": []
+              },
+              {
+                "text": "Color",
+                "runs": []
+              },
+              {
+                "text": "Noun",
+                "runs": []
+              },
+              {
+                "text": "You have...",
+                "runs": []
+              },
+              {
+                "text": "Short, Long, Shoulder length",
+                "runs": []
+              },
+              {
+                "text": "Straight, Wavy, Curly",
+                "runs": []
+              },
+              {
+                "text": "Black, Brown, Blond, Red...",
+                "runs": []
+              },
+              {
+                "text": "Hair",
+                "runs": []
+              },
+              {
+                "text": "Eyes",
+                "runs": []
+              },
+              {
+                "text": "Size",
+                "runs": []
+              },
+              {
+                "text": "Shape",
+                "runs": []
+              },
+              {
+                "text": "Color",
+                "runs": []
+              },
+              {
+                "text": "Noun",
+                "runs": []
+              },
+              {
+                "text": "They have got...",
+                "runs": []
+              },
+              {
+                "text": "Big, Small, Large",
+                "runs": []
+              },
+              {
+                "text": "Round, Almond shape, Asian",
+                "runs": []
+              },
+              {
+                "text": "Blac, Brown, Green, Blue...",
+                "runs": []
+              },
+              {
+                "text": "Eyes",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Height",
+              "Size",
+              "He is… They are… I am...",
+              "Short",
+              "Average height",
+              "Tall",
+              "Weight",
+              "Weight",
+              "We are… He is… You are",
+              "Thin, Slim, Skinny",
+              "Average, Well-built",
+              "Chubby, Fat",
+              "Complexion",
+              "Skin tone / Color",
+              "Joe has got… They have...",
+              "Light complexion",
+              "Dark complexion",
+              "Hair",
+              "Length",
+              "Type",
+              "Color",
+              "Noun",
+              "You have...",
+              "Short, Long, Shoulder length",
+              "Straight, Wavy, Curly",
+              "Black, Brown, Blond, Red...",
+              "Hair",
+              "Eyes",
+              "Size",
+              "Shape",
+              "Color",
+              "Noun",
+              "They have got...",
+              "Big, Small, Large",
+              "Round, Almond shape, Asian",
+              "Blac, Brown, Green, Blue...",
+              "Eyes"
+            ],
+            "joinedText": "Height\nSize\nHe is… They are… I am...\nShort\nAverage height\nTall\nWeight\nWeight\nWe are… He is… You are\nThin, Slim, Skinny\nAverage, Well-built\nChubby, Fat\nComplexion\nSkin tone / Color\nJoe has got… They have...\nLight complexion\nDark complexion\nHair\nLength\nType\nColor\nNoun\nYou have...\nShort, Long, Shoulder length\nStraight, Wavy, Curly\nBlack, Brown, Blond, Red...\nHair\nEyes\nSize\nShape\nColor\nNoun\nThey have got...\nBig, Small, Large\nRound, Almond shape, Asian\nBlac, Brown, Green, Blue...\nEyes",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "251",
+            "shapeName": "Google Shape;251;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 723900,
+              "y": 552450,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3723900,
+              "bottom": 3552450
+            },
+            "columnWidths": [
+              1206500,
+              1651900,
+              1105900,
+              617450,
+              1896150,
+              1407625
+            ],
+            "rows": [
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "Height",
+                    "paragraphs": [
+                      {
+                        "text": "Height",
+                        "runs": [
+                          "Height"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Size",
+                    "paragraphs": [
+                      {
+                        "text": "Size",
+                        "runs": [
+                          "Size"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "He is… They are… I am...",
+                    "paragraphs": [
+                      {
+                        "text": "He is… They are… I am...",
+                        "runs": [
+                          "He ",
+                          "is",
+                          "… They are… I am..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Short",
+                    "paragraphs": [
+                      {
+                        "text": "Short",
+                        "runs": [
+                          "Short"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Average height",
+                    "paragraphs": [
+                      {
+                        "text": "Average height",
+                        "runs": [
+                          "Average height"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Tall",
+                    "paragraphs": [
+                      {
+                        "text": "Tall",
+                        "runs": [
+                          "Tall"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "Weight",
+                    "paragraphs": [
+                      {
+                        "text": "Weight",
+                        "runs": [
+                          "Weight"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Weight",
+                    "paragraphs": [
+                      {
+                        "text": "Weight",
+                        "runs": [
+                          "Weight"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "We are… He is… You are",
+                    "paragraphs": [
+                      {
+                        "text": "We are… He is… You are",
+                        "runs": [
+                          "We are… He is… You are"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Thin, Slim, Skinny",
+                    "paragraphs": [
+                      {
+                        "text": "Thin, Slim, Skinny",
+                        "runs": [
+                          "Thin, Slim, Skinny"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Average, Well-built",
+                    "paragraphs": [
+                      {
+                        "text": "Average, Well-built",
+                        "runs": [
+                          "Average, Well-built"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Chubby, Fat",
+                    "paragraphs": [
+                      {
+                        "text": "Chubby, Fat",
+                        "runs": [
+                          "Chubby, Fat"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "Complexion",
+                    "paragraphs": [
+                      {
+                        "text": "Complexion",
+                        "runs": [
+                          "Complexion"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Skin tone / Color",
+                    "paragraphs": [
+                      {
+                        "text": "Skin tone / Color",
+                        "runs": [
+                          "Skin tone / Color"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "Joe has got… They have...",
+                    "paragraphs": [
+                      {
+                        "text": "Joe has got… They have...",
+                        "runs": [
+                          "Joe ",
+                          "has got",
+                          "… They have..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Light complexion",
+                    "paragraphs": [
+                      {
+                        "text": "Light complexion",
+                        "runs": [
+                          "Light c",
+                          "omplexion"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Dark complexion",
+                    "paragraphs": [
+                      {
+                        "text": "Dark complexion",
+                        "runs": [
+                          "Dark c",
+                          "omplexion"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "Hair",
+                    "paragraphs": [
+                      {
+                        "text": "Hair ",
+                        "runs": [
+                          "Hair "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Length",
+                    "paragraphs": [
+                      {
+                        "text": "Length",
+                        "runs": [
+                          "Length"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Type",
+                    "paragraphs": [
+                      {
+                        "text": "Type",
+                        "runs": [
+                          "Type"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Color",
+                    "paragraphs": [
+                      {
+                        "text": "Color",
+                        "runs": [
+                          "Color"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Noun",
+                    "paragraphs": [
+                      {
+                        "text": "Noun",
+                        "runs": [
+                          "Noun"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "You have...",
+                    "paragraphs": [
+                      {
+                        "text": "You have...",
+                        "runs": [
+                          "You ",
+                          "have",
+                          "..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Short, Long, Shoulder length",
+                    "paragraphs": [
+                      {
+                        "text": "Short, Long, Shoulder length",
+                        "runs": [
+                          "Short, Long, Shoulder length"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Straight, Wavy, Curly",
+                    "paragraphs": [
+                      {
+                        "text": "Straight, Wavy, Curly",
+                        "runs": [
+                          "Straight, Wavy, Curly"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Black, Brown, Blond, Red...",
+                    "paragraphs": [
+                      {
+                        "text": "Black, Brown, Blond, Red...",
+                        "runs": [
+                          "Black, Brown, Blond, Red..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Hair",
+                    "paragraphs": [
+                      {
+                        "text": "Hair",
+                        "runs": [
+                          "Hair"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "Eyes",
+                    "paragraphs": [
+                      {
+                        "text": "Eyes",
+                        "runs": [
+                          "Eyes"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Size",
+                    "paragraphs": [
+                      {
+                        "text": "Size",
+                        "runs": [
+                          "Size"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Shape",
+                    "paragraphs": [
+                      {
+                        "text": "Shape",
+                        "runs": [
+                          "Shape"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Color",
+                    "paragraphs": [
+                      {
+                        "text": "Color",
+                        "runs": [
+                          "Color"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Noun",
+                    "paragraphs": [
+                      {
+                        "text": "Noun",
+                        "runs": [
+                          "Noun"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "They have got...",
+                    "paragraphs": [
+                      {
+                        "text": "They have got...",
+                        "runs": [
+                          "They ",
+                          "have got",
+                          "..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Big, Small, Large",
+                    "paragraphs": [
+                      {
+                        "text": "Big, Small, Large",
+                        "runs": [
+                          "Big, Small, Large"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Round, Almond shape, Asian",
+                    "paragraphs": [
+                      {
+                        "text": "Round, Almond shape, Asian",
+                        "runs": [
+                          "Round, Almond shape, Asian"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Blac, Brown, Green, Blue...",
+                    "paragraphs": [
+                      {
+                        "text": "Blac, Brown, Green, Blue...",
+                        "runs": [
+                          "Blac, Brown, Green, Blue..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Eyes",
+                    "paragraphs": [
+                      {
+                        "text": "Eyes",
+                        "runs": [
+                          "Eyes"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "We need to consider the following chart.",
+        "visibleTexts": [
+          "We need to consider the following chart.",
+          "Height Size He is… They are… I am... Short Average height Tall Weight Weight We are… He is… You are Thin, Slim, Skinny Average, Well-built Chubby, Fat Complexion Skin tone / Color Joe has got… They have... Light complexion Dark complexion Hair Length Type Color Noun You have... Short, Long, Bob, Shoulder length Straight, Wavy, Curly Black, Brown, Blond, Red... Hair Eyes Size Shape Color Noun They have got... Big, Small, Large Round, Almond shape, Asian Blac, Brown, Green, Blue... Eyes"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "table-or-chart-mentioned-without-table-semantics"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "‹#›",
+          "To consider ",
+          "When describing noses, you can use the adjectives hooked, pointy, flat, button. ",
+          "Lips are describe as thin or thick. Also, full. ",
+          "Eyebrows can also be described as thick, thin or bushy. ",
+          "If you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl. "
+        ],
+        "joinedText": "‹#›\nTo consider \nWhen describing noses, you can use the adjectives hooked, pointy, flat, button. \nLips are describe as thin or thick. Also, full. \nEyebrows can also be described as thick, thin or bushy. \nIf you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl.",
+        "shapes": [
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;gb76bc49bf3_0_5",
+            "kind": "text",
+            "bbox": {
+              "x": 700050,
+              "y": 698075,
+              "cx": 7743900,
+              "cy": 3325200,
+              "right": 8443950,
+              "bottom": 4023275
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;gb76bc49bf3_0_5",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;gb76bc49bf3_0_5",
+            "kind": "text",
+            "bbox": {
+              "x": 1128425,
+              "y": 1043675,
+              "cx": 6600000,
+              "cy": 2697900,
+              "right": 7728425,
+              "bottom": 3741575
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "When describing noses, you can use the adjectives hooked, pointy, flat, button. ",
+                "runs": [
+                  "When describing noses, you can use the adjectives hooked, pointy, flat, button. "
+                ]
+              },
+              {
+                "text": "Lips are describe as thin or thick. Also, full. ",
+                "runs": [
+                  "Lips are describe as thin or thick. Also, full. "
+                ]
+              },
+              {
+                "text": "Eyebrows can also be described as thick, thin or bushy. ",
+                "runs": [
+                  "Eyebrows can also be described as thick, thin or bushy. "
+                ]
+              },
+              {
+                "text": "If you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl. ",
+                "runs": [
+                  "If you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl. "
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "When describing noses, you can use the adjectives hooked, pointy, flat, button. ",
+              "Lips are describe as thin or thick. Also, full. ",
+              "Eyebrows can also be described as thick, thin or bushy. ",
+              "If you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl. "
+            ],
+            "joinedText": "To consider \nWhen describing noses, you can use the adjectives hooked, pointy, flat, button. \nLips are describe as thin or thick. Also, full. \nEyebrows can also be described as thick, thin or bushy. \nIf you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "9",
+        "visibleTexts": [
+          "9",
+          "To consider 1. When describing noses, you can use the adjectives hooked, pointy, flat, button. 2. Lips are described as thin or thick. Also, full. 3. Eyebrows can also be described as thick, thin or bushy. 4. If you want to describe a piece of clothes, you need to follow the regular pattern of adjectives. The correct verb to use when talking about it is -wear- E.G. She is wearing a beautiful single red, silk, European nightgown. On top of it, she has a gorgeous, golden silk shawl."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "When describing people we can talk about:",
+          "Functions",
+          "Examples",
+          "1",
+          "How people look like",
+          "Jake is a tall thin man with dark complexion.",
+          "Sue has got small, asian light eyes and thin red lips.",
+          "2",
+          "How people are like",
+          "Sandra was an honest woman with lively personality.",
+          "I want someone outgoing and enthusiastic to share my life with.",
+          "3",
+          "Describe outfits and clothes",
+          "I love that great new, black, leather jacket you are wearing."
+        ],
+        "joinedText": "When describing people we can talk about:\nFunctions\nExamples\n1\nHow people look like\nJake is a tall thin man with dark complexion.\nSue has got small, asian light eyes and thin red lips.\n2\nHow people are like\nSandra was an honest woman with lively personality.\nI want someone outgoing and enthusiastic to share my life with.\n3\nDescribe outfits and clothes\nI love that great new, black, leather jacket you are wearing.",
+        "shapes": [
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1643496,
+              "y": 43426,
+              "cx": 5316300,
+              "cy": 584700,
+              "right": 6959796,
+              "bottom": 628126
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "When describing people we can talk about:",
+                "runs": [
+                  "When describing people we can talk about:"
+                ]
+              }
+            ],
+            "texts": [
+              "When describing people we can talk about:"
+            ],
+            "joinedText": "When describing people we can talk about:"
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 1312350,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4312350,
+              "bottom": 3780525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "How people look like",
+                "runs": []
+              },
+              {
+                "text": "Jake is a tall thin man with dark complexion.",
+                "runs": []
+              },
+              {
+                "text": "Sue has got small, asian light eyes and thin red lips.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "How people are like",
+                "runs": []
+              },
+              {
+                "text": "Sandra was an honest woman with lively personality.",
+                "runs": []
+              },
+              {
+                "text": "I want someone outgoing and enthusiastic to share my life with.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Describe outfits and clothes",
+                "runs": []
+              },
+              {
+                "text": "I love that great new, black, leather jacket you are wearing.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "How people look like",
+              "Jake is a tall thin man with dark complexion.",
+              "Sue has got small, asian light eyes and thin red lips.",
+              "2",
+              "How people are like",
+              "Sandra was an honest woman with lively personality.",
+              "I want someone outgoing and enthusiastic to share my life with.",
+              "3",
+              "Describe outfits and clothes",
+              "I love that great new, black, leather jacket you are wearing."
+            ],
+            "joinedText": "Functions\nExamples\n1\nHow people look like\nJake is a tall thin man with dark complexion.\nSue has got small, asian light eyes and thin red lips.\n2\nHow people are like\nSandra was an honest woman with lively personality.\nI want someone outgoing and enthusiastic to share my life with.\n3\nDescribe outfits and clothes\nI love that great new, black, leather jacket you are wearing.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_0",
+            "bbox": {
+              "x": 1312350,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4312350,
+              "bottom": 3780525
+            },
+            "columnWidths": [
+              504500,
+              2451750,
+              3888875
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "How people look like",
+                    "paragraphs": [
+                      {
+                        "text": "How people look like",
+                        "runs": [
+                          "How people look like"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Jake is a tall thin man with dark complexion.",
+                    "paragraphs": [
+                      {
+                        "text": "Jake is a tall thin man with dark complexion. ",
+                        "runs": [
+                          "Jake is a tall thin man with dark ",
+                          "complexion",
+                          ". "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Sue has got small, asian light eyes and thin red lips.",
+                    "paragraphs": [
+                      {
+                        "text": "Sue has got small, asian light eyes and thin red lips.",
+                        "runs": [
+                          "S",
+                          "ue has got small, asian light eyes and thin red lips."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "How people are like",
+                    "paragraphs": [
+                      {
+                        "text": "How people are like",
+                        "runs": [
+                          "How people are like"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Sandra was an honest woman with lively personality.",
+                    "paragraphs": [
+                      {
+                        "text": "Sandra was an honest woman with lively personality.",
+                        "runs": [
+                          "Sandra was an honest woman with lively personality."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "I want someone outgoing and enthusiastic to share my life with.",
+                    "paragraphs": [
+                      {
+                        "text": "I want someone outgoing and enthusiastic to share my life with.",
+                        "runs": [
+                          "I want someone outgoing and ",
+                          "enthusiastic to share my life with."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Describe outfits and clothes",
+                    "paragraphs": [
+                      {
+                        "text": "Describe outfits and clothes",
+                        "runs": [
+                          "Describe outfits and clothes"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I love that great new, black, leather jacket you are wearing.",
+                    "paragraphs": [
+                      {
+                        "text": "I love that great new, black, leather jacket you are wearing.",
+                        "runs": [
+                          "I love that great new, black, leather jacket you are wearing."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "When describing people we can talk about:",
+        "visibleTexts": [
+          "When describing people we can talk about:",
+          "Functions Examples 1 How people look like Jake is a tall thin man with dark complexion. Sue has got small, Asian light eyes and thin red lips. 2 How people are like Sandra was an honest woman with lively personality. I want someone outgoing and enthusiastic to share my life with. 3 Describe outfits and clothes I love that great new, black, leather jacket you are wearing."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class.",
+          "0.",
+          "Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys.",
+          "B. Listen to the audio and answer the questions your teacher makes. "
+        ],
+        "joinedText": "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class.\n0.\nSean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys.\nB. Listen to the audio and answer the questions your teacher makes.",
+        "shapes": [
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;ga8f26b7cbc_0_5",
+            "kind": "text",
+            "bbox": {
+              "x": 1261950,
+              "y": 98275,
+              "cx": 6496200,
+              "cy": 836400,
+              "right": 7758150,
+              "bottom": 934675
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class.",
+                "runs": [
+                  "A. ",
+                  "Describe the people on the pictures. Follow the ",
+                  "example",
+                  ". Try using all the areas covered in class."
+                ]
+              }
+            ],
+            "texts": [
+              "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class."
+            ],
+            "joinedText": "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class."
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;ga8f26b7cbc_0_5",
+            "kind": "table",
+            "bbox": {
+              "x": 952500,
+              "y": 858475,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3952500,
+              "bottom": 3858475
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0.",
+              "Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys."
+            ],
+            "joinedText": "0.\nSean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;ga8f26b7cbc_0_5",
+            "kind": "text",
+            "bbox": {
+              "x": 992800,
+              "y": 4101075,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7115500,
+              "bottom": 4702275
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;ga8f26b7cbc_0_5",
+            "kind": "picture",
+            "bbox": {
+              "x": 3660023,
+              "y": 1946500,
+              "cx": 1297325,
+              "cy": 1945226,
+              "right": 4957348,
+              "bottom": 3891726
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;ga8f26b7cbc_0_5",
+            "kind": "picture",
+            "bbox": {
+              "x": 6128250,
+              "y": 1996500,
+              "cx": 1367632,
+              "cy": 1945226,
+              "right": 7495882,
+              "bottom": 3941726
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;ga8f26b7cbc_0_5",
+            "kind": "picture",
+            "bbox": {
+              "x": 946650,
+              "y": 1996500,
+              "cx": 1367625,
+              "cy": 1945274,
+              "right": 2314275,
+              "bottom": 3941774
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;ga8f26b7cbc_0_5",
+            "kind": "picture",
+            "bbox": {
+              "x": 6508020,
+              "y": 4156325,
+              "cx": 836400,
+              "cy": 836400,
+              "right": 7344420,
+              "bottom": 4992725
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;ga8f26b7cbc_0_5",
+            "bbox": {
+              "x": 952500,
+              "y": 858475,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3952500,
+              "bottom": 3858475
+            },
+            "columnWidths": [
+              483825,
+              6755175
+            ],
+            "rows": [
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys.",
+                    "paragraphs": [
+                      {
+                        "text": "Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys.",
+                        "runs": [
+                          "Sean is an average height, thin man with light ",
+                          "complexion",
+                          ". He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;ga8f26b7cbc_0_5",
+            "bbox": {
+              "x": 3660023,
+              "y": 1946500,
+              "cx": 1297325,
+              "cy": 1945226,
+              "right": 4957348,
+              "bottom": 3891726
+            },
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;ga8f26b7cbc_0_5",
+            "bbox": {
+              "x": 6128250,
+              "y": 1996500,
+              "cx": 1367632,
+              "cy": 1945226,
+              "right": 7495882,
+              "bottom": 3941726
+            },
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;ga8f26b7cbc_0_5",
+            "bbox": {
+              "x": 946650,
+              "y": 1996500,
+              "cx": 1367625,
+              "cy": 1945274,
+              "right": 2314275,
+              "bottom": 3941774
+            },
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId7",
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;ga8f26b7cbc_0_5",
+            "bbox": {
+              "x": 6508020,
+              "y": 4156325,
+              "cx": 836400,
+              "cy": 836400,
+              "right": 7344420,
+              "bottom": 4992725
+            },
+            "slide": 13
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId3",
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId4",
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId5",
+            "slide": 13
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId7",
+            "slide": 13
+          }
+        ]
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class.",
+        "visibleTexts": [
+          "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class.",
+          "0. Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing a comfortable pair of blue American jeans with a single white cotton shirt. He seems to be a nice guy.",
+          "B. Listen to the audio and answer the questions your teacher makes."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYJC5V3y4oDN3zYHpt7YTtZdgv4o5vN9TjCBv-gtV2Xc_mUJ2Ds5W6yOfVrQgpe0IAQFB_I3ev5RobK_zzeJo-WUKTWJqKmaQsO3AHEYL_BdgM76hJtyRKMf6HU1Ol_uiXvp_M502_QWYXTxDiqyR1V_wQZPwFbabaTKw61x3emv5M9VuEmrLdOExctsurAxQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb4M1l4dWlteFxZA5dAbclxafDr9A_oMIgK-VOXxkuM86jW8ofqcc-O9Bb45Ohubs7GkYFoqaPLDnr6viU-AJwxgLnspuvq6d6TyIpDU7qxe2ussjg5Eq8WiBCSxkB8SCErsJJ_R1hkg5goptEK2IVY2373N2REVE6k3HfJdb4F9Ji56j5CtEJbwqtoUOL4sQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZvb3tC-V_5E2_j2GzpBCIgPC2XJaeggoJ-DGTU6hIMEtGbs2JiZ5Ec05AVCjxgtarX1KEuXKTkeru5Exb-ExMdsShOHPvkZEGnr9xqn03HL6mX9ofbPjQU6ZdZoU5Ap06n5Dum3Yv9vAOlPflpRidrYUjNsSSMi8MNylQIb71IMeec50Z9Sl9gtwK4vt3ItA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYU4aCBIf0XPMFqqL0aFnSIzH97h1HMCx-12i1ekw3AkxOE_EH4Paix9PiIIjscSBT6HcrvEHLSnL8lGLlXeDTbg4Qro6aBYOsG2DPNtHsD8JTZ-vWFvcs4ndg25tryqHmnC6O7f0HEQmw_HRWlJOgMmjqTXLeCJuvS7etmDO-LzmT2Y6VYGi6fBKiMH2CiOw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 5,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "-Lauren: Hey, Liam. How are you?",
+          "-Liam: Doing great. How about you?",
+          "-Lauren: Great as well. Wow you look good.",
+          "-Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip.",
+          "-Lauren: It is beautiful and it does match your big, round, blue eyes. ",
+          "-Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party?",
+          "-Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly.",
+          "-Liam: No way, he is super friendly and quite fun. ",
+          "-Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular?",
+          "-Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. ",
+          "-Lauren: Great, then. Wear something nice. ",
+          "-Liam: I always do.  ",
+          "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+        ],
+        "joinedText": "-Lauren: Hey, Liam. How are you?\n-Liam: Doing great. How about you?\n-Lauren: Great as well. Wow you look good.\n-Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip.\n-Lauren: It is beautiful and it does match your big, round, blue eyes. \n-Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party?\n-Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly.\n-Liam: No way, he is super friendly and quite fun. \n-Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular?\n-Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. \n-Lauren: Great, then. Wear something nice. \n-Liam: I always do.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "shapes": [
+          {
+            "shapeId": "294",
+            "shapeName": "Google Shape;294;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 732725,
+              "y": 1007925,
+              "cx": 7743900,
+              "cy": 3325200,
+              "right": 8476625,
+              "bottom": 4333125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 863675,
+              "y": 1023825,
+              "cx": 7403100,
+              "cy": 3233100,
+              "right": 8266775,
+              "bottom": 4256925
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "-Lauren: Hey, Liam. How are you?",
+                "runs": [
+                  "-",
+                  "Lauren",
+                  ": Hey, Liam. How are you?"
+                ]
+              },
+              {
+                "text": "-Liam: Doing great. How about you?",
+                "runs": [
+                  "-",
+                  "Liam",
+                  ": Doing great. How about you?"
+                ]
+              },
+              {
+                "text": "-Lauren: Great as well. Wow you look good.",
+                "runs": [
+                  "-",
+                  "Lauren",
+                  ": Great as well. Wow you look good."
+                ]
+              },
+              {
+                "text": "-Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip.",
+                "runs": [
+                  "-",
+                  "Liam",
+                  ": Oh thanks. I bought this single blue, rayon, German shirt on my trip."
+                ]
+              },
+              {
+                "text": "-Lauren: It is beautiful and it does match your big, round, blue eyes. ",
+                "runs": [
+                  "-",
+                  "Lauren",
+                  ": It is beautiful and it does match your big, round, blue eyes. "
+                ]
+              },
+              {
+                "text": "-Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party?",
+                "runs": [
+                  "-",
+                  "Liam",
+                  ": So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party?"
+                ]
+              },
+              {
+                "text": "-Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly.",
+                "runs": [
+                  "-",
+                  "Lauren",
+                  ": Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly."
+                ]
+              },
+              {
+                "text": "-Liam: No way, he is super friendly and quite fun. ",
+                "runs": [
+                  "-",
+                  "Liam",
+                  ": No way, he is super friendly and quite fun. "
+                ]
+              },
+              {
+                "text": "-Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular?",
+                "runs": [
+                  "-",
+                  "Lauren",
+                  ": Really? The tall, thin, muscular guy with prince-charming hair who is so popular?"
+                ]
+              },
+              {
+                "text": "-Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. ",
+                "runs": [
+                  "-",
+                  "Liam",
+                  ": That one! Do not worry, I’ll pick you up and you’ll be my date. "
+                ]
+              },
+              {
+                "text": "-Lauren: Great, then. Wear something nice. ",
+                "runs": [
+                  "-",
+                  "Lauren",
+                  ": Great, then. Wear ",
+                  "something nice. "
+                ]
+              },
+              {
+                "text": "-Liam: I always do.  ",
+                "runs": [
+                  "-",
+                  "Liam",
+                  ": I always do. ",
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "-Lauren: Hey, Liam. How are you?",
+              "-Liam: Doing great. How about you?",
+              "-Lauren: Great as well. Wow you look good.",
+              "-Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip.",
+              "-Lauren: It is beautiful and it does match your big, round, blue eyes. ",
+              "-Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party?",
+              "-Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly.",
+              "-Liam: No way, he is super friendly and quite fun. ",
+              "-Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular?",
+              "-Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. ",
+              "-Lauren: Great, then. Wear something nice. ",
+              "-Liam: I always do.  "
+            ],
+            "joinedText": "-Lauren: Hey, Liam. How are you?\n-Liam: Doing great. How about you?\n-Lauren: Great as well. Wow you look good.\n-Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip.\n-Lauren: It is beautiful and it does match your big, round, blue eyes. \n-Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party?\n-Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly.\n-Liam: No way, he is super friendly and quite fun. \n-Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular?\n-Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. \n-Lauren: Great, then. Wear something nice. \n-Liam: I always do."
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1267400,
+              "y": 64050,
+              "cx": 6689400,
+              "cy": 828300,
+              "right": 7956800,
+              "bottom": 892350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  ",
+                "runs": [
+                  "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+            ],
+            "joinedText": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "-Lauren: Hey, Liam. How are you? -Liam: Doing great. How about you? -Lauren: Great as well. Wow, you look good! -Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip. -Lauren: It is beautiful and it does match your big, round, blue eyes. -Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party? -Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly. -Liam: No way, he is super friendly and quite fun. -Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular? -Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. -Lauren: Great, then. Wear something nice. -Liam: I always do.",
+        "visibleTexts": [
+          "-Lauren: Hey, Liam. How are you? -Liam: Doing great. How about you? -Lauren: Great as well. Wow, you look good! -Liam: Oh thanks. I bought this single blue, rayon, German shirt on my trip. -Lauren: It is beautiful and it does match your big, round, blue eyes. -Liam: So my mum told me, ha, ha, ha,. Hey, are you planning to go to Tyler’s party? -Lauren: Ummm. I want to but...I don’t know him quite well and he seems to be not very friendly. -Liam: No way, he is super friendly and quite fun. -Lauren: Really? The tall, thin, muscular guy with prince-charming hair who is so popular? -Liam: That one! Do not worry, I’ll pick you up and you’ll be my date. -Lauren: Great, then. Wear something nice. -Liam: I always do.",
+          "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up. ",
+          "E. Write a 100 to 150 word text where you can describe your ideal partner; the way he/she looks, how he/she is what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up.\nE. Write a 100 to 150 word text where you can describe your ideal partner; the way he/she looks, how he/she is what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1071400,
+              "y": 222875,
+              "cx": 6655500,
+              "cy": 1175400,
+              "right": 7726900,
+              "bottom": 1398275
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up. ",
+                "runs": [
+                  "D. ",
+                  "Act out the following situation",
+                  ". You and your teacher",
+                  " in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up. "
+                ]
+              }
+            ],
+            "texts": [
+              "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up. "
+            ],
+            "joinedText": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up."
+          },
+          {
+            "shapeId": "302",
+            "shapeName": "Google Shape;302;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 100 to 150 word text where you can describe your ideal partner; the way he/she looks, how he/she is what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out.",
+                "runs": [
+                  "E. Write a 100 to 150 word text where you can ",
+                  "describe your ideal partner; the way he/she looks, how he/she is what clothes you picture him/her wearing and how you prefer his/her personality to be. ",
+                  "Do not leave any detail out."
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 100 to 150 word text where you can describe your ideal partner; the way he/she looks, how he/she is what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out."
+            ],
+            "joinedText": "E. Write a 100 to 150 word text where you can describe your ideal partner; the way he/she looks, how he/she is what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out."
+          },
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4357707,
+              "y": 1146508,
+              "cx": 1432445,
+              "cy": 1175522,
+              "right": 5790152,
+              "bottom": 2322030
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "303",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "303",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "306",
+            "shapeName": "Google Shape;306;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "306",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "306",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "306",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "306",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up.",
+        "visibleTexts": [
+          "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up.",
+          "E. Write an 80 to 120 word text where you can describe your ideal partner; the way he/she looks, how he/she is, what clothes you picture him/her wearing and how you prefer his/her personality to be. Do not leave any detail out.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "315",
+            "shapeName": "Google Shape;315;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "317",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "317",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 17
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 17
+          }
+        ]
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZz41eBd5H7X3abE6snMOWzvCQ_B4oYtEPx7T0O72-qz7WGHrRxOm_XxCNoXeP7TWNIh1KbGkZZoKhX8mg5m318-4ELZrSUnKTIL7PFf1iUnseV2cypY9eA4lpZLZPs9PWkl-77jpLpe-MfNosc3j-72esAdliJdwWQ7FoD0mH5MgNaSo6sowYtdriREZlrwQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb0SDbAGm5dKcvRkEb_GIqiJdZZMTNU4lHuhtDQ74AtUBzw7CCcYab1vGjV2fZGBal1FbNFVfd_1moOYj3TUtbMYc7DeLO5u2HFwN6SZENN8TNPNKHLOpa83J4KzB9oqqeOJiHMEhCi_Y6ULeiyetLjD5BR_GHR2DPRYGVIBLP2omjNAvUgdv7M9aROuZbXJw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYfuocMO39i-Zj-tUYeewkiV61Ap-c7lbDlIpk8kZbVyYwGJnIHXDy2xYphWaCfJsp8RE1sWLx-2EwPYdObu_yFWZBHOZJlkemEy3NHXRV9ArQ6ZNVYW0CO34mMNVNvCyd-zNa1aMqg-nDr620Bu69jf5GEq_ozP_6YlO9ED1e1S4nTZy51nsg1saKAjfk=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

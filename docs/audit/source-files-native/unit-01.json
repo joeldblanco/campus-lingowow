@@ -1,0 +1,5964 @@
+{
+  "schemaVersion": 1,
+  "unit": 1,
+  "module": {
+    "order": 1,
+    "title": "Module 1",
+    "id": null,
+    "driveTitle": "Module 1"
+  },
+  "candidate": {
+    "id": "1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_",
+    "title": "Unit 1 - This is me.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "1127377",
+    "level": "A",
+    "path": [
+      "A levels",
+      "Module 1",
+      "Students View"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\A-unit-01-primary-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_.pptx",
+    "localBytes": 1127377,
+    "sha256": "8cac7d334c4a1e2bc9e6e10a0afed6890bc24fe7f16bec4ec57f0087433b34b7"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\A-unit-01-primary-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_.pptx",
+    "publicSourceUrl": null,
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "native-only-published-mismatch",
+  "publishedComparison": {
+    "status": "no-public-record"
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 3101,
+      "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 23882,
+      "sha256": "88964acd46dc1397927149535a96041e988826d6c4961b4727d6d5ed523e88d7"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 22739,
+      "sha256": "a41c4a5a06acbba33fa8a2c26fbed54b40958f6c412efb73c06dc8f5384b41e9"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54643,
+      "sha256": "0f448667c37b019279cc829ff81d19a1f266db6e03bdcffc6ad45b2833d37ac6"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 26831,
+      "sha256": "6c559eb047439368f02c2c43138d7234f5f474b7d881f3e8b495ac74e29f4cf6"
+    },
+    {
+      "path": "ppt/media/image6.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 17718,
+      "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475"
+    },
+    {
+      "path": "ppt/media/image7.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 7,
+    "bytes": 181642,
+    "byExtension": {
+      ".png": 7
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 7,
+    "imageBytes": 181642
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 3101,
+      "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "494",
+          "shapeName": "Google Shape;494;p4",
+          "bbox": {
+            "x": 1276875,
+            "y": 2632525,
+            "cx": 1379825,
+            "cy": 1379825,
+            "right": 2656700,
+            "bottom": 4012350
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "613",
+          "shapeName": "Google Shape;613;p12",
+          "bbox": {
+            "x": 6659400,
+            "y": 3581625,
+            "cx": 969600,
+            "cy": 969600,
+            "right": 7629000,
+            "bottom": 4551225
+          },
+          "slide": 12
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 23882,
+      "sha256": "88964acd46dc1397927149535a96041e988826d6c4961b4727d6d5ed523e88d7",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image2.png",
+          "relationshipId": "rId5",
+          "shapeId": "511",
+          "shapeName": "Google Shape;511;p6",
+          "bbox": {
+            "x": 2009543,
+            "y": 2612094,
+            "cx": 660899,
+            "cy": 660899,
+            "right": 2670442,
+            "bottom": 3272993
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 22739,
+      "sha256": "a41c4a5a06acbba33fa8a2c26fbed54b40958f6c412efb73c06dc8f5384b41e9",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "654",
+          "shapeName": "Google Shape;654;g7796a207ae_0_235",
+          "bbox": {
+            "x": 2140244,
+            "y": 2277299,
+            "cx": 4863512,
+            "cy": 552271,
+            "right": 7003756,
+            "bottom": 2829570
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 54643,
+      "sha256": "0f448667c37b019279cc829ff81d19a1f266db6e03bdcffc6ad45b2833d37ac6",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId4",
+          "shapeId": "655",
+          "shapeName": "Google Shape;655;g7796a207ae_0_235",
+          "bbox": {
+            "x": 3760326,
+            "y": 657650,
+            "cx": 1623347,
+            "cy": 1613891,
+            "right": 5383673,
+            "bottom": 2271541
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 26831,
+      "sha256": "6c559eb047439368f02c2c43138d7234f5f474b7d881f3e8b495ac74e29f4cf6",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "510",
+          "shapeName": "Google Shape;510;p6",
+          "bbox": {
+            "x": 2123678,
+            "y": 809827,
+            "cx": 397763,
+            "cy": 397763,
+            "right": 2521441,
+            "bottom": 1207590
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_\\image6.png",
+      "mimeType": "image/png",
+      "bytes": 17718,
+      "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475",
+      "referenceCount": 13,
+      "sameDigestCountInDeck": 1,
+      "classification": "repeated-media-candidate",
+      "classificationReason": "repeated source image retained for manual template-versus-instruction review",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "476",
+          "shapeName": "Google Shape;476;p2",
+          "bbox": {
+            "x": 8640073,
+            "y": 4630990,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9050545,
+            "bottom": 5039071
+          },
+          "slide": 2
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "484",
+          "shapeName": "Google Shape;484;p3",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 3
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "489",
+          "shapeName": "Google Shape;489;p4",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "502",
+          "shapeName": "Google Shape;502;p5",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 5
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "507",
+          "shapeName": "Google Shape;507;p6",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 6
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "519",
+          "shapeName": "Google Shape;519;p7",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 7
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "524",
+          "shapeName": "Google Shape;524;p8",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 8
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "580",
+          "shapeName": "Google Shape;580;p9",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 9
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "600",
+          "shapeName": "Google Shape;600;p11",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 11
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "606",
+          "shapeName": "Google Shape;606;p12",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 12
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "619",
+          "shapeName": "Google Shape;619;p13",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 13
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "630",
+          "shapeName": "Google Shape;630;p14",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 14
+        },
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "646",
+          "shapeName": "Google Shape;646;p15",
+          "bbox": {
+            "x": 8693238,
+            "y": 4673522,
+            "cx": 410472,
+            "cy": 408081,
+            "right": 9103710,
+            "bottom": 5081603
+          },
+          "slide": 15
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.png",
+      "localPath": "docs\\audit\\source-originals\\images\\A-unit-01-1cv0Skl-Ny1pXC_HQDJJ6_5wbcXnVWCh_\\image7.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.png",
+          "relationshipId": "rId3",
+          "shapeId": "467",
+          "shapeName": "Google Shape;467;p1",
+          "bbox": {
+            "x": 6731853,
+            "y": 209478,
+            "cx": 2150360,
+            "cy": 492268,
+            "right": 8882213,
+            "bottom": 701746
+          },
+          "slide": 1
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "This is me!",
+          "1",
+          "Unit"
+        ],
+        "joinedText": "This is me!\n1\nUnit",
+        "shapes": [
+          {
+            "shapeId": "463",
+            "shapeName": "Google Shape;463;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 7134448,
+              "y": 10626,
+              "cx": 1998925,
+              "cy": 1418285,
+              "right": 9133373,
+              "bottom": 1428911
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "464",
+            "shapeName": "Google Shape;464;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1271738,
+              "y": 2254930,
+              "cx": 4998228,
+              "cy": 1368164,
+              "right": 6269966,
+              "bottom": 3623094
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is me!",
+                "runs": [
+                  "This is me!"
+                ]
+              }
+            ],
+            "texts": [
+              "This is me!"
+            ],
+            "joinedText": "This is me!"
+          },
+          {
+            "shapeId": "465",
+            "shapeName": "Google Shape;465;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1233638,
+              "y": 166130,
+              "cx": 595463,
+              "cy": 1368164,
+              "right": 1829101,
+              "bottom": 1534294
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          },
+          {
+            "shapeId": "466",
+            "shapeName": "Google Shape;466;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 561740,
+              "y": 387746,
+              "cx": 892809,
+              "cy": 460215,
+              "right": 1454549,
+              "bottom": 847961
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "467",
+            "shapeName": "Google Shape;467;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6731853,
+              "y": 209478,
+              "cx": 2150360,
+              "cy": 492268,
+              "right": 8882213,
+              "bottom": 701746
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image7.png",
+            "relationshipId": "rId3",
+            "shapeId": "467",
+            "shapeName": "Google Shape;467;p1",
+            "bbox": {
+              "x": 6731853,
+              "y": 209478,
+              "cx": 2150360,
+              "cy": 492268,
+              "right": 8882213,
+              "bottom": 701746
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image7.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Talk about myself and others using personal information aspects.",
+          "Competencies",
+          "Use basic grammatical elements, vocabulary, and phrases related to personal information to make proper introductions."
+        ],
+        "joinedText": "Communicative Function\nTalk about myself and others using personal information aspects.\nCompetencies\nUse basic grammatical elements, vocabulary, and phrases related to personal information to make proper introductions.",
+        "shapes": [
+          {
+            "shapeId": "472",
+            "shapeName": "Google Shape;472;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 369925,
+              "cx": 5889900,
+              "cy": 641100,
+              "right": 6501300,
+              "bottom": 1011025
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function"
+            ],
+            "joinedText": "Communicative Function"
+          },
+          {
+            "shapeId": "473",
+            "shapeName": "Google Shape;473;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 1127759,
+              "cx": 5889900,
+              "cy": 770051,
+              "right": 6501300,
+              "bottom": 1897810
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Talk about myself and others using personal information aspects.",
+                "runs": [
+                  "Talk about myself and others using personal information aspects."
+                ]
+              }
+            ],
+            "texts": [
+              "Talk about myself and others using personal information aspects."
+            ],
+            "joinedText": "Talk about myself and others using personal information aspects."
+          },
+          {
+            "shapeId": "474",
+            "shapeName": "Google Shape;474;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 2177303,
+              "cx": 5889900,
+              "cy": 641100,
+              "right": 6501300,
+              "bottom": 2818403
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies"
+            ],
+            "joinedText": "Competencies"
+          },
+          {
+            "shapeId": "475",
+            "shapeName": "Google Shape;475;p2",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 2935137,
+              "cx": 5889900,
+              "cy": 1171036,
+              "right": 6501300,
+              "bottom": 4106173
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Use basic grammatical elements, vocabulary, and phrases related to personal information to make proper introductions.",
+                "runs": [
+                  "Use basic grammatical elements, vocabulary, and phrases related to personal information to make proper introductions."
+                ]
+              }
+            ],
+            "texts": [
+              "Use basic grammatical elements, vocabulary, and phrases related to personal information to make proper introductions."
+            ],
+            "joinedText": "Use basic grammatical elements, vocabulary, and phrases related to personal information to make proper introductions."
+          },
+          {
+            "shapeId": "476",
+            "shapeName": "Google Shape;476;p2",
+            "kind": "picture",
+            "bbox": {
+              "x": 8640073,
+              "y": 4630990,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9050545,
+              "bottom": 5039071
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "476",
+            "shapeName": "Google Shape;476;p2",
+            "bbox": {
+              "x": 8640073,
+              "y": 4630990,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9050545,
+              "bottom": 5039071
+            },
+            "slide": 2
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 2
+          }
+        ]
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "481",
+            "shapeName": "Google Shape;481;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 4562203,
+              "y": 371611,
+              "cx": 1275651,
+              "cy": 1530828,
+              "right": 5837854,
+              "bottom": 1902439
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "482",
+            "shapeName": "Google Shape;482;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1710900,
+              "y": 2984720,
+              "cx": 5337000,
+              "cy": 1159800,
+              "right": 7047900,
+              "bottom": 4144520
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          },
+          {
+            "shapeId": "483",
+            "shapeName": "Google Shape;483;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3211046,
+              "y": 1270346,
+              "cx": 1988989,
+              "cy": 1804836,
+              "right": 5200035,
+              "bottom": 3075182
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "484",
+            "shapeName": "Google Shape;484;p3",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "484",
+            "shapeName": "Google Shape;484;p3",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 3
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 3
+          }
+        ]
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Listen to the audio of two people talking and tell your teacher: what is the topic? Are there phrases you know?\nWrite them in the chat box.",
+          "👦",
+          "       👨"
+        ],
+        "joinedText": "A. Listen to the audio of two people talking and tell your teacher: what is the topic? Are there phrases you know?\nWrite them in the chat box.\n👦\n       👨",
+        "shapes": [
+          {
+            "shapeId": "489",
+            "shapeName": "Google Shape;489;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "490",
+            "shapeName": "Google Shape;490;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 347025,
+              "y": 59675,
+              "cx": 8514600,
+              "cy": 1139400,
+              "right": 8861625,
+              "bottom": 1199075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Listen to the audio of two people talking and tell your teacher: what is the topic? Are there phrases you know?\nWrite them in the chat box.",
+                "runs": [
+                  "A. Listen to the audio of two people talking and tell your teacher: what is the topic? Are there phrases you know?",
+                  "Write them in the chat box."
+                ]
+              }
+            ],
+            "texts": [
+              "A. Listen to the audio of two people talking and tell your teacher: what is the topic? Are there phrases you know?\nWrite them in the chat box."
+            ],
+            "joinedText": "A. Listen to the audio of two people talking and tell your teacher: what is the topic? Are there phrases you know?\nWrite them in the chat box."
+          },
+          {
+            "shapeId": "491",
+            "shapeName": "Google Shape;491;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 4459549,
+              "y": 1785215,
+              "cx": 2989001,
+              "cy": 2123658,
+              "right": 7448550,
+              "bottom": 3908873
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "👦",
+                "runs": [
+                  "👦"
+                ]
+              },
+              {
+                "text": "       👨",
+                "runs": [
+                  "       👨"
+                ]
+              }
+            ],
+            "texts": [
+              "👦",
+              "       👨"
+            ],
+            "joinedText": "👦\n       👨"
+          },
+          {
+            "shapeId": "492",
+            "shapeName": "Google Shape;492;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 5628375,
+              "y": 1703925,
+              "cx": 940314,
+              "cy": 866404,
+              "right": 6568689,
+              "bottom": 2570329
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "493",
+            "shapeName": "Google Shape;493;p4",
+            "kind": "text",
+            "bbox": {
+              "x": 5305624,
+              "y": 2745720,
+              "cx": 866575,
+              "cy": 798461,
+              "right": 6172199,
+              "bottom": 3544181
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "494",
+            "shapeName": "Google Shape;494;p4",
+            "kind": "picture",
+            "bbox": {
+              "x": 1276875,
+              "y": 2632525,
+              "cx": 1379825,
+              "cy": 1379825,
+              "right": 2656700,
+              "bottom": 4012350
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "489",
+            "shapeName": "Google Shape;489;p4",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "494",
+            "shapeName": "Google Shape;494;p4",
+            "bbox": {
+              "x": 1276875,
+              "y": 2632525,
+              "cx": 1379825,
+              "cy": 1379825,
+              "right": 2656700,
+              "bottom": 4012350
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "499",
+            "shapeName": "Google Shape;499;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 1419825,
+              "y": 1964350,
+              "cx": 4575000,
+              "cy": 1159800,
+              "right": 5994825,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary introduction",
+                "runs": [
+                  "Vocabulary introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary introduction"
+            ],
+            "joinedText": "Vocabulary introduction"
+          },
+          {
+            "shapeId": "500",
+            "shapeName": "Google Shape;500;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 1857375,
+              "y": 3221050,
+              "cx": 2714625,
+              "cy": 341300,
+              "right": 4572000,
+              "bottom": 3562350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "501",
+            "shapeName": "Google Shape;501;p5",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          },
+          {
+            "shapeId": "502",
+            "shapeName": "Google Shape;502;p5",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "502",
+            "shapeName": "Google Shape;502;p5",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 5
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 5
+          }
+        ]
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Which of the words do you know? Practice with your teacher.",
+          "Name",
+          "Peter",
+          "Family Name",
+          "Smith",
+          "💼",
+          "Occupation",
+          "Teacher",
+          "S-P-E-L-L",
+          "Spell",
+          "P-E-T-E-R",
+          "👶👴",
+          "Age",
+          "20 years old",
+          "Origin",
+          "The US",
+          "🏡",
+          "Housing",
+          "Lincoln Avenue, 23rd",
+          "📱",
+          "Phone/Mail",
+          "01 154 8593",
+          "👩‍❤️‍💋‍👨",
+          "Marital Status",
+          "I am married but Jake is single"
+        ],
+        "joinedText": "Which of the words do you know? Practice with your teacher.\nName\nPeter\nFamily Name\nSmith\n💼\nOccupation\nTeacher\nS-P-E-L-L\nSpell\nP-E-T-E-R\n👶👴\nAge\n20 years old\nOrigin\nThe US\n🏡\nHousing\nLincoln Avenue, 23rd\n📱\nPhone/Mail\n01 154 8593\n👩‍❤️‍💋‍👨\nMarital Status\nI am married but Jake is single",
+        "shapes": [
+          {
+            "shapeId": "507",
+            "shapeName": "Google Shape;507;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "508",
+            "shapeName": "Google Shape;508;p6",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 6,
+              "cx": 6646800,
+              "cy": 827700,
+              "right": 7258200,
+              "bottom": 827706
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Which of the words do you know? Practice with your teacher.",
+                "runs": [
+                  "Which",
+                  " of the words do you know? Practice with your teacher."
+                ]
+              }
+            ],
+            "texts": [
+              "Which of the words do you know? Practice with your teacher."
+            ],
+            "joinedText": "Which of the words do you know? Practice with your teacher."
+          },
+          {
+            "shapeId": "509",
+            "shapeName": "Google Shape;509;p6",
+            "kind": "table",
+            "bbox": {
+              "x": 1678525,
+              "y": 657939,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4678525,
+              "bottom": 3657939
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Name",
+                "runs": []
+              },
+              {
+                "text": "Peter",
+                "runs": []
+              },
+              {
+                "text": "Family Name",
+                "runs": []
+              },
+              {
+                "text": "Smith",
+                "runs": []
+              },
+              {
+                "text": "💼",
+                "runs": []
+              },
+              {
+                "text": "Occupation",
+                "runs": []
+              },
+              {
+                "text": "Teacher",
+                "runs": []
+              },
+              {
+                "text": "S-P-E-L-L",
+                "runs": []
+              },
+              {
+                "text": "Spell",
+                "runs": []
+              },
+              {
+                "text": "P-E-T-E-R",
+                "runs": []
+              },
+              {
+                "text": "👶👴",
+                "runs": []
+              },
+              {
+                "text": "Age",
+                "runs": []
+              },
+              {
+                "text": "20 years old",
+                "runs": []
+              },
+              {
+                "text": "Origin",
+                "runs": []
+              },
+              {
+                "text": "The US",
+                "runs": []
+              },
+              {
+                "text": "🏡",
+                "runs": []
+              },
+              {
+                "text": "Housing",
+                "runs": []
+              },
+              {
+                "text": "Lincoln Avenue, 23rd",
+                "runs": []
+              },
+              {
+                "text": "📱",
+                "runs": []
+              },
+              {
+                "text": "Phone/Mail",
+                "runs": []
+              },
+              {
+                "text": "01 154 8593",
+                "runs": []
+              },
+              {
+                "text": "👩‍❤️‍💋‍👨",
+                "runs": []
+              },
+              {
+                "text": "Marital Status",
+                "runs": []
+              },
+              {
+                "text": "I am married but Jake is single",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Name",
+              "Peter",
+              "Family Name",
+              "Smith",
+              "💼",
+              "Occupation",
+              "Teacher",
+              "S-P-E-L-L",
+              "Spell",
+              "P-E-T-E-R",
+              "👶👴",
+              "Age",
+              "20 years old",
+              "Origin",
+              "The US",
+              "🏡",
+              "Housing",
+              "Lincoln Avenue, 23rd",
+              "📱",
+              "Phone/Mail",
+              "01 154 8593",
+              "👩‍❤️‍💋‍👨",
+              "Marital Status",
+              "I am married but Jake is single"
+            ],
+            "joinedText": "Name\nPeter\nFamily Name\nSmith\n💼\nOccupation\nTeacher\nS-P-E-L-L\nSpell\nP-E-T-E-R\n👶👴\nAge\n20 years old\nOrigin\nThe US\n🏡\nHousing\nLincoln Avenue, 23rd\n📱\nPhone/Mail\n01 154 8593\n👩‍❤️‍💋‍👨\nMarital Status\nI am married but Jake is single",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "510",
+            "shapeName": "Google Shape;510;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 2123678,
+              "y": 809827,
+              "cx": 397763,
+              "cy": 397763,
+              "right": 2521441,
+              "bottom": 1207590
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "511",
+            "shapeName": "Google Shape;511;p6",
+            "kind": "picture",
+            "bbox": {
+              "x": 2009543,
+              "y": 2612094,
+              "cx": 660899,
+              "cy": 660899,
+              "right": 2670442,
+              "bottom": 3272993
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "509",
+            "shapeName": "Google Shape;509;p6",
+            "bbox": {
+              "x": 1678525,
+              "y": 657939,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4678525,
+              "bottom": 3657939
+            },
+            "columnWidths": [
+              1303025,
+              2035175,
+              2448750
+            ],
+            "rows": [
+              {
+                "height": 291900,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Name",
+                    "paragraphs": [
+                      {
+                        "text": "Name",
+                        "runs": [
+                          "Name"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Peter",
+                    "paragraphs": [
+                      {
+                        "text": "Peter",
+                        "runs": [
+                          "Peter"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 291900,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Family Name",
+                    "paragraphs": [
+                      {
+                        "text": "Family Name",
+                        "runs": [
+                          "Family Name"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Smith",
+                    "paragraphs": [
+                      {
+                        "text": "Smith",
+                        "runs": [
+                          "Smith"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 536600,
+                "cells": [
+                  {
+                    "text": "💼",
+                    "paragraphs": [
+                      {
+                        "text": "💼",
+                        "runs": [
+                          "💼"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Occupation",
+                    "paragraphs": [
+                      {
+                        "text": "Occupation",
+                        "runs": [
+                          "Occupation"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Teacher",
+                    "paragraphs": [
+                      {
+                        "text": "Teacher",
+                        "runs": [
+                          "Teacher"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 291900,
+                "cells": [
+                  {
+                    "text": "S-P-E-L-L",
+                    "paragraphs": [
+                      {
+                        "text": "S-P-E-L-L",
+                        "runs": [
+                          "S-P-E-L-L"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Spell",
+                    "paragraphs": [
+                      {
+                        "text": "Spell",
+                        "runs": [
+                          "Spell"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "P-E-T-E-R",
+                    "paragraphs": [
+                      {
+                        "text": "P-E-T-E-R",
+                        "runs": [
+                          "P-E-T-E-R"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 494200,
+                "cells": [
+                  {
+                    "text": "👶👴",
+                    "paragraphs": [
+                      {
+                        "text": "👶👴",
+                        "runs": [
+                          "👶👴"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Age",
+                    "paragraphs": [
+                      {
+                        "text": "Age",
+                        "runs": [
+                          "Age"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "20 years old",
+                    "paragraphs": [
+                      {
+                        "text": "20 years old",
+                        "runs": [
+                          "20 years old"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 553100,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Origin",
+                    "paragraphs": [
+                      {
+                        "text": "Origin",
+                        "runs": [
+                          "Origin"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The US",
+                    "paragraphs": [
+                      {
+                        "text": "The US",
+                        "runs": [
+                          "The ",
+                          "US"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 552000,
+                "cells": [
+                  {
+                    "text": "🏡",
+                    "paragraphs": [
+                      {
+                        "text": "🏡",
+                        "runs": [
+                          "🏡"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Housing",
+                    "paragraphs": [
+                      {
+                        "text": "Housing",
+                        "runs": [
+                          "Housing"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Lincoln Avenue, 23rd",
+                    "paragraphs": [
+                      {
+                        "text": "Lincoln Avenue, 23rd",
+                        "runs": [
+                          "Lincoln Avenue, 23rd"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 609800,
+                "cells": [
+                  {
+                    "text": "📱",
+                    "paragraphs": [
+                      {
+                        "text": "📱\n",
+                        "runs": [
+                          "📱"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Phone/Mail",
+                    "paragraphs": [
+                      {
+                        "text": "Phone/Mail",
+                        "runs": [
+                          "Phone/Mail"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "01 154 8593",
+                    "paragraphs": [
+                      {
+                        "text": "01 154 8593",
+                        "runs": [
+                          "01 154 8593"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 609800,
+                "cells": [
+                  {
+                    "text": "👩‍❤️‍💋‍👨",
+                    "paragraphs": [
+                      {
+                        "text": "👩‍❤️‍💋‍👨",
+                        "runs": [
+                          "👩‍❤️‍💋‍👨"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Marital Status",
+                    "paragraphs": [
+                      {
+                        "text": "Marital Status",
+                        "runs": [
+                          "Marital Status"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I am married but Jake is single",
+                    "paragraphs": [
+                      {
+                        "text": "I am married but Jake is single",
+                        "runs": [
+                          "I am married but Jake is single"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "507",
+            "shapeName": "Google Shape;507;p6",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "510",
+            "shapeName": "Google Shape;510;p6",
+            "bbox": {
+              "x": 2123678,
+              "y": 809827,
+              "cx": 397763,
+              "cy": 397763,
+              "right": 2521441,
+              "bottom": 1207590
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId5",
+            "shapeId": "511",
+            "shapeName": "Google Shape;511;p6",
+            "bbox": {
+              "x": 2009543,
+              "y": 2612094,
+              "cx": 660899,
+              "cy": 660899,
+              "right": 2670442,
+              "bottom": 3272993
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId5",
+            "slide": 6
+          }
+        ]
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "516",
+            "shapeName": "Google Shape;516;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 4575000,
+              "cy": 1159800,
+              "right": 6462672,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "517",
+            "shapeName": "Google Shape;517;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3221050,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3562350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "518",
+            "shapeName": "Google Shape;518;p7",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          },
+          {
+            "shapeId": "519",
+            "shapeName": "Google Shape;519;p7",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "519",
+            "shapeName": "Google Shape;519;p7",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 7
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 7
+          }
+        ]
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Verb TO BE – Simple Present Tense",
+          "PERSONAL PRONOUN",
+          "TO BE FORM",
+          "I",
+          "am",
+          "YOU",
+          "are",
+          "HE",
+          "is",
+          "SHE",
+          "is",
+          "IT",
+          "is",
+          "WE",
+          "are",
+          "YOU",
+          "are",
+          "THEY",
+          "are",
+          "1st Person Singular",
+          "2nd Person Singular",
+          "3rd Person Singular",
+          "1st Person Plural",
+          "2nd Person Plural",
+          "3rd Person Plural",
+          "I",
+          "AM",
+          "JOHN",
+          "YOU",
+          "ARE",
+          "JOHN",
+          "?",
+          "I",
+          "AM",
+          "JOHN",
+          "NOT",
+          "HE",
+          "IS",
+          "A STUDENT",
+          "HE",
+          "IS",
+          "A STUDENT",
+          "?",
+          "NOT",
+          "HE",
+          "IS",
+          "A STUDENT",
+          "THEY",
+          "ARE",
+          "20 YEARS OLD",
+          "THEY",
+          "ARE",
+          "20 YEARS OLD",
+          "?",
+          "NOT",
+          "THEY",
+          "ARE",
+          "20 YEARS OLD",
+          "          HINT",
+          "‘I am’ changes to ‘are you’ in questions.",
+          "E.g. ",
+          "‘I am a teacher → Are you a teacher?’"
+        ],
+        "joinedText": "Verb TO BE – Simple Present Tense\nPERSONAL PRONOUN\nTO BE FORM\nI\nam\nYOU\nare\nHE\nis\nSHE\nis\nIT\nis\nWE\nare\nYOU\nare\nTHEY\nare\n1st Person Singular\n2nd Person Singular\n3rd Person Singular\n1st Person Plural\n2nd Person Plural\n3rd Person Plural\nI\nAM\nJOHN\nYOU\nARE\nJOHN\n?\nI\nAM\nJOHN\nNOT\nHE\nIS\nA STUDENT\nHE\nIS\nA STUDENT\n?\nNOT\nHE\nIS\nA STUDENT\nTHEY\nARE\n20 YEARS OLD\nTHEY\nARE\n20 YEARS OLD\n?\nNOT\nTHEY\nARE\n20 YEARS OLD\nHINT\n\n‘I am’ changes to ‘are you’ in questions.\n\nE.g. \n‘I am a teacher → Are you a teacher?’",
+        "shapes": [
+          {
+            "shapeId": "524",
+            "shapeName": "Google Shape;524;p8",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "525",
+            "shapeName": "Google Shape;525;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 1762361,
+              "y": 368967,
+              "cx": 5619279,
+              "cy": 458575,
+              "right": 7381640,
+              "bottom": 827542
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Verb TO BE – Simple Present Tense",
+                "runs": [
+                  "Verb TO BE – Simple Present Tens",
+                  "e"
+                ]
+              }
+            ],
+            "texts": [
+              "Verb TO BE – Simple Present Tense"
+            ],
+            "joinedText": "Verb TO BE – Simple Present Tense"
+          },
+          {
+            "shapeId": "526",
+            "shapeName": "Google Shape;526;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3023530,
+              "y": 928466,
+              "cx": 3824945,
+              "cy": 4055561,
+              "right": 6848475,
+              "bottom": 4984027
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "527",
+            "shapeName": "Google Shape;527;p8",
+            "kind": "table",
+            "bbox": {
+              "x": 915419,
+              "y": 1510709,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3915419,
+              "bottom": 4510709
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "PERSONAL PRONOUN",
+                "runs": []
+              },
+              {
+                "text": "TO BE FORM",
+                "runs": []
+              },
+              {
+                "text": "I",
+                "runs": []
+              },
+              {
+                "text": "am",
+                "runs": []
+              },
+              {
+                "text": "YOU",
+                "runs": []
+              },
+              {
+                "text": "are",
+                "runs": []
+              },
+              {
+                "text": "HE",
+                "runs": []
+              },
+              {
+                "text": "is",
+                "runs": []
+              },
+              {
+                "text": "SHE",
+                "runs": []
+              },
+              {
+                "text": "is",
+                "runs": []
+              },
+              {
+                "text": "IT",
+                "runs": []
+              },
+              {
+                "text": "is",
+                "runs": []
+              },
+              {
+                "text": "WE",
+                "runs": []
+              },
+              {
+                "text": "are",
+                "runs": []
+              },
+              {
+                "text": "YOU",
+                "runs": []
+              },
+              {
+                "text": "are",
+                "runs": []
+              },
+              {
+                "text": "THEY",
+                "runs": []
+              },
+              {
+                "text": "are",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "PERSONAL PRONOUN",
+              "TO BE FORM",
+              "I",
+              "am",
+              "YOU",
+              "are",
+              "HE",
+              "is",
+              "SHE",
+              "is",
+              "IT",
+              "is",
+              "WE",
+              "are",
+              "YOU",
+              "are",
+              "THEY",
+              "are"
+            ],
+            "joinedText": "PERSONAL PRONOUN\nTO BE FORM\nI\nam\nYOU\nare\nHE\nis\nSHE\nis\nIT\nis\nWE\nare\nYOU\nare\nTHEY\nare",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "528",
+            "shapeName": "Google Shape;528;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 209551,
+              "y": 2104267,
+              "cx": 678768,
+              "cy": 260384,
+              "right": 888319,
+              "bottom": 2364651
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1st Person Singular",
+                "runs": [
+                  "1st Person Singular"
+                ]
+              }
+            ],
+            "texts": [
+              "1st Person Singular"
+            ],
+            "joinedText": "1st Person Singular"
+          },
+          {
+            "shapeId": "529",
+            "shapeName": "Google Shape;529;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 214313,
+              "y": 2384887,
+              "cx": 678312,
+              "cy": 277716,
+              "right": 892625,
+              "bottom": 2662603
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2nd Person Singular",
+                "runs": [
+                  "2nd Person Singular"
+                ]
+              }
+            ],
+            "texts": [
+              "2nd Person Singular"
+            ],
+            "joinedText": "2nd Person Singular"
+          },
+          {
+            "shapeId": "530",
+            "shapeName": "Google Shape;530;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 214313,
+              "y": 2678555,
+              "cx": 678311,
+              "cy": 799280,
+              "right": 892624,
+              "bottom": 3477835
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3rd Person Singular",
+                "runs": [
+                  "3rd Person Singular"
+                ]
+              }
+            ],
+            "texts": [
+              "3rd Person Singular"
+            ],
+            "joinedText": "3rd Person Singular"
+          },
+          {
+            "shapeId": "531",
+            "shapeName": "Google Shape;531;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 214313,
+              "y": 3499678,
+              "cx": 678312,
+              "cy": 260384,
+              "right": 892625,
+              "bottom": 3760062
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1st Person Plural",
+                "runs": [
+                  "1st Person Plural"
+                ]
+              }
+            ],
+            "texts": [
+              "1st Person Plural"
+            ],
+            "joinedText": "1st Person Plural"
+          },
+          {
+            "shapeId": "532",
+            "shapeName": "Google Shape;532;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 211421,
+              "y": 3775902,
+              "cx": 678312,
+              "cy": 260384,
+              "right": 889733,
+              "bottom": 4036286
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2nd Person Plural",
+                "runs": [
+                  "2nd Person Plural"
+                ]
+              }
+            ],
+            "texts": [
+              "2nd Person Plural"
+            ],
+            "joinedText": "2nd Person Plural"
+          },
+          {
+            "shapeId": "533",
+            "shapeName": "Google Shape;533;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 214312,
+              "y": 4062413,
+              "cx": 678312,
+              "cy": 260384,
+              "right": 892624,
+              "bottom": 4322797
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3rd Person Plural",
+                "runs": [
+                  "3rd Person Plural"
+                ]
+              }
+            ],
+            "texts": [
+              "3rd Person Plural"
+            ],
+            "joinedText": "3rd Person Plural"
+          },
+          {
+            "shapeId": "534",
+            "shapeName": "Google Shape;534;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3638194,
+              "y": 1034583,
+              "cx": 218458,
+              "cy": 257138,
+              "right": 3856652,
+              "bottom": 1291721
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "I",
+                "runs": [
+                  "I"
+                ]
+              }
+            ],
+            "texts": [
+              "I"
+            ],
+            "joinedText": "I"
+          },
+          {
+            "shapeId": "535",
+            "shapeName": "Google Shape;535;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3906966,
+              "y": 1034585,
+              "cx": 414460,
+              "cy": 257138,
+              "right": 4321426,
+              "bottom": 1291723
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "AM",
+                "runs": [
+                  "AM"
+                ]
+              }
+            ],
+            "texts": [
+              "AM"
+            ],
+            "joinedText": "AM"
+          },
+          {
+            "shapeId": "536",
+            "shapeName": "Google Shape;536;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4371740,
+              "y": 1019875,
+              "cx": 582578,
+              "cy": 257138,
+              "right": 4954318,
+              "bottom": 1277013
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "JOHN",
+                "runs": [
+                  "JOHN"
+                ]
+              }
+            ],
+            "texts": [
+              "JOHN"
+            ],
+            "joinedText": "JOHN"
+          },
+          {
+            "shapeId": "537",
+            "shapeName": "Google Shape;537;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3847693,
+              "y": 1364407,
+              "cx": 473733,
+              "cy": 257138,
+              "right": 4321426,
+              "bottom": 1621545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "YOU",
+                "runs": [
+                  "YOU"
+                ]
+              }
+            ],
+            "texts": [
+              "YOU"
+            ],
+            "joinedText": "YOU"
+          },
+          {
+            "shapeId": "538",
+            "shapeName": "Google Shape;538;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3327028,
+              "y": 1364406,
+              "cx": 473733,
+              "cy": 257138,
+              "right": 3800761,
+              "bottom": 1621544
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "ARE",
+                "runs": [
+                  "ARE"
+                ]
+              }
+            ],
+            "texts": [
+              "ARE"
+            ],
+            "joinedText": "ARE"
+          },
+          {
+            "shapeId": "539",
+            "shapeName": "Google Shape;539;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4371740,
+              "y": 1364406,
+              "cx": 582578,
+              "cy": 257138,
+              "right": 4954318,
+              "bottom": 1621544
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "JOHN",
+                "runs": [
+                  "JOHN"
+                ]
+              }
+            ],
+            "texts": [
+              "JOHN"
+            ],
+            "joinedText": "JOHN"
+          },
+          {
+            "shapeId": "540",
+            "shapeName": "Google Shape;540;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 5001319,
+              "y": 1364406,
+              "cx": 218458,
+              "cy": 257138,
+              "right": 5219777,
+              "bottom": 1621544
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "?",
+                "runs": [
+                  "?"
+                ]
+              }
+            ],
+            "texts": [
+              "?"
+            ],
+            "joinedText": "?"
+          },
+          {
+            "shapeId": "541",
+            "shapeName": "Google Shape;541;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3117462,
+              "y": 1708937,
+              "cx": 218458,
+              "cy": 257138,
+              "right": 3335920,
+              "bottom": 1966075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "I",
+                "runs": [
+                  "I"
+                ]
+              }
+            ],
+            "texts": [
+              "I"
+            ],
+            "joinedText": "I"
+          },
+          {
+            "shapeId": "542",
+            "shapeName": "Google Shape;542;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3382921,
+              "y": 1708937,
+              "cx": 414460,
+              "cy": 257138,
+              "right": 3797381,
+              "bottom": 1966075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "AM",
+                "runs": [
+                  "AM"
+                ]
+              }
+            ],
+            "texts": [
+              "AM"
+            ],
+            "joinedText": "AM"
+          },
+          {
+            "shapeId": "543",
+            "shapeName": "Google Shape;543;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4371740,
+              "y": 1708938,
+              "cx": 582578,
+              "cy": 257138,
+              "right": 4954318,
+              "bottom": 1966076
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "JOHN",
+                "runs": [
+                  "JOHN"
+                ]
+              }
+            ],
+            "texts": [
+              "JOHN"
+            ],
+            "joinedText": "JOHN"
+          },
+          {
+            "shapeId": "544",
+            "shapeName": "Google Shape;544;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3847694,
+              "y": 1708937,
+              "cx": 473733,
+              "cy": 257138,
+              "right": 4321427,
+              "bottom": 1966075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "NOT",
+                "runs": [
+                  "NOT"
+                ]
+              }
+            ],
+            "texts": [
+              "NOT"
+            ],
+            "joinedText": "NOT"
+          },
+          {
+            "shapeId": "545",
+            "shapeName": "Google Shape;545;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3116489,
+              "y": 2403570,
+              "cx": 473731,
+              "cy": 257138,
+              "right": 3590220,
+              "bottom": 2660708
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "HE",
+                "runs": [
+                  "HE"
+                ]
+              }
+            ],
+            "texts": [
+              "HE"
+            ],
+            "joinedText": "HE"
+          },
+          {
+            "shapeId": "546",
+            "shapeName": "Google Shape;546;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3636657,
+              "y": 2403570,
+              "cx": 328898,
+              "cy": 257138,
+              "right": 3965555,
+              "bottom": 2660708
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "IS",
+                "runs": [
+                  "IS"
+                ]
+              }
+            ],
+            "texts": [
+              "IS"
+            ],
+            "joinedText": "IS"
+          },
+          {
+            "shapeId": "547",
+            "shapeName": "Google Shape;547;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3999045,
+              "y": 2388862,
+              "cx": 1029620,
+              "cy": 257138,
+              "right": 5028665,
+              "bottom": 2646000
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A STUDENT",
+                "runs": [
+                  "A STUDENT"
+                ]
+              }
+            ],
+            "texts": [
+              "A STUDENT"
+            ],
+            "joinedText": "A STUDENT"
+          },
+          {
+            "shapeId": "548",
+            "shapeName": "Google Shape;548;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3489642,
+              "y": 2720733,
+              "cx": 473732,
+              "cy": 257138,
+              "right": 3963374,
+              "bottom": 2977871
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "HE",
+                "runs": [
+                  "HE"
+                ]
+              }
+            ],
+            "texts": [
+              "HE"
+            ],
+            "joinedText": "HE"
+          },
+          {
+            "shapeId": "549",
+            "shapeName": "Google Shape;549;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3116490,
+              "y": 2715605,
+              "cx": 328898,
+              "cy": 257138,
+              "right": 3445388,
+              "bottom": 2972743
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "IS",
+                "runs": [
+                  "IS"
+                ]
+              }
+            ],
+            "texts": [
+              "IS"
+            ],
+            "joinedText": "IS"
+          },
+          {
+            "shapeId": "550",
+            "shapeName": "Google Shape;550;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4007627,
+              "y": 2720002,
+              "cx": 1021037,
+              "cy": 257138,
+              "right": 5028664,
+              "bottom": 2977140
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A STUDENT",
+                "runs": [
+                  "A STUDENT"
+                ]
+              }
+            ],
+            "texts": [
+              "A STUDENT"
+            ],
+            "joinedText": "A STUDENT"
+          },
+          {
+            "shapeId": "551",
+            "shapeName": "Google Shape;551;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 5069280,
+              "y": 2715605,
+              "cx": 218458,
+              "cy": 257138,
+              "right": 5287738,
+              "bottom": 2972743
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "?",
+                "runs": [
+                  "?"
+                ]
+              }
+            ],
+            "texts": [
+              "?"
+            ],
+            "joinedText": "?"
+          },
+          {
+            "shapeId": "552",
+            "shapeName": "Google Shape;552;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4007628,
+              "y": 3077343,
+              "cx": 491464,
+              "cy": 257138,
+              "right": 4499092,
+              "bottom": 3334481
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "NOT",
+                "runs": [
+                  "NOT"
+                ]
+              }
+            ],
+            "texts": [
+              "NOT"
+            ],
+            "joinedText": "NOT"
+          },
+          {
+            "shapeId": "553",
+            "shapeName": "Google Shape;553;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3116489,
+              "y": 3066059,
+              "cx": 473731,
+              "cy": 257138,
+              "right": 3590220,
+              "bottom": 3323197
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "HE",
+                "runs": [
+                  "HE"
+                ]
+              }
+            ],
+            "texts": [
+              "HE"
+            ],
+            "joinedText": "HE"
+          },
+          {
+            "shapeId": "554",
+            "shapeName": "Google Shape;554;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3636657,
+              "y": 3066059,
+              "cx": 328898,
+              "cy": 257138,
+              "right": 3965555,
+              "bottom": 3323197
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "IS",
+                "runs": [
+                  "IS"
+                ]
+              }
+            ],
+            "texts": [
+              "IS"
+            ],
+            "joinedText": "IS"
+          },
+          {
+            "shapeId": "555",
+            "shapeName": "Google Shape;555;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4536825,
+              "y": 3063564,
+              "cx": 1029620,
+              "cy": 257138,
+              "right": 5566445,
+              "bottom": 3320702
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A STUDENT",
+                "runs": [
+                  "A STUDENT"
+                ]
+              }
+            ],
+            "texts": [
+              "A STUDENT"
+            ],
+            "joinedText": "A STUDENT"
+          },
+          {
+            "shapeId": "556",
+            "shapeName": "Google Shape;556;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3113194,
+              "y": 3773145,
+              "cx": 713502,
+              "cy": 257138,
+              "right": 3826696,
+              "bottom": 4030283
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "THEY",
+                "runs": [
+                  "THEY"
+                ]
+              }
+            ],
+            "texts": [
+              "THEY"
+            ],
+            "joinedText": "THEY"
+          },
+          {
+            "shapeId": "557",
+            "shapeName": "Google Shape;557;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3879564,
+              "y": 3773145,
+              "cx": 495366,
+              "cy": 257138,
+              "right": 4374930,
+              "bottom": 4030283
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "ARE",
+                "runs": [
+                  "ARE"
+                ]
+              }
+            ],
+            "texts": [
+              "ARE"
+            ],
+            "joinedText": "ARE"
+          },
+          {
+            "shapeId": "558",
+            "shapeName": "Google Shape;558;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4417047,
+              "y": 3758437,
+              "cx": 1550748,
+              "cy": 257138,
+              "right": 5967795,
+              "bottom": 4015575
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "20 YEARS OLD",
+                "runs": [
+                  "20 YEARS OLD"
+                ]
+              }
+            ],
+            "texts": [
+              "20 YEARS OLD"
+            ],
+            "joinedText": "20 YEARS OLD"
+          },
+          {
+            "shapeId": "559",
+            "shapeName": "Google Shape;559;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3657797,
+              "y": 4090308,
+              "cx": 713504,
+              "cy": 257138,
+              "right": 4371301,
+              "bottom": 4347446
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "THEY",
+                "runs": [
+                  "THEY"
+                ]
+              }
+            ],
+            "texts": [
+              "THEY"
+            ],
+            "joinedText": "THEY"
+          },
+          {
+            "shapeId": "560",
+            "shapeName": "Google Shape;560;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3111747,
+              "y": 4085180,
+              "cx": 495366,
+              "cy": 257138,
+              "right": 3607113,
+              "bottom": 4342318
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "ARE",
+                "runs": [
+                  "ARE"
+                ]
+              }
+            ],
+            "texts": [
+              "ARE"
+            ],
+            "joinedText": "ARE"
+          },
+          {
+            "shapeId": "561",
+            "shapeName": "Google Shape;561;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4427801,
+              "y": 4089577,
+              "cx": 1537820,
+              "cy": 257138,
+              "right": 5965621,
+              "bottom": 4346715
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "20 YEARS OLD",
+                "runs": [
+                  "20 YEARS OLD"
+                ]
+              }
+            ],
+            "texts": [
+              "20 YEARS OLD"
+            ],
+            "joinedText": "20 YEARS OLD"
+          },
+          {
+            "shapeId": "562",
+            "shapeName": "Google Shape;562;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6006886,
+              "y": 4085180,
+              "cx": 329028,
+              "cy": 257138,
+              "right": 6335914,
+              "bottom": 4342318
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "?",
+                "runs": [
+                  "?"
+                ]
+              }
+            ],
+            "texts": [
+              "?"
+            ],
+            "joinedText": "?"
+          },
+          {
+            "shapeId": "563",
+            "shapeName": "Google Shape;563;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 4409420,
+              "y": 4399293,
+              "cx": 740212,
+              "cy": 257138,
+              "right": 5149632,
+              "bottom": 4656431
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "NOT",
+                "runs": [
+                  "NOT"
+                ]
+              }
+            ],
+            "texts": [
+              "NOT"
+            ],
+            "joinedText": "NOT"
+          },
+          {
+            "shapeId": "564",
+            "shapeName": "Google Shape;564;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3113194,
+              "y": 4388009,
+              "cx": 713502,
+              "cy": 257138,
+              "right": 3826696,
+              "bottom": 4645147
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "THEY",
+                "runs": [
+                  "THEY"
+                ]
+              }
+            ],
+            "texts": [
+              "THEY"
+            ],
+            "joinedText": "THEY"
+          },
+          {
+            "shapeId": "565",
+            "shapeName": "Google Shape;565;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 3879564,
+              "y": 4388009,
+              "cx": 495366,
+              "cy": 257138,
+              "right": 4374930,
+              "bottom": 4645147
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "ARE",
+                "runs": [
+                  "ARE"
+                ]
+              }
+            ],
+            "texts": [
+              "ARE"
+            ],
+            "joinedText": "ARE"
+          },
+          {
+            "shapeId": "566",
+            "shapeName": "Google Shape;566;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 5202477,
+              "y": 4404564,
+              "cx": 1550748,
+              "cy": 257138,
+              "right": 6753225,
+              "bottom": 4661702
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "20 YEARS OLD",
+                "runs": [
+                  "20 YEARS OLD"
+                ]
+              }
+            ],
+            "texts": [
+              "20 YEARS OLD"
+            ],
+            "joinedText": "20 YEARS OLD"
+          },
+          {
+            "shapeId": "567",
+            "shapeName": "Google Shape;567;p8",
+            "kind": "group",
+            "bbox": {
+              "x": 6400295,
+              "y": 1113044,
+              "cx": 2529393,
+              "cy": 2822126,
+              "right": 8929688,
+              "bottom": 3935170
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "568",
+            "shapeName": "Google Shape;568;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6680895,
+              "y": 964323,
+              "cx": 2209107,
+              "cy": 2467208,
+              "right": 8890002,
+              "bottom": 3431531
+            },
+            "parentShapeId": "567",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "569",
+            "shapeName": "Google Shape;569;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6648246,
+              "y": 2660032,
+              "cx": 801968,
+              "cy": 741032,
+              "right": 7450214,
+              "bottom": 3401064
+            },
+            "parentShapeId": "567",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "570",
+            "shapeName": "Google Shape;570;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6647702,
+              "y": 2286000,
+              "cx": 2115298,
+              "cy": 645876,
+              "right": 8763000,
+              "bottom": 2931876
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "571",
+            "shapeName": "Google Shape;571;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 6647702,
+              "y": 1208327,
+              "cx": 2191497,
+              "cy": 1723549,
+              "right": 8839199,
+              "bottom": 2931876
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "          HINT",
+                "runs": [
+                  "          HINT"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "‘I am’ changes to ‘are you’ in questions.",
+                "runs": [
+                  "‘I am’ changes to ‘are you’ in questions."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "E.g. ",
+                "runs": [
+                  "E.g. "
+                ]
+              },
+              {
+                "text": "‘I am a teacher → Are you a teacher?’",
+                "runs": [
+                  "‘I am a teacher → Are you a teacher?’"
+                ]
+              }
+            ],
+            "texts": [
+              "          HINT",
+              "‘I am’ changes to ‘are you’ in questions.",
+              "E.g. ",
+              "‘I am a teacher → Are you a teacher?’"
+            ],
+            "joinedText": "HINT\n\n‘I am’ changes to ‘are you’ in questions.\n\nE.g. \n‘I am a teacher → Are you a teacher?’"
+          },
+          {
+            "shapeId": "572",
+            "shapeName": "Google Shape;572;p8",
+            "kind": "text",
+            "bbox": {
+              "x": 7986066,
+              "y": 2763330,
+              "cx": 868993,
+              "cy": 1042823,
+              "right": 8855059,
+              "bottom": 3806153
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "527",
+            "shapeName": "Google Shape;527;p8",
+            "bbox": {
+              "x": 915419,
+              "y": 1510709,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3915419,
+              "bottom": 4510709
+            },
+            "columnWidths": [
+              895375,
+              786800
+            ],
+            "rows": [
+              {
+                "height": 593375,
+                "cells": [
+                  {
+                    "text": "PERSONAL PRONOUN",
+                    "paragraphs": [
+                      {
+                        "text": "PERSONAL PRONOUN",
+                        "runs": [
+                          "PERSONAL PRONOUN"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "TO BE FORM",
+                    "paragraphs": [
+                      {
+                        "text": "TO BE FORM",
+                        "runs": [
+                          "TO BE FORM"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 281375,
+                "cells": [
+                  {
+                    "text": "I",
+                    "paragraphs": [
+                      {
+                        "text": "I",
+                        "runs": [
+                          "I"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "am",
+                    "paragraphs": [
+                      {
+                        "text": "am",
+                        "runs": [
+                          "am"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 281375,
+                "cells": [
+                  {
+                    "text": "YOU",
+                    "paragraphs": [
+                      {
+                        "text": "YOU",
+                        "runs": [
+                          "YOU"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "are",
+                    "paragraphs": [
+                      {
+                        "text": "are",
+                        "runs": [
+                          "are"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 288625,
+                "cells": [
+                  {
+                    "text": "HE",
+                    "paragraphs": [
+                      {
+                        "text": "HE",
+                        "runs": [
+                          "HE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "is",
+                    "paragraphs": [
+                      {
+                        "text": "is",
+                        "runs": [
+                          "is"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 281375,
+                "cells": [
+                  {
+                    "text": "SHE",
+                    "paragraphs": [
+                      {
+                        "text": "SHE",
+                        "runs": [
+                          "SHE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "is",
+                    "paragraphs": [
+                      {
+                        "text": "is",
+                        "runs": [
+                          "is"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 255575,
+                "cells": [
+                  {
+                    "text": "IT",
+                    "paragraphs": [
+                      {
+                        "text": "IT",
+                        "runs": [
+                          "IT"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "is",
+                    "paragraphs": [
+                      {
+                        "text": "is",
+                        "runs": [
+                          "is"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 300200,
+                "cells": [
+                  {
+                    "text": "WE",
+                    "paragraphs": [
+                      {
+                        "text": "WE",
+                        "runs": [
+                          "WE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "are",
+                    "paragraphs": [
+                      {
+                        "text": "are",
+                        "runs": [
+                          "are"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 266775,
+                "cells": [
+                  {
+                    "text": "YOU",
+                    "paragraphs": [
+                      {
+                        "text": "YOU",
+                        "runs": [
+                          "YOU"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "are",
+                    "paragraphs": [
+                      {
+                        "text": "are",
+                        "runs": [
+                          "are"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 276950,
+                "cells": [
+                  {
+                    "text": "THEY",
+                    "paragraphs": [
+                      {
+                        "text": "THEY",
+                        "runs": [
+                          "THEY"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "are",
+                    "paragraphs": [
+                      {
+                        "text": "are",
+                        "runs": [
+                          "are"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "524",
+            "shapeName": "Google Shape;524;p8",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 8
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 8
+          }
+        ]
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "577",
+            "shapeName": "Google Shape;577;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 2684328,
+              "cy": 1159800,
+              "right": 4572000,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use",
+                "runs": [
+                  "Language Use"
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use"
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "578",
+            "shapeName": "Google Shape;578;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3124150,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3465450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "579",
+            "shapeName": "Google Shape;579;p9",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          },
+          {
+            "shapeId": "580",
+            "shapeName": "Google Shape;580;p9",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "580",
+            "shapeName": "Google Shape;580;p9",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 9
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 9
+          }
+        ]
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Targets",
+          "FUNCTIONS",
+          "EXAMPLES",
+          "Express one’s and others’ names",
+          "My name is John",
+          "I am John Smith but people call me J.",
+          "State what people are",
+          "We are doctors",
+          "Talk about age",
+          "She is 32 years old",
+          "He is 20",
+          "State origins",
+          "They are from Argentina",
+          "It is American",
+          "State addresses",
+          "You live in New York *",
+          "Give contact information",
+          "My telephone number is 0162034550",
+          "Her email is sps_2015@mail.com",
+          "Simple present tense with verb TO BE helps us to talk about personal information aspects about oneself and others. Look at the different examples in the chart.",
+          "TO CONSIDER",
+          "Every personal pronoun has its own possessive adjective.",
+          "I – My",
+          "You – Your",
+          "He – His",
+          "She – Her",
+          "It – Its",
+          "We – Our",
+          "You – Your",
+          "They – Their",
+          "*It is the only aspect that uses a different verb."
+        ],
+        "joinedText": "Language Targets\nFUNCTIONS\nEXAMPLES\nExpress one’s and others’ names\nMy name is John\nI am John Smith but people call me J.\nState what people are\nWe are doctors\nTalk about age\nShe is 32 years old\nHe is 20\nState origins\nThey are from Argentina\nIt is American\nState addresses\nYou live in New York *\nGive contact information\nMy telephone number is 0162034550\nHer email is sps_2015@mail.com\nSimple present tense with verb TO BE helps us to talk about personal information aspects about oneself and others. Look at the different examples in the chart.\nTO CONSIDER\n\nEvery personal pronoun has its own possessive adjective.\n\nI – My\nYou – Your\nHe – His\nShe – Her\nIt – Its\nWe – Our\nYou – Your\nThey – Their\n*It is the only aspect that uses a different verb.",
+        "shapes": [
+          {
+            "shapeId": "585",
+            "shapeName": "Google Shape;585;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 1762361,
+              "y": 252004,
+              "cx": 5619279,
+              "cy": 458575,
+              "right": 7381640,
+              "bottom": 710579
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Targets",
+                "runs": [
+                  "Language Targets"
+                ]
+              }
+            ],
+            "texts": [
+              "Language Targets"
+            ],
+            "joinedText": "Language Targets"
+          },
+          {
+            "shapeId": "586",
+            "shapeName": "Google Shape;586;p10",
+            "kind": "table",
+            "bbox": {
+              "x": 3485905,
+              "y": 1137582,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 6485905,
+              "bottom": 4137582
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "FUNCTIONS",
+                "runs": []
+              },
+              {
+                "text": "EXAMPLES",
+                "runs": []
+              },
+              {
+                "text": "Express one’s and others’ names",
+                "runs": []
+              },
+              {
+                "text": "My name is John",
+                "runs": []
+              },
+              {
+                "text": "I am John Smith but people call me J.",
+                "runs": []
+              },
+              {
+                "text": "State what people are",
+                "runs": []
+              },
+              {
+                "text": "We are doctors",
+                "runs": []
+              },
+              {
+                "text": "Talk about age",
+                "runs": []
+              },
+              {
+                "text": "She is 32 years old",
+                "runs": []
+              },
+              {
+                "text": "He is 20",
+                "runs": []
+              },
+              {
+                "text": "State origins",
+                "runs": []
+              },
+              {
+                "text": "They are from Argentina",
+                "runs": []
+              },
+              {
+                "text": "It is American",
+                "runs": []
+              },
+              {
+                "text": "State addresses",
+                "runs": []
+              },
+              {
+                "text": "You live in New York *",
+                "runs": []
+              },
+              {
+                "text": "Give contact information",
+                "runs": []
+              },
+              {
+                "text": "My telephone number is 0162034550",
+                "runs": []
+              },
+              {
+                "text": "Her email is sps_2015@mail.com",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "FUNCTIONS",
+              "EXAMPLES",
+              "Express one’s and others’ names",
+              "My name is John",
+              "I am John Smith but people call me J.",
+              "State what people are",
+              "We are doctors",
+              "Talk about age",
+              "She is 32 years old",
+              "He is 20",
+              "State origins",
+              "They are from Argentina",
+              "It is American",
+              "State addresses",
+              "You live in New York *",
+              "Give contact information",
+              "My telephone number is 0162034550",
+              "Her email is sps_2015@mail.com"
+            ],
+            "joinedText": "FUNCTIONS\nEXAMPLES\nExpress one’s and others’ names\nMy name is John\nI am John Smith but people call me J.\nState what people are\nWe are doctors\nTalk about age\nShe is 32 years old\nHe is 20\nState origins\nThey are from Argentina\nIt is American\nState addresses\nYou live in New York *\nGive contact information\nMy telephone number is 0162034550\nHer email is sps_2015@mail.com",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "587",
+            "shapeName": "Google Shape;587;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 443255,
+              "y": 1009987,
+              "cx": 2619259,
+              "cy": 1604295,
+              "right": 3062514,
+              "bottom": 2614282
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Simple present tense with verb TO BE helps us to talk about personal information aspects about oneself and others. Look at the different examples in the chart.",
+                "runs": [
+                  "Simple present tense with verb TO BE helps us to talk about personal information aspects about oneself and others. Look at the different examples in the chart."
+                ]
+              }
+            ],
+            "texts": [
+              "Simple present tense with verb TO BE helps us to talk about personal information aspects about oneself and others. Look at the different examples in the chart."
+            ],
+            "joinedText": "Simple present tense with verb TO BE helps us to talk about personal information aspects about oneself and others. Look at the different examples in the chart."
+          },
+          {
+            "shapeId": "588",
+            "shapeName": "Google Shape;588;p10",
+            "kind": "group",
+            "bbox": {
+              "x": 126923,
+              "y": 2690036,
+              "cx": 2935591,
+              "cy": 2360427,
+              "right": 3062514,
+              "bottom": 5050463
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "589",
+            "shapeName": "Google Shape;589;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 6680895,
+              "y": 964323,
+              "cx": 2209107,
+              "cy": 2467208,
+              "right": 8890002,
+              "bottom": 3431531
+            },
+            "parentShapeId": "588",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "590",
+            "shapeName": "Google Shape;590;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 6648246,
+              "y": 2660032,
+              "cx": 801968,
+              "cy": 741032,
+              "right": 7450214,
+              "bottom": 3401064
+            },
+            "parentShapeId": "588",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "591",
+            "shapeName": "Google Shape;591;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 276447,
+              "y": 2773777,
+              "cx": 2619258,
+              "cy": 2423740,
+              "right": 2895705,
+              "bottom": 5197517
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "TO CONSIDER",
+                "runs": [
+                  "TO CONSIDER"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Every personal pronoun has its own possessive adjective.",
+                "runs": [
+                  "Every personal pronoun has its own ",
+                  "possessive",
+                  " ",
+                  "adjective",
+                  "."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "I – My",
+                "runs": [
+                  "I – ",
+                  "My"
+                ]
+              },
+              {
+                "text": "You – Your",
+                "runs": [
+                  "You – ",
+                  "Your"
+                ]
+              },
+              {
+                "text": "He – His",
+                "runs": [
+                  "He – ",
+                  "His"
+                ]
+              },
+              {
+                "text": "She – Her",
+                "runs": [
+                  "She – ",
+                  "Her"
+                ]
+              },
+              {
+                "text": "It – Its",
+                "runs": [
+                  "It – ",
+                  "Its"
+                ]
+              },
+              {
+                "text": "We – Our",
+                "runs": [
+                  "We – ",
+                  "Our"
+                ]
+              },
+              {
+                "text": "You – Your",
+                "runs": [
+                  "You – ",
+                  "Your"
+                ]
+              },
+              {
+                "text": "They – Their",
+                "runs": [
+                  "They – ",
+                  "Their"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "TO CONSIDER",
+              "Every personal pronoun has its own possessive adjective.",
+              "I – My",
+              "You – Your",
+              "He – His",
+              "She – Her",
+              "It – Its",
+              "We – Our",
+              "You – Your",
+              "They – Their"
+            ],
+            "joinedText": "TO CONSIDER\n\nEvery personal pronoun has its own possessive adjective.\n\nI – My\nYou – Your\nHe – His\nShe – Her\nIt – Its\nWe – Our\nYou – Your\nThey – Their"
+          },
+          {
+            "shapeId": "592",
+            "shapeName": "Google Shape;592;p10",
+            "kind": "text",
+            "bbox": {
+              "x": 5803020,
+              "y": 4728815,
+              "cx": 3052439,
+              "cy": 369332,
+              "right": 8855459,
+              "bottom": 5098147
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "*It is the only aspect that uses a different verb.",
+                "runs": [
+                  "*",
+                  "It is the only aspect that uses a different verb."
+                ]
+              }
+            ],
+            "texts": [
+              "*It is the only aspect that uses a different verb."
+            ],
+            "joinedText": "*It is the only aspect that uses a different verb."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "586",
+            "shapeName": "Google Shape;586;p10",
+            "bbox": {
+              "x": 3485905,
+              "y": 1137582,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 6485905,
+              "bottom": 4137582
+            },
+            "columnWidths": [
+              1954425,
+              3310925
+            ],
+            "rows": [
+              {
+                "height": 771900,
+                "cells": [
+                  {
+                    "text": "FUNCTIONS",
+                    "paragraphs": [
+                      {
+                        "text": "FUNCTIONS",
+                        "runs": [
+                          "FUNCTIONS"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "EXAMPLES",
+                    "paragraphs": [
+                      {
+                        "text": "EXAMPLES",
+                        "runs": [
+                          "EXAMPLES"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 287025,
+                "cells": [
+                  {
+                    "text": "Express one’s and others’ names",
+                    "paragraphs": [
+                      {
+                        "text": "Express one’s and others’ names",
+                        "runs": [
+                          "Express one’s and others’ names"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "My name is John",
+                    "paragraphs": [
+                      {
+                        "text": "My name is John",
+                        "runs": [
+                          "My name is John"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 287025,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "I am John Smith but people call me J.",
+                    "paragraphs": [
+                      {
+                        "text": "I am John Smith but people call me J.",
+                        "runs": [
+                          "I am John Smith ",
+                          "but people call me J."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 358075,
+                "cells": [
+                  {
+                    "text": "State what people are",
+                    "paragraphs": [
+                      {
+                        "text": "State what people are",
+                        "runs": [
+                          "State what people are"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We are doctors",
+                    "paragraphs": [
+                      {
+                        "text": "We are doctors",
+                        "runs": [
+                          "We are doctors"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 183675,
+                "cells": [
+                  {
+                    "text": "Talk about age",
+                    "paragraphs": [
+                      {
+                        "text": "Talk about age",
+                        "runs": [
+                          "Talk about age"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She is 32 years old",
+                    "paragraphs": [
+                      {
+                        "text": "She is 32 years old",
+                        "runs": [
+                          "She is 32 years old"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 183675,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "He is 20",
+                    "paragraphs": [
+                      {
+                        "text": "He is 20",
+                        "runs": [
+                          "He is 20"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 179050,
+                "cells": [
+                  {
+                    "text": "State origins",
+                    "paragraphs": [
+                      {
+                        "text": "State origins",
+                        "runs": [
+                          "State origins"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They are from Argentina",
+                    "paragraphs": [
+                      {
+                        "text": "They are from Argentina",
+                        "runs": [
+                          "They are from Argentina"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 179050,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "It is American",
+                    "paragraphs": [
+                      {
+                        "text": "It is American",
+                        "runs": [
+                          "It is American"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 325250,
+                "cells": [
+                  {
+                    "text": "State addresses",
+                    "paragraphs": [
+                      {
+                        "text": "State addresses",
+                        "runs": [
+                          "State addresses"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "You live in New York *",
+                    "paragraphs": [
+                      {
+                        "text": "You live in New York *",
+                        "runs": [
+                          "You live in New York ",
+                          "*"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 191025,
+                "cells": [
+                  {
+                    "text": "Give contact information",
+                    "paragraphs": [
+                      {
+                        "text": "Give contact information",
+                        "runs": [
+                          "Give contact information"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "My telephone number is 0162034550",
+                    "paragraphs": [
+                      {
+                        "text": "My telephone number is 0162034550",
+                        "runs": [
+                          "My telephone number is 0162034550"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 191025,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Her email is sps_2015@mail.com",
+                    "paragraphs": [
+                      {
+                        "text": "Her email is sps_2015@mail.com",
+                        "runs": [
+                          "Her email is ",
+                          "sps_2015@mail.com"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s\nPractice",
+          "Practice makes perfect!",
+          "4"
+        ],
+        "joinedText": "Let’s\nPractice\nPractice makes perfect!\n4",
+        "shapes": [
+          {
+            "shapeId": "597",
+            "shapeName": "Google Shape;597;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 1887672,
+              "y": 1964350,
+              "cx": 2684328,
+              "cy": 1159800,
+              "right": 4572000,
+              "bottom": 3124150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s\nPractice",
+                "runs": [
+                  "Let’s",
+                  "Practice"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s\nPractice"
+            ],
+            "joinedText": "Let’s\nPractice"
+          },
+          {
+            "shapeId": "598",
+            "shapeName": "Google Shape;598;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 1878641,
+              "y": 3124150,
+              "cx": 2906010,
+              "cy": 341300,
+              "right": 4784651,
+              "bottom": 3465450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect!",
+                "runs": [
+                  "Practice makes perfect!"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect!"
+            ],
+            "joinedText": "Practice makes perfect!"
+          },
+          {
+            "shapeId": "599",
+            "shapeName": "Google Shape;599;p11",
+            "kind": "text",
+            "bbox": {
+              "x": 479725,
+              "y": 0,
+              "cx": 1778400,
+              "cy": 1398300,
+              "right": 2258125,
+              "bottom": 1398300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          },
+          {
+            "shapeId": "600",
+            "shapeName": "Google Shape;600;p11",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "600",
+            "shapeName": "Google Shape;600;p11",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 11
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 11
+          }
+        ]
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Examples:",
+          "He is a teacher.",
+          "I am Joseph",
+          "A. Write 8 sentences  in the chat box using the TO BE verb in simple present and the vocabulary studied.",
+          "B. Listen to the audio and write in the chat box if the information is true (T) or false (F). Follow the example.",
+          "0.  His name is Adrian. (F)",
+          "1.   He is 20 years old.",
+          "2.  He works in a restaurant.",
+          "3.  He lives with his parents.",
+          "4.  He is a university student.",
+          "5.  His job is in the afternoons.",
+          "6.  His email address is @yahoo",
+          "They are 20 years old"
+        ],
+        "joinedText": "Examples:\nHe is a teacher.\nI am Joseph\nA. Write 8 sentences  in the chat box using the TO BE verb in simple present and the vocabulary studied.\nB. Listen to the audio and write in the chat box if the information is true (T) or false (F). Follow the example.\n0.  His name is Adrian. (F)\n1.   He is 20 years old.\n2.  He works in a restaurant.\n3.  He lives with his parents.\n4.  He is a university student.\n5.  His job is in the afternoons.\n6.  His email address is @yahoo\nThey are 20 years old",
+        "shapes": [
+          {
+            "shapeId": "605",
+            "shapeName": "Google Shape;605;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 644975,
+              "y": 1149525,
+              "cx": 6365700,
+              "cy": 3581700,
+              "right": 7010675,
+              "bottom": 4731225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "606",
+            "shapeName": "Google Shape;606;p12",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "607",
+            "shapeName": "Google Shape;607;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 880750,
+              "y": 1149525,
+              "cx": 1894800,
+              "cy": 1115100,
+              "right": 2775550,
+              "bottom": 2264625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Examples:",
+                "runs": [
+                  "Examples:"
+                ]
+              },
+              {
+                "text": "He is a teacher.",
+                "runs": [
+                  "He is a teacher."
+                ]
+              },
+              {
+                "text": "I am Joseph",
+                "runs": [
+                  "I am Joseph"
+                ]
+              }
+            ],
+            "texts": [
+              "Examples:",
+              "He is a teacher.",
+              "I am Joseph"
+            ],
+            "joinedText": "Examples:\nHe is a teacher.\nI am Joseph"
+          },
+          {
+            "shapeId": "608",
+            "shapeName": "Google Shape;608;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 763800,
+              "y": 383473,
+              "cx": 6799500,
+              "cy": 670500,
+              "right": 7563300,
+              "bottom": 1053973
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Write 8 sentences  in the chat box using the TO BE verb in simple present and the vocabulary studied.",
+                "runs": [
+                  "A. Write 8 sentences  in the chat box using the TO BE verb in simple present and the vocabulary studied."
+                ]
+              }
+            ],
+            "texts": [
+              "A. Write 8 sentences  in the chat box using the TO BE verb in simple present and the vocabulary studied."
+            ],
+            "joinedText": "A. Write 8 sentences  in the chat box using the TO BE verb in simple present and the vocabulary studied."
+          },
+          {
+            "shapeId": "609",
+            "shapeName": "Google Shape;609;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 763799,
+              "y": 2264740,
+              "cx": 5895600,
+              "cy": 906600,
+              "right": 6659399,
+              "bottom": 3171340
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and write in the chat box if the information is true (T) or false (F). Follow the example.",
+                "runs": [
+                  "B. Listen to the audio and write in the chat box if the information is true (T) or false (F). Follow the example."
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and write in the chat box if the information is true (T) or false (F). Follow the example."
+            ],
+            "joinedText": "B. Listen to the audio and write in the chat box if the information is true (T) or false (F). Follow the example."
+          },
+          {
+            "shapeId": "610",
+            "shapeName": "Google Shape;610;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 763800,
+              "y": 3196275,
+              "cx": 2848200,
+              "cy": 1740300,
+              "right": 3612000,
+              "bottom": 4936575
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.  His name is Adrian. (F)",
+                "runs": [
+                  "0. ",
+                  " ",
+                  "His name is Adrian. (F)"
+                ]
+              },
+              {
+                "text": "1.   He is 20 years old.",
+                "runs": [
+                  "1. ",
+                  " ",
+                  " ",
+                  "He is 20 years old."
+                ]
+              },
+              {
+                "text": "2.  He works in a restaurant.",
+                "runs": [
+                  "2.",
+                  " ",
+                  " ",
+                  "He works in a restaurant."
+                ]
+              },
+              {
+                "text": "3.  He lives with his parents.",
+                "runs": [
+                  "3.",
+                  " ",
+                  " ",
+                  "He lives with his parents."
+                ]
+              }
+            ],
+            "texts": [
+              "0.  His name is Adrian. (F)",
+              "1.   He is 20 years old.",
+              "2.  He works in a restaurant.",
+              "3.  He lives with his parents."
+            ],
+            "joinedText": "0.  His name is Adrian. (F)\n1.   He is 20 years old.\n2.  He works in a restaurant.\n3.  He lives with his parents."
+          },
+          {
+            "shapeId": "611",
+            "shapeName": "Google Shape;611;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 3612000,
+              "y": 3508875,
+              "cx": 2981700,
+              "cy": 1115100,
+              "right": 6593700,
+              "bottom": 4623975
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4.  He is a university student.",
+                "runs": [
+                  "4.",
+                  "  ",
+                  "He is a university student."
+                ]
+              },
+              {
+                "text": "5.  His job is in the afternoons.",
+                "runs": [
+                  "5. ",
+                  " ",
+                  "His job is in the afternoons."
+                ]
+              },
+              {
+                "text": "6.  His email address is @yahoo",
+                "runs": [
+                  "6.",
+                  "  ",
+                  "His email address is @yahoo"
+                ]
+              }
+            ],
+            "texts": [
+              "4.  He is a university student.",
+              "5.  His job is in the afternoons.",
+              "6.  His email address is @yahoo"
+            ],
+            "joinedText": "4.  He is a university student.\n5.  His job is in the afternoons.\n6.  His email address is @yahoo"
+          },
+          {
+            "shapeId": "612",
+            "shapeName": "Google Shape;612;p12",
+            "kind": "text",
+            "bbox": {
+              "x": 3216150,
+              "y": 1149525,
+              "cx": 1894800,
+              "cy": 1115100,
+              "right": 5110950,
+              "bottom": 2264625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "They are 20 years old",
+                "runs": [
+                  "They are 20 years old"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "They are 20 years old"
+            ],
+            "joinedText": "They are 20 years old"
+          },
+          {
+            "shapeId": "613",
+            "shapeName": "Google Shape;613;p12",
+            "kind": "picture",
+            "bbox": {
+              "x": 6659400,
+              "y": 3581625,
+              "cx": 969600,
+              "cy": 969600,
+              "right": 7629000,
+              "bottom": 4551225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "606",
+            "shapeName": "Google Shape;606;p12",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 12
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "613",
+            "shapeName": "Google Shape;613;p12",
+            "bbox": {
+              "x": 6659400,
+              "y": 3581625,
+              "cx": 969600,
+              "cy": 969600,
+              "right": 7629000,
+              "bottom": 4551225
+            },
+            "slide": 12
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 12
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 12
+          }
+        ]
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "Carl Johnson",
+          "My name is Carl Johnson and I am 32 years old. I am from The USA but I live in Brazil now with my family. I am an environmental engineer and I work in The Amazon. Our house is in Sao Paulo. If you need to contact me, my telephone number is +55 789 452 321 and my email is carlj@hotmail.com",
+          "0.     What is his name?                   His name is Carl Johnson",
+          "C. Read the following text and answer the questions in the chat box.",
+          "1.   How old is he? ",
+          "2.  Where is he from? ",
+          "3.  Is he a doctor? ",
+          "4.  Where is his house?",
+          "5.  What is his phone number? ",
+          "6.  What is his email?"
+        ],
+        "joinedText": "Carl Johnson\nMy name is Carl Johnson and I am 32 years old. I am from The USA but I live in Brazil now with my family. I am an environmental engineer and I work in The Amazon. Our house is in Sao Paulo. If you need to contact me, my telephone number is +55 789 452 321 and my email is carlj@hotmail.com\n\n0.     What is his name?                   His name is Carl Johnson\nC. Read the following text and answer the questions in the chat box.\n1.   How old is he? \n2.  Where is he from? \n3.  Is he a doctor?\n4.  Where is his house?\n5.  What is his phone number? \n6.  What is his email?",
+        "shapes": [
+          {
+            "shapeId": "618",
+            "shapeName": "Google Shape;618;p13",
+            "kind": "text",
+            "bbox": {
+              "x": 969225,
+              "y": 1136800,
+              "cx": 6246900,
+              "cy": 3470700,
+              "right": 7216125,
+              "bottom": 4607500
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "619",
+            "shapeName": "Google Shape;619;p13",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "620",
+            "shapeName": "Google Shape;620;p13",
+            "kind": "text",
+            "bbox": {
+              "x": 1033162,
+              "y": 1078629,
+              "cx": 6182700,
+              "cy": 2136000,
+              "right": 7215862,
+              "bottom": 3214629
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Carl Johnson",
+                "runs": [
+                  "Carl Johnson"
+                ]
+              },
+              {
+                "text": "My name is Carl Johnson and I am 32 years old. I am from The USA but I live in Brazil now with my family. I am an environmental engineer and I work in The Amazon. Our house is in Sao Paulo. If you need to contact me, my telephone number is +55 789 452 321 and my email is carlj@hotmail.com",
+                "runs": [
+                  "My name is Carl Johnson and I am 32 years old. I am from The USA but I live in Brazil now with my family. I am an environmental engineer and I work in The Amazon. Our house is in Sao Paulo. If you need to contact me, my telephone number is +55 789 452 321 and my email is ",
+                  "carlj@hotmail.com"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "0.     What is his name?                   His name is Carl Johnson",
+                "runs": [
+                  "0.     What is his name?                   His name is Carl Johnson"
+                ]
+              }
+            ],
+            "texts": [
+              "Carl Johnson",
+              "My name is Carl Johnson and I am 32 years old. I am from The USA but I live in Brazil now with my family. I am an environmental engineer and I work in The Amazon. Our house is in Sao Paulo. If you need to contact me, my telephone number is +55 789 452 321 and my email is carlj@hotmail.com",
+              "0.     What is his name?                   His name is Carl Johnson"
+            ],
+            "joinedText": "Carl Johnson\nMy name is Carl Johnson and I am 32 years old. I am from The USA but I live in Brazil now with my family. I am an environmental engineer and I work in The Amazon. Our house is in Sao Paulo. If you need to contact me, my telephone number is +55 789 452 321 and my email is carlj@hotmail.com\n\n0.     What is his name?                   His name is Carl Johnson"
+          },
+          {
+            "shapeId": "621",
+            "shapeName": "Google Shape;621;p13",
+            "kind": "text",
+            "bbox": {
+              "x": 916200,
+              "y": 408273,
+              "cx": 6799500,
+              "cy": 670500,
+              "right": 7715700,
+              "bottom": 1078773
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following text and answer the questions in the chat box.",
+                "runs": [
+                  "C. Read the following text and answer the questions in the chat box."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following text and answer the questions in the chat box."
+            ],
+            "joinedText": "C. Read the following text and answer the questions in the chat box."
+          },
+          {
+            "shapeId": "622",
+            "shapeName": "Google Shape;622;p13",
+            "kind": "text",
+            "bbox": {
+              "x": 1137475,
+              "y": 3411750,
+              "cx": 2685300,
+              "cy": 1253400,
+              "right": 3822775,
+              "bottom": 4665150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1.   How old is he? ",
+                "runs": [
+                  "1.   ",
+                  "How old is he? "
+                ]
+              },
+              {
+                "text": "2.  Where is he from? ",
+                "runs": [
+                  "2.  ",
+                  "Where is he from? "
+                ]
+              },
+              {
+                "text": "3.  Is he a doctor? ",
+                "runs": [
+                  "3.  ",
+                  "Is he a doctor? "
+                ]
+              }
+            ],
+            "texts": [
+              "1.   How old is he? ",
+              "2.  Where is he from? ",
+              "3.  Is he a doctor? "
+            ],
+            "joinedText": "1.   How old is he? \n2.  Where is he from? \n3.  Is he a doctor?"
+          },
+          {
+            "shapeId": "623",
+            "shapeName": "Google Shape;623;p13",
+            "kind": "connector",
+            "bbox": {
+              "x": 3187883,
+              "y": 3121336,
+              "cx": 3285600,
+              "cy": 0,
+              "right": 6473483,
+              "bottom": 3121336
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "624",
+            "shapeName": "Google Shape;624;p13",
+            "kind": "text",
+            "bbox": {
+              "x": 4130825,
+              "y": 3411750,
+              "cx": 3285600,
+              "cy": 1253400,
+              "right": 7416425,
+              "bottom": 4665150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4.  Where is his house?",
+                "runs": [
+                  "4.  ",
+                  "Where is his house?"
+                ]
+              },
+              {
+                "text": "5.  What is his phone number? ",
+                "runs": [
+                  "5.  ",
+                  "What is his phone number? "
+                ]
+              },
+              {
+                "text": "6.  What is his email?",
+                "runs": [
+                  "6.  ",
+                  "What is his email?"
+                ]
+              }
+            ],
+            "texts": [
+              "4.  Where is his house?",
+              "5.  What is his phone number? ",
+              "6.  What is his email?"
+            ],
+            "joinedText": "4.  Where is his house?\n5.  What is his phone number? \n6.  What is his email?"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "619",
+            "shapeName": "Google Shape;619;p13",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 13
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 13
+          }
+        ]
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "D. Imagine you are a new employee in an office. Talk to your teacher using personal information aspects, make and answer questions.",
+          "Let’s ",
+          "Talk",
+          "E. Write a 30 - 50 word profile similar to the reading where you use your own information. ",
+          "Let’s ",
+          "Write"
+        ],
+        "joinedText": "D. Imagine you are a new employee in an office. Talk to your teacher using personal information aspects, make and answer questions.\nLet’s \nTalk\nE. Write a 30 - 50 word profile similar to the reading where you use your own information.\nLet’s \nWrite",
+        "shapes": [
+          {
+            "shapeId": "629",
+            "shapeName": "Google Shape;629;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 3907445,
+              "y": 3379773,
+              "cx": 1351359,
+              "cy": 1673031,
+              "right": 5258804,
+              "bottom": 5052804
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "630",
+            "shapeName": "Google Shape;630;p14",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "631",
+            "shapeName": "Google Shape;631;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 611400,
+              "y": 535873,
+              "cx": 6799500,
+              "cy": 670500,
+              "right": 7410900,
+              "bottom": 1206373
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Imagine you are a new employee in an office. Talk to your teacher using personal information aspects, make and answer questions.",
+                "runs": [
+                  "D. Imagine you are a new employee in an office. Talk to your teacher using personal information aspects, make and answer questions."
+                ]
+              }
+            ],
+            "texts": [
+              "D. Imagine you are a new employee in an office. Talk to your teacher using personal information aspects, make and answer questions."
+            ],
+            "joinedText": "D. Imagine you are a new employee in an office. Talk to your teacher using personal information aspects, make and answer questions."
+          },
+          {
+            "shapeId": "632",
+            "shapeName": "Google Shape;632;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 2962819,
+              "y": 938216,
+              "cx": 1367938,
+              "cy": 1456885,
+              "right": 4330757,
+              "bottom": 2395101
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "633",
+            "shapeName": "Google Shape;633;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 3197767,
+              "y": 1170056,
+              "cx": 1063200,
+              "cy": 954000,
+              "right": 4260967,
+              "bottom": 2124056
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s ",
+                "runs": [
+                  "Let’s "
+                ]
+              },
+              {
+                "text": "Talk",
+                "runs": [
+                  "Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s ",
+              "Talk"
+            ],
+            "joinedText": "Let’s \nTalk"
+          },
+          {
+            "shapeId": "634",
+            "shapeName": "Google Shape;634;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 622024,
+              "y": 2758075,
+              "cx": 6132600,
+              "cy": 670500,
+              "right": 6754624,
+              "bottom": 3428575
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 30 - 50 word profile similar to the reading where you use your own information. ",
+                "runs": [
+                  "E. Write a ",
+                  "3",
+                  "0 - ",
+                  "5",
+                  "0 word profile similar to the reading where you use your own information. "
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 30 - 50 word profile similar to the reading where you use your own information. "
+            ],
+            "joinedText": "E. Write a 30 - 50 word profile similar to the reading where you use your own information."
+          },
+          {
+            "shapeId": "635",
+            "shapeName": "Google Shape;635;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 5152514,
+              "y": 4212802,
+              "cx": 390668,
+              "cy": 388771,
+              "right": 5543182,
+              "bottom": 4601573
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "636",
+            "shapeName": "Google Shape;636;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 5066077,
+              "y": 3779796,
+              "cx": 1056466,
+              "cy": 1066952,
+              "right": 6122543,
+              "bottom": 4846748
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "637",
+            "shapeName": "Google Shape;637;p14",
+            "kind": "text",
+            "bbox": {
+              "x": 3825088,
+              "y": 3739244,
+              "cx": 1354500,
+              "cy": 954000,
+              "right": 5179588,
+              "bottom": 4693244
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s ",
+                "runs": [
+                  "Let’s "
+                ]
+              },
+              {
+                "text": "Write",
+                "runs": [
+                  "Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s ",
+              "Write"
+            ],
+            "joinedText": "Let’s \nWrite"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "630",
+            "shapeName": "Google Shape;630;p14",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 14
+          }
+        ]
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to: ",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to: \nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "642",
+            "shapeName": "Google Shape;642;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 3240774,
+              "y": 1475375,
+              "cx": 5452463,
+              "cy": 1220100,
+              "right": 8693237,
+              "bottom": 2695475
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "643",
+            "shapeName": "Google Shape;643;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 3240775,
+              "y": 2645249,
+              "cx": 4872000,
+              "cy": 1811815,
+              "right": 8112775,
+              "bottom": 4457064
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to: ",
+                "runs": [
+                  "Remember to: "
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to: ",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to: \nRate your teacher after every lesson.\nRevise the self-study material."
+          },
+          {
+            "shapeId": "644",
+            "shapeName": "Google Shape;644;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 1234450,
+              "y": 1149387,
+              "cx": 1806651,
+              "cy": 1811815,
+              "right": 3041101,
+              "bottom": 2961202
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "645",
+            "shapeName": "Google Shape;645;p15",
+            "kind": "text",
+            "bbox": {
+              "x": 1705484,
+              "y": 1566670,
+              "cx": 864587,
+              "cy": 798592,
+              "right": 2570071,
+              "bottom": 2365262
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "646",
+            "shapeName": "Google Shape;646;p15",
+            "kind": "picture",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "646",
+            "shapeName": "Google Shape;646;p15",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            },
+            "slide": 15
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 15
+          }
+        ]
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "© 2020 The Utterers Corner. All rights reserved",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "© 2020 The Utterers Corner. All rights reserved\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "651",
+            "shapeName": "Google Shape;651;g7796a207ae_0_235",
+            "kind": "text",
+            "bbox": {
+              "x": 2775098,
+              "y": 4658581,
+              "cx": 3593700,
+              "cy": 323400,
+              "right": 6368798,
+              "bottom": 4981981
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "© 2020 The Utterers Corner. All rights reserved",
+                "runs": [
+                  "© 2020 The Utterers Corner. All rights reserved"
+                ]
+              }
+            ],
+            "texts": [
+              "© 2020 The Utterers Corner. All rights reserved"
+            ],
+            "joinedText": "© 2020 The Utterers Corner. All rights reserved"
+          },
+          {
+            "shapeId": "652",
+            "shapeName": "Google Shape;652;g7796a207ae_0_235",
+            "kind": "group",
+            "bbox": {
+              "x": 1746299,
+              "y": 1080354,
+              "cx": 5651497,
+              "cy": 2049543,
+              "right": 7397796,
+              "bottom": 3129897
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "653",
+            "shapeName": "Google Shape;653;g7796a207ae_0_235",
+            "kind": "text",
+            "bbox": {
+              "x": 1106100,
+              "y": 2904201,
+              "cx": 6931800,
+              "cy": 267300,
+              "right": 8037900,
+              "bottom": 3171501
+            },
+            "parentShapeId": "652",
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          },
+          {
+            "shapeId": "654",
+            "shapeName": "Google Shape;654;g7796a207ae_0_235",
+            "kind": "picture",
+            "bbox": {
+              "x": 2140244,
+              "y": 2277299,
+              "cx": 4863512,
+              "cy": 552271,
+              "right": 7003756,
+              "bottom": 2829570
+            },
+            "parentShapeId": "652",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "655",
+            "shapeName": "Google Shape;655;g7796a207ae_0_235",
+            "kind": "picture",
+            "bbox": {
+              "x": 3760326,
+              "y": 657650,
+              "cx": 1623347,
+              "cy": 1613891,
+              "right": 5383673,
+              "bottom": 2271541
+            },
+            "parentShapeId": "652",
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "654",
+            "shapeName": "Google Shape;654;g7796a207ae_0_235",
+            "bbox": {
+              "x": 2140244,
+              "y": 2277299,
+              "cx": 4863512,
+              "cy": 552271,
+              "right": 7003756,
+              "bottom": 2829570
+            },
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "shapeId": "655",
+            "shapeName": "Google Shape;655;g7796a207ae_0_235",
+            "bbox": {
+              "x": 3760326,
+              "y": 657650,
+              "cx": 1623347,
+              "cy": 1613891,
+              "right": 5383673,
+              "bottom": 2271541
+            },
+            "slide": 16
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "slide": 16
+          }
+        ]
+      }
+    }
+  ]
+}
