@@ -1,0 +1,2060 @@
+{
+  "schemaVersion": 1,
+  "auditType": "visible-content-coverage-review",
+  "auditScope": {
+    "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+    "publishedLessonCount": 55,
+    "unitRange": [
+      2,
+      56
+    ],
+    "detailedUnits": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "builder": "scripts/content/build-course-learning.py",
+    "sourceManifest": "docs/audit/course-source-manifest.json",
+    "nativeAudit": "docs/audit/native-pptx-audit.json",
+    "planInputs": [
+      "docs/audit/lingowow-esencial-course-content-snapshot.json",
+      "docs/audit/source-files/*.json",
+      "docs/audit/source-files-native/unit-*.json",
+      "docs/audit/course-exercise-review.json"
+    ],
+    "planNote": "Audit plan was generated read-only with the builder and no database/runtime writes; audio playback provenance was outside this text-coverage comparison."
+  },
+  "method": {
+    "learnerPayloadFields": [
+      "text.data.content",
+      "structured-content.data.content and data.tables",
+      "vocabulary.data.items",
+      "recording.data.instruction",
+      "essay.data.prompt",
+      "short_answer.data.question and data.items",
+      "multiple_choice.data.question and data.options",
+      "audio.data.instruction",
+      "video.data.title",
+      "image.data.alt/caption"
+    ],
+    "excludedFromLearnerCoverage": [
+      "row.data.sourceText",
+      "row.data.sourceTitle",
+      "row.data.nativeParagraphs",
+      "row.data.data.originalSource",
+      "teacher_notes rows with hiddenFromLearners=true",
+      "cover/divider/congrats/copyright narration"
+    ],
+    "definition": "A source paragraph is omitted when it appears in published/native source evidence but in none of the emitted learner payload fields. Table cell shape defects are reported separately even when cell text survives inside a serialized mapping string."
+  },
+  "summary": {
+    "detailedFindingSlides": 30,
+    "detailedTeachingOrContextFindings": 29,
+    "detailedMalformedTableSlides": 29,
+    "allCourseMalformedStructuredTableSlides": 145,
+    "allCourseTableSlides": 145,
+    "nativeAuditUnavailableUnits": [
+      53,
+      54,
+      55,
+      56
+    ],
+    "nativeAuditUnavailableLessonCount": 4
+  },
+  "patterns": [
+    {
+      "id": "structured-table-cell-object-stringification",
+      "severity": "blocking-for-fidelity",
+      "count": 145,
+      "scope": "Units 2-33 and 35-52; every reported structured-content table has at least one cell represented as a Python-like mapping string containing text/paragraphs/runs.",
+      "learnerImpact": "Cell text and row relationships are not reliable learner-facing table content, and adjacent explanatory prose is not emitted when a table exists.",
+      "targetBlock": "structured-content.data.content.headers/rows",
+      "requiredFix": "Normalize native table cells to their joined cell text before emitting headers/rows; retain source row/cell order and blank cells. Add a regression fixture using the native Unit 2 table shape."
+    },
+    {
+      "id": "teaching-prose-metadata-only",
+      "severity": "high",
+      "scope": "Detailed findings below; the same pattern recurs in the all-course unit summary.",
+      "learnerImpact": "Grammar rules, examples, vocabulary context, and exercise answer context may remain only in sourceText/nativeParagraphs metadata while the learner receives a vocabulary/table/essay/recording block.",
+      "targetBlock": "The emitted block types listed per finding",
+      "requiredFix": "Emit a learner-visible text block for every retained teaching paragraph or include it as readable content beside the structured activity; do not rely on metadata fields."
+    },
+    {
+      "id": "native-source-unavailable",
+      "severity": "blocker",
+      "scope": "Units 53-56",
+      "learnerImpact": "Published-only extraction cannot prove native table/text coverage or asset semantics for these lessons.",
+      "requiredFix": "Acquire and align authoritative native source before treating coverage as complete."
+    }
+  ],
+  "detailedFindings": [
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "lessonTitle": "I come from...",
+      "slideNumber": 8,
+      "sourceTitle": "We normally use simple present tense to talk about countries and nationalities. Not only the verb to be can be useful to talk about this. Revise the following chart and check some examples.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vhjh80001jm04epgai2ay.json",
+        "native": "docs/audit/source-files-native/unit-02.json"
+      },
+      "sourceParagraphsOmitted": [
+        "Even when we talk about this topic, the grammar rules must be respected.",
+        "To Be – works alone.",
+        "Other verbs – Use auxiliaries.",
+        "MOST COMMON QUESTIONS",
+        "- Where are you from?"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--009",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-010",
+          "type": "video",
+          "learnerFieldsChecked": [
+            "data.title"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--009"
+      ]
+    },
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "lessonTitle": "I come from...",
+      "slideNumber": 10,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vhjh80001jm04epgai2ay.json",
+        "native": "docs/audit/source-files-native/unit-02.json"
+      },
+      "sourceParagraphsOmitted": [
+        "When we talk about countries and nationalities, there are three main aspects or functions we can cover.",
+        "All country names, nationalities and languages take CAPITAL LETTERS."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-012",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-012"
+      ]
+    },
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "lessonTitle": "I come from...",
+      "slideNumber": 12,
+      "sourceTitle": "A. Change the following sentences into the interrogative and negative form. Follow the example. Pay attention if the sentences have verb to be or not. After that, create four new sentences with questions and negative statements",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vhjh80001jm04epgai2ay.json",
+        "native": "docs/audit/source-files-native/unit-02.json"
+      },
+      "sourceParagraphsOmitted": [
+        "A. Change the following sentences into the interrogative and negative form. Follow the example. Pay attention if the sentences have verb to be or not. After that, create four new sentences with questions and negative statements"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-014",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--015",
+          "type": "short_answer",
+          "learnerFieldsChecked": [
+            "data.question",
+            "data.items"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-016",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-014"
+      ]
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "lessonTitle": "Every Day I…",
+      "slideNumber": 8,
+      "sourceTitle": "It is common to use the simple present tense to talk about routines; also, the use of adverbs of frequency is common on this topic.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vi2e30003l404hjqaqibj.json",
+        "native": "docs/audit/source-files-native/unit-03.json"
+      },
+      "sourceParagraphsOmitted": [
+        "It is common to use the simple present tense to talk about routines; also, the use of adverbs of frequency is common on this topic.",
+        "1. Adverbs go before verbs since they modify them, EXCEPT for To Be.",
+        "She is always happy",
+        "2. NEVER has a negative connotation.",
+        "(no need for don’t/doesn’t)",
+        "They never visit me.",
+        "3. Adverbs can work in statements, negative sentences and questions."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vi2e30003l404hjqaqibj-structured-content-8-it-is-common-to-use-the-simple-present-tense-to-tal-008",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vi2e30003l404hjqaqibj-structured-content-8-it-is-common-to-use-the-simple-present-tense-to-tal-008"
+      ]
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "lessonTitle": "Every Day I…",
+      "slideNumber": 9,
+      "sourceTitle": "Another common thing in English are the interrogative words which can be used in any tense. Check out the following examples and how to identify them.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vi2e30003l404hjqaqibj.json",
+        "native": "docs/audit/source-files-native/unit-03.json"
+      },
+      "sourceParagraphsOmitted": [
+        "Another common thing in English are the interrogative words which can be used in any tense. Check out the following examples and how to identify them.",
+        "Peter sometimes goes to the beach on weekends by car because he loves it.",
+        "Every interrogative word asks for specific information; look at the chart:",
+        "Bonus: I normally go to class with Jane. Who do you normally go to class with?"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vi2e30003l404hjqaqibj-structured-content-9-another-common-thing-in-english-are-the-interrogati-009",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vi2e30003l404hjqaqibj-structured-content-9-another-common-thing-in-english-are-the-interrogati-009"
+      ]
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "lessonTitle": "Every Day I…",
+      "slideNumber": 11,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vi2e30003l404hjqaqibj.json",
+        "native": "docs/audit/source-files-native/unit-03.json"
+      },
+      "sourceParagraphsOmitted": [
+        "When we talk about daily routines there are three main aspects that we should take into account using the simple present tense.",
+        "The three aspects talk about the same function but they aim different targets in language. The second aspect, as seen in the example, uses mainly general or indefinite time expressions to differentiate itself from the third one."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vi2e30003l404hjqaqibj-structured-content-11-language-targets-011",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vi2e30003l404hjqaqibj-structured-content-11-language-targets-011"
+      ]
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "lessonTitle": "I love it!",
+      "slideNumber": 4,
+      "sourceTitle": "A. Look at the pictures. What can you see? What are they suggesting? Write your answers in the chat box.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vijvj0001i904j8k1di8d.json",
+        "native": "docs/audit/source-files-native/unit-04.json"
+      },
+      "sourceParagraphsOmitted": [
+        "A. Look at the pictures. What can you see? What are they suggesting? Write your answers in the chat box."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vijvj0001i904j8k1di8d-essay-4-a-look-at-the-pictures-what-can-you-see-what-are-they-suggesting-004",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": false,
+      "structuredTableBlockIds": []
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "lessonTitle": "I love it!",
+      "slideNumber": 11,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vijvj0001i904j8k1di8d.json",
+        "native": "docs/audit/source-files-native/unit-04.json"
+      },
+      "sourceParagraphsOmitted": [
+        "We mainly use simple present to express likes and preferences, but there is an interesting fact we need to consider: likeness degrees.",
+        "We can also use like and preference expressions to talk about people, food, etc. (Not only for hobbies)",
+        "The expression thrilled about sometimes is substituted by crazy about."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vijvj0001i904j8k1di8d-structured-content-11-language-targets-011",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vijvj0001i904j8k1di8d-structured-content-11-language-targets-011"
+      ]
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "lessonTitle": "I love it!",
+      "slideNumber": 13,
+      "sourceTitle": "A. Listen to the audio and extract the information about likes and preferences. Write them in the chat box.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0vijvj0001i904j8k1di8d.json",
+        "native": "docs/audit/source-files-native/unit-04.json"
+      },
+      "sourceParagraphsOmitted": [
+        "A. Listen to the audio and extract the information about likes and preferences. Write them in the chat box.",
+        "B. Check the following sentences and identify the degree of likeness or preference they have. Locate the examples under their corresponding category.",
+        "I am fond of soccer.",
+        "I love taking pictures.",
+        "I like eating ice cream.",
+        "I am a fan of hiking mountains.",
+        "I like playing chess.",
+        "I am crazy about her."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0vijvj0001i904j8k1di8d-structured-content-13-a-listen-to-the-audio-and-extract-the-information--013",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0vijvj0001i904j8k1di8d-essay-13-a-listen-to-the-audio-and-extract-the-information-about-likes-a-014",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0vijvj0001i904j8k1di8d-structured-content-13-a-listen-to-the-audio-and-extract-the-information--013"
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "lessonTitle": "About us and Relatives",
+      "slideNumber": 6,
+      "sourceTitle": "When we talk about families, we can divide it into two main groups; Family and extended family. Also, we can talk about the in-laws. Did you know about this?",
+      "role": "vocabulary-or-task-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+        "native": "docs/audit/source-files-native/unit-05.json"
+      },
+      "sourceParagraphsOmitted": [
+        "When we talk about families, we can divide it into two main groups; Family and extended family. Also, we can talk about the in-laws. Did you know about this?",
+        "Grandfather",
+        "Granddaughter",
+        "Grandmother",
+        "Grandson",
+        "Cousin",
+        "Aunt",
+        "Uncle"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-6-when-we-talk-about-families-we-can-divide-it-into-t-006",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-6-when-we-talk-about-families-we-can-divide-it-into-t-006"
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "lessonTitle": "About us and Relatives",
+      "slideNumber": 8,
+      "sourceTitle": "We normally use simple present tense to talk about our family and relatives. See the following chart and check out the examples.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+        "native": "docs/audit/source-files-native/unit-05.json"
+      },
+      "sourceParagraphsOmitted": [
+        "Even when we talk about this topic, the grammar rules must be respected."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--008",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wu7xk0001lb04z0pauq4e-vocabulary-8-we-normally-use-simple-present-tense-to-talk-about-our-fami-009",
+          "type": "vocabulary",
+          "learnerFieldsChecked": [
+            "data.items"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--008"
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "lessonTitle": "About us and Relatives",
+      "slideNumber": 11,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+        "native": "docs/audit/source-files-native/unit-05.json"
+      },
+      "sourceParagraphsOmitted": [
+        "When we talk about families and relatives there are certain aspects that we can include in this topic.",
+        "Most of the statements about family take To Be. However, we can use other verbs to talk about this matter."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-11-language-targets-013",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-11-language-targets-013"
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "lessonTitle": "About us and Relatives",
+      "slideNumber": 13,
+      "sourceTitle": "Questions Answers 0. Do you have a big family? Yes, I do. We are seven people. 1. How many siblings are you? 2. What is your cousin’s name? 3. Do you have any children? 4. Where does your uncle live? 5. How old is your sister? 6. 7. 8.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+        "native": "docs/audit/source-files-native/unit-05.json"
+      },
+      "sourceParagraphsOmitted": [
+        "Read the following questions and answer using your own information.  After that, create your own questions and answer them."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-13-questions-answers-0-do-you-have-a-big-family-yes-i-015",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wu7xk0001lb04z0pauq4e-essay-13-questions-answers-0-do-you-have-a-big-family-yes-i-do-we-are-se-016",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-13-questions-answers-0-do-you-have-a-big-family-yes-i-015"
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "lessonTitle": "About us and Relatives",
+      "slideNumber": 14,
+      "sourceTitle": "B. Listen to David talking about his family. What information he says that suits the different aspects? Copy the information under each category.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+        "native": "docs/audit/source-files-native/unit-05.json"
+      },
+      "sourceParagraphsOmitted": [
+        "B. Listen to David talking about his family. What information he says that suits the different aspects? Copy the information under each category."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-14-b-listen-to-david-talking-about-his-family-what-in-017",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-14-b-listen-to-david-talking-about-his-family-what-in-017"
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "lessonTitle": "What do you do?",
+      "slideNumber": 8,
+      "sourceTitle": "It is common to use the simple present tense to talk about jobs and occupations as we saw on the useful language before.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+        "native": "docs/audit/source-files-native/unit-06.json"
+      },
+      "sourceParagraphsOmitted": [
+        "It is common to use the simple present tense to talk about jobs and occupations as we saw on the useful language before.",
+        "In the following chart you will see how this structure can be implemented.",
+        "Jake works in a bank.",
+        "Does he work in a bank?",
+        "I don’t work as a waiter / Do you work as a waiter?"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-8-it-is-common-to-use-the-simple-present-tense-to-tal-008",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-8-it-is-common-to-use-the-simple-present-tense-to-tal-008"
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "lessonTitle": "What do you do?",
+      "slideNumber": 9,
+      "sourceTitle": "1. Most of the verbs take “-s” when using the third person rule. take – takes cook - cooks 2. Verbs that finish in “-sh”, “-ch”, “-s”, “-ss”, “-z”, “-x”, “-o”, receive “-es” when using the third person rule. 3. Verbs that finish in “-y” change to “-i” + “es” when using the third person rule.* play – plays* stay – stays*",
+      "role": "vocabulary-or-task-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+        "native": "docs/audit/source-files-native/unit-06.json"
+      },
+      "sourceParagraphsOmitted": [
+        "stop – stops",
+        "teach – teaches",
+        "copy – copies",
+        "*When the “y” is preceded by a vowel letter, just add “s” at the end of the verb.",
+        "When talking about Jobs and referring to an individual, we need to use the articles a – an (also called indefinite).",
+        "i.e. “John is an architect.”,",
+        "“Peter is a doctor.”",
+        "As you can see in the examples, ‘a’ is used before words that start with consonants and “an” before words that start with vowels.",
+        "go - goes"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-9-1-most-of-the-verbs-take-s-when-using-the-third-per-009",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-vocabulary-9-1-most-of-the-verbs-take-s-when-using-the-third-person-rule-010",
+          "type": "vocabulary",
+          "learnerFieldsChecked": [
+            "data.items"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-9-1-most-of-the-verbs-take-s-when-using-the-third-per-009"
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "lessonTitle": "What do you do?",
+      "slideNumber": 11,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+        "native": "docs/audit/source-files-native/unit-06.json"
+      },
+      "sourceParagraphsOmitted": [
+        "Simple present tense helps us to talk about and describe jobs and occupations. In this chart you will see two main functions covered by this structure when talking about jobs.",
+        "We use verb TO BE to state what people are, as in the example provided.",
+        "We use other verbs to specify what people do."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-11-language-targets-012",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-11-language-targets-012"
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "lessonTitle": "What do you do?",
+      "slideNumber": 13,
+      "sourceTitle": "Sentences Questions Negative statements 0. John works in a farm. Does he work in a farm? He doesn’t work in a farm. 1. Pedro is an architect. 2. Maria administers a restaurant. 3. Eucaris works in a gas company 4. Johannes and Jake are English teachers. 5. 6. 7. 8.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+        "native": "docs/audit/source-files-native/unit-06.json"
+      },
+      "sourceParagraphsOmitted": [
+        "A. Change the following sentences into the interrogative and negative form. Follow the example. Pay attention if the sentences have verb  To Be or not. Finally, add your own sentences, questions and negative statements in the spaces provided."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-13-sentences-questions-negative-statements-0-john-wor-014",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-short-answer-13-sentences-questions-negative-statements-0-john-works-in--015",
+          "type": "short_answer",
+          "learnerFieldsChecked": [
+            "data.question",
+            "data.items"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-essay-13-sentences-questions-negative-statements-0-john-works-in-a-farm--016",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-13-sentences-questions-negative-statements-0-john-wor-014"
+      ]
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "lessonTitle": "There’s nothing left!",
+      "slideNumber": 10,
+      "sourceTitle": "We normally use simple present tense to talk about food. Check out the following examples.",
+      "role": "vocabulary-or-task-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wwx210003kz04s3qt526e.json",
+        "native": "docs/audit/source-files-native/unit-07.json"
+      },
+      "sourceParagraphsOmitted": [],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wwx210003kz04s3qt526e-structured-content-10-we-normally-use-simple-present-tense-to-talk-about-010",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wwx210003kz04s3qt526e-vocabulary-10-we-normally-use-simple-present-tense-to-talk-about-food-ch-011",
+          "type": "vocabulary",
+          "learnerFieldsChecked": [
+            "data.items"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wwx210003kz04s3qt526e-structured-content-10-we-normally-use-simple-present-tense-to-talk-about-010"
+      ]
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "lessonTitle": "There’s nothing left!",
+      "slideNumber": 12,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wwx210003kz04s3qt526e.json",
+        "native": "docs/audit/source-files-native/unit-07.json"
+      },
+      "sourceParagraphsOmitted": [
+        "When we talk about food we can consider the following aspects.",
+        "Most of the statements either talk about existence or quantities, but we also can use this topic to include other aspects as it can bee seen in number 3."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wwx210003kz04s3qt526e-structured-content-12-language-targets-013",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wwx210003kz04s3qt526e-structured-content-12-language-targets-013"
+      ]
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "lessonTitle": "There’s nothing left!",
+      "slideNumber": 14,
+      "sourceTitle": "A. Change the following sentences to questions. DO NOT forget to use is there / are there, how much / how many and quantifiers. Finally, create your own sentences and questions in the space provided. Follow the example.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk0wwx210003kz04s3qt526e.json",
+        "native": "docs/audit/source-files-native/unit-07.json"
+      },
+      "sourceParagraphsOmitted": [
+        "A. Change the following sentences to questions. DO NOT forget to use is there / are there, how much / how many and quantifiers. Finally, create your own sentences and questions in the space provided.  Follow the example."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk0wwx210003kz04s3qt526e-structured-content-14-a-change-the-following-sentences-to-questions-do-n-015",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wwx210003kz04s3qt526e-short-answer-14-a-change-the-following-sentences-to-questions-do-not-for-016",
+          "type": "short_answer",
+          "learnerFieldsChecked": [
+            "data.question",
+            "data.items"
+          ]
+        },
+        {
+          "id": "course-guided-cmk0wwx210003kz04s3qt526e-essay-14-a-change-the-following-sentences-to-questions-do-not-forget-to--017",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk0wwx210003kz04s3qt526e-structured-content-14-a-change-the-following-sentences-to-questions-do-n-015"
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "lessonTitle": "This is not yours!",
+      "slideNumber": 8,
+      "sourceTitle": "TO CONSIDER - This / that (singular) These / Those (plural) are demonstratives we use to talk about possessions. This / These (close objects) – That / Those (far objects) - Whose: wh word used to ask for possessions: Whose USB is this? - Possessive adjectives can also be used to talk about belongings: This is my house. - Every possessive adjective has a possessive pronoun: My / Mine, Your / yours, His / His, Her / Hers, Its / Its, Our / Ours, Their / Theirs (used when we already know what we are talking about) - Demonstrative pronouns can also work as adjectives. E.G That house is blue. Let’s watch the video on the platform.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3z9vfj0007jp04aiu6wqaq.json",
+        "native": "docs/audit/source-files-native/unit-08.json"
+      },
+      "sourceParagraphsOmitted": [
+        "- This / that (singular) These / Those (plural) are demonstratives we use to talk about possessions. This / These (close objects) – That / Those (far objects)",
+        "- Whose: wh word used to ask for possessions: Whose USB is this?",
+        "- Possessive adjectives can also be used to talk about belongings: This is my house.",
+        "- Every possessive adjective  has a possessive pronoun: My / Mine, Your / yours, His / His, Her / Hers, Its / Its, Our / Ours, Their / Theirs (used when we already know what we are talking about)",
+        "- Demonstrative pronouns can also work as adjectives. E.G That house is blue. Let’s watch the video on the platform.",
+        "We normally use simple present tense to talk about belongings. Check out the following examples."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-structured-content-8-to-consider-this-that-singular-these-those-plural-a-008",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3z9vfj0007jp04aiu6wqaq-structured-content-8-to-consider-this-that-singular-these-those-plural-a-008"
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "lessonTitle": "This is not yours!",
+      "slideNumber": 10,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3z9vfj0007jp04aiu6wqaq.json",
+        "native": "docs/audit/source-files-native/unit-08.json"
+      },
+      "sourceParagraphsOmitted": [
+        "When we talk about belongings we can consider the following aspects.",
+        "When we talk about belongings we cannot only used the demonstrative, but we can also use the possessive pronouns and adjectives. Additionally, the possessive case is useful."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-structured-content-10-language-targets-010",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3z9vfj0007jp04aiu6wqaq-structured-content-10-language-targets-010"
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "lessonTitle": "This is not yours!",
+      "slideNumber": 12,
+      "sourceTitle": "Statements Questions 0. Those are Tim’s shoes. Whose shoes are those? / Are those Tim’s? 1. That is Mary’s bag. 2. These are our books. 3. This is my cell phone. 4. Those are Jeff’s glasses. 5. That is my room’s key. 6. 7. 8.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3z9vfj0007jp04aiu6wqaq.json",
+        "native": "docs/audit/source-files-native/unit-08.json"
+      },
+      "sourceParagraphsOmitted": [
+        "A. Change the following sentences to questions. DO NOT forget the different grammar aspects reviewed. Finally, add your own sentences and questions in the space provided. Follow the example."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-structured-content-12-statements-questions-0-those-are-tim-s-shoes-whose-012",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-short-answer-12-statements-questions-0-those-are-tim-s-shoes-whose-shoes-013",
+          "type": "short_answer",
+          "learnerFieldsChecked": [
+            "data.question",
+            "data.items"
+          ]
+        },
+        {
+          "id": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-essay-12-statements-questions-0-those-are-tim-s-shoes-whose-shoes-are-th-014",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3z9vfj0007jp04aiu6wqaq-structured-content-12-statements-questions-0-those-are-tim-s-shoes-whose-012"
+      ]
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "lessonTitle": "How do I get there?",
+      "slideNumber": 8,
+      "sourceTitle": "We normally use simple present tense to talk about places and where they are.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3zalwi0001jo04hy9a1qi7.json",
+        "native": "docs/audit/source-files-native/unit-09.json"
+      },
+      "sourceParagraphsOmitted": [
+        "We normally use simple present tense to talk about places and where they are.",
+        "- Prepositions are used to indicate location.",
+        "- Downtown does not use any preposition: I am going downtown.",
+        "- More than 1 verb can be used to talk about directions. / Questions vary too."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3zalwi0001jo04hy9a1qi7-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--008",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3zalwi0001jo04hy9a1qi7-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--008"
+      ]
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "lessonTitle": "How do I get there?",
+      "slideNumber": 10,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3zalwi0001jo04hy9a1qi7.json",
+        "native": "docs/audit/source-files-native/unit-09.json"
+      },
+      "sourceParagraphsOmitted": [
+        "When we talk about places, we can consider the following aspects.",
+        "Prepositions are essential to work with these 3 aspects since they state locations and placement."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3zalwi0001jo04hy9a1qi7-structured-content-10-language-targets-010",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3zalwi0001jo04hy9a1qi7-structured-content-10-language-targets-010"
+      ]
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "lessonTitle": "How do I get there?",
+      "slideNumber": 12,
+      "sourceTitle": "Questions Answers 0. How do I get to the library? You can take the main street, walk two blocks and the library is on the left corner. 1. Where is the park? 2. Is the Chinese restaurant downtown? 3. Is the park in front of the museum? 4. Where is the local market? 5. How do I get downtown? 6. 7. 8.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3zalwi0001jo04hy9a1qi7.json",
+        "native": "docs/audit/source-files-native/unit-09.json"
+      },
+      "sourceParagraphsOmitted": [
+        "A. Answer the questions using the language studied. Remember that more than one answer is possible.  Finally, add your own questions and answers in the space provided."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3zalwi0001jo04hy9a1qi7-structured-content-12-questions-answers-0-how-do-i-get-to-the-library-yo-012",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk3zalwi0001jo04hy9a1qi7-essay-12-questions-answers-0-how-do-i-get-to-the-library-you-can-take-th-013",
+          "type": "essay",
+          "learnerFieldsChecked": [
+            "data.prompt"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3zalwi0001jo04hy9a1qi7-structured-content-12-questions-answers-0-how-do-i-get-to-the-library-yo-012"
+      ]
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "lessonTitle": "Such a wonderful place!",
+      "slideNumber": 8,
+      "sourceTitle": "We normally talk about places and we include the use of adjectives to describe their characteristics. Adjectives are words we use to denote specificities about people, places or situations.",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3zca590009jp04suhvg28s.json",
+        "native": "docs/audit/source-files-native/unit-10.json"
+      },
+      "sourceParagraphsOmitted": [
+        "We normally talk about places and we include the use of adjectives to describe their characteristics. Adjectives are words we use to denote specificities about people, places or situations.",
+        "Adjectives come before the object, place or people they describe.",
+        "They can also be after one verb:  My house is beautiful (mainly after To Be).",
+        "Adjectives do not change because of  gender. E.G: She is beautiful / The park is beautiful.",
+        "Adjectives are not pluralized. E.G: They are talls.❌ They are tall. ✅"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3zca590009jp04suhvg28s-structured-content-8-we-normally-talk-about-places-and-we-include-the-us-008",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3zca590009jp04suhvg28s-structured-content-8-we-normally-talk-about-places-and-we-include-the-us-008"
+      ]
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "lessonTitle": "Such a wonderful place!",
+      "slideNumber": 10,
+      "sourceTitle": "Language Targets",
+      "role": "teaching-rule-or-example",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3zca590009jp04suhvg28s.json",
+        "native": "docs/audit/source-files-native/unit-10.json"
+      },
+      "sourceParagraphsOmitted": [
+        "Adjectives can be used in any tense: present, past, future. They are mainly used to describe different characteristics. Check the following examples.",
+        "More than one adjective can be used to describe one single thing. It has to respect the order presented in the characteristics. E.G.",
+        "They have a gorgeous, big, new, American, wooden, beach house.",
+        "*not always all the characteristics are used*"
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3zca590009jp04suhvg28s-structured-content-10-language-targets-010",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3zca590009jp04suhvg28s-structured-content-10-language-targets-010"
+      ]
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "lessonTitle": "Such a wonderful place!",
+      "slideNumber": 12,
+      "sourceTitle": "A. Fill in the blanks with the corresponding adjectives from the box. After that, describe your town too. Use other adjectives you know or one from your list.",
+      "role": "exercise-instruction-or-answer-context",
+      "sourceReferences": {
+        "published": "docs/audit/source-files/cmk3zca590009jp04suhvg28s.json",
+        "native": "docs/audit/source-files-native/unit-10.json"
+      },
+      "sourceParagraphsOmitted": [
+        "Peter lives in a _________ city, it doesn’t have a lot of buildings or houses but it is a ____________ town because it has beautiful beaches. His house is _______ and he lives in a ________ place because the house is in a _________ mountain. It is also an ___________ town in the south and it always has __________ blue sky.",
+        "B. Listen to Andrew talking about his hometown. What is he saying? Tell your teacher about his description."
+      ],
+      "targetBlocksMissingThoseParagraphs": [
+        {
+          "id": "course-guided-cmk3zca590009jp04suhvg28s-structured-content-12-a-fill-in-the-blanks-with-the-corresponding-adject-012",
+          "type": "structured-content",
+          "learnerFieldsChecked": [
+            "data.content",
+            "data.tables"
+          ]
+        },
+        {
+          "id": "course-guided-cmk3zca590009jp04suhvg28s-vocabulary-12-a-fill-in-the-blanks-with-the-corresponding-adjectives-fro-013",
+          "type": "vocabulary",
+          "learnerFieldsChecked": [
+            "data.items"
+          ]
+        },
+        {
+          "id": "course-guided-cmk3zca590009jp04suhvg28s-short-answer-12-a-fill-in-the-blanks-with-the-corresponding-adjectives-f-014",
+          "type": "short_answer",
+          "learnerFieldsChecked": [
+            "data.question",
+            "data.items"
+          ]
+        }
+      ],
+      "structuredTableCellShapeIssue": true,
+      "structuredTableBlockIds": [
+        "course-guided-cmk3zca590009jp04suhvg28s-structured-content-12-a-fill-in-the-blanks-with-the-corresponding-adject-012"
+      ]
+    }
+  ],
+  "verifiedExamples": [
+    {
+      "unit": 2,
+      "slideNumber": 6,
+      "sourceText": "We can group nationalities because of suffixes. Some can’t be grouped",
+      "visibleBlocks": [
+        {
+          "blockId": "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-007",
+          "type": "text",
+          "field": "data.content",
+          "contains": "We can group nationalities because of suffixes. Some can’t be grouped",
+          "visible": true
+        }
+      ],
+      "conclusion": "This example is emitted in a learner-visible text block alongside vocabulary items; it is not metadata-only in the current plan."
+    }
+  ],
+  "unit2TableSplit": {
+    "sourceSlide": 8,
+    "sourceEvidence": "docs/audit/source-files-native/unit-02.json",
+    "sourceTableRows": [
+      [
+        "To Be verb",
+        "",
+        "Other verbs – Auxiliary Introduction",
+        ""
+      ],
+      [
+        "John is American",
+        "Is he American?",
+        "She comes from England.",
+        "Does she come from England?"
+      ],
+      [
+        "They are from Mexico",
+        "Where are they from?",
+        "You speak Italian",
+        "Do you speak Italian?"
+      ],
+      [
+        "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
+        "",
+        "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. \n\nDo - I/You/We/They\nDoes - He/She/ It (3rd person singular)\n*Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
+        ""
+      ]
+    ],
+    "basis": "The native table has four columns arranged as two adjacent two-column groups. Split only at the existing group boundary; preserve row order and blank cells.",
+    "groups": [
+      {
+        "key": "to-be",
+        "sourceColumns": [
+          0,
+          1
+        ],
+        "sourceHeader": "To Be verb",
+        "headers": [
+          "To Be verb",
+          ""
+        ],
+        "rows": [
+          {
+            "sourceRow": 2,
+            "cells": [
+              "John is American",
+              "Is he American?"
+            ]
+          },
+          {
+            "sourceRow": 3,
+            "cells": [
+              "They are from Mexico",
+              "Where are they from?"
+            ]
+          },
+          {
+            "sourceRow": 4,
+            "cells": [
+              "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
+              ""
+            ]
+          }
+        ]
+      },
+      {
+        "key": "other-verbs",
+        "sourceColumns": [
+          2,
+          3
+        ],
+        "sourceHeader": "Other verbs – Auxiliary Introduction",
+        "headers": [
+          "Other verbs – Auxiliary Introduction",
+          ""
+        ],
+        "rows": [
+          {
+            "sourceRow": 2,
+            "cells": [
+              "She comes from England.",
+              "Does she come from England?"
+            ]
+          },
+          {
+            "sourceRow": 3,
+            "cells": [
+              "You speak Italian",
+              "Do you speak Italian?"
+            ]
+          },
+          {
+            "sourceRow": 4,
+            "cells": [
+              "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. \n\nDo - I/You/We/They\nDoes - He/She/ It (3rd person singular)\n*Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
+              ""
+            ]
+          }
+        ]
+      }
+    ],
+    "mobileRenderingRules": [
+      "Render each group as its own two-column learner table/card with the source header in column 1 and the existing blank second header cell preserved.",
+      "Keep all four source rows in order, including the long explanation row.",
+      "Move the long explanation cells into learner-visible text immediately below their corresponding group if the two-column table becomes too dense; do not paraphrase or invent column labels."
+    ]
+  },
+  "allCourseUnitSummary": [
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "lessonTitle": "I come from...",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 14,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 9,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk0vhjh80001jm04epgai2ay.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-02.json"
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "lessonTitle": "Every Day I…",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 14,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk0vi2e30003l404hjqaqibj.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-03.json"
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "lessonTitle": "I love it!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 13,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk0vijvj0001i904j8k1di8d.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-04.json"
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "lessonTitle": "About us and Relatives",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 14,
+      "tableSlides": 5,
+      "malformedTableSlides": 5,
+      "omittedParagraphSlides": 5,
+      "omittedParagraphCount": 14,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-05.json"
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "lessonTitle": "What do you do?",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 15,
+      "tableSlides": 4,
+      "malformedTableSlides": 4,
+      "omittedParagraphSlides": 4,
+      "omittedParagraphCount": 21,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-06.json"
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "lessonTitle": "There’s nothing left!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 15,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 4,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk0wwx210003kz04s3qt526e.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-07.json"
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "lessonTitle": "This is not yours!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 11,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3z9vfj0007jp04aiu6wqaq.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-08.json"
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "lessonTitle": "How do I get there?",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 9,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zalwi0001jo04hy9a1qi7.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-09.json"
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "lessonTitle": "Such a wonderful place!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 13,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zca590009jp04suhvg28s.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-10.json"
+    },
+    {
+      "unit": 11,
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "lessonTitle": "Similar but not the same.",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 13,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 7,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zfe8a0003jo047u04yua4.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-11.json"
+    },
+    {
+      "unit": 12,
+      "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+      "lessonTitle": "The greatest!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 6,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zidzg0001ic04ffiveeqx.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-12.json"
+    },
+    {
+      "unit": 13,
+      "lessonId": "cmk3zq5rb0001ju05muzrd2c4",
+      "lessonTitle": "I am working on it!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 10,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zq5rb0001ju05muzrd2c4.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-13.json"
+    },
+    {
+      "unit": 14,
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "lessonTitle": "Back then…!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 13,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 16,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zr60x0001l804vyj6hctk.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-14.json"
+    },
+    {
+      "unit": 15,
+      "lessonId": "cmk3zs4250003l8047krvt8qc",
+      "lessonTitle": "I remember I...",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 11,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zs4250003l8047krvt8qc.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-15.json"
+    },
+    {
+      "unit": 16,
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "lessonTitle": "When you called...",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 14,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk3zsy840001l104272zs8xh.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-16.json"
+    },
+    {
+      "unit": 17,
+      "lessonId": "cmk400jyo0003ic0464j0gv1l",
+      "lessonTitle": "That’s the plan",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 10,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk400jyo0003ic0464j0gv1l.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-17.json"
+    },
+    {
+      "unit": 18,
+      "lessonId": "cmk4011yd0003ju0505ofufnq",
+      "lessonTitle": "We are attending!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 9,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk4011yd0003ju0505ofufnq.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-18.json"
+    },
+    {
+      "unit": 19,
+      "lessonId": "cmk401if40005l804vf3z3k0q",
+      "lessonTitle": "It is this Saturday",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk401if40005l804vf3z3k0q.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-19.json"
+    },
+    {
+      "unit": 20,
+      "lessonId": "cmk401zlh0001js04fn6f881k",
+      "lessonTitle": "Don’t leave your umbrella!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 19,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmk401zlh0001js04fn6f881k.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-20.json"
+    },
+    {
+      "unit": 21,
+      "lessonId": "cmkq3xx5w0001jr04cw7bh9g7",
+      "lessonTitle": "So far I...",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 16,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 2,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmkq3xx5w0001jr04cw7bh9g7.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-21.json"
+    },
+    {
+      "unit": 22,
+      "lessonId": "cmkpx0d310001gy04zr4lq99y",
+      "lessonTitle": "Behaving properly",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 13,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmkpx0d310001gy04zr4lq99y.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-22.json"
+    },
+    {
+      "unit": 23,
+      "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+      "lessonTitle": "How dull!",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 15,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmn7vbcg20005l804sg2hxgf4.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-23.json"
+    },
+    {
+      "unit": 24,
+      "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+      "lessonTitle": "I don't know  why...",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 17,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmn7vc7pm0001le04qfcuwa27.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-24.json"
+    },
+    {
+      "unit": 25,
+      "lessonId": "cmnmm9m3i000hw1qklyh7h658",
+      "lessonTitle": "Unit 25",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 4,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9m3i000hw1qklyh7h658.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-25.json"
+    },
+    {
+      "unit": 26,
+      "lessonId": "cmnmm9mm1000kw1qkgi2bize8",
+      "lessonTitle": "Unit 26",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 13,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9mm1000kw1qkgi2bize8.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-26.json"
+    },
+    {
+      "unit": 27,
+      "lessonId": "cmnmm9my8000nw1qkfl8lpdxz",
+      "lessonTitle": "Unit 27",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 2,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9my8000nw1qkfl8lpdxz.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-27.json"
+    },
+    {
+      "unit": 28,
+      "lessonId": "cmnmm9naj000qw1qkkzistoi6",
+      "lessonTitle": "Unit 28",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9naj000qw1qkkzistoi6.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-28.json"
+    },
+    {
+      "unit": 29,
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "lessonTitle": "Unit 29",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 1,
+      "omittedParagraphCount": 1,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9nmo000tw1qkxzhh3pwc.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-29.json"
+    },
+    {
+      "unit": 30,
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "lessonTitle": "Unit 30",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 3,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9nyt000ww1qkoxsumpck.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-30.json"
+    },
+    {
+      "unit": 31,
+      "lessonId": "cmnmm9ob2000zw1qkel9nezp5",
+      "lessonTitle": "Unit 31",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 13,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 4,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9ob2000zw1qkel9nezp5.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-31.json"
+    },
+    {
+      "unit": 32,
+      "lessonId": "cmnmm9on70012w1qka03chue1",
+      "lessonTitle": "Unit 32",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9on70012w1qka03chue1.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-32.json"
+    },
+    {
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "lessonTitle": "Unit 33",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 9,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9ozb0015w1qkj7gth0wy.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-33.json"
+    },
+    {
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "lessonTitle": "Unit 34",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 4,
+      "tableSlides": 0,
+      "malformedTableSlides": 0,
+      "omittedParagraphSlides": 5,
+      "omittedParagraphCount": 15,
+      "status": "teaching-text-coverage-review",
+      "sourceFile": "docs/audit/source-files/cmnmm9pbg0018w1qkdkv1gbma.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-34.json"
+    },
+    {
+      "unit": 35,
+      "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+      "lessonTitle": "Unit 35",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 7,
+      "tableSlides": 1,
+      "malformedTableSlides": 1,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 3,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9pns001bw1qki5fh6r0j.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-35.json"
+    },
+    {
+      "unit": 36,
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "lessonTitle": "Unit 36",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 8,
+      "tableSlides": 1,
+      "malformedTableSlides": 1,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 4,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9q04001ew1qke5tfufyk.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-36.json"
+    },
+    {
+      "unit": 37,
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "lessonTitle": "Unit 37",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 4,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9qca001hw1qkpe089f8f.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-37.json"
+    },
+    {
+      "unit": 38,
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "lessonTitle": "Unit 38",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 3,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9qog001kw1qkht1v6i81.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-38.json"
+    },
+    {
+      "unit": 39,
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "lessonTitle": "Unit 39",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 4,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9r0u001nw1qkmd7iwebn.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-39.json"
+    },
+    {
+      "unit": 40,
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "lessonTitle": "Unit 40",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 16,
+      "tableSlides": 4,
+      "malformedTableSlides": 4,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9rcz001qw1qka3igty9u.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-40.json"
+    },
+    {
+      "unit": 41,
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "lessonTitle": "Unit 41",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9rp6001tw1qk9ct8o936.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-41.json"
+    },
+    {
+      "unit": 42,
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "lessonTitle": "Unit 42",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 4,
+      "malformedTableSlides": 4,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 7,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9s1b001ww1qkz2zll59e.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-42.json"
+    },
+    {
+      "unit": 43,
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "lessonTitle": "Unit 43",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 13,
+      "tableSlides": 5,
+      "malformedTableSlides": 5,
+      "omittedParagraphSlides": 4,
+      "omittedParagraphCount": 7,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9sdw001zw1qktwvzlc1f.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-43.json"
+    },
+    {
+      "unit": 44,
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "lessonTitle": "Unit 44",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 2,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9sq20022w1qkn3bi0mm7.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-44.json"
+    },
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "lessonTitle": "Unit 45",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 2,
+      "malformedTableSlides": 2,
+      "omittedParagraphSlides": 2,
+      "omittedParagraphCount": 2,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9t2a0025w1qk877v6313.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-45.json"
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "lessonTitle": "Unit 46",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 4,
+      "malformedTableSlides": 4,
+      "omittedParagraphSlides": 4,
+      "omittedParagraphCount": 6,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-46.json"
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "lessonTitle": "Unit 47",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 13,
+      "tableSlides": 5,
+      "malformedTableSlides": 5,
+      "omittedParagraphSlides": 5,
+      "omittedParagraphCount": 9,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9tqo002bw1qklsuz2eli.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-47.json"
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "lessonTitle": "Unit 48",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 10,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 3,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-48.json"
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "lessonTitle": "Unit 49",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 3,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9uey002hw1qk4poj2sfe.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-49.json"
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "lessonTitle": "Unit 50",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 4,
+      "malformedTableSlides": 4,
+      "omittedParagraphSlides": 4,
+      "omittedParagraphCount": 7,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9ur4002kw1qkr4g1untw.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-50.json"
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "lessonTitle": "Unit 51",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 12,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 5,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9v3a002nw1qkedoaw2od.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-51.json"
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "lessonTitle": "Unit 52",
+      "nativeAuditAvailable": true,
+      "nativeAlignedSlides": 11,
+      "tableSlides": 3,
+      "malformedTableSlides": 3,
+      "omittedParagraphSlides": 3,
+      "omittedParagraphCount": 8,
+      "status": "table-cell-shape-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9vfh002qw1qknevwf813.json",
+      "nativeAuditFile": "docs/audit/source-files-native/unit-52.json"
+    },
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "lessonTitle": "Unit 53",
+      "nativeAuditAvailable": false,
+      "nativeAlignedSlides": 4,
+      "tableSlides": 0,
+      "malformedTableSlides": 0,
+      "omittedParagraphSlides": 0,
+      "omittedParagraphCount": 0,
+      "status": "published-only-native-audit-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+      "nativeAuditFile": null
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "lessonTitle": "Unit 54",
+      "nativeAuditAvailable": false,
+      "nativeAlignedSlides": 4,
+      "tableSlides": 0,
+      "malformedTableSlides": 0,
+      "omittedParagraphSlides": 0,
+      "omittedParagraphCount": 0,
+      "status": "published-only-native-audit-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+      "nativeAuditFile": null
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "lessonTitle": "Unit 55",
+      "nativeAuditAvailable": false,
+      "nativeAlignedSlides": 2,
+      "tableSlides": 0,
+      "malformedTableSlides": 0,
+      "omittedParagraphSlides": 0,
+      "omittedParagraphCount": 0,
+      "status": "published-only-native-audit-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+      "nativeAuditFile": null
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "lessonTitle": "Unit 56",
+      "nativeAuditAvailable": false,
+      "nativeAlignedSlides": 1,
+      "tableSlides": 0,
+      "malformedTableSlides": 0,
+      "omittedParagraphSlides": 0,
+      "omittedParagraphCount": 0,
+      "status": "published-only-native-audit-blocked",
+      "sourceFile": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+      "nativeAuditFile": null
+    }
+  ],
+  "intentionalExclusions": [
+    {
+      "sourceRole": "cover/divider/closing/copyright",
+      "treatment": "teacher_notes hidden from learners",
+      "reason": "Consciously excluded noninstructional narration; this audit does not treat it as pedagogical omission."
+    },
+    {
+      "sourceRole": "open prompt delivery wording",
+      "treatment": "Report only when the authored prompt materially drops task intent; chat-box/teacher-channel wording may be adapted by the runtime."
+    }
+  ]
+}
