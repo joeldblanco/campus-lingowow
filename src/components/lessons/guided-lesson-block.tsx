@@ -486,8 +486,9 @@ function GuidedTablePanel({
   const columnCount = Math.max(headers.reduce((sum, cell) => sum + (cell.colSpan || 1), 0), ...rows.map((row) => row.reduce((sum, cell) => sum + (cell.colSpan || 1), 0)))
   const tableMinWidth = id === 'week-overview' ? 240 : Math.max(240, columnCount * 144 - (indexColumn === undefined ? 0 : 96))
   return (
-    <section data-guided-table-group={id} className="overflow-x-auto rounded-[20px] border border-[#EEE8FA] bg-white p-2 sm:p-3">
+    <section data-guided-table-group={id} className="rounded-[20px] border border-[#EEE8FA] bg-white p-2 sm:p-3">
       {columnCount > 2 && <p className="mb-2 px-3 text-sm text-[#506187] sm:hidden">Desliza para ver la tabla →</p>}
+      <div data-guided-table-scroll className="overflow-x-auto">
       <table
         aria-label={label}
         className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
@@ -527,6 +528,7 @@ function GuidedTablePanel({
           ))}
         </tbody>
       </table>
+      </div>
       {notes.length > 0 && (
         <div data-guided-table-notes className={`space-y-3 px-3 pt-3 text-base leading-6 ${NAVY_TEXT}`}>
           {notes.map((note, index) => <p key={index} className="whitespace-pre-wrap">{note}</p>)}
@@ -581,12 +583,13 @@ function StructuredContentPresentation({
   return (
     <div
       data-guided-table
-      className="overflow-x-auto rounded-[24px] border border-[#EEE8FA] bg-white p-2 shadow-[0_12px_28px_rgba(16,36,92,0.07)] sm:p-3"
+      className="rounded-[24px] border border-[#EEE8FA] bg-white p-2 shadow-[0_12px_28px_rgba(16,36,92,0.07)] sm:p-3"
     >
       {block.subtitle && (
         <p className={`px-3 pb-3 pt-2 text-base leading-6 ${SLATE_TEXT}`}>{block.subtitle}</p>
       )}
       {columnCount > 2 && <p className="mb-2 px-3 text-sm text-[#506187] sm:hidden">Desliza para ver la tabla →</p>}
+      <div data-guided-table-scroll className="overflow-x-auto">
       <table
         aria-label={block.title || 'Tabla de referencia'}
         className={`w-full min-w-[240px] table-fixed border-separate border-spacing-0 text-left text-base leading-6 ${NAVY_TEXT}`}
@@ -622,6 +625,7 @@ function StructuredContentPresentation({
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

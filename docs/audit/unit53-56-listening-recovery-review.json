@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 1,
+  "scope": "Listening source review status after original Unit 53-56 Drive recovery",
+  "generatedAtUtc": "2026-10-08T10:57:40.546090+00:00",
+  "sourcePolicy": {
+    "publishedPromptPriority": true,
+    "originalAudioOnly": true,
+    "transcriptEvidenceOnlyUntilSemanticReview": true,
+    "noSyntheticAudio": true,
+    "noAutomaticAnswerKeys": true
+  },
+  "sourceManifest": "docs/audit/unit53-56-drive-recovery.json",
+  "transcriptManifest": "docs/audit/unit53-56-audio-transcripts.json",
+  "items": [
+    {
+      "key": {
+        "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+        "slideNumber": 4,
+        "itemId": "u53-s04-review",
+        "unit": 53,
+        "audioIndex": 1
+      },
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "unit": 53,
+      "lessonTitle": "Unit 53",
+      "slideNumber": 4,
+      "itemId": "u53-s04-review",
+      "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "responseMode": "teacher-listening",
+      "role": "intro",
+      "audioIndex": 1,
+      "mappingBasis": "opening-slide-context",
+      "sourceAudioIconCount": 1,
+      "sourceEvidence": [
+        "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4"
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+        "label": "Audio 1 - Unit 53.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L/view",
+        "slideNumber": 4,
+        "status": "recovered",
+        "sourceSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
+        "sourceBytes": 907142,
+        "durationSeconds": 56.633469,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit53-audio1.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
+        "language": "en",
+        "languageProbability": 0.995961606502533,
+        "segmentCount": 18,
+        "transcriptTextAvailable": true
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+        "slideNumber": 13,
+        "itemId": "u53-s13-b",
+        "unit": 53,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "unit": 53,
+      "lessonTitle": "Unit 53",
+      "slideNumber": 13,
+      "itemId": "u53-s13-b",
+      "prompt": "Listen to the audio and answer teacher questions.",
+      "responseMode": "teacher-listening",
+      "role": "comprehension",
+      "audioIndex": 2,
+      "mappingBasis": "comprehension-slide-context",
+      "sourceAudioIconCount": 0,
+      "sourceEvidence": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ",
+        "label": "Audio 2 - Unit 53.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ/view",
+        "slideNumber": 13,
+        "status": "recovered",
+        "sourceSha256": "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37",
+        "sourceBytes": 868272,
+        "durationSeconds": 54.195374,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit53-audio2.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37",
+        "language": "en",
+        "languageProbability": 0.9909124374389648,
+        "segmentCount": 14,
+        "transcriptTextAvailable": true
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+        "slideNumber": 4,
+        "itemId": "u54-s04-review",
+        "unit": 54,
+        "audioIndex": 1
+      },
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "unit": 54,
+      "lessonTitle": "Unit 54",
+      "slideNumber": 4,
+      "itemId": "u54-s04-review",
+      "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "responseMode": "teacher-listening",
+      "role": "intro",
+      "audioIndex": 1,
+      "mappingBasis": "opening-slide-context",
+      "sourceAudioIconCount": 1,
+      "sourceEvidence": [
+        "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4"
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq",
+        "label": "Audio 1 - Unit 54.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq/view",
+        "slideNumber": 4,
+        "status": "recovered",
+        "sourceSha256": "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
+        "sourceBytes": 737033,
+        "durationSeconds": 45.99873,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit54-audio1.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
+        "language": "en",
+        "languageProbability": 0.9957244396209717,
+        "segmentCount": 9,
+        "transcriptTextAvailable": true
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+        "slideNumber": 13,
+        "itemId": "u54-s13-b",
+        "unit": 54,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "unit": 54,
+      "lessonTitle": "Unit 54",
+      "slideNumber": 13,
+      "itemId": "u54-s13-b",
+      "prompt": "Listen to the audio and answer teacher questions.",
+      "responseMode": "teacher-listening",
+      "role": "comprehension",
+      "audioIndex": 2,
+      "mappingBasis": "comprehension-slide-context",
+      "sourceAudioIconCount": 1,
+      "sourceEvidence": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ",
+        "label": "Audio 2 - Unit 54.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ/view",
+        "slideNumber": 13,
+        "status": "recovered",
+        "sourceSha256": "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6",
+        "sourceBytes": 614571,
+        "durationSeconds": 38.336145,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit54-audio2.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6",
+        "language": "en",
+        "languageProbability": 0.991599440574646,
+        "segmentCount": 7,
+        "transcriptTextAvailable": true
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+        "slideNumber": 4,
+        "itemId": "u55-s04-review",
+        "unit": 55,
+        "audioIndex": 1
+      },
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "unit": 55,
+      "lessonTitle": "Unit 55",
+      "slideNumber": 4,
+      "itemId": "u55-s04-review",
+      "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "responseMode": "teacher-listening",
+      "role": "intro",
+      "audioIndex": 1,
+      "mappingBasis": "opening-slide-context",
+      "sourceAudioIconCount": 1,
+      "sourceEvidence": [
+        "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4"
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "16vlShb_LW0tpQjPyM13l2TomvtxP1l_W",
+        "label": "Audio 1 - Unit 55.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/16vlShb_LW0tpQjPyM13l2TomvtxP1l_W/view",
+        "slideNumber": 4,
+        "status": "recovered",
+        "sourceSha256": "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
+        "sourceBytes": 665980,
+        "durationSeconds": 41.540499,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit55-audio1.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
+        "language": "en",
+        "languageProbability": 0.9811726212501526,
+        "segmentCount": 11,
+        "transcriptTextAvailable": true
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+        "slideNumber": 13,
+        "itemId": "u55-s13-b",
+        "unit": 55,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "unit": 55,
+      "lessonTitle": "Unit 55",
+      "slideNumber": 13,
+      "itemId": "u55-s13-b",
+      "prompt": "Listen to the audio and answer teacher questions.",
+      "responseMode": "teacher-listening",
+      "role": "comprehension",
+      "audioIndex": 2,
+      "mappingBasis": "comprehension-slide-context",
+      "sourceAudioIconCount": 1,
+      "sourceEvidence": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+        "label": "Auido 2 - Unit 55.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh/view?usp=sharing",
+        "slideNumber": 13,
+        "status": "recovered",
+        "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+        "sourceBytes": 756259,
+        "durationSeconds": 47.182948,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+        "language": "en",
+        "languageProbability": 0.9799962043762207,
+        "segmentCount": 17,
+        "transcriptTextAvailable": true
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+        "slideNumber": 4,
+        "itemId": "u56-s04-review",
+        "unit": 56,
+        "audioIndex": 1
+      },
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "unit": 56,
+      "lessonTitle": "Unit 56",
+      "slideNumber": 4,
+      "itemId": "u56-s04-review",
+      "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "responseMode": "teacher-listening",
+      "role": "intro",
+      "audioIndex": 1,
+      "mappingBasis": "opening-slide-context",
+      "sourceAudioIconCount": 1,
+      "sourceEvidence": [
+        "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4"
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj",
+        "label": "Unit 56 - Audio 1.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj/view",
+        "slideNumber": 4,
+        "status": "recovered",
+        "sourceSha256": "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
+        "sourceBytes": 707102,
+        "durationSeconds": 43.861338,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit56-audio1.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
+        "language": "en",
+        "languageProbability": 0.9983002543449402,
+        "segmentCount": 12,
+        "transcriptTextAvailable": true
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+        "slideNumber": 13,
+        "itemId": "u56-s13-b",
+        "unit": 56,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "unit": 56,
+      "lessonTitle": "Unit 56",
+      "slideNumber": 13,
+      "itemId": "u56-s13-b",
+      "prompt": "Listen to the audio and answer teacher questions.",
+      "responseMode": "teacher-listening",
+      "role": "comprehension",
+      "audioIndex": 2,
+      "mappingBasis": "comprehension-slide-context",
+      "sourceAudioIconCount": 1,
+      "sourceEvidence": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "transcript": null,
+      "uncertaintyFlags": [],
+      "manualReviewRequired": true,
+      "reviewStatus": "source-recovered-transcript-available",
+      "questions": [],
+      "revision": null,
+      "doNotAutoAuthorKeys": true,
+      "audioSource": {
+        "sourceId": "1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ",
+        "label": "Unit 56 - Audio 2.mp3",
+        "viewerUrl": "https://drive.google.com/file/d/1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ/view",
+        "slideNumber": 13,
+        "status": "recovered",
+        "sourceSha256": "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1",
+        "sourceBytes": 633123,
+        "durationSeconds": 39.253333,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit56-audio2.mp3",
+        "mimeType": "audio/mpeg"
+      },
+      "transcriptEvidence": {
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1",
+        "language": "en",
+        "languageProbability": 0.9987523555755615,
+        "segmentCount": 9,
+        "transcriptTextAvailable": true
+      }
+    }
+  ],
+  "counts": {
+    "items": 8,
+    "sourceRecovered": 8,
+    "transcriptAvailable": 8,
+    "blockedSource": 0,
+    "questionsAuthored": 0
+  }
+}

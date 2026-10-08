@@ -1,0 +1,1006 @@
+{
+  "schemaVersion": 1,
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "sourcePolicy": {
+    "authoritativeSource": "published Google Slides manifest",
+    "audio": "No listening answer is inferred without a transcript; audio activities remain teacher-listening.",
+    "openResponses": "Published role-play, writing, personalized and multi-valid prompts remain open response.",
+    "closedResponses": "Closed grammar and reading items receive explicit answerItems only when source evidence makes them deterministic.",
+    "builderContract": "Consumers may map builderHints._explicit_answer_key and builderHints._explicit_options; answerItems remain the review source of truth."
+  },
+  "lessons": {
+    "cmnmm9vul002tw1qkq6vmdn9t": {
+      "unit": 53,
+      "moduleId": "cmnmm9lx3000fw1qkh6ijo1px",
+      "moduleOrder": 14,
+      "moduleTitle": "Módulo 14",
+      "lessonOrder": 1,
+      "lessonTitle": "Unit 53",
+      "videoUrl": null,
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+      "deckTitle": "NEW Never say die- Unit 53.pptx",
+      "slideCount": 17,
+      "slides": {
+        "4": {
+          "source": {
+            "number": 4,
+            "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "visibleTexts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic?",
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+              "4"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 2,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u53-s04-review",
+              "kind": "listening",
+              "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4"
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "12": {
+          "source": {
+            "number": 12,
+            "title": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+            "visibleTexts": [
+              "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+              "0. If we had called before, they would be waiting."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u53-s12-a",
+              "kind": "grammar-production",
+              "prompt": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+                "0. If we had called before, they would be waiting."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "The source presents learner-generated practice; keep it open response."
+              ],
+              "sourceEvidenceLocations": [
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 0,
+                  "text": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example."
+                },
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 1,
+                  "text": "0. If we had called before, they would be waiting."
+                }
+              ],
+              "originalPrompt": "Complete the grammar practice shown on the published slide.",
+              "originalReviewStatus": "open-response-preserved",
+              "semanticPatch": {
+                "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch-53-56.json",
+                "originalPrompt": "Complete the grammar practice shown on the published slide.",
+                "originalReviewStatus": "open-response-preserved",
+                "patchItemId": "u53-s12-a",
+                "provenance": {
+                  "file": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+                  "sha256": "fc9709bcf3de1372ef184ca60630df138cb37ed45f2723675ccd95bb6e4083e8",
+                  "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+                  "contentId": "cmnmm9vxn002uw1qkj2y4mtcl",
+                  "deckTitle": "NEW Never say die- Unit 53.pptx",
+                  "publishedSlide": 12
+                },
+                "sourceEvidence": [
+                  "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+                  "0. If we had called before, they would be waiting."
+                ],
+                "originalSourceEvidence": [
+                  "A. Complete the grammar exercise on the published slide."
+                ],
+                "validatedProvenanceSha256": "fc9709bcf3de1372ef184ca60630df138cb37ed45f2723675ccd95bb6e4083e8",
+                "patchReviewStatus": "reviewed-source-aligned-open-response",
+                "validatedPublishedSourceSlide": 12
+              }
+            }
+          ]
+        },
+        "13": {
+          "source": {
+            "number": 13,
+            "title": "B. Listen to the audio and answer the questions your teacher makes.",
+            "visibleTexts": [
+              "B. Listen to the audio and answer the questions your teacher makes."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u53-s13-b",
+              "kind": "listening",
+              "prompt": "Listen to the audio and answer teacher questions.",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "B. Listen to the audio and answer the questions your teacher makes."
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "14": {
+          "source": {
+            "number": 14,
+            "title": "14",
+            "visibleTexts": [
+              "14",
+              "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+              "World War II showed that war must be avoided at all costs and democracies must resist aggression, says Stanford historian WitWorld War II provided two contradictory lessons: war must be avoided at all costs and democracies must resist aggression, says Stanford historian James J. Sheehan. On the 75th anniversary of “Victory in Europe Day” – the day when people from across the world celebrated the acceptance of Nazi Germany’s unconditional surrender to the Allied forces of the United States, the United Kingdom, France and the Soviet Union on May 8, 1945 – Sheehan discusses the difficult challenges ahead, despite war in Europe being over. Sheehan is the Dickason Professor in the Humanities and Professor of History emeritus in the School of Humanities and Sciences. He is the author of Where Have All the Soldiers Gone? The Transformation of Modern Europe, a history of war and peace in 20th-century Europe. Are there any elements to VE Day that you think have been largely forgotten, overlooked or misunderstood? It is important to realize what actually occurred on May 8, 1945. Most wars end when one side either surrenders or agrees to a cease-fire. That is what happened on Nov. 11, 1918, when the representatives of the German government agreed to an armistice and then, seven months later, signed a peace treaty; if they hadn’t we would not be talking about this now. On May 8, 1945, there was no German state recognized by its enemies. In three different places, the commanders of the German armed forces surrendered unconditionally. Civil and military authority in what had been the German state was assumed by the allies. Germany was divided among them. Although peace treaties were signed with Germany’s allies in 1947, a final treaty that recognized Germany as a fully sovereign state did not take place until 1991. One of the ironies of the postwar settlement is that, despite the absence of a formal peace treaty, it turned out to be so durable like if it had actually taken place. Adapted from: https://news.stanford.edu/2020/05/04/world-war-iis-contradictory-lessons/",
+              "https://news.stanford.edu/2020/05/04/world-war-iis-contradictory-lessons/"
+            ],
+            "links": [
+              {
+                "url": "https://news.stanford.edu/2020/05/04/world-war-iis-contradictory-lessons/",
+                "kind": "link",
+                "source": "anchor"
+              }
+            ],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u53-s14-c",
+              "kind": "reading-discussion",
+              "prompt": "Read the article and discuss its questions with your teacher.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "C. Read the article and answer or discuss the questions with your teacher."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Use the published article as evidence; do not auto-grade discussion responses."
+              ]
+            }
+          ]
+        },
+        "15": {
+          "source": {
+            "number": 15,
+            "title": "D. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?",
+            "visibleTexts": [
+              "D. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?",
+              "E. Write an 160-200 word text addressing the issue that happened on September 11th, 2001. What would the world be now if extreme Islamics had never committed this act? If that had never happened, would there be other attacks now? State facts and your own position regarding this matter.",
+              "Let’s Talk",
+              "Let’s Write"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u53-s15-d",
+              "kind": "roleplay-and-writing",
+              "prompt": "Complete the role-play or writing activity shown on the published slide.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "D. Complete the final activity on the published slide."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Preserve the published word count and prompt when the builder imports this review."
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "cmnmm9w6q002ww1qkmhschbtj": {
+      "unit": 54,
+      "moduleId": "cmnmm9lx3000fw1qkh6ijo1px",
+      "moduleOrder": 14,
+      "moduleTitle": "Módulo 14",
+      "lessonOrder": 2,
+      "lessonTitle": "Unit 54",
+      "videoUrl": null,
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+      "deckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+      "slideCount": 17,
+      "slides": {
+        "4": {
+          "source": {
+            "number": 4,
+            "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "visibleTexts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic?",
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+              "4"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 2,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u54-s04-review",
+              "kind": "listening",
+              "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4"
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "12": {
+          "source": {
+            "number": 12,
+            "title": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+            "visibleTexts": [
+              "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+              "0. If they called before, they would have gotten an answer."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u54-s12-a",
+              "kind": "grammar-production",
+              "prompt": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+                "0. If they called before, they would have gotten an answer."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "The source presents learner-generated practice; keep it open response."
+              ],
+              "sourceEvidenceLocations": [
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 0,
+                  "text": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example."
+                },
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 1,
+                  "text": "0. If they called before, they would have gotten an answer."
+                }
+              ],
+              "originalPrompt": "Complete the grammar practice shown on the published slide.",
+              "originalReviewStatus": "open-response-preserved",
+              "semanticPatch": {
+                "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch-53-56.json",
+                "originalPrompt": "Complete the grammar practice shown on the published slide.",
+                "originalReviewStatus": "open-response-preserved",
+                "patchItemId": "u54-s12-a",
+                "provenance": {
+                  "file": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+                  "sha256": "3a74c9931910a1b3b91eeced592839c360f09a380a446aca026435d43889d012",
+                  "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+                  "contentId": "cmnmm9w9s002xw1qk34wb2go5",
+                  "deckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+                  "publishedSlide": 12
+                },
+                "sourceEvidence": [
+                  "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+                  "0. If they called before, they would have gotten an answer."
+                ],
+                "originalSourceEvidence": [
+                  "A. Complete the grammar exercise on the published slide."
+                ],
+                "validatedProvenanceSha256": "3a74c9931910a1b3b91eeced592839c360f09a380a446aca026435d43889d012",
+                "patchReviewStatus": "reviewed-source-aligned-open-response",
+                "validatedPublishedSourceSlide": 12
+              }
+            }
+          ]
+        },
+        "13": {
+          "source": {
+            "number": 13,
+            "title": "B. Listen to the audio and answer the questions your teacher makes.",
+            "visibleTexts": [
+              "B. Listen to the audio and answer the questions your teacher makes."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u54-s13-b",
+              "kind": "listening",
+              "prompt": "Listen to the audio and answer teacher questions.",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "B. Listen to the audio and answer the questions your teacher makes."
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "14": {
+          "source": {
+            "number": 14,
+            "title": "14",
+            "visibleTexts": [
+              "14",
+              "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below.",
+              "Titanic sunk by steering mistake, author says LONDON (Reuters) - The Titanic hit an iceberg in 1912 because of a basic steering error, and only sank as fast as it did because an official persuaded the captain to continue sailing, an author said in an interview published on Wednesday. Louise Patten, a writer and granddaughter of Titanic second officer Charles Lightoller, said the truth about what happened nearly 100 years ago had been hidden for fear of tarnishing the reputation of her grandfather, who later became a war hero. Lightoller, the most senior officer to have survived the disaster, covered up the error in two inquiries on both sides of the Atlantic because he was worried it would bankrupt the ill-fated liner’s owners and put his colleagues out of a job. Id they did not cover this, the facts would have turned out differently. “They could easily have avoided the iceberg if it wasn’t for the blunder,” Patten told the Daily Telegraph. “Instead of steering Titanic safely round to the left of the iceberg, once it had been spotted dead ahead, the steersman, Robert Hitchins, had panicked and turned it the wrong way.” Patten, who made the revelations to coincide with the publication of her new novel “Good as Gold” into which her account of events are woven, said that the conversion from sail ships to steam meant there were two different steering systems. Crucially, one system meant turning the wheel one way and the other in completely the opposite direction. Adapted from: https://www.reuters.com/article/us-britain-titanic-book-idUSTRE68L1HG20100922",
+              "https://www.reuters.com/article/us-britain-titanic-book-idUSTRE68L1HG20100922"
+            ],
+            "links": [
+              {
+                "url": "https://www.reuters.com/article/us-britain-titanic-book-idUSTRE68L1HG20100922",
+                "kind": "link",
+                "source": "anchor"
+              }
+            ],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u54-s14-c",
+              "kind": "reading-discussion",
+              "prompt": "Read the article and discuss its questions with your teacher.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "C. Read the article and answer or discuss the questions with your teacher."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Use the published article as evidence; do not auto-grade discussion responses."
+              ]
+            }
+          ]
+        },
+        "15": {
+          "source": {
+            "number": 15,
+            "title": "D. Make a small presentation / discussion about a different even in history you consider to be different if people did or explained the facts differently. Which is this event? When did it happened? What hypothetical situations in the present can you state with past results.",
+            "visibleTexts": [
+              "D. Make a small presentation / discussion about a different even in history you consider to be different if people did or explained the facts differently. Which is this event? When did it happened? What hypothetical situations in the present can you state with past results.",
+              "E. Write an 160-200 word text addressing the hypothetical scenario in your life if you made a different decision at certain point of your life and how that would have affected it. Be very detailed in your explanation.",
+              "Let’s Talk",
+              "Let’s Write"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u54-s15-d",
+              "kind": "roleplay-and-writing",
+              "prompt": "Complete the role-play or writing activity shown on the published slide.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "D. Complete the final activity on the published slide."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Preserve the published word count and prompt when the builder imports this review."
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "cmnmm9wiv002zw1qkz23p6kdp": {
+      "unit": 55,
+      "moduleId": "cmnmm9lx3000fw1qkh6ijo1px",
+      "moduleOrder": 14,
+      "moduleTitle": "Módulo 14",
+      "lessonOrder": 3,
+      "lessonTitle": "Unit 55",
+      "videoUrl": null,
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+      "deckTitle": "NEW That's anyone's call - Unit 55.pptx",
+      "slideCount": 17,
+      "slides": {
+        "4": {
+          "source": {
+            "number": 4,
+            "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "visibleTexts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic?",
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+              "4"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 2,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u55-s04-review",
+              "kind": "listening",
+              "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4"
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "12": {
+          "source": {
+            "number": 12,
+            "title": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+            "visibleTexts": [
+              "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+              "0. If we weren’t going to call you for confirmation tonight, we would have not said that."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u55-s12-a",
+              "kind": "grammar-production",
+              "prompt": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+                "0. If we weren’t going to call you for confirmation tonight, we would have not said that."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "The source presents learner-generated practice; keep it open response."
+              ],
+              "sourceEvidenceLocations": [
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 0,
+                  "text": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example."
+                },
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 1,
+                  "text": "0. If we weren’t going to call you for confirmation tonight, we would have not said that."
+                }
+              ],
+              "originalPrompt": "Complete the grammar practice shown on the published slide.",
+              "originalReviewStatus": "open-response-preserved",
+              "semanticPatch": {
+                "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch-53-56.json",
+                "originalPrompt": "Complete the grammar practice shown on the published slide.",
+                "originalReviewStatus": "open-response-preserved",
+                "patchItemId": "u55-s12-a",
+                "provenance": {
+                  "file": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+                  "sha256": "d98a0f676e58e9c7fd286acb6a2cc470cd4019d44791046ba143152122530d27",
+                  "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+                  "contentId": "cmnmm9wly0030w1qk4vrdc4a7",
+                  "deckTitle": "NEW That's anyone's call - Unit 55.pptx",
+                  "publishedSlide": 12
+                },
+                "sourceEvidence": [
+                  "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+                  "0. If we weren’t going to call you for confirmation tonight, we would have not said that."
+                ],
+                "originalSourceEvidence": [
+                  "A. Complete the grammar exercise on the published slide."
+                ],
+                "validatedProvenanceSha256": "d98a0f676e58e9c7fd286acb6a2cc470cd4019d44791046ba143152122530d27",
+                "patchReviewStatus": "reviewed-source-aligned-open-response",
+                "validatedPublishedSourceSlide": 12
+              }
+            }
+          ]
+        },
+        "13": {
+          "source": {
+            "number": 13,
+            "title": "B. Listen to the audio and answer the questions your teacher makes.",
+            "visibleTexts": [
+              "B. Listen to the audio and answer the questions your teacher makes."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u55-s13-b",
+              "kind": "listening",
+              "prompt": "Listen to the audio and answer teacher questions.",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "B. Listen to the audio and answer the questions your teacher makes."
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "14": {
+          "source": {
+            "number": 14,
+            "title": "14",
+            "visibleTexts": [
+              "14",
+              "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below.",
+              "An interview with Ukrainian President Volodymyr Zelensky Q: Can you describe to us the moment when you found out a full-scale invasion had begun? Who informed you and what were your first moves that morning? A: First of all, the war began in 2014. But I do not want to look like some deep, great historian right now and say that the war began long before 2014, because if they weren’t going on war, they would have acted differently long ago. The war of the Russian Federation in one form or another against Ukraine or against the sovereignty of our state or against statehood or against the general existence of Ukraine — this war is old and it has been going on for many decades, even hundreds of years. But if we rely on the date that appears everywhere as the date of Russia’s full-scale invasion of Ukraine, of course, this is Feb. 24, 2022. They began this war of occupation where they chipped away from us little by little in 2014, although I believe that they have been encroaching on Crimea since 1991 through [providing Russian passports to Ukrainians] and various other steps. These are hybrid, heavy, cynical measures — albeit professionally implemented ones. They have been trying to devour our country through their information policy, all of their television — I worked in [television], and I understood perfectly how this functions and if they weren’t intending harm, thye would have not played that card . They have been devouring Ukraine as they had big assets, the petrodollars and revenue from gas, so of course, they bought up our industries and so on. They acted through informational [policy], humanitarian [means], passportization and then bought up the deputies of the Verkhovna Rada [parliament] of Ukraine, financed various parties. And by the way, their party was the second party in the country by the time I became president. The second party in the country was the party of the Russian Federation. If I hadn’t — not specifically because of me — but if I hadn’t run for president, this party would have been the first. This is also very important to understand. I am not saying that this is my personal merit; this is the merit of the people of Ukraine, who believed [in us]. I am not trying to break this down into right or wrong, but this is a fact. The influence is so strong that this party would have been the first party. Today, we see that this party does not enjoy trust anymore. And this suggests that starting from Feb. 24, there has been a complete reboot, a complete reset of consciousness in Ukraine. That’s what I think. Adapted from:https://www.washingtonpost.com/national-security/2022/08/16/zelensky-interview-transcript/",
+              "https://www.washingtonpost.com/national-security/2022/08/16/zelensky-interview-transcript/"
+            ],
+            "links": [
+              {
+                "url": "https://www.washingtonpost.com/national-security/2022/08/16/zelensky-interview-transcript/",
+                "kind": "link",
+                "source": "anchor"
+              }
+            ],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u55-s14-c",
+              "kind": "reading-discussion",
+              "prompt": "Read the article and discuss its questions with your teacher.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "C. Read the article and answer or discuss the questions with your teacher."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Use the published article as evidence; do not auto-grade discussion responses."
+              ]
+            }
+          ]
+        },
+        "15": {
+          "source": {
+            "number": 15,
+            "title": "D. Make a small presentation / discussion about a couple of the most difficult moments for humanity these past two years. Would they have affected less the world if the weren’t going to have a global impact even in some years?",
+            "visibleTexts": [
+              "D. Make a small presentation / discussion about a couple of the most difficult moments for humanity these past two years. Would they have affected less the world if the weren’t going to have a global impact even in some years?",
+              "E. Write an 160-200 word text addressing the feminist movement that have taken place during the last years in the world. If people were going to accept fully accept it, wouldn’t they have done it already? Is it more the pain than the gain?",
+              "Let’s Talk",
+              "Let’s Write"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u55-s15-d",
+              "kind": "roleplay-and-writing",
+              "prompt": "Complete the role-play or writing activity shown on the published slide.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "D. Complete the final activity on the published slide."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Preserve the published word count and prompt when the builder imports this review."
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "cmnmm9wv00032w1qkxr02azgp": {
+      "unit": 56,
+      "moduleId": "cmnmm9lx3000fw1qkh6ijo1px",
+      "moduleOrder": 14,
+      "moduleTitle": "Módulo 14",
+      "lessonOrder": 4,
+      "lessonTitle": "Unit 56",
+      "videoUrl": null,
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+      "deckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+      "slideCount": 17,
+      "slides": {
+        "4": {
+          "source": {
+            "number": 4,
+            "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "visibleTexts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic?",
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+              "4"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 2,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u56-s04-review",
+              "kind": "listening",
+              "prompt": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4"
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "12": {
+          "source": {
+            "number": 12,
+            "title": "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+            "visibleTexts": [
+              "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+              "0. Developing sustainable energy will give this world a better chance."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u56-s12-a",
+              "kind": "grammar-production",
+              "prompt": "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+                "0. Developing sustainable energy will give this world a better chance."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "The source presents learner-generated practice; keep it open response."
+              ],
+              "sourceEvidenceLocations": [
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 0,
+                  "text": "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example."
+                },
+                {
+                  "slide": 12,
+                  "visibleTextIndex": 1,
+                  "text": "0. Developing sustainable energy will give this world a better chance."
+                }
+              ],
+              "originalPrompt": "Complete the grammar practice shown on the published slide.",
+              "originalReviewStatus": "open-response-preserved",
+              "semanticPatch": {
+                "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch-53-56.json",
+                "originalPrompt": "Complete the grammar practice shown on the published slide.",
+                "originalReviewStatus": "open-response-preserved",
+                "patchItemId": "u56-s12-a",
+                "provenance": {
+                  "file": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+                  "sha256": "aedae0aeef4f2ce5b9e37c5d59594a0633c964bf9ee971cfd269333402e4d429",
+                  "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+                  "contentId": "cmnmm9wy10033w1qk25duuj99",
+                  "deckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+                  "publishedSlide": 12
+                },
+                "sourceEvidence": [
+                  "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+                  "0. Developing sustainable energy will give this world a better chance."
+                ],
+                "originalSourceEvidence": [
+                  "A. Complete the grammar exercise on the published slide."
+                ],
+                "validatedProvenanceSha256": "aedae0aeef4f2ce5b9e37c5d59594a0633c964bf9ee971cfd269333402e4d429",
+                "patchReviewStatus": "reviewed-source-aligned-open-response",
+                "validatedPublishedSourceSlide": 12
+              }
+            }
+          ]
+        },
+        "13": {
+          "source": {
+            "number": 13,
+            "title": "B. Listen to the audio and answer the questions your teacher makes.",
+            "visibleTexts": [
+              "B. Listen to the audio and answer the questions your teacher makes."
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 1,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            },
+            "warnings": [
+              "audio-icon-without-original-url"
+            ]
+          },
+          "items": [
+            {
+              "id": "u56-s13-b",
+              "kind": "listening",
+              "prompt": "Listen to the audio and answer teacher questions.",
+              "responseMode": "teacher-listening",
+              "reviewStatus": "blocked-awaiting-transcript",
+              "answerItems": [],
+              "sourceEvidence": [
+                "B. Listen to the audio and answer the questions your teacher makes."
+              ],
+              "blocker": "Published source exposes an audio icon or teacher-made questions but no transcript or deterministic answer key.",
+              "doNotAutoGrade": true
+            }
+          ]
+        },
+        "14": {
+          "source": {
+            "number": 14,
+            "title": "14",
+            "visibleTexts": [
+              "14",
+              "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below.",
+              "12 Things You Should Remember When Feeling Lost in Life If you’re feeling lost in life, the first thing to keep in mind is that you are not alone in these feelings. Even the most charismatic people you know, whether in person or celebrities of some sort, experience days where they are feeling lost in life, are losing interest in life, or are feeling confused and frustrated at the same time. While it’s good to know we aren’t alone in this feeling, the question still remains: What to do when you feel lost? Here are 12 things to remember when you feel lost in life: 1. Recognize That It’s Okay! As stressed above, it’s okay to be in a position where you need to figure out what to do when you feel lost. At the same time, recognize that there are times you need to be alone. If you’ve always been accustomed to being in contact with people, this may prove difficult. However, learning how to be alone and comfortable in your own skin will give you confidence and a sense of self-reliance. We cheat ourselves out of the opportunity to become self-reliant when we look for constant companionship. It’s understandable though as we are social creatures and believe being constantly around people gives us a direction in life. The reality is having these periods where you are alone is good for you and feeling lost in life is your body telling you to spend some time with yourself. Learn how to embrace your me-time: What Your Fear of Being Alone Is Really About and How to Get over It Adapted from https://www.lifehack.org/articles/communication/12-things-you-should-remember-when-feeling-lost-and-lonely.html",
+              "://www.lifehack.org/articles/communication/12-things-you-should-remember-when-feeling-lost-and-lonely.html"
+            ],
+            "links": [
+              {
+                "url": "https://www.lifehack.org/articles/communication/12-things-you-should-remember-when-feeling-lost-and-lonely.html",
+                "kind": "link",
+                "source": "anchor"
+              }
+            ],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u56-s14-c",
+              "kind": "reading-discussion",
+              "prompt": "Read the article and discuss its questions with your teacher.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "C. Read the article and answer or discuss the questions with your teacher."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Use the published article as evidence; do not auto-grade discussion responses."
+              ]
+            }
+          ]
+        },
+        "15": {
+          "source": {
+            "number": 15,
+            "title": "D. Make a small presentation / discussion about a couple of the most difficult decisions you consider people need to make in life. What makes them cling towards a specific side of the balance? Do they have options? Be very bold in this.",
+            "visibleTexts": [
+              "D. Make a small presentation / discussion about a couple of the most difficult decisions you consider people need to make in life. What makes them cling towards a specific side of the balance? Do they have options? Be very bold in this.",
+              "E. Write an 160-200 word text addressing the different scenarios people live if they are immigrants. What to expect? Which are the reasons that move them to make such a decision? Have you got an idea of how easy or difficult is to cope in a new country?",
+              "Let’s Talk",
+              "Let’s Write"
+            ],
+            "links": [],
+            "tables": [],
+            "mediaSummary": {
+              "audioUrls": [],
+              "videoUrls": [],
+              "audioIconCount": 0,
+              "renderedSlideImageCount": 1,
+              "tableCount": 0
+            }
+          },
+          "items": [
+            {
+              "id": "u56-s15-d",
+              "kind": "roleplay-and-writing",
+              "prompt": "Complete the role-play or writing activity shown on the published slide.",
+              "responseMode": "open-response",
+              "reviewStatus": "open-response-preserved",
+              "answerItems": [],
+              "sourceEvidence": [
+                "D. Complete the final activity on the published slide."
+              ],
+              "doNotAutoGrade": true,
+              "constraints": [
+                "Preserve the published word count and prompt when the builder imports this review."
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "placementFixes": [],
+  "semanticPatch": {
+    "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch-53-56.json",
+    "validated": true,
+    "appliedItemIds": [
+      "u53-s12-a",
+      "u54-s12-a",
+      "u55-s12-a",
+      "u56-s12-a"
+    ],
+    "rejectedItemIds": [],
+    "remainingHardBlocks": []
+  }
+}

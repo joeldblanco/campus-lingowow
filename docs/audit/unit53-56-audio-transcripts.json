@@ -1,0 +1,765 @@
+{
+  "schemaVersion": 1,
+  "scope": "Original audio transcripts for Units 53-56",
+  "generatedAtUtc": "2026-10-08T10:56:19.322934+00:00",
+  "model": "faster-whisper-small-int8",
+  "modelConfig": {
+    "device": "cpu",
+    "computeType": "int8",
+    "cpuThreads": 4,
+    "localFilesOnly": true
+  },
+  "sourceManifest": "docs/audit/unit53-56-drive-recovery.json",
+  "transcripts": [
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "slideNumber": 4,
+      "audioIndex": 1,
+      "sourceId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+      "sourceLabel": "Audio 1 - Unit 53.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit53-audio1.mp3",
+      "sourceSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
+      "sourceBytes": 907142,
+      "durationSeconds": 56.633469,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.995961606502533,
+      "text": "So what happened? Camille was in an accident on her way back home. I know, but what have the doctors said? I came as fast as I could. This is a matter of life and death, Tyler. The doctors came out an hour ago and asked for our consent. Consent for what, Dylan? They needed to shove the leg in order to save her. You're kidding, right? I'm not. If they hadn't done that, she would be dead now. Oh my god, I told her not to attend that meeting. If she had not gone, she would be fine at home. What meeting did she attend? The one for signing the petitions? I thought that it was dead in the water. It is, but you know how she is when she feels she's fighting for right cause? I should have been there, Dylan, to stop her from going. Oh no, Tyler. Stop it. We cannot be sure if that would have made any difference. We know her. Stop blaming yourself. The doctor is coming. Let's see what news he brings.",
+      "segments": [
+        {
+          "start": 0.91,
+          "end": 2.91,
+          "text": "So what happened?",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 2.95,
+          "end": 5.55,
+          "text": "Camille was in an accident on her way back home.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 5.55,
+          "end": 8.55,
+          "text": "I know, but what have the doctors said? I came as fast as I could.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 9.19,
+          "end": 16.31,
+          "text": "This is a matter of life and death, Tyler. The doctors came out an hour ago and asked for our consent.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 16.31,
+          "end": 18.31,
+          "text": "Consent for what, Dylan?",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 18.39,
+          "end": 21.31,
+          "text": "They needed to shove the leg in order to save her.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 21.31,
+          "end": 22.51,
+          "text": "You're kidding, right?",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 22.51,
+          "end": 26.31,
+          "text": "I'm not. If they hadn't done that, she would be dead now.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 26.31,
+          "end": 28.71,
+          "text": "Oh my god, I told her not to attend that meeting.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 28.71,
+          "end": 31.71,
+          "text": "If she had not gone, she would be fine at home.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 31.71,
+          "end": 35.71,
+          "text": "What meeting did she attend? The one for signing the petitions?",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 35.71,
+          "end": 37.71,
+          "text": "I thought that it was dead in the water.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 37.71,
+          "end": 41.71,
+          "text": "It is, but you know how she is when she feels she's fighting for right cause?",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 41.71,
+          "end": 45.71,
+          "text": "I should have been there, Dylan, to stop her from going.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 45.71,
+          "end": 47.71,
+          "text": "Oh no, Tyler. Stop it.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 47.71,
+          "end": 50.71,
+          "text": "We cannot be sure if that would have made any difference.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 50.71,
+          "end": 53.71,
+          "text": "We know her. Stop blaming yourself. The doctor is coming.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 53.71,
+          "end": 55.71,
+          "text": "Let's see what news he brings.",
+          "avgLogprob": -0.10472361428233293
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "sourceId": "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ",
+      "sourceLabel": "Audio 2 - Unit 53.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit53-audio2.mp3",
+      "sourceSha256": "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37",
+      "sourceBytes": 868272,
+      "durationSeconds": 54.195374,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9909124374389648,
+      "text": "Oh my god, I just need this semester to finish. Come on, easy. It has not been that dreadful, Daniel. Not at all, Marcus. How about the history assignment? What if the Nazis had won the world? Well, I think it is a pretty interesting matter. Imagine the scenario. If they had won, we all would be slaves, probably. Or worse, we would be dead. If they had won, we would not even exist, so why bother wondering? I think history is not a matter of dead in water. We are supposed to analyze the facts so we are not doomed to repeat them. I guess there's a point there. If we had not been born in a free country or world, we would not even have a bucket list to pursue. Definitely. I guess even when it seems the world crumbles down in some places, we are still pretty lucky to live the way we do. Indeed.",
+      "segments": [
+        {
+          "start": 0.75,
+          "end": 3.75,
+          "text": "Oh my god, I just need this semester to finish.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 3.75,
+          "end": 7.25,
+          "text": "Come on, easy. It has not been that dreadful, Daniel.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 7.25,
+          "end": 10.75,
+          "text": "Not at all, Marcus. How about the history assignment?",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 10.75,
+          "end": 13.25,
+          "text": "What if the Nazis had won the world?",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 13.25,
+          "end": 17.25,
+          "text": "Well, I think it is a pretty interesting matter. Imagine the scenario.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 17.25,
+          "end": 22.75,
+          "text": "If they had won, we all would be slaves, probably. Or worse, we would be dead.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 22.75,
+          "end": 27.75,
+          "text": "If they had won, we would not even exist, so why bother wondering?",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 27.75,
+          "end": 31.25,
+          "text": "I think history is not a matter of dead in water.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 31.25,
+          "end": 35.25,
+          "text": "We are supposed to analyze the facts so we are not doomed to repeat them.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 35.25,
+          "end": 40.75,
+          "text": "I guess there's a point there. If we had not been born in a free country or world,",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 40.75,
+          "end": 43.75,
+          "text": "we would not even have a bucket list to pursue.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 43.75,
+          "end": 50.25,
+          "text": "Definitely. I guess even when it seems the world crumbles down in some places,",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 50.25,
+          "end": 52.75,
+          "text": "we are still pretty lucky to live the way we do.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 52.75,
+          "end": 54.25,
+          "text": "Indeed.",
+          "avgLogprob": -0.08569691857358194
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "slideNumber": 4,
+      "audioIndex": 1,
+      "sourceId": "14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq",
+      "sourceLabel": "Audio 1 - Unit 54.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit54-audio1.mp3",
+      "sourceSha256": "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
+      "sourceBytes": 737033,
+      "durationSeconds": 45.99873,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9957244396209717,
+      "text": "So, what's new in the office, Dom? Not much, Dean. Well, Janice got gelled at by the boss. I mean, she made a mistake, but it was not okay. He gelled at her. No way. What happened? She forgot to reply to a message to a client confirming a launch meeting, but at the end it all worked out. So, okay, call her attention, but not yelling. If she got some nerve, she would have said something to him. I mean, not to defend herself, but to call for some respect. Maybe, if our boss weren't so feisty, she would have come up with something, but you know how he is. I know. She needs a shot in the arm just to finally make him understand that he must not yell at anyone to correct them. Indeed.",
+      "segments": [
+        {
+          "start": 0.88,
+          "end": 2.88,
+          "text": "So, what's new in the office, Dom?",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 3.44,
+          "end": 11.44,
+          "text": "Not much, Dean. Well, Janice got gelled at by the boss. I mean, she made a mistake, but it was not okay. He gelled at her.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 11.6,
+          "end": 13.6,
+          "text": "No way. What happened?",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 13.88,
+          "end": 20.08,
+          "text": "She forgot to reply to a message to a client confirming a launch meeting, but at the end it all worked out.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 20.26,
+          "end": 23.36,
+          "text": "So, okay, call her attention, but not yelling.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 23.36,
+          "end": 29.74,
+          "text": "If she got some nerve, she would have said something to him. I mean, not to defend herself, but to call for some respect.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 30.54,
+          "end": 37.06,
+          "text": "Maybe, if our boss weren't so feisty, she would have come up with something, but you know how he is.",
+          "avgLogprob": -0.22344826810782956
+        },
+        {
+          "start": 37.06,
+          "end": 43.5,
+          "text": "I know. She needs a shot in the arm just to finally make him understand that he must not yell at anyone to correct them.",
+          "avgLogprob": -0.22344826810782956
+        },
+        {
+          "start": 44.26,
+          "end": 46.26,
+          "text": "Indeed.",
+          "avgLogprob": -0.22344826810782956
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceId": "1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ",
+      "sourceLabel": "Audio 2 - Unit 54.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit54-audio2.mp3",
+      "sourceSha256": "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6",
+      "sourceBytes": 614571,
+      "durationSeconds": 38.336145,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.991599440574646,
+      "text": "Do you call mom Taylor if I had the time I would have done it I'm super busy getting ready for dad's party Joan Well, but she knows already we're coming and making this surprise party, right? Sure, if she didn't she would have not let us call all of our relatives Well, at least our uncles and aunts great Dana call and she says she had already organized a cocktail before dinner Amazing so one thing less to worry about. Yep. Do you get the suits from the cleaners? If I got them they would have been here already. I'm going there in a few great. See you at mom's tix",
+      "segments": [
+        {
+          "start": 0.91,
+          "end": 5.23,
+          "text": "Do you call mom Taylor if I had the time I would have done it",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 5.23,
+          "end": 8.35,
+          "text": "I'm super busy getting ready for dad's party Joan",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 8.63,
+          "end": 12.25,
+          "text": "Well, but she knows already we're coming and making this surprise party, right?",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 12.67,
+          "end": 16.83,
+          "text": "Sure, if she didn't she would have not let us call all of our relatives",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 16.83,
+          "end": 23.33,
+          "text": "Well, at least our uncles and aunts great Dana call and she says she had already organized a cocktail before dinner",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 24.23,
+          "end": 29.07,
+          "text": "Amazing so one thing less to worry about. Yep. Do you get the suits from the cleaners?",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 29.07,
+          "end": 36.99,
+          "text": "If I got them they would have been here already. I'm going there in a few great. See you at mom's tix",
+          "avgLogprob": -0.19429480483134587
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "slideNumber": 4,
+      "audioIndex": 1,
+      "sourceId": "16vlShb_LW0tpQjPyM13l2TomvtxP1l_W",
+      "sourceLabel": "Audio 1 - Unit 55.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit55-audio1.mp3",
+      "sourceSha256": "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
+      "sourceBytes": 665980,
+      "durationSeconds": 41.540499,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9811726212501526,
+      "text": "Hey, John, how is it going? Just great. How about you, Tom? Good. Tell me, you're attending Santa's party this Saturday, right? Oh, Tom, I'm afraid I won't make it. No way. I told her that if she were having a party this Saturday, we all would have gone there. I know. If I weren't having my mom's birthday, I would have definitely stopped by. But it's impossible to be at two places at once. Or are they also having two birthdays the same day? You tell me, John. Some may see this as a fat chance, but it isn't. Indeed. Well, I let Tini know you sent your regards. Please do.",
+      "segments": [
+        {
+          "start": 0.69,
+          "end": 2.69,
+          "text": "Hey, John, how is it going?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 2.69,
+          "end": 4.69,
+          "text": "Just great. How about you, Tom?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 4.69,
+          "end": 8.69,
+          "text": "Good. Tell me, you're attending Santa's party this Saturday, right?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 8.69,
+          "end": 10.69,
+          "text": "Oh, Tom, I'm afraid I won't make it.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 10.69,
+          "end": 16.69,
+          "text": "No way. I told her that if she were having a party this Saturday, we all would have gone there.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 16.69,
+          "end": 21.69,
+          "text": "I know. If I weren't having my mom's birthday, I would have definitely stopped by.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 21.69,
+          "end": 25.69,
+          "text": "But it's impossible to be at two places at once.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 25.69,
+          "end": 28.69,
+          "text": "Or are they also having two birthdays the same day?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 28.69,
+          "end": 33.69,
+          "text": "You tell me, John. Some may see this as a fat chance, but it isn't.",
+          "avgLogprob": -0.14355686205354604
+        },
+        {
+          "start": 33.69,
+          "end": 37.69,
+          "text": "Indeed. Well, I let Tini know you sent your regards.",
+          "avgLogprob": -0.14355686205354604
+        },
+        {
+          "start": 37.69,
+          "end": 39.69,
+          "text": "Please do.",
+          "avgLogprob": -0.14355686205354604
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "sourceLabel": "Auido 2 - Unit 55.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
+      "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+      "sourceBytes": 756259,
+      "durationSeconds": 47.182948,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9799962043762207,
+      "text": "Dave, did everyone send their documents? Not everyone, but all of them are here. How is that possible? Well, someone gave some other people a free ride. Marcus again? Oh my. If he weren't given people free rides, people would have been more responsible this time. I said the same thing. Nevertheless, he stated that the main issue was to have all documents on time and sent. So what else can we do? Nothing. I mean, he's a great guy always tensing his arm. What really annoys me is people taking advantage of him. Don't even mention it. I'm sure that if they weren't having a good cover for the end of the month, the boss would have sent some of them home already. I know. One can only hope.",
+      "segments": [
+        {
+          "start": 1.68,
+          "end": 4.68,
+          "text": "Dave, did everyone send their documents?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 4.68,
+          "end": 6.68,
+          "text": "Not everyone, but all of them are here.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 6.68,
+          "end": 8.68,
+          "text": "How is that possible?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 8.68,
+          "end": 11.68,
+          "text": "Well, someone gave some other people a free ride.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 11.68,
+          "end": 12.68,
+          "text": "Marcus again?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 12.68,
+          "end": 13.68,
+          "text": "Oh my.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 13.68,
+          "end": 18.68,
+          "text": "If he weren't given people free rides, people would have been more responsible this time.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 18.68,
+          "end": 20.68,
+          "text": "I said the same thing.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 20.68,
+          "end": 25.68,
+          "text": "Nevertheless, he stated that the main issue was to have all documents on time and sent.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 25.68,
+          "end": 27.68,
+          "text": "So what else can we do?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 27.68,
+          "end": 31.68,
+          "text": "Nothing. I mean, he's a great guy always tensing his arm.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 31.68,
+          "end": 35.68,
+          "text": "What really annoys me is people taking advantage of him.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 35.68,
+          "end": 36.68,
+          "text": "Don't even mention it.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 36.68,
+          "end": 40.68,
+          "text": "I'm sure that if they weren't having a good cover for the end of the month,",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 40.68,
+          "end": 43.68,
+          "text": "the boss would have sent some of them home already.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 43.68,
+          "end": 44.68,
+          "text": "I know.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 44.68,
+          "end": 46.68,
+          "text": "One can only hope.",
+          "avgLogprob": -0.07558594781091843
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "slideNumber": 4,
+      "audioIndex": 1,
+      "sourceId": "12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj",
+      "sourceLabel": "Unit 56 - Audio 1.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit56-audio1.mp3",
+      "sourceSha256": "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
+      "sourceBytes": 707102,
+      "durationSeconds": 43.861338,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9983002543449402,
+      "text": "I've been working on a case that I haven't been able to track. It had taken me blood, sweat, and tears by the time I found our first clue. Developing an investigation requires cunning skill and of course tons of patience. To get a clue is not as simple as to make it look on TV, since along with it, you have to keep up with all the paperwork that as a detective you have to fill in. So it means burning a candle at both ends. If I weren't having a meeting tonight with an informant, I would have gone mad already. It's been two weeks since the murder and we have just a note the killer left. She deserved it. If he hadn't left that, we would have nothing, but still we have nothing. I'm hoping I could get the most out of the meeting I'm having with him tonight.",
+      "segments": [
+        {
+          "start": 0.98,
+          "end": 4.38,
+          "text": "I've been working on a case that I haven't been able to track.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 4.38,
+          "end": 8.78,
+          "text": "It had taken me blood, sweat, and tears by the time I found our first clue.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 8.78,
+          "end": 13.42,
+          "text": "Developing an investigation requires cunning skill and of course tons of patience.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 13.42,
+          "end": 17.1,
+          "text": "To get a clue is not as simple as to make it look on TV, since along with it, you have",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 17.1,
+          "end": 21.14,
+          "text": "to keep up with all the paperwork that as a detective you have to fill in.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 21.14,
+          "end": 23.66,
+          "text": "So it means burning a candle at both ends.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 23.66,
+          "end": 27.18,
+          "text": "If I weren't having a meeting tonight with an informant, I would have gone mad",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 27.18,
+          "end": 28.18,
+          "text": "already.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 28.18,
+          "end": 32.9,
+          "text": "It's been two weeks since the murder and we have just a note the killer left.",
+          "avgLogprob": -0.23201215069960146
+        },
+        {
+          "start": 32.9,
+          "end": 34.66,
+          "text": "She deserved it.",
+          "avgLogprob": -0.23201215069960146
+        },
+        {
+          "start": 34.66,
+          "end": 39.74,
+          "text": "If he hadn't left that, we would have nothing, but still we have nothing.",
+          "avgLogprob": -0.23201215069960146
+        },
+        {
+          "start": 39.74,
+          "end": 42.78,
+          "text": "I'm hoping I could get the most out of the meeting I'm having with him tonight.",
+          "avgLogprob": -0.23201215069960146
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceId": "1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ",
+      "sourceLabel": "Unit 56 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit56-audio2.mp3",
+      "sourceSha256": "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1",
+      "sourceBytes": 633123,
+      "durationSeconds": 39.253333,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9987523555755615,
+      "text": "What people normally want in life is exactly what they don't know. Knowing exactly what you want sometimes can be really tricky, especially if you're going through a crisis. If I had had a clear idea of what I wanted and where I wanted to go, it would have been a lot easier for me when I was younger. Nevertheless, I think that having this type of crisis in your life makes you stronger, once you've overcome them. Developing skills does not only require dedication, but sometimes they come from hardships. You live and teach you some things you would never learn by listening to others' experiences. To be a grown-up has never been only a matter of age, but something that comes with the different moments lived in life.",
+      "segments": [
+        {
+          "start": 1.07,
+          "end": 5.71,
+          "text": "What people normally want in life is exactly what they don't know. Knowing exactly what",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 5.71,
+          "end": 10.69,
+          "text": "you want sometimes can be really tricky, especially if you're going through a crisis. If I had",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 10.69,
+          "end": 14.71,
+          "text": "had a clear idea of what I wanted and where I wanted to go, it would have been a lot easier",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 14.71,
+          "end": 18.87,
+          "text": "for me when I was younger. Nevertheless, I think that having this type of crisis in",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 18.87,
+          "end": 23.59,
+          "text": "your life makes you stronger, once you've overcome them. Developing skills does not",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 23.59,
+          "end": 27.91,
+          "text": "only require dedication, but sometimes they come from hardships. You live and teach",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 27.91,
+          "end": 32.15,
+          "text": "you some things you would never learn by listening to others' experiences. To be a",
+          "avgLogprob": -0.16915095038712025
+        },
+        {
+          "start": 32.15,
+          "end": 36.11,
+          "text": "grown-up has never been only a matter of age, but something that comes with the",
+          "avgLogprob": -0.16915095038712025
+        },
+        {
+          "start": 36.11,
+          "end": 39.75,
+          "text": "different moments lived in life.",
+          "avgLogprob": -0.16915095038712025
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    }
+  ],
+  "blocked": [],
+  "counts": {
+    "available": 8,
+    "transcribed": 8,
+    "blocked": 0,
+    "expected": 8
+  },
+  "policy": "Transcripts are source evidence only. They do not authorize synthetic audio or automatic exercise answer keys."
+}

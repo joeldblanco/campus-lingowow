@@ -1,0 +1,2712 @@
+{
+  "schemaVersion": 1,
+  "source": "composed published-priority native audit",
+  "_auditPath": "course-builder-native-audit.json",
+  "records": [],
+  "publishedSourceReview": [
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+      "status": "reviewed",
+      "sourceProofSlides": [
+        {
+          "slideNumber": 4,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+            "4"
+          ],
+          "publishedSlideProof": {
+            "unit": 53,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 63017,
+            "screenshotSha256": "757acd55a8507768347555ceee8caf9c117f1515c01d4a112504fd4aab6070ed",
+            "proofType": "visible-published-slide-plus-page-assets-image"
+          }
+        },
+        {
+          "slideNumber": 6,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "PHRASES MEANING EXAMPLE A MATTER OF LIFE AND DEATH If something is a matter of life and death, it's extremely important and it could involve someone's survival. I am not joking, this is a matter of life and death. DEAD IN THE WATER If something is dead in the water, it has no chance of succeeding or of making any progress. That project is still on? I thought it was dead in the water. KICK THE BUCKET If someone kicks the bucket, they die. Larry just kicked the bucket. NEVER SAY DIE You can say \"Never say die!\" if you want to tell someone to keep trying while there's still a chance of success. Did you apply for the job? I did. Never say die. ONE’S NUMBER IS UP Someone is appointed to die. I truly think Jake’s number is up. GET SMOKED When someone or something gets killed. The petitions for were completed, the major’s project for the condos was smoked. TO BE BROWN BREAD To be dead. I could not stay at the party, it was brown bread. THE BUCKET LIST Things to do before dying. Gotta jump off a plane soon, It’s part of my bucket list.",
+            "Look at the phrases and discuss them with your teacher. Did you know them?"
+          ],
+          "publishedSlideProof": {
+            "unit": 53,
+            "slideNumber": 6,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+            "observedSlideObjectId": "gd6c0dc1310_0_17",
+            "observedSlideNumber": 6,
+            "screenshotBytes": 111940,
+            "screenshotSha256": "e89210dfa6f38fd7fa0554ccc656385f114834f0454ee6fc20f434f555469a03",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 8,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We can use mixed conditionals when we imagine a past change with a result in the present.",
+            "A PAST CHANGE A RESULT IN THE PRESENT If I hadn't got the job in Tokyo, If we had not taken this road, If I had won the match, I would not be with my current girlfriend. We would probably be there now. I would be running for the finals. To Consider 1. The conditional that gets mixed here is the 3rd one. It uses past perfect. 2. The result in the present is used with the modal WOULD + SIMPLE FORM VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't be lost if we had looked at the map. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you go now if he had asked you to?"
+          ],
+          "publishedSlideProof": {
+            "unit": 53,
+            "slideNumber": 8,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+            "observedSlideObjectId": "g72967b2bcc_0_86",
+            "observedSlideNumber": 8,
+            "screenshotBytes": 100858,
+            "screenshotSha256": "cdd88fed7ee5f00b6a6dcf05112d672932bd4c07cd2a71b8e6d14d6bed9bb038",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 10,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We can use the grammar presented to talk about the following function:",
+            "Functions Examples Talk about unreal situations in the past and the present. Joseph would have big kids now if he had married younger.",
+            "To consider This type of mixed conditional refers to an unreal past condition and its a probable result in the present. These sentences express a situation which is contrary to reality both in the past and in the present."
+          ],
+          "publishedSlideProof": {
+            "unit": 53,
+            "slideNumber": 10,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+            "observedSlideObjectId": "g729cfa641f_0_0",
+            "observedSlideNumber": 10,
+            "screenshotBytes": 69329,
+            "screenshotSha256": "2f739cdba5c678ce6ffe2ba6f4e5946bf60ee8180003c4871aa36a3dbb2bc8b7",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        }
+      ],
+      "reviewedTables": [
+        {
+          "unit": 53,
+          "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+          "sourceSlide": 6,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "PHRASES MEANING EXAMPLE A MATTER OF LIFE AND DEATH If something is a matter of life and death, it's extremely important and it could involve someone's survival. I am not joking, this is a matter of life and death. DEAD IN THE WATER If something is dead in the water, it has no chance of succeeding or of making any progress. That project is still on? I thought it was dead in the water. KICK THE BUCKET If someone kicks the bucket, they die. Larry just kicked the bucket. NEVER SAY DIE You can say \"Never say die!\" if you want to tell someone to keep trying while there's still a chance of success. Did you apply for the job? I did. Never say die. ONE’S NUMBER IS UP Someone is appointed to die. I truly think Jake’s number is up. GET SMOKED When someone or something gets killed. The petitions for were completed, the major’s project for the condos was smoked. TO BE BROWN BREAD To be dead. I could not stay at the party, it was brown bread. THE BUCKET LIST Things to do before dying. Gotta jump off a plane soon, It’s part of my bucket list.",
+            "publishedVisibleTexts": [
+              "PHRASES MEANING EXAMPLE A MATTER OF LIFE AND DEATH If something is a matter of life and death, it's extremely important and it could involve someone's survival. I am not joking, this is a matter of life and death. DEAD IN THE WATER If something is dead in the water, it has no chance of succeeding or of making any progress. That project is still on? I thought it was dead in the water. KICK THE BUCKET If someone kicks the bucket, they die. Larry just kicked the bucket. NEVER SAY DIE You can say \"Never say die!\" if you want to tell someone to keep trying while there's still a chance of success. Did you apply for the job? I did. Never say die. ONE’S NUMBER IS UP Someone is appointed to die. I truly think Jake’s number is up. GET SMOKED When someone or something gets killed. The petitions for were completed, the major’s project for the condos was smoked. TO BE BROWN BREAD To be dead. I could not stay at the party, it was brown bread. THE BUCKET LIST Things to do before dying. Gotta jump off a plane soon, It’s part of my bucket list.",
+              "Look at the phrases and discuss them with your teacher. Did you know them?"
+            ],
+            "publishedSlideProof": {
+              "unit": 53,
+              "slideNumber": 6,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+              "observedSlideObjectId": "gd6c0dc1310_0_17",
+              "observedSlideNumber": 6,
+              "screenshotBytes": 111940,
+              "screenshotSha256": "e89210dfa6f38fd7fa0554ccc656385f114834f0454ee6fc20f434f555469a03",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "A MATTER OF LIFE AND DEATH",
+                  "If something is a matter of life and death, it's extremely important and it could involve someone's survival.",
+                  "I am not joking, this is a matter of life and death."
+                ],
+                [
+                  "DEAD IN THE WATER",
+                  "If something is dead in the water, it has no chance of succeeding or of making any progress.",
+                  "That project is still on? I thought it was dead in the water."
+                ],
+                [
+                  "KICK THE BUCKET",
+                  "If someone kicks the bucket, they die.",
+                  "Larry just kicked the bucket."
+                ],
+                [
+                  "NEVER SAY DIE",
+                  "You can say \"Never say die!\" if you want to tell someone to keep trying while there's still a chance of success.",
+                  "Did you apply for the job?\nI did. Never say die."
+                ],
+                [
+                  "ONE’S NUMBER IS UP",
+                  "Someone is appointed to die.",
+                  "I truly think Jake’s number is up."
+                ],
+                [
+                  "GET SMOKED",
+                  "When someone or something gets killed.",
+                  "The petitions for were completed, the major’s project for the condos was smoked."
+                ],
+                [
+                  "TO BE BROWN BREAD",
+                  "To be dead.",
+                  "I could not stay at the party, it was brown bread."
+                ],
+                [
+                  "THE BUCKET LIST",
+                  "Things to do before dying.",
+                  "Gotta jump off a plane soon, It’s part of my bucket list."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "",
+                  "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "three-column PHRASES / MEANING / EXAMPLE table with eight phrase rows and a teacher discussion prompt above",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "PHRASES",
+                    "MEANING",
+                    "EXAMPLE"
+                  ],
+                  [
+                    "A MATTER OF LIFE AND DEATH",
+                    "If something is a matter of life and death, it's extremely important and it could involve someone's survival.",
+                    "I am not joking, this is a matter of life and death."
+                  ],
+                  [
+                    "DEAD IN THE WATER",
+                    "If something is dead in the water, it has no chance of succeeding or of making any progress.",
+                    "That project is still on? I thought it was dead in the water."
+                  ],
+                  [
+                    "KICK THE BUCKET",
+                    "If someone kicks the bucket, they die.",
+                    "Larry just kicked the bucket."
+                  ],
+                  [
+                    "NEVER SAY DIE",
+                    "You can say \"Never say die!\" if you want to tell someone to keep trying while there's still a chance of success.",
+                    "Did you apply for the job?\nI did. Never say die."
+                  ],
+                  [
+                    "ONE’S NUMBER IS UP",
+                    "Someone is appointed to die.",
+                    "I truly think Jake’s number is up."
+                  ],
+                  [
+                    "GET SMOKED",
+                    "When someone or something gets killed.",
+                    "The petitions for were completed, the major’s project for the condos was smoked."
+                  ],
+                  [
+                    "TO BE BROWN BREAD",
+                    "To be dead.",
+                    "I could not stay at the party, it was brown bread."
+                  ],
+                  [
+                    "THE BUCKET LIST",
+                    "Things to do before dying.",
+                    "Gotta jump off a plane soon, It’s part of my bucket list."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "",
+                "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+              "sha256": "fc9709bcf3de1372ef184ca60630df138cb37ed45f2723675ccd95bb6e4083e8",
+              "slideNumber": 6
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 6,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "A MATTER OF LIFE AND DEATH",
+                  "If something is a matter of life and death, it's extremely important and it could involve someone's survival.",
+                  "I am not joking, this is a matter of life and death."
+                ],
+                [
+                  "DEAD IN THE WATER",
+                  "If something is dead in the water, it has no chance of succeeding or of making any progress.",
+                  "That project is still on? I thought it was dead in the water."
+                ],
+                [
+                  "KICK THE BUCKET",
+                  "If someone kicks the bucket, they die.",
+                  "Larry just kicked the bucket."
+                ],
+                [
+                  "NEVER SAY DIE",
+                  "You can say \"Never say die!\" if you want to tell someone to keep trying while there's still a chance of success.",
+                  "Did you apply for the job?\nI did. Never say die."
+                ],
+                [
+                  "ONE’S NUMBER IS UP",
+                  "Someone is appointed to die.",
+                  "I truly think Jake’s number is up."
+                ],
+                [
+                  "GET SMOKED",
+                  "When someone or something gets killed.",
+                  "The petitions for were completed, the major’s project for the condos was smoked."
+                ],
+                [
+                  "TO BE BROWN BREAD",
+                  "To be dead.",
+                  "I could not stay at the party, it was brown bread."
+                ],
+                [
+                  "THE BUCKET LIST",
+                  "Things to do before dying.",
+                  "Gotta jump off a plane soon, It’s part of my bucket list."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "",
+              "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+            }
+          ]
+        },
+        {
+          "unit": 53,
+          "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+          "sourceSlide": 8,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We can use mixed conditionals when we imagine a past change with a result in the present.",
+            "publishedVisibleTexts": [
+              "We can use mixed conditionals when we imagine a past change with a result in the present.",
+              "A PAST CHANGE A RESULT IN THE PRESENT If I hadn't got the job in Tokyo, If we had not taken this road, If I had won the match, I would not be with my current girlfriend. We would probably be there now. I would be running for the finals. To Consider 1. The conditional that gets mixed here is the 3rd one. It uses past perfect. 2. The result in the present is used with the modal WOULD + SIMPLE FORM VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't be lost if we had looked at the map. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you go now if he had asked you to?"
+            ],
+            "publishedSlideProof": {
+              "unit": 53,
+              "slideNumber": 8,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+              "observedSlideObjectId": "g72967b2bcc_0_86",
+              "observedSlideNumber": 8,
+              "screenshotBytes": 100858,
+              "screenshotSha256": "cdd88fed7ee5f00b6a6dcf05112d672932bd4c07cd2a71b8e6d14d6bed9bb038",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "A PAST CHANGE",
+                  "A RESULT IN THE PRESENT"
+                ],
+                [
+                  "If I hadn't got the job in Tokyo,",
+                  "I would not be with my current girlfriend."
+                ],
+                [
+                  "If we had not taken this road,",
+                  "We would probably be there now."
+                ],
+                [
+                  "If I had won the match,",
+                  "I would be running for the finals."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To Consider",
+                  "text": "1. The conditional that gets mixed here is the 3rd one. It uses past perfect. 2. The result in the present is used with the modal WOULD + SIMPLE FORM VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't be lost if we had looked at the map. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you go now if he had asked you to?"
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "two-column mixed-conditional chart with a full-width To Consider note block below",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "A PAST CHANGE",
+                    "A RESULT IN THE PRESENT"
+                  ],
+                  [
+                    "If I hadn't got the job in Tokyo,",
+                    "I would not be with my current girlfriend."
+                  ],
+                  [
+                    "If we had not taken this road,",
+                    "We would probably be there now."
+                  ],
+                  [
+                    "If I had won the match,",
+                    "I would be running for the finals."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To Consider",
+                "text": "1. The conditional that gets mixed here is the 3rd one. It uses past perfect. 2. The result in the present is used with the modal WOULD + SIMPLE FORM VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't be lost if we had looked at the map. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you go now if he had asked you to?"
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+              "sha256": "fc9709bcf3de1372ef184ca60630df138cb37ed45f2723675ccd95bb6e4083e8",
+              "slideNumber": 8
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 8,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "A PAST CHANGE",
+                  "A RESULT IN THE PRESENT"
+                ],
+                [
+                  "If I hadn't got the job in Tokyo,",
+                  "I would not be with my current girlfriend."
+                ],
+                [
+                  "If we had not taken this road,",
+                  "We would probably be there now."
+                ],
+                [
+                  "If I had won the match,",
+                  "I would be running for the finals."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To Consider",
+              "text": "1. The conditional that gets mixed here is the 3rd one. It uses past perfect. 2. The result in the present is used with the modal WOULD + SIMPLE FORM VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't be lost if we had looked at the map. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you go now if he had asked you to?"
+            }
+          ]
+        },
+        {
+          "unit": 53,
+          "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+          "sourceSlide": 10,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We can use the grammar presented to talk about the following function:",
+            "publishedVisibleTexts": [
+              "We can use the grammar presented to talk about the following function:",
+              "Functions Examples Talk about unreal situations in the past and the present. Joseph would have big kids now if he had married younger.",
+              "To consider This type of mixed conditional refers to an unreal past condition and its a probable result in the present. These sentences express a situation which is contrary to reality both in the past and in the present."
+            ],
+            "publishedSlideProof": {
+              "unit": 53,
+              "slideNumber": 10,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+              "observedSlideObjectId": "g729cfa641f_0_0",
+              "observedSlideNumber": 10,
+              "screenshotBytes": 69329,
+              "screenshotSha256": "2f739cdba5c678ce6ffe2ba6f4e5946bf60ee8180003c4871aa36a3dbb2bc8b7",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "Talk about unreal situations in the past and the present.",
+                  "Joseph would have big kids now if he had married younger."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To consider",
+                  "text": "This type of mixed conditional refers to an unreal past condition and its a probable result in the present. These sentences express a situation which is contrary to reality both in the past and in the present."
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "two-column Functions / Examples table with a separate To consider note block",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "Functions",
+                    "Examples"
+                  ],
+                  [
+                    "Talk about unreal situations in the past and the present.",
+                    "Joseph would have big kids now if he had married younger."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To consider",
+                "text": "This type of mixed conditional refers to an unreal past condition and its a probable result in the present. These sentences express a situation which is contrary to reality both in the past and in the present."
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+              "sha256": "fc9709bcf3de1372ef184ca60630df138cb37ed45f2723675ccd95bb6e4083e8",
+              "slideNumber": 10
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 10,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "Talk about unreal situations in the past and the present.",
+                  "Joseph would have big kids now if he had married younger."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To consider",
+              "text": "This type of mixed conditional refers to an unreal past condition and its a probable result in the present. These sentences express a situation which is contrary to reality both in the past and in the present."
+            }
+          ]
+        }
+      ],
+      "reviewedFigures": [
+        {
+          "id": "unit-53-published-slide-04-figure-1",
+          "kind": "instructional-image",
+          "assetType": "instructional-image",
+          "role": "instructional",
+          "unit": 53,
+          "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+          "slideNumber": 4,
+          "sourceSlideNumber": 4,
+          "publishedSlideNumber": 4,
+          "localPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+          "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\source-originals\\published-figures\\unit53-slide04.jpg",
+          "sourceSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+          "sha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+          "dedupSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+          "mimeType": "image/jpeg",
+          "bytes": 60440,
+          "width": 1125,
+          "height": 750,
+          "selected": true,
+          "reviewed": true,
+          "confirmedInstructional": true,
+          "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+          "publicPath": "public/images/lessons/course/source-4486f3719bb57c9d.webp",
+          "publicUrl": "/images/lessons/course/source-4486f3719bb57c9d.webp",
+          "publicHref": "/images/lessons/course/source-4486f3719bb57c9d.webp",
+          "nativeTrace": {
+            "nativePresentationDriveFileId": null,
+            "nativePresentationPath": null,
+            "nativeIdentityConfirmed": false,
+            "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "publishedSlideNumber": 4,
+            "publishedSlideObjectId": "g72967b2bcc_0_37",
+            "publishedAssetId": "cb6f934af4114c62",
+            "publishedAssetName": "AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+            "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+            "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+            "sourceAssetPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+            "sourceAssetSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+            "sourceAssetMimeType": "image/jpeg",
+            "sourceAssetDimensions": [
+              1125,
+              750
+            ],
+            "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          "reviewEvidence": [
+            "The visible published slide 4 asks the learner to look at the picture.",
+            "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+            "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+          ],
+          "sourceProof": {
+            "unit": 53,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 63017,
+            "screenshotSha256": "757acd55a8507768347555ceee8caf9c117f1515c01d4a112504fd4aab6070ed",
+            "proofType": "visible-published-slide-plus-page-assets-image",
+            "confirmedInstructional": true,
+            "nativeAssetSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+            "sourceAsset": {
+              "nativePresentationDriveFileId": null,
+              "nativePresentationPath": null,
+              "nativeIdentityConfirmed": false,
+              "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+              "publishedSlideNumber": 4,
+              "publishedSlideObjectId": "g72967b2bcc_0_37",
+              "publishedAssetId": "cb6f934af4114c62",
+              "publishedAssetName": "AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+              "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+              "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+              "sourceAssetPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+              "sourceAssetSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+              "sourceAssetMimeType": "image/jpeg",
+              "sourceAssetDimensions": [
+                1125,
+                750
+              ],
+              "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+            },
+            "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
+          },
+          "sourceReview": true
+        }
+      ]
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+      "status": "reviewed",
+      "sourceProofSlides": [
+        {
+          "slideNumber": 4,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+            "4"
+          ],
+          "publishedSlideProof": {
+            "unit": 54,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 59871,
+            "screenshotSha256": "05fe4213a6da49cd8e810c88d1a313caac9ae9ba5adc86ff350060df5c1b85d2",
+            "proofType": "visible-published-slide-plus-page-assets-image"
+          }
+        },
+        {
+          "slideNumber": 6,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "PHRASES MEANING EXAMPLE A BOOST OF CONFIDENCE Something/action that makes you feel confident. She did great, she just needed a boost of confidence A SHOT IN THE ARM Something that gives you confidence and strength; it makes you courageous. Just give her a shot in the arm and see what she is capable of. AN ACT OF FAITH Something you do believing in someone else; giving someone ot something a chance. Staying with Dean was an act of faith. WROTE SOMEONE OR SOMETHING OFF Not to have faith or confidence in someone or something. Expecting failure. I wrote Marcus off many years ago. He cannot be trusted. TO PUSH ONE’S BUTTONS To cause a strong reaction or emotional response in someone; to provoke a negative response My brother knew exactly how to push my buttons and get me in trouble with our parents TO FEEL UPBEAT Upbeat means to feel full of hope, optimism, and joy. Mostly noticeable to others. Listening to her favorite song made her feel upbeat TO HAVE SENSE OF WORTH To have self-esteem, to know one’s worth and value She would not accept that if she had sense of worth. TO BE AS BOLD AS BRASS To be extremely confident but with no respect nor politeness. He came in and acted as bold as brass like always.",
+            "Look at the phrases and discuss them with your teacher. Did you know them?"
+          ],
+          "publishedSlideProof": {
+            "unit": 54,
+            "slideNumber": 6,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+            "observedSlideObjectId": "gd6c0dc1310_0_17",
+            "observedSlideNumber": 6,
+            "screenshotBytes": 122618,
+            "screenshotSha256": "f19fd45b1026ee81d8aa8462f2980923084c07da7ffde3ec0464228c5e829bd9",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 8,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We can use mixed conditionals when we talk about hypothetical present situations with a result in the past",
+            "A HYPOTHETICAL PRESENT A RESULT IN THE PAST If they came earlier, If John did not push my buttons, If she were as bold as brass, we wouldn’t have not been sleeping. I would not have acted so feisty. She would have gotten higher in the company. To Consider 1. The conditional that get mixed here is the 2nd one. It uses past simple. 2. The result in the past is used with the modal WOULD + HAVE + PAST PARTICIPLE VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have done this if we had the money. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone there if they gave you chance?"
+          ],
+          "publishedSlideProof": {
+            "unit": 54,
+            "slideNumber": 8,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+            "observedSlideObjectId": "g72967b2bcc_0_86",
+            "observedSlideNumber": 8,
+            "screenshotBytes": 105666,
+            "screenshotSha256": "1d56b55a0265f7b35dec270715c2a197720c195f4c523b785181634ea18ce544",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 10,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We can use the grammar presented to talk about the following function:",
+            "Functions Examples 1 hypothetical present situations with a result in the past If I wasn't afraid of spiders, I would have picked it up",
+            "To consider These mixed conditional sentences refer to an unreal present situation and its probable (but unreal) past result. In these mixed conditional sentences, the time in the if clause is now or always and the time in the main clause is before now."
+          ],
+          "publishedSlideProof": {
+            "unit": 54,
+            "slideNumber": 10,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+            "observedSlideObjectId": "g729cfa641f_0_0",
+            "observedSlideNumber": 10,
+            "screenshotBytes": 71934,
+            "screenshotSha256": "d222e6b2f704bf59d0e3b24745b9be274127f32172cdb937946ce37397011fab",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        }
+      ],
+      "reviewedTables": [
+        {
+          "unit": 54,
+          "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+          "sourceSlide": 6,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "PHRASES MEANING EXAMPLE A BOOST OF CONFIDENCE Something/action that makes you feel confident. She did great, she just needed a boost of confidence A SHOT IN THE ARM Something that gives you confidence and strength; it makes you courageous. Just give her a shot in the arm and see what she is capable of. AN ACT OF FAITH Something you do believing in someone else; giving someone ot something a chance. Staying with Dean was an act of faith. WROTE SOMEONE OR SOMETHING OFF Not to have faith or confidence in someone or something. Expecting failure. I wrote Marcus off many years ago. He cannot be trusted. TO PUSH ONE’S BUTTONS To cause a strong reaction or emotional response in someone; to provoke a negative response My brother knew exactly how to push my buttons and get me in trouble with our parents TO FEEL UPBEAT Upbeat means to feel full of hope, optimism, and joy. Mostly noticeable to others. Listening to her favorite song made her feel upbeat TO HAVE SENSE OF WORTH To have self-esteem, to know one’s worth and value She would not accept that if she had sense of worth. TO BE AS BOLD AS BRASS To be extremely confident but with no respect nor politeness. He came in and acted as bold as brass like always.",
+            "publishedVisibleTexts": [
+              "PHRASES MEANING EXAMPLE A BOOST OF CONFIDENCE Something/action that makes you feel confident. She did great, she just needed a boost of confidence A SHOT IN THE ARM Something that gives you confidence and strength; it makes you courageous. Just give her a shot in the arm and see what she is capable of. AN ACT OF FAITH Something you do believing in someone else; giving someone ot something a chance. Staying with Dean was an act of faith. WROTE SOMEONE OR SOMETHING OFF Not to have faith or confidence in someone or something. Expecting failure. I wrote Marcus off many years ago. He cannot be trusted. TO PUSH ONE’S BUTTONS To cause a strong reaction or emotional response in someone; to provoke a negative response My brother knew exactly how to push my buttons and get me in trouble with our parents TO FEEL UPBEAT Upbeat means to feel full of hope, optimism, and joy. Mostly noticeable to others. Listening to her favorite song made her feel upbeat TO HAVE SENSE OF WORTH To have self-esteem, to know one’s worth and value She would not accept that if she had sense of worth. TO BE AS BOLD AS BRASS To be extremely confident but with no respect nor politeness. He came in and acted as bold as brass like always.",
+              "Look at the phrases and discuss them with your teacher. Did you know them?"
+            ],
+            "publishedSlideProof": {
+              "unit": 54,
+              "slideNumber": 6,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+              "observedSlideObjectId": "gd6c0dc1310_0_17",
+              "observedSlideNumber": 6,
+              "screenshotBytes": 122618,
+              "screenshotSha256": "f19fd45b1026ee81d8aa8462f2980923084c07da7ffde3ec0464228c5e829bd9",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "A BOOST OF CONFIDENCE",
+                  "Something/action that makes you feel confident.",
+                  "She did great, she just needed a boost of confidence"
+                ],
+                [
+                  "A SHOT IN THE ARM",
+                  "Something that gives you confidence and strength; it makes you courageous.",
+                  "Just give her a shot in the arm and see what she is capable of."
+                ],
+                [
+                  "AN ACT OF FAITH",
+                  "Something you do believing in someone else; giving someone ot something a chance.",
+                  "Staying with Dean was an act of faith."
+                ],
+                [
+                  "WROTE SOMEONE OR SOMETHING OFF",
+                  "Not to have faith or confidence in someone or something. Expecting failure.",
+                  "I wrote Marcus off many years ago. He cannot be trusted."
+                ],
+                [
+                  "TO PUSH ONE’S BUTTONS",
+                  "To cause a strong reaction or emotional response in someone; to provoke a negative response",
+                  "My brother knew exactly how to push my buttons and get me in trouble with our parents"
+                ],
+                [
+                  "TO FEEL UPBEAT",
+                  "Upbeat means to feel full of hope, optimism, and joy. Mostly noticeable to others.",
+                  "Listening to her favorite song made her feel upbeat"
+                ],
+                [
+                  "TO HAVE SENSE OF WORTH",
+                  "To have self-esteem, to know one’s worth and value",
+                  "She would not accept that if she had sense of worth."
+                ],
+                [
+                  "TO BE AS BOLD AS BRASS",
+                  "To be extremely confident but with no respect nor politeness.",
+                  "He came in and acted as bold as brass like always."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "",
+                  "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "three-column PHRASES / MEANING / EXAMPLE table with eight phrase rows and a teacher discussion prompt above",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "PHRASES",
+                    "MEANING",
+                    "EXAMPLE"
+                  ],
+                  [
+                    "A BOOST OF CONFIDENCE",
+                    "Something/action that makes you feel confident.",
+                    "She did great, she just needed a boost of confidence"
+                  ],
+                  [
+                    "A SHOT IN THE ARM",
+                    "Something that gives you confidence and strength; it makes you courageous.",
+                    "Just give her a shot in the arm and see what she is capable of."
+                  ],
+                  [
+                    "AN ACT OF FAITH",
+                    "Something you do believing in someone else; giving someone ot something a chance.",
+                    "Staying with Dean was an act of faith."
+                  ],
+                  [
+                    "WROTE SOMEONE OR SOMETHING OFF",
+                    "Not to have faith or confidence in someone or something. Expecting failure.",
+                    "I wrote Marcus off many years ago. He cannot be trusted."
+                  ],
+                  [
+                    "TO PUSH ONE’S BUTTONS",
+                    "To cause a strong reaction or emotional response in someone; to provoke a negative response",
+                    "My brother knew exactly how to push my buttons and get me in trouble with our parents"
+                  ],
+                  [
+                    "TO FEEL UPBEAT",
+                    "Upbeat means to feel full of hope, optimism, and joy. Mostly noticeable to others.",
+                    "Listening to her favorite song made her feel upbeat"
+                  ],
+                  [
+                    "TO HAVE SENSE OF WORTH",
+                    "To have self-esteem, to know one’s worth and value",
+                    "She would not accept that if she had sense of worth."
+                  ],
+                  [
+                    "TO BE AS BOLD AS BRASS",
+                    "To be extremely confident but with no respect nor politeness.",
+                    "He came in and acted as bold as brass like always."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "",
+                "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+              "sha256": "3a74c9931910a1b3b91eeced592839c360f09a380a446aca026435d43889d012",
+              "slideNumber": 6
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 6,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "A BOOST OF CONFIDENCE",
+                  "Something/action that makes you feel confident.",
+                  "She did great, she just needed a boost of confidence"
+                ],
+                [
+                  "A SHOT IN THE ARM",
+                  "Something that gives you confidence and strength; it makes you courageous.",
+                  "Just give her a shot in the arm and see what she is capable of."
+                ],
+                [
+                  "AN ACT OF FAITH",
+                  "Something you do believing in someone else; giving someone ot something a chance.",
+                  "Staying with Dean was an act of faith."
+                ],
+                [
+                  "WROTE SOMEONE OR SOMETHING OFF",
+                  "Not to have faith or confidence in someone or something. Expecting failure.",
+                  "I wrote Marcus off many years ago. He cannot be trusted."
+                ],
+                [
+                  "TO PUSH ONE’S BUTTONS",
+                  "To cause a strong reaction or emotional response in someone; to provoke a negative response",
+                  "My brother knew exactly how to push my buttons and get me in trouble with our parents"
+                ],
+                [
+                  "TO FEEL UPBEAT",
+                  "Upbeat means to feel full of hope, optimism, and joy. Mostly noticeable to others.",
+                  "Listening to her favorite song made her feel upbeat"
+                ],
+                [
+                  "TO HAVE SENSE OF WORTH",
+                  "To have self-esteem, to know one’s worth and value",
+                  "She would not accept that if she had sense of worth."
+                ],
+                [
+                  "TO BE AS BOLD AS BRASS",
+                  "To be extremely confident but with no respect nor politeness.",
+                  "He came in and acted as bold as brass like always."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "",
+              "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+            }
+          ]
+        },
+        {
+          "unit": 54,
+          "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+          "sourceSlide": 8,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We can use mixed conditionals when we talk about hypothetical present situations with a result in the past",
+            "publishedVisibleTexts": [
+              "We can use mixed conditionals when we talk about hypothetical present situations with a result in the past",
+              "A HYPOTHETICAL PRESENT A RESULT IN THE PAST If they came earlier, If John did not push my buttons, If she were as bold as brass, we wouldn’t have not been sleeping. I would not have acted so feisty. She would have gotten higher in the company. To Consider 1. The conditional that get mixed here is the 2nd one. It uses past simple. 2. The result in the past is used with the modal WOULD + HAVE + PAST PARTICIPLE VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have done this if we had the money. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone there if they gave you chance?"
+            ],
+            "publishedSlideProof": {
+              "unit": 54,
+              "slideNumber": 8,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+              "observedSlideObjectId": "g72967b2bcc_0_86",
+              "observedSlideNumber": 8,
+              "screenshotBytes": 105666,
+              "screenshotSha256": "1d56b55a0265f7b35dec270715c2a197720c195f4c523b785181634ea18ce544",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "A HYPOTHETICAL PRESENT",
+                  "A RESULT IN THE PAST"
+                ],
+                [
+                  "If they came earlier,",
+                  "we wouldn’t have not been sleeping."
+                ],
+                [
+                  "If John did not push my buttons,",
+                  "I would not have acted so feisty."
+                ],
+                [
+                  "If she were as bold as brass,",
+                  "She would have gotten higher in the company."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To Consider",
+                  "text": "1. The conditional that get mixed here is the 2nd one. It uses past simple. 2. The result in the past is used with the modal WOULD + HAVE + PAST PARTICIPLE VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have done this if we had the money. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone there if they gave you chance?"
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "two-column mixed-conditional chart with a full-width To Consider note block below",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "A HYPOTHETICAL PRESENT",
+                    "A RESULT IN THE PAST"
+                  ],
+                  [
+                    "If they came earlier,",
+                    "we wouldn’t have not been sleeping."
+                  ],
+                  [
+                    "If John did not push my buttons,",
+                    "I would not have acted so feisty."
+                  ],
+                  [
+                    "If she were as bold as brass,",
+                    "She would have gotten higher in the company."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To Consider",
+                "text": "1. The conditional that get mixed here is the 2nd one. It uses past simple. 2. The result in the past is used with the modal WOULD + HAVE + PAST PARTICIPLE VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have done this if we had the money. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone there if they gave you chance?"
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+              "sha256": "3a74c9931910a1b3b91eeced592839c360f09a380a446aca026435d43889d012",
+              "slideNumber": 8
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 8,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "A HYPOTHETICAL PRESENT",
+                  "A RESULT IN THE PAST"
+                ],
+                [
+                  "If they came earlier,",
+                  "we wouldn’t have not been sleeping."
+                ],
+                [
+                  "If John did not push my buttons,",
+                  "I would not have acted so feisty."
+                ],
+                [
+                  "If she were as bold as brass,",
+                  "She would have gotten higher in the company."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To Consider",
+              "text": "1. The conditional that get mixed here is the 2nd one. It uses past simple. 2. The result in the past is used with the modal WOULD + HAVE + PAST PARTICIPLE VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have done this if we had the money. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone there if they gave you chance?"
+            }
+          ]
+        },
+        {
+          "unit": 54,
+          "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+          "sourceSlide": 10,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We can use the grammar presented to talk about the following function:",
+            "publishedVisibleTexts": [
+              "We can use the grammar presented to talk about the following function:",
+              "Functions Examples 1 hypothetical present situations with a result in the past If I wasn't afraid of spiders, I would have picked it up",
+              "To consider These mixed conditional sentences refer to an unreal present situation and its probable (but unreal) past result. In these mixed conditional sentences, the time in the if clause is now or always and the time in the main clause is before now."
+            ],
+            "publishedSlideProof": {
+              "unit": 54,
+              "slideNumber": 10,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+              "observedSlideObjectId": "g729cfa641f_0_0",
+              "observedSlideNumber": 10,
+              "screenshotBytes": 71934,
+              "screenshotSha256": "d222e6b2f704bf59d0e3b24745b9be274127f32172cdb937946ce37397011fab",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "",
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "1",
+                  "hypothetical present situations with a result in the past",
+                  "If I wasn't afraid of spiders, I would have picked it up"
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To consider",
+                  "text": "These mixed conditional sentences refer to an unreal present situation and its probable (but unreal) past result. In these mixed conditional sentences, the time in the if clause is now or always and the time in the main clause is before now."
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "three-column index / Functions / Examples table with a separate To consider note block",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "",
+                    "Functions",
+                    "Examples"
+                  ],
+                  [
+                    "1",
+                    "hypothetical present situations with a result in the past",
+                    "If I wasn't afraid of spiders, I would have picked it up"
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To consider",
+                "text": "These mixed conditional sentences refer to an unreal present situation and its probable (but unreal) past result. In these mixed conditional sentences, the time in the if clause is now or always and the time in the main clause is before now."
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+              "sha256": "3a74c9931910a1b3b91eeced592839c360f09a380a446aca026435d43889d012",
+              "slideNumber": 10
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 10,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "",
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "1",
+                  "hypothetical present situations with a result in the past",
+                  "If I wasn't afraid of spiders, I would have picked it up"
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To consider",
+              "text": "These mixed conditional sentences refer to an unreal present situation and its probable (but unreal) past result. In these mixed conditional sentences, the time in the if clause is now or always and the time in the main clause is before now."
+            }
+          ]
+        }
+      ],
+      "reviewedFigures": [
+        {
+          "id": "unit-54-published-slide-04-figure-1",
+          "kind": "instructional-image",
+          "assetType": "instructional-image",
+          "role": "instructional",
+          "unit": 54,
+          "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+          "slideNumber": 4,
+          "sourceSlideNumber": 4,
+          "publishedSlideNumber": 4,
+          "localPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+          "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\source-originals\\published-figures\\unit54-slide04.jpg",
+          "sourceSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+          "sha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+          "dedupSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+          "mimeType": "image/jpeg",
+          "bytes": 45990,
+          "width": 1124,
+          "height": 750,
+          "selected": true,
+          "reviewed": true,
+          "confirmedInstructional": true,
+          "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+          "publicPath": "public/images/lessons/course/source-cae379794e78a748.webp",
+          "publicUrl": "/images/lessons/course/source-cae379794e78a748.webp",
+          "publicHref": "/images/lessons/course/source-cae379794e78a748.webp",
+          "nativeTrace": {
+            "nativePresentationDriveFileId": null,
+            "nativePresentationPath": null,
+            "nativeIdentityConfirmed": false,
+            "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "publishedSlideNumber": 4,
+            "publishedSlideObjectId": "g72967b2bcc_0_37",
+            "publishedAssetId": "ab763532ad066f5b",
+            "publishedAssetName": "AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+            "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+            "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+            "sourceAssetPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+            "sourceAssetSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+            "sourceAssetMimeType": "image/jpeg",
+            "sourceAssetDimensions": [
+              1124,
+              750
+            ],
+            "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          "reviewEvidence": [
+            "The visible published slide 4 asks the learner to look at the picture.",
+            "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+            "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+          ],
+          "sourceProof": {
+            "unit": 54,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 59871,
+            "screenshotSha256": "05fe4213a6da49cd8e810c88d1a313caac9ae9ba5adc86ff350060df5c1b85d2",
+            "proofType": "visible-published-slide-plus-page-assets-image",
+            "confirmedInstructional": true,
+            "nativeAssetSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+            "sourceAsset": {
+              "nativePresentationDriveFileId": null,
+              "nativePresentationPath": null,
+              "nativeIdentityConfirmed": false,
+              "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+              "publishedSlideNumber": 4,
+              "publishedSlideObjectId": "g72967b2bcc_0_37",
+              "publishedAssetId": "ab763532ad066f5b",
+              "publishedAssetName": "AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+              "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+              "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+              "sourceAssetPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+              "sourceAssetSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+              "sourceAssetMimeType": "image/jpeg",
+              "sourceAssetDimensions": [
+                1124,
+                750
+              ],
+              "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+            },
+            "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
+          },
+          "sourceReview": true
+        }
+      ]
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+      "status": "reviewed",
+      "sourceProofSlides": [
+        {
+          "slideNumber": 4,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+            "4"
+          ],
+          "publishedSlideProof": {
+            "unit": 55,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 66676,
+            "screenshotSha256": "ad16820bc3c0c6f185186a2a4dae701e985b92b1654b6edcaa361c39804f7848",
+            "proofType": "visible-published-slide-plus-page-assets-image"
+          }
+        },
+        {
+          "slideNumber": 6,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "PHRASES MEANING EXAMPLE ANYONE’S CALL The expression anyone's call' is used when the result of a contest or election is difficult to predict. Who do you think will win? It’s anyone’s call. A FAT CHANCE The expression fat chance is used to indicate that something is not very likely to happen. The boss is thinking of me for the job? Fat chance! MURPHY’S LAW Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will. We've tried to prepare for every possible incident, but remember Murphy's law ...! FREE RIDE Someone who gets a free ride benefits from a collective activity without participating in it. Only those who share the work can share the benefits - nobody gets a free ride! FALL INTO ONE’S LAP If something good falls into your lap, it happens to you without any effort on your part. She's not making much effort to find work. Does she think a job is going to fall into her lap? ON THE OFF CHANCE If you do something on the off chance, you think there might be a slight possibility of success. I went into the supermarket on the off chance that I would find a map. TAKE POT LUCK If you take pot luck, you accept whatever is available without knowing what it will be like. We were so hungry we decided to take pot luck and stopped at the first restaurant we saw. PLAY A WAITING GAME If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later. The cat keeps its eye on the bird, carefully playing a waiting game.",
+            "Look at the phrases and discuss them with your teacher. Did you know them?"
+          ],
+          "publishedSlideProof": {
+            "unit": 55,
+            "slideNumber": 6,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+            "observedSlideObjectId": "gd6c0dc1310_0_17",
+            "observedSlideNumber": 6,
+            "screenshotBytes": 113940,
+            "screenshotSha256": "569da290e79d8d83181ada3508beb1b052064f855f029fc27ec2cfad16c8c643",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 8,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We can use mixed conditionals when we talk about a hypothetical situation in the future with a result in the past.",
+            "A HYPOTHETICAL FUTURE A RESULT IN THE PAST If I weren’t having a party next Friday, If they weren’t going to school tomorrow, If she were having her doctor appointment on Thursday, I would have been there at the mall to go out with you. We would have probably sent them to your place. I wouldn’t have taken my piano lesson. To Consider 1. The conditional that get mixed here is the 2nd one. It uses past progressive. 2. The result in the past is used with the perfect modal WOULD + HAVE + PAST PARTICIPLE. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have missed the meeting if we were having the chance to attend that day.. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone with us If he were coming to the ceremony on Sunday? 6. The time expressions in the conditional clause play very important role."
+          ],
+          "publishedSlideProof": {
+            "unit": 55,
+            "slideNumber": 8,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+            "observedSlideObjectId": "g72967b2bcc_0_86",
+            "observedSlideNumber": 8,
+            "screenshotBytes": 120065,
+            "screenshotSha256": "be1e54729492f17838ba04da6b10a2b55c438e880f4449aa76fb03df679fe781",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 10,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We can use the grammar presented to talk about the following function:",
+            "Functions Examples 1 Talk about hypothetical future situation with a past result. If I wasn’t having dinner with Dana on Wednesday, I would have accepted your invitation.",
+            "To consider This type of mixed conditional refers to possible future that prevents the person from doing / going another activity that eventually will remain in the past. *Sometimes you can see the if clauses using WASN’T and not WEREN’T"
+          ],
+          "publishedSlideProof": {
+            "unit": 55,
+            "slideNumber": 10,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+            "observedSlideObjectId": "g729cfa641f_0_0",
+            "observedSlideNumber": 10,
+            "screenshotBytes": 73373,
+            "screenshotSha256": "d0c4cface57f6d88036ed2786ac1b5b54b9d4d3ea75af7bd6b01f74aa9948208",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        }
+      ],
+      "reviewedTables": [
+        {
+          "unit": 55,
+          "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+          "sourceSlide": 6,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "PHRASES MEANING EXAMPLE ANYONE’S CALL The expression anyone's call' is used when the result of a contest or election is difficult to predict. Who do you think will win? It’s anyone’s call. A FAT CHANCE The expression fat chance is used to indicate that something is not very likely to happen. The boss is thinking of me for the job? Fat chance! MURPHY’S LAW Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will. We've tried to prepare for every possible incident, but remember Murphy's law ...! FREE RIDE Someone who gets a free ride benefits from a collective activity without participating in it. Only those who share the work can share the benefits - nobody gets a free ride! FALL INTO ONE’S LAP If something good falls into your lap, it happens to you without any effort on your part. She's not making much effort to find work. Does she think a job is going to fall into her lap? ON THE OFF CHANCE If you do something on the off chance, you think there might be a slight possibility of success. I went into the supermarket on the off chance that I would find a map. TAKE POT LUCK If you take pot luck, you accept whatever is available without knowing what it will be like. We were so hungry we decided to take pot luck and stopped at the first restaurant we saw. PLAY A WAITING GAME If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later. The cat keeps its eye on the bird, carefully playing a waiting game.",
+            "publishedVisibleTexts": [
+              "PHRASES MEANING EXAMPLE ANYONE’S CALL The expression anyone's call' is used when the result of a contest or election is difficult to predict. Who do you think will win? It’s anyone’s call. A FAT CHANCE The expression fat chance is used to indicate that something is not very likely to happen. The boss is thinking of me for the job? Fat chance! MURPHY’S LAW Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will. We've tried to prepare for every possible incident, but remember Murphy's law ...! FREE RIDE Someone who gets a free ride benefits from a collective activity without participating in it. Only those who share the work can share the benefits - nobody gets a free ride! FALL INTO ONE’S LAP If something good falls into your lap, it happens to you without any effort on your part. She's not making much effort to find work. Does she think a job is going to fall into her lap? ON THE OFF CHANCE If you do something on the off chance, you think there might be a slight possibility of success. I went into the supermarket on the off chance that I would find a map. TAKE POT LUCK If you take pot luck, you accept whatever is available without knowing what it will be like. We were so hungry we decided to take pot luck and stopped at the first restaurant we saw. PLAY A WAITING GAME If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later. The cat keeps its eye on the bird, carefully playing a waiting game.",
+              "Look at the phrases and discuss them with your teacher. Did you know them?"
+            ],
+            "publishedSlideProof": {
+              "unit": 55,
+              "slideNumber": 6,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+              "observedSlideObjectId": "gd6c0dc1310_0_17",
+              "observedSlideNumber": 6,
+              "screenshotBytes": 113940,
+              "screenshotSha256": "569da290e79d8d83181ada3508beb1b052064f855f029fc27ec2cfad16c8c643",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "ANYONE’S CALL",
+                  "The expression anyone's call' is used when the result of a contest or election is difficult to predict.",
+                  "Who do you think will win?\nIt’s anyone’s call."
+                ],
+                [
+                  "A FAT CHANCE",
+                  "The expression fat chance is used to indicate that something is not very likely to happen.",
+                  "The boss is thinking of me for the job? Fat chance!"
+                ],
+                [
+                  "MURPHY’S LAW",
+                  "Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will.",
+                  "We've tried to prepare for every possible incident, but remember Murphy's law ...!"
+                ],
+                [
+                  "FREE RIDE",
+                  "Someone who gets a free ride benefits from a collective activity without participating in it.",
+                  "Only those who share the work can share the benefits - nobody gets a free ride!"
+                ],
+                [
+                  "FALL INTO ONE’S LAP",
+                  "If something good falls into your lap, it happens to you without any effort on your part.",
+                  "She's not making much effort to find work. Does she think a job is going to fall into her lap?"
+                ],
+                [
+                  "ON THE OFF CHANCE",
+                  "If you do something on the off chance, you think there might be a slight possibility of success.",
+                  "I went into the supermarket on the off chance that I would find a map."
+                ],
+                [
+                  "TAKE POT LUCK",
+                  "If you take pot luck, you accept whatever is available without knowing what it will be like.",
+                  "We were so hungry we decided to take pot luck and stopped at the first restaurant we saw."
+                ],
+                [
+                  "PLAY A WAITING GAME",
+                  "If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later.",
+                  "The cat keeps its eye on the bird, carefully playing a waiting game."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "",
+                  "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "three-column PHRASES / MEANING / EXAMPLE table with eight phrase rows and a teacher discussion prompt above",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "PHRASES",
+                    "MEANING",
+                    "EXAMPLE"
+                  ],
+                  [
+                    "ANYONE’S CALL",
+                    "The expression anyone's call' is used when the result of a contest or election is difficult to predict.",
+                    "Who do you think will win?\nIt’s anyone’s call."
+                  ],
+                  [
+                    "A FAT CHANCE",
+                    "The expression fat chance is used to indicate that something is not very likely to happen.",
+                    "The boss is thinking of me for the job? Fat chance!"
+                  ],
+                  [
+                    "MURPHY’S LAW",
+                    "Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will.",
+                    "We've tried to prepare for every possible incident, but remember Murphy's law ...!"
+                  ],
+                  [
+                    "FREE RIDE",
+                    "Someone who gets a free ride benefits from a collective activity without participating in it.",
+                    "Only those who share the work can share the benefits - nobody gets a free ride!"
+                  ],
+                  [
+                    "FALL INTO ONE’S LAP",
+                    "If something good falls into your lap, it happens to you without any effort on your part.",
+                    "She's not making much effort to find work. Does she think a job is going to fall into her lap?"
+                  ],
+                  [
+                    "ON THE OFF CHANCE",
+                    "If you do something on the off chance, you think there might be a slight possibility of success.",
+                    "I went into the supermarket on the off chance that I would find a map."
+                  ],
+                  [
+                    "TAKE POT LUCK",
+                    "If you take pot luck, you accept whatever is available without knowing what it will be like.",
+                    "We were so hungry we decided to take pot luck and stopped at the first restaurant we saw."
+                  ],
+                  [
+                    "PLAY A WAITING GAME",
+                    "If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later.",
+                    "The cat keeps its eye on the bird, carefully playing a waiting game."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "",
+                "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+              "sha256": "d98a0f676e58e9c7fd286acb6a2cc470cd4019d44791046ba143152122530d27",
+              "slideNumber": 6
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 6,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "ANYONE’S CALL",
+                  "The expression anyone's call' is used when the result of a contest or election is difficult to predict.",
+                  "Who do you think will win?\nIt’s anyone’s call."
+                ],
+                [
+                  "A FAT CHANCE",
+                  "The expression fat chance is used to indicate that something is not very likely to happen.",
+                  "The boss is thinking of me for the job? Fat chance!"
+                ],
+                [
+                  "MURPHY’S LAW",
+                  "Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will.",
+                  "We've tried to prepare for every possible incident, but remember Murphy's law ...!"
+                ],
+                [
+                  "FREE RIDE",
+                  "Someone who gets a free ride benefits from a collective activity without participating in it.",
+                  "Only those who share the work can share the benefits - nobody gets a free ride!"
+                ],
+                [
+                  "FALL INTO ONE’S LAP",
+                  "If something good falls into your lap, it happens to you without any effort on your part.",
+                  "She's not making much effort to find work. Does she think a job is going to fall into her lap?"
+                ],
+                [
+                  "ON THE OFF CHANCE",
+                  "If you do something on the off chance, you think there might be a slight possibility of success.",
+                  "I went into the supermarket on the off chance that I would find a map."
+                ],
+                [
+                  "TAKE POT LUCK",
+                  "If you take pot luck, you accept whatever is available without knowing what it will be like.",
+                  "We were so hungry we decided to take pot luck and stopped at the first restaurant we saw."
+                ],
+                [
+                  "PLAY A WAITING GAME",
+                  "If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later.",
+                  "The cat keeps its eye on the bird, carefully playing a waiting game."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "",
+              "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+            }
+          ]
+        },
+        {
+          "unit": 55,
+          "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+          "sourceSlide": 8,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We can use mixed conditionals when we talk about a hypothetical situation in the future with a result in the past.",
+            "publishedVisibleTexts": [
+              "We can use mixed conditionals when we talk about a hypothetical situation in the future with a result in the past.",
+              "A HYPOTHETICAL FUTURE A RESULT IN THE PAST If I weren’t having a party next Friday, If they weren’t going to school tomorrow, If she were having her doctor appointment on Thursday, I would have been there at the mall to go out with you. We would have probably sent them to your place. I wouldn’t have taken my piano lesson. To Consider 1. The conditional that get mixed here is the 2nd one. It uses past progressive. 2. The result in the past is used with the perfect modal WOULD + HAVE + PAST PARTICIPLE. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have missed the meeting if we were having the chance to attend that day.. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone with us If he were coming to the ceremony on Sunday? 6. The time expressions in the conditional clause play very important role."
+            ],
+            "publishedSlideProof": {
+              "unit": 55,
+              "slideNumber": 8,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+              "observedSlideObjectId": "g72967b2bcc_0_86",
+              "observedSlideNumber": 8,
+              "screenshotBytes": 120065,
+              "screenshotSha256": "be1e54729492f17838ba04da6b10a2b55c438e880f4449aa76fb03df679fe781",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "A HYPOTHETICAL FUTURE",
+                  "A RESULT IN THE PAST"
+                ],
+                [
+                  "If I weren’t having a party next Friday,",
+                  "I would have been there at the mall to go out with you."
+                ],
+                [
+                  "If they weren’t going to school tomorrow,",
+                  "We would have probably sent them to your place."
+                ],
+                [
+                  "If she were having her doctor appointment on Thursday,",
+                  "I wouldn’t have taken my piano lesson."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To Consider",
+                  "text": "1. The conditional that get mixed here is the 2nd one. It uses past progressive. 2. The result in the past is used with the perfect modal WOULD + HAVE + PAST PARTICIPLE. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have missed the meeting if we were having the chance to attend that day.. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone with us If he were coming to the ceremony on Sunday? 6. The time expressions in the conditional clause play very important role."
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "two-column mixed-conditional chart with a full-width To Consider note block below",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "A HYPOTHETICAL FUTURE",
+                    "A RESULT IN THE PAST"
+                  ],
+                  [
+                    "If I weren’t having a party next Friday,",
+                    "I would have been there at the mall to go out with you."
+                  ],
+                  [
+                    "If they weren’t going to school tomorrow,",
+                    "We would have probably sent them to your place."
+                  ],
+                  [
+                    "If she were having her doctor appointment on Thursday,",
+                    "I wouldn’t have taken my piano lesson."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To Consider",
+                "text": "1. The conditional that get mixed here is the 2nd one. It uses past progressive. 2. The result in the past is used with the perfect modal WOULD + HAVE + PAST PARTICIPLE. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have missed the meeting if we were having the chance to attend that day.. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone with us If he were coming to the ceremony on Sunday? 6. The time expressions in the conditional clause play very important role."
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+              "sha256": "d98a0f676e58e9c7fd286acb6a2cc470cd4019d44791046ba143152122530d27",
+              "slideNumber": 8
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 8,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "A HYPOTHETICAL FUTURE",
+                  "A RESULT IN THE PAST"
+                ],
+                [
+                  "If I weren’t having a party next Friday,",
+                  "I would have been there at the mall to go out with you."
+                ],
+                [
+                  "If they weren’t going to school tomorrow,",
+                  "We would have probably sent them to your place."
+                ],
+                [
+                  "If she were having her doctor appointment on Thursday,",
+                  "I wouldn’t have taken my piano lesson."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To Consider",
+              "text": "1. The conditional that get mixed here is the 2nd one. It uses past progressive. 2. The result in the past is used with the perfect modal WOULD + HAVE + PAST PARTICIPLE. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have missed the meeting if we were having the chance to attend that day.. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone with us If he were coming to the ceremony on Sunday? 6. The time expressions in the conditional clause play very important role."
+            }
+          ]
+        },
+        {
+          "unit": 55,
+          "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+          "sourceSlide": 10,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We can use the grammar presented to talk about the following function:",
+            "publishedVisibleTexts": [
+              "We can use the grammar presented to talk about the following function:",
+              "Functions Examples 1 Talk about hypothetical future situation with a past result. If I wasn’t having dinner with Dana on Wednesday, I would have accepted your invitation.",
+              "To consider This type of mixed conditional refers to possible future that prevents the person from doing / going another activity that eventually will remain in the past. *Sometimes you can see the if clauses using WASN’T and not WEREN’T"
+            ],
+            "publishedSlideProof": {
+              "unit": 55,
+              "slideNumber": 10,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+              "observedSlideObjectId": "g729cfa641f_0_0",
+              "observedSlideNumber": 10,
+              "screenshotBytes": 73373,
+              "screenshotSha256": "d0c4cface57f6d88036ed2786ac1b5b54b9d4d3ea75af7bd6b01f74aa9948208",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "",
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "1",
+                  "Talk about hypothetical future situation with a past result.",
+                  "If I wasn’t having dinner with Dana on Wednesday, I would have accepted your invitation."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To consider",
+                  "text": "This type of mixed conditional refers to possible future that prevents the person from doing / going another activity that eventually will remain in the past. *Sometimes you can see the if clauses using WASN’T and not WEREN’T"
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "three-column index / Functions / Examples table with a separate To consider note block",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "",
+                    "Functions",
+                    "Examples"
+                  ],
+                  [
+                    "1",
+                    "Talk about hypothetical future situation with a past result.",
+                    "If I wasn’t having dinner with Dana on Wednesday, I would have accepted your invitation."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To consider",
+                "text": "This type of mixed conditional refers to possible future that prevents the person from doing / going another activity that eventually will remain in the past. *Sometimes you can see the if clauses using WASN’T and not WEREN’T"
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+              "sha256": "d98a0f676e58e9c7fd286acb6a2cc470cd4019d44791046ba143152122530d27",
+              "slideNumber": 10
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 10,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "",
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "1",
+                  "Talk about hypothetical future situation with a past result.",
+                  "If I wasn’t having dinner with Dana on Wednesday, I would have accepted your invitation."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To consider",
+              "text": "This type of mixed conditional refers to possible future that prevents the person from doing / going another activity that eventually will remain in the past. *Sometimes you can see the if clauses using WASN’T and not WEREN’T"
+            }
+          ]
+        }
+      ],
+      "reviewedFigures": [
+        {
+          "id": "unit-55-published-slide-04-figure-1",
+          "kind": "instructional-image",
+          "assetType": "instructional-image",
+          "role": "instructional",
+          "unit": 55,
+          "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+          "slideNumber": 4,
+          "sourceSlideNumber": 4,
+          "publishedSlideNumber": 4,
+          "localPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+          "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\source-originals\\published-figures\\unit55-slide04.jpg",
+          "sourceSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+          "sha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+          "dedupSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+          "mimeType": "image/jpeg",
+          "bytes": 73368,
+          "width": 1000,
+          "height": 750,
+          "selected": true,
+          "reviewed": true,
+          "confirmedInstructional": true,
+          "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+          "publicPath": "public/images/lessons/course/source-301b982e820251ea.webp",
+          "publicUrl": "/images/lessons/course/source-301b982e820251ea.webp",
+          "publicHref": "/images/lessons/course/source-301b982e820251ea.webp",
+          "nativeTrace": {
+            "nativePresentationDriveFileId": null,
+            "nativePresentationPath": null,
+            "nativeIdentityConfirmed": false,
+            "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "publishedSlideNumber": 4,
+            "publishedSlideObjectId": "g72967b2bcc_0_37",
+            "publishedAssetId": "d9ce42ac50147f8c",
+            "publishedAssetName": "AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+            "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+            "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+            "sourceAssetPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+            "sourceAssetSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+            "sourceAssetMimeType": "image/jpeg",
+            "sourceAssetDimensions": [
+              1000,
+              750
+            ],
+            "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          "reviewEvidence": [
+            "The visible published slide 4 asks the learner to look at the picture.",
+            "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+            "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+          ],
+          "sourceProof": {
+            "unit": 55,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 66676,
+            "screenshotSha256": "ad16820bc3c0c6f185186a2a4dae701e985b92b1654b6edcaa361c39804f7848",
+            "proofType": "visible-published-slide-plus-page-assets-image",
+            "confirmedInstructional": true,
+            "nativeAssetSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+            "sourceAsset": {
+              "nativePresentationDriveFileId": null,
+              "nativePresentationPath": null,
+              "nativeIdentityConfirmed": false,
+              "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+              "publishedSlideNumber": 4,
+              "publishedSlideObjectId": "g72967b2bcc_0_37",
+              "publishedAssetId": "d9ce42ac50147f8c",
+              "publishedAssetName": "AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+              "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+              "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+              "sourceAssetPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+              "sourceAssetSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+              "sourceAssetMimeType": "image/jpeg",
+              "sourceAssetDimensions": [
+                1000,
+                750
+              ],
+              "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+            },
+            "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
+          },
+          "sourceReview": true
+        }
+      ]
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+      "status": "reviewed",
+      "sourceProofSlides": [
+        {
+          "slideNumber": 4,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "A. Look at the picture. What is it suggesting? What is today’s topic?",
+            "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+            "4"
+          ],
+          "publishedSlideProof": {
+            "unit": 56,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 67674,
+            "screenshotSha256": "ca9505c66e3bc6ce4b40fb9b47b7c99e1b2ee46c13b599656177580945d2f9c6",
+            "proofType": "visible-published-slide-plus-page-assets-image"
+          }
+        },
+        {
+          "slideNumber": 6,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "PHRASES MEANING EXAMPLE BLOOD, SWEAT AND TEARS If something needs blood, sweat, and tears then it is a hard thing to do and requires a lot of effort. We spent 15 years building this business, it took blood, sweat, and tears to make it what it is today. BURNING A CANDLE AT BOTH ENDS To work too hard as well as trying to do other things. My boss had a nervous breakdown last month, it’s not surprising, he was burning the candle at both ends for many months. GET CRACKING Get started on a project or task. Right, do we all know what we are supposed to be doing? Great, let’s get cracking. MOVE MOUNTAINS Make every possible effort, doing the impossible if needed. Trust me, I will move mountains to make sure that you are satisfied with your new branding. PULL ONE’S OWN WEIGHT To do your fair share of work that a group of people is doing together. We are all working hard to reach our deadline, so we need you to start pulling your own weight otherwise we will have to let you go. RAISE THE BAR Raise the standards which need to be met in order to qualify for something.s. Apple has really raised the bar with their latest iPhone. STAY AHEAD OF THE GAME To react quickly and gain/keep an advantage. We are changing our marketing strategy, advertising will now include TikTok. We must stay ahead of the game. BEND OVER BACKWARDS To work extra hard to help someone or to make them happy. I don’t understand why he continues to bend over backwards for Julia, she doesn’t appreciate it.",
+            "Look at the phrases and discuss them with your teacher. Did you know them?"
+          ],
+          "publishedSlideProof": {
+            "unit": 56,
+            "slideNumber": 6,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+            "observedSlideObjectId": "gd6c0dc1310_0_17",
+            "observedSlideNumber": 6,
+            "screenshotBytes": 138678,
+            "screenshotSha256": "e8f4ccbe1793d9d0473fbbc4c25db9e7fa9b95b576468a850a968099c69be395",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 8,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We consider right phrases, to introduce simple or complex topics, NOMINAL phrases. These can be presented differently, Check the chart.",
+            "STRUCTURES EXAMPLES Gerunds as nouns + complements Infinitive clauses + complements Relative pronouns Learning quantum physics requires great discipline. To design this crafts will change the way we see space. . What I don’t get is all those references. To Consider 1. Having gerunds, infinitive clauses and relative pronouns as subjects is what we called in English nominalization. 2. This nominalization process makes a structure work as the subject of a sentence. 3. Each of the nominalized clause, have specific complements that go before the verb of the sentences 4. Gerunds and Infinitive clauses normally have NOUNS as complements. 5. Relative pronouns work on their own to be the subject of the sentence. 6. This can be used at any tense."
+          ],
+          "publishedSlideProof": {
+            "unit": 56,
+            "slideNumber": 8,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+            "observedSlideObjectId": "g72967b2bcc_0_86",
+            "observedSlideNumber": 8,
+            "screenshotBytes": 110711,
+            "screenshotSha256": "4aa84e1337987277e20a0917540516b161e0c02958a07f3d6962a7319b575a1b",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        },
+        {
+          "slideNumber": 10,
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+          "visibleTexts": [
+            "We can use the grammar presented to talk about the following function:",
+            "Functions Examples 1 Use right phrase to introduce simple or complex topics. Redirecting the energy would have been the right call; now, we have to start moving mountains. To prove Jake innocent has been one of the greatest challenges I have ever faced; I needed to raise the bar as a lawyer. How you talked to him was so disrespectful.",
+            "To consider We can have even more complex clauses. To prevent John from taking the house would be the real challenge. In this case, we added to the infinitive clause not only its own complement but an extra prepositional phrase."
+          ],
+          "publishedSlideProof": {
+            "unit": 56,
+            "slideNumber": 10,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+            "observedSlideObjectId": "g729cfa641f_0_0",
+            "observedSlideNumber": 10,
+            "screenshotBytes": 85357,
+            "screenshotSha256": "6ebdcaf921311422974a3a646fadb5073aba565d791fd6ca3af21169569e49f8",
+            "proofType": "visible-published-slide-screenshot",
+            "wholeSlideScreenshotEvidenceOnly": true,
+            "method": "Chrome visible published deck UI; selected slide verified in AX state"
+          }
+        }
+      ],
+      "reviewedTables": [
+        {
+          "unit": 56,
+          "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+          "sourceSlide": 6,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "PHRASES MEANING EXAMPLE BLOOD, SWEAT AND TEARS If something needs blood, sweat, and tears then it is a hard thing to do and requires a lot of effort. We spent 15 years building this business, it took blood, sweat, and tears to make it what it is today. BURNING A CANDLE AT BOTH ENDS To work too hard as well as trying to do other things. My boss had a nervous breakdown last month, it’s not surprising, he was burning the candle at both ends for many months. GET CRACKING Get started on a project or task. Right, do we all know what we are supposed to be doing? Great, let’s get cracking. MOVE MOUNTAINS Make every possible effort, doing the impossible if needed. Trust me, I will move mountains to make sure that you are satisfied with your new branding. PULL ONE’S OWN WEIGHT To do your fair share of work that a group of people is doing together. We are all working hard to reach our deadline, so we need you to start pulling your own weight otherwise we will have to let you go. RAISE THE BAR Raise the standards which need to be met in order to qualify for something.s. Apple has really raised the bar with their latest iPhone. STAY AHEAD OF THE GAME To react quickly and gain/keep an advantage. We are changing our marketing strategy, advertising will now include TikTok. We must stay ahead of the game. BEND OVER BACKWARDS To work extra hard to help someone or to make them happy. I don’t understand why he continues to bend over backwards for Julia, she doesn’t appreciate it.",
+            "publishedVisibleTexts": [
+              "PHRASES MEANING EXAMPLE BLOOD, SWEAT AND TEARS If something needs blood, sweat, and tears then it is a hard thing to do and requires a lot of effort. We spent 15 years building this business, it took blood, sweat, and tears to make it what it is today. BURNING A CANDLE AT BOTH ENDS To work too hard as well as trying to do other things. My boss had a nervous breakdown last month, it’s not surprising, he was burning the candle at both ends for many months. GET CRACKING Get started on a project or task. Right, do we all know what we are supposed to be doing? Great, let’s get cracking. MOVE MOUNTAINS Make every possible effort, doing the impossible if needed. Trust me, I will move mountains to make sure that you are satisfied with your new branding. PULL ONE’S OWN WEIGHT To do your fair share of work that a group of people is doing together. We are all working hard to reach our deadline, so we need you to start pulling your own weight otherwise we will have to let you go. RAISE THE BAR Raise the standards which need to be met in order to qualify for something.s. Apple has really raised the bar with their latest iPhone. STAY AHEAD OF THE GAME To react quickly and gain/keep an advantage. We are changing our marketing strategy, advertising will now include TikTok. We must stay ahead of the game. BEND OVER BACKWARDS To work extra hard to help someone or to make them happy. I don’t understand why he continues to bend over backwards for Julia, she doesn’t appreciate it.",
+              "Look at the phrases and discuss them with your teacher. Did you know them?"
+            ],
+            "publishedSlideProof": {
+              "unit": 56,
+              "slideNumber": 6,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.gd6c0dc1310_0_17",
+              "observedSlideObjectId": "gd6c0dc1310_0_17",
+              "observedSlideNumber": 6,
+              "screenshotBytes": 138678,
+              "screenshotSha256": "e8f4ccbe1793d9d0473fbbc4c25db9e7fa9b95b576468a850a968099c69be395",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "BLOOD, SWEAT AND TEARS",
+                  "If something needs blood, sweat, and tears then it is a hard thing to do and requires a lot of effort.",
+                  "We spent 15 years building this business, it took blood, sweat, and tears to make it what it is today."
+                ],
+                [
+                  "BURNING A CANDLE AT BOTH ENDS",
+                  "To work too hard as well as trying to do other things.",
+                  "My boss had a nervous breakdown last month, it’s not surprising, he was burning the candle at both ends for many months."
+                ],
+                [
+                  "GET CRACKING",
+                  "Get started on a project or task.",
+                  "Right, do we all know what we are supposed to be doing? Great, let’s get cracking."
+                ],
+                [
+                  "MOVE MOUNTAINS",
+                  "Make every possible effort, doing the impossible if needed.",
+                  "Trust me, I will move mountains to make sure that you are satisfied with your new branding."
+                ],
+                [
+                  "PULL ONE’S OWN WEIGHT",
+                  "To do your fair share of work that a group of people is doing together.",
+                  "We are all working hard to reach our deadline, so we need you to start pulling your own weight otherwise we will have to let you go."
+                ],
+                [
+                  "RAISE THE BAR",
+                  "Raise the standards which need to be met in order to qualify for something.s.",
+                  "Apple has really raised the bar with their latest iPhone."
+                ],
+                [
+                  "STAY AHEAD OF THE GAME",
+                  "To react quickly and gain/keep an advantage.",
+                  "We are changing our marketing strategy, advertising will now include TikTok. We must stay ahead of the game."
+                ],
+                [
+                  "BEND OVER BACKWARDS",
+                  "To work extra hard to help someone or to make them happy.",
+                  "I don’t understand why he continues to bend over backwards for Julia, she doesn’t appreciate it."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "",
+                  "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "three-column PHRASES / MEANING / EXAMPLE table with eight phrase rows and a teacher discussion prompt above",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "PHRASES",
+                    "MEANING",
+                    "EXAMPLE"
+                  ],
+                  [
+                    "BLOOD, SWEAT AND TEARS",
+                    "If something needs blood, sweat, and tears then it is a hard thing to do and requires a lot of effort.",
+                    "We spent 15 years building this business, it took blood, sweat, and tears to make it what it is today."
+                  ],
+                  [
+                    "BURNING A CANDLE AT BOTH ENDS",
+                    "To work too hard as well as trying to do other things.",
+                    "My boss had a nervous breakdown last month, it’s not surprising, he was burning the candle at both ends for many months."
+                  ],
+                  [
+                    "GET CRACKING",
+                    "Get started on a project or task.",
+                    "Right, do we all know what we are supposed to be doing? Great, let’s get cracking."
+                  ],
+                  [
+                    "MOVE MOUNTAINS",
+                    "Make every possible effort, doing the impossible if needed.",
+                    "Trust me, I will move mountains to make sure that you are satisfied with your new branding."
+                  ],
+                  [
+                    "PULL ONE’S OWN WEIGHT",
+                    "To do your fair share of work that a group of people is doing together.",
+                    "We are all working hard to reach our deadline, so we need you to start pulling your own weight otherwise we will have to let you go."
+                  ],
+                  [
+                    "RAISE THE BAR",
+                    "Raise the standards which need to be met in order to qualify for something.s.",
+                    "Apple has really raised the bar with their latest iPhone."
+                  ],
+                  [
+                    "STAY AHEAD OF THE GAME",
+                    "To react quickly and gain/keep an advantage.",
+                    "We are changing our marketing strategy, advertising will now include TikTok. We must stay ahead of the game."
+                  ],
+                  [
+                    "BEND OVER BACKWARDS",
+                    "To work extra hard to help someone or to make them happy.",
+                    "I don’t understand why he continues to bend over backwards for Julia, she doesn’t appreciate it."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "",
+                "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+              "sha256": "aedae0aeef4f2ce5b9e37c5d59594a0633c964bf9ee971cfd269333402e4d429",
+              "slideNumber": 6
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 6,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "PHRASES",
+                  "MEANING",
+                  "EXAMPLE"
+                ],
+                [
+                  "BLOOD, SWEAT AND TEARS",
+                  "If something needs blood, sweat, and tears then it is a hard thing to do and requires a lot of effort.",
+                  "We spent 15 years building this business, it took blood, sweat, and tears to make it what it is today."
+                ],
+                [
+                  "BURNING A CANDLE AT BOTH ENDS",
+                  "To work too hard as well as trying to do other things.",
+                  "My boss had a nervous breakdown last month, it’s not surprising, he was burning the candle at both ends for many months."
+                ],
+                [
+                  "GET CRACKING",
+                  "Get started on a project or task.",
+                  "Right, do we all know what we are supposed to be doing? Great, let’s get cracking."
+                ],
+                [
+                  "MOVE MOUNTAINS",
+                  "Make every possible effort, doing the impossible if needed.",
+                  "Trust me, I will move mountains to make sure that you are satisfied with your new branding."
+                ],
+                [
+                  "PULL ONE’S OWN WEIGHT",
+                  "To do your fair share of work that a group of people is doing together.",
+                  "We are all working hard to reach our deadline, so we need you to start pulling your own weight otherwise we will have to let you go."
+                ],
+                [
+                  "RAISE THE BAR",
+                  "Raise the standards which need to be met in order to qualify for something.s.",
+                  "Apple has really raised the bar with their latest iPhone."
+                ],
+                [
+                  "STAY AHEAD OF THE GAME",
+                  "To react quickly and gain/keep an advantage.",
+                  "We are changing our marketing strategy, advertising will now include TikTok. We must stay ahead of the game."
+                ],
+                [
+                  "BEND OVER BACKWARDS",
+                  "To work extra hard to help someone or to make them happy.",
+                  "I don’t understand why he continues to bend over backwards for Julia, she doesn’t appreciate it."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "",
+              "text": "Look at the phrases and discuss them with your teacher. Did you know them?"
+            }
+          ]
+        },
+        {
+          "unit": 56,
+          "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+          "sourceSlide": 8,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We consider right phrases, to introduce simple or complex topics, NOMINAL phrases. These can be presented differently, Check the chart.",
+            "publishedVisibleTexts": [
+              "We consider right phrases, to introduce simple or complex topics, NOMINAL phrases. These can be presented differently, Check the chart.",
+              "STRUCTURES EXAMPLES Gerunds as nouns + complements Infinitive clauses + complements Relative pronouns Learning quantum physics requires great discipline. To design this crafts will change the way we see space. . What I don’t get is all those references. To Consider 1. Having gerunds, infinitive clauses and relative pronouns as subjects is what we called in English nominalization. 2. This nominalization process makes a structure work as the subject of a sentence. 3. Each of the nominalized clause, have specific complements that go before the verb of the sentences 4. Gerunds and Infinitive clauses normally have NOUNS as complements. 5. Relative pronouns work on their own to be the subject of the sentence. 6. This can be used at any tense."
+            ],
+            "publishedSlideProof": {
+              "unit": 56,
+              "slideNumber": 8,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+              "observedSlideObjectId": "g72967b2bcc_0_86",
+              "observedSlideNumber": 8,
+              "screenshotBytes": 110711,
+              "screenshotSha256": "4aa84e1337987277e20a0917540516b161e0c02958a07f3d6962a7319b575a1b",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "STRUCTURES",
+                  "EXAMPLES"
+                ],
+                [
+                  "Gerunds as nouns + complements",
+                  "Learning quantum physics requires great discipline."
+                ],
+                [
+                  "Infinitive clauses + complements",
+                  "To design this crafts will change the way we see space. ."
+                ],
+                [
+                  "Relative pronouns",
+                  "What I don’t get is all those references."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To Consider",
+                  "text": "1. Having gerunds, infinitive clauses and relative pronouns as subjects is what we called in English nominalization. 2. This nominalization process makes a structure work as the subject of a sentence. 3. Each of the nominalized clause, have specific complements that go before the verb of the sentences 4. Gerunds and Infinitive clauses normally have NOUNS as complements. 5. Relative pronouns work on their own to be the subject of the sentence. 6. This can be used at any tense."
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "two-column STRUCTURES / EXAMPLES table with a full-width To Consider note block below",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "STRUCTURES",
+                    "EXAMPLES"
+                  ],
+                  [
+                    "Gerunds as nouns + complements",
+                    "Learning quantum physics requires great discipline."
+                  ],
+                  [
+                    "Infinitive clauses + complements",
+                    "To design this crafts will change the way we see space. ."
+                  ],
+                  [
+                    "Relative pronouns",
+                    "What I don’t get is all those references."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To Consider",
+                "text": "1. Having gerunds, infinitive clauses and relative pronouns as subjects is what we called in English nominalization. 2. This nominalization process makes a structure work as the subject of a sentence. 3. Each of the nominalized clause, have specific complements that go before the verb of the sentences 4. Gerunds and Infinitive clauses normally have NOUNS as complements. 5. Relative pronouns work on their own to be the subject of the sentence. 6. This can be used at any tense."
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+              "sha256": "aedae0aeef4f2ce5b9e37c5d59594a0633c964bf9ee971cfd269333402e4d429",
+              "slideNumber": 8
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 8,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "STRUCTURES",
+                  "EXAMPLES"
+                ],
+                [
+                  "Gerunds as nouns + complements",
+                  "Learning quantum physics requires great discipline."
+                ],
+                [
+                  "Infinitive clauses + complements",
+                  "To design this crafts will change the way we see space. ."
+                ],
+                [
+                  "Relative pronouns",
+                  "What I don’t get is all those references."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To Consider",
+              "text": "1. Having gerunds, infinitive clauses and relative pronouns as subjects is what we called in English nominalization. 2. This nominalization process makes a structure work as the subject of a sentence. 3. Each of the nominalized clause, have specific complements that go before the verb of the sentences 4. Gerunds and Infinitive clauses normally have NOUNS as complements. 5. Relative pronouns work on their own to be the subject of the sentence. 6. This can be used at any tense."
+            }
+          ]
+        },
+        {
+          "unit": 56,
+          "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+          "sourceSlide": 10,
+          "publishedSourceFile": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+          "status": "reviewed",
+          "clearTableSemanticsBlocker": true,
+          "review": "The visible published slide contains an instructional structured chart/table. Keep it as an editable learner-facing matrix with all source cells and notes; never flatten the matrix into one paragraph.",
+          "sourceEvidence": {
+            "publishedTitle": "We can use the grammar presented to talk about the following function:",
+            "publishedVisibleTexts": [
+              "We can use the grammar presented to talk about the following function:",
+              "Functions Examples 1 Use right phrase to introduce simple or complex topics. Redirecting the energy would have been the right call; now, we have to start moving mountains. To prove Jake innocent has been one of the greatest challenges I have ever faced; I needed to raise the bar as a lawyer. How you talked to him was so disrespectful.",
+              "To consider We can have even more complex clauses. To prevent John from taking the house would be the real challenge. In this case, we added to the infinitive clause not only its own complement but an extra prepositional phrase."
+            ],
+            "publishedSlideProof": {
+              "unit": 56,
+              "slideNumber": 10,
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g729cfa641f_0_0",
+              "observedSlideObjectId": "g729cfa641f_0_0",
+              "observedSlideNumber": 10,
+              "screenshotBytes": 85357,
+              "screenshotSha256": "6ebdcaf921311422974a3a646fadb5073aba565d791fd6ca3af21169569e49f8",
+              "proofType": "visible-published-slide-screenshot",
+              "wholeSlideScreenshotEvidenceOnly": true,
+              "method": "Chrome visible published deck UI; selected slide verified in AX state"
+            },
+            "nativePresentationAvailable": false,
+            "nativeIdentityConfirmed": false,
+            "nativeSourceFinding": "No authoritative native presentation bytes were available; preserve nativeIdentityConfirmed=false.",
+            "visibleStructuredContent": {
+              "cellMatrix": [
+                [
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "Use right phrase to introduce simple or complex topics.",
+                  "Redirecting the energy would have been the right call; now, we have to start moving mountains.\nTo prove Jake innocent has been one of the greatest challenges I have ever faced; I needed to raise the bar as a lawyer.\nHow you talked to him was so disrespectful."
+                ]
+              ],
+              "notes": [
+                {
+                  "heading": "To consider",
+                  "text": "We can have even more complex clauses. To prevent John from taking the house would be the real challenge. In this case, we added to the infinitive clause not only its own complement but an extra prepositional phrase."
+                }
+              ]
+            }
+          },
+          "approvedProjection": {
+            "approved": true,
+            "mode": "structured",
+            "source": "published-visible-text",
+            "nativeIdentityConfirmed": false,
+            "publishedLayout": "two-column Functions / Examples table with a separate To consider note block",
+            "tables": [
+              {
+                "shapeName": "published-visible-text-projection",
+                "shapeId": null,
+                "bbox": null,
+                "columnWidths": null,
+                "rows": [
+                  [
+                    "Functions",
+                    "Examples"
+                  ],
+                  [
+                    "Use right phrase to introduce simple or complex topics.",
+                    "Redirecting the energy would have been the right call; now, we have to start moving mountains.\nTo prove Jake innocent has been one of the greatest challenges I have ever faced; I needed to raise the bar as a lawyer.\nHow you talked to him was so disrespectful."
+                  ]
+                ],
+                "literalSourceQuote": "Every cell is copied from the visible published slide; line breaks are presentation-only separators."
+              }
+            ],
+            "notes": [
+              {
+                "heading": "To consider",
+                "text": "We can have even more complex clauses. To prevent John from taking the house would be the real challenge. In this case, we added to the infinitive clause not only its own complement but an extra prepositional phrase."
+              }
+            ],
+            "nativeShapeProvenance": {
+              "available": false,
+              "nativeIdentityConfirmed": false,
+              "reason": "No authoritative native PPTX bytes were available for Units 53-56; the visible published slide is authoritative."
+            }
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+              "sha256": "aedae0aeef4f2ce5b9e37c5d59594a0633c964bf9ee971cfd269333402e4d429",
+              "slideNumber": 10
+            },
+            {
+              "kind": "published-html-fetch",
+              "path": "docs/audit/published-source-identity-53-56.json",
+              "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6"
+            }
+          ],
+          "slideNumber": 10,
+          "tables": [
+            {
+              "rows": [
+                [
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "Use right phrase to introduce simple or complex topics.",
+                  "Redirecting the energy would have been the right call; now, we have to start moving mountains.\nTo prove Jake innocent has been one of the greatest challenges I have ever faced; I needed to raise the bar as a lawyer.\nHow you talked to him was so disrespectful."
+                ]
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "heading": "To consider",
+              "text": "We can have even more complex clauses. To prevent John from taking the house would be the real challenge. In this case, we added to the infinitive clause not only its own complement but an extra prepositional phrase."
+            }
+          ]
+        }
+      ],
+      "reviewedFigures": [
+        {
+          "id": "unit-56-published-slide-04-figure-1",
+          "kind": "instructional-image",
+          "assetType": "instructional-image",
+          "role": "instructional",
+          "unit": 56,
+          "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+          "slideNumber": 4,
+          "sourceSlideNumber": 4,
+          "publishedSlideNumber": 4,
+          "localPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+          "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\source-originals\\published-figures\\unit56-slide04.jpg",
+          "sourceSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+          "sha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+          "dedupSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+          "mimeType": "image/jpeg",
+          "bytes": 104181,
+          "width": 1125,
+          "height": 750,
+          "selected": true,
+          "reviewed": true,
+          "confirmedInstructional": true,
+          "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+          "publicPath": "public/images/lessons/course/source-2b96e467487c9664.webp",
+          "publicUrl": "/images/lessons/course/source-2b96e467487c9664.webp",
+          "publicHref": "/images/lessons/course/source-2b96e467487c9664.webp",
+          "nativeTrace": {
+            "nativePresentationDriveFileId": null,
+            "nativePresentationPath": null,
+            "nativeIdentityConfirmed": false,
+            "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "publishedSlideNumber": 4,
+            "publishedSlideObjectId": "g72967b2bcc_0_37",
+            "publishedAssetId": "6fcfbe7a6a0de136",
+            "publishedAssetName": "AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+            "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+            "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+            "sourceAssetPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+            "sourceAssetSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+            "sourceAssetMimeType": "image/jpeg",
+            "sourceAssetDimensions": [
+              1125,
+              750
+            ],
+            "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          "reviewEvidence": [
+            "The visible published slide 4 asks the learner to look at the picture.",
+            "The pageAssets bundle returned this individual JPEG; it is visually the photo shown in the published prompt, not a full-slide render, logo, or audio icon.",
+            "Native PPTX identity is unavailable, so nativeIdentityConfirmed remains false."
+          ],
+          "sourceProof": {
+            "unit": 56,
+            "slideNumber": 4,
+            "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+            "screenshotBytes": 67674,
+            "screenshotSha256": "ca9505c66e3bc6ce4b40fb9b47b7c99e1b2ee46c13b599656177580945d2f9c6",
+            "proofType": "visible-published-slide-plus-page-assets-image",
+            "confirmedInstructional": true,
+            "nativeAssetSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+            "sourceAsset": {
+              "nativePresentationDriveFileId": null,
+              "nativePresentationPath": null,
+              "nativeIdentityConfirmed": false,
+              "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+              "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+              "publishedSlideNumber": 4,
+              "publishedSlideObjectId": "g72967b2bcc_0_37",
+              "publishedAssetId": "6fcfbe7a6a0de136",
+              "publishedAssetName": "AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+              "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+              "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+              "sourceAssetPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+              "sourceAssetSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+              "sourceAssetMimeType": "image/jpeg",
+              "sourceAssetDimensions": [
+                1125,
+                750
+              ],
+              "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+            },
+            "evidence": "Chrome visible published deck UI showed the picture prompt; documented pageAssets.list + pageAssets.bundle returned and visually confirmed the individual instructional JPEG. The screenshot hash remains audit evidence only."
+          },
+          "sourceReview": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "mode": "stage",
+  "dryRun": false,
+  "courseSlug": "course",
+  "preserveExistingAudioUrls": true,
+  "existingAudioUrls": [],
+  "audio": [],
+  "images": [
+    {
+      "status": "staged",
+      "sourceId": "unit-56-published-slide-04-figure-1",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\published-figures\\unit56-slide04.jpg",
+      "sourceSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+      "unit": 56,
+      "slideNumber": 4,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "6fcfbe7a6a0de136",
+        "publishedAssetName": "AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit56-slide04.jpg",
+        "sourceAssetSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1125,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "transcript": null,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "role": "instructional",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZys3HhfDgjct13p1EpzbTvS3ngsEBiHJ8QMtaYUAeImHLSjN2qfjk5Ho5C-cahfNzWQcP5bKxMCJAWHs5WWsSU615IJvKzfm9kwIsLGJJ07Hng1DfO-2cwauLpZ_2adRv6xUd_l_2F1aarPvdcC8ykVoiDm34RYPUXvxpQar55ceEeAdBSmevw=s2048",
+      "audioNumber": null,
+      "outputSha256": "c678c4832428ec7493930eaad9f4dba197f080a80b1bbf5ea13f85d927455fd6",
+      "optimization": {
+        "status": "ready",
+        "needed": true,
+        "target": ".webp",
+        "implemented": true,
+        "quality": 90,
+        "maxDimension": 1600,
+        "originalDimensions": [
+          1125,
+          750
+        ],
+        "outputDimensions": [
+          1125,
+          750
+        ],
+        "preservedAlpha": false,
+        "originalSha256": "2b96e467487c9664ec1b6d633e2dead5de3f826f0079def6cb959841ce31b9c5",
+        "outputSha256": "c678c4832428ec7493930eaad9f4dba197f080a80b1bbf5ea13f85d927455fd6"
+      },
+      "publicPath": "public/images/lessons/course/source-2b96e467487c9664.webp",
+      "publicUrl": "/images/lessons/course/source-2b96e467487c9664.webp",
+      "publicHref": "/images/lessons/course/source-2b96e467487c9664.webp",
+      "destinationPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\public\\images\\lessons\\course\\source-2b96e467487c9664.webp"
+    },
+    {
+      "status": "staged",
+      "sourceId": "unit-55-published-slide-04-figure-1",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\published-figures\\unit55-slide04.jpg",
+      "sourceSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+      "unit": 55,
+      "slideNumber": 4,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "d9ce42ac50147f8c",
+        "publishedAssetName": "AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit55-slide04.jpg",
+        "sourceAssetSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1000,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "transcript": null,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "role": "instructional",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSb4DktDr3B98IH-Dp3PJxtmDOOcIug-evKQwdAUMcHBgt25ZuWQLRtQ4mIiZ8rLExyKmUvJr-9XHr-vG1P9oqhBgpmaiiisoao-Z0OBX62-rExwCzOyxJWH8YEOb48Vurt1Dme5R0hIsafGEYJCDVNzQb0Yj_1I4PLq3R8398YbRAJVJ8sCKDrd=s2048",
+      "audioNumber": null,
+      "outputSha256": "6334c5ae317564861c39b9bf99fa2be59b4c1f99834f49f2391f35f94652bbff",
+      "optimization": {
+        "status": "ready",
+        "needed": true,
+        "target": ".webp",
+        "implemented": true,
+        "quality": 90,
+        "maxDimension": 1600,
+        "originalDimensions": [
+          1000,
+          750
+        ],
+        "outputDimensions": [
+          1000,
+          750
+        ],
+        "preservedAlpha": false,
+        "originalSha256": "301b982e820251eaa9012d619672ba80560841fcf38c47d70332e67243a6b7a0",
+        "outputSha256": "6334c5ae317564861c39b9bf99fa2be59b4c1f99834f49f2391f35f94652bbff"
+      },
+      "publicPath": "public/images/lessons/course/source-301b982e820251ea.webp",
+      "publicUrl": "/images/lessons/course/source-301b982e820251ea.webp",
+      "publicHref": "/images/lessons/course/source-301b982e820251ea.webp",
+      "destinationPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\public\\images\\lessons\\course\\source-301b982e820251ea.webp"
+    },
+    {
+      "status": "staged",
+      "sourceId": "unit-53-published-slide-04-figure-1",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\published-figures\\unit53-slide04.jpg",
+      "sourceSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+      "unit": 53,
+      "slideNumber": 4,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "cb6f934af4114c62",
+        "publishedAssetName": "AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit53-slide04.jpg",
+        "sourceAssetSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1125,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "transcript": null,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "role": "instructional",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSbREW5Z1eJYCQlRCAwh3RbpWE5lcBDwY6aw2gLGNNLDEJY8oepYeGpeXclPU-fvT_bBP9agLL4MdJlbQwrpeEgLJWAdUgWMAm172YWpMQT0vVU08EM7QswBPbHu7zRo2USrpPd_uNi2qIyo3R1kIuWmnhwHqnQtQaoNrEDORQBtosKOqdA68U2n=s2048",
+      "audioNumber": null,
+      "outputSha256": "35b1bbdee51d19a95779bd50b8ffa8537a1813bccd581c06b7a50bdc28a13904",
+      "optimization": {
+        "status": "ready",
+        "needed": true,
+        "target": ".webp",
+        "implemented": true,
+        "quality": 90,
+        "maxDimension": 1600,
+        "originalDimensions": [
+          1125,
+          750
+        ],
+        "outputDimensions": [
+          1125,
+          750
+        ],
+        "preservedAlpha": false,
+        "originalSha256": "4486f3719bb57c9de6063802041f2c896f46f1d3d6a2c2bf39082232df75ec76",
+        "outputSha256": "35b1bbdee51d19a95779bd50b8ffa8537a1813bccd581c06b7a50bdc28a13904"
+      },
+      "publicPath": "public/images/lessons/course/source-4486f3719bb57c9d.webp",
+      "publicUrl": "/images/lessons/course/source-4486f3719bb57c9d.webp",
+      "publicHref": "/images/lessons/course/source-4486f3719bb57c9d.webp",
+      "destinationPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\public\\images\\lessons\\course\\source-4486f3719bb57c9d.webp"
+    },
+    {
+      "status": "staged",
+      "sourceId": "unit-54-published-slide-04-figure-1",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\published-figures\\unit54-slide04.jpg",
+      "sourceSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+      "unit": 54,
+      "slideNumber": 4,
+      "nativeTrace": {
+        "nativePresentationDriveFileId": null,
+        "nativePresentationPath": null,
+        "nativeIdentityConfirmed": false,
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+        "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+        "publishedSlideNumber": 4,
+        "publishedSlideObjectId": "g72967b2bcc_0_37",
+        "publishedAssetId": "ab763532ad066f5b",
+        "publishedAssetName": "AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "publishedAssetUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+        "extractionMethod": "documented pageAssets.list + pageAssets.bundle from visible published deck",
+        "sourceAssetPath": "docs/audit/source-originals/published-figures/unit54-slide04.jpg",
+        "sourceAssetSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+        "sourceAssetMimeType": "image/jpeg",
+        "sourceAssetDimensions": [
+          1124,
+          750
+        ],
+        "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+      },
+      "transcript": null,
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "role": "instructional",
+      "originalMediaUrl": "https://docs.google.com/u/3/slides-images-rt/AE1YXSZ4uvDPy4g1ilaKbhr6mkilEMtATlvduE686r95kvadFq5vBafzQf2i4c4seno69X9qlnZGpP4doltGKpubPmDMJ_2xcGLTAW3CAvw--fx8xEGuhLwjw1Cvg7gNHD2rpY7NO9dlm0onLs9p0xA5LL74YYFHnGKRPM0XTxVSq7DqBqThFLwMBFy0=s2048",
+      "audioNumber": null,
+      "outputSha256": "9f239579628b604754083c860944b461961705c460020062f241d3011a174567",
+      "optimization": {
+        "status": "ready",
+        "needed": true,
+        "target": ".webp",
+        "implemented": true,
+        "quality": 90,
+        "maxDimension": 1600,
+        "originalDimensions": [
+          1124,
+          750
+        ],
+        "outputDimensions": [
+          1124,
+          750
+        ],
+        "preservedAlpha": false,
+        "originalSha256": "cae379794e78a7481d2d50ae1bbc1369b4f852572ed1fb29c388aa314dbccbc0",
+        "outputSha256": "9f239579628b604754083c860944b461961705c460020062f241d3011a174567"
+      },
+      "publicPath": "public/images/lessons/course/source-cae379794e78a748.webp",
+      "publicUrl": "/images/lessons/course/source-cae379794e78a748.webp",
+      "publicHref": "/images/lessons/course/source-cae379794e78a748.webp",
+      "destinationPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\public\\images\\lessons\\course\\source-cae379794e78a748.webp"
+    }
+  ],
+  "blockers": [],
+  "counts": {
+    "audio": 0,
+    "images": 4,
+    "staged": 4,
+    "planned": 0,
+    "blocked": 0
+  }
+}

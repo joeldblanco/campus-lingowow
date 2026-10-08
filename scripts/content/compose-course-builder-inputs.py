@@ -39,10 +39,41 @@ TABLE_REVIEW_POLICY_KEYS = (
     "noInventedCellsOrExamples",
     "publishedSourceProjectionRequiresLiteralCellQuotes",
 )
+PUBLISHED_SOURCE_REVIEW_STATUS = "reviewed"
 
 
 class ComposeError(ValueError):
     """Raised when a required audit input cannot be interpreted safely."""
+
+
+class UnitScope:
+    """The inclusive unit range admitted by one composition run."""
+
+    def __init__(self, first: int, last: int) -> None:
+        self.first = first
+        self.last = last
+
+    @property
+    def units(self) -> range:
+        return range(self.first, self.last + 1)
+
+    @property
+    def count(self) -> int:
+        return self.last - self.first + 1
+
+    def includes(self, unit: int | None) -> bool:
+        return unit is not None and self.first <= unit <= self.last
+
+
+def _unit_scope(first: int, last: int) -> UnitScope:
+    if first < 2:
+        raise ComposeError("unit scope must start at Unit 2 or later; Unit 1 uses its authored pipeline")
+    if last < first:
+        raise ComposeError(f"unit scope is invalid: first unit {first} is after last unit {last}")
+    return UnitScope(first=first, last=last)
+
+
+DEFAULT_UNIT_SCOPE = UnitScope(first=UNIT_FIRST, last=UNIT_LAST)
 
 
 def _as_list(value: Any) -> list[Any]:
@@ -510,6 +541,505 @@ def _apply_table_review(
     return summary, decisions
 
 
+def _published_source_review_records(document: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Return the explicit published-source review records in stable order."""
+
+    raw_records = document.get("records")
+    if raw_records is None:
+        raw_records = document.get("entries")
+    if raw_records is None:
+        raw_records = document.get("units")
+    if isinstance(raw_records, Mapping):
+        records: list[dict[str, Any]] = []
+        for raw_unit, raw_record in raw_records.items():
+            if not isinstance(raw_record, Mapping):
+                continue
+            record = copy.deepcopy(dict(raw_record))
+            record.setdefault("unit", raw_unit)
+            records.append(record)
+        return records
+    return [copy.deepcopy(dict(item)) for item in _as_list(raw_records) if isinstance(item, Mapping)]
+
+
+def _published_source_review_proof_slides(record: Mapping[str, Any]) -> list[dict[str, Any]]:
+    raw_proof = record.get("sourceProofSlides")
+    if raw_proof is None:
+        raw_proof = record.get("proofSlides")
+    if raw_proof is None and isinstance(record.get("sourceProof"), Mapping):
+        raw_proof = record["sourceProof"].get("slides")
+    if raw_proof is None and isinstance(record.get("sourceEvidence"), Mapping):
+        # The audit review writer stores the exact published-slide proof next
+        # to its quoted visible text. Keep this compatibility path explicit;
+        # identity and status are still validated by the caller.
+        published_proof = record["sourceEvidence"].get("publishedSlideProof")
+        if isinstance(published_proof, Mapping):
+            raw_proof = [published_proof]
+    if isinstance(raw_proof, Mapping):
+        result: list[dict[str, Any]] = []
+        for raw_number, raw_slide in raw_proof.items():
+            if not isinstance(raw_slide, Mapping):
+                continue
+            slide = copy.deepcopy(dict(raw_slide))
+            slide.setdefault("slideNumber", raw_number)
+            result.append(slide)
+        return result
+    return [copy.deepcopy(dict(item)) for item in _as_list(raw_proof) if isinstance(item, Mapping)]
+
+
+def _published_source_review_slide_text_sha_candidates(slide: Mapping[str, Any]) -> set[str]:
+    values = [_text(value) for value in _as_list(slide.get("visibleTexts")) if _text(value)]
+    if not values and _text(slide.get("title")):
+        values = [_text(slide.get("title"))]
+    raw_joined = "\n".join(values)
+    normalized_joined = "\n".join(_normalise_review_text(value) for value in values)
+    payloads = (
+        raw_joined,
+        normalized_joined,
+        json.dumps(values, ensure_ascii=False, separators=(",", ":")),
+    )
+    return {hashlib.sha256(payload.encode("utf-8")).hexdigest() for payload in payloads}
+
+
+def _published_source_review_proof_matches(
+    proof: Mapping[str, Any],
+    source: Mapping[str, Any],
+    slide: Mapping[str, Any],
+    asset_roots: Sequence[Path],
+) -> bool:
+    proof_container = proof.get("publishedSlideProof") or proof.get("slideProof") or proof.get("sourceProof")
+    if isinstance(proof_container, Mapping):
+        proof = {**copy.deepcopy(dict(proof_container)), **dict(proof)}
+    proof_url = _text(
+        proof.get("sourceUrl")
+        or proof.get("sourceURL")
+        or proof.get("publishedSourceUrl")
+        or proof.get("publishedUrl")
+    )
+    if proof_url and proof_url != _source_url(source):
+        return False
+    proof_texts = proof.get("visibleTexts") or proof.get("publishedVisibleTexts")
+    if proof_texts is None and isinstance(proof.get("sourceEvidence"), Mapping):
+        proof_texts = proof["sourceEvidence"].get("visibleTexts") or proof["sourceEvidence"].get("publishedVisibleTexts")
+    if proof_texts is None and isinstance(proof.get("sourceEvidence"), list):
+        proof_texts = proof.get("sourceEvidence")
+    if proof_texts is not None:
+        actual = [_normalise_review_text(value) for value in _as_list(slide.get("visibleTexts")) if _text(value)]
+        expected = [_normalise_review_text(value) for value in _as_list(proof_texts) if _text(value)]
+        return bool(expected) and expected == actual
+    digest = _text(
+        proof.get("sourceSlideTextSha256")
+        or proof.get("publishedSlideTextSha256")
+        or proof.get("sourceTextSha256")
+        or proof.get("textDigest")
+    ).casefold()
+    if digest:
+        return bool(SHA256_RE.fullmatch(digest)) and digest in _published_source_review_slide_text_sha_candidates(slide)
+    raw_ref = proof.get("proofRef") or proof.get("sourceRef")
+    if isinstance(raw_ref, Mapping):
+        raw_path = _text(raw_ref.get("path") or raw_ref.get("file"))
+        expected_sha = _text(raw_ref.get("sha256") or raw_ref.get("sourceSha256")).casefold()
+        path = Path(_resolve_local_path(raw_path, asset_roots)) if raw_path else Path()
+        if raw_path and path.is_file() and SHA256_RE.fullmatch(expected_sha):
+            try:
+                return _sha256_file(path).casefold() == expected_sha
+            except OSError:
+                return False
+    proof_sha = _text(proof.get("screenshotSha256") or proof.get("proofSha256")).casefold()
+    proof_slide_url = _text(proof.get("publishedSlideUrl") or proof.get("slideUrl"))
+    if (
+        SHA256_RE.fullmatch(proof_sha)
+        and proof_slide_url
+        and _source_url(source)
+        and proof_slide_url.startswith(_source_url(source))
+    ):
+        return True
+    return False
+
+
+def _published_source_review_tables(record: Mapping[str, Any]) -> list[dict[str, Any]]:
+    raw_tables = record.get("reviewedTables")
+    if raw_tables is None:
+        raw_tables = record.get("tables")
+    result: list[dict[str, Any]] = []
+    for raw_table in _as_list(raw_tables):
+        if not isinstance(raw_table, Mapping):
+            continue
+        table = copy.deepcopy(dict(raw_table))
+        table.setdefault("slideNumber", table.get("sourceSlide"))
+        result.append(table)
+    return result
+
+
+def _published_source_review_figures(record: Mapping[str, Any]) -> list[dict[str, Any]]:
+    raw_figures = record.get("reviewedFigures")
+    if raw_figures is None:
+        raw_figures = record.get("figures")
+    result: list[dict[str, Any]] = []
+    for raw_figure in _as_list(raw_figures):
+        if not isinstance(raw_figure, Mapping):
+            continue
+        figure = copy.deepcopy(dict(raw_figure))
+        figure.setdefault("slideNumber", figure.get("sourceSlide"))
+        result.append(figure)
+    return result
+
+
+def _published_source_review_table_rows(raw_table: Mapping[str, Any]) -> list[list[list[str]]]:
+    projection = raw_table.get("approvedProjection") if isinstance(raw_table.get("approvedProjection"), Mapping) else raw_table
+    raw_tables = projection.get("tables") if isinstance(projection, Mapping) else None
+    if raw_tables is None and isinstance(projection, Mapping) and "rows" in projection:
+        raw_tables = [projection]
+    tables: list[list[list[str]]] = []
+    for table in _as_list(raw_tables):
+        raw_rows = table.get("rows") if isinstance(table, Mapping) else table
+        if not isinstance(raw_rows, list) or not raw_rows:
+            raise ComposeError("published source review table has no rows")
+        rows: list[list[str]] = []
+        for raw_row in raw_rows:
+            if not isinstance(raw_row, list) or not raw_row:
+                raise ComposeError("published source review table row must be a non-empty list")
+            if any(not isinstance(value, str) for value in raw_row):
+                raise ComposeError("published source review table cells must be strings")
+            rows.append([value.strip() for value in raw_row])
+        tables.append(rows)
+    if not tables:
+        raise ComposeError("published source review table has no reviewed matrix")
+    return tables
+
+
+def _published_source_review_notes(projection: Mapping[str, Any]) -> list[dict[str, str]]:
+    """Normalize reviewed explanatory notes without flattening them away."""
+
+    notes: list[dict[str, str]] = []
+    for raw_note in _as_list(projection.get("notes")):
+        if isinstance(raw_note, Mapping):
+            heading = _text(raw_note.get("heading") or raw_note.get("title"))
+            text = _text(raw_note.get("text") or raw_note.get("content") or raw_note.get("body"))
+        else:
+            heading = ""
+            text = _text(raw_note)
+        if not heading and not text:
+            continue
+        notes.append({"heading": heading, "text": text})
+    return notes
+
+
+def _published_source_review_notes_text(notes: Sequence[Mapping[str, Any]]) -> str:
+    """Return the learner-visible note text while retaining every note."""
+
+    parts: list[str] = []
+    for note in notes:
+        heading = _text(note.get("heading"))
+        text = _text(note.get("text"))
+        if heading and text:
+            parts.append(f"{heading}: {text}")
+        elif heading or text:
+            parts.append(heading or text)
+    return "\n".join(parts)
+
+
+def _apply_published_source_review(
+    document: Mapping[str, Any] | None,
+    sources_by_unit: Mapping[int, Mapping[str, Any]],
+    sources_by_lesson: Mapping[str, Mapping[str, Any]],
+    asset_roots: Sequence[Path],
+    blockers: list[dict[str, Any]],
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
+) -> tuple[dict[str, Any], dict[int, dict[str, Any]]]:
+    """Validate source-only review proof without creating native identity.
+
+    A reviewed record is an explicit admission for a unit whose editable native
+    presentation is unavailable.  It must still identify the exact published
+    lesson and URL, prove every referenced slide, and keep table/figure
+    projections tied to those slides.  A malformed or partial record never
+    suppresses the normal native blocker.
+    """
+
+    empty = {
+        "status": "not-supplied",
+        "records": 0,
+        "applied": 0,
+        "reviewedSlides": 0,
+        "reviewedTables": 0,
+        "reviewedFigures": 0,
+        "rejected": 0,
+    }
+    if document is None:
+        return empty, {}
+    if not isinstance(document, Mapping):
+        raise ComposeError("published source review input must contain an object")
+    course_id = _text(document.get("courseId"))
+    if course_id and course_id != COURSE_ID:
+        raise ComposeError("published source review course id does not match the course builder")
+    records = _published_source_review_records(document)
+    if not records:
+        raise ComposeError("published source review input has no records list")
+    summary = {**empty, "status": "applied", "records": len(records)}
+    accepted: dict[int, dict[str, Any]] = {}
+    seen_units: set[int] = set()
+    for raw_record in records:
+        unit = _int(raw_record.get("unit"))
+        lesson_id = _text(raw_record.get("lessonId") or raw_record.get("sourceLessonId"))
+        source_url = _text(raw_record.get("sourceUrl") or raw_record.get("sourceURL") or raw_record.get("publishedSourceUrl"))
+        source = sources_by_unit.get(unit or 0)
+        valid = True
+        if unit is None or not scope.includes(unit) or unit in seen_units:
+            if unit in seen_units:
+                blockers.append({"kind": "source-review", "unit": unit, "code": "published-source-review-duplicate"})
+            continue
+        seen_units.add(unit)
+        if source is None or not lesson_id or lesson_id != _lesson_id(source) or source_url != _source_url(source):
+            blockers.append(
+                {
+                    "kind": "source-review",
+                    "unit": unit,
+                    "lessonId": lesson_id,
+                    "code": "published-source-review-identity-mismatch",
+                }
+            )
+            valid = False
+        if _text(raw_record.get("status")).casefold() != PUBLISHED_SOURCE_REVIEW_STATUS:
+            blockers.append(
+                {
+                    "kind": "source-review",
+                    "unit": unit,
+                    "code": "published-source-review-status-invalid",
+                }
+            )
+            valid = False
+        if source is None:
+            continue
+        proof_slides = _published_source_review_proof_slides(raw_record)
+        if not proof_slides:
+            blockers.append({"kind": "source-review", "unit": unit, "code": "published-source-review-proof-missing"})
+            valid = False
+        proof_by_slide: dict[int, dict[str, Any]] = {}
+        for raw_proof in proof_slides:
+            slide_number = _int(raw_proof.get("slideNumber") or raw_proof.get("publishedSlide") or raw_proof.get("number"))
+            slide = _source_slide(source, slide_number or -1)
+            if slide_number is None or slide is None:
+                blockers.append(
+                    {
+                        "kind": "source-review",
+                        "unit": unit,
+                        "slide": slide_number,
+                        "code": "published-source-review-slide-missing",
+                    }
+                )
+                valid = False
+                continue
+            if slide_number in proof_by_slide:
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-duplicate-slide"})
+                valid = False
+                continue
+            if not _published_source_review_proof_matches(raw_proof, source, slide, asset_roots):
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-proof-mismatch"})
+                valid = False
+                continue
+            proof_by_slide[slide_number] = raw_proof
+        tables_by_slide: dict[int, list[list[list[str]]]] = defaultdict(list)
+        reviewed_tables_by_slide: dict[int, list[dict[str, Any]]] = defaultdict(list)
+        review_tables = _published_source_review_tables(raw_record)
+        for raw_table in review_tables:
+            slide_number = _int(raw_table.get("slideNumber") or raw_table.get("sourceSlide"))
+            if slide_number is None or slide_number not in proof_by_slide:
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-table-slide-unproven"})
+                valid = False
+                continue
+            try:
+                tables = _published_source_review_table_rows(raw_table)
+            except ComposeError as exc:
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-table-invalid", "detail": str(exc)})
+                valid = False
+                continue
+            source_text = _table_review_source_text(_source_slide(source, slide_number) or {})
+            if any(
+                value and not _table_review_contains(source_text, value)
+                for table in tables
+                for row in table
+                for value in row
+            ):
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-table-source-mismatch"})
+                valid = False
+                continue
+            projection = raw_table.get("approvedProjection") if isinstance(raw_table.get("approvedProjection"), Mapping) else raw_table
+            notes = _published_source_review_notes(projection)
+            if any(
+                value
+                and not _table_review_contains(source_text, value)
+                for note in notes
+                for value in (note.get("text"),)
+            ):
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-note-source-mismatch"})
+                valid = False
+                continue
+            tables_by_slide[slide_number].extend(tables)
+            reviewed_tables_by_slide[slide_number].append(
+                {
+                    **copy.deepcopy(dict(raw_table)),
+                    "slideNumber": slide_number,
+                    "tables": [{"rows": copy.deepcopy(matrix)} for matrix in tables],
+                    "notes": copy.deepcopy(notes),
+                }
+            )
+        figures = _published_source_review_figures(raw_record)
+        canonical_figures: list[dict[str, Any]] = []
+        for raw_figure in figures:
+            slide_number = _int(raw_figure.get("slideNumber") or raw_figure.get("sourceSlide"))
+            digest = _record_sha(raw_figure)
+            path = _record_path(raw_figure)
+            resolved_path = _resolve_local_path(path, asset_roots) if path else ""
+            if (
+                slide_number is None
+                or slide_number not in proof_by_slide
+                or raw_figure.get("confirmedInstructional") is not True
+                or not SHA256_RE.fullmatch(digest)
+                or not path
+                or not Path(resolved_path).is_file()
+            ):
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-figure-invalid"})
+                valid = False
+                continue
+            canonical_figures.append(
+                {
+                    **copy.deepcopy(raw_figure),
+                    "unit": unit,
+                    "slideNumber": slide_number,
+                    "sourceSha256": digest,
+                    "sourcePath": resolved_path,
+                    "sourceReview": True,
+                }
+            )
+        if not valid:
+            summary["rejected"] += 1
+            continue
+        canonical = {
+            "unit": unit,
+            "lessonId": lesson_id,
+            "sourceUrl": source_url,
+            "status": PUBLISHED_SOURCE_REVIEW_STATUS,
+            "sourceProofSlides": [copy.deepcopy(proof_by_slide[number]) for number in sorted(proof_by_slide)],
+            "reviewedTables": [
+                table
+                for number in sorted(reviewed_tables_by_slide)
+                for table in reviewed_tables_by_slide[number]
+            ],
+            "reviewedFigures": canonical_figures,
+        }
+        table_conflict = False
+        for number, matrices in tables_by_slide.items():
+            slide = _source_slide(source, number)
+            if slide is None:
+                continue
+            existing_tables = slide.get("tables") if isinstance(slide.get("tables"), list) else []
+            existing_rows = [
+                copy.deepcopy(table.get("rows"))
+                for table in existing_tables
+                if isinstance(table, Mapping) and isinstance(table.get("rows"), list)
+            ]
+            rows = [row for matrix in matrices for row in matrix]
+            if existing_rows and existing_rows != rows:
+                blockers.append({"kind": "source-review", "unit": unit, "slide": number, "code": "published-source-review-table-conflict"})
+                table_conflict = True
+                break
+        if table_conflict:
+            summary["rejected"] += 1
+            continue
+        for number, matrices in tables_by_slide.items():
+            slide = _source_slide(source, number)
+            if slide is None:
+                continue
+            existing_tables = slide.get("tables") if isinstance(slide.get("tables"), list) else []
+            existing_rows = [
+                copy.deepcopy(table.get("rows"))
+                for table in existing_tables
+                if isinstance(table, Mapping) and isinstance(table.get("rows"), list)
+            ]
+            if not existing_rows:
+                slide["tables"] = [{"rows": copy.deepcopy(matrix)} for matrix in matrices]
+            reviewed_slide_tables = reviewed_tables_by_slide[number]
+            reviewed_table = reviewed_slide_tables[0] if reviewed_slide_tables else {}
+            projection = reviewed_table.get("approvedProjection") if isinstance(reviewed_table.get("approvedProjection"), Mapping) else reviewed_table
+            notes = [
+                note
+                for reviewed_slide_table in reviewed_slide_tables
+                for note in _published_source_review_notes(
+                    reviewed_slide_table.get("approvedProjection")
+                    if isinstance(reviewed_slide_table.get("approvedProjection"), Mapping)
+                    else reviewed_slide_table
+                )
+            ]
+            projection = copy.deepcopy(dict(projection)) if isinstance(projection, Mapping) else {}
+            projection["notes"] = copy.deepcopy(notes)
+            source_evidence = reviewed_table.get("sourceEvidence")
+            source_evidence = copy.deepcopy(dict(source_evidence)) if isinstance(source_evidence, Mapping) else {}
+            note_text = _published_source_review_notes_text(notes)
+            if note_text and not _text(source_evidence.get("publishedNote")):
+                source_evidence["publishedNote"] = note_text
+            review_status = _text(reviewed_table.get("status")) or PUBLISHED_SOURCE_REVIEW_STATUS
+            table_review = {
+                "schemaVersion": 1,
+                "unit": unit,
+                "lessonId": lesson_id,
+                "sourceSlide": number,
+                "reviewStatus": review_status,
+                "clearTableSemanticsBlocker": reviewed_table.get("clearTableSemanticsBlocker") is not False,
+                "tableReferenceResolved": reviewed_table.get("clearTableSemanticsBlocker") is not False,
+                "projection": {
+                    "approved": projection.get("approved") is not False,
+                    "mode": _text(projection.get("mode")) or "structured",
+                    "source": _text(projection.get("source")) or "published-visible-text",
+                    "nativeIdentityConfirmed": projection.get("nativeIdentityConfirmed") is True,
+                    "notes": copy.deepcopy(notes),
+                    "tableCount": len(matrices),
+                },
+                "sourceRefs": copy.deepcopy(_as_list(reviewed_table.get("sourceRefs"))),
+                "sourceEvidence": source_evidence,
+            }
+            slide["tableReview"] = table_review
+            slide["tableSemantics"] = {
+                "mode": "structured",
+                "tables": copy.deepcopy(matrices),
+                "tableReferenceResolved": True,
+                "source": "published-visible-text",
+                "nativeIdentityConfirmed": False,
+                "approvedProjection": copy.deepcopy(projection),
+            }
+            slide_data = slide.get("data") if isinstance(slide.get("data"), Mapping) else {}
+            slide["data"] = {
+                **copy.deepcopy(dict(slide_data)),
+                "tableReview": copy.deepcopy(slide["tableReview"]),
+                "tableSemantics": copy.deepcopy(slide["tableSemantics"]),
+            }
+        if not canonical:
+            continue
+        for number, proof in proof_by_slide.items():
+            slide = _source_slide(source, number)
+            if slide is None:
+                continue
+            metadata = {
+                "reviewStatus": PUBLISHED_SOURCE_REVIEW_STATUS,
+                "nativeIdentityConfirmed": False,
+                "unit": unit,
+                "lessonId": lesson_id,
+                "sourceUrl": source_url,
+                "slideNumber": number,
+                "proof": copy.deepcopy(proof),
+            }
+            slide["publishedSourceReview"] = metadata
+            slide_data = slide.get("data") if isinstance(slide.get("data"), Mapping) else {}
+            slide["data"] = {**copy.deepcopy(dict(slide_data)), "publishedSourceReview": copy.deepcopy(metadata)}
+        accepted[unit] = canonical
+        summary["applied"] += 1
+        summary["reviewedSlides"] += len(proof_by_slide)
+        summary["reviewedTables"] += sum(len(item.get("tables", [])) for item in canonical["reviewedTables"])
+        summary["reviewedFigures"] += len(canonical_figures)
+    for unit in scope.units:
+        if unit not in accepted:
+            blockers.append({"kind": "source-review", "unit": unit, "code": "published-source-review-record-missing"})
+    return summary, accepted
+
+
 def _normalise_review_text(value: Any) -> str:
     """Collapse published text for a conservative source-evidence comparison."""
 
@@ -553,6 +1083,36 @@ def _review_item_matching_slides(
     ]
 
 
+def _listening_evidence_values(entry: Mapping[str, Any], keys: Sequence[str]) -> list[str]:
+    """Read explicit listening placement evidence without inferring it."""
+
+    values: list[str] = []
+    for key in keys:
+        raw = entry.get(key)
+        if isinstance(raw, Mapping):
+            raw = raw.get("evidence") or raw.get("visibleTexts") or raw.get("text")
+        values.extend(_text(value) for value in _as_list(raw) if _text(value))
+        if values:
+            break
+    return values
+
+
+def _listening_evidence_matches_slide(
+    source: Mapping[str, Any],
+    slide_number: int | None,
+    evidence: Sequence[str],
+) -> bool:
+    """Require each supplied evidence string to occur on the exact source slide."""
+
+    if slide_number is None or not evidence:
+        return False
+    slide = _source_slide(source, slide_number)
+    if not slide:
+        return False
+    haystack = _normalise_review_text("\n".join(_as_list(slide.get("visibleTexts"))))
+    return bool(haystack) and all(_normalise_review_text(value) in haystack for value in evidence)
+
+
 def _snapshot_lessons(snapshot: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
     result: dict[str, Mapping[str, Any]] = {}
     for module in _as_list(snapshot.get("modules")):
@@ -575,6 +1135,7 @@ def _published_sources(
     manifest: Mapping[str, Any],
     snapshot: Mapping[str, Any],
     blockers: list[dict[str, Any]],
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
 ) -> tuple[list[dict[str, Any]], dict[int, dict[str, Any]], dict[str, Mapping[str, Any]]]:
     raw_sources = manifest.get("sources")
     if not isinstance(raw_sources, list):
@@ -591,7 +1152,7 @@ def _published_sources(
         if unit is None:
             unit = _unit_from_value(source)
         lesson_id = _lesson_id(source)
-        if unit is None or not (UNIT_FIRST <= unit <= UNIT_LAST):
+        if not scope.includes(unit):
             continue
         if not lesson_id:
             blockers.append({"kind": "source", "unit": unit, "code": "lesson-id-missing"})
@@ -622,7 +1183,7 @@ def _published_sources(
         by_unit[unit] = source
         by_lesson[lesson_id] = source
         sources.append(source)
-    expected = set(range(UNIT_FIRST, UNIT_LAST + 1))
+    expected = set(scope.units)
     for unit in sorted(expected - set(by_unit)):
         blockers.append({"kind": "source", "unit": unit, "code": "published-source-missing"})
     sources.sort(key=lambda item: _unit_from_value(_source_deck(item)) or 10**6)
@@ -826,18 +1387,25 @@ def _normalize_audio(
     sources_by_unit: Mapping[int, Mapping[str, Any]],
     asset_roots: Sequence[Path],
     blockers: list[dict[str, Any]],
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     reviewed_audio_by_key, _ = _index_reviewed_media(reviewed)
     staged_records = _media_records(staged, "audio")
     staged_by_id, staged_by_sha = _staged_index(staged_records)
+    scoped_staged_records = [
+        record for record in staged_records if scope.includes(_unit_from_value(record))
+    ]
     reviewed_records = _media_records(reviewed, "audio")
+    scoped_reviewed_records = [
+        record for record in reviewed_records if scope.includes(_unit_from_value(record))
+    ]
     if not staged_records and reviewed_records:
         # This path is deliberately still blocked below because reviewed media
         # has immutable source data but no staged browser URL.
         staged_records = []
     merged: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
-    for source_item in reviewed_records or staged_records:
+    for source_item in scoped_reviewed_records or scoped_staged_records:
         identifier = _record_id(source_item)
         digest = _record_sha(source_item)
         staged_item = staged_by_id.get(identifier) or staged_by_sha.get(digest)
@@ -847,7 +1415,7 @@ def _normalize_audio(
         unit = _unit_from_value(item)
         if unit is None:
             unit = _unit_from_value(source_item)
-        if unit is None or not (UNIT_FIRST <= unit <= UNIT_LAST):
+        if not scope.includes(unit):
             continue
         key = (identifier, digest)
         if key in seen:
@@ -911,19 +1479,19 @@ def _normalize_audio(
             )
         merged.append(normalized)
     by_unit = Counter(item["unit"] for item in merged)
-    expected = sum(1 for unit in sources_by_unit if UNIT_FIRST <= unit <= UNIT_LAST)
-    if len(merged) != len(reviewed_records) and reviewed_records:
+    expected = sum(1 for unit in sources_by_unit if scope.includes(unit))
+    if len(merged) != len(scoped_reviewed_records) and scoped_reviewed_records:
         blockers.append(
             {
                 "kind": "audio",
                 "code": "audio-record-count-mismatch",
-                "expected": len(reviewed_records),
+                "expected": len(scoped_reviewed_records),
                 "actual": len(merged),
             }
         )
     return sorted(merged, key=lambda item: (item["unit"], item.get("audioNumber") or 10**6, item["id"])), {
-        "reviewedRecords": len(reviewed_records),
-        "stagedRecords": len(staged_records),
+        "reviewedRecords": len(scoped_reviewed_records),
+        "stagedRecords": len(scoped_staged_records),
         "normalizedRecords": len(merged),
         "unitsWithAudio": len(by_unit),
         "expectedUnits": expected,
@@ -940,6 +1508,8 @@ def _figure_candidates(
     blockers: list[dict[str, Any]],
     figure_proof: Mapping[str, Any] | None = None,
     figure_proof_ref: str = "",
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
+    published_source_review: Mapping[int, Mapping[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
     seen: set[tuple[int, int, str]] = set()
@@ -947,7 +1517,7 @@ def _figure_candidates(
     confirmed_units = reviewed_figures.get("units", {}) if isinstance(reviewed_figures, Mapping) else {}
     if isinstance(confirmed_units, list):
         confirmed_units = {str(item.get("unit")): item for item in confirmed_units if isinstance(item, Mapping)}
-    for unit in range(UNIT_FIRST, UNIT_LAST + 1):
+    for unit in scope.units:
         unit_entry = confirmed_units.get(str(unit), {}) if isinstance(confirmed_units, Mapping) else {}
         if unit in {33, 34, 35, 36}:
             # These decks have no whole-deck native match.  Their figures are
@@ -985,6 +1555,37 @@ def _figure_candidates(
                         "mapping": "reviewed-figures",
                     }
                 )
+    for raw_unit, review in (published_source_review or {}).items():
+        unit = _int(raw_unit)
+        if unit is None or not scope.includes(unit) or not isinstance(review, Mapping):
+            continue
+        for raw_figure in _as_list(review.get("reviewedFigures")):
+            if not isinstance(raw_figure, Mapping):
+                continue
+            slide_number = _int(raw_figure.get("slideNumber") or raw_figure.get("sourceSlide"))
+            digest = _record_sha(raw_figure)
+            path = _record_path(raw_figure)
+            resolved_path = _resolve_local_path(path, asset_roots) if path else ""
+            if slide_number is None or not digest or not path or not Path(resolved_path).is_file():
+                # The source-review validator normally catches this first; keep
+                # this guard so a direct helper call cannot admit an unscoped
+                # figure into the staged media path.
+                blockers.append({"kind": "image", "unit": unit, "slide": slide_number, "code": "published-source-review-figure-invalid"})
+                continue
+            candidates.append(
+                {
+                    "unit": unit,
+                    "slideNumber": slide_number,
+                    "sourceSha256": digest,
+                    "sourcePath": resolved_path,
+                    "purpose": _text(raw_figure.get("purpose") or raw_figure.get("sourcePurpose")),
+                    "reviewedFigure": copy.deepcopy(dict(raw_figure)),
+                    "mapping": "published-source-review",
+                    "sourceProofRef": copy.deepcopy(raw_figure.get("sourceProof"))
+                    if isinstance(raw_figure.get("sourceProof"), Mapping)
+                    else {},
+                }
+            )
     if isinstance(figure_proof, Mapping):
         # A proof entry may independently verify a figure on any published
         # slide. Units 33-36 have no reviewed-figures admission path, while
@@ -1273,6 +1874,63 @@ def _figure_candidates(
     }
 
 
+def _attach_published_source_review(
+    published_source_review: Mapping[int, Mapping[str, Any]],
+    figures: Sequence[Mapping[str, Any]],
+    sources_by_unit: Mapping[int, Mapping[str, Any]],
+    blockers: list[dict[str, Any]],
+) -> None:
+    """Expose reviewed source-only media through the builder's slide contract."""
+
+    figure_map: dict[tuple[int, int], list[Mapping[str, Any]]] = defaultdict(list)
+    for figure in figures:
+        unit = _int(figure.get("unit"))
+        slide = _int(figure.get("slideNumber"))
+        evidence = figure.get("nativeEvidence")
+        mapping = evidence.get("mapping") if isinstance(evidence, Mapping) else None
+        if unit is not None and slide is not None and mapping == "published-source-review":
+            figure_map[(unit, slide)].append(figure)
+    for raw_unit, review in published_source_review.items():
+        unit = _int(raw_unit)
+        source = sources_by_unit.get(unit or 0)
+        if unit is None or not isinstance(review, Mapping) or not isinstance(source, Mapping):
+            continue
+        for proof in _as_list(review.get("sourceProofSlides")):
+            if not isinstance(proof, Mapping):
+                continue
+            slide_number = _int(proof.get("slideNumber") or proof.get("publishedSlide") or proof.get("number"))
+            slide = _source_slide(source, slide_number or -1)
+            if slide is None or slide_number is None:
+                continue
+            existing = slide.get("_nativeAudit") if isinstance(slide.get("_nativeAudit"), Mapping) else {}
+            if existing.get("nativeIdentityConfirmed") is True:
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-native-identity-conflict"})
+                continue
+            payload = copy.deepcopy(dict(existing))
+            payload.update(
+                {
+                    "recordId": f"published-source-review-u{unit}-s{slide_number}",
+                    "slideNumber": slide_number,
+                    "sourceRole": "published-source-review",
+                    "nativeIdentityConfirmed": False,
+                    "sourceReview": {
+                        "unit": unit,
+                        "lessonId": _lesson_id(source),
+                        "sourceUrl": _source_url(source),
+                        "status": PUBLISHED_SOURCE_REVIEW_STATUS,
+                        "proof": copy.deepcopy(dict(proof)),
+                    },
+                }
+            )
+            payload.setdefault("paragraphs", [])
+            payload.setdefault("tables", None)
+            payload["figures"] = copy.deepcopy(figure_map.get((unit, slide_number), []))
+            payload["figureEvidencePresent"] = bool(payload["figures"])
+            payload.setdefault("audio", [])
+            payload.setdefault("nativeTexts", [])
+            slide["_nativeAudit"] = payload
+
+
 def _native_candidate_ids(
     reviewed_figures: Mapping[str, Any] | None,
     correspondence: Mapping[str, Any] | None,
@@ -1351,18 +2009,25 @@ def _compose_native_audit(
     blockers: list[dict[str, Any]],
     table_reviews: Mapping[tuple[int, int], Mapping[str, Any]] | None = None,
     vector_review: Mapping[str, Any] | None = None,
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
+    published_source_review: Mapping[int, Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    if not isinstance(native_audit, Mapping):
+    reviewed_units = {
+        unit
+        for unit in (published_source_review or {})
+        if isinstance(unit, int) and scope.includes(unit)
+    }
+    if not isinstance(native_audit, Mapping) and not reviewed_units:
         blockers.append({"kind": "native", "code": "native-audit-missing"})
         return {"schemaVersion": 1, "records": []}
-    raw_records = [item for item in _as_list(native_audit.get("records")) if isinstance(item, Mapping)]
+    raw_records = [item for item in _as_list(native_audit.get("records")) if isinstance(item, Mapping)] if isinstance(native_audit, Mapping) else []
     candidate_ids = _native_candidate_ids(reviewed_figures, correspondence, native_match)
     vector_reviews = _vector_review_index(vector_review)
     figure_map: dict[tuple[int, int], list[Mapping[str, Any]]] = defaultdict(list)
     for figure in figures:
         figure_map[(int(figure["unit"]), int(figure["slideNumber"]))].append(figure)
     selected: list[dict[str, Any]] = []
-    for unit in range(UNIT_FIRST, UNIT_LAST + 1):
+    for unit in scope.units:
         source = sources_by_unit.get(unit)
         source_title = _text(_source_deck(source or {}).get("deckTitle"))
         wanted_id = candidate_ids.get(unit)
@@ -1382,6 +2047,8 @@ def _compose_native_audit(
             in {"primary-candidate", ""}
         ] or records
         if not records:
+            if unit in reviewed_units:
+                continue
             blockers.append({"kind": "native", "unit": unit, "code": "native-record-missing"})
             continue
         records.sort(
@@ -1461,10 +2128,15 @@ def _compose_native_audit(
             record["native"] = native_copy
         selected.append(record)
     return {
-        "schemaVersion": native_audit.get("schemaVersion", 1),
+        "schemaVersion": native_audit.get("schemaVersion", 1) if isinstance(native_audit, Mapping) else 1,
         "source": "composed published-priority native audit",
         "_auditPath": "course-builder-native-audit.json",
         "records": selected,
+        "publishedSourceReview": [
+            copy.deepcopy(dict(reviewed))
+            for unit, reviewed in sorted((published_source_review or {}).items())
+            if isinstance(reviewed, Mapping) and scope.includes(_int(unit))
+        ],
         **({"vectorReview": copy.deepcopy(dict(vector_review))} if isinstance(vector_review, Mapping) else {}),
     }
 
@@ -2480,19 +3152,77 @@ def _normalize_listening(
                         "code": "listening-slide-missing",
                     }
                 )
-            # A listening review is source-scoped by all three immutable
-            # coordinates: published slide, 1-based audio ordinal, and audio
-            # digest.  Do not retarget a reviewed question by filename or by
-            # digest alone when those coordinates disagree.  Keep the full
-            # rejected record in the materialized audit so the source issue is
-            # reviewable without allowing the builder to consume it.
+            # A listening review is source-scoped by the published prompt
+            # slide, the 1-based audio ordinal, and the audio digest.  A
+            # reviewed source may explicitly place its media on a different
+            # source slide, but that mapping must carry both exact source and
+            # target-slide evidence.  Never infer a cross-slide relationship
+            # from adjacency or from a matching digest alone.
             audio_index = _int(entry.get("audioIndex"))
             digest = _text(entry.get("sourceAudioSha256")).casefold()
+            source_audio_slide = _int(entry.get("sourceAudioSlideNumber"))
+            audio_match_slide = source_audio_slide if source_audio_slide is not None else slide
+            cross_slide = (
+                slide is not None
+                and source_audio_slide is not None
+                and source_audio_slide != slide
+            )
+            if cross_slide:
+                source_audio_evidence = _listening_evidence_values(
+                    entry,
+                    (
+                        "sourceAudioSlideEvidence",
+                        "audioSourceEvidence",
+                        "sourceAudioEvidence",
+                    ),
+                )
+                target_prompt_evidence = _listening_evidence_values(
+                    entry,
+                    (
+                        "targetSlideEvidence",
+                        "targetPromptEvidence",
+                        "publishedPromptEvidence",
+                        "sourceEvidence",
+                    ),
+                )
+                proof_ok = (
+                    audio_index is not None
+                    and bool(digest)
+                    and _listening_evidence_matches_slide(
+                        sources_by_lesson[lesson_id],
+                        source_audio_slide,
+                        source_audio_evidence,
+                    )
+                    and _listening_evidence_matches_slide(
+                        sources_by_lesson[lesson_id],
+                        slide,
+                        target_prompt_evidence,
+                    )
+                )
+                if not proof_ok:
+                    blockers.append(
+                        {
+                            "kind": "listening",
+                            "unit": _int(entry.get("unit")),
+                            "lessonId": lesson_id,
+                            "slide": slide,
+                            "sourceAudioSlideNumber": source_audio_slide,
+                            "audioIndex": audio_index,
+                            "code": "listening-cross-slide-proof-missing",
+                            "detail": (
+                                "Cross-slide listening placement requires exact source-audio "
+                                "and target-prompt evidence on the declared slides."
+                            ),
+                        }
+                    )
+                    entry["compositionStatus"] = "rejected-cross-slide-proof"
+                    rejected.append(entry)
+                    continue
             if slide is not None and audio_index is not None and digest:
                 scoped = [
                     item
                     for item in audio_by_lesson.get(lesson_id, [])
-                    if _int(item.get("slideNumber")) == slide
+                    if _int(item.get("slideNumber")) == audio_match_slide
                     and _int(item.get("audioNumber") or item.get("audioIndex")) == audio_index
                     and _record_sha(item).casefold() == digest
                 ]
@@ -2511,6 +3241,7 @@ def _normalize_listening(
                             "unit": _int(entry.get("unit")),
                             "lessonId": lesson_id,
                             "slide": slide,
+                            "sourceAudioSlideNumber": source_audio_slide,
                             "audioIndex": audio_index,
                             "sourceAudioSha256": _text(entry.get("sourceAudioSha256")),
                             "observedAudio": observed,
@@ -2521,6 +3252,54 @@ def _normalize_listening(
                     entry["compositionStatus"] = "rejected-source-audio-mismatch"
                     rejected.append(entry)
                     continue
+                if cross_slide:
+                    # The learning builder resolves audio by the activity's
+                    # published slide.  Add a deliberate manifest alias while
+                    # preserving the immutable source slide and digest.  The
+                    # alias is created only after the exact coordinates and
+                    # cross-slide proof above have passed.
+                    if not isinstance(audio, list):
+                        blockers.append(
+                            {
+                                "kind": "listening",
+                                "unit": _int(entry.get("unit")),
+                                "lessonId": lesson_id,
+                                "slide": slide,
+                                "sourceAudioSlideNumber": source_audio_slide,
+                                "code": "listening-cross-slide-audio-alias-unavailable",
+                            }
+                        )
+                        entry["compositionStatus"] = "rejected-cross-slide-audio-alias"
+                        rejected.append(entry)
+                        continue
+                    source_audio = scoped[0]
+                    alias_exists = any(
+                        _int(item.get("activitySlideNumber")) == slide
+                        and _int(item.get("sourceAudioSlideNumber")) == source_audio_slide
+                        and _record_sha(item).casefold() == digest
+                        for item in audio_by_lesson.get(lesson_id, [])
+                    )
+                    if not alias_exists:
+                        alias = copy.deepcopy(dict(source_audio))
+                        alias["slideNumber"] = slide
+                        alias["activitySlideNumber"] = slide
+                        alias["sourceSlideNumber"] = source_audio_slide
+                        alias["sourceAudioSlideNumber"] = source_audio_slide
+                        alias["sourceAudioMapping"] = {
+                            "sourceAudioSlideNumber": source_audio_slide,
+                            "activitySlideNumber": slide,
+                            "audioIndex": audio_index,
+                            "sourceAudioSha256": digest,
+                        }
+                        audio.append(alias)
+                        audio_by_lesson[lesson_id].append(alias)
+                    entry["sourceAudioSlideNumber"] = source_audio_slide
+                    entry["sourceAudioMapping"] = {
+                        "sourceAudioSlideNumber": source_audio_slide,
+                        "activitySlideNumber": slide,
+                        "audioIndex": audio_index,
+                        "sourceAudioSha256": digest,
+                    }
             exercises.append(entry)
     return {"schemaVersion": 1, "exercises": exercises, "rejectedEntries": rejected}
 
@@ -2569,6 +3348,10 @@ def _builder_summary(path: Path) -> dict[str, Any]:
 
 
 def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
+    scope = _unit_scope(
+        getattr(args, "unit_first", UNIT_FIRST),
+        getattr(args, "unit_last", UNIT_LAST),
+    )
     snapshot = _load_json(args.snapshot)
     source_manifest = _load_json(args.source_manifest)
     staged_media = _load_json(args.staged_media)
@@ -2586,6 +3369,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     exercise_errata_review = _load_json(args.exercise_errata_review) if args.exercise_errata_review else None
     unit6_recovery = _load_json(args.unit6_recovery) if args.unit6_recovery else None
     table_review = _load_json(args.table_review) if args.table_review else None
+    published_source_review = _load_json(args.published_source_review) if args.published_source_review else None
     listening_documents = [_load_json(path) for path in args.listening_review]
     pronunciation_review = getattr(args, "pronunciation_review", None)
     if pronunciation_review:
@@ -2596,7 +3380,12 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     if _text(snapshot.get("courseId") or (snapshot.get("course") or {}).get("id")) not in {"", COURSE_ID}:
         raise ComposeError("snapshot course id does not match the course builder")
     blockers: list[dict[str, Any]] = []
-    sources, sources_by_unit, sources_by_lesson = _published_sources(source_manifest, snapshot, blockers)
+    sources, sources_by_unit, sources_by_lesson = _published_sources(
+        source_manifest,
+        snapshot,
+        blockers,
+        scope=scope,
+    )
     table_review_summary, table_review_decisions = _apply_table_review(
         table_review,
         sources,
@@ -2604,6 +3393,14 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         sources_by_lesson,
         args.asset_root,
         blockers,
+    )
+    published_source_review_summary, published_source_review_by_unit = _apply_published_source_review(
+        published_source_review,
+        sources_by_unit,
+        sources_by_lesson,
+        args.asset_root,
+        blockers,
+        scope=scope,
     )
     snapshot_lessons = _snapshot_lessons(snapshot)
     source_by_lesson = {lesson_id: source for lesson_id, source in sources_by_lesson.items() if lesson_id in snapshot_lessons}
@@ -2650,14 +3447,21 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
 
     _reviewed_audio, reviewed_images = _index_reviewed_media(reviewed_media)
     stage_image_records = _media_records(staged_media, "images")
+    scoped_stage_image_records = [
+        record for record in stage_image_records if scope.includes(_unit_from_value(record))
+    ]
     _stage_images_by_id, stage_images_by_sha = _staged_index(stage_image_records)
     stage_audio_records = _media_records(staged_media, "audio")
+    scoped_stage_audio_records = [
+        record for record in stage_audio_records if scope.includes(_unit_from_value(record))
+    ]
     audio, audio_counts = _normalize_audio(
         staged_media,
         reviewed_media,
         sources_by_unit,
         args.asset_root,
         blockers,
+        scope=scope,
     )
     figures, figure_counts = _figure_candidates(
         reviewed_figures,
@@ -2669,6 +3473,14 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         blockers,
         figure_proof,
         str(args.figure_proof) if args.figure_proof else "",
+        scope=scope,
+        published_source_review=published_source_review_by_unit,
+    )
+    _attach_published_source_review(
+        published_source_review_by_unit,
+        figures,
+        sources_by_unit,
+        blockers,
     )
     filtered_native = _compose_native_audit(
         native_audit,
@@ -2680,6 +3492,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         blockers,
         table_review_decisions,
         vector_review,
+        scope=scope,
+        published_source_review=published_source_review_by_unit,
     )
     normalized_exercise = _normalize_exercise_review(exercise_review, source_by_lesson, blockers)
     normalized_listening = _normalize_listening(
@@ -2709,8 +3523,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "schemaVersion": 1,
         "courseId": COURSE_ID,
         "scope": {
-            "units": [UNIT_FIRST, UNIT_LAST],
-            "unitCount": UNIT_LAST - UNIT_FIRST + 1,
+            "units": [scope.first, scope.last],
+            "unitCount": scope.count,
             "sourceCount": len(sources),
             "publishedSourcePriority": True,
             "nativeSupplementOnlyWhenAligned": True,
@@ -2718,6 +3532,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "oldFigureCorrespondenceIgnoredWhenProofProvided": bool(figure_proof),
             "unit3AudioPolicy": "reuse-exact-audio2-only-when-slide4-source-match-is-proven",
             "tableReviewPublishedPriority": bool(table_review),
+            "publishedSourceReviewExplicitOnly": bool(published_source_review),
             "vectorReviewExplicitOnly": True,
             "unit3VectorReview": bool(vector_review),
         },
@@ -2738,6 +3553,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "exerciseErrataReview": str(args.exercise_errata_review) if args.exercise_errata_review else None,
             "unit6Recovery": str(args.unit6_recovery) if args.unit6_recovery else None,
             "tableReview": str(args.table_review) if args.table_review else None,
+            "publishedSourceReview": str(args.published_source_review) if args.published_source_review else None,
             "listeningReview": [str(path) for path in args.listening_review],
             "pronunciationReview": str(pronunciation_review) if pronunciation_review else None,
         },
@@ -2762,12 +3578,12 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "figures": figures,
         "counts": {
             "publishedSources": len(sources),
-            "expectedPublishedSources": UNIT_LAST - UNIT_FIRST + 1,
-            "stageAudioRecords": len(stage_audio_records),
-            "stageImageRecords": len(stage_image_records),
-            "stageAudioReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in stage_audio_records),
-            "stageImageReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in stage_image_records),
-            "stageImageDuplicates": sum(_record_status(item) == "duplicate" for item in stage_image_records),
+            "expectedPublishedSources": scope.count,
+            "stageAudioRecords": len(scoped_stage_audio_records),
+            "stageImageRecords": len(scoped_stage_image_records),
+            "stageAudioReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in scoped_stage_audio_records),
+            "stageImageReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in scoped_stage_image_records),
+            "stageImageDuplicates": sum(_record_status(item) == "duplicate" for item in scoped_stage_image_records),
             "audio": audio_counts,
             "figures": figure_counts,
             "exerciseReviewLessons": len(normalized_exercise["lessons"]),
@@ -2776,6 +3592,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "exerciseErrataReview": errata_summary,
             "unit6Recovery": unit6_recovery_summary,
             "tableReview": table_review_summary,
+            "publishedSourceReview": published_source_review_summary,
             "vectorReview": {
                 "status": "supplied" if isinstance(vector_review, Mapping) else "not-supplied",
                 "entries": [
@@ -2862,6 +3679,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "unit6RecoveryExplicitOnly": True,
             "tableReviewPublishedPriority": bool(table_review),
             "tableReviewNativeMismatchesExcluded": table_review_summary["excludedNativeTables"] > 0,
+            "publishedSourceReviewExplicitOnly": True,
+            "publishedSourceReviewSupplied": bool(published_source_review),
             "vectorReviewExplicitOnly": True,
             "unit3VectorReviewSupplied": bool(vector_review),
             "exerciseSemanticPatchSummary": exercise_patch_summary,
@@ -2886,6 +3705,18 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
 
 def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--unit-first",
+        type=int,
+        default=UNIT_FIRST,
+        help=f"inclusive first unit to compose (default: {UNIT_FIRST})",
+    )
+    parser.add_argument(
+        "--unit-last",
+        type=int,
+        default=UNIT_LAST,
+        help=f"inclusive last unit to compose (default: {UNIT_LAST})",
+    )
     parser.add_argument("--snapshot", required=True, type=Path)
     parser.add_argument("--source-manifest", required=True, type=Path)
     parser.add_argument("--staged-media", required=True, type=Path)
@@ -2929,6 +3760,11 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
         "--table-review",
         type=Path,
         help="source-grounded tableReview contract; published projections override mismatched native tables",
+    )
+    parser.add_argument(
+        "--published-source-review",
+        type=Path,
+        help="explicit reviewed published-source projections for units without editable native presentations",
     )
     parser.add_argument("--listening-review", type=Path, action="append", default=[])
     parser.add_argument(
