@@ -4158,6 +4158,34 @@ def _source_heading(value: Any) -> str:
     return candidate
 
 
+def _source_topic_heading(slide: Mapping[str, Any]) -> str:
+    """Return a source-authored topic for a multi-figure vocabulary slide.
+
+    A published slide can use one activity heading for several reviewed
+    vocabulary figures. Reusing that heading makes every figure look like the
+    same navigation step, while choosing the first visible word invents a
+    misleading topic. The source decks commonly place the authored topic label
+    after the item list (for example ``DAILY ROUTINES``), so use the last
+    concise authored heading when there are multiple confirmed figures.
+    """
+
+    if len(_native_figures(slide)) < 2:
+        return ""
+    slide_title = _normalise(slide.get("title")).casefold()
+    candidates = [
+        heading
+        for value in _meaningful_texts(slide)
+        for heading in [_source_heading(value)]
+        if (
+            heading
+            and heading.casefold() != slide_title
+            and _normalise(value).upper() == _normalise(value)
+            and any(character.isalpha() for character in _normalise(value))
+        )
+    ]
+    return candidates[-1] if candidates else ""
+
+
 def _reviewed_guided_title(payload: Mapping[str, Any]) -> str:
     candidate = _normalise(payload.get("title"))
     if not candidate:
@@ -4201,7 +4229,14 @@ def _native_row_title(
     if source_role == "learning-goal":
         return _source_heading(payload.get("title")) or heading or "En esta unidad."
     if native_type == "image":
-        return "Observa la imagen." if _is_picture_prompt_required(slide) else heading or "Imagen."
+        if _is_picture_prompt_required(slide):
+            return "Observa la imagen."
+        topic_heading = _source_topic_heading(slide)
+        if topic_heading:
+            return topic_heading
+        if len(_native_figures(slide)) >= 2:
+            return "Imagen."
+        return heading or "Imagen."
     if native_type == "video":
         if _video_has_pronunciation_hint(slide):
             return "Escucha la pronunciación."
@@ -4211,6 +4246,14 @@ def _native_row_title(
             return "Lee el texto."
         return heading or "Contenido."
     if native_type == "structured-content":
+        if source_role == "native-vector-calendar":
+            data = payload.get("data")
+            table_groups = data.get("tableGroups") if isinstance(data, Mapping) else None
+            if any(
+                isinstance(group, Mapping) and _text(group.get("key")).casefold() == "week-overview"
+                for group in _as_list(table_groups)
+            ):
+                return "Una semana de actividades."
         return heading or "Consulta las formas."
     if native_type == "vocabulary":
         return heading or "Vocabulario."

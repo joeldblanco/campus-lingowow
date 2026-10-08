@@ -526,6 +526,76 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertEqual(image["data"]["title"], "Observa la imagen.")
         self.assertEqual(image["data"]["data"]["guidedTitle"], "Observa la imagen.")
 
+        vocabulary_image = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {
+                "number": 6,
+                "title": "GO BACK HOME",
+                "visibleTexts": [
+                    "GO BACK HOME",
+                    "READ A BOOK",
+                    "WAKE UP",
+                    "TAKE A SHOWER",
+                    "GET DRESSED",
+                    "HAVE/TAKE BREAKFAST",
+                    "BRUSH MY TEETH",
+                    "GO TO WORK",
+                    "GO TO BED/FALL ASLEEP",
+                    "DAILY ROUTINES",
+                ],
+                "_nativeAudit": {"figures": [{} for _ in range(9)]},
+            },
+            "image",
+            {"url": "/images/lessons/course/routine-1.webp"},
+            2,
+            1,
+        )
+        self.assertEqual(vocabulary_image["data"]["title"], "DAILY ROUTINES")
+        self.assertNotEqual(vocabulary_image["data"]["title"], "GO BACK HOME")
+
+        generic_image_group = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {
+                "number": 7,
+                "title": "Compare people",
+                "visibleTexts": [
+                    "Compare people",
+                    "Mrs. Lee is the best teacher in school.",
+                    "Dana is the most interested in class.",
+                    "PEOPLE",
+                    "PLACES",
+                    "THINGS",
+                ],
+                "_nativeAudit": {"figures": [{} for _ in range(4)]},
+            },
+            "image",
+            {"url": "/images/lessons/course/figure-1.webp"},
+            3,
+            2,
+        )
+        self.assertEqual(generic_image_group["data"]["title"], "Imagen.")
+
+        vector = builder._native_row(
+            LESSON_ID,
+            source,
+            source_digest,
+            {"number": 4, "title": "Week", "visibleTexts": ["Week"]},
+            "structured-content",
+            {
+                "sourceRole": "native-vector-calendar",
+                "data": {"tableGroups": [{"key": "week-overview"}]},
+                "content": {"headers": ["DAY", "ACTIVITIES"], "rows": []},
+            },
+            4,
+            3,
+        )
+        self.assertEqual(vector["title"], "Week")
+        self.assertEqual(vector["data"]["title"], "Una semana de actividades.")
+
         audio = builder._native_row(
             LESSON_ID,
             source,
@@ -541,8 +611,8 @@ class BuildCourseLearningTests(unittest.TestCase):
                 "mediaDigest": "audio-sha256-fixture",
                 "transcript": "Original recording.",
             },
-            2,
-            1,
+            5,
+            4,
         )
         self.assertEqual(audio["title"], "13")
         self.assertEqual(audio["data"]["title"], "Escucha.")
@@ -555,8 +625,8 @@ class BuildCourseLearningTests(unittest.TestCase):
             {"number": 14, "title": "Olá!", "visibleTexts": ["Olá!"]},
             "vocabulary",
             {"items": [{"id": "hello", "term": "Olá", "definition": "Hello"}]},
-            3,
-            2,
+            6,
+            5,
         )
         self.assertEqual(vocabulary["title"], "Olá!")
         self.assertEqual(vocabulary["data"]["title"], "Vocabulario.")
@@ -569,8 +639,8 @@ class BuildCourseLearningTests(unittest.TestCase):
             {"number": 15, "title": "Grammar practice", "visibleTexts": ["Grammar practice"]},
             "structured-content",
             {"content": {"headers": ["Subject"], "rows": [["I"]]}},
-            4,
-            3,
+            7,
+            6,
         )
         self.assertEqual(structured["data"]["title"], "Grammar practice")
         self.assertEqual(structured["data"]["data"]["guidedTitle"], "Grammar practice")
@@ -590,8 +660,8 @@ class BuildCourseLearningTests(unittest.TestCase):
             },
             "text",
             {"content": "<p>Maria is from Peru.</p>"},
-            5,
-            4,
+            8,
+            7,
         )
         self.assertEqual(reading["data"]["title"], "Lee el texto.")
         self.assertEqual(reading["data"]["data"]["guidedTitle"], "Lee el texto.")
@@ -608,8 +678,8 @@ class BuildCourseLearningTests(unittest.TestCase):
             },
             "video",
             {"url": "https://youtu.be/fixture"},
-            6,
-            5,
+            9,
+            8,
         )
         self.assertEqual(video["data"]["title"], "Escucha la pronunciación.")
         self.assertEqual(video["data"]["data"]["guidedTitle"], "Escucha la pronunciación.")
