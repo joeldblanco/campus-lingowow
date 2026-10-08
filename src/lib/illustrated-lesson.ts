@@ -319,6 +319,12 @@ function getMeaningfulLabel(step: GuidedLessonStep): string | undefined {
   return label && !TECHNICAL_LABELS.has(normalizeSearchText(label)) ? label : undefined
 }
 
+function referenceTaskTitle(label: string): string {
+  const clean = label.replace(/[.!?]+$/, '').trim()
+  if (/^consulta\b/i.test(clean)) return `${clean}.`
+  return `Consulta ${normalizeSearchText(clean).replace(/^(el|la|los|las|the)\s+/, '')}.`
+}
+
 function getAuthoredGuidedTitle(step: GuidedLessonStep): string | undefined {
   const authoredTitles = getStepMetadata(step, ['guidedTitles'])
   if (Array.isArray(authoredTitles)) {
@@ -408,7 +414,7 @@ export function getIllustratedLessonTaskTitle(step: GuidedLessonStep): string {
     const unitOneRole = grammarBlock && getMetadataValue(grammarBlock, ['unit1Role'])
     if (unitOneRole === 'transform') return 'Transforma la frase.'
     const label = getMeaningfulLabel(step)
-    if (label) return `Consulta ${normalizeSearchText(label).replace(/^(el|la|los|las|the)\s+/, '')}.`
+    if (label) return referenceTaskTitle(label)
     return 'Observa la estructura.'
   }
   if (step.blocks.some((block) => block.type === 'structured-content' && block.content)) {
@@ -416,7 +422,7 @@ export function getIllustratedLessonTaskTitle(step: GuidedLessonStep): string {
     if (label) {
       const normalized = normalizeSearchText(label)
       if (normalized.includes('posesiv')) return 'Consulta los posesivos.'
-      return `Consulta ${normalized.replace(/^(el|la|los|las|the)\s+/, '')}.`
+      return referenceTaskTitle(label)
     }
     return 'Consulta las formas.'
   }

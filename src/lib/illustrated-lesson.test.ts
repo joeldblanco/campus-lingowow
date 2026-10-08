@@ -111,6 +111,14 @@ describe('illustrated vocabulary sequence', () => {
     expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([grammar])[0])).toBe('Consulta past simple.')
   })
 
+  it('keeps a concise reference instruction without repeating its verb or punctuation', () => {
+    const grammar: Block = {
+      id: 'reference', type: 'grammar-visualizer', order: 0,
+      title: 'Consulta las formas.', sets: [],
+    }
+    expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([grammar])[0])).toBe('Consulta las formas.')
+  })
+
   it('accepts only known scene assets and keeps generic steps on the setting path', () => {
     const step = buildIllustratedLessonSteps([{
       id: 'scene',
