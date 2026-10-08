@@ -352,3 +352,33 @@
 .animate-shake {
   animation: shake 0.6s ease-in-out;
 }
+
+/* Unit 1 scenes keep the complete illustration visible while reserving a clear
+   white fade for live reading content. The mobile scene remains below content. */
+.unit1-scene-fade {
+  pointer-events: none;
+}
+
+.guided-lesson-viewer[data-unit1-authored]
+  .guided-lesson-main[data-guided-kind='reading']
+  .guided-lesson-content {
+  max-width: min(42rem, 38vw);
+}
+
+.guided-lesson-viewer[data-unit1-authored]
+  .guided-lesson-main[data-guided-kind='reading']
+  [data-guided-reading] {
+  max-width: min(42rem, 38vw);
+  background: transparent;
+}
+
+@media (max-width: 1023px) {
+  .guided-lesson-viewer[data-unit1-authored]
+    .guided-lesson-main[data-guided-kind='reading']
+    .guided-lesson-content,
+  .guided-lesson-viewer[data-unit1-authored]
+    .guided-lesson-main[data-guided-kind='reading']
+    [data-guided-reading] {
+    max-width: none;
+  }
+}

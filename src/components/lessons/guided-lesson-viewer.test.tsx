@@ -71,6 +71,7 @@ describe('GuidedLessonViewer', () => {
       <GuidedLessonViewer
         blocks={[block('text', 'reading'), block('essay', 'writing')]}
         storageKey="lesson-resume"
+        isCompleted={false}
       />
     )
     expect(screen.getByRole('heading', { name: 'Escritura' })).toBeInTheDocument()
@@ -84,6 +85,57 @@ describe('GuidedLessonViewer', () => {
       />
     )
     expect(screen.getByRole('heading', { name: 'Lectura' })).toBeInTheDocument()
+  })
+
+  it('opens a completed lesson review at the first step', () => {
+    sessionStorage.setItem('lesson-completed-review', '1')
+
+    render(
+      <GuidedLessonViewer
+        blocks={[block('text', 'reading'), block('essay', 'writing')]}
+        storageKey="lesson-completed-review"
+        isCompleted
+      />
+    )
+
+    expect(screen.getByRole('heading', { name: 'Lectura' })).toBeInTheDocument()
+    expect(sessionStorage.getItem('lesson-completed-review')).toBe('0')
+  })
+
+  it('keeps the current step when completion changes during an attempt', () => {
+    const { rerender } = render(
+      <GuidedLessonViewer
+        blocks={[block('text', 'reading'), block('essay', 'writing')]}
+        storageKey="lesson-completion-change"
+        isCompleted={false}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    rerender(
+      <GuidedLessonViewer
+        blocks={[block('text', 'reading'), block('essay', 'writing')]}
+        storageKey="lesson-completion-change"
+        isCompleted
+      />
+    )
+
+    expect(screen.getByRole('heading', { name: 'Escritura' })).toBeInTheDocument()
+  })
+
+  it('marks step transitions with their navigation direction', () => {
+    const { container } = render(
+      <GuidedLessonViewer
+        blocks={[block('text', 'reading'), block('essay', 'writing')]}
+        storageKey="lesson-transition-direction"
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    expect(container.querySelector('[data-guided-step][data-guided-step-transition="forward"]')).toBeVisible()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Atrás' }))
+    expect(container.querySelector('[data-guided-step][data-guided-step-transition="backward"]')).toBeVisible()
   })
 
   it('pauses audio from the step left behind', async () => {
