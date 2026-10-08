@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
 import json
 import tempfile
@@ -1417,6 +1418,132 @@ class BuildCourseLearningTests(unittest.TestCase):
         )
         self.assertIn("Look at the picture", str(published["data"]))
 
+    def test_independently_verified_figure_survives_native_text_mismatch(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "sourceUrl": "https://slides.example/independent-figure-proof",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 5 - About us and Relatives.pptx",
+                "slideCount": 1,
+                "slides": [
+                    {
+                        "number": 4,
+                        "title": "Picture",
+                        "visibleTexts": ["Look at the picture and answer the question."],
+                    }
+                ],
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            asset = Path(directory) / "family-photo.jpg"
+            asset.write_bytes(b"verified family photo payload")
+            digest = hashlib.sha256(asset.read_bytes()).hexdigest()
+            native_audit = {
+                "_auditPath": str(Path(directory) / "native-audit.json"),
+                "records": [
+                    {
+                        "unit": 5,
+                        "status": "ok",
+                        "candidate": {"id": "independent-figure-proof-5", "title": "Unit 5 - About us and Relatives.pptx"},
+                        "native": {
+                            "slides": [
+                                {
+                                    "number": 4,
+                                    "texts": ["Unrelated native text that fails whole-slide alignment."],
+                                    "figures": [
+                                        {
+                                            "unit": 5,
+                                            "slideNumber": 4,
+                                            "assetPath": str(asset),
+                                            "publicUrl": "/images/lessons/course/family-photo.webp",
+                                            "role": "instructional-figure",
+                                            "confirmedInstructional": True,
+                                            "sourceSha256": digest,
+                                            "nativeEvidence": {
+                                                "reviewed": True,
+                                                "mapping": "reviewed-figures",
+                                                "sourceSha256": digest,
+                                                "verifiedSourceSha256": digest,
+                                            },
+                                        }
+                                    ],
+                                }
+                            ]
+                        },
+                    }
+                ],
+            }
+
+            plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertTrue(plan["publishable"])
+        self.assertFalse(any(blocker["code"] == "native-figure-required" for blocker in plan["blockers"]))
+        image = next(row for row in plan["nextRows"] if row["data"].get("type") == "image")
+        self.assertEqual(image["data"]["url"], "/images/lessons/course/family-photo.webp")
+        self.assertEqual(image["data"]["assetPath"], str(asset.resolve()))
+        self.assertEqual(
+            image["data"]["data"]["originalSource"]["nativeEvidence"]["figures"][0]["sourceSha256"],
+            digest,
+        )
+
+    def test_independent_figure_proof_rejects_payload_sha_mismatch(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 4,
+                "title": "Picture",
+                "visibleTexts": ["Look at the picture and answer the question."],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        with tempfile.TemporaryDirectory() as directory:
+            asset = Path(directory) / "family-photo.jpg"
+            asset.write_bytes(b"verified family photo payload")
+            wrong_digest = "0" * 64
+            native_audit = {
+                "_auditPath": str(Path(directory) / "native-audit.json"),
+                "records": [
+                    {
+                        "unit": 5,
+                        "status": "ok",
+                        "candidate": {"id": "independent-figure-sha-mismatch-5", "title": "Where are you from?"},
+                        "native": {
+                            "slides": [
+                                {
+                                    "number": 4,
+                                    "texts": ["Unrelated native text."],
+                                    "figures": [
+                                        {
+                                            "unit": 5,
+                                            "slideNumber": 4,
+                                            "assetPath": str(asset),
+                                            "publicUrl": "/images/lessons/course/family-photo.webp",
+                                            "role": "instructional-figure",
+                                            "confirmedInstructional": True,
+                                            "sourceSha256": wrong_digest,
+                                            "nativeEvidence": {
+                                                "reviewed": True,
+                                                "mapping": "reviewed-figures",
+                                                "sourceSha256": wrong_digest,
+                                                "verifiedSourceSha256": wrong_digest,
+                                            },
+                                        }
+                                    ],
+                                }
+                            ]
+                        },
+                    }
+                ],
+            }
+
+            plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "native-figure-required" and blocker["slide"] == 4 for blocker in plan["blockers"]))
+        self.assertFalse(any(row["data"].get("type") == "image" for row in plan["nextRows"]))
+
     def test_conflicting_native_chart_keeps_required_table_blocker(self) -> None:
         source = {
             "courseId": COURSE_ID,
@@ -1541,6 +1668,52 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertFalse(plan["publishable"])
         self.assertTrue(any(blocker["code"] == "native-figure-required" and blocker["slide"] == 1 for blocker in plan["blockers"]))
         self.assertFalse(any(blocker["code"] == "native-figure-untraceable" for blocker in plan["blockers"]))
+
+    def test_picture_words_in_writing_vocabulary_and_grammar_do_not_require_figure(self) -> None:
+        cases = [
+            (
+                15,
+                "Let's Write",
+                [
+                    "E. Write an 80 to 120 word text where you can describe your ideal partner; "
+                    "the way he/she looks, how he/she is, what clothes you picture him/her wearing "
+                    "and how you prefer his/her personality to be."
+                ],
+            ),
+            (
+                13,
+                "Delexical verbs",
+                [
+                    "A. Look at the words on the list. Make sentences using the corresponding delexical verbs.",
+                    "DINE – HUG – BATHE – PHOTOGRAPH – PROMISE – DECIDE – SWIM – COOK – LUNCH",
+                ],
+            ),
+            (
+                8,
+                "Useful phrases",
+                [
+                    "PHRASES EXAMPLES What if… What if Jane came tonight to the party? "
+                    "Just picture how awkward it would be.",
+                ],
+            ),
+        ]
+
+        for number, title, visible_texts in cases:
+            source = source_fixture()
+            source["deck"]["slides"] = [
+                {"number": number, "title": title, "visibleTexts": visible_texts}
+            ]
+            source["deck"]["slideCount"] = 1
+
+            plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+            self.assertTrue(plan["publishable"], msg=f"unexpected blocker for slide {number}: {plan['blockers']}")
+            self.assertFalse(
+                any(
+                    blocker["code"] == "native-figure-required" and blocker["slide"] == number
+                    for blocker in plan["blockers"]
+                )
+            )
 
     def test_exercise_review_maps_distinct_reading_questions_and_accepted_answers(self) -> None:
         source = source_fixture()

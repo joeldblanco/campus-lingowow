@@ -643,11 +643,30 @@ def _is_audio_required(slide: Mapping[str, Any]) -> bool:
 
 
 _PICTURE_REFERENCE_PATTERN = re.compile(r"\b(?:picture|photo(?:graph)?|image|illustration)\b", re.IGNORECASE)
-_PICTURE_ACTION_PATTERN = re.compile(
-    r"\b(?:look|see|describe|identify|match|choose|select|point|talk|discuss|answer|complete|write|what|which)\b",
+_PICTURE_VISUAL_DIRECTIVE_PATTERN = re.compile(
+    r"(?:"
+    r"\b(?:look\s+(?:closely\s+)?at|observe|study|examine|view|describe|"
+    r"discuss|talk\s+about|use|refer\s+to)\s+"
+    r"(?:(?:the|a|an|this|that|these|those)\s+)?"
+    r"(?:picture|photo(?:graph)?|image|illustration)s?\b"
+    r"|\b(?:identify|find|match|point\s+to)\b[^.!?\n]{0,50}\b"
+    r"(?:in|on|with|to)\s+(?:(?:the|a|an|this|that|these|those)\s+)?"
+    r"(?:picture|photo(?:graph)?|image|illustration)s?\b"
+    r"|\bwhat\s+(?:do\s+you\s+see|is|are)\b[^.!?\n]{0,40}\b"
+    r"(?:in|on)\s+(?:(?:the|a|an|this|that|these|those)\s+)?"
+    r"(?:picture|photo(?:graph)?|image|illustration)s?\b"
+    r"|\b(?:answer|complete|write)\b[^.!?\n]{0,40}\b"
+    r"(?:about|from|using|of)\s+(?:(?:the|a|an|this|that|these|those)\s+)?"
+    r"(?:picture|photo(?:graph)?|image|illustration)s?\b"
+    r")",
     re.IGNORECASE,
 )
 _PICTURE_TITLE_LABELS = {"picture", "pictures", "photo", "photos", "image", "images", "illustration", "illustrations"}
+_PICTURE_NOUN_CONTEXT_PATTERN = re.compile(
+    r"\b(?:the|a|an|this|that|these|those)\s+"
+    r"(?:picture|photo(?:graph)?|image|illustration)s?\b",
+    re.IGNORECASE,
+)
 
 
 def _is_picture_prompt_required(slide: Mapping[str, Any]) -> bool:
@@ -659,7 +678,15 @@ def _is_picture_prompt_required(slide: Mapping[str, Any]) -> bool:
     title = _normalise(slide.get("title")).casefold()
     if title in _PICTURE_TITLE_LABELS:
         return True
-    return bool(_PICTURE_ACTION_PATTERN.search(evidence))
+    # A visual asset is required only when the source gives a visual
+    # instruction or names a concrete picture/photo/image context. A broad
+    # action-word check misclassified ordinary language such as “what clothes
+    # you picture him/her wearing”, vocabulary lists containing PHOTOGRAPH,
+    # and examples such as “Just picture how awkward it would be.”
+    return bool(
+        _PICTURE_VISUAL_DIRECTIVE_PATTERN.search(evidence)
+        or _PICTURE_NOUN_CONTEXT_PATTERN.search(evidence)
+    )
 
 
 _CONFIRMED_FIGURE_LABELS = {
@@ -1141,6 +1168,111 @@ def _native_tables_payload(native_slide: Mapping[str, Any]) -> Any:
     return shape_tables or None
 
 
+_FIGURE_DIGEST_KEYS = (
+    "sourceSha256",
+    "verifiedSourceSha256",
+    "sha256",
+    "dedupSha256",
+    "sourceDigest",
+)
+
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _independently_verified_figure(
+    figure: Any,
+    record: Mapping[str, Any],
+    native_slide: Mapping[str, Any],
+    source_slide_number: int,
+    audit_path: str,
+) -> Mapping[str, Any] | None:
+    """Validate a figure whose native slide text did not meet alignment.
+
+    A figure may be admitted independently when the source audit attached an
+    explicit reviewed proof and the local payload bytes match its SHA-256.
+    This keeps the native text alignment threshold strict while allowing an
+    independently verified original image to survive a prose mismatch.
+    """
+
+    if not isinstance(figure, Mapping) or figure.get("confirmedInstructional") is not True:
+        return None
+    try:
+        figure_slide = int(
+            figure.get("publishedSlideNumber")
+            or figure.get("sourceSlideNumber")
+            or figure.get("slideNumber")
+            or figure.get("slide")
+        )
+    except (TypeError, ValueError):
+        return None
+    if figure_slide != source_slide_number:
+        return None
+    figure_unit = figure.get("unit")
+    if figure_unit not in (None, ""):
+        try:
+            if int(figure_unit) != int(record.get("unit")):
+                return None
+        except (TypeError, ValueError):
+            return None
+
+    evidence = figure.get("nativeEvidence")
+    if not isinstance(evidence, Mapping):
+        return None
+    proof_ref = figure.get("sourceProofRef")
+    if not isinstance(proof_ref, Mapping):
+        proof_ref = evidence.get("sourceProofRef") if isinstance(evidence.get("sourceProofRef"), Mapping) else None
+    proof_reviewed = evidence.get("reviewed") is True or bool(_text(evidence.get("mapping")))
+    proof_exact = isinstance(proof_ref, Mapping) and proof_ref.get("byteExactMatch") is True
+    if not proof_reviewed and not proof_exact:
+        return None
+
+    digests: list[str] = []
+    for container in (figure, evidence, proof_ref or {}):
+        if not isinstance(container, Mapping):
+            continue
+        for key in _FIGURE_DIGEST_KEYS + ("publishedReferenceSha256",):
+            candidate = _text(container.get(key)).casefold()
+            if candidate:
+                if not re.fullmatch(r"[0-9a-f]{64}", candidate):
+                    return None
+                digests.append(candidate)
+    if not digests or len(set(digests)) != 1:
+        return None
+    digest = digests[0]
+
+    path_value = ""
+    for key in ("assetPath", "localPath", "sourcePath", "filePath", "imagePath", "mediaPath", "path"):
+        path_value = _text(figure.get(key))
+        if path_value:
+            break
+    asset_path = _resolve_native_asset_path(path_value, record, native_slide, audit_path)
+    if not asset_path:
+        return None
+    try:
+        if _file_sha256(Path(asset_path)).casefold() != digest:
+            return None
+    except OSError:
+        return None
+    browser_url = _native_figure_browser_url(figure, asset_path)
+    if not browser_url:
+        return None
+
+    normalized = copy.deepcopy(dict(figure))
+    normalized["assetPath"] = asset_path
+    normalized["localPath"] = asset_path
+    normalized["publicUrl"] = browser_url
+    normalized["sourceSha256"] = digest
+    normalized["verifiedSourceSha256"] = digest
+    normalized["_independentProof"] = True
+    return normalized
+
+
 def _native_audio_entries(native_slide: Mapping[str, Any]) -> list[Mapping[str, Any]]:
     result: list[Mapping[str, Any]] = []
     for key in ("audio", "audios", "audioRefs", "audioEvidence"):
@@ -1271,9 +1403,40 @@ def _prepare_native_audit(
         number = _slide_number(slide)
         native_slide = matched.get(number)
         if native_slide is None:
-            # A mismatched native slide is discarded as supplemental evidence.
-            # The published extraction remains authoritative and is still
-            # converted below; required media/table evidence is checked there.
+            # A mismatched native slide is discarded as supplemental prose and
+            # table evidence. A separately reviewed, byte-verified figure may
+            # still be attached to the exact published slide without lowering
+            # the whole-slide alignment threshold.
+            if _is_picture_prompt_required(slide):
+                independent_figures: list[Mapping[str, Any]] = []
+                seen_digests: set[str] = set()
+                for candidate_slide in native_slides:
+                    for figure in _native_figure_entries(candidate_slide):
+                        verified = _independently_verified_figure(
+                            figure,
+                            record,
+                            candidate_slide,
+                            number,
+                            audit_path,
+                        )
+                        if verified is None:
+                            continue
+                        digest = _text(verified.get("sourceSha256")).casefold()
+                        if digest in seen_digests:
+                            continue
+                        seen_digests.add(digest)
+                        independent_figures.append(verified)
+                if independent_figures:
+                    slide["_nativeAudit"] = {
+                        "recordId": record_id,
+                        "slideNumber": number,
+                        "paragraphs": [],
+                        "tables": None,
+                        "figures": copy.deepcopy(independent_figures),
+                        "figureEvidencePresent": True,
+                        "audio": [],
+                        "nativeTexts": [],
+                    }
             continue
         paragraphs = _unique_texts(
             _nested_text(value)
