@@ -223,6 +223,81 @@ _TECHNICAL_LABELS = {
 }
 
 
+_GOAL_LABELS = {
+    "communicative function",
+    "competencies",
+    "competency",
+    "learning goal",
+    "learning goals",
+    "learning objective",
+    "learning objectives",
+    "objective",
+    "objectives",
+    "outcomes",
+}
+
+
+def _goal_label(value: Any) -> str:
+    """Return a normalized authored goal heading, when present."""
+
+    return _normalise(value).casefold().rstrip(":  –—-.")
+
+
+def _is_goal_slide(slide: Mapping[str, Any]) -> bool:
+    """Identify a source slide that states learner goals rather than an activity."""
+
+    values = [_text(slide.get("title")), *_meaningful_texts(slide)]
+    labels = {_goal_label(value) for value in values if _goal_label(value) in _GOAL_LABELS}
+    if not labels:
+        return False
+    # A slide carrying an authored task or media remains an activity even when
+    # its prompt mentions competencies. Goal slides are text-only declarations.
+    return not (
+        _is_audio_required(slide)
+        or _is_picture_prompt_required(slide)
+        or _video_urls(slide)
+        or _tables(slide)
+    )
+
+
+def _goal_title(slide: Mapping[str, Any], texts: Sequence[str]) -> str:
+    """Choose a short authored heading for the learner-facing goal block."""
+
+    for value in [_text(slide.get("title")), *texts]:
+        if _goal_label(value) in _GOAL_LABELS:
+            return _normalise(value).rstrip(":  –—-.")
+    return _normalise(slide.get("title"))
+
+
+def _goal_visible_texts(slide: Mapping[str, Any], texts: Sequence[str]) -> list[str]:
+    """Render goal prose once while retaining every authored value in metadata."""
+
+    title = _normalise(slide.get("title"))
+    candidates = _unique_texts([*texts, *_native_paragraphs(slide)])
+    # The selected goal heading is rendered as the block title. Remove it from
+    # the body, including a generic published title such as ``Lectura``.
+    if candidates and title and candidates[0].casefold() == title.casefold():
+        candidates = candidates[1:]
+
+    result: list[str] = []
+    for value in candidates:
+        key = value.casefold()
+        matching_prior = [
+            prior
+            for prior in result
+            if len(prior) >= 8 and prior.casefold() in key
+        ]
+        if len(matching_prior) >= 2:
+            covered_length = sum(len(prior) for prior in matching_prior)
+            if covered_length / max(len(value), 1) >= 0.5:
+                # Native audits can add one joined paragraph after the
+                # published extractor's individual goal values. Published
+                # values are authoritative and already cover that paragraph.
+                continue
+        result.append(value)
+    return result
+
+
 def _is_technical_text(value: str) -> bool:
     lowered = _normalise(value).casefold().replace("�", "'").replace("’", "'")
     if not lowered:
@@ -445,7 +520,10 @@ def _learner_context_texts(
     title_key = _normalise(slide.get("title")).casefold()
     if len(title_key) >= 32:
         prompt_keys.add(title_key)
-    candidates = [*_native_paragraphs(slide), *_meaningful_texts(slide)]
+    # Published extraction is authoritative. Put it first so a native audit's
+    # joined paragraph is recognized as coverage of already-visible source
+    # values instead of becoming a second learner paragraph.
+    candidates = [*_meaningful_texts(slide), *_native_paragraphs(slide)]
     result: list[str] = []
     seen: set[str] = set()
     for raw_value in candidates:
@@ -2596,6 +2674,25 @@ def _native_block_specs(
         common["nativeParagraphs"] = copy.deepcopy(native_paragraphs)
     if re.search(r"\b(?:objective|competenc|communicative function|learning goal)\w*\b", full_text.casefold()):
         common["objectives"] = copy.deepcopy(texts)
+    if _is_goal_slide(slide):
+        goal_texts = _goal_visible_texts(slide, texts)
+        goal_title = _goal_title(slide, texts)
+        specs.append(
+            (
+                "text",
+                {
+                    **common,
+                    "title": goal_title,
+                    "content": _readable_html(goal_texts or texts),
+                    "format": "html",
+                    "sourceRole": "learning-goal",
+                },
+            )
+        )
+        # Goal slides state what the learner will achieve. They do not become
+        # recording/essay activities merely because a goal sentence contains
+        # words such as "conversation" or "write".
+        return specs
     if tables:
         combined_rows: list[list[str]] = []
         for table in tables:
@@ -2957,6 +3054,37 @@ def _archive_existing_rows(
     return result
 
 
+def _concise_block_title(value: Any) -> str:
+    """Keep an authored title useful as a step label without dumping a slide."""
+
+    candidate = _normalise(value)
+    if len(candidate) <= 96:
+        return candidate
+    # Source decks often put the whole instruction in the slide title. The
+    # first authored sentence/clause is a stable, meaningful step label while
+    # the complete instruction remains in the block payload and provenance.
+    # Do not split the authored ``A.``/``B.`` exercise marker as a sentence.
+    first = re.split(r"(?<=[!?])\s+|(?<=[a-z0-9])\.\s+|:\s+", candidate, maxsplit=1)[0].strip()
+    if 12 <= len(first) <= 120:
+        return first
+    if len(first) > 120:
+        before_comma = first.split(",", 1)[0].strip()
+        if 12 <= len(before_comma) <= 120:
+            return before_comma
+    return candidate
+
+
+def _native_row_title(
+    slide: Mapping[str, Any],
+    native_type: str,
+    payload: Mapping[str, Any],
+) -> str:
+    payload_title = _text(payload.get("title"))
+    if payload_title:
+        return _concise_block_title(payload_title)
+    return _concise_block_title(_text(slide.get("title")) or native_type.replace("-", " ").title())
+
+
 def _native_row(
     lesson_id: str,
     source: Mapping[str, Any],
@@ -2993,6 +3121,10 @@ def _native_row(
     if isinstance(existing_metadata, Mapping):
         metadata = {**copy.deepcopy(dict(existing_metadata)), **metadata}
     data["type"] = native_type
+    # ``mapContentToBlock`` reads the nested data object and does not expose a
+    # Prisma row's top-level title. Store a concise authored label there so the
+    # guided viewer can name the step without rendering the full slide prompt.
+    data["title"] = _native_row_title(slide, native_type, payload)
     data["data"] = metadata
     return {
         "id": row_id,

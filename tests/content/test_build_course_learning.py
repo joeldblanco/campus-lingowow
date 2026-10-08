@@ -260,6 +260,86 @@ def unit2_slide8_native_fixture() -> tuple[dict, dict]:
 
 
 class BuildCourseLearningTests(unittest.TestCase):
+    def test_goal_slide_renders_one_concise_source_block(self) -> None:
+        goal = "Describe oneself and others� origins by talking about countries and nationalities."
+        competency = (
+            "Use basic grammatical elements, vocabulary, and phrases related to countries and nationalities "
+            "effectively in basic conversations and written texts."
+        )
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "title": "I come from�"},
+            "contentId": "goal-source-fixture",
+            "sourceUrl": "https://slides.example/goal-fixture",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 2 - I come from.pptx",
+                "slideCount": 1,
+                "slides": [
+                    {
+                        "number": 2,
+                        "title": "Communicative Function",
+                        "visibleTexts": ["Communicative Function", goal, "Competencies", competency],
+                        "_nativeAudit": {
+                            "paragraphs": [
+                                "Communicative Function",
+                                goal,
+                                "Competencies",
+                                competency,
+                                f"Communicative Function {goal} Competencies {competency}",
+                            ]
+                        },
+                    }
+                ],
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        self.assertTrue(plan["publishable"])
+        rows = [
+            row
+            for row in plan["nextRows"]
+            if row["id"].startswith("course-guided-")
+            and row["data"]["data"]["sourceSlides"] == [2]
+        ]
+        self.assertEqual(len(rows), 1)
+        row = rows[0]
+        self.assertEqual(row["data"]["type"], "text")
+        self.assertEqual(row["data"]["title"], "Communicative Function")
+        self.assertEqual(row["data"]["sourceRole"], "learning-goal")
+        self.assertEqual(row["data"]["content"].count(goal), 1)
+        self.assertEqual(row["data"]["content"].count(competency), 1)
+        self.assertNotIn(f"Communicative Function {goal}", row["data"]["content"])
+        self.assertEqual(
+            row["data"]["data"]["originalSource"]["visibleTexts"],
+            source["deck"]["slides"][0]["visibleTexts"],
+        )
+
+    def test_long_source_title_becomes_a_concise_step_label(self) -> None:
+        source = source_fixture(complete_audio=True)
+        title = (
+            "A. Change the following sentences into the interrogative and negative form. "
+            "Follow the example. Pay attention to the verb used."
+        )
+        source["deck"]["slides"][1]["title"] = title
+        source["deck"]["slides"][1]["visibleTexts"] = [title]
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        row = next(
+            row
+            for row in plan["nextRows"]
+            if row["id"].startswith("course-guided-")
+            and row["data"]["data"]["sourceSlides"] == [2]
+            and row["data"]["type"] == "structured-content"
+        )
+        self.assertEqual(
+            row["data"]["title"],
+            "A. Change the following sentences into the interrogative and negative form",
+        )
+        self.assertLess(len(row["data"]["title"]), len(title))
+
     def test_plan_is_deterministic_and_preserves_existing_identity(self) -> None:
         source = source_fixture()
         first = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
