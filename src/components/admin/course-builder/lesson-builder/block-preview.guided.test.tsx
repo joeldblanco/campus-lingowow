@@ -8,8 +8,9 @@ import {
 import { ClassroomSyncContext } from '@/components/classroom/use-classroom-sync'
 
 vi.mock('next/image', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => (
-    <div role="img" aria-label={alt} data-src={src} />
+  default: ({ src, alt, onError }: { src: string; alt: string; onError?: () => void }) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt} data-src={src} onError={() => onError?.()} />
   ),
 }))
 
@@ -158,6 +159,26 @@ describe('BlockPreview guided appearance', () => {
     expect(
       screen.getByRole('heading', { name: 'Watch the conversation about introductions' })
     ).toBeInTheDocument()
+  })
+
+  it('keeps the original video URL in an accessible fallback when the thumbnail fails', () => {
+    const video = {
+      id: 'video-fallback',
+      type: 'video' as const,
+      order: 0,
+      title: 'Watch the conversation about introductions',
+      url: 'https://youtu.be/EMWmCb1CIdc',
+    }
+
+    render(<BlockPreview guidedAppearance block={video} />)
+
+    fireEvent.error(screen.getByRole('img', { name: video.title }))
+
+    expect(screen.queryByRole('img', { name: video.title })).not.toBeInTheDocument()
+    const fallback = screen.getByRole('link', { name: `Abrir video original: ${video.title}` })
+    expect(fallback).toHaveAttribute('href', video.url)
+    expect(fallback).toHaveAttribute('data-video-thumbnail-fallback', 'true')
+    expect(fallback).toHaveTextContent('Abrir video original')
   })
 
   it('hydrates guided audio duration from an already-loaded media element', () => {

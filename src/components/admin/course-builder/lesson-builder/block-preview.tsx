@@ -486,6 +486,15 @@ function VideoBlockPreview({
   }
 
   const thumbnail = block.url ? getYouTubeThumbnail(block.url) : null
+  const [thumbnailUnavailable, setThumbnailUnavailable] = useState(false)
+
+  useEffect(() => {
+    setThumbnailUnavailable(false)
+  }, [thumbnail])
+
+  const originalVideoLabel = block.title
+    ? `Abrir video original: ${block.title}`
+    : 'Abrir video original'
 
   return (
     <div className={hideHeader ? '' : 'space-y-4'}>
@@ -511,21 +520,34 @@ function VideoBlockPreview({
         <>
           <div className="relative group">
             <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-              {thumbnail ? (
+              {thumbnail && !thumbnailUnavailable ? (
                 <Image
                   src={thumbnail}
                   alt={block.title || 'Video thumbnail'}
                   className="w-full h-full object-cover"
                   width={800}
                   height={450}
+                  onError={() => setThumbnailUnavailable(true)}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Video className="h-16 w-16 text-muted-foreground" />
-                </div>
+                <a
+                  href={block.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={originalVideoLabel}
+                  data-video-thumbnail-fallback="true"
+                  className="flex h-full w-full items-center justify-center bg-[#10245C] text-white transition-colors hover:bg-[#1C3A87] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F4C95D] focus-visible:ring-inset"
+                >
+                  <span className="flex items-center gap-3 rounded-full bg-white/15 px-5 py-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F4C95D] text-[#10245C]">
+                      <Play className="h-5 w-5 fill-current" aria-hidden="true" />
+                    </span>
+                    <span className="font-semibold">Abrir video original</span>
+                  </span>
+                </a>
               )}
             </div>
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-lg bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
               <Play className="h-12 w-12 text-white" />
             </div>
           </div>
