@@ -3,6 +3,31 @@ import { describe, expect, it } from 'vitest'
 import { GuidedLessonBlock } from './guided-lesson-block'
 
 describe('guided lesson visual language fidelity', () => {
+  it('keeps explicitly authored group notes outside the scrolling table', () => {
+    render(<GuidedLessonBlock block={{
+      id: 'group-note', type: 'structured-content', order: 0, title: 'Reference',
+      content: { headers: ['A', 'B', 'C'], rows: [['one', 'two', 'three']] },
+      data: { tableGroups: [{ key: 'reference', sourceHeader: 'Reference group', headers: ['A', 'B', 'C'], rows: [['one', 'two', 'three']], notes: ['Keep this explanation visible.'] }] },
+    }}>fallback</GuidedLessonBlock>)
+    const scrollingRegion = screen.getByRole('table', { name: 'Reference group' }).parentElement!
+    expect(scrollingRegion).toHaveClass('overflow-x-auto')
+    expect(scrollingRegion).not.toContainElement(screen.getByText('Keep this explanation visible.'))
+    expect(scrollingRegion).not.toContainElement(screen.getByText('Desliza para ver la tabla →'))
+  })
+  it('keeps explanations and the scroll hint outside a wide table scrolling region', () => {
+    render(
+      <GuidedLessonBlock block={{
+        id: 'wide-reference', type: 'structured-content', order: 0,
+        title: 'Expressions', subtitle: 'Read the meaning before reviewing the examples.',
+        content: { headers: ['Phrase', 'Meaning', 'Example'], rows: [['Never say die', 'Keep trying', 'Never say die.']] },
+      }}>fallback</GuidedLessonBlock>
+    )
+    const table = screen.getByRole('table', { name: 'Expressions' })
+    const scrollingRegion = table.parentElement!
+    expect(scrollingRegion).toHaveClass('overflow-x-auto')
+    expect(scrollingRegion).not.toContainElement(screen.getByText('Read the meaning before reviewing the examples.'))
+    expect(scrollingRegion).not.toContainElement(screen.getByText('Desliza para ver la tabla →'))
+  })
   it('renders every authored vocabulary fact as a compact editorial card without invented controls', () => {
     const items = [
       ['name', 'Name', 'Peter'],

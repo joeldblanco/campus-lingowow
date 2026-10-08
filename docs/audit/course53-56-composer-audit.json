@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "composer": "scripts/content/compose-course-builder-inputs.py",
+  "draftInputs": "docs\\audit\\course53-56-inputs.json",
+  "materializedInputs": {
+    "sourceDir": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course53-56-materialized\\sources",
+    "nativeAudit": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course53-56-materialized\\native-audit.json",
+    "audioManifest": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course53-56-materialized\\audio-manifest.json",
+    "exerciseReview": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course53-56-materialized\\exercise-review.json",
+    "listeningReview": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course53-56-materialized\\listening-review.json"
+  },
+  "builder": {
+    "status": "ready",
+    "path": "docs\\audit\\course53-56-learning-draft.json",
+    "sourceCount": 4,
+    "planCount": 4,
+    "publishableCount": 4,
+    "blockedCount": 0,
+    "blockerCount": 0,
+    "blockersByCode": {},
+    "blockedLessons": [],
+    "unsupportedSlideCount": 0,
+    "returnCode": 0,
+    "stdoutTail": "",
+    "stderrTail": ""
+  },
+  "counts": {
+    "publishedSources": 4,
+    "expectedPublishedSources": 4,
+    "stageAudioRecords": 8,
+    "stageImageRecords": 4,
+    "stageAudioReady": 8,
+    "stageImageReady": 4,
+    "stageImageDuplicates": 0,
+    "audio": {
+      "reviewedRecords": 8,
+      "stagedRecords": 8,
+      "normalizedRecords": 8,
+      "unitsWithAudio": 4,
+      "expectedUnits": 4
+    },
+    "figures": {
+      "candidateReferences": 4,
+      "readyReferences": 4,
+      "uniqueSourceSha256": 4,
+      "unitsWithFigures": 4,
+      "mappingCounts": {
+        "published-source-review": 4
+      }
+    },
+    "exerciseReviewLessons": 4,
+    "exerciseSemanticPatch": {
+      "status": "applied",
+      "applied": 4,
+      "rejected": 0,
+      "remainingHardBlocks": 0,
+      "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch-53-56.json"
+    },
+    "exerciseTeacherNotesReview": {
+      "status": "not-supplied",
+      "applied": 0,
+      "rejected": 0
+    },
+    "exerciseErrataReview": {
+      "status": "not-supplied",
+      "applied": 0,
+      "rejected": 0
+    },
+    "unit6Recovery": {
+      "status": "not-supplied",
+      "applied": 0,
+      "rejected": 0
+    },
+    "tableReview": {
+      "status": "not-supplied",
+      "entries": 0,
+      "applied": 0,
+      "structured": 0,
+      "textOnly": 0,
+      "publishedProjections": 0,
+      "nativeProjections": 0,
+      "excludedNativeTables": 0,
+      "rejected": 0
+    },
+    "publishedSourceReview": {
+      "status": "applied",
+      "records": 4,
+      "applied": 4,
+      "reviewedSlides": 16,
+      "reviewedTables": 12,
+      "reviewedFigures": 4,
+      "rejected": 0
+    },
+    "vectorReview": {
+      "status": "not-supplied",
+      "entries": []
+    },
+    "listeningReviewEntries": 8,
+    "listeningReviewRejectedEntries": 0,
+    "listeningReviewItems": 32
+  },
+  "composerBlockers": {
+    "total": 0,
+    "byCode": {},
+    "units": []
+  },
+  "composerBlockerDetails": [],
+  "readyForApply": true,
+  "policy": {
+    "publishedSlidesAuthoritative": true,
+    "genericNativeImageRefsExcluded": true,
+    "unit33To36FiguresRequireVisualProof": true,
+    "oldFigureCorrespondenceIgnoredWhenProofProvided": false,
+    "exerciseSemanticPatchExplicitOnly": true,
+    "teacherNotesReviewExplicitOnly": true,
+    "exerciseErrataReviewExplicitOnly": true,
+    "unit6RecoveryExplicitOnly": true,
+    "tableReviewPublishedPriority": false,
+    "tableReviewNativeMismatchesExcluded": false,
+    "publishedSourceReviewExplicitOnly": true,
+    "publishedSourceReviewSupplied": true,
+    "vectorReviewExplicitOnly": true,
+    "unit3VectorReviewSupplied": false,
+    "exerciseSemanticPatchSummary": {
+      "status": "applied",
+      "applied": 4,
+      "rejected": 0,
+      "remainingHardBlocks": 0,
+      "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch-53-56.json"
+    },
+    "unresolvedUnit33To36FiguresStayBlocked": true,
+    "unit3DoesNotInventAudio1": true,
+    "databaseOrPublicWrites": false
+  }
+}

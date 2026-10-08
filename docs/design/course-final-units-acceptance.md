@@ -72,4 +72,4 @@ Those results establish source and plan readiness. They do not replace the visua
 3. The `N` issue badge visible in some captures is a local Next development-tools overlay, not product UI; it is excluded from the design result and should be omitted from any public evidence export.
 4. No production promotion was performed; publication and deployment checks remain operational gates separate from this local visual acceptance record.
 
-Main verification for this dev snapshot was tracking 1,231 expected unit tests and green lint; TypeScript was still pending at the time of this report. The focused Python checks previously reported 178 passing. This documentation-only update did not rerun those checks.
+Final main verification: 168 test files / 1,231 unit tests, lint, and TypeScript are green. The 178 focused Python checks are green. Added regressions cover scoped source composition, verified published projections, exact cross-slide audio links, preserved explanatory notes, and stationary notes/hints outside scrolling tables. The temporary QA route was removed and its local server stopped before release.
