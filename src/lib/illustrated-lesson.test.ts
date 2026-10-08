@@ -56,6 +56,7 @@ describe('illustrated vocabulary sequence', () => {
     expect(steps).toHaveLength(1)
     expect(steps[0].blocks).toEqual([audio, exercise])
     expect(steps[0].blocks.find((block) => block.type === 'audio')).toMatchObject({ url: '/source.mp3' })
+    expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Escucha y elige.')
   })
 
   it('names the personal-data activity by its recognition objective', () => {

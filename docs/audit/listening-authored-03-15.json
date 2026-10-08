@@ -836,7 +836,7 @@
           "id": "manual-mc-1",
           "kind": "prompt",
           "format": "multiple-choice",
-          "prompt": "What does the speaker say about the father's car?",
+          "prompt": "Whose car is discussed first?",
           "reviewStatus": "reviewed",
           "answerItems": [
             {

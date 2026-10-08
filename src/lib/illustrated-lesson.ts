@@ -423,7 +423,11 @@ export function getIllustratedLessonTaskTitle(step: GuidedLessonStep): string {
   const matching = step.blocks.find(block => block.type === 'match')
   if (matching?.type === 'match') return isPilotGuidedMatchProfile(matching.pairs || [], matching.id) ? 'Identifica el dato.' : 'Une cada dato.'
   if (step.blocks.some((block) => block.type === 'fill_blanks')) return 'Completa la frase.'
-  if (step.blocks.some((block) => block.type === 'multiple_choice')) return 'Elige la respuesta.'
+  if (step.blocks.some((block) => block.type === 'multiple_choice')) {
+    return step.blocks.some((block) => block.type === 'audio' || block.type === 'video')
+      ? 'Escucha y elige.'
+      : 'Elige la respuesta.'
+  }
   if (step.blocks.some((block) => block.type === 'true_false')) {
     return step.blocks.some((block) => block.type === 'audio' || block.type === 'video')
       ? 'Escucha y decide.'
