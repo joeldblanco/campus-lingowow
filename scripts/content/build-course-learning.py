@@ -601,7 +601,8 @@ def _audio_url(item: Mapping[str, Any]) -> str:
         "originalMediaURL",
     ):
         value = _text(item.get(key))
-        if value and not _is_drive_ui_url(value):
+        lowered = value.casefold()
+        if value and not _is_drive_ui_url(value) and "slides-images-rt" not in lowered:
             return value
     return ""
 
@@ -625,6 +626,34 @@ def _audio_transcript(item: Mapping[str, Any]) -> str:
         if value:
             return value
     return ""
+
+
+def _is_audio_placeholder(item: Mapping[str, Any]) -> bool:
+    """Identify published icons/rendered slide images that are not audio."""
+
+    if item.get("iconOnly") is True:
+        return True
+    kind = _normalise(item.get("kind") or item.get("type") or "").casefold()
+    return any(
+        marker in kind
+        for marker in ("audio-icon", "audio icon", "rendered-slide-image", "rendered slide image")
+    )
+
+
+def _audio_ordinal(item: Mapping[str, Any]) -> int | None:
+    """Read the source audio ordinal; review manifests use 1-based values."""
+
+    for key in ("audioIndex", "audioNumber", "audioOrdinal", "ordinal"):
+        value = item.get(key)
+        if isinstance(value, bool):
+            continue
+        try:
+            ordinal = int(value)
+        except (TypeError, ValueError):
+            continue
+        if ordinal > 0:
+            return ordinal
+    return None
 
 
 def _audio_provenance(item: Mapping[str, Any]) -> dict[str, str]:
@@ -655,7 +684,8 @@ def _native_audio_items(slide: Mapping[str, Any]) -> list[Mapping[str, Any]]:
     for key in ("audio", "audios", "audioRefs", "audioEvidence"):
         for item in _as_list(native.get(key)):
             if isinstance(item, Mapping):
-                result.append(item)
+                if not _is_audio_placeholder(item):
+                    result.append(item)
             elif _text(item):
                 result.append({"url": _text(item), "kind": "audio"})
     return result
@@ -682,7 +712,7 @@ def _audio_manifest_entries(
             candidate.get("lessonId") or candidate.get("sourceLessonId") or candidate.get("contentId") or inherited_lesson
         )
         candidate_slide = candidate.get("slideNumber", candidate.get("slide", candidate.get("slideNo", inherited_slide)))
-        if _audio_url(candidate) or _audio_transcript(candidate) or _audio_digest(candidate):
+        if not _is_audio_placeholder(candidate) and (_audio_url(candidate) or _audio_transcript(candidate) or _audio_digest(candidate)):
             if candidate_lesson:
                 candidate["lessonId"] = candidate_lesson
             if candidate_slide is not None:
@@ -1208,7 +1238,7 @@ def _audio_candidates(
 ) -> list[Mapping[str, Any]]:
     candidates: list[Mapping[str, Any]] = []
     for item in _media(slide):
-        if _media_kind(item) == "audio":
+        if _media_kind(item) == "audio" and not _is_audio_placeholder(item):
             candidates.append(item)
     candidates.extend(_native_audio_items(slide))
     candidates.extend(_audio_manifest_entries(audio_manifest, lesson_id, _slide_number(slide)))
@@ -1218,9 +1248,14 @@ def _audio_candidates(
     source_deck = _deck(source)
     candidates.extend(_audio_manifest_entries(source_deck.get("audio"), lesson_id, _slide_number(slide)))
     deduped: list[Mapping[str, Any]] = []
-    seen: set[tuple[str, str, str]] = set()
+    seen: set[tuple[str, str, str, str]] = set()
     for item in candidates:
-        key = (_audio_url(item), _audio_digest(item), _audio_transcript(item))
+        key = (
+            _audio_url(item),
+            _audio_digest(item),
+            _audio_transcript(item),
+            str(_audio_ordinal(item) or ""),
+        )
         if key in seen:
             continue
         seen.add(key)
@@ -1768,8 +1803,8 @@ def _listening_review_index(
         elif entry_status and entry_status not in {"reviewed", "approved", "ready"}:
             _add_blocker(blockers, _blocker("listening-review-status-missing", slide_number, f"Listening review has unsupported status {entry_status!r}."))
         audio_index = entry.get("audioIndex")
-        if isinstance(audio_index, bool) or not isinstance(audio_index, int) or audio_index < 0:
-            _add_blocker(blockers, _blocker("listening-review-audio-index-invalid", slide_number, "Listening review audioIndex must be a non-negative integer."))
+        if isinstance(audio_index, bool) or not isinstance(audio_index, int) or audio_index <= 0:
+            _add_blocker(blockers, _blocker("listening-review-audio-index-invalid", slide_number, "Listening review audioIndex must be a positive source audio ordinal."))
         if not _text(entry.get("sourceAudioSha256")):
             _add_blocker(blockers, _blocker("listening-review-audio-sha-missing", slide_number, "Listening review requires sourceAudioSha256."))
         raw_items = entry.get("items")
@@ -1842,22 +1877,33 @@ def _listening_review_audio(
     candidates = [
         candidate
         for candidate in _audio_candidates(source, slide, lesson_id, audio_manifest)
-        if _audio_digest(candidate) or _audio_url(candidate) or _audio_transcript(candidate)
+        if not _is_audio_placeholder(candidate)
+        and (_audio_digest(candidate) or _audio_url(candidate) or _audio_transcript(candidate))
     ]
     audio_index = review_entry.get("audioIndex")
     digest = _text(review_entry.get("sourceAudioSha256"))
-    if isinstance(audio_index, bool) or not isinstance(audio_index, int) or audio_index < 0 or audio_index >= len(candidates):
-        _add_blocker(blockers, _blocker("listening-review-audio-index-invalid", number, "Listening review audioIndex does not identify a source audio entry."))
+    if isinstance(audio_index, bool) or not isinstance(audio_index, int) or audio_index <= 0:
+        _add_blocker(blockers, _blocker("listening-review-audio-index-invalid", number, "Listening review audioIndex must identify a 1-based source audio ordinal."))
         return None
-    indexed_audio = candidates[audio_index]
-    matched = [candidate for candidate in candidates if _audio_digest(candidate).casefold() == digest.casefold()]
+    ordinal_candidates = [candidate for candidate in candidates if _audio_ordinal(candidate) == audio_index]
+    if not ordinal_candidates:
+        _add_blocker(
+            blockers,
+            _blocker(
+                "listening-review-audio-index-invalid",
+                number,
+                "Listening review audioIndex does not match a source audio ordinal.",
+            ),
+        )
+        return None
+    matched = [candidate for candidate in ordinal_candidates if _audio_digest(candidate).casefold() == digest.casefold()]
     if not matched:
         _add_blocker(blockers, _blocker("listening-review-audio-sha-mismatch", number, "Listening review sourceAudioSha256 does not match the staged source audio."))
         return None
-    if _audio_digest(indexed_audio).casefold() != digest.casefold():
-        _add_blocker(blockers, _blocker("listening-review-audio-scope-mismatch", number, "Listening review audioIndex and sourceAudioSha256 identify different source audio."))
+    if len(matched) > 1:
+        _add_blocker(blockers, _blocker("listening-review-audio-scope-mismatch", number, "Listening review audioIndex and sourceAudioSha256 identify multiple source audio entries."))
         return None
-    audio = indexed_audio
+    audio = matched[0]
     if not _text(audio.get("publicHref") or audio.get("publicUrl") or audio.get("publicURL") or audio.get("playbackUrl") or audio.get("playbackURL")):
         staged_matches = [
             candidate
@@ -2304,11 +2350,27 @@ def _native_block_specs(
     listening_review_supplied = listening_review is not None
     audio_required = _is_audio_required(slide) or bool(_native_audio_items(slide)) or listening_review_supplied
     audio_items = _audio_candidates(source, slide, lesson_id, audio_manifest) if audio_required else []
-    # Prefer a complete authored evidence record over a rendered audio icon
-    # placeholder from the published extraction.
+    # Prefer a complete staged/original record over an incomplete published
+    # placeholder. A URL alone is not enough to make a listening block
+    # playable: digest and transcript are immutable evidence requirements.
     audio_item = next(
-        (item for item in audio_items if _audio_url(item) or _audio_digest(item) or _audio_transcript(item)),
-        audio_items[0] if audio_items else None,
+        (
+            item
+            for item in audio_items
+            if not _is_audio_placeholder(item)
+            and _audio_url(item)
+            and _audio_digest(item)
+            and _audio_transcript(item)
+        ),
+        next(
+            (
+                item
+                for item in audio_items
+                if not _is_audio_placeholder(item)
+                and (_audio_url(item) or _audio_digest(item) or _audio_transcript(item))
+            ),
+            audio_items[0] if audio_items else None,
+        ),
     )
     listening_audio = None
     listening_review_blocked = False

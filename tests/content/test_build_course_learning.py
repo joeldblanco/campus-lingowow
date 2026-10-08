@@ -53,6 +53,8 @@ def source_fixture(*, complete_audio: bool = False) -> dict:
     audio_media = {
         "kind": "audio",
         "url": "https://cdn.example/lesson/audio-6.mp3",
+        "audioIndex": 1,
+        "audioNumber": 1,
     }
 
     if complete_audio:
@@ -1252,7 +1254,7 @@ class BuildCourseLearningTests(unittest.TestCase):
                 {
                     "lessonId": LESSON_ID,
                     "slideNumber": 6,
-                    "audioIndex": 0,
+                    "audioIndex": 1,
                     "sourceAudioSha256": "audio-sha256-fixture",
                     "items": [
                         {
@@ -1284,6 +1286,126 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(all(item["correctOptionId"] == "a" for item in multiple_choice["data"]["items"]))
         self.assertFalse(any(row["data"].get("type") == "text" and row["data"]["data"].get("sourceSlides") == [6] for row in generated))
 
+    def test_listening_review_uses_one_based_audio_ordinal_and_prefers_complete_stage(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"] = [
+            {
+                "number": 6,
+                "title": "Listening",
+                "visibleTexts": ["Listening", "Listen to the audio and write the country."],
+                "media": [
+                    {
+                        "kind": "audio",
+                        "audioIndex": 1,
+                        "url": "https://audio.example/incomplete.mp3",
+                    },
+                    {
+                        "kind": "audio-icon",
+                        "iconOnly": True,
+                        "url": "https://docs.google.com/slides-images-rt/rendered-slide.png",
+                    },
+                ],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        stage = {
+            "entries": [
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 6,
+                    "audioIndex": 2,
+                    "audioNumber": 2,
+                    "sourceSha256": "staged-audio-2",
+                    "publicHref": "/audio/lessons/course/unit-02-audio-02.mp3",
+                    "originalMediaUrl": "https://drive.google.com/file/d/staged/view",
+                    "transcript": "I come from Peru.",
+                }
+            ]
+        }
+        review = {
+            "exercises": [
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 6,
+                    "audioIndex": 2,
+                    "sourceAudioSha256": "staged-audio-2",
+                    "items": [
+                        {
+                            "id": "listening-ordinal",
+                            "prompt": "Which country is named?",
+                            "explicitOptions": [
+                                {"id": "a", "text": "Peru"},
+                                {"id": "b", "text": "Brazil"},
+                                {"id": "c", "text": "Chile"},
+                                {"id": "d", "text": "Mexico"},
+                            ],
+                            "answerItems": [{"canonical": "Peru", "evidence": "I come from Peru."}],
+                            "reviewStatus": "reviewed",
+                        }
+                    ],
+                }
+            ]
+        }
+
+        plan = builder.build_plan(
+            snapshot_fixture()["modules"][0]["lessons"][0],
+            source,
+            audio_manifest=stage,
+            listening_review=review,
+        )
+
+        self.assertTrue(plan["publishable"])
+        self.assertFalse(any(blocker["code"] == "listening-review-audio-index-invalid" for blocker in plan["blockers"]))
+        audio = next(row for row in plan["nextRows"] if row["data"].get("type") == "audio")
+        self.assertEqual(audio["data"]["url"], "/audio/lessons/course/unit-02-audio-02.mp3")
+        self.assertEqual(audio["data"]["data"]["originalSource"]["audio"]["digest"], "staged-audio-2")
+
+    def test_listening_review_does_not_treat_candidate_position_as_audio_ordinal(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"] = [
+            {
+                "number": 6,
+                "title": "Listening",
+                "visibleTexts": ["Listening", "Listen to the audio and write the country."],
+                "media": [{"kind": "audio-icon", "iconOnly": True}],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        stage = {
+            "entries": [
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 6,
+                    "audioIndex": 2,
+                    "sourceSha256": "staged-audio-2",
+                    "publicHref": "/audio/lessons/course/unit-02-audio-02.mp3",
+                    "transcript": "I come from Peru.",
+                }
+            ]
+        }
+        review = {
+            "exercises": [
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 6,
+                    "audioIndex": 1,
+                    "sourceAudioSha256": "staged-audio-2",
+                    "items": [],
+                }
+            ]
+        }
+
+        plan = builder.build_plan(
+            snapshot_fixture()["modules"][0]["lessons"][0],
+            source,
+            audio_manifest=stage,
+            listening_review=review,
+        )
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "listening-review-audio-index-invalid" for blocker in plan["blockers"]))
+        self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
+
     def test_listening_review_rejects_transcript_evidence_sha_and_manual_status(self) -> None:
         source = source_fixture(complete_audio=True)
         source["deck"]["slides"] = [copy.deepcopy(source["deck"]["slides"][5])]
@@ -1300,7 +1422,7 @@ class BuildCourseLearningTests(unittest.TestCase):
                 {
                     "lessonId": LESSON_ID,
                     "slideNumber": 6,
-                    "audioIndex": 0,
+                    "audioIndex": 1,
                     "sourceAudioSha256": "wrong-sha",
                     "items": [
                         {
@@ -1351,14 +1473,14 @@ class BuildCourseLearningTests(unittest.TestCase):
                 {
                     "lessonId": "another-lesson",
                     "slideNumber": 6,
-                    "audioIndex": 0,
+                    "audioIndex": 1,
                     "sourceAudioSha256": "audio-sha256-fixture",
                     "items": [],
                 },
                 {
                     "lessonId": LESSON_ID,
                     "slideNumber": 6,
-                    "audioIndex": 0,
+                    "audioIndex": 1,
                     "sourceAudioSha256": "audio-sha256-fixture",
                     "items": [
                         {
