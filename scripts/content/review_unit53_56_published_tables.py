@@ -47,8 +47,8 @@ PROOF = {
 
 
 def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
-    # U+FFFD is retained where the published-source extraction contains that
-    # literal replacement glyph.  This keeps strict source-cell validation
+    # The published source uses U+2019 curly apostrophes; the audit keeps that
+    # punctuation in every learner-facing cell.  This keeps strict source-cell validation
     # lossless; the visible-slide proof records the published punctuation.
     return {
         (53, 6): {
@@ -59,10 +59,10 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
                 ["DEAD IN THE WATER", "If something is dead in the water, it has no chance of succeeding or of making any progress.", "That project is still on? I thought it was dead in the water."],
                 ["KICK THE BUCKET", "If someone kicks the bucket, they die.", "Larry just kicked the bucket."],
                 ["NEVER SAY DIE", "You can say \"Never say die!\" if you want to tell someone to keep trying while there's still a chance of success.", "Did you apply for the job?\nI did. Never say die."],
-                ["ONE�S NUMBER IS UP", "Someone is appointed to die.", "I truly think Jake�s number is up."],
-                ["GET SMOKED", "When someone or something gets killed.", "The petitions for were completed, the major�s project for the condos was smoked."],
+                ["ONE’S NUMBER IS UP", "Someone is appointed to die.", "I truly think Jake’s number is up."],
+                ["GET SMOKED", "When someone or something gets killed.", "The petitions for were completed, the major’s project for the condos was smoked."],
                 ["TO BE BROWN BREAD", "To be dead.", "I could not stay at the party, it was brown bread."],
-                ["THE BUCKET LIST", "Things to do before dying.", "Gotta jump off a plane soon, It�s part of my bucket list."],
+                ["THE BUCKET LIST", "Things to do before dying.", "Gotta jump off a plane soon, It’s part of my bucket list."],
             ],
             "notes": [{"heading": "Teacher prompt", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
         },
@@ -92,9 +92,9 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
                 ["A SHOT IN THE ARM", "Something that gives you confidence and strength; it makes you courageous.", "Just give her a shot in the arm and see what she is capable of."],
                 ["AN ACT OF FAITH", "Something you do believing in someone else; giving someone ot something a chance.", "Staying with Dean was an act of faith."],
                 ["WROTE SOMEONE OR SOMETHING OFF", "Not to have faith or confidence in someone or something. Expecting failure.", "I wrote Marcus off many years ago. He cannot be trusted."],
-                ["TO PUSH ONE�S BUTTONS", "To cause a strong reaction or emotional response in someone; to provoke a negative response", "My brother knew exactly how to push my buttons and get me in trouble with our parents"],
+                ["TO PUSH ONE’S BUTTONS", "To cause a strong reaction or emotional response in someone; to provoke a negative response", "My brother knew exactly how to push my buttons and get me in trouble with our parents"],
                 ["TO FEEL UPBEAT", "Upbeat means to feel full of hope, optimism, and joy. Mostly noticeable to others.", "Listening to her favorite song made her feel upbeat"],
-                ["TO HAVE SENSE OF WORTH", "To have self-esteem, to know one�s worth and value", "She would not accept that if she had sense of worth."],
+                ["TO HAVE SENSE OF WORTH", "To have self-esteem, to know one’s worth and value", "She would not accept that if she had sense of worth."],
                 ["TO BE AS BOLD AS BRASS", "To be extremely confident but with no respect nor politeness.", "He came in and acted as bold as brass like always."],
             ],
             "notes": [{"heading": "Teacher prompt", "text": "Look at the phrases and discuss them with your teacher. Did you know them?"}],
@@ -103,7 +103,7 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
             "layout": "two-column mixed-conditional chart with a full-width To Consider note block below",
             "rows": [
                 ["A HYPOTHETICAL PRESENT", "A RESULT IN THE PAST"],
-                ["If they came earlier,", "we wouldn�t have not been sleeping."],
+                ["If they came earlier,", "we wouldn’t have not been sleeping."],
                 ["If John did not push my buttons,", "I would not have acted so feisty."],
                 ["If she were as bold as brass,", "She would have gotten higher in the company."],
             ],
@@ -121,11 +121,11 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
             "layout": "three-column PHRASES / MEANING / EXAMPLE table with eight phrase rows and a teacher discussion prompt above",
             "rows": [
                 ["PHRASES", "MEANING", "EXAMPLE"],
-                ["ANYONE�S CALL", "The expression anyone's call' is used when the result of a contest or election is difficult to predict.", "Who do you think will win?\nIt�s anyone�s call."],
+                ["ANYONE’S CALL", "The expression anyone's call' is used when the result of a contest or election is difficult to predict.", "Who do you think will win?\nIt’s anyone’s call."],
                 ["A FAT CHANCE", "The expression fat chance is used to indicate that something is not very likely to happen.", "The boss is thinking of me for the job? Fat chance!"],
-                ["MURPHY�S LAW", "Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will.", "We've tried to prepare for every possible incident, but remember Murphy's law ...!"],
+                ["MURPHY’S LAW", "Referring to Murphy's law expresses a sentiment of bad luck and the idea that if anything can go wrong, it will.", "We've tried to prepare for every possible incident, but remember Murphy's law ...!"],
                 ["FREE RIDE", "Someone who gets a free ride benefits from a collective activity without participating in it.", "Only those who share the work can share the benefits - nobody gets a free ride!"],
-                ["FALL INTO ONE�S LAP", "If something good falls into your lap, it happens to you without any effort on your part.", "She's not making much effort to find work. Does she think a job is going to fall into her lap?"],
+                ["FALL INTO ONE’S LAP", "If something good falls into your lap, it happens to you without any effort on your part.", "She's not making much effort to find work. Does she think a job is going to fall into her lap?"],
                 ["ON THE OFF CHANCE", "If you do something on the off chance, you think there might be a slight possibility of success.", "I went into the supermarket on the off chance that I would find a map."],
                 ["TAKE POT LUCK", "If you take pot luck, you accept whatever is available without knowing what it will be like.", "We were so hungry we decided to take pot luck and stopped at the first restaurant we saw."],
                 ["PLAY A WAITING GAME", "If you play a waiting game, you deliberately delay taking action in order to be able to act more effectively later.", "The cat keeps its eye on the bird, carefully playing a waiting game."],
@@ -136,9 +136,9 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
             "layout": "two-column mixed-conditional chart with a full-width To Consider note block below",
             "rows": [
                 ["A HYPOTHETICAL FUTURE", "A RESULT IN THE PAST"],
-                ["If I weren�t having a party next Friday,", "I would have been there at the mall to go out with you."],
-                ["If they weren�t going to school tomorrow,", "We would have probably sent them to your place."],
-                ["If she were having her doctor appointment on Thursday,", "I wouldn�t have taken my piano lesson."],
+                ["If I weren’t having a party next Friday,", "I would have been there at the mall to go out with you."],
+                ["If they weren’t going to school tomorrow,", "We would have probably sent them to your place."],
+                ["If she were having her doctor appointment on Thursday,", "I wouldn’t have taken my piano lesson."],
             ],
             "notes": [{"heading": "To Consider", "text": "1. The conditional that get mixed here is the 2nd one. It uses past progressive. 2. The result in the past is used with the perfect modal WOULD + HAVE + PAST PARTICIPLE. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have missed the meeting if we were having the chance to attend that day.. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone with us If he were coming to the ceremony on Sunday? 6. The time expressions in the conditional clause play very important role."}],
         },
@@ -146,9 +146,9 @@ def _rows_and_notes() -> dict[tuple[int, int], dict[str, Any]]:
             "layout": "three-column index / Functions / Examples table with a separate To consider note block",
             "rows": [
                 ["", "Functions", "Examples"],
-                ["1", "Talk about hypothetical future situation with a past result.", "If I wasn�t having dinner with Dana on Wednesday, I would have accepted your invitation."],
+                ["1", "Talk about hypothetical future situation with a past result.", "If I wasn’t having dinner with Dana on Wednesday, I would have accepted your invitation."],
             ],
-            "notes": [{"heading": "To consider", "text": "This type of mixed conditional refers to possible future that prevents the person from doing / going another activity that eventually will remain in the past. *Sometimes you can see the if clauses using WASN�T and not WEREN�T"}],
+            "notes": [{"heading": "To consider", "text": "This type of mixed conditional refers to possible future that prevents the person from doing / going another activity that eventually will remain in the past. *Sometimes you can see the if clauses using WASN’T and not WEREN’T"}],
         },
         (56, 6): {
             "layout": "three-column PHRASES / MEANING / EXAMPLE table with eight phrase rows and a teacher discussion prompt above",
@@ -205,6 +205,10 @@ def _source_slide(source: dict[str, Any], slide_number: int) -> dict[str, Any]:
     raise ValueError(f"missing source slide {slide_number}")
 
 
+def _normalise_source_text(value: str) -> str:
+    return " ".join(value.split()).casefold()
+
+
 def _proof(unit: int, slide_number: int, source_url: str, visible_texts: list[str]) -> dict[str, Any]:
     object_id, screenshot_bytes, screenshot_sha = PROOF[(unit, slide_number)]
     slide_url = f"{source_url}&slide=id.{object_id}"
@@ -231,6 +235,13 @@ def _table_entry(unit: int, slide_number: int, source: dict[str, Any], source_pa
     slide = _source_slide(source, slide_number)
     review = _rows_and_notes()[(unit, slide_number)]
     source_url = source["sourceUrl"]
+    source_text = _normalise_source_text("\n".join(slide.get("visibleTexts", [])))
+    for row in review["rows"]:
+        for cell in row:
+            if cell and _normalise_source_text(cell) not in source_text:
+                raise ValueError(
+                    f"published cell is not present in source slide {unit}/{slide_number}: {cell!r}"
+                )
     source_ref = {
         "kind": "published",
         "path": source_path,
@@ -399,6 +410,13 @@ def validate(document: dict[str, Any]) -> None:
         proof = entry["sourceEvidence"]["publishedSlideProof"]
         assert len(proof["screenshotSha256"]) == 64
         assert proof["wholeSlideScreenshotEvidenceOnly"] is True
+        source_text = _normalise_source_text(
+            "\n".join(entry["sourceEvidence"]["publishedVisibleTexts"])
+        )
+        for row in projection["tables"][0]["rows"]:
+            for cell in row:
+                assert "\ufffd" not in cell
+                assert _normalise_source_text(cell) in source_text
     assert document["tableReview"]["summary"]["auditedCount"] == 12
 
 
