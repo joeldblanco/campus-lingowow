@@ -187,6 +187,9 @@ class BuildCourseLearningTests(unittest.TestCase):
         )
         self.assertIn("<p>", reading["data"]["content"])
         self.assertIn("Maria is from Peru", reading["data"]["content"])
+        reading_essay = next(row for row in generated if row["data"]["type"] == "essay" and row["data"]["data"]["sourceSlides"] == [4])
+        self.assertIn("Authored passage/context", reading_essay["data"]["data"]["aiGradingContext"])
+        self.assertIn("Maria is from Peru", reading_essay["data"]["data"]["aiGradingContext"])
 
         recording = next(row for row in generated if row["data"]["type"] == "recording")
         self.assertIn("Act out the conversation", recording["data"]["instruction"])
@@ -266,6 +269,51 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(exercise["data"]["aiGrading"])
         self.assertNotIn("correctAnswer", exercise["data"])
         self.assertNotIn("answer", exercise["data"])
+
+    def test_closed_true_false_prompt_without_reviewed_key_is_blocked_not_essay(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slideCount"] = 9
+        source["deck"]["slides"].insert(
+            5,
+            {
+                "number": 5,
+                "title": "Listening check",
+                "visibleTexts": ["Listen to the audio and state if each sentence is true or false."],
+                "media": [
+                    {
+                        "kind": "audio",
+                        "url": "https://cdn.example/lesson/audio-check.mp3",
+                        "digest": "audio-check-digest",
+                        "transcript": "The authored listening passage.",
+                    }
+                ],
+            },
+        )
+        lesson = snapshot_fixture()["modules"][0]["lessons"][0]
+        plan = builder.build_plan(lesson, source)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "closed-answer-key-missing" and blocker["slide"] == 5 for blocker in plan["blockers"]))
+        closed_rows = [row for row in plan["nextRows"] if row.get("data", {}).get("data", {}).get("sourceSlides") == [5]]
+        self.assertFalse(any(row["data"].get("type") == "essay" for row in closed_rows))
+        instruction = next(row for row in closed_rows if row["data"].get("type") == "text")
+        self.assertTrue(instruction["data"]["reviewRequired"])
+        self.assertEqual(instruction["data"]["reviewReason"], "closed-answer-key-missing")
+
+    def test_open_audio_essay_context_includes_authored_transcript(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"][5]["visibleTexts"] = ["Write a response based on what you hear."]
+        lesson = snapshot_fixture()["modules"][0]["lessons"][0]
+        plan = builder.build_plan(lesson, source)
+
+        exercise = next(
+            row
+            for row in plan["nextRows"]
+            if row.get("data", {}).get("type") == "essay" and row["data"]["data"]["sourceSlides"] == [6]
+        )
+        context = exercise["data"]["data"]["aiGradingContext"]
+        self.assertIn("Authored audio transcript", context)
+        self.assertIn("I come from Peru.", context)
 
     def test_explicit_authored_answer_key_is_preserved_when_present(self) -> None:
         source = source_fixture(complete_audio=True)

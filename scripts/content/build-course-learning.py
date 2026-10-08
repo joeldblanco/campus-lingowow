@@ -1026,9 +1026,50 @@ def _is_short_answer_prompt(text: str) -> bool:
     )
 
 
+def _is_closed_answer_prompt(text: str) -> bool:
+    """Identify activities that need an authored key before native grading."""
+
+    lowered = text.casefold()
+    if re.search(r"\b(?:your own|personal information|about yourself|own answer|own opinion)\b", lowered):
+        return False
+    return bool(
+        re.search(
+            r"\b(?:true\s*(?:/|or|-)?\s*false|multiple[- ]?choice|choose|select|pick|fill\s+in|complete\s+(?:the|each|these)\s+(?:sentence|blank|space)|identify|state whether|change .*\b(?:interrogative|negative|question|form)|transform)\b",
+            lowered,
+        )
+    )
+
+
 def _is_reading(text: str) -> bool:
     lowered = text.casefold()
     return len(text) >= 160 or bool(re.search(r"\b(?:read the text|reading|read aloud)\b", lowered))
+
+
+def _ai_grading_context(
+    slide: Mapping[str, Any],
+    prompt_text: str,
+    audio_item: Mapping[str, Any] | None = None,
+    source: Mapping[str, Any] | None = None,
+) -> str:
+    parts = ["Evaluate the learner response against the authored source prompt."]
+    source_text = "\n".join(_meaningful_texts(slide)).strip()
+    if source_text and _is_reading(source_text):
+        parts.append(f"Authored passage/context:\n{source_text}")
+    elif source is not None and re.search(r"\b(?:passage|text|reading|according to|based on|following|answer)", prompt_text.casefold()):
+        current_number = _slide_number(slide)
+        previous = [
+            candidate
+            for candidate in _slides(source)
+            if _slide_number(candidate) < current_number and _is_reading("\n".join(_meaningful_texts(candidate)))
+        ]
+        if previous:
+            passage = "\n".join(_meaningful_texts(previous[-1])).strip()
+            if passage:
+                parts.append(f"Authored preceding passage/context:\n{passage}")
+    transcript = _audio_transcript(audio_item) if audio_item is not None else ""
+    if transcript:
+        parts.append(f"Authored audio transcript:\n{transcript}")
+    return "\n\n".join(parts)
 
 
 def _slide_warning_codes(slide: Mapping[str, Any]) -> list[str]:
@@ -1196,6 +1237,7 @@ def _native_block_specs(
 
     explicit_answer = _explicit_answer_key(slide)
     explicit_options = _explicit_options(slide)
+    closed_answer_blocked = False
     if explicit_answer is not None:
         if explicit_options:
             choice_options, correct_option_id = _multiple_choice_options(explicit_options, explicit_answer, number)
@@ -1288,13 +1330,23 @@ def _native_block_specs(
                     "mode": "teacher-and-self-study",
                     "aiGrading": True,
                     "data": {
-                        "aiGradingContext": "No authored answer key is assumed; evaluate the learner recording against the instruction.",
+                        "aiGradingContext": _ai_grading_context(slide, prompt_text, audio_item, source),
                     },
                 },
             )
         )
 
-    if _is_essay_prompt(prompt_text):
+    if explicit_answer is None and _is_closed_answer_prompt(prompt_text):
+        closed_answer_blocked = True
+        _add_blocker(
+            blockers,
+            _blocker(
+                "closed-answer-key-missing",
+                number,
+                "Closed-answer activity has no reviewed authored answer key; it remains a source instruction until reviewed.",
+            ),
+        )
+    elif _is_essay_prompt(prompt_text):
         min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
@@ -1306,7 +1358,7 @@ def _native_block_specs(
                     **({"minWords": min_words} if min_words is not None else {}),
                     **({"maxWords": max_words} if max_words is not None else {}),
                     "data": {
-                        "aiGradingContext": "No authored answer key is assumed; evaluate the learner response against the source prompt.",
+                        "aiGradingContext": _ai_grading_context(slide, prompt_text, audio_item, source),
                     },
                 },
             )
@@ -1323,7 +1375,7 @@ def _native_block_specs(
                     **({"minWords": min_words} if min_words is not None else {}),
                     **({"maxWords": max_words} if max_words is not None else {}),
                     "data": {
-                        "aiGradingContext": "No authored answer key is assumed; evaluate the learner response against the source prompt.",
+                        "aiGradingContext": _ai_grading_context(slide, prompt_text, audio_item, source),
                     },
                 },
             )
@@ -1333,6 +1385,20 @@ def _native_block_specs(
     # same slide also has questions or a read-aloud instruction.
     if _is_reading(full_text) and not tables:
         specs.append(("text", {**common, "content": _readable_html(evidence_texts), "format": "html"}))
+
+    if closed_answer_blocked and not any(native_type == "text" for native_type, _ in specs):
+        specs.append(
+            (
+                "text",
+                {
+                    **common,
+                    "content": _readable_html(evidence_texts),
+                    "format": "html",
+                    "reviewRequired": True,
+                    "reviewReason": "closed-answer-key-missing",
+                },
+            )
+        )
 
     if not specs and full_text:
         specs.append(("text", {**common, "content": _readable_html(evidence_texts), "format": "html"}))
