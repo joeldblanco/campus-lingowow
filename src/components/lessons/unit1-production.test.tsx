@@ -185,6 +185,23 @@ describe('Unit 1 sentence production', () => {
 })
 
 describe('Unit 1 conversation production', () => {
+  it('uses the reviewed course scenario and authored turn count in both study modes', () => {
+    const block: Block = {
+      id: 'unit-two-conversation', type: 'recording', order: 0,
+      instruction: 'Introduce yourself to a classmate and discuss your origins.',
+      data: {
+        learningRevision: 'course-guided-v1', guidedRole: 'conversation',
+        turns: [{ id: 'origins', question: 'Where does your family come from?' }],
+      },
+    }
+    render(<Unit1Production block={block} />)
+    expect(screen.getByText('Where does your family come from?')).toBeVisible()
+    expect(screen.getByText('Turno 1 de 1')).toBeVisible()
+    expect(screen.queryByText('What is your name?')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Con mi profesora' }))
+    expect(screen.getByText('Where does your family come from?')).toBeVisible()
+    expect(screen.queryByRole('button', { name: 'Grabar respuesta' })).not.toBeInTheDocument()
+  })
   it('offers a teacher mode without recording or automatic grading, with explicit completion', () => {
     const target = document.createElement('div')
     const onCompletion = vi.fn()

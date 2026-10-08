@@ -24,7 +24,7 @@ import { assignLessonBackgrounds } from '@/lib/lesson-backgrounds'
 import { Unit1Scene } from './unit1-scene'
 import { Unit1Teaching, isUnit1TeachingBlock } from './unit1-teaching'
 import dynamic from 'next/dynamic'
-import { isUnit1ProductionBlock } from '@/lib/unit1-production-role'
+import { getUnit1ProductionRole, isUnit1ProductionBlock } from '@/lib/unit1-production-role'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 import motion from './guided-lesson-viewer-motion.module.css'
 const Unit1Production = dynamic(() => import('./unit1-production').then(module => module.Unit1Production))
@@ -361,7 +361,7 @@ export function GuidedLessonViewer({
                       suppressHeading={block.type === 'title' && block.title.trim() === step.label}
                     >
                       {isUnit1TeachingBlock(block) && block.type !== 'audio' ? <Unit1Teaching block={block} />
-                      : isUnit1ProductionBlock(block) && ['sentences', 'conversation'].includes(String(block.data?.unit1Role)) ? <Unit1Production
+                      : isUnit1ProductionBlock(block) && ['sentences', 'conversation'].includes(String(getUnit1ProductionRole(block))) ? <Unit1Production
                         block={block}
                         guidedActionTarget={targets[step.id]}
                         onGuidedCompletionChange={completionCallbacks[block.id]}

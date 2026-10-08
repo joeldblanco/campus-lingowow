@@ -139,6 +139,9 @@ function normalizeTurns(block: RecordingBlock): ConversationTurn[] {
     })
     .filter((turn): turn is ConversationTurn => Boolean(turn))
 
+  if (data.learningRevision === 'course-guided-v1') {
+    return turns.length > 0 ? turns : [{ id: 'scenario', question: block.instruction || block.prompt || 'Practica esta situación.', answerPrompt: 'Responde a la situación.' }]
+  }
   return turns.length === 5 ? turns : DEFAULT_CONVERSATION_TURNS
 }
 
