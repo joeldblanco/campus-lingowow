@@ -119,6 +119,15 @@ describe('illustrated vocabulary sequence', () => {
     expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([grammar])[0])).toBe('Consulta las formas.')
   })
 
+  it('does not turn every oral presentation into a self-introduction', () => {
+    const family: Block = { id: 'family-talk', type: 'recording', order: 0, prompt: 'Present your family to the class.' }
+    const topic: Block = { id: 'topic-talk', type: 'recording', order: 0, prompt: 'Present your opinion about the topic.' }
+    const self: Block = { id: 'self-talk', type: 'recording', order: 0, prompt: 'Present yourself to a new classmate.' }
+    expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([family])[0])).toBe('Presenta a tu familia.')
+    expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([topic])[0])).toBe('Graba tu presentación.')
+    expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([self])[0])).toBe('Preséntate.')
+  })
+
   it('accepts only known scene assets and keeps generic steps on the setting path', () => {
     const step = buildIllustratedLessonSteps([{
       id: 'scene',

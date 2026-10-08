@@ -357,8 +357,10 @@ function getWritingTitle(step: GuidedLessonStep): string {
 
 function getSpeakingTitle(step: GuidedLessonStep): string {
   const prompt = normalizeSearchText(getBlockPrompt(step, ['recording']))
+  if (prompt.includes('familia') || prompt.includes('family')) return 'Presenta a tu familia.'
   if (prompt.includes('conversation') || prompt.includes('conversa')) return 'Ahora, conversa.'
-  if (prompt.includes('present') || prompt.includes('presen')) return 'Preséntate.'
+  if (prompt.includes('present yourself') || prompt.includes('introduce yourself') || prompt.includes('presentate')) return 'Preséntate.'
+  if (prompt.includes('present')) return 'Graba tu presentación.'
   return 'Graba tu respuesta.'
 }
 
