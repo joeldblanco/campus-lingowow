@@ -3271,6 +3271,71 @@ def _reviewed_text_only_table(
     }
 
 
+def _reviewed_table_subtitle(
+    slide: Mapping[str, Any],
+    tables: Sequence[Sequence[Sequence[str]]],
+) -> str:
+    """Return a verified published explanation that sits outside a table."""
+
+    slide_data = slide.get("data")
+    raw_review = slide.get("tableReview")
+    if not isinstance(raw_review, Mapping):
+        raw_review = slide_data.get("tableReview") if isinstance(slide_data, Mapping) else None
+    semantics = slide.get("tableSemantics")
+    if not isinstance(semantics, Mapping) and isinstance(slide_data, Mapping):
+        semantics = slide_data.get("tableSemantics")
+    if not isinstance(raw_review, Mapping) or not isinstance(semantics, Mapping):
+        return ""
+    if _text(semantics.get("mode")).casefold() != "structured" or semantics.get("tableReferenceResolved") is not True:
+        return ""
+    if raw_review.get("clearTableSemanticsBlocker") is not True:
+        return ""
+    review_status = _text(raw_review.get("reviewStatus")).casefold().replace("_", "-")
+    if "reviewed" not in review_status or "text-only" in review_status:
+        return ""
+    projection = raw_review.get("projection")
+    if not isinstance(projection, Mapping) or _text(projection.get("mode")).casefold() != "structured":
+        return ""
+    if projection.get("approved") is not True:
+        return ""
+    evidence = raw_review.get("sourceEvidence")
+    if not isinstance(evidence, Mapping):
+        return ""
+
+    cell_values = {
+        _normalise(cell).casefold()
+        for table in tables
+        for row in table
+        for cell in row
+        if _normalise(cell)
+    }
+    # Prefer an explicit audit note when present. Otherwise the published
+    # visible-text list is authoritative; its non-cell value is the separate
+    # explanation above the chart (Unit 37's reviewed source contract).
+    candidates: list[str] = []
+    for key in ("publishedRenderedNote", "publishedNote", "sourceNote"):
+        value = _normalise(evidence.get(key))
+        if value:
+            candidates.append(value)
+    candidates.extend(_unique_texts(evidence.get("publishedVisibleTexts")))
+    seen: set[str] = set()
+    for candidate in candidates:
+        normalized = _normalise(candidate)
+        key = normalized.casefold()
+        if not normalized or key in seen:
+            continue
+        seen.add(key)
+        if key in cell_values or _is_technical_text(normalized):
+            continue
+        # Do not promote the flattened table serialization or an authored
+        # listening instruction into a chart subtitle.
+        matching_cells = sum(1 for cell in cell_values if len(cell) >= 8 and cell in key)
+        if matching_cells >= 2 or _is_replaced_listening_instruction(normalized) or _is_teacher_led_listening_prompt(normalized):
+            continue
+        return normalized
+    return ""
+
+
 def _exercise_review_ai_context(
     slide: Mapping[str, Any],
     item: Mapping[str, Any],
@@ -4387,6 +4452,7 @@ def _native_block_specs(
             combined_rows.extend(copy.deepcopy(table))
         headers = combined_rows[0] if combined_rows else []
         rows = combined_rows[1:] if len(combined_rows) > 1 else []
+        table_subtitle = _reviewed_table_subtitle(slide, tables)
         worksheet_projection = _grammar_worksheet_projection(tables, exercise_items)
         learner_headers = headers
         learner_rows = rows
@@ -4401,6 +4467,7 @@ def _native_block_specs(
                     **common,
                     "content": {"headers": learner_headers, "rows": learner_rows},
                     "tables": copy.deepcopy(tables),
+                    **({"subtitle": table_subtitle} if table_subtitle else {}),
                     **({"worksheetProjection": worksheet_metadata} if worksheet_metadata else {}),
                     **({"data": {"tableGroups": table_groups}} if table_groups else {}),
                 },

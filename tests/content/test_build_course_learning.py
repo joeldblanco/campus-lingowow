@@ -583,6 +583,59 @@ def picture_prompt_source_cases() -> list[dict[str, object]]:
     ]
 
 
+def unit37_reviewed_table_fixture() -> tuple[dict, str, list[list[str]]]:
+    """Published Unit 37 chart plus the separately rendered source note."""
+
+    note = "Preference can have an extended meaning if we use the more complex grammar points to regular ones."
+    headers = ["", "Grammar", "Examples", "Observation"]
+    rows = [
+        [
+            "1",
+            "Preferences + Non-finite clause",
+            "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+            "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses",
+        ],
+        [
+            "2",
+            "Preferences + Relative clause",
+            "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI�m desperate for a partner who can meet my professional standards.",
+            "Relative clauses need to respect their principles even here.",
+        ],
+    ]
+    table = [headers, *rows]
+    flattened = " ".join(value.replace("\n", " ") for row in table for value in row if value)
+    slide = {
+        "number": 8,
+        "title": flattened,
+        "visibleTexts": [flattened, note],
+        "tables": [table],
+        "tableSemantics": {
+            "mode": "structured",
+            "tables": [table],
+            "tableReferenceResolved": True,
+            "source": "published-visible-text",
+        },
+        "tableReview": {
+            "schemaVersion": 1,
+            "lessonId": LESSON_ID,
+            "sourceSlide": 8,
+            "reviewStatus": "reviewed-with-published-corrections",
+            "clearTableSemanticsBlocker": True,
+            "tableReferenceResolved": True,
+            "projection": {
+                "approved": True,
+                "mode": "structured",
+                "source": "published-visible-text",
+            },
+            "sourceEvidence": {"publishedVisibleTexts": [flattened, note, *[value for row in table for value in row]]},
+        },
+    }
+    source = source_fixture()
+    source["deck"]["slides"] = [slide]
+    source["deck"]["slideCount"] = 1
+    return source, note, rows
+
+
 class BuildCourseLearningTests(unittest.TestCase):
     def test_goal_slide_renders_one_concise_source_block(self) -> None:
         goal = "Describe oneself and others� origins by talking about countries and nationalities."
@@ -1394,6 +1447,21 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertIn("To Be", context["data"]["content"])
         self.assertIn("MOST COMMON QUESTIONS", context["data"]["content"])
         self.assertNotIn("To Be verb Other verbs", context["data"]["content"])
+
+    def test_reviewed_unit37_table_keeps_published_note_as_learner_subtitle(self) -> None:
+        source, note, expected_rows = unit37_reviewed_table_fixture()
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        self.assertTrue(plan["publishable"], plan["blockers"])
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        structured = next(row for row in generated if row["data"]["type"] == "structured-content")
+        self.assertEqual(structured["data"]["subtitle"], note)
+        self.assertEqual(structured["data"]["content"]["headers"], ["", "Grammar", "Examples", "Observation"])
+        normalized_rows = [[builder._normalise(cell) for cell in row] for row in expected_rows]
+        self.assertEqual(structured["data"]["content"]["rows"], normalized_rows)
+        self.assertIn("Past participle Clauses", json.dumps(structured["data"]["content"], ensure_ascii=False))
+        self.assertIn("I�m desperate for a partner", json.dumps(structured["data"]["content"], ensure_ascii=False))
+        self.assertEqual(structured["data"].get("subtitle"), note)
 
     def test_incidental_table_noun_does_not_create_missing_table_blocker(self) -> None:
         source = source_fixture()
