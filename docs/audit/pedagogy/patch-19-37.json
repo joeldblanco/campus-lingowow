@@ -1,0 +1,2451 @@
+{
+  "schemaVersion": 1,
+  "units": [
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37
+  ],
+  "patches": [
+    {
+      "unit": 19,
+      "lessonId": "cmk401if40005l804vf3z3k0q",
+      "rowId": "course-guided-cmk401if40005l804vf3z3k0q-recording-14-d-tell-your-teacher-about-your-common-life-events-likely-to-033",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Tell your teacher about your common life events likely to happen in a close future. Ask him questions too.",
+          "after": "Discuss close-future events with a partner and ask about one event."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher about your common life events likely to happen in a close future. Ask him questions too.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What close-future event do you have this week?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “I start studying tomorrow.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What are you going to do before that event?",
+              "answerPrompt": "Answer with one plan using be going to."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about one close-future event.",
+              "answerPrompt": "Switch roles and answer with simple present or will."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 19,
+      "lessonId": "cmk401if40005l804vf3z3k0q",
+      "rowId": "course-guided-cmk401if40005l804vf3z3k0q-text-13-at-home-don-t-you-have-a-test-tomorrow-yes-mum-i-start-studying--031",
+      "reason": "Correct learner-visible grammar in the future-event dialogue.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>At home! Don’t you have a test tomorrow? Yes, mum. I start studying in some minutes. Tommy it is 8 o’clock, very late! Easy, mum! I finish reading this pages in some minutes and I get to it. If you don’t pass the test tomorrow, you will be grounded until you are married. I am going to pass mum not to worry. Hey BTW, do we have a family meeting tomorrow? Yes! Tomorrow, your grandma is on her birthday. Oh…! I want to hang out with my friends tomorrow night... Sorry, we have a family commitment, you are coming with us! Oh great! Another boring family meeting.</p>",
+          "after": "<p>At home! Don’t you have a test tomorrow? Yes, mum. I start studying in some minutes. Tommy it is 8 o’clock, very late! Easy, mum! I finish reading these pages in some minutes and I get to it. If you don’t pass the test tomorrow, you will be grounded until you are married. I am going to pass mum not to worry. Hey BTW, do we have a family meeting tomorrow? Yes! Tomorrow, it is your grandma's birthday. Oh…! I want to hang out with my friends tomorrow night... Sorry, we have a family commitment, you are coming with us! Oh great! Another boring family meeting.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 20,
+      "lessonId": "cmk401zlh0001js04fn6f881k",
+      "rowId": "course-guided-cmk401zlh0001js04fn6f881k-recording-14-d-pretend-you-and-your-teacher-are-friends-and-are-deciding-033",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Pretend you and your teacher are friends and are deciding where to go out tonight. Talk about the weather and make predictions about it. Also, include instant decisions and promises.",
+          "after": "Discuss tonight’s weather and plans with a partner."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Pretend you and your teacher are friends and are deciding where to go out tonight. Talk about the weather and make predictions about it. Also, include instant decisions and promises.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What weather do you expect tonight?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “I’ll take my umbrella.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What will you do if the weather changes?",
+              "answerPrompt": "Give an instant decision or plan."
+            },
+            {
+              "id": "question",
+              "question": "Make one promise about the outing to your partner.",
+              "answerPrompt": "Use will and switch roles."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 20,
+      "lessonId": "cmk401zlh0001js04fn6f881k",
+      "rowId": "course-guided-cmk401zlh0001js04fn6f881k-text-8-when-we-talk-about-weather-we-do-not-only-use-simple-present-we-c-020",
+      "reason": "Clarify that future time phrases are optional when context is clear and distinguish will from a prior plan.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>When we talk about weather we do not only use simple present. We can also use will. Check the following examples.</p><p>TO CONSIDER 1. Will is used to state future. 2. Verbs go in simple form after using will. 3. Future Time phrases are also needed. 4. Adverbs also help to state meaning.</p><p>Will – Future It will rain soon. It is cloudy. Will it rain soon? It is cold; it will probably snow later. Will it probably snow later? Go fresh, it will be sunny at the beach. Will it be sunny at the beach?</p>",
+          "after": "<p>When we talk about weather we do not only use simple present. We can also use will. Check the following examples.</p><p>TO CONSIDER 1. Will is used to state future. 2. Verbs go in simple form after using will. 3. A future time phrase may be added when the context does not already make the time clear. 4. Adverbs also help to state meaning.</p><p>Quick decision: “I'll take my umbrella.” Prior plan: “I'm going to take my umbrella because rain is forecast.”</p><p>Will – Future It will rain soon. It is cloudy. Will it rain soon? It is cold; it will probably snow later. Will it probably snow later? Go fresh, it will be sunny at the beach. Will it be sunny at the beach?</p>"
+        }
+      ]
+    },
+    {
+      "unit": 21,
+      "lessonId": "cmkq3xx5w0001jr04cw7bh9g7",
+      "rowId": "course-guided-cmkq3xx5w0001jr04cw7bh9g7-recording-16-d-following-the-example-from-the-previous-activity-act-out--035",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, act out a situation with your teacher where you can express the different traveling experiences you have lived.",
+          "after": "Discuss travel experiences and ongoing actions with a partner."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, act out a situation with your teacher where you can express the different traveling experiences you have lived.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What place have you visited?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “I have visited a new place.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "How long have you been interested in traveling?",
+              "answerPrompt": "Use for or since for an action that continues."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about a completed travel experience.",
+              "answerPrompt": "Ask and answer with the present perfect."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 21,
+      "lessonId": "cmkq3xx5w0001jr04cw7bh9g7",
+      "rowId": "course-guided-cmkq3xx5w0001jr04cw7bh9g7-structured-content-11-we-can-use-present-perfect-tense-to-communicate-di-024",
+      "reason": "Separate present-perfect continuous actions that continue from completed present-perfect actions.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Express actions that started in the past and still continue.",
+                "They have visited us for two weeks already."
+              ],
+              [
+                "",
+                "",
+                "You have been tall since you were a child."
+              ],
+              [
+                "2",
+                "Talk about actions than happened only once or certain times.",
+                "He has just been there once."
+              ],
+              [
+                "",
+                "",
+                "We have stayed at your place many times."
+              ],
+              [
+                "3",
+                "State unfinished actions",
+                "We have been expecting him to change for so long."
+              ],
+              [
+                "4",
+                "Point out finished actions",
+                "-Why are you so tired? -I’ve been getting ready for the test all week."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Express actions that started in the past and still continue.",
+                "They have visited us for two weeks already."
+              ],
+              [
+                "",
+                "",
+                "You have been tall since you were a child."
+              ],
+              [
+                "2",
+                "Talk about actions that happened only once or at certain times.",
+                "He has just been there once."
+              ],
+              [
+                "",
+                "",
+                "We have stayed at your place many times."
+              ],
+              [
+                "3",
+                "State an action that is still unfinished.",
+                "We have been waiting for him to change for so long."
+              ],
+              [
+                "4",
+                "Point out a finished action.",
+                "-Why are you so tired?\n-I've finished getting ready for the test."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 22,
+      "lessonId": "cmkpx0d310001gy04zr4lq99y",
+      "rowId": "course-guided-cmkpx0d310001gy04zr4lq99y-recording-14-d-discuss-with-your-teacher-how-people-should-be-when-they--033",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting.",
+          "after": "Discuss how friends should behave and which actions are required or prohibited."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "How should friends behave with one another?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “You should listen to your friend.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What mustn’t a friend do?",
+              "answerPrompt": "State one prohibition with mustn’t."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner what a friend does not have to do.",
+              "answerPrompt": "Contrast don’t have to with mustn’t."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 22,
+      "lessonId": "cmkpx0d310001gy04zr4lq99y",
+      "rowId": "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-8-statements-questions-answers-1-you-should-talk-to-h-020",
+      "reason": "Make mustn’t, don’t have to, and can’t statements and answers logically consistent.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Statements",
+              "Questions",
+              "Answers"
+            ],
+            "rows": [
+              [
+                "1",
+                "You should talk to her.",
+                "Should I talk to her?",
+                "Yes, you should talk to her."
+              ],
+              [
+                "2",
+                "We have to be nice to them.",
+                "Do you have to be nice to them?",
+                "No, we don’t have to be nice to them."
+              ],
+              [
+                "3",
+                "She must be careful now.",
+                "Must she be careful now?",
+                "No, she mustn't be careful now."
+              ],
+              [
+                "4",
+                "They can’t act like children.",
+                "Can they act like children?",
+                "Yes, they can act like children."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Statements",
+              "Questions",
+              "Answers"
+            ],
+            "rows": [
+              [
+                "1",
+                "You should talk to her.",
+                "Should I talk to her?",
+                "Yes, you should talk to her."
+              ],
+              [
+                "2",
+                "We have to be nice to them.",
+                "Do you have to be nice to them?",
+                "No, we don’t have to be nice to them."
+              ],
+              [
+                "3",
+                "She mustn’t touch the controls.",
+                "Must she touch the controls?",
+                "No, she mustn’t touch the controls."
+              ],
+              [
+                "4",
+                "They can’t act like children.",
+                "Can they act like children?",
+                "No, they can’t act like children."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 23,
+      "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+      "rowId": "course-guided-cmn7vbcg20005l804sg2hxgf4-recording-14-d-tell-your-teacher-about-an-anecdote-from-your-family-or-f-034",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.",
+          "after": "Tell an anecdote using indefinite pronouns for people, places, and things."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "Tell your partner about an anecdote involving someone or something.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “Someone went somewhere.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "Where did it happen?",
+              "answerPrompt": "Answer with somewhere, anywhere, or nowhere."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about a similar anecdote.",
+              "answerPrompt": "Ask with someone, something, or somewhere."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 23,
+      "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+      "rowId": "course-guided-cmn7vbcg20005l804sg2hxgf4-short-answer-12-a-listen-to-the-audio-and-answer-the-questions-your-teac-029",
+      "reason": "Accept valid equivalent indefinite-pronoun answers where the authored blank allows them.",
+      "changes": [
+        {
+          "path": [
+            "items",
+            1,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "somewhere"
+          ],
+          "after": [
+            "somewhere",
+            "someplace"
+          ]
+        },
+        {
+          "path": [
+            "items",
+            7,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "someone went somewhere to do something"
+          ],
+          "after": [
+            "someone went somewhere to do something",
+            "somebody went somewhere to do something"
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReviewItems",
+            0,
+            "answerItems",
+            1,
+            "accepted"
+          ],
+          "before": [
+            "somewhere"
+          ],
+          "after": [
+            "somewhere",
+            "someplace"
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReviewItems",
+            0,
+            "answerItems",
+            7,
+            "accepted"
+          ],
+          "before": [
+            "someone went somewhere to do something"
+          ],
+          "after": [
+            "someone went somewhere to do something",
+            "somebody went somewhere to do something"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 23,
+      "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+      "rowId": "course-guided-cmn7vbcg20005l804sg2hxgf4-text-8-people-places-things-all-everybody-everyone-everywhere-everything-022",
+      "reason": "Clarify the indefinite-pronoun categories and singular agreement without treating all as a singular-pronoun rule.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>People Places Things All Everybody Everyone Everywhere Everything Positive Somebody Someone Somewhere Something Negative Anybody Anyone Anywhere Anything None Nobody No one Nowhere Nothing</p><p>We use indefinite pronouns to make generalizations about people, places and things.</p><p>To Consider 1. All indefinite pronouns have a definite connotation when using them. 2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. 3. The ones using the particle “No” have already a full negative connotation like “never”. 4. They are used with verbs in singular (i.e. the verb for the 3rd person singular)</p>",
+          "after": "<p>People Places Things All Everybody Everyone Everywhere Everything Positive Somebody Someone Somewhere Something Negative Anybody Anyone Anywhere Anything None Nobody No one Nowhere Nothing</p><p>We use indefinite pronouns to make generalizations about people, places and things.</p><p>To consider 1. Indefinite pronouns ending in -body, -one, and -thing refer to people or things without naming them. 2. Pronouns beginning with “any” commonly appear in questions and negative sentences, but they can also appear in positive contexts. 3. Pronouns beginning with “no” already carry a negative meaning. 4. Pronouns ending in -body, -one, and -thing usually take a singular verb: “Everyone is ready.” With all, the verb agrees with the noun after of: “All of the students are ready.”</p>"
+        }
+      ]
+    },
+    {
+      "unit": 24,
+      "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+      "rowId": "course-guided-cmn7vc7pm0001le04qfcuwa27-recording-14-d-act-out-a-situation-with-your-teacher-where-you-can-expre-034",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Act out a situation with your teacher where you can express different ideas about a job you don’t like or something that is not what you expected. Use the language studied",
+          "after": "Discuss a job or expectation with relative clauses."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Act out a situation with your teacher where you can express different ideas about a job you don’t like or something that is not what you expected. Use the language studied",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "Describe a job or place using a relative clause.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “The job that I want is flexible.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "Add one extra detail about the person or thing.",
+              "answerPrompt": "Use commas for a non-restrictive clause."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner why or how an expectation changed.",
+              "answerPrompt": "Ask and answer with why or how."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 24,
+      "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+      "rowId": "course-guided-cmn7vc7pm0001le04qfcuwa27-recording-14-d-act-out-a-situation-with-your-teacher-where-you-can-expre-035",
+      "reason": "Convert the E recording into a written open response with an explicit word limit and writing review kind.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write an 80 - 120 word paragraph where you talk about a place where there are people and issues that are not solved yet. Talk about the situation, where it is happening, how it can be solved, what they are doing and what position you play there. Include the language studied",
+          "after": "E. Write 80–120 words about a place where people face unresolved issues. Explain the situation, possible solutions, what people are doing, and your role. Use relative clauses."
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write 80–120 words about a place where people face unresolved issues. Explain the situation, possible solutions, what people are doing, and your role. Use relative clauses."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 120
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Describe una situación."
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "E. Write an 80 - 120 word paragraph where you talk about a place where there are people and issues that are not solved yet. Talk about the situation, where it is happening, how it can be solved, what they are doing and what position you play there. Include the language studied",
+          "after": "Write 80–120 words about a place where people face unresolved issues. Explain the situation, possible solutions, what people are doing, and your role. Use relative clauses."
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Act out a situation with your teacher where you can express different ideas about a job you don’t like or something that is not what you expected. Use the language studied\nE. Write an 80 - 120 word paragraph where you talk about a place where there are people and issues that are not solved yet. Talk about the situation, where it is happening, how it can be solved, what they are doing and what position you play there. Include the language studied\n\nAuthored source prompt:\nE. Write an 80 - 120 word paragraph where you talk about a place where there are people and issues that are not solved yet. Talk about the situation, where it is happening, how it can be solved, what they are doing and what position you play there. Include the language studied\n\nAuthored review criteria/context:\nconstraints:\n80–120 words; use relative clauses.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Act out a situation with your teacher where you can express different ideas about a job you don’t like or something that is not what you expected. Use the language studied\nE. Write an 80 - 120 word paragraph where you talk about a place where there are people and issues that are not solved yet. Talk about the situation, where it is happening, how it can be solved, what they are doing and what position you play there. Include the language studied\n\nAuthored source prompt:\nE. Write an 80 - 120 word paragraph where you talk about a place where there are people and issues that are not solved yet. Talk about the situation, where it is happening, how it can be solved, what they are doing and what position you play there. Include the language studied\n\nAuthored review criteria/context:\nconstraints:\n80–120 words; use relative clauses.\n\nEvaluation guidance: Treat this as writing, not role-play. Check the 80–120 word range, a clear situation and role, possible solutions, and accurate restrictive or non-restrictive relative clauses. Do not require a single canonical answer."
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReview",
+            "prompt"
+          ],
+          "before": "Role-play a situation about a job or expectation and write an 80–120 word paragraph.",
+          "after": "Write an 80–120 word paragraph about a place with unresolved issues, possible solutions, actions, and your role."
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReview",
+            "kind"
+          ],
+          "before": "roleplay-and-writing",
+          "after": "writing"
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReview",
+            "constraints"
+          ],
+          "before": [
+            "80–120 words; use relative clauses."
+          ],
+          "after": [
+            "80–120 words",
+            "Describe the situation, possible solutions, actions, and your role",
+            "Use relative clauses"
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": "conversation",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Write an 80 - 120 word paragraph where you talk about a place where there are people and issues that are not solved yet. Talk about the situation, where it is happening, how it can be solved, what they are doing and what position you play there. Include the language studied",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": {
+            "$delete": true
+          }
+        }
+      ]
+    },
+    {
+      "unit": 24,
+      "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+      "rowId": "course-guided-cmn7vc7pm0001le04qfcuwa27-text-8-we-use-relative-clauses-or-relative-pronouns-to-include-extra-inf-022",
+      "reason": "Teach restrictive and non-restrictive relative clauses with correct punctuation and pronoun choices.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We use relative clauses or relative pronouns to include extra information about someone or something in the sentences.</p><p>To consider</p><p>1. Most relative pronouns are enclosed between commas. 2. They can also be used as the example with why. 3. How can be used to set clauses related to manners or ways. E.G: I know how he did it!</p><p>4. We can also used that to create relative clauses for people and things. Jane, that lives here, is my best friend. The car, that is on the corner, was stolen yesterday.</p>",
+          "after": "<p>Use relative clauses to identify someone or something, or to add information.</p><p><strong>Identify:</strong> no commas; use who, which or that. The student who lives here is my friend.</p><p><strong>Add information:</strong> use commas and who or which, not that. Jane, who lives here, is my best friend.</p><p><strong>Reason / manner:</strong> The reason why she left is clear. I know how he did it.</p>"
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Añade información."
+        }
+      ]
+    },
+    {
+      "unit": 25,
+      "lessonId": "cmnmm9m3i000hw1qklyh7h658",
+      "rowId": "course-guided-cmnmm9m3i000hw1qklyh7h658-recording-15-d-following-the-example-from-the-previous-activity-act-out--035",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the situations, things, people and the feelings produced in an experience in your life.",
+          "after": "Describe a life experience and the feelings it produced."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the situations, things, people and the feelings produced in an experience in your life.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "Describe an experience that felt fascinating or terrifying.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “The story was captivating.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What happened during the experience?",
+              "answerPrompt": "Add one detail about a person, place, or thing."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner to describe a similar experience.",
+              "answerPrompt": "Ask and answer with one adjective."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 25,
+      "lessonId": "cmnmm9m3i000hw1qklyh7h658",
+      "rowId": "course-guided-cmnmm9m3i000hw1qklyh7h658-short-answer-13-a-look-at-the-words-in-the-box-and-complete-the-paragrap-029",
+      "reason": "Accept the standard unhyphenated spelling variant for the authored adjective blank.",
+      "changes": [
+        {
+          "path": [
+            "items",
+            1,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "never-ending"
+          ],
+          "after": [
+            "never-ending",
+            "never ending"
+          ]
+        },
+        {
+          "path": [
+            "items",
+            1,
+            "question"
+          ],
+          "before": "Complete the descriptive paragraph with adjectives from the box.",
+          "after": "Complete the descriptive paragraph with the adjective meaning “continuing without end.”"
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReviewItems",
+            0,
+            "answerItems",
+            1,
+            "accepted"
+          ],
+          "before": [
+            "never-ending"
+          ],
+          "after": [
+            "never-ending",
+            "never ending"
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReviewItems",
+            0,
+            "answerItems",
+            1,
+            "rationale"
+          ],
+          "before": "The word bank supplies the only remaining modifier that fits the source's intended adjective exercise, though the phrase is semantically unusual.",
+          "after": "The source word bank supplies never-ending for the blank; the phrase is semantically unusual, so accept the standard hyphenated or unhyphenated spelling without requiring an invented synonym."
+        }
+      ]
+    },
+    {
+      "unit": 26,
+      "lessonId": "cmnmm9mm1000kw1qkgi2bize8",
+      "rowId": "course-guided-cmnmm9mm1000kw1qkgi2bize8-recording-15-d-following-the-example-from-the-previous-activity-act-out--035",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the situations, things, people and the feelings produced in an experience in your live.",
+          "after": "Discuss habits, general facts, and instructions with a partner."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the situations, things, people and the feelings produced in an experience in your live.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What habit annoys you?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “If I see litter, I pick it up.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What happens when people ignore that habit?",
+              "answerPrompt": "Give another general or factual result."
+            },
+            {
+              "id": "question",
+              "question": "Give your partner one instruction about the situation.",
+              "answerPrompt": "Use if plus an imperative."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 26,
+      "lessonId": "cmnmm9mm1000kw1qkgi2bize8",
+      "rowId": "course-guided-cmnmm9mm1000kw1qkgi2bize8-structured-content-11-conditionals-may-have-a-main-purpose-but-they-can--025",
+      "reason": "Replace the ambiguous tidal example and correct the homework collocation in the zero-conditional examples.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Things that are generally true.",
+                "If my dad catches us eating his chocolate, we are grounded for weeks."
+              ],
+              [
+                "",
+                "",
+                "Dilan gets upset when someone smokes in a public area."
+              ],
+              [
+                "2",
+                "Facts or scientific statements",
+                "Water boils if it reaches 100 degrees."
+              ],
+              [
+                "",
+                "",
+                "The sea gets high tides if the moon is in a further range than it regularly is."
+              ],
+              [
+                "3",
+                "Giving instructions",
+                "If you leave the room, turn the lights off. Tell Jake to make his homework when you call him."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Things that are generally true.",
+                "If my dad catches us eating his chocolate, we are grounded for weeks."
+              ],
+              [
+                "",
+                "",
+                "Dilan gets upset when someone smokes in a public area."
+              ],
+              [
+                "2",
+                "Facts or scientific statements",
+                "Water boils if it reaches 100 degrees."
+              ],
+              [
+                "",
+                "",
+                "If you leave ice in the sun, it melts."
+              ],
+              [
+                "3",
+                "Giving instructions",
+                "If you leave the room, turn the lights off. Tell Jake to do his homework when you call him."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 27,
+      "lessonId": "cmnmm9my8000nw1qkfl8lpdxz",
+      "rowId": "course-guided-cmnmm9my8000nw1qkfl8lpdxz-recording-14-d-following-the-example-from-the-previous-activity-act-out--034",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the consequences a specific situation can have on people. Point out the good and the bad.",
+          "after": "Discuss a situation and its possible good and bad consequences."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the consequences a specific situation can have on people. Point out the good and the bad.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What situation can affect people?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “If we act now, we can reduce harm.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What may happen if people do nothing?",
+              "answerPrompt": "Use a conditional to link the decision and result."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner for one positive way to respond.",
+              "answerPrompt": "Answer with a likely result."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 27,
+      "lessonId": "cmnmm9my8000nw1qkfl8lpdxz",
+      "rowId": "course-guided-cmnmm9my8000nw1qkfl8lpdxz-text-13-bullying-how-many-people-do-you-know-that-face-bullying-bullying-032",
+      "reason": "Correct the bullying passage wording and connect the requested decision to its likely result.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Bullying How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it. If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now.</p>",
+          "after": "<p>Bullying How many people do you know that face bullying? Bullying has become more widespread these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it. If parents do not start instilling values at home, they will see their own children become the bullies or the bullied ones. If we decide to act now, we can start making a difference and reduce the harm bullying causes.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 28,
+      "lessonId": "cmnmm9naj000qw1qkkzistoi6",
+      "rowId": "course-guided-cmnmm9naj000qw1qkkzistoi6-recording-14-d-talk-to-your-teacher-about-the-different-life-decisions-y-034",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Talk to your teacher about the different life decisions you have not made yet, and the possible results if you were to take them now.",
+          "after": "Discuss an important life decision and hypothetical advice."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Talk to your teacher about the different life decisions you have not made yet, and the possible results if you were to take them now.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What important decision have you not made yet?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “If I were you, I would wait.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What would you do in that situation?",
+              "answerPrompt": "Give hypothetical advice with If I were you."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about a real future possibility.",
+              "answerPrompt": "Contrast a first conditional possibility with advice."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 28,
+      "lessonId": "cmnmm9naj000qw1qkkzistoi6",
+      "rowId": "course-guided-cmnmm9naj000qw1qkkzistoi6-text-10-we-can-use-the-first-conditional-aiming-the-following-functions--024",
+      "reason": "Label the hypothetical advice example as second conditional and contrast it with a real first-conditional possibility.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We can use the first conditional aiming the following functions or aspects</p><p>To consider Second Conditional can also be used to give advice to people. E.G: If I were you, I would not do that.</p><p>To consider</p><p>If I were you, I would not do that.</p>",
+          "after": "<p>We can use the second conditional to discuss hypothetical situations and advice.</p><p>Use the first conditional for a real future possibility: If I study, I will pass. Use the second conditional for hypothetical advice: If I were you, I would not do that.</p><p>To consider</p><p>If I were you, I would not do that.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 29,
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "rowId": "course-guided-cmnmm9nmo000tw1qkxzhh3pwc-recording-15-d-following-the-example-from-the-previous-activity-act-out--035",
+      "reason": "Correct the D oral prompt wording before adding its topic-specific conversation scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Following the example from the previous activity, act out a conversation with your teacher where you can express yourself in essentials human needs on a regular basis.",
+          "after": "D. Discuss essential human needs with your teacher and express your opinions where relevant."
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "conversation"
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Discuss essential human needs and everyday opinions with a partner."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": [
+            {
+              "id": "scenario",
+              "question": "Which essential human need matters in your daily life?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “People need rest every day.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What can make that need difficult to meet?",
+              "answerPrompt": "Describe one situation and its effect."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about an essential human need.",
+              "answerPrompt": "Ask and answer one clear question."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 29,
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "rowId": "course-guided-cmnmm9nmo000tw1qkxzhh3pwc-recording-15-d-following-the-example-from-the-previous-activity-act-out--036",
+      "reason": "Convert the E recording into a written open response with an explicit word limit and writing review kind.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write an 80 to 120 word text where you present a difficult situation in your life or someone else’s opinions, ideas and apologies when needed. What happened? Is it solved now? Do not leave any detail out.",
+          "after": "E. Write 80–120 words about a difficult situation in your life or someone else’s. Include opinions, ideas, and apologies where needed; explain what happened and whether it is solved."
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write 80–120 words about a difficult situation. Explain what happened, whether it is solved, and the relevant opinions, ideas, or apologies."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 120
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Cuenta qué ocurrió."
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write 80–120 words about a difficult situation. Explain what happened, whether it is solved, and the relevant opinions, ideas, or apologies."
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Following the example from the previous activity, act out a conversation with your teacher where you can express yourself in essentials human needs on a regular basis.\nE. Write an 80 to 120 word text where you present a difficult situation in your life or someone else’s opinions, ideas and apologies when needed. What happened? Is it solved now? Do not leave any detail out.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Following the example from the previous activity, act out a conversation with your teacher where you can express yourself in essentials human needs on a regular basis.\nE. Write an 80 to 120 word text where you present a difficult situation in your life or someone else’s opinions, ideas and apologies when needed. What happened? Is it solved now? Do not leave any detail out.\n\nEvaluation guidance: Treat this as writing. Check the 80–120 word range, a clear situation, what happened, whether it is solved, and relevant opinions, ideas, or apologies. Do not require a single canonical answer."
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReview"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": {
+            "id": "u29-s15-e",
+            "kind": "writing",
+            "prompt": "Write 80–120 words about a difficult situation in your life or someone else’s. Explain what happened, whether it is solved, and relevant opinions, ideas, or apologies.",
+            "responseMode": "open-response",
+            "reviewStatus": "source-published-open",
+            "answerItems": [],
+            "doNotAutoGrade": true,
+            "constraints": [
+              "80–120 words",
+              "Explain what happened and whether it is solved",
+              "Include relevant opinions, ideas, or apologies"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 29,
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "rowId": "course-guided-cmnmm9nmo000tw1qkxzhh3pwc-text-8-1-verbs-using-infinitives-i-want-to-say-i-m-sorry-they-decided-to-020",
+      "reason": "Correct the keep on example so the gerund pattern is complete.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>1 Verbs using infinitives I want to say I’m sorry. They decided to keep on that. Check a list here: https://www.engvid.com/english-resource/verbs-followed-by-gerunds-and-infinitives/ 2 Verbs using gerunds He kept eating junk food. Stop bothering your sister! 3 Verbs using both I started to work here last June. I started working here last June. 4 Infinitive after adjectives It is important to come clean. It is awful to spill the beans. There is another way to use gerunds 5 Gerunds after prepositions I thought about telling her. Make him happy by bringing cookies. -</p><p>There are many ways in which we can state our ideas, opinions and apologies. Using infinitives and gerunds is one of them.</p>",
+          "after": "<p>1 Verbs using infinitives I want to say I’m sorry. They decided to keep on doing that. Check a list here: https://www.engvid.com/english-resource/verbs-followed-by-gerunds-and-infinitives/ 2 Verbs using gerunds He kept eating junk food. Stop bothering your sister! 3 Verbs using both I started to work here last June. I started working here last June. 4 Infinitive after adjectives It is important to come clean. It is awful to spill the beans. There is another way to use gerunds 5 Gerunds after prepositions I thought about telling her. Make him happy by bringing cookies. -</p><p>There are many ways in which we can state our ideas, opinions and apologies. Using infinitives and gerunds is one of them.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 30,
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "rowId": "course-guided-cmnmm9nyt000ww1qkoxsumpck-recording-15-d-act-out-the-following-situation-you-and-your-teacher-in-a-030",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up.",
+          "after": "Describe people, clothing, appearance, and personality at a reunion."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Act out the following situation. You and your teacher in a high school reunion 15 years after graduating. Talk about your classmates, about yourself, catch up.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "Describe one classmate’s appearance and clothing.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “She has short, wavy hair.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "How is that person’s personality?",
+              "answerPrompt": "Add one personality adjective."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about a classmate.",
+              "answerPrompt": "Use appearance or clothing vocabulary."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 30,
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "rowId": "course-guided-cmnmm9nyt000ww1qkoxsumpck-structured-content-11-when-describing-people-we-can-talk-about-017",
+      "reason": "Use neutral, grammatical appearance examples while preserving the lesson’s descriptor practice.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "How people look like",
+                "Jake is a tall thin man with dark complexion."
+              ],
+              [
+                "",
+                "",
+                "Sue has got small, asian light eyes and thin red lips."
+              ],
+              [
+                "2",
+                "How people are like",
+                "Sandra was an honest woman with lively personality."
+              ],
+              [
+                "",
+                "",
+                "I want someone outgoing and enthusiastic to share my life with."
+              ],
+              [
+                "3",
+                "Describe outfits and clothes",
+                "I love that great new, black, leather jacket you are wearing."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "How people look like",
+                "Jake is a tall thin man with dark complexion."
+              ],
+              [
+                "",
+                "",
+                "Sue has got small, almond-shaped, light eyes and thin red lips."
+              ],
+              [
+                "2",
+                "How people are like",
+                "Sandra was an honest woman with lively personality."
+              ],
+              [
+                "",
+                "",
+                "I want someone outgoing and enthusiastic to share my life with."
+              ],
+              [
+                "3",
+                "Describe outfits and clothes",
+                "I love that great new, black, leather jacket you are wearing."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 30,
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "rowId": "course-guided-cmnmm9nyt000ww1qkoxsumpck-structured-content-13-a-describe-the-people-on-the-pictures-follow-the-e-020",
+      "reason": "Correct the visible clothing and agreement example without changing the authored scene or media.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "0.",
+              "Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing comfortable pair of blue american jeans with a single white cotton shirt. He seems to be a nice guys."
+            ],
+            "rows": []
+          },
+          "after": {
+            "headers": [
+              "0.",
+              "Sean is of average height, a thin man with a light complexion. He has short, wavy black hair and big blue eyes. Right now, he is wearing a comfortable pair of blue American jeans and a single white cotton shirt. He seems to be a nice guy."
+            ],
+            "rows": []
+          }
+        }
+      ]
+    },
+    {
+      "unit": 30,
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "rowId": "course-guided-cmnmm9nyt000ww1qkoxsumpck-structured-content-8-we-need-to-consider-the-following-chart-013",
+      "reason": "Use neutral, grammatical appearance descriptors and correct the truncated eye-color example.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "Height",
+              "Size",
+              "",
+              "",
+              "",
+              ""
+            ],
+            "rows": [
+              [
+                "He is… They are… I am...",
+                "",
+                "Short",
+                "Average height",
+                "",
+                "Tall"
+              ],
+              [
+                "Weight",
+                "Weight",
+                "",
+                "",
+                "",
+                ""
+              ],
+              [
+                "We are… He is… You are",
+                "",
+                "Thin, Slim, Skinny",
+                "",
+                "Average, Well-built",
+                "Chubby, Fat"
+              ],
+              [
+                "Complexion",
+                "Skin tone / Color",
+                "",
+                "",
+                "",
+                ""
+              ],
+              [
+                "Joe has got… They have...",
+                "",
+                "Light complexion",
+                "",
+                "Dark complexion",
+                ""
+              ],
+              [
+                "Hair",
+                "Length",
+                "Type",
+                "",
+                "Color",
+                "Noun"
+              ],
+              [
+                "You have...",
+                "Short, Long, Bob, Shoulder length",
+                "Straight, Wavy, Curly",
+                "",
+                "Black, Brown, Blond, Red...",
+                "Hair"
+              ],
+              [
+                "Eyes",
+                "Size",
+                "Shape",
+                "",
+                "Color",
+                "Noun"
+              ],
+              [
+                "They have got...",
+                "Big, Small, Large",
+                "Round, Almond shape, Asian",
+                "",
+                "Blac, Brown, Green, Blue...",
+                "Eyes"
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "Height",
+              "Size",
+              "",
+              "",
+              "",
+              ""
+            ],
+            "rows": [
+              [
+                "He is… They are… I am...",
+                "",
+                "Short",
+                "Average height",
+                "",
+                "Tall"
+              ],
+              [
+                "Weight",
+                "Weight",
+                "",
+                "",
+                "",
+                ""
+              ],
+              [
+                "We are… He is… You are",
+                "",
+                "Thin, Slim, Skinny",
+                "",
+                "Average, Well-built",
+                "Chubby, Fat"
+              ],
+              [
+                "Complexion",
+                "Skin tone / Color",
+                "",
+                "",
+                "",
+                ""
+              ],
+              [
+                "Joe has got… They have...",
+                "",
+                "Light complexion",
+                "",
+                "Dark complexion",
+                ""
+              ],
+              [
+                "Hair",
+                "Length",
+                "Type",
+                "",
+                "Color",
+                "Noun"
+              ],
+              [
+                "You have...",
+                "Short, Long, Bob, Shoulder length",
+                "Straight, Wavy, Curly",
+                "",
+                "Black, Brown, Blond, Red...",
+                "Hair"
+              ],
+              [
+                "Eyes",
+                "Size",
+                "Shape",
+                "",
+                "Color",
+                "Noun"
+              ],
+              [
+                "They have got...",
+                "Big, Small, Large",
+                "Round, Almond-shaped",
+                "",
+                "Black, Brown, Green, Blue...",
+                "Eyes"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 31,
+      "lessonId": "cmnmm9ob2000zw1qkel9nezp5",
+      "rowId": "course-guided-cmnmm9ob2000zw1qkel9nezp5-recording-15-d-following-the-example-from-the-previous-activity-name-som-034",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, name some situations you cannot stand or some you are ok with. Also, ask your teacher.",
+          "after": "Discuss situations you cannot stand and situations you accept."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, name some situations you cannot stand or some you are ok with. Also, ask your teacher.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What situation can you not stand?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “I hate it when people interrupt.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What situation do you not mind?",
+              "answerPrompt": "Give one example with do not mind."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about a similar situation.",
+              "answerPrompt": "Use when or as long as."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 31,
+      "lessonId": "cmnmm9ob2000zw1qkel9nezp5",
+      "rowId": "course-guided-cmnmm9ob2000zw1qkel9nezp5-structured-content-11-there-are-some-functions-that-we-can-cover-when-us-024",
+      "reason": "Correct the learner-visible collocation “think on me” to “think of me”.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Express disagreement towards certain actions.",
+                "I hate it when someone yells in public."
+              ],
+              [
+                "",
+                "",
+                "It upsets my mum when we do not clean our room."
+              ],
+              [
+                "2",
+                "State enjoyment in regards certain actions.",
+                "It brightens my days when someone thinks on me and texts me."
+              ],
+              [
+                "",
+                "",
+                "I love it when my kids help me with the housework."
+              ],
+              [
+                "3",
+                "Show you are ok with people’s doings.",
+                "John did not bring white cardboard but yellow. I don’t mind the color as long as he brought one."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Express disagreement towards certain actions.",
+                "I hate it when someone yells in public."
+              ],
+              [
+                "",
+                "",
+                "It upsets my mum when we do not clean our room."
+              ],
+              [
+                "2",
+                "State enjoyment in regards certain actions.",
+                "It brightens my days when someone thinks of me and texts me."
+              ],
+              [
+                "",
+                "",
+                "I love it when my kids help me with the housework."
+              ],
+              [
+                "3",
+                "Show you are ok with people’s doings.",
+                "John did not bring white cardboard but yellow. I don’t mind the color as long as he brought one."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 32,
+      "lessonId": "cmnmm9on70012w1qka03chue1",
+      "rowId": "course-guided-cmnmm9on70012w1qka03chue1-recording-14-d-following-the-example-from-the-previous-activity-act-out--032",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class",
+          "after": "Discuss an important decision and express preferences."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What decision are you giving thought to?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “I would rather choose the first option.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "Which option would you rather choose?",
+              "answerPrompt": "Use would rather or prefer."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner what they would like to do.",
+              "answerPrompt": "Use would like or wish."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 32,
+      "lessonId": "cmnmm9on70012w1qka03chue1",
+      "rowId": "course-guided-cmnmm9on70012w1qka03chue1-text-13-giving-it-a-thought-jim-so-have-you-made-your-mind-yet-craig-i-h-030",
+      "reason": "Correct the decision and preference dialogue’s idiomatic forms.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Giving it a thought! Jim: So, have you made your mind yet? Craig: I haven’t. I’d wish this to be easier man. Jim: Come on! You just need to focus on what you would like for real, and make your decision. Craig: Can you please tell me your opinion? Jim: I told you. Both are great universities but I would rather choose Stanford over Yale. Craig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy them. Craig: For sure!</p>",
+          "after": "<p>Giving it a thought! Jim: So, have you made up your mind yet? Craig: I haven’t. I wish this were easier, man. Jim: Come on! You just need to focus on what you would really like, and make your decision. Craig: Can you please tell me your opinion? Jim: I told you. Both are great universities but I would rather choose Stanford over Yale. Craig: I have been giving it a lot of thought and I’d prefer to go to Stanford as well. Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy them. Craig: For sure!</p>"
+        }
+      ]
+    },
+    {
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "rowId": "course-guided-cmnmm9ozb0015w1qkj7gth0wy-essay-13-i-wasn-t-prepared-for-the-culture-shock-of-being-an-internation-031",
+      "reason": "Correct the evaluative source quote for the article while preserving all source and provenance fields.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "exerciseReview",
+            "answerItems",
+            0,
+            "acceptedSourceQuotes"
+          ],
+          "before": [
+            "I was always having to ask people to repeat themselves",
+            "The language barrier meant that public transport was tricky at first"
+          ],
+          "after": [
+            "I constantly found myself having to ask people to repeat themselves",
+            "The language barrier meant that public transport was tricky at first"
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nI wasn’t prepared for the culture shock of being an international student For any student, moving away from home can be daunting. But I didn’t expect student life in Scotland to be all that different from my home of the Netherlands. After all, we get the same news and TV shows online. However, when I moved from Amsterdam to study at the University of Stirling, I began to realise that a few small things were catching me off balance. I was suffering a minor cultural shock. In my first year, I quickly found out my English was not as good as I had assumed. Most of my flatmates were born and raised in Scotland, and I constantly found myself having to ask people to repeat themselves. Their Scottish accents didn’t help and I was mispronouncing names and places all the time. I also got confused about small cultural things. Much to my flatmates’ amusement, it took me two Christmases to figure out that mince pies are not actually filled with minced beef. The language barrier meant that public transport was tricky at first. I found the lack of information about bus prices and how and where to get tickets really surprising. It turned a simple 15-minute journey into a daunting task. Article retrieved from: https://www.theguardian.com/education/2016/mar/30/i-wasnt-prepared-for-the-culture-shock-of-being-an-international-student\nhttps://www.theguardian.com/education/2016/mar/30/i-wasnt-prepared-for-the-culture-shock-of-being-an-international-student\nC. Read the following paragraph. Can you find examples of the functions studied? Also, discuss the topic with your teacher. Read the full article on the link.\n\nAuthored source prompt:\nExtract customs, expectations and acceptability examples from the article.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nI wasn’t prepared for the culture shock of being an international student For any student, moving away from home can be daunting. But I didn’t expect student life in Scotland to be all that different from my home of the Netherlands. After all, we get the same news and TV shows online. However, when I moved from Amsterdam to study at the University of Stirling, I began to realise that a few small things were catching me off balance. I was suffering a minor cultural shock. In my first year, I quickly found out my English was not as good as I had assumed. Most of my flatmates were born and raised in Scotland, and I constantly found myself having to ask people to repeat themselves. Their Scottish accents didn’t help and I was mispronouncing names and places all the time. I also got confused about small cultural things. Much to my flatmates’ amusement, it took me two Christmases to figure out that mince pies are not actually filled with minced beef. The language barrier meant that public transport was tricky at first. I found the lack of information about bus prices and how and where to get tickets really surprising. It turned a simple 15-minute journey into a daunting task. Article retrieved from: https://www.theguardian.com/education/2016/mar/30/i-wasnt-prepared-for-the-culture-shock-of-being-an-international-student\nhttps://www.theguardian.com/education/2016/mar/30/i-wasnt-prepared-for-the-culture-shock-of-being-an-international-student\nC. Read the following paragraph. Can you find examples of the functions studied? Also, discuss the topic with your teacher. Read the full article on the link.\n\nAuthored source prompt:\nExtract customs, expectations and acceptability examples from the article.\n\nEvaluation guidance: For the expectation example, accept “I constantly found myself having to ask people to repeat themselves” and equivalent excerpts that preserve the article’s meaning. Keep the article source and URL as authored."
+        }
+      ]
+    },
+    {
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "rowId": "course-guided-cmnmm9ozb0015w1qkj7gth0wy-recording-14-d-following-the-example-from-the-previous-activity-tell-you-033",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, tell your teacher about an experience related to cultural shock you may have lived.",
+          "after": "Discuss a cultural custom, expectation, or culture-shock experience."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, tell your teacher about an experience related to cultural shock you may have lived.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "Describe one custom from a place you know.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “People are expected to greet one another.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What felt unexpected about that custom?",
+              "answerPrompt": "Compare the expectation with your experience."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about a different custom.",
+              "answerPrompt": "Ask a clear question about expectations."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "rowId": "course-guided-cmnmm9ozb0015w1qkj7gth0wy-structured-content-8-1-to-be-supposed-to-in-my-country-you-are-supposed--020",
+      "reason": "Correct the learner-visible expected-to question while preserving the authored customs examples.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "1",
+              "To be + Supposed to",
+              "In my country, you are supposed to say your first name when introducing yourself",
+              "What are you supposed to do when…? Am I expected do something special?"
+            ],
+            "rows": [
+              [
+                "2",
+                "To be + Expected to",
+                "People are not expected to hug others in Asia.",
+                ""
+              ],
+              [
+                "3",
+                "To be + Adjective + Infinitive",
+                "It is not acceptable for women to wear miniskirts in Dubai.",
+                ""
+              ],
+              [
+                "4",
+                "To be + Custom + Infinitive",
+                "It is the custom to double kiss in some European countries.",
+                ""
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "1",
+              "To be + Supposed to",
+              "In my country, you are supposed to say your first name when introducing yourself",
+              "What are you supposed to do when…? Am I expected to do something special?"
+            ],
+            "rows": [
+              [
+                "2",
+                "To be + Expected to",
+                "People are not expected to hug others in Asia.",
+                ""
+              ],
+              [
+                "3",
+                "To be + Adjective + Infinitive",
+                "It is not acceptable for women to wear miniskirts in Dubai.",
+                ""
+              ],
+              [
+                "4",
+                "To be + Custom + Infinitive",
+                "It is the custom to double kiss in some European countries.",
+                ""
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "rowId": "course-guided-cmnmm9pbg0018w1qkdkv1gbma-recording-15-d-following-the-example-from-the-previous-activity-tell-you-028",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, tell your teacher about something that has drastically changed and how you see it in some years .",
+          "after": "Discuss how an object, event, or movement has changed over time."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, tell your teacher about something that has drastically changed and how you see it in some years .",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What has changed since the past?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “Communication was slower in the past.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "How might it change in the future?",
+              "answerPrompt": "Make one future prediction."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about a change they have noticed.",
+              "answerPrompt": "Use time contrasts."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "rowId": "course-guided-cmnmm9pbg0018w1qkdkv1gbma-text-11-let-s-take-a-look-at-how-we-may-use-this-020",
+      "reason": "Correct the future-change model’s subject, connector, and verb phrase.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Let’s take a look at how we may use this..</p><p>Functions Examples 1 Establishing differences in time. Communication evolves every single day. Centuries ago, people only communicated through letters. In the future, it will transform itself even more that people will use holograms instead of using video calls like now.</p>",
+          "after": "<p>Let’s take a look at how we may use this..</p><p>Functions Examples 1 Establishing differences in time. Communication evolves every single day. Centuries ago, people only communicated through letters. In the future, communication will transform even more, so people may use holograms instead of video calls.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 35,
+      "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+      "rowId": "course-guided-cmnmm9pns001bw1qki5fh6r0j-recording-14-d-following-the-example-from-the-previous-activity-tell-you-023",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, tell your teacher about some issues you think might affect people to change or at least consider it. Use the language studied.",
+          "after": "Discuss issues and express context-dependent possibilities."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, tell your teacher about some issues you think might affect people to change or at least consider it. Use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What issue might affect people?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “They might change their plan.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What may happen if people respond?",
+              "answerPrompt": "Use may and explain the context."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner what could happen in another situation.",
+              "answerPrompt": "Use could and give the condition."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 35,
+      "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+      "rowId": "course-guided-cmnmm9pns001bw1qki5fh6r0j-structured-content-10-let-s-take-a-look-how-we-may-use-probability-014",
+      "reason": "Explain that might, may, and could express context-dependent possibility rather than a fixed ranking.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Events / things highly to happen",
+                "All odds in our favor, so we might get the prize."
+              ],
+              [
+                "2",
+                "Events / things likely to happen",
+                "They may pass the test, but you never know."
+              ],
+              [
+                "3",
+                "Events / things hardly to happen",
+                "I seriously doubt it, but she could come this weekend."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "A possibility supported by current evidence.",
+                "The evidence is strong, so we might get the prize."
+              ],
+              [
+                "2",
+                "A possibility with an uncertain outcome.",
+                "They may pass the test, but we do not know yet."
+              ],
+              [
+                "3",
+                "A possibility in a given context.",
+                "She could come this weekend; let’s get some groceries."
+              ],
+              [
+                "",
+                "To consider",
+                "Might, may, and could all express possibility; context determines how likely the speaker considers it."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 36,
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "rowId": "course-guided-cmnmm9q04001ew1qke5tfufyk-recording-14-d-following-the-example-from-the-previous-activity-tell-you-025",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Following the example from the previous activity, tell your teacher about some ideas or suggestions you may come up with to help people who normally complain about not being successful in whatever they do. Use the language studied",
+          "after": "Give suggestions to someone who wants to become more successful."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, tell your teacher about some ideas or suggestions you may come up with to help people who normally complain about not being successful in whatever they do. Use the language studied",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What suggestion would help someone who feels unsuccessful?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “You had better ask for help.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What had better happen next?",
+              "answerPrompt": "Give one strong suggestion with had better."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner for another helpful idea.",
+              "answerPrompt": "Ask and answer with a suggestion."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 36,
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "rowId": "course-guided-cmnmm9q04001ew1qke5tfufyk-text-6-look-at-the-information-where-do-you-think-these-phrases-belong-011",
+      "reason": "Correct malformed learner-visible idioms and explicitly label the standard forms.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Look at the information. Where do you think these phrases belong?</p><p>All pumps on deck</p><p>Back on the horse</p><p>Hit the nose on the head</p><p>Extending the laurel leaf</p><p>Whatever fills your boat</p><p>Hit the ball rolling</p><p>Look at the information, Where do you think these phrases belong to?</p><p>All pumps on deck.</p><p>Back on the horse.</p><p>Hit the nose on the head.</p><p>Extending the laurel leaf.</p><p>Whatever fills your boat.</p><p>Hit the ball rolling.</p>",
+          "after": "<p>Look at the information. These idioms are written in their standard forms. Where do you think these phrases belong?</p><p>All hands on deck</p><p>Get back on the horse</p><p>Hit the nail on the head</p><p>Extend an olive branch</p><p>Whatever floats your boat</p><p>Get the ball rolling</p><p>Use the corrected phrases in a sentence and discuss their meanings with your teacher.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 37,
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "rowId": "course-guided-cmnmm9qca001hw1qkpe089f8f-recording-15-d-talk-to-your-teacher-what-is-it-that-you-have-always-want-033",
+      "reason": "Turn self-study recording into a short, topic-specific oral conversation with clear response scaffolds.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter 3 years from now.",
+          "after": "Discuss what you want, expect, and look for in a life partner."
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter 3 years from now.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "What qualities do you want in a life partner?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: “I need someone to share life with.”"
+            },
+            {
+              "id": "follow-up",
+              "question": "What kind of person would you look for?",
+              "answerPrompt": "Use a relative clause with who or that."
+            },
+            {
+              "id": "question",
+              "question": "Ask your partner about future preferences.",
+              "answerPrompt": "Use a future preference."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 37,
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "rowId": "course-guided-cmnmm9qca001hw1qkpe089f8f-structured-content-11-preferences-can-be-expressed-in-any-tense-and-with-023",
+      "reason": "Correct the preposition in the learner-visible preference example.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "State what people look for and want from others.",
+                "They’d love us to dance by their music during the training."
+              ],
+              [
+                "",
+                "",
+                "I expect committed classmates who make big efforts."
+              ],
+              [
+                "2",
+                "Express what you look for and want from things / situations",
+                "Striving through problems, the company desires the employees to stick by it."
+              ],
+              [
+                "",
+                "",
+                "Ashamed and disgusted, Jake wanted the problem to be over so he came clean."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "State what people look for and want from others.",
+                "They’d love us to dance to their music during the training."
+              ],
+              [
+                "",
+                "",
+                "I expect committed classmates who make big efforts."
+              ],
+              [
+                "2",
+                "Express what you look for and want from things / situations",
+                "Striving through problems, the company desires the employees to stick by it."
+              ],
+              [
+                "",
+                "",
+                "Ashamed and disgusted, Jake wanted the problem to be over so he came clean."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 37,
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "rowId": "course-guided-cmnmm9qca001hw1qkpe089f8f-structured-content-13-a-state-8-different-sentences-where-you-state-what-026",
+      "reason": "Correct the singular subject and natural noun in the learner-visible production model.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "0.",
+              "The orphanages is looking for someone filled with humbleness and love to help the children."
+            ],
+            "rows": [
+              [
+                "1.",
+                ""
+              ],
+              [
+                "2.",
+                ""
+              ],
+              [
+                "3.",
+                ""
+              ],
+              [
+                "4.",
+                ""
+              ],
+              [
+                "5.",
+                ""
+              ],
+              [
+                "6.",
+                ""
+              ],
+              [
+                "7.",
+                ""
+              ],
+              [
+                "8.",
+                ""
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "0.",
+              "The orphanage is looking for someone filled with humility and love to help the children."
+            ],
+            "rows": [
+              [
+                "1.",
+                ""
+              ],
+              [
+                "2.",
+                ""
+              ],
+              [
+                "3.",
+                ""
+              ],
+              [
+                "4.",
+                ""
+              ],
+              [
+                "5.",
+                ""
+              ],
+              [
+                "6.",
+                ""
+              ],
+              [
+                "7.",
+                ""
+              ],
+              [
+                "8.",
+                ""
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 37,
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "rowId": "course-guided-cmnmm9qca001hw1qkpe089f8f-structured-content-8-grammar-examples-observation-1-preferences-non-fini-020",
+      "reason": "Correct the non-finite clause example’s gerund form while preserving its grammar focus.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Grammar",
+              "Examples",
+              "Observation"
+            ],
+            "rows": [
+              [
+                "1",
+                "Preferences + Non-finite clause",
+                "I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees.",
+                "Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses"
+              ],
+              [
+                "2",
+                "Preferences + Relative clause",
+                "Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards.",
+                "Relative clauses need to respect their principles even here."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Grammar",
+              "Examples",
+              "Observation"
+            ],
+            "rows": [
+              [
+                "1",
+                "Preferences + Non-finite clause",
+                "I need someone to build a life with. Any woman needs a good guy devoted to sharing his life with her. Being ethical and committed, Paul wishes to get the same from his employees.",
+                "Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses"
+              ],
+              [
+                "2",
+                "Preferences + Relative clause",
+                "Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards.",
+                "Relative clauses need to respect their principles even here."
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

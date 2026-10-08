@@ -1,0 +1,6 @@
+{
+  "scope": "Pedagogical corrections in dev; no replacement media or CSS",
+  "references": ["docs/design/graphic-guide-v1/README.md", "docs/design/content-format-mockups/v3/03-language.webp", "docs/design/content-format-mockups/v3/05-production.webp", "docs/design/graphic-guide-v1/writing-instruction-reference.png"],
+  "requirements": ["Preserve complete illustrated environment and existing scene identity/side", "Keep title hierarchy, controls, white fade, spacing and responsive composition", "Written tasks show textarea and authored word limits rather than microphone", "Conversation shows short topic-specific turn and scaffold with circular recording control", "One positive grading/continuation action and readable skip", "No audio replacement, unexpected microphone permission, student-history writes during visual QA"],
+  "representatives": ["Unit2 converted writing desktop/mobile", "Unit24 corrected relative-clause explanation", "Unit35 corrected probability explanation", "Unit42 direct-speech question and accepted paraphrase", "Unit53 multi-turn conversation desktop/mobile"]
+}

@@ -1,0 +1,2506 @@
+{
+  "schemaVersion": 1,
+  "units": [
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56
+  ],
+  "patches": [
+    {
+      "unit": 38,
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-recording-15-d-following-the-example-from-the-previous-activity-what-wou-035",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "topic",
+              "question": "Name two chores or tasks people often ask others to do. Use have or get + object + verb.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: I have my assistant print the report."
+            },
+            {
+              "id": "example",
+              "question": "Describe one situation in which you ask someone to help at home or work.",
+              "answerPrompt": "Say who does what and use one causative structure."
+            },
+            {
+              "id": "frequency",
+              "question": "How often do you ask for help, and what makes the request useful or necessary?",
+              "answerPrompt": "Explain briefly."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 39,
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-recording-15-d-talk-about-a-situation-you-lived-or-you-have-been-living--028",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "situation",
+              "question": "Describe a recent situation in which communication or teamwork had to work out.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: We need to work out a solution."
+            },
+            {
+              "id": "phrasal-verb",
+              "question": "Choose one phrasal verb from the lesson that fits your situation.",
+              "answerPrompt": "Use it in a complete sentence."
+            },
+            {
+              "id": "meaning",
+              "question": "Explain what your phrasal verb means in that context.",
+              "answerPrompt": "Paraphrase its meaning."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 40,
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-recording-15-d-what-are-the-things-you-are-grateful-for-name-simple-thin-030",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. What are the things you are grateful for? Name simple things or actions that make you feel great and talk to your teacher about his.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "appreciation",
+              "question": "Name one simple action or thing that makes you feel grateful.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: I take a break when I feel tired."
+            },
+            {
+              "id": "collocation",
+              "question": "Use a delexical verb such as do, make, take, give, or have with a suitable noun.",
+              "answerPrompt": "Say the full collocation."
+            },
+            {
+              "id": "meaning",
+              "question": "Explain what your collocation means in context.",
+              "answerPrompt": "Use a short paraphrase."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 41,
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-recording-16-d-based-on-the-previous-activity-tell-your-teacher-an-anecd-026",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the previous activity, tell your teacher an anecdote of a day that turned out to be completely different from how you were expecting it.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "anecdote",
+              "question": "Describe a day that changed unexpectedly.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: By the time I arrived, the meeting had started."
+            },
+            {
+              "id": "sequence",
+              "question": "Mention one event that had happened before the change.",
+              "answerPrompt": "Use the past perfect."
+            },
+            {
+              "id": "reflection",
+              "question": "Explain how the earlier event affected what happened next.",
+              "answerPrompt": "Connect the two events."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 42,
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-recording-16-d-tell-your-teacher-a-story-gossip-you-remember-from-your-y-027",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "statement",
+              "question": "State one short, neutral sentence that a speaker could have said.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: Direct statement: “I am ready.”"
+            },
+            {
+              "id": "report",
+              "question": "Report that statement using said or asked and include that when it fits.",
+              "answerPrompt": "Give the reported version."
+            },
+            {
+              "id": "shift",
+              "question": "Explain one pronoun or time change you made when reporting it.",
+              "answerPrompt": "Name the change briefly."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 43,
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-recording-16-d-tell-your-opinion-about-the-topic-presented-in-the-readin-026",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your opinion about the topic presented in the reading section. What do you think? What other ideas can we add? Use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "tag",
+              "question": "State an opinion about an everyday topic and add a matching tag question.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: It is useful, isn’t it?"
+            },
+            {
+              "id": "modal",
+              "question": "Make a second example with a modal or an imperative and its tag.",
+              "answerPrompt": "Use one complete sentence."
+            },
+            {
+              "id": "function",
+              "question": "Explain whether your tag checks information, shows interest, or expresses surprise.",
+              "answerPrompt": "Choose one function."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 44,
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--027",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "issue",
+              "question": "Name a public issue without assigning blame unless your source provides evidence.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: The report was prepared by the team."
+            },
+            {
+              "id": "passive",
+              "question": "Describe what was done or affected using a passive construction.",
+              "answerPrompt": "Use one passive sentence."
+            },
+            {
+              "id": "agent",
+              "question": "Add a by-phrase only if the responsible agent is known from your source.",
+              "answerPrompt": "Explain your choice."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--026",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "counterfactual",
+              "question": "Choose a clearly fictional past event that could have had a different outcome.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: If I had checked the map, I would have arrived earlier."
+            },
+            {
+              "id": "third-conditional",
+              "question": "Describe the alternative outcome with if + past perfect and would have + past participle.",
+              "answerPrompt": "Say one complete sentence."
+            },
+            {
+              "id": "comparison",
+              "question": "Explain how the imagined outcome differs from what happened.",
+              "answerPrompt": "Compare the two outcomes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "decision",
+              "question": "Describe one past decision and what should have happened instead.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: She should have called earlier."
+            },
+            {
+              "id": "modal-perfect",
+              "question": "Use would have or must have to describe an imagined or inferred past result.",
+              "answerPrompt": "Give one example."
+            },
+            {
+              "id": "evidence",
+              "question": "Explain whether your sentence expresses advice, imagination, or deduction.",
+              "answerPrompt": "Name the function."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-recording-17-d-based-on-the-topic-presented-in-the-reading-section-how-w-030",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "regret",
+              "question": "Describe a regret, or choose a clearly fictional one if you prefer.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: I wish I had asked sooner."
+            },
+            {
+              "id": "wish",
+              "question": "Use if only or wish with the past perfect to express the regret.",
+              "answerPrompt": "Say one complete sentence."
+            },
+            {
+              "id": "lesson",
+              "question": "Explain what might be different now in the imagined scenario.",
+              "answerPrompt": "Add one consequence."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-recording-17-d-based-on-the-topic-presented-in-the-reading-section-prepa-028",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, prepare a small presentation about someone or something that may have had an even more especial impact on people / society / the world if it / he had not ceased existing. What could have been different? How?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "possibility",
+              "question": "Describe one possible past event without claiming that it definitely happened.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: They might have missed the train."
+            },
+            {
+              "id": "modal-perfect",
+              "question": "Use could have, may have, or might have to express the possibility.",
+              "answerPrompt": "Give one sentence."
+            },
+            {
+              "id": "certainty",
+              "question": "Explain why your sentence expresses possibility rather than certainty.",
+              "answerPrompt": "Refer to the modal."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-recording-15-d-based-on-the-topic-presented-in-the-reading-section-what--024",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "precaution",
+              "question": "Name a situation where preparation could help prevent a problem.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: Take notes in case you need them; if you need help, ask."
+            },
+            {
+              "id": "in-case",
+              "question": "Use in case to describe the precaution.",
+              "answerPrompt": "Say one complete sentence."
+            },
+            {
+              "id": "contrast",
+              "question": "Contrast your sentence with an if-clause that describes a condition.",
+              "answerPrompt": "Explain the difference."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-recording-15-d-based-on-the-topic-presented-in-the-reading-section-tell--025",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "wish",
+              "question": "Name a future wish or an unlikely situation.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: I wish the situation were different."
+            },
+            {
+              "id": "hypothesis",
+              "question": "Use would, could, or wish to describe the imagined result.",
+              "answerPrompt": "Say one complete sentence."
+            },
+            {
+              "id": "reason",
+              "question": "Explain why the situation is unlikely or why you want the change.",
+              "answerPrompt": "Add one reason."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-recording-15-d-based-on-the-topic-presented-in-the-reading-section-make--025",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts. Correct the oral task wording while keeping the past counterfactual function. Keep the learner-facing oral prompt concise and grammatical.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "scenario",
+              "question": "Choose a global disaster that was predicted but did not happen. What might have happened if it had become reality? Where might that have led us?",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: If I had chosen that path, I would be in a different role now."
+            },
+            {
+              "id": "mixed-result",
+              "question": "Use a mixed or third conditional to describe the present result.",
+              "answerPrompt": "Give one complete sentence."
+            },
+            {
+              "id": "outcome",
+              "question": "Explain how the imagined present differs from reality.",
+              "answerPrompt": "Compare the outcomes."
+            }
+          ]
+        },
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?",
+          "after": "D. Discuss a global disaster that was predicted but did not happen. What might have happened if it had become reality? Where might that have led us?"
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?",
+          "after": "D. Discuss a global disaster that was predicted but did not happen. What might have happened if it had become reality? Where might that have led us?"
+        }
+      ]
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-recording-15-d-make-a-small-presentation-discussion-about-where-will-we--024",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "milestone",
+              "question": "Choose one future milestone and say what will have been completed by then.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: By 2035, we will have completed the project."
+            },
+            {
+              "id": "duration",
+              "question": "Contrast that completed event with an action that will have been in progress.",
+              "answerPrompt": "Use will have been + -ing."
+            },
+            {
+              "id": "projection",
+              "question": "Use the valid model question “Where will we have gotten as a society in 40 years?” to discuss a future projection.",
+              "answerPrompt": "Give one reason for your projection."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-recording-15-d-make-a-small-presentation-discussion-about-where-we-would-023",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts. Frame the historical counterfactual precisely and avoid generalizing a community. Keep the learner-facing historical prompt neutral and precise. Use neutral historical evaluation context without generalizing a religious community.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "historical-scenario",
+              "question": "Choose a historical counterfactual and label the imagined details as fictional.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: If the event had not occurred, the present might be different."
+            },
+            {
+              "id": "mixed-conditional",
+              "question": "Use if + past perfect with would + base verb to connect a past condition to a present result.",
+              "answerPrompt": "Give one sentence."
+            },
+            {
+              "id": "evidence",
+              "question": "Separate historical evidence from your imagined consequences.",
+              "answerPrompt": "Identify which details are factual."
+            }
+          ]
+        },
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?",
+          "after": "D. Discuss a clearly labeled fictional historical scenario in which Nazi Germany won the war. Explain possible effects on the present and distinguish evidence from imagination."
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?",
+          "after": "D. Discuss a clearly labeled fictional historical scenario in which Nazi Germany won the war. Explain possible effects on the present and distinguish evidence from imagination."
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?\nE. Write an 160-200 word text addressing the issue that happened on September 11th, 2001. What would the world be now if extreme Islamics had never committed this act? If that had never happened, would there be other attacks now? State facts and your own position regarding this matter.\n\nAuthored source prompt:\nD. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nD. Discuss a clearly labeled fictional historical scenario in which Nazi Germany won the war. Explain possible effects on the present and distinguish evidence from imagination.\n\nEvaluation criteria:\nEvaluate the oral response for precise historical references, accurate past-to-present mixed conditionals, and a clear distinction between evidence and imagined consequences. Do not require invented speaker facts or generalize a religious community.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-recording-15-d-make-a-small-presentation-discussion-about-a-different-ev-023",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts. Correct the history prompt while retaining the present-to-past mixed conditional. Keep the learner-facing history prompt grammatical and neutral.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Make a small presentation / discussion about a different even in history you consider to be different if people did or explained the facts differently. Which is this event? When did it happened? What hypothetical situations in the present can you state with past results.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "present-condition",
+              "question": "Choose a present trait or condition that could have changed a past result.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: If she were more prepared, she would have avoided the delay."
+            },
+            {
+              "id": "mixed-conditional",
+              "question": "Use if + past simple or were with would have + past participle.",
+              "answerPrompt": "Give one complete sentence."
+            },
+            {
+              "id": "past-result",
+              "question": "Explain the past result of the imagined present condition.",
+              "answerPrompt": "Connect the two parts."
+            }
+          ]
+        },
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Make a small presentation / discussion about a different even in history you consider to be different if people did or explained the facts differently. Which is this event? When did it happened? What hypothetical situations in the present can you state with past results.",
+          "after": "D. Discuss a historical event that might have had a different outcome if people had acted or explained the facts differently. State one present condition with a past result."
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Make a small presentation / discussion about a different even in history you consider to be different if people did or explained the facts differently. Which is this event? When did it happened? What hypothetical situations in the present can you state with past results.",
+          "after": "D. Discuss a historical event that might have had a different outcome if people had acted or explained the facts differently. State one present condition with a past result."
+        }
+      ]
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "rowId": "course-guided-cmnmm9wiv002zw1qkz23p6kdp-recording-15-d-make-a-small-presentation-discussion-about-a-couple-of-th-022",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts. Correct the oral prompt and retain the future-to-past conditional function. Keep the learner-facing social-topic prompt concise and balanced.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Make a small presentation / discussion about a couple of the most difficult moments for humanity these past two years. Would they have affected less the world if the weren’t going to have a global impact even in some years?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "social-issue",
+              "question": "Choose a social movement or public issue and describe two perspectives on it.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: If people were going to accept it fully, wouldn’t they have acted already?"
+            },
+            {
+              "id": "future-past",
+              "question": "Use if + were going to + verb with would have + past participle to discuss a possible past result.",
+              "answerPrompt": "Give one sentence."
+            },
+            {
+              "id": "position",
+              "question": "State your position and support it with one reason.",
+              "answerPrompt": "Explain briefly."
+            }
+          ]
+        },
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Make a small presentation / discussion about a couple of the most difficult moments for humanity these past two years. Would they have affected less the world if the weren’t going to have a global impact even in some years?",
+          "after": "D. Discuss one or two difficult moments for humanity in the past two years. How might their effects have differed if they had not had a global impact? Use the mixed conditional studied."
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Make a small presentation / discussion about a couple of the most difficult moments for humanity these past two years. Would they have affected less the world if the weren’t going to have a global impact even in some years?",
+          "after": "D. Discuss one or two difficult moments for humanity in the past two years. How might their effects have differed if they had not had a global impact? Use the mixed conditional studied."
+        }
+      ]
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-recording-15-d-make-a-small-presentation-discussion-about-a-couple-of-th-022",
+      "reason": "Expand the oral task into concise, topic-specific scaffolding without inventing audio facts. Make the oral decision prompt concise and neutral without inventing facts. Keep the learner-facing decision prompt concise and neutral.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Make a small presentation / discussion about a couple of the most difficult decisions you consider people need to make in life. What makes them cling towards a specific side of the balance? Do they have options? Be very bold in this.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "topic",
+              "question": "Choose a simple or complex topic for a short presentation.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Modelo: To improve the process takes patience."
+            },
+            {
+              "id": "nominalization",
+              "question": "Use a gerund or infinitive clause as the subject of one sentence.",
+              "answerPrompt": "Give one sentence."
+            },
+            {
+              "id": "relative-clause",
+              "question": "Add a relative clause to explain one part of your topic.",
+              "answerPrompt": "Give one sentence."
+            }
+          ]
+        },
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Make a small presentation / discussion about a couple of the most difficult decisions you consider people need to make in life. What makes them cling towards a specific side of the balance? Do they have options? Be very bold in this.",
+          "after": "D. Discuss two difficult decisions people may face. What factors influence each choice, and what alternatives might they have? Use the language studied."
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Make a small presentation / discussion about a couple of the most difficult decisions you consider people need to make in life. What makes them cling towards a specific side of the balance? Do they have options? Be very bold in this.",
+          "after": "D. Discuss two difficult decisions people may face. What factors influence each choice, and what alternatives might they have? Use the language studied."
+        }
+      ]
+    },
+    {
+      "unit": 38,
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-recording-15-d-following-the-example-from-the-previous-activity-what-wou-036",
+      "reason": "Convert the published E writing task from recording to essay while preserving its source prompt and word range. Remove the recording-only instruction after conversion to an essay. Expose the authored E task as the essay prompt. Keep the published E word range on the essay. Keep the published E word range on the essay. Remove the incompatible guided conversation role. Remove the incompatible single conversation turn. Remove the recording learner prompt after conversion to an essay. Mark the review as written work instead of roleplay-and-writing. Use concise writing evaluation criteria for the converted essay.",
+      "changes": [
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write a text between 120 - 160 words where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be okay or not? Have you had a good or terrible experience? Write about it too.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 120–160 word text about chores or activities bosses normally have people do at work. Explain which requests are acceptable, include one experience or clearly labeled fictional example, and use causative structures."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 120
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 160
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": "conversation",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Write a text between 120 - 160 words where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be okay or not? Have you had a good or terrible experience? Write about it too.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "E. Write a text between 120 - 160 words where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be okay or not? Have you had a good or terrible experience? Write about it too.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReview",
+            "kind"
+          ],
+          "before": "roleplay-and-writing",
+          "after": "writing"
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Following the example from the previous activity, What would you say are the most common things people have others do? How often do you ask for help and in which matters?\nE. Write a text between 120 - 160 words where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be okay or not? Have you had a good or terrible experience? Write about it too.\n\nAuthored source prompt:\nE. Write a text between 120 - 160 words where you talk about the chores or activities bosses normally have people do at their jobs. What things do you consider to be okay or not? Have you had a good or terrible experience? Write about it too.\n\nAuthored review criteria/context:\nconstraints:\n120–160 words; use causative structures.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 120–160 word text about chores or activities bosses normally have people do at work. Explain which requests are acceptable, include one experience or clearly labeled fictional example, and use causative structures.\n\nEvaluation criteria:\nEvaluate 120–160 words for clear organization, accurate have/get causatives, and a specific workplace example. Accept a personal or clearly labeled fictional example.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 39,
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-text-8-phrasal-verb-formation-examples-more-examples-1-verb-preposition--013",
+      "reason": "Remove the unrelated anime URL and correct the learner-facing phrasal-verb instruction.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Phrasal Verb Formation Examples More Examples 1 Verb + Preposition We need to look after the babies. John stood by them all the time. Click on the link and pursuit a 200 phrasal verbs list. https://ww3.animeonline.ninja/episodio/rurouni-kenshin-meiji-kenkaku-romantan-cap-12/ 2 Verb + Adverb The thieves just ran away. They turned up badly. 3 Verb + Adverb + Preposition I was taken with the presentation they did. The family is bearing up under the trials.</p><p>Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like.</p>",
+          "after": "<p>Phrasal Verb Formation Examples</p><p><strong>1 Verb + Preposition:</strong> We need to look after the babies. John stood by them all the time. Consult a reliable phrasal-verb reference for more examples.</p><p><strong>2 Verb + Adverb:</strong> The thieves just ran away. They turned up badly.</p><p><strong>3 Verb + Adverb + Preposition:</strong> I was taken with the presentation they did. The family is bearing up under the trials.</p><p>Everyday communication uses phrasal verbs to express ideas naturally. Learn each verb in context.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 40,
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-text-11-we-can-use-these-verbs-to-board-the-following-aspect-019",
+      "reason": "Rewrite the delexical-verb instruction so it describes collocations rather than a literal translation.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We can use these verbs to board the following aspect.</p><p>To consider In most cases, there is a verb that has a meaning similar or equal to the delexical structure. These structures are very common in English and an understanding of them will enrich the fluency of the language.</p><p>To consider</p>",
+          "after": "<p>We can use these verbs to express the following ideas.</p><p>In many common collocations, a familiar verb combines with a noun to express a specific meaning. Study each delexical structure in context.</p><p>Use the collocations to communicate the intended meaning; do not translate the verb literally.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 41,
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-short-answer-15-15-024",
+      "reason": "Align the extraction item with the unit past-perfect objective and accept the authored contractions. Use source-grounded past-perfect answers rather than delexical-verb labels. Accept the contracted and uncontracted source-grounded past-perfect forms. Align the extraction item with the unit past-perfect objective and accept the authored contractions. Use source-grounded past-perfect answers rather than delexical-verb labels. Accept the contracted and uncontracted source-grounded past-perfect forms. Give the open extraction task concise past-perfect evaluation context.",
+      "changes": [
+        {
+          "path": [
+            "items",
+            0,
+            "question"
+          ],
+          "before": "C. Read the following paragraph and extract sentences with the delexical verbs and tell your teacher what their intended meaning is.",
+          "after": "C. Read the paragraph and quote one complete past-perfect clause that shows an earlier event."
+        },
+        {
+          "path": [
+            "items",
+            0,
+            "correctAnswer"
+          ],
+          "before": "had one of those days",
+          "after": "I'd been invited to a party."
+        },
+        {
+          "path": [
+            "items",
+            0,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "had one of those days"
+          ],
+          "after": [
+            "I'd been invited to a party.",
+            "I had been invited to a party."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            1,
+            "question"
+          ],
+          "before": "C. Read the following paragraph and extract sentences with the delexical verbs and tell your teacher what their intended meaning is.",
+          "after": "C. Read the paragraph and quote another complete past-perfect clause that shows an earlier event."
+        },
+        {
+          "path": [
+            "items",
+            1,
+            "correctAnswer"
+          ],
+          "before": "had a terrible day",
+          "after": "I'd lent my car to my son the day before."
+        },
+        {
+          "path": [
+            "items",
+            1,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "had a terrible day"
+          ],
+          "after": [
+            "I'd lent my car to my son the day before.",
+            "I had lent my car to my son the day before."
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nExtract past-perfect forms from the reading and explain the earlier event they describe.\n\nEvaluation criteria:\nAccept complete source-grounded clauses with equivalent contraction or expansion. Do not require delexical-verb labels or exact punctuation.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 42,
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-short-answer-13-a-write-the-correct-reported-speech-for-each-sentence-fo-021",
+      "reason": "Show the authored direct statement and neutral speaker context in every reported-speech item. Use a neutral they report because the authored source does not identify a speaker. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Use a neutral they report because the authored source does not identify a speaker. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Use a neutral they report because the authored source does not identify a speaker. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Use a neutral they report because the authored source does not identify a speaker. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Use a neutral they report because the authored source does not identify a speaker. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Accept that-optional and contraction variants without inventing a speaker identity. Show the authored direct statement and neutral speaker context in every reported-speech item. Use a neutral they report because the authored source does not identify a speaker. Accept that-optional and contraction variants without inventing a speaker identity. Record the direct statements and neutral grading policy for reported speech.",
+      "changes": [
+        {
+          "path": [
+            "items",
+            0,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “I did not do my homework.” Report it. The speaker is unspecified."
+        },
+        {
+          "path": [
+            "items",
+            0,
+            "correctAnswer"
+          ],
+          "before": "He said that he had not done his homework.",
+          "after": "They said that they had not done their homework."
+        },
+        {
+          "path": [
+            "items",
+            0,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "He said that he had not done his homework.",
+            "She said that she had not done her homework."
+          ],
+          "after": [
+            "They said that they had not done their homework.",
+            "They said they hadn't done their homework."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            1,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “We will definitely get that spot.” Report it. The speakers are unspecified."
+        },
+        {
+          "path": [
+            "items",
+            1,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "They said that they would definitely get that spot.",
+            "He said that he would definitely get that spot."
+          ],
+          "after": [
+            "They said that they would definitely get that spot.",
+            "They said they would definitely get that spot.",
+            "They said they'd definitely get that spot."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            2,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “I was watching TV and you called.” Report it. The speaker is unspecified."
+        },
+        {
+          "path": [
+            "items",
+            2,
+            "correctAnswer"
+          ],
+          "before": "She said that she had been watching TV when I called.",
+          "after": "They said that they had been watching TV when I called."
+        },
+        {
+          "path": [
+            "items",
+            2,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "She said that she had been watching TV when I called.",
+            "He said that he had been watching TV when I called."
+          ],
+          "after": [
+            "They said that they had been watching TV when I called.",
+            "They said they'd been watching TV when I called."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            3,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct request: “Don’t open the windows, please.” Report it. The speaker is unspecified."
+        },
+        {
+          "path": [
+            "items",
+            3,
+            "correctAnswer"
+          ],
+          "before": "He asked me not to open the windows.",
+          "after": "They asked me not to open the windows."
+        },
+        {
+          "path": [
+            "items",
+            3,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "He asked me not to open the windows.",
+            "She asked me not to open the windows."
+          ],
+          "after": [
+            "They asked me not to open the windows.",
+            "They asked me not to open the windows, please."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            4,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “I normally eat cereal in the mornings.” Report it. The speaker is unspecified."
+        },
+        {
+          "path": [
+            "items",
+            4,
+            "correctAnswer"
+          ],
+          "before": "He said that he normally ate cereal in the mornings.",
+          "after": "They said that they normally ate cereal in the mornings."
+        },
+        {
+          "path": [
+            "items",
+            4,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "He said that he normally ate cereal in the mornings.",
+            "She said that she normally ate cereal in the mornings."
+          ],
+          "after": [
+            "They said that they normally ate cereal in the mornings.",
+            "They said they normally ate cereal in the mornings."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            5,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “We are having a terrible day.” Report it. The speakers are unspecified."
+        },
+        {
+          "path": [
+            "items",
+            5,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "They said that they were having a terrible day.",
+            "He said that he was having a terrible day."
+          ],
+          "after": [
+            "They said that they were having a terrible day.",
+            "They said they were having a terrible day."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            6,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “I may call her.” Report it. The speaker is unspecified."
+        },
+        {
+          "path": [
+            "items",
+            6,
+            "correctAnswer"
+          ],
+          "before": "He said that he might call her.",
+          "after": "They said that they might call her."
+        },
+        {
+          "path": [
+            "items",
+            6,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "He said that he might call her.",
+            "She said that she might call her."
+          ],
+          "after": [
+            "They said that they might call her.",
+            "They said they might call her."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            7,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “We should smoke outside.” Report it. The speakers are unspecified."
+        },
+        {
+          "path": [
+            "items",
+            7,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "They said that they should smoke outside.",
+            "He said that they should smoke outside."
+          ],
+          "after": [
+            "They said that they should smoke outside.",
+            "They said they should smoke outside."
+          ]
+        },
+        {
+          "path": [
+            "items",
+            8,
+            "question"
+          ],
+          "before": "Convert each direct statement/request into reported speech.",
+          "after": "Direct statement: “I cannot take this schedule now.” Report it. The speaker is unspecified."
+        },
+        {
+          "path": [
+            "items",
+            8,
+            "correctAnswer"
+          ],
+          "before": "He said that he could not take that schedule then.",
+          "after": "They said that they could not take that schedule then."
+        },
+        {
+          "path": [
+            "items",
+            8,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "He said that he could not take that schedule then.",
+            "She said that she could not take that schedule then."
+          ],
+          "after": [
+            "They said that they could not take that schedule then.",
+            "They said they couldn't take that schedule then."
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nReport each authored direct statement using a neutral, unspecified speaker.\n\nEvaluation criteria:\nAccept that-optional forms, standard contractions, and they as the neutral pronoun. Do not require an invented speaker name, gender, or reporting location.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 43,
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-9-structures-questions-tag-questions-past-perfect-had-013",
+      "reason": "Correct the duplicated verb and the modal tag while preserving the tag-question lesson.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows"
+          ],
+          "before": [
+            [
+              "Past Perfect",
+              "Had Mike taken English lessons by 2020?",
+              "He had taken English lessons by 2020, hadn't he?"
+            ],
+            [
+              "Modals",
+              "Can you go come with me? Would they join us? Should she call first? Must they have a review?",
+              "You can’t come with me, can you?. They would join us, wouldn’t they?. She should call first, shouldn’t she?. They must have a review, musn’t they?"
+            ],
+            [
+              "To Consider Tag questions are used at the end of the sentences. Tag questions are used to with any tense as you see in the examples. If the statement is positive, the tag question goes negative. If the statement is negative, the tag question goes positive. If the subject is ‘I’, the tag questions works with aren’t. E.G. I am right, aren’t I? Using the expression Let’s makes us work with the word shall. E.G. Let’s go, shall we? When having Imperatives, we work with will. E.G. Close the door, will you? Affirmative tags after affirmative statements can be used to express interest or surprise. E.G You are leaving home, are you?",
+              "",
+              ""
+            ]
+          ],
+          "after": [
+            [
+              "Past Perfect",
+              "Had Mike taken English lessons by 2020?",
+              "He had taken English lessons by 2020, hadn't he?"
+            ],
+            [
+              "Modals",
+              "Can you come with me? Would they join us? Should she call first? Must they have a review?",
+              "You can’t come with me, can you? They would join us, wouldn’t they? She should call first, shouldn’t she? They must have a review, mustn’t they?"
+            ],
+            [
+              "To Consider Tag questions are used at the end of sentences. They can be used with any tense. If the statement is positive, the tag is negative; if the statement is negative, the tag is positive. With I, use aren’t I. Let’s takes shall we, and imperatives take will you. Affirmative tags after affirmative statements can express interest or surprise.",
+              "",
+              ""
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 44,
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-structured-content-8-structures-active-voice-passive-voice-to-be-past-pa-012",
+      "reason": "Use the idiomatic material passive made of plastic.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows"
+          ],
+          "before": [
+            [
+              "To be + Past Participle",
+              "They build the building in glass.",
+              "The building is built in glass."
+            ],
+            [
+              "",
+              "Someone stole my car yesterday.",
+              "My car was stolen yesterday."
+            ],
+            [
+              "",
+              "Those are plastic chairs.",
+              "Those chairs are plastic-made."
+            ],
+            [
+              "To be + Past Participle + by",
+              "Alex will finish the job tonight.",
+              "The job will be finished by Alex tonight."
+            ],
+            [
+              "",
+              "John has done the house chores lately.",
+              "The house chores have been done by John lately."
+            ],
+            [
+              "",
+              "Tim had borne in mind this idea for ages.",
+              "This idea had been borne in mind by Tim for ages."
+            ]
+          ],
+          "after": [
+            [
+              "To be + Past Participle",
+              "They build the building in glass.",
+              "The building is built in glass."
+            ],
+            [
+              "",
+              "Someone stole my car yesterday.",
+              "My car was stolen yesterday."
+            ],
+            [
+              "",
+              "Those are plastic chairs.",
+              "Those chairs are made of plastic."
+            ],
+            [
+              "To be + Past Participle + by",
+              "Alex will finish the job tonight.",
+              "The job will be finished by Alex tonight."
+            ],
+            [
+              "",
+              "John has done the house chores lately.",
+              "The house chores have been done by John lately."
+            ],
+            [
+              "",
+              "Tim had borne in mind this idea for ages.",
+              "This idea had been borne in mind by Tim for ages."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "reason": "Correct the auxiliary order and align the question with the would-have function.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows"
+          ],
+          "before": [
+            [
+              "Should Have + Past Participle",
+              "Dylan should have called them before going.",
+              "What should he have done before going?"
+            ],
+            [
+              "",
+              "If it had been me, I should have brought more money.",
+              "What should you have done?"
+            ],
+            [
+              "Would have + Past Participle",
+              "My family would have wanted him to be different, but he wasn’t.",
+              "How would have your family wanted him to be?"
+            ],
+            [
+              "",
+              "He would not have expected me to drop school.",
+              "Would he have expected you to drop school?"
+            ],
+            [
+              "Must have + Past Participle",
+              "We must have seen the straw in the wind, but we did not.",
+              "Would you have seen the straw in the wind?"
+            ],
+            [
+              "",
+              "If he had not done things that way , the boss must have given him the chance.",
+              "What if he had not done things that way?"
+            ]
+          ],
+          "after": [
+            [
+              "Should Have + Past Participle",
+              "Dylan should have called them before going.",
+              "What should he have done before going?"
+            ],
+            [
+              "",
+              "If it had been me, I should have brought more money.",
+              "What should you have done?"
+            ],
+            [
+              "Would have + Past Participle",
+              "My family would have wanted him to be different, but he wasn’t.",
+              "How would your family have wanted him to be?"
+            ],
+            [
+              "",
+              "He would not have expected me to drop school.",
+              "Would he have expected you to drop school?"
+            ],
+            [
+              "Must have + Past Participle",
+              "We must have seen the straw in the wind, but we did not.",
+              "Would you have seen the straw in the wind?"
+            ],
+            [
+              "",
+              "If he had not done things that way, the boss must have given him the chance.",
+              "What if he had not done things that way?"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-6-phrases-meaning-example-sing-the-blues-to-feel-sorr-010",
+      "reason": "Separate lose heart from lose one’s heart and keep the regret vocabulary distinct.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows"
+          ],
+          "before": [
+            [
+              "SING THE BLUES",
+              "To feel sorrow or being sad about something.",
+              "You should not have sung the blues but looking for her."
+            ],
+            [
+              "CRY OVER SPILLED MILK",
+              "Being upset about something that happened and we cannot change.",
+              "Don’t cry over spilled milk, you gotta do something now."
+            ],
+            [
+              "EAT SOMEONE'S HEART OUT",
+              "To feel very sad or mentally pained.",
+              "It just ate my heart out to see her with someone else."
+            ],
+            [
+              "COLD FEET",
+              "Attitude that prevent someone to continue with the course of an action",
+              "Rachel left Barry at the altar, she got cold feet at the last moment."
+            ],
+            [
+              "EAT CROW",
+              "To admit having been proven wrong after taking a strong position.",
+              "How does it feel to eat crow, John?"
+            ],
+            [
+              "LOSE ONE’S HEART",
+              "To give up out of despair. To lament deeply.",
+              "I had already lost my heart waiting for an answer."
+            ],
+            [
+              "RAW DEAL",
+              "Unfair way of treating someone.",
+              "That was such a raw deal back there with Jen."
+            ],
+            [
+              "SIT ON THE FENCE",
+              "Lack of the ability to decide something",
+              "I regret not making my mind up but sitting on the fence regarding Diane."
+            ]
+          ],
+          "after": [
+            [
+              "SING THE BLUES",
+              "To feel sorrow or be sad about something.",
+              "You should not have sung the blues while looking for her."
+            ],
+            [
+              "CRY OVER SPILLED MILK",
+              "To be upset about something that happened and cannot be changed.",
+              "Don’t cry over spilled milk; you have to do something now."
+            ],
+            [
+              "EAT SOMEONE'S HEART OUT",
+              "To feel very sad or mentally pained.",
+              "It ate my heart out to see her with someone else."
+            ],
+            [
+              "COLD FEET",
+              "An attitude that prevents someone from continuing with a course of action.",
+              "Rachel left Barry at the altar because she got cold feet."
+            ],
+            [
+              "EAT CROW",
+              "To admit having been proven wrong after taking a strong position.",
+              "How does it feel to eat crow, John?"
+            ],
+            [
+              "LOSE HEART",
+              "To lose courage or give up out of despair.",
+              "I almost lost heart while waiting for an answer."
+            ],
+            [
+              "LOSE ONE’S HEART",
+              "To fall deeply in love.",
+              "She lost her heart to the music."
+            ],
+            [
+              "RAW DEAL",
+              "An unfair way of treating someone.",
+              "That was such a raw deal with Jen."
+            ],
+            [
+              "SIT ON THE FENCE",
+              "A lack of ability to decide something.",
+              "I regret sitting on the fence about Diane."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-structured-content-8-structures-statements-questions-could-have-past-par-012",
+      "reason": "Align modal-perfect examples with past possibility and natural question forms.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows"
+          ],
+          "before": [
+            [
+              "Could + Have + Past Participle",
+              "I could have gotten lost if we had not seen then on time.",
+              "What could have happened to them?"
+            ],
+            [
+              "",
+              "You could have said that before all went to nothing.",
+              "What could I have said?"
+            ],
+            [
+              "May + Have + Past Participle",
+              "John may have caught that flu at the hospital.",
+              "Where may John have caught that flu?"
+            ],
+            [
+              "",
+              "We may have called a few times, but he never picked up.",
+              "May you really have expected an answer from him?"
+            ],
+            [
+              "Might + Have + Past Participle",
+              "I might have eaten a cheese burger once.",
+              "Did you eat a burger even being a vegetarian?"
+            ],
+            [
+              "",
+              "They might have been here, but they are gone now.",
+              "Were they here before?"
+            ]
+          ],
+          "after": [
+            [
+              "Could + Have + Past Participle",
+              "I could have gotten lost if we had not seen them on time.",
+              "What could have happened to them?"
+            ],
+            [
+              "",
+              "You could have said that before everything went wrong.",
+              "What could I have said?"
+            ],
+            [
+              "May + Have + Past Participle",
+              "John may have caught that flu at the hospital.",
+              "Where may John have caught that flu?"
+            ],
+            [
+              "",
+              "We may have called a few times, but he never picked up.",
+              "Why may he have missed the calls?"
+            ],
+            [
+              "Might + Have + Past Participle",
+              "I might have eaten a cheeseburger once.",
+              "Could you have eaten a burger even if you were vegetarian?"
+            ],
+            [
+              "",
+              "They might have been here, but they are gone now.",
+              "Were they here before?"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-text-14-14-022",
+      "reason": "Add a minimum glossary and an explicit in-case/if contrast to reduce technical reading load.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Possible Potential Outcomes from COVID-19 Complications on Testes: Lesson from SARS Infection Coronavirus infection disease-2019 (COVID-19) gained worldwide fame after deadly outbreak in China and its subsequent spread to many countries. So far, COVID-19 is not fully contained, and new cases are arising on daily bases in various countries, Imagine if it keeps growing. Due to zoonotic nature and human-to-human spread, COVID-19 is considered pandemic with more causalities in developing countries. Full genome analysis revealed its resemblance with severe acute respiratory syndrome (SARS) virus with minor variation in non-structural proteins. Both viruses use the common angiotensin converting enzyme (ACE2) receptor to attach to the epithelial cells of the target organs. Currently, in case someone gets COVID-19, those patients are treated with drugs that are used for lungs infections. However, ACE2 has high expression in other human organs such as kidney and testes. So what if that’s not enough? Thus, it is assumed that, like SARS, it may have adverse effects on other vital organs, which have dominant expression of ACE2. In testis, SARS affected patients displayed peritubular fibrosis, extensive germ cell disruption, damage of blood-testis barrier integrity and more frequent occurrence of apoptosis. Here, we critically discuss the possible adverse effects of COVID-19 on the testes of patients along with future precautions to overcome the complications of reproductive organs. Adapted from: https://pubmed.ncbi.nlm.nih.gov/33115584/</p>",
+          "after": "<p>Possible Potential Outcomes from COVID-19 Complications on Testes: Lesson from SARS Infection Coronavirus infection disease-2019 (COVID-19) gained worldwide fame after deadly outbreak in China and its subsequent spread to many countries. So far, COVID-19 is not fully contained, and new cases are arising on daily bases in various countries, Imagine if it keeps growing. Due to zoonotic nature and human-to-human spread, COVID-19 is considered pandemic with more causalities in developing countries. Full genome analysis revealed its resemblance with severe acute respiratory syndrome (SARS) virus with minor variation in non-structural proteins. Both viruses use the common angiotensin converting enzyme (ACE2) receptor to attach to the epithelial cells of the target organs. Currently, in case someone gets COVID-19, those patients are treated with drugs that are used for lungs infections. However, ACE2 has high expression in other human organs such as kidney and testes. So what if that’s not enough? Thus, it is assumed that, like SARS, it may have adverse effects on other vital organs, which have dominant expression of ACE2. In testis, SARS affected patients displayed peritubular fibrosis, extensive germ cell disruption, damage of blood-testis barrier integrity and more frequent occurrence of apoptosis. Here, we critically discuss the possible adverse effects of COVID-19 on the testes of patients along with future precautions to overcome the complications of reproductive organs. Adapted from: https://pubmed.ncbi.nlm.nih.gov/33115584/</p><p><strong>Glossary:</strong> ACE2 is a receptor used by some viruses to enter cells; fibrosis is scar tissue; apoptosis is programmed cell death.</p><p><strong>Language focus:</strong> Use <em>in case</em> for a precaution (“Take notes in case you need to review them”) and <em>if</em> for a condition (“If you need help, ask your teacher”).</p>"
+        }
+      ]
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-structured-content-6-phrases-meaning-example-feel-the-pinch-to-experienc-010",
+      "reason": "Correct the phrasal heading to see fit and preserve the idiom meaning.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows"
+          ],
+          "before": [
+            [
+              "FILL THE PINCH",
+              "To experience hardship, especially financial.",
+              "Staff, we’re beginning to feel the pinch as the dispute entered its third week."
+            ],
+            [
+              "SEE THE FIT",
+              "To consider it correct or acceptable to do something.",
+              "why did the company see fit to give you the job?"
+            ],
+            [
+              "KNOCK ON WOOD",
+              "said after a confident or positive statement, to express a hope for one's good luck to continue.",
+              "I haven't been banned yet, knock on wood."
+            ],
+            [
+              "FIRE IN THE BELLY",
+              "A powerful sense of ambition or determination.",
+              "He lacks the fire in his belly necessary to seek the presidency."
+            ],
+            [
+              "HOPE AGAINST HOPE",
+              "Hope or wish for with little reason or justification.",
+              "I'm hoping against hope that someone will return my wallet."
+            ],
+            [
+              "FOOL’S PARADISE",
+              "A state of happiness based on a person's not knowing about or denying the existence of potential trouble.",
+              "They were living in a fool's paradise, refusing to accept that they were in debt."
+            ],
+            [
+              "BRASS RING",
+              "A very desirable prize, goal, or opportunity",
+              "He made his first try for the brass ring when he ran for mayor a few years ago."
+            ],
+            [
+              "GAME PLAN",
+              "A strategy worked out in advance, especially in sports, politics, or business.",
+              "If he has a game plan for winning the deal, only he understands it."
+            ]
+          ],
+          "after": [
+            [
+              "FEEL THE PINCH",
+              "To experience hardship, especially financial.",
+              "Staff, we’re beginning to feel the pinch as the dispute entered its third week."
+            ],
+            [
+              "SEE FIT",
+              "To consider it correct or acceptable to do something.",
+              "Why did the company see fit to give you the job?"
+            ],
+            [
+              "KNOCK ON WOOD",
+              "Said after a confident or positive statement to express hope that good luck will continue.",
+              "I haven't been banned yet, knock on wood."
+            ],
+            [
+              "FIRE IN THE BELLY",
+              "A powerful sense of ambition or determination.",
+              "He lacks the fire in his belly necessary to seek the presidency."
+            ],
+            [
+              "HOPE AGAINST HOPE",
+              "To hope or wish with little reason or justification.",
+              "I'm hoping against hope that someone will return my wallet."
+            ],
+            [
+              "FOOL’S PARADISE",
+              "A state of happiness based on not knowing about or denying potential trouble.",
+              "They were living in a fool's paradise, refusing to accept that they were in debt."
+            ],
+            [
+              "BRASS RING",
+              "A very desirable prize, goal, or opportunity.",
+              "He made his first try for the brass ring when he ran for mayor."
+            ],
+            [
+              "GAME PLAN",
+              "A strategy worked out in advance, especially in sports, politics, or business.",
+              "If he has a game plan for winning the deal, only he understands it."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-text-8-we-are-able-to-express-ideas-about-things-or-event-that-did-not-h-012",
+      "reason": "Correct the modal-perfect question order while preserving the past counterfactual function.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We are able to express ideas about things or event that did not happen through the use of different expressions and regular grammar.</p><p>PHRASES EXAMPLES What if… What if Charles had taken Mary to the party? He would have loosened there! Imagine that / if… Imagine you hadn’t called Joe’s parents; When would have they known? Suppose / Supposing that Supposing we had not gone to the doctor, we could have gotten worse. I wish… I wish I had called her; now, I will never know if she felt the same for me. To Consider 1. We work with these phrases using the past perfect tense. 2. When using what if we have to close the sentence with a question mark. 3. Could and would play a major role. Especially for complementing the sentences. 4. Some other modals may be useful depending on the context.</p>",
+          "after": "<p>We are able to express ideas about things or events that did not happen through different expressions and regular grammar.</p><p>PHRASES EXAMPLES What if… What if Charles had taken Mary to the party? He would have ended up there! Imagine that / if… Imagine you hadn’t called Joe’s parents; when would they have known? Suppose / Supposing that Supposing we had not gone to the doctor, we could have gotten worse. I wish… I wish I had called her; now, I will never know if she felt the same for me. To Consider: We work with these phrases using the past perfect. Could and would help express the imagined result, and other modals may fit the context.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-recording-15-d-based-on-the-topic-presented-in-the-reading-section-make--026",
+      "reason": "Convert the published E writing task from recording to essay while preserving its source prompt and word range. Remove the recording-only instruction after conversion to an essay. Expose the authored E task as the essay prompt. Keep the published E word range on the essay. Keep the published E word range on the essay. Remove the incompatible guided conversation role. Remove the incompatible single conversation turn. Remove the recording learner prompt after conversion to an essay. Mark the review as written work instead of roleplay-and-writing. Use concise writing evaluation criteria for the converted essay.",
+      "changes": [
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write an 160-200 word text addressing: What if you had not studied the profession you have now? Where would have you ended up? Suppose you had chosen to be a different professional, where would that have led you? Talk about the scenarios and the details if you wish you had taken a different path or as if you had taken it.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 160–200 word text about a counterfactual career or life decision. Explain what might have happened if you had chosen a different path, and label fictional details clearly. Use the past counterfactual grammar studied."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 160
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 200
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": "conversation",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Write an 160-200 word text addressing: What if you had not studied the profession you have now? Where would have you ended up? Suppose you had chosen to be a different professional, where would that have led you? Talk about the scenarios and the details if you wish you had taken a different path or as if you had taken it.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "E. Write an 160-200 word text addressing: What if you had not studied the profession you have now? Where would have you ended up? Suppose you had chosen to be a different professional, where would that have led you? Talk about the scenarios and the details if you wish you had taken a different path or as if you had taken it.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "exerciseReview",
+            "kind"
+          ],
+          "before": "roleplay-and-writing",
+          "after": "writing"
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, make a small presentation / discussion about what other global disaster had been announced and never came to happen? What if it had became true? Suppose that we had lived it, where would that have let us?\nE. Write an 160-200 word text addressing: What if you had not studied the profession you have now? Where would have you ended up? Suppose you had chosen to be a different professional, where would that have led you? Talk about the scenarios and the details if you wish you had taken a different path or as if you had taken it.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing: What if you had not studied the profession you have now? Where would have you ended up? Suppose you had chosen to be a different professional, where would that have led you? Talk about the scenarios and the details if you wish you had taken a different path or as if you had taken it.\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 160–200 word text about a counterfactual career or life decision. Explain what might have happened if you had chosen a different path, and label fictional details clearly. Use the past counterfactual grammar studied.\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate past counterfactual or mixed-conditional forms and a clear comparison of outcomes. Accept a clearly labeled fictional scenario.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-structured-content-10-we-can-use-the-grammar-presented-to-talk-about-the-014",
+      "reason": "Make the future-perfect and future-perfect-continuous contrast visible with a concise time model. Add a clear timeline cue without changing the valid future-perfect question.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Talk about events that will be completed before a specific time in the future",
+                "Joseph will have been gone by the time she realizes of his feelings."
+              ],
+              [
+                "",
+                "",
+                ""
+              ],
+              [
+                "2",
+                "Express actions that will be in progress at a specific time in the future.",
+                "The police will be setting a perimeter, once the concert starts."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "Talk about events that will be completed before a specific time in the future.",
+                "Joseph will have left by the time she realizes his feelings."
+              ],
+              [
+                "2",
+                "Contrast completion with an action that will be in progress at a future time.",
+                "By 2035, the team will have finished the project; at 10 a.m., they will have been working for two hours."
+              ],
+              [
+                "3",
+                "Express actions that will be in progress at a specific time in the future.",
+                "The police will be setting a perimeter once the concert starts."
+              ]
+            ]
+          }
+        },
+        {
+          "path": [
+            "subtitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Timeline cue: completed before a future point = will have + past participle; ongoing up to that point = will have been + -ing."
+        }
+      ]
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-structured-content-12-a-using-the-grammar-learned-in-the-lesson-write-8--017",
+      "reason": "Add a model and time-marker guidance to the future-perfect production task.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "0. Jake will have taken the chance with Annie in to weeks’ time."
+            ],
+            "rows": [
+              [
+                ""
+              ],
+              [
+                ""
+              ],
+              [
+                ""
+              ],
+              [
+                ""
+              ],
+              [
+                ""
+              ],
+              [
+                ""
+              ],
+              [
+                ""
+              ],
+              [
+                ""
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "0. Jake will have taken the chance with Annie in two weeks’ time.",
+              "Model: By Friday, Jake will have finished the course."
+            ],
+            "rows": [
+              [
+                "",
+                ""
+              ],
+              [
+                "",
+                ""
+              ],
+              [
+                "",
+                ""
+              ],
+              [
+                "",
+                ""
+              ],
+              [
+                "",
+                ""
+              ],
+              [
+                "",
+                ""
+              ],
+              [
+                "",
+                ""
+              ],
+              [
+                "",
+                ""
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-essay-15-d-make-a-small-presentation-discussion-about-where-we-would-be--024",
+      "reason": "Replace imprecise historical and religious generalization with a precise, evidence-aware mixed-conditional task. Use concise neutral evaluation criteria for the historical essay.",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write an 160-200 word text addressing the issue that happened on September 11th, 2001. What would the world be now if extreme Islamics had never committed this act? If that had never happened, would there be other attacks now? State facts and your own position regarding this matter.",
+          "after": "E. Write a 160–200 word text about the September 11, 2001 attacks and a clearly labeled counterfactual scenario. Use a past-to-present mixed conditional to explain how the present might differ if the attacks had not occurred; refer to the specific attacks and al-Qaeda, avoid generalizing a religious community, distinguish historical evidence from imagined details, and state your position."
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Make a small presentation / discussion about where we would be if the Nazzis had won the war. What would be happening to the world now? Would your country be standing as a nation now if they had won?\nE. Write an 160-200 word text addressing the issue that happened on September 11th, 2001. What would the world be now if extreme Islamics had never committed this act? If that had never happened, would there be other attacks now? State facts and your own position regarding this matter.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing the issue that happened on September 11th, 2001. What would the world be now if extreme Islamics had never committed this act? If that had never happened, would there be other attacks now? State facts and your own position regarding this matter.\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 160–200 word text about the September 11, 2001 attacks and a clearly labeled counterfactual scenario. Use a past-to-present mixed conditional to explain how the present might differ if the attacks had not occurred; refer to the specific attacks and al-Qaeda, avoid generalizing a religious community, distinguish historical evidence from imagined details, and state your position.\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate past-to-present mixed conditionals, precise historical references, and a clear distinction between evidence and fiction. Do not generalize a religious community.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-structured-content-8-we-can-use-mixed-conditionals-when-we-talk-about-hy-011",
+      "reason": "Remove the double negative and make each mixed-conditional result clear. Clarify the present-condition and past-result evaluation cue.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "A HYPOTHETICAL PRESENT",
+              "A RESULT IN THE PAST"
+            ],
+            "rows": [
+              [
+                "If they came earlier,",
+                "we wouldn’t have not been sleeping."
+              ],
+              [
+                "If John did not push my buttons,",
+                "I would not have acted so feisty."
+              ],
+              [
+                "If she were as bold as brass,",
+                "She would have gotten higher in the company."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "A HYPOTHETICAL PRESENT",
+              "A RESULT IN THE PAST"
+            ],
+            "rows": [
+              [
+                "If they were more punctual,",
+                "they wouldn’t have missed the start."
+              ],
+              [
+                "If John did not push my buttons,",
+                "I would not have reacted so strongly."
+              ],
+              [
+                "If she were as bold as brass,",
+                "she would have earned a higher position in the company."
+              ]
+            ]
+          }
+        },
+        {
+          "path": [
+            "subtitle"
+          ],
+          "before": "To Consider: 1. The conditional that get mixed here is the 2nd one. It uses past simple. 2. The result in the past is used with the modal WOULD + HAVE + PAST PARTICIPLE VERB. 3. These sentences do not necessarily start with the if clause first. E.G: We wouldn't have done this if we had the money. 4. When if clauses start these sentences, you need to separate them by commas as we see in the examples. 5. We can also use questions here. E.G: Would you have gone there if they gave you chance?",
+          "after": "Mixed conditional: use a present hypothetical condition with would have + past participle for the past result."
+        }
+      ]
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "rowId": "course-guided-cmnmm9wiv002zw1qkz23p6kdp-essay-15-d-make-a-small-presentation-discussion-about-a-couple-of-the-mo-023",
+      "reason": "Remove the duplicated accept and preserve the future-to-past mixed conditional with balanced framing. Use concise, balanced evaluation criteria for the social-issue essay.",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write an 160-200 word text addressing the feminist movement that have taken place during the last years in the world. If people were going to accept fully accept it, wouldn’t they have done it already? Is it more the pain than the gain?",
+          "after": "E. Write a 160–200 word text about the feminist movement or another clearly framed public issue. Use the future-to-past mixed conditional: “If people were going to accept it fully, wouldn’t they have acted already?” Present more than one perspective, explain the possible past result, and state your position respectfully."
+        },
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Make a small presentation / discussion about a couple of the most difficult moments for humanity these past two years. Would they have affected less the world if the weren’t going to have a global impact even in some years?\nE. Write an 160-200 word text addressing the feminist movement that have taken place during the last years in the world. If people were going to accept fully accept it, wouldn’t they have done it already? Is it more the pain than the gain?\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing the feminist movement that have taken place during the last years in the world. If people were going to accept fully accept it, wouldn’t they have done it already? Is it more the pain than the gain?\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 160–200 word text about the feminist movement or another clearly framed public issue. Use the future-to-past mixed conditional: “If people were going to accept it fully, wouldn’t they have acted already?” Present more than one perspective, explain the possible past result, and state your position respectfully.\n\nEvaluation criteria:\nEvaluate 160–200 words for the future-to-past mixed conditional function, accurate grammar, and balanced, respectful discussion of a social issue. Accept the feminist movement or another clearly framed public issue.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-structured-content-8-we-consider-right-phrases-to-introduce-simple-or-co-011",
+      "reason": "Correct the infinitive complement while preserving nominalization as the grammar function.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "headers": [
+              "STRUCTURES",
+              "EXAMPLES"
+            ],
+            "rows": [
+              [
+                "Gerunds as nouns + complements",
+                "Learning quantum physics requires great discipline."
+              ],
+              [
+                "Infinitive clauses + complements",
+                "To design this crafts will change the way we see space. ."
+              ],
+              [
+                "Relative pronouns",
+                "What I don’t get is all those references."
+              ]
+            ]
+          },
+          "after": {
+            "headers": [
+              "STRUCTURES",
+              "EXAMPLES"
+            ],
+            "rows": [
+              [
+                "Gerunds as nouns + complements",
+                "Learning quantum physics requires great discipline."
+              ],
+              [
+                "Infinitive clauses + complements",
+                "To design these crafts will change the way we see space."
+              ],
+              [
+                "Relative pronouns",
+                "What I don’t get is all those references."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-essay-15-d-make-a-small-presentation-discussion-about-a-couple-of-the-mo-023",
+      "reason": "Add concise criteria and a model allowance for the final nominalization essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Make a small presentation / discussion about a couple of the most difficult decisions you consider people need to make in life. What makes them cling towards a specific side of the balance? Do they have options? Be very bold in this.\nE. Write an 160-200 word text addressing the different scenarios people live if they are immigrants. What to expect? Which are the reasons that move them to make such a decision? Have you got an idea of how easy or difficult is to cope in a new country?\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing the different scenarios people live if they are immigrants. What to expect? Which are the reasons that move them to make such a decision? Have you got an idea of how easy or difficult is to cope in a new country?\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing the different scenarios people live if they are immigrants. What to expect? Which are the reasons that move them to make such a decision? Have you got an idea of how easy or difficult is to cope in a new country?\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate nominalization, including a gerund, infinitive clause, or relative clause, with clear organization. Accept a clearly labeled fictional scenario.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 39,
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-essay-15-d-talk-about-a-situation-you-lived-or-you-have-been-living-rece-029",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.\nE. Write a piece of text between 120-160 words where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied.\n\nAuthored source prompt:\nE. Write a piece of text between 120-160 words where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied.\n\nAuthored review criteria/context:\nconstraints:\n120–160 words; use the listed phrasal verbs.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a piece of text between 120-160 words where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied.\n\nEvaluation criteria:\nEvaluate 120–160 words for a clear workplace focus, accurate phrasal verbs in context, and understandable support. Accept equivalent phrasal verbs when meaning is preserved.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 40,
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-essay-15-d-what-are-the-things-you-are-grateful-for-name-simple-things-o-031",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. What are the things you are grateful for? Name simple things or actions that make you feel great and talk to your teacher about his.\nE. Write a text between 120-150 words about your parents and the main values and principles they raised you up with. Which are they? How have they helped you in life? Which one do you implement. Use the language studied.\n\nAuthored source prompt:\nE. Write a text between 120-150 words about your parents and the main values and principles they raised you up with. Which are they? How have they helped you in life? Which one do you implement. Use the language studied.\n\nAuthored review criteria/context:\nconstraints:\n120–150 words; use delexical collocations.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a text between 120-150 words about your parents and the main values and principles they raised you up with. Which are they? How have they helped you in life? Which one do you implement. Use the language studied.\n\nEvaluation criteria:\nEvaluate 120–150 words for clear organization, accurate delexical verb collocations, and relevant examples. Do not require personal disclosure.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 41,
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-essay-16-d-based-on-the-previous-activity-tell-your-teacher-an-anecdote--027",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the previous activity, tell your teacher an anecdote of a day that turned out to be completely different from how you were expecting it.\nE. Write an 120-160 word text about the different experiences, good or bad, that you had already lived by the time you finally left school. Remember to be very detailed and use the language studied.\n\nAuthored source prompt:\nE. Write an 120-160 word text about the different experiences, good or bad, that you had already lived by the time you finally left school. Remember to be very detailed and use the language studied.\n\nAuthored review criteria/context:\nconstraints:\n120–160 words; use past perfect to order earlier experiences.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 120-160 word text about the different experiences, good or bad, that you had already lived by the time you finally left school. Remember to be very detailed and use the language studied.\n\nEvaluation criteria:\nEvaluate 120–160 words for a clear sequence of events and accurate past perfect forms. Accept a clearly labeled fictional anecdote.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 42,
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-essay-16-d-tell-your-teacher-a-story-gossip-you-remember-from-your-youth-028",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied.\nE. Write an 120-160 word text where you write a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.\n\nAuthored source prompt:\nE. Write an 120-160 word text where you write a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.\n\nAuthored review criteria/context:\nconstraints:\n120–160 words; use reported speech.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 120-160 word text where you write a news report about an important fact that happened in your city pretending you are the reporter. Remember to be very detailed and use the language studied.\n\nEvaluation criteria:\nEvaluate 120–160 words for a coherent news-style report, accurate reported speech, and clear attribution. Do not invent speaker identities or require factual local events.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 43,
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-essay-16-d-tell-your-opinion-about-the-topic-presented-in-the-reading-se-027",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Tell your opinion about the topic presented in the reading section. What do you think? What other ideas can we add? Use the language studied.\nE. Write an 120-160 word text about the way people perceived the world before the pandemic and how they do it now. What changed? How would or will they do things from now on? Have they gotten a new perspective?Remember to be very detailed and use the language studied.\n\nAuthored source prompt:\nE. Write an 120-160 word text about the way people perceived the world before the pandemic and how they do it now. What changed? How would or will they do things from now on? Have they gotten a new perspective?Remember to be very detailed and use the language studied.\n\nAuthored review criteria/context:\nconstraints:\n120–160 words; use tag questions and future/past perspectives.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 120-160 word text about the way people perceived the world before the pandemic and how they do it now. What changed? How would or will they do things from now on? Have they gotten a new perspective?Remember to be very detailed and use the language studied.\n\nEvaluation criteria:\nEvaluate 120–160 words for a clear comparison, accurate tag questions, and supported ideas. Accept a clearly labeled fictional or general example.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 44,
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-028",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied.\nE. Write an 120-160 word text about a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.\n\nAuthored source prompt:\nE. Write an 120-160 word text about a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.\n\nAuthored review criteria/context:\nconstraints:\n120–160 words; use passive voice.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 120-160 word text about a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.\n\nEvaluation criteria:\nEvaluate 120–160 words for a clear explanation, accurate passive voice, and neutral attribution. Avoid requiring unsupported claims about real crises.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-027",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, what other event in the world do you think would have been prevented if the right people had acted on time? Use the language studied.\nE. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied.\n\nAuthored source prompt:\nE. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied.\n\nEvaluation criteria:\nEvaluate 160–200 words for a coherent third-conditional scenario and accurate tense form. Several answers are valid; accept a clearly labeled fictional scenario.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied.\nE. Write an 160-200 word text about someone or something you would have considered a good influence during your youth but you didn’t. How should you have seen it? What would have been different if you had done it? Be very detailed, the story does not have to be real. Remember to use the language studied.\n\nAuthored source prompt:\nE. Write an 160-200 word text about someone or something you would have considered a good influence during your youth but you didn’t. How should you have seen it? What would have been different if you had done it? Be very detailed, the story does not have to be real. Remember to use the language studied.\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text about someone or something you would have considered a good influence during your youth but you didn’t. How should you have seen it? What would have been different if you had done it? Be very detailed, the story does not have to be real. Remember to use the language studied.\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate modal-perfect forms, clear reasoning about past decisions, and organized support. Accept a fictional scenario when labeled.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-essay-17-d-based-on-the-topic-presented-in-the-reading-section-how-would-031",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, how would you consider regret to be? Is it healthy? What is your position? Can you recall any regrets you have had in life? What happened?\nE. Write an 160-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied\n\nAuthored source prompt:\nE. Write an 160-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate if only/wish regret forms and clear consequences. A fictional regret is acceptable; do not require personal disclosure.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-essay-17-d-based-on-the-topic-presented-in-the-reading-section-prepare-a-029",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, prepare a small presentation about someone or something that may have had an even more especial impact on people / society / the world if it / he had not ceased existing. What could have been different? How?\nE. Write an 160-200 word text about what the world could have turned out to be if Nazis had not been stopped. How may have the world been? Where might we all have been placed as nations and societies? Read, search and write your ideas. Use the language studied. Watch the video provided and discuss with your teacher if necessary.\n\nAuthored source prompt:\nE. Write an 160-200 word text about what the world could have turned out to be if Nazis had not been stopped. How may have the world been? Where might we all have been placed as nations and societies? Read, search and write your ideas. Use the language studied. Watch the video provided and discuss with your teacher if necessary.\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text about what the world could have turned out to be if Nazis had not been stopped. How may have the world been? Where might we all have been placed as nations and societies? Read, search and write your ideas. Use the language studied. Watch the video provided and discuss with your teacher if necessary.\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate could/may/might have forms, precise neutral historical framing, and a clear distinction between possibility and certainty. Accept a clearly labeled fictional scenario.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-essay-15-d-based-on-the-topic-presented-in-the-reading-section-what-othe-025",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?\nE. Write a 170-200 word text about the impact socialism is having in the world and hot it may turn out in case it keeps spreading and gaining power. What if the world receives it? Support your ideas and remember to use the language studied.\n\nAuthored source prompt:\nE. Write a 170-200 word text about the impact socialism is having in the world and hot it may turn out in case it keeps spreading and gaining power. What if the world receives it? Support your ideas and remember to use the language studied.\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 170-200 word text about the impact socialism is having in the world and hot it may turn out in case it keeps spreading and gaining power. What if the world receives it? Support your ideas and remember to use the language studied.\n\nEvaluation criteria:\nEvaluate 170–200 words for accurate in case/if contrast, clear organization, and precise neutral discussion of the public issue. Accept a clearly labeled fictional or general alternative; do not require specialized medical knowledge.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-essay-15-d-based-on-the-topic-presented-in-the-reading-section-tell-your-026",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.\nE. Write an 160-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If only you wished something related to this matter, what would it be and why?\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If only you wished something related to this matter, what would it be and why?\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If only you wished something related to this matter, what would it be and why?\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate unreal-condition and wish forms, clear reasoning, and respectful treatment of health topics. Accept a fictional or neutral alternative.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-essay-15-d-make-a-small-presentation-discussion-about-where-will-we-have-025",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.\nE. Write an 160-200 word text addressing where will technology have reached in 30 or 50 years’ time? Will we be doing things that seem too impossible now? What about regular tech like PCs and phones? Be very detailed and use the language studied in the lesson.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing where will technology have reached in 30 or 50 years’ time? Will we be doing things that seem too impossible now? What about regular tech like PCs and phones? Be very detailed and use the language studied in the lesson.\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing where will technology have reached in 30 or 50 years’ time? Will we be doing things that seem too impossible now? What about regular tech like PCs and phones? Be very detailed and use the language studied in the lesson.\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate future-perfect and future-perfect-continuous contrasts, visible time markers, and a clear plan or projection. Treat “Where will we have gotten…?” as valid.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-essay-15-d-make-a-small-presentation-discussion-about-a-different-even-i-024",
+      "reason": "Use concise, source-grounded written evaluation criteria for the final essay.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "aiGradingContext"
+          ],
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Make a small presentation / discussion about a different even in history you consider to be different if people did or explained the facts differently. Which is this event? When did it happened? What hypothetical situations in the present can you state with past results.\nE. Write an 160-200 word text addressing the hypothetical scenario in your life if you made a different decision at certain point of your life and how that would have affected it. Be very detailed in your explanation.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing the hypothetical scenario in your life if you made a different decision at certain point of your life and how that would have affected it. Be very detailed in your explanation.\n\nAuthored review criteria/context:\nconstraints:\nPreserve the published word count and prompt when the builder imports this review.",
+          "after": "Evaluate the learner response against the authored source prompt.\n\nAuthored source prompt:\nE. Write an 160-200 word text addressing the hypothetical scenario in your life if you made a different decision at certain point of your life and how that would have affected it. Be very detailed in your explanation.\n\nEvaluation criteria:\nEvaluate 160–200 words for accurate present-to-past mixed conditionals, a clear antecedent/result relationship, and organized support. Accept a fictional life scenario.\n\nDo not invent source facts, speaker identities, or a single answer when the task is open response."
+        }
+      ]
+    }
+  ]
+}
