@@ -45,7 +45,10 @@
       "sourceBytesVerified": true,
       "sha256Verified": true,
       "durationVerifiedWith": "ffprobe local file",
-      "doNotSynthesize": true
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-53-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-53-audio-01.mp3",
+      "readyForParentStage": true
     },
     {
       "unit": 53,
@@ -80,7 +83,10 @@
       "sourceBytesVerified": true,
       "sha256Verified": true,
       "durationVerifiedWith": "ffprobe local file",
-      "doNotSynthesize": true
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-53-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-53-audio-02.mp3",
+      "readyForParentStage": true
     },
     {
       "unit": 54,
@@ -115,7 +121,10 @@
       "sourceBytesVerified": true,
       "sha256Verified": true,
       "durationVerifiedWith": "ffprobe local file",
-      "doNotSynthesize": true
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-54-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-54-audio-01.mp3",
+      "readyForParentStage": true
     },
     {
       "unit": 54,
@@ -150,7 +159,10 @@
       "sourceBytesVerified": true,
       "sha256Verified": true,
       "durationVerifiedWith": "ffprobe local file",
-      "doNotSynthesize": true
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-54-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-54-audio-02.mp3",
+      "readyForParentStage": true
     },
     {
       "unit": 55,
@@ -185,7 +197,10 @@
       "sourceBytesVerified": true,
       "sha256Verified": true,
       "durationVerifiedWith": "ffprobe local file",
-      "doNotSynthesize": true
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-55-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-55-audio-01.mp3",
+      "readyForParentStage": true
     },
     {
       "unit": 56,
@@ -220,7 +235,10 @@
       "sourceBytesVerified": true,
       "sha256Verified": true,
       "durationVerifiedWith": "ffprobe local file",
-      "doNotSynthesize": true
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-56-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-56-audio-01.mp3",
+      "readyForParentStage": true
     },
     {
       "unit": 56,
@@ -255,7 +273,10 @@
       "sourceBytesVerified": true,
       "sha256Verified": true,
       "durationVerifiedWith": "ffprobe local file",
-      "doNotSynthesize": true
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-56-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-56-audio-02.mp3",
+      "readyForParentStage": true
     }
   ],
   "blockers": [
