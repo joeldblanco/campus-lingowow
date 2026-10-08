@@ -17,14 +17,14 @@
       2,
       3
     ],
-    "selectedCount": 102,
-    "transcribedCount": 102,
-    "excludedCount": 50,
+    "selectedCount": 103,
+    "transcribedCount": 103,
+    "excludedCount": 49,
     "excludedByReason": {
       "outside-unit-range": 2,
       "self-study-role": 11,
       "excluded-name": 34,
-      "copy-duplicate-name": 3
+      "copy-duplicate-name": 2
     }
   },
   "candidates": [
@@ -352,16 +352,6 @@
       "sourceSha256": "7894b81cc3e4ac5cc6dc402618885beac89e0d726ffdac4597f9ea54539d88f7",
       "sourceBytes": 1006074,
       "reason": "excluded-name"
-    },
-    {
-      "unit": 36,
-      "sourceFilename": "Unit 36 - Audio 1 (1).mp3",
-      "sourcePath": "docs/audit/source-originals/audio/B-unit-36-lesson-01-1XUdTp5inMYyie-5BCs1e76Z0JlOmpJ64.mp3",
-      "materializedFilename": "B-unit-36-lesson-01-1XUdTp5inMYyie-5BCs1e76Z0JlOmpJ64.mp3",
-      "sourceSha256": "b7143a46fa85d692056d74a71a5516606224dcee6fee96c7a4ad81a275d7c9cf",
-      "sourceBytes": 1104570,
-      "reason": "copy-duplicate-name",
-      "audioIndex": 1
     },
     {
       "unit": 37,
@@ -5617,6 +5607,82 @@
           "end": 38.91,
           "text": "Fine, I take it.",
           "avgLogprob": -0.12147602510566895
+        }
+      ]
+    },
+    {
+      "unit": 36,
+      "audioIndex": 1,
+      "sourceFilename": "Unit 36 - Audio 1 (1).mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-36-lesson-01-1XUdTp5inMYyie-5BCs1e76Z0JlOmpJ64.mp3",
+      "materializedFilename": "B-unit-36-lesson-01-1XUdTp5inMYyie-5BCs1e76Z0JlOmpJ64.mp3",
+      "sourceSha256": "b7143a46fa85d692056d74a71a5516606224dcee6fee96c7a4ad81a275d7c9cf",
+      "sourceBytes": 1104570,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9968006610870361,
+      "avgLogprob": -0.10059733716875038,
+      "text": "Sometimes I wonder if people truly think about how they treat, act towards others. I mean, do people really give a thought about how their actions affect others? For good or for bad they do. I really think this is something we cannot overlook. In fact, this should be something we all need to be taught how to deal with, ever since we were kids, that being so, how different the world has turned out to be, may be more tolerant, full of compassion which we are not nowadays. We better start retracing our steps towards values we have been leaving behind and change course and appoint others to a greater direction that will be giving us a different outcome from the one we foresee now. Showing sympathy, being true friends with someone in caring gives us more than we can expect, so let's.",
+      "segments": [
+        {
+          "start": 0.51,
+          "end": 4.67,
+          "text": "Sometimes I wonder if people truly think about how they treat, act towards others.",
+          "avgLogprob": -0.06555412028884065
+        },
+        {
+          "start": 5.55,
+          "end": 9.31,
+          "text": "I mean, do people really give a thought about how their actions affect others?",
+          "avgLogprob": -0.06555412028884065
+        },
+        {
+          "start": 10.27,
+          "end": 15.07,
+          "text": "For good or for bad they do. I really think this is something we cannot overlook.",
+          "avgLogprob": -0.06555412028884065
+        },
+        {
+          "start": 16.03,
+          "end": 19.71,
+          "text": "In fact, this should be something we all need to be taught how to deal with,",
+          "avgLogprob": -0.06555412028884065
+        },
+        {
+          "start": 19.71,
+          "end": 24.59,
+          "text": "ever since we were kids, that being so, how different the world has turned out to be,",
+          "avgLogprob": -0.06555412028884065
+        },
+        {
+          "start": 24.59,
+          "end": 27.79,
+          "text": "may be more tolerant, full of compassion which we are not nowadays.",
+          "avgLogprob": -0.06555412028884065
+        },
+        {
+          "start": 28.67,
+          "end": 33.07,
+          "text": "We better start retracing our steps towards values we have been leaving behind and change",
+          "avgLogprob": -0.153162162488615
+        },
+        {
+          "start": 33.07,
+          "end": 37.23,
+          "text": "course and appoint others to a greater direction that will be giving us a different outcome from",
+          "avgLogprob": -0.153162162488615
+        },
+        {
+          "start": 37.23,
+          "end": 42.51,
+          "text": "the one we foresee now. Showing sympathy, being true friends with someone in caring",
+          "avgLogprob": -0.153162162488615
+        },
+        {
+          "start": 42.51,
+          "end": 45.63,
+          "text": "gives us more than we can expect, so let's.",
+          "avgLogprob": -0.153162162488615
         }
       ]
     },

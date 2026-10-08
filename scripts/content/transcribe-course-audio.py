@@ -30,8 +30,9 @@ BANNED_NAME_RE = re.compile(
     r"(?i)(?:^|[^a-z0-9])(?:quiz|test|ssm|self[\s_-]*study)(?:$|[^a-z0-9])"
 )
 COPY_NAME_RE = re.compile(
-    r"(?i)(?:\(\d+\)|(?:^|[^a-z0-9])(?:copia|copy|duplicate)(?:$|[^a-z0-9]))"
+    r"(?i)(?:^|[^a-z0-9])(?:copia|copy|duplicate)(?:$|[^a-z0-9])"
 )
+NUMBERED_SUFFIX_RE = re.compile(r"(?i)\(\d+\)(?=\.[^.]+$)")
 UNIT3_GENERIC_CANDIDATE_RE = re.compile(r"(?i)unit\s*3.*everyday\s*i")
 
 
@@ -187,7 +188,7 @@ def select_teaching_audios(files: Sequence[Mapping[str, Any]]) -> dict[str, list
         canonical_row, canonical_index = sorted(
             rows,
             key=lambda item: (
-                bool(COPY_NAME_RE.search(_source_name(item[0]))),
+                bool(COPY_NAME_RE.search(_source_name(item[0])) or NUMBERED_SUFFIX_RE.search(_source_name(item[0]))),
                 _row_unit(item[0]),
                 item[1],
                 _source_name(item[0]).casefold(),
