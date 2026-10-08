@@ -72,7 +72,8 @@ class PrepareCourseMediaTests(unittest.TestCase):
             item = plan["audio"][0]
             self.assertEqual(item["status"], "planned")
             self.assertEqual(item["publicPath"], "public/audio/lessons/course/unit-02-audio-01.mp3")
-            self.assertEqual(item["publicUrl"], "public/audio/lessons/course/unit-02-audio-01.mp3")
+            self.assertEqual(item["publicUrl"], "/audio/lessons/course/unit-02-audio-01.mp3")
+            self.assertEqual(item["publicHref"], item["publicUrl"])
             self.assertFalse((public_root / item["publicPath"]).exists())
 
     def test_transcript_manifest_is_joined_by_original_id(self) -> None:
@@ -233,7 +234,7 @@ class PrepareCourseMediaTests(unittest.TestCase):
             self.assertEqual(plan["blockers"], [])
             item = plan["images"][0]
             self.assertEqual(item["status"], "planned")
-            self.assertEqual(item["publicPath"], f"images/lessons/course/source-{digest(source)[:16]}.webp")
+            self.assertEqual(item["publicPath"], f"public/images/lessons/course/source-{digest(source)[:16]}.webp")
             self.assertEqual(item["publicUrl"], f"/images/lessons/course/source-{digest(source)[:16]}.webp")
             self.assertTrue(item["optimization"]["needed"])
             self.assertTrue(item["optimization"]["implemented"])

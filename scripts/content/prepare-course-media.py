@@ -328,7 +328,7 @@ def _stable_public_path(
     if kind == "image":
         if not source_sha256:
             raise MediaPlanError("instructional image is missing source SHA-256")
-        return f"images/lessons/{course_slug}/source-{source_sha256[:16].casefold()}.webp"
+        return f"public/images/lessons/{course_slug}/source-{source_sha256[:16].casefold()}.webp"
     raise MediaPlanError(f"unsupported media kind: {kind}")
 
 
@@ -340,6 +340,15 @@ def _audio_suffix(item: Mapping[str, Any], source_path: Path) -> str:
         return requested
     suffix = source_path.suffix.casefold()
     return suffix if suffix in AUDIO_EXTENSIONS else ".mp3"
+
+
+def _public_url(public_path: str) -> str:
+    """Map a repo-relative public/ file path to the browser URL root."""
+
+    normalized = public_path.replace("\\", "/")
+    if normalized.startswith("public/"):
+        normalized = normalized[len("public/") :]
+    return "/" + normalized.lstrip("/")
 
 
 def _validate_record(record: Mapping[str, Any], kind: str, root: Path) -> tuple[dict[str, Any], Path | None]:
@@ -636,8 +645,8 @@ def prepare_media_plan(
         audio_counters[unit] = audio_counters.get(unit, 0) + 1
         index = int(result.get("audioNumber") or audio_counters[unit])
         result["publicPath"] = _stable_public_path("audio", slug, unit, index, _audio_suffix(result, source_path))
-        result["publicUrl"] = result["publicPath"]
-        result["publicHref"] = "/" + result["publicPath"]
+        result["publicUrl"] = _public_url(result["publicPath"])
+        result["publicHref"] = result["publicUrl"]
         _stage_one(result, source_path, public_root, stage)
         audio_results.append(result)
 
@@ -675,7 +684,7 @@ def prepare_media_plan(
             result.get("slideNumber"),
             result["sourceSha256"],
         )
-        result["publicUrl"] = "/" + result["publicPath"]
+        result["publicUrl"] = _public_url(result["publicPath"])
         result["publicHref"] = result["publicUrl"]
         _stage_one(result, source_path, public_root, stage, payload=payload)
         image_results.append(result)
