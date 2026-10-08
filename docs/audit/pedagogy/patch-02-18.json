@@ -41,17 +41,17 @@
           "after": [
             {
               "id": "introduction",
-              "question": "Introduce yourself: say where you are from, your nationality, and one language you speak. Then ask your teacher where they are from.",
-              "answerPrompt": "Model: I’m from [country]. I’m [nationality]. I speak [language]. Where are you from?"
+              "question": "Introduce yourself: say where you are from, your nationality, and one language you speak. Then ask your partner where they are from.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I’m from [country]. I’m [nationality]. I speak [language]. Where are you from?"
             },
             {
               "id": "origin-follow-up",
-              "question": "Ask your teacher one follow-up question about their country or nationality, then answer a question about your own origin.",
+              "question": "Ask your partner one follow-up question about their country or nationality, then answer a question about your own origin.",
               "answerPrompt": "Ask: What nationality are you? / What language do you speak? Then answer with your own information."
             },
             {
               "id": "family-origin",
-              "question": "Tell your teacher where one family member is from and ask where one of their family members is from.",
+              "question": "Tell your partner where one family member is from and ask where one of their family members is from.",
               "answerPrompt": "Model: My [family member] is from [country]. Where is your [family member] from?"
             }
           ]
@@ -62,7 +62,7 @@
             "learnerPrompt"
           ],
           "before": "D. Act out the following situation with your teacher. Imagine you are a new student in USA and you get to the classroom and you find a classmate. Introduce yourself, talk about your personal information and about your origins. Ask and answer questions.",
-          "after": "Introduce yourself and your origins, ask your teacher where they are from, and ask one follow-up question."
+          "after": "Introduce yourself and your origins, ask your partner where they are from, and ask one follow-up question."
         }
       ]
     },
@@ -194,17 +194,17 @@
           "after": [
             {
               "id": "routine",
-              "question": "Describe your weekday routine with two frequency words, then ask your teacher about their routine.",
-              "answerPrompt": "Model: I usually wake up at [time], and I sometimes [activity]. What do you usually do in the morning?"
+              "question": "Describe your weekday routine with two frequency words, then ask your partner about their routine.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I usually wake up at [time], and I sometimes [activity]. What do you usually do in the morning?"
             },
             {
               "id": "frequency",
-              "question": "Ask your teacher how often they do one daily activity, then answer the same question about yourself.",
+              "question": "Ask your partner how often they do one daily activity, then answer the same question about yourself.",
               "answerPrompt": "Ask: How often do you [activity]? Answer: I [usually/sometimes/never] [activity]."
             },
             {
               "id": "comparison",
-              "question": "Compare one part of your routine with your teacher’s routine and ask one follow-up question.",
+              "question": "Compare one part of your routine with your partner’s routine and ask one follow-up question.",
               "answerPrompt": "Model: I usually [activity], but I never [activity]. What about you?"
             }
           ]
@@ -215,7 +215,7 @@
             "learnerPrompt"
           ],
           "before": "C. Improvise a conversation with your teacher. Ask and answer questions about daily routine. Do not forget to include all the aspects studied.",
-          "after": "Describe your daily routine with frequency adverbs, ask your teacher about theirs, and ask one follow-up question."
+          "after": "Describe your daily routine with frequency adverbs, ask your partner about theirs, and ask one follow-up question."
         }
       ]
     },
@@ -345,17 +345,17 @@
           "after": [
             {
               "id": "family-tree",
-              "question": "Present your family tree and describe three family members or relationships. Then ask your teacher about one family member.",
-              "answerPrompt": "Model: This is my [relationship], [name]. They are [age/description]. Who is in your family?"
+              "question": "Present your family tree and describe three family members or relationships. Then ask your partner about one family member.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: This is my [relationship], [name]. They are [age/description]. Who is in your family?"
             },
             {
               "id": "family-questions",
-              "question": "Ask your teacher whether they have siblings, cousins, or children, then answer a family question about yourself.",
+              "question": "Ask your partner whether they have siblings, cousins, or children, then answer a family question about yourself.",
               "answerPrompt": "Ask: How many siblings do you have? Answer with your own family information."
             },
             {
               "id": "family-detail",
-              "question": "Say where one relative lives or how old they are, and ask your teacher for one similar detail.",
+              "question": "Say where one relative lives or how old they are, and ask your partner for one similar detail.",
               "answerPrompt": "Model: My [relative] lives in [place]. How old is your [relative]?"
             }
           ]
@@ -366,7 +366,7 @@
             "learnerPrompt"
           ],
           "before": "D. Talk about your family. Present a family tree to your teacher and use the language studied during this lesson.",
-          "after": "Present your family tree, describe three family members or relationships, and ask your teacher about their family."
+          "after": "Present your family tree, describe three family members or relationships, and ask your partner about their family."
         }
       ]
     },
@@ -466,47 +466,35 @@
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "kind"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "roleplay-and-writing",
           "after": "writing"
         },
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "prompt"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Present a family tree and write a 50–80 word paragraph about someone else’s family.",
           "after": "Write a 50–80 word paragraph about someone else’s family, including family relationships and members."
         },
         {
           "path": [
             "data",
-            "data",
             "aiGradingContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Talk about your family. Present a family tree to your teacher and use the language studied during this lesson.\nE. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson.\n\nAuthored source prompt:\nE. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson.\n\nAuthored review criteria/context:\nconstraints:\n50–80 words for the writing task; include family relationships and members.",
           "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson.\n\nAuthored review criteria/context:\nconstraints:\n50–80 words for the writing task; include family relationships and members."
         },
         {
           "path": [
             "data",
-            "data",
             "originalPromptAIContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Present a family tree and write a 50–80 word paragraph about someone else’s family.",
           "after": "Write a 50–80 word paragraph about someone else’s family, including family relationships and members."
         }
       ]
@@ -547,17 +535,17 @@
           "after": [
             {
               "id": "interview-intro",
-              "question": "Role-play the interview opening: introduce yourself and say why you are there. Then ask your teacher one interview question.",
-              "answerPrompt": "Model: My name is [name]. I’m here for the [job] interview. What experience are you looking for?"
+              "question": "Role-play the interview opening: introduce yourself and say why you are there. Then ask your partner one interview question.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: My name is [name]. I’m here for the [job] interview. What experience are you looking for?"
             },
             {
               "id": "experience",
-              "question": "Answer your teacher’s question about your experience, describe two tasks you can do, and ask about one task they do.",
+              "question": "Answer your partner’s question about your experience, describe two tasks you can do, and ask about one task they do.",
               "answerPrompt": "Model: I work as a [job]. I [task] and [task]. What tasks do you do?"
             },
             {
               "id": "role-question",
-              "question": "Ask your teacher one question about the position, then answer a follow-up question about your availability.",
+              "question": "Ask your partner one question about the position, then answer a follow-up question about your availability.",
               "answerPrompt": "Ask: When would I start? Answer with a day or time that suits you."
             },
             {
@@ -599,16 +587,16 @@
             {
               "id": "application-intro",
               "question": "Introduce yourself as an applicant for the administrative sales assistant position, then ask the CEO what the role involves.",
-              "answerPrompt": "Model: I’m applying for the administrative sales assistant position. What does the role involve?"
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I’m applying for the administrative sales assistant position. What does the role involve?"
             },
             {
               "id": "experience-answer",
-              "question": "Answer your teacher’s questions about your experience, describe two professional tasks, and ask about one task they do.",
+              "question": "Answer your partner’s questions about your experience, describe two professional tasks, and ask about one task they do.",
               "answerPrompt": "Model: I have experience as a [job]. I [task] and [task]. What experience do you have?"
             },
             {
               "id": "availability",
-              "question": "Ask one question about the position or start date, then answer your teacher’s follow-up question.",
+              "question": "Ask one question about the position or start date, then answer your partner’s follow-up question.",
               "answerPrompt": "Ask: When would I start? Answer with your availability."
             },
             {
@@ -702,17 +690,17 @@
           "after": [
             {
               "id": "party-size",
-              "question": "Plan the party size: say how many people are coming and ask your teacher how many guests they expect.",
-              "answerPrompt": "Model: There are [number] people coming. How many guests do you expect?"
+              "question": "Plan the party size: say how many people are coming and ask your partner how many guests they expect.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: There are [number] people coming. How many guests do you expect?"
             },
             {
               "id": "food-quantities",
-              "question": "Discuss how much uncountable food and how many countable items you need, then ask your teacher about one quantity.",
+              "question": "Discuss how much uncountable food and how many countable items you need, then ask your partner about one quantity.",
               "answerPrompt": "Model: We need some/much [food] and [number] [items]. How many [items] do we need?"
             },
             {
               "id": "shopping-list",
-              "question": "Say what products you have and what you still need to buy. Ask your teacher one final shopping question.",
+              "question": "Say what products you have and what you still need to buy. Ask your partner one final shopping question.",
               "answerPrompt": "Model: We have [item], but there isn’t any [item]. What else should we buy?"
             }
           ]
@@ -723,7 +711,7 @@
             "learnerPrompt"
           ],
           "before": "D. Pretend you are organizing a party with your teacher. Talk about how many people and how much food you need for this party. What products do you need to buy? What do you have? REMEMBER, use the language studied.",
-          "after": "Plan a party with quantities, products, and what you already have; ask your teacher at least one quantity question."
+          "after": "Plan a party with quantities, products, and what you already have; ask your partner at least one quantity question."
         }
       ]
     },
@@ -823,47 +811,35 @@
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "kind"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "roleplay-and-writing",
           "after": "writing"
         },
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "prompt"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Organize a party discussion and write an 80–100 word shopping-habits paragraph.",
           "after": "Write an 80–100 word paragraph about your family’s shopping habits using countable and uncountable quantities."
         },
         {
           "path": [
             "data",
-            "data",
             "aiGradingContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Pretend you are organizing a party with your teacher. Talk about how many people and how much food you need for this party. What products do you need to buy? What do you have? REMEMBER, use the language studied.\nE. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity.\n\nAuthored source prompt:\nE. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity.\n\nAuthored review criteria/context:\nconstraints:\nUse countable/uncountable quantities and quantifiers; 80–100 words for writing.",
           "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity.\n\nAuthored review criteria/context:\nconstraints:\nUse countable/uncountable quantities and quantifiers; 80–100 words for writing."
         },
         {
           "path": [
             "data",
-            "data",
             "originalPromptAIContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Organize a party discussion and write an 80–100 word shopping-habits paragraph.",
           "after": "Write an 80–100 word paragraph about your family’s shopping habits using countable and uncountable quantities."
         }
       ]
@@ -907,17 +883,17 @@
           "after": [
             {
               "id": "belongings",
-              "question": "Describe three belongings in your home and say who each item belongs to. Then ask your teacher about one item.",
-              "answerPrompt": "Model: These are my keys. That is my brother’s watch. Whose bag is this?"
+              "question": "Describe three belongings in your home and say who each item belongs to. Then ask your partner about one item.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: These are my keys. That is my brother’s watch. Whose bag is this?"
             },
             {
               "id": "family-possessions",
-              "question": "Describe one belonging of a sibling or parent using a possessive adjective or pronoun, then ask your teacher a whose question.",
+              "question": "Describe one belonging of a sibling or parent using a possessive adjective or pronoun, then ask your partner a whose question.",
               "answerPrompt": "Model: This is her wallet. It is hers. Whose phone is that?"
             },
             {
               "id": "demonstratives",
-              "question": "Point out one nearby and one distant object, state who owns them, and ask your teacher to do the same.",
+              "question": "Point out one nearby and one distant object, state who owns them, and ask your partner to do the same.",
               "answerPrompt": "Model: These are my glasses. Those are my parents’ books. What are those?"
             }
           ]
@@ -928,7 +904,7 @@
             "learnerPrompt"
           ],
           "before": "D. Pretend you and your teacher are in your house. Describe the different belongings you and your family have there. Talk about yours, talk about your brothers’ belongings, your parents’. Do not leave out the language studied.",
-          "after": "Describe three belongings, use possessive forms and demonstratives, and ask your teacher whose one item is."
+          "after": "Describe three belongings, use possessive forms and demonstratives, and ask your partner whose one item is."
         }
       ]
     },
@@ -1010,47 +986,35 @@
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "kind"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "roleplay-and-writing",
           "after": "writing"
         },
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "prompt"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Describe belongings and write an argument conversation.",
           "after": "E. Write a 50–80 word conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as many interventions as needed to include the language studied."
         },
         {
           "path": [
             "data",
-            "data",
             "aiGradingContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Pretend you and your teacher are in your house. Describe the different belongings you and your family have there. Talk about yours, talk about your brothers’ belongings, your parents’. Do not leave out the language studied.\nE. Write a conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as much interventions as needed to include the language studied.\n\nAuthored source prompt:\nE. Write a conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as much interventions as needed to include the language studied.",
           "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 50–80 word conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as many interventions as needed to include the language studied."
         },
         {
           "path": [
             "data",
-            "data",
             "originalPromptAIContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Describe belongings and write an argument conversation.",
           "after": "Write a 50–80 word argument conversation using belongings language."
         },
         {
@@ -1124,17 +1088,17 @@
           "after": [
             {
               "id": "destination",
-              "question": "Tell your teacher about two places you want to visit in the city, then ask which place they want to visit.",
-              "answerPrompt": "Model: I want to visit the [place] and the [place]. Which place do you want to visit?"
+              "question": "Tell your partner about two places you want to visit in the city, then ask which place they want to visit.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I want to visit the [place] and the [place]. Which place do you want to visit?"
             },
             {
               "id": "route",
-              "question": "Ask your teacher how to get to one place and explain one route using a street, landmark, or direction.",
+              "question": "Ask your partner how to get to one place and explain one route using a street, landmark, or direction.",
               "answerPrompt": "Ask: How do I get to the [place]? Model: Go [direction] and walk [number] blocks."
             },
             {
               "id": "location",
-              "question": "Say where a third place is, then ask your teacher one indirect location question.",
+              "question": "Say where a third place is, then ask your partner one indirect location question.",
               "answerPrompt": "Model: The [place] is next to/in front of the [place]. Do you know where the [place] is?"
             }
           ]
@@ -1245,47 +1209,35 @@
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "kind"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "roleplay-and-writing",
           "after": "writing"
         },
         {
           "path": [
             "data",
-            "data",
             "exerciseReview",
             "prompt"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Role-play visiting a city and write an 80–100 word city description.",
           "after": "Write an 80–100 word city description with at least six places and how to get there."
         },
         {
           "path": [
             "data",
-            "data",
             "aiGradingContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Evaluate the learner response against the authored source prompt.\n\nAuthored passage/context:\nD. Pretend you just arrived to a city. You are a tourist and your teacher is your companion. Talk about the places you want to visit and discuss how you are getting there.\nE. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied.\n\nAuthored source prompt:\nE. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied.\n\nAuthored review criteria/context:\nconstraints:\nMention at least six places and how to get there; 80–100 words.",
           "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied.\n\nAuthored review criteria/context:\nconstraints:\nMention at least six places and how to get there; 80–100 words."
         },
         {
           "path": [
             "data",
-            "data",
             "originalPromptAIContext"
           ],
-          "before": {
-            "$missing": true
-          },
+          "before": "Role-play visiting a city and write an 80–100 word city description.",
           "after": "Write an 80–100 word city description with at least six places and routes."
         }
       ]
@@ -1329,17 +1281,17 @@
           "after": [
             {
               "id": "place",
-              "question": "Name a city, town, or country you like or want to visit, say where it is, and ask your teacher about a place they like.",
-              "answerPrompt": "Model: I like [place]. It is in [country/region]. What place do you like?"
+              "question": "Name a city, town, or country you like or want to visit, say where it is, and ask your partner about a place they like.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I like [place]. It is in [country/region]. What place do you like?"
             },
             {
               "id": "adjectives",
-              "question": "Describe the place with three adjectives, then ask your teacher how their place is.",
+              "question": "Describe the place with three adjectives, then ask your partner how their place is.",
               "answerPrompt": "Model: It is [adjective], [adjective], and [adjective]. How is your place?"
             },
             {
               "id": "features",
-              "question": "Say what the place has and why you like it, then ask one follow-up question about your teacher’s place.",
+              "question": "Say what the place has and why you like it, then ask one follow-up question about your partner’s place.",
               "answerPrompt": "Model: It has [feature], so I like it because [reason]. What does your place have?"
             }
           ]
@@ -1350,7 +1302,7 @@
             "learnerPrompt"
           ],
           "before": "D. Describe a city / town / country you like or that you want to visit. Use very detailed information. Remember to work with the language studied. Your teacher will ask you questions to help you describe.",
-          "after": "Describe a place with its location, three adjectives, and one feature; ask your teacher two follow-up questions."
+          "after": "Describe a place with its location, three adjectives, and one feature; ask your partner two follow-up questions."
         }
       ]
     },
@@ -1393,12 +1345,12 @@
           "after": [
             {
               "id": "places",
-              "question": "Name two places you have visited and compare their size, atmosphere, or appearance. Then ask your teacher about two places they know.",
-              "answerPrompt": "Model: [Place A] is [comparative] than [Place B]. Which places have you visited?"
+              "question": "Name two places you have visited and compare their size, atmosphere, or appearance. Then ask your partner about two places they know.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: [Place A] is [comparative] than [Place B]. Which places have you visited?"
             },
             {
               "id": "people",
-              "question": "Compare the people in the two places and ask your teacher how the people differ in their examples.",
+              "question": "Compare the people in the two places and ask your partner how the people differ in their examples.",
               "answerPrompt": "Model: The people in [Place A] are [comparative] than the people in [Place B]. How are they in your places?"
             },
             {
@@ -1414,7 +1366,7 @@
             "learnerPrompt"
           ],
           "before": "D. Compare two different places you have already visited. How are theses places? How are the people? How is the food? Similar? Different? Remember to use comparisons.",
-          "after": "Compare two places, their people, and their food using comparative and as ... as forms; ask your teacher one follow-up question."
+          "after": "Compare two places, their people, and their food using comparative and as ... as forms; ask your partner one follow-up question."
         }
       ]
     },
@@ -1454,17 +1406,17 @@
           "after": [
             {
               "id": "choice",
-              "question": "Choose a country you consider one of the best and tell your teacher why. Then ask which country they consider the best.",
-              "answerPrompt": "Model: I think [country] is one of the best because it is [adjective]. Which country is the best in your opinion?"
+              "question": "Choose a country you consider one of the best and tell your partner why. Then ask which country they consider the best.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I think [country] is one of the best because it is [adjective]. Which country is the best in your opinion?"
             },
             {
               "id": "superlative",
-              "question": "Describe the country with two superlatives and ask your teacher for two superlatives about their choice.",
+              "question": "Describe the country with two superlatives and ask your partner for two superlatives about their choice.",
               "answerPrompt": "Model: It has the most [adjective] [noun] and the [superlative] [noun]. What is the most [adjective] feature of your country?"
             },
             {
               "id": "context",
-              "question": "Give one concrete context for your opinion, then ask one follow-up question about your teacher’s choice.",
+              "question": "Give one concrete context for your opinion, then ask one follow-up question about your partner’s choice.",
               "answerPrompt": "Model: It is the best place for [activity] because [reason]. Why do you think yours is the best?"
             }
           ]
@@ -1475,7 +1427,7 @@
             "learnerPrompt"
           ],
           "before": "D. Improvise a conversation with your teacher. Talk about which are the best countries in your opinion. Be very detailed, ask and answer questions.",
-          "after": "Choose a country, support the choice with two superlatives and a reason, and ask your teacher two follow-up questions."
+          "after": "Choose a country, support the choice with two superlatives and a reason, and ask your partner two follow-up questions."
         }
       ]
     },
@@ -1530,8 +1482,8 @@
           "after": [
             {
               "id": "phone-opening",
-              "question": "Open the phone call and ask your teacher what they are doing right now.",
-              "answerPrompt": "Model: Hi! What are you doing right now?"
+              "question": "Open the phone call and ask your partner what they are doing right now.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: Hi! What are you doing right now?"
             },
             {
               "id": "experiences",
@@ -1540,7 +1492,7 @@
             },
             {
               "id": "time-phrases",
-              "question": "Describe two activities happening now or these days and ask your teacher one follow-up question.",
+              "question": "Describe two activities happening now or these days and ask your partner one follow-up question.",
               "answerPrompt": "Model: At the moment I’m [verb]-ing [activity]. These days I’m also [verb]-ing [activity]. What about you?"
             }
           ]
@@ -1608,17 +1560,17 @@
           "after": [
             {
               "id": "destination",
-              "question": "Tell your teacher where and when you took a trip, then ask where they went on a memorable trip.",
-              "answerPrompt": "Model: I went to [place] in [time]. Where did you go?"
+              "question": "Tell your partner where and when you took a trip, then ask where they went on a memorable trip.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I went to [place] in [time]. Where did you go?"
             },
             {
               "id": "companions",
-              "question": "Say who you went with and ask your teacher who accompanied them.",
+              "question": "Say who you went with and ask your partner who accompanied them.",
               "answerPrompt": "Model: I went with [person/people]. Who did you go with?"
             },
             {
               "id": "activities",
-              "question": "Describe two things you did on the trip and ask your teacher what they did on theirs.",
+              "question": "Describe two things you did on the trip and ask your partner what they did on theirs.",
               "answerPrompt": "Model: We visited [place] and tried [activity/food]. What did you do?"
             }
           ]
@@ -1629,7 +1581,7 @@
             "learnerPrompt"
           ],
           "before": "D. Tell your teacher about one trip you made in your life and that you liked a lot. Where did you go? When did you go? Who did you go with? What did you do?",
-          "after": "Describe where, when, with whom, and what you did on a past trip; ask your teacher the same questions."
+          "after": "Describe where, when, with whom, and what you did on a past trip; ask your partner the same questions."
         }
       ]
     },
@@ -1697,12 +1649,12 @@
           "after": [
             {
               "id": "past-habit",
-              "question": "Tell your teacher about one thing you used to do when you were younger but do not do anymore. Then ask what they used to do.",
-              "answerPrompt": "Model: I used to [verb] when I was younger. What did you use to do?"
+              "question": "Tell your partner about one thing you used to do when you were younger but do not do anymore. Then ask what they used to do.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I used to [verb] when I was younger. What did you use to do?"
             },
             {
               "id": "reason",
-              "question": "Explain why you stopped one past habit and ask your teacher why they stopped one habit.",
+              "question": "Explain why you stopped one past habit and ask your partner why they stopped one habit.",
               "answerPrompt": "Model: I stopped because [reason]. Why did you stop?"
             },
             {
@@ -1718,7 +1670,7 @@
             "learnerPrompt"
           ],
           "before": "D. Tell your teacher about some things you used to do some years ago but not anymore. Why did you stop making them? Also, make your teacher questions.",
-          "after": "Describe one past habit, explain why it stopped, contrast it with a present routine, and ask your teacher two questions."
+          "after": "Describe one past habit, explain why it stopped, contrast it with a present routine, and ask your partner two questions."
         }
       ]
     },
@@ -1777,16 +1729,16 @@
             {
               "id": "setting",
               "question": "Describe where you were and what you were doing when the event began.",
-              "answerPrompt": "Model: I was at/in [place], and I was [verb]-ing when it happened."
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I was at/in [place], and I was [verb]-ing when it happened."
             },
             {
               "id": "interruption",
-              "question": "Explain what happened next using a simple-past event that interrupted an ongoing action, then ask your teacher what they were doing.",
+              "question": "Explain what happened next using a simple-past event that interrupted an ongoing action, then ask your partner what they were doing.",
               "answerPrompt": "Model: I was [verb]-ing when [event] happened. What were you doing?"
             },
             {
               "id": "reflection",
-              "question": "Describe how the experience ended and ask your teacher one question about their experience.",
+              "question": "Describe how the experience ended and ask your partner one question about their experience.",
               "answerPrompt": "Model: We [past action] and finally got to safety. How did you feel?"
             }
           ]
@@ -1797,7 +1749,7 @@
             "learnerPrompt"
           ],
           "before": "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience?",
-          "after": "Describe what you were doing, the event that interrupted it, and how the experience ended; ask your teacher one question."
+          "after": "Describe what you were doing, the event that interrupted it, and how the experience ended; ask your partner one question."
         }
       ]
     },
@@ -1855,17 +1807,17 @@
           "after": [
             {
               "id": "categories",
-              "question": "Tell your teacher one plan about work or study and one plan about free time, then ask about their plans.",
-              "answerPrompt": "Model: I’m going to [verb] for work/study, and I’m going to [verb] in my free time. What are you going to do?"
+              "question": "Tell your partner one plan about work or study and one plan about free time, then ask about their plans.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I’m going to [verb] for work/study, and I’m going to [verb] in my free time. What are you going to do?"
             },
             {
               "id": "personal-plan",
-              "question": "Describe one personal plan with a future time phrase and ask your teacher one specific question about timing.",
+              "question": "Describe one personal plan with a future time phrase and ask your partner one specific question about timing.",
               "answerPrompt": "Model: I’m going to [verb] in [month/on day]. When are you going to [verb]?"
             },
             {
               "id": "intention",
-              "question": "Explain why one plan matters to you and ask one follow-up question about your teacher’s plan.",
+              "question": "Explain why one plan matters to you and ask one follow-up question about your partner’s plan.",
               "answerPrompt": "Model: I’m going to [verb] because [reason]. Why are you going to [verb]?"
             }
           ]
@@ -1876,7 +1828,7 @@
             "learnerPrompt"
           ],
           "before": "D. Tell your teacher about some of the plans you have for the upcoming future. Include information about job, free time, personal things etc. Also, ask your teacher questions.",
-          "after": "Describe plans for work or study, free time, and a personal event with future time phrases; ask your teacher two questions."
+          "after": "Describe plans for work or study, free time, and a personal event with future time phrases; ask your partner two questions."
         }
       ]
     },
@@ -1931,17 +1883,17 @@
           "after": [
             {
               "id": "important-event",
-              "question": "Tell your teacher about one important arrangement and give its date. Then ask about one important event they have arranged.",
-              "answerPrompt": "Model: I’m [verb]-ing on [date]. What important event are you attending?"
+              "question": "Tell your partner about one important arrangement and give its date. Then ask about one important event they have arranged.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I’m [verb]-ing on [date]. What important event are you attending?"
             },
             {
               "id": "simple-event",
-              "question": "Tell your teacher about one simple arrangement for the month and ask when they are doing a similar activity.",
+              "question": "Tell your partner about one simple arrangement for the month and ask when they are doing a similar activity.",
               "answerPrompt": "Model: I’m [verb]-ing on [date]. When are you [verb]-ing?"
             },
             {
               "id": "arrangement-detail",
-              "question": "Explain one detail of an arrangement and ask one final question about your teacher’s plans.",
+              "question": "Explain one detail of an arrangement and ask one final question about your partner’s plans.",
               "answerPrompt": "Model: I’m [verb]-ing with [person] at [place]. Who are you going with?"
             }
           ]
@@ -1952,7 +1904,7 @@
             "learnerPrompt"
           ],
           "before": "D. Tell your teacher about some of the arrangements you have made for the upcoming month. What important events do you have? What simple events do you have? Ask him about his events too.",
-          "after": "Describe one important and one simple arrangement with dates, then ask your teacher two questions about their arrangements."
+          "after": "Describe one important and one simple arrangement with dates, then ask your partner two questions about their arrangements."
         }
       ]
     },
