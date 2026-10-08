@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import copy
 from collections import Counter, defaultdict
+from dataclasses import dataclass
 import hashlib
 import json
 import re
@@ -43,6 +44,36 @@ TABLE_REVIEW_POLICY_KEYS = (
 
 class ComposeError(ValueError):
     """Raised when a required audit input cannot be interpreted safely."""
+
+
+@dataclass(frozen=True)
+class UnitScope:
+    """The inclusive unit range admitted by one composition run."""
+
+    first: int
+    last: int
+
+    @property
+    def units(self) -> range:
+        return range(self.first, self.last + 1)
+
+    @property
+    def count(self) -> int:
+        return self.last - self.first + 1
+
+    def includes(self, unit: int | None) -> bool:
+        return unit is not None and self.first <= unit <= self.last
+
+
+def _unit_scope(first: int, last: int) -> UnitScope:
+    if first < 2:
+        raise ComposeError("unit scope must start at Unit 2 or later; Unit 1 uses its authored pipeline")
+    if last < first:
+        raise ComposeError(f"unit scope is invalid: first unit {first} is after last unit {last}")
+    return UnitScope(first=first, last=last)
+
+
+DEFAULT_UNIT_SCOPE = UnitScope(first=UNIT_FIRST, last=UNIT_LAST)
 
 
 def _as_list(value: Any) -> list[Any]:
@@ -575,6 +606,7 @@ def _published_sources(
     manifest: Mapping[str, Any],
     snapshot: Mapping[str, Any],
     blockers: list[dict[str, Any]],
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
 ) -> tuple[list[dict[str, Any]], dict[int, dict[str, Any]], dict[str, Mapping[str, Any]]]:
     raw_sources = manifest.get("sources")
     if not isinstance(raw_sources, list):
@@ -591,7 +623,7 @@ def _published_sources(
         if unit is None:
             unit = _unit_from_value(source)
         lesson_id = _lesson_id(source)
-        if unit is None or not (UNIT_FIRST <= unit <= UNIT_LAST):
+        if not scope.includes(unit):
             continue
         if not lesson_id:
             blockers.append({"kind": "source", "unit": unit, "code": "lesson-id-missing"})
@@ -622,7 +654,7 @@ def _published_sources(
         by_unit[unit] = source
         by_lesson[lesson_id] = source
         sources.append(source)
-    expected = set(range(UNIT_FIRST, UNIT_LAST + 1))
+    expected = set(scope.units)
     for unit in sorted(expected - set(by_unit)):
         blockers.append({"kind": "source", "unit": unit, "code": "published-source-missing"})
     sources.sort(key=lambda item: _unit_from_value(_source_deck(item)) or 10**6)
@@ -826,18 +858,25 @@ def _normalize_audio(
     sources_by_unit: Mapping[int, Mapping[str, Any]],
     asset_roots: Sequence[Path],
     blockers: list[dict[str, Any]],
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     reviewed_audio_by_key, _ = _index_reviewed_media(reviewed)
     staged_records = _media_records(staged, "audio")
     staged_by_id, staged_by_sha = _staged_index(staged_records)
+    scoped_staged_records = [
+        record for record in staged_records if scope.includes(_unit_from_value(record))
+    ]
     reviewed_records = _media_records(reviewed, "audio")
+    scoped_reviewed_records = [
+        record for record in reviewed_records if scope.includes(_unit_from_value(record))
+    ]
     if not staged_records and reviewed_records:
         # This path is deliberately still blocked below because reviewed media
         # has immutable source data but no staged browser URL.
         staged_records = []
     merged: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
-    for source_item in reviewed_records or staged_records:
+    for source_item in scoped_reviewed_records or scoped_staged_records:
         identifier = _record_id(source_item)
         digest = _record_sha(source_item)
         staged_item = staged_by_id.get(identifier) or staged_by_sha.get(digest)
@@ -847,7 +886,7 @@ def _normalize_audio(
         unit = _unit_from_value(item)
         if unit is None:
             unit = _unit_from_value(source_item)
-        if unit is None or not (UNIT_FIRST <= unit <= UNIT_LAST):
+        if not scope.includes(unit):
             continue
         key = (identifier, digest)
         if key in seen:
@@ -911,19 +950,19 @@ def _normalize_audio(
             )
         merged.append(normalized)
     by_unit = Counter(item["unit"] for item in merged)
-    expected = sum(1 for unit in sources_by_unit if UNIT_FIRST <= unit <= UNIT_LAST)
-    if len(merged) != len(reviewed_records) and reviewed_records:
+    expected = sum(1 for unit in sources_by_unit if scope.includes(unit))
+    if len(merged) != len(scoped_reviewed_records) and scoped_reviewed_records:
         blockers.append(
             {
                 "kind": "audio",
                 "code": "audio-record-count-mismatch",
-                "expected": len(reviewed_records),
+                "expected": len(scoped_reviewed_records),
                 "actual": len(merged),
             }
         )
     return sorted(merged, key=lambda item: (item["unit"], item.get("audioNumber") or 10**6, item["id"])), {
-        "reviewedRecords": len(reviewed_records),
-        "stagedRecords": len(staged_records),
+        "reviewedRecords": len(scoped_reviewed_records),
+        "stagedRecords": len(scoped_staged_records),
         "normalizedRecords": len(merged),
         "unitsWithAudio": len(by_unit),
         "expectedUnits": expected,
@@ -940,6 +979,7 @@ def _figure_candidates(
     blockers: list[dict[str, Any]],
     figure_proof: Mapping[str, Any] | None = None,
     figure_proof_ref: str = "",
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
     seen: set[tuple[int, int, str]] = set()
@@ -947,7 +987,7 @@ def _figure_candidates(
     confirmed_units = reviewed_figures.get("units", {}) if isinstance(reviewed_figures, Mapping) else {}
     if isinstance(confirmed_units, list):
         confirmed_units = {str(item.get("unit")): item for item in confirmed_units if isinstance(item, Mapping)}
-    for unit in range(UNIT_FIRST, UNIT_LAST + 1):
+    for unit in scope.units:
         unit_entry = confirmed_units.get(str(unit), {}) if isinstance(confirmed_units, Mapping) else {}
         if unit in {33, 34, 35, 36}:
             # These decks have no whole-deck native match.  Their figures are
@@ -1351,6 +1391,7 @@ def _compose_native_audit(
     blockers: list[dict[str, Any]],
     table_reviews: Mapping[tuple[int, int], Mapping[str, Any]] | None = None,
     vector_review: Mapping[str, Any] | None = None,
+    scope: UnitScope = DEFAULT_UNIT_SCOPE,
 ) -> dict[str, Any]:
     if not isinstance(native_audit, Mapping):
         blockers.append({"kind": "native", "code": "native-audit-missing"})
@@ -1362,7 +1403,7 @@ def _compose_native_audit(
     for figure in figures:
         figure_map[(int(figure["unit"]), int(figure["slideNumber"]))].append(figure)
     selected: list[dict[str, Any]] = []
-    for unit in range(UNIT_FIRST, UNIT_LAST + 1):
+    for unit in scope.units:
         source = sources_by_unit.get(unit)
         source_title = _text(_source_deck(source or {}).get("deckTitle"))
         wanted_id = candidate_ids.get(unit)
@@ -2569,6 +2610,10 @@ def _builder_summary(path: Path) -> dict[str, Any]:
 
 
 def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
+    scope = _unit_scope(
+        getattr(args, "unit_first", UNIT_FIRST),
+        getattr(args, "unit_last", UNIT_LAST),
+    )
     snapshot = _load_json(args.snapshot)
     source_manifest = _load_json(args.source_manifest)
     staged_media = _load_json(args.staged_media)
@@ -2596,7 +2641,12 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     if _text(snapshot.get("courseId") or (snapshot.get("course") or {}).get("id")) not in {"", COURSE_ID}:
         raise ComposeError("snapshot course id does not match the course builder")
     blockers: list[dict[str, Any]] = []
-    sources, sources_by_unit, sources_by_lesson = _published_sources(source_manifest, snapshot, blockers)
+    sources, sources_by_unit, sources_by_lesson = _published_sources(
+        source_manifest,
+        snapshot,
+        blockers,
+        scope=scope,
+    )
     table_review_summary, table_review_decisions = _apply_table_review(
         table_review,
         sources,
@@ -2650,14 +2700,21 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
 
     _reviewed_audio, reviewed_images = _index_reviewed_media(reviewed_media)
     stage_image_records = _media_records(staged_media, "images")
+    scoped_stage_image_records = [
+        record for record in stage_image_records if scope.includes(_unit_from_value(record))
+    ]
     _stage_images_by_id, stage_images_by_sha = _staged_index(stage_image_records)
     stage_audio_records = _media_records(staged_media, "audio")
+    scoped_stage_audio_records = [
+        record for record in stage_audio_records if scope.includes(_unit_from_value(record))
+    ]
     audio, audio_counts = _normalize_audio(
         staged_media,
         reviewed_media,
         sources_by_unit,
         args.asset_root,
         blockers,
+        scope=scope,
     )
     figures, figure_counts = _figure_candidates(
         reviewed_figures,
@@ -2669,6 +2726,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         blockers,
         figure_proof,
         str(args.figure_proof) if args.figure_proof else "",
+        scope=scope,
     )
     filtered_native = _compose_native_audit(
         native_audit,
@@ -2680,6 +2738,7 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         blockers,
         table_review_decisions,
         vector_review,
+        scope=scope,
     )
     normalized_exercise = _normalize_exercise_review(exercise_review, source_by_lesson, blockers)
     normalized_listening = _normalize_listening(
@@ -2709,8 +2768,8 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "schemaVersion": 1,
         "courseId": COURSE_ID,
         "scope": {
-            "units": [UNIT_FIRST, UNIT_LAST],
-            "unitCount": UNIT_LAST - UNIT_FIRST + 1,
+            "units": [scope.first, scope.last],
+            "unitCount": scope.count,
             "sourceCount": len(sources),
             "publishedSourcePriority": True,
             "nativeSupplementOnlyWhenAligned": True,
@@ -2762,12 +2821,12 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "figures": figures,
         "counts": {
             "publishedSources": len(sources),
-            "expectedPublishedSources": UNIT_LAST - UNIT_FIRST + 1,
-            "stageAudioRecords": len(stage_audio_records),
-            "stageImageRecords": len(stage_image_records),
-            "stageAudioReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in stage_audio_records),
-            "stageImageReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in stage_image_records),
-            "stageImageDuplicates": sum(_record_status(item) == "duplicate" for item in stage_image_records),
+            "expectedPublishedSources": scope.count,
+            "stageAudioRecords": len(scoped_stage_audio_records),
+            "stageImageRecords": len(scoped_stage_image_records),
+            "stageAudioReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in scoped_stage_audio_records),
+            "stageImageReady": sum(_record_status(item) in READY_MEDIA_STATUSES for item in scoped_stage_image_records),
+            "stageImageDuplicates": sum(_record_status(item) == "duplicate" for item in scoped_stage_image_records),
             "audio": audio_counts,
             "figures": figure_counts,
             "exerciseReviewLessons": len(normalized_exercise["lessons"]),
@@ -2886,6 +2945,18 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
 
 def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--unit-first",
+        type=int,
+        default=UNIT_FIRST,
+        help=f"inclusive first unit to compose (default: {UNIT_FIRST})",
+    )
+    parser.add_argument(
+        "--unit-last",
+        type=int,
+        default=UNIT_LAST,
+        help=f"inclusive last unit to compose (default: {UNIT_LAST})",
+    )
     parser.add_argument("--snapshot", required=True, type=Path)
     parser.add_argument("--source-manifest", required=True, type=Path)
     parser.add_argument("--staged-media", required=True, type=Path)
