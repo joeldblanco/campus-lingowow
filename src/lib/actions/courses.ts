@@ -983,6 +983,7 @@ export async function getCourseProgress(
                     contents: {
                       select: {
                         id: true,
+                        data: true,
                       },
                     },
                   },
@@ -1003,7 +1004,8 @@ export async function getCourseProgress(
 
     const progress = summarizeCourseProgress(
       enrollmentWithDetails.course.modules,
-      enrollmentWithDetails.student.completedContents
+      enrollmentWithDetails.student.completedContents,
+      { courseId }
     )
 
     return {
@@ -1041,7 +1043,7 @@ export async function getCourseModuleProgress(
           title: true,
           lessons: {
             where: { isPublished: true },
-            select: { id: true, contents: { select: { id: true } } },
+            select: { id: true, contents: { select: { id: true, data: true } } },
           },
         },
       }),
@@ -1067,7 +1069,8 @@ export async function getCourseModuleProgress(
       modules,
       completed.map((c) => c.contentId),
       exams,
-      attempts
+      attempts,
+      { courseId }
     )
   } catch (error) {
     console.error('Error fetching course module progress:', error)

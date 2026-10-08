@@ -80,6 +80,108 @@ describe('summarizeCourseProgress', () => {
       completedContentIds: ['c1'],
     })
   })
+
+  it('virtually completes converted learner contents from a completed original embed', () => {
+    const migratedLesson: ProgressModule['lessons'][number] = {
+      id: 'lesson-1',
+      contents: [
+        {
+          id: 'archive-embed',
+          data: {
+            type: 'teacher_notes',
+            learningRevision: 'course-guided-v1',
+            courseId: 'course-1',
+            lessonId: 'lesson-1',
+            originalSource: { type: 'embed', contentId: 'archive-embed' },
+          },
+        },
+        { id: 'new-1', data: { type: 'text' } },
+        { id: 'new-2', data: { type: 'text' } },
+        { id: 'new-3', data: { type: 'text' } },
+        { id: 'teacher-note', data: { type: 'teacher_notes' } },
+        { id: 'hidden', data: { type: 'text', hiddenFromLearners: true } },
+      ],
+    }
+
+    expect(
+      summarizeCourseProgress(
+        [{ lessons: [migratedLesson] }],
+        [
+          { contentId: 'archive-embed', completed: true },
+          { contentId: 'unrelated-content', completed: true },
+        ],
+        { courseId: 'course-1' }
+      )
+    ).toEqual({
+      totalContents: 3,
+      completedContents: 3,
+      progressPercentage: 100,
+      completedContentIds: ['new-1', 'new-2', 'new-3'],
+    })
+  })
+
+  it('does not grant virtual completion for an incomplete or out-of-scope archive', () => {
+    const lesson: ProgressModule['lessons'][number] = {
+      id: 'lesson-1',
+      contents: [
+        {
+          id: 'archive-embed',
+          data: {
+            type: 'teacher_notes',
+            learningRevision: 'course-guided-v1',
+            courseId: 'other-course',
+            lessonId: 'lesson-1',
+            originalSource: { type: 'embed', contentId: 'archive-embed' },
+          },
+        },
+        { id: 'new-1', data: { type: 'text' } },
+      ],
+    }
+
+    expect(
+      summarizeCourseProgress(
+        [{ lessons: [lesson] }],
+        [{ contentId: 'archive-embed', completed: true }],
+        { courseId: 'course-1' }
+      )
+    ).toMatchObject({
+      totalContents: 1,
+      completedContents: 0,
+      progressPercentage: 0,
+      completedContentIds: [],
+    })
+  })
+
+  it('does not grant a scoped archive bridge when the original embed is incomplete', () => {
+    const lesson: ProgressModule['lessons'][number] = {
+      id: 'lesson-1',
+      contents: [
+        {
+          id: 'archive-embed',
+          data: {
+            type: 'teacher_notes',
+            learningRevision: 'course-guided-v1',
+            lessonId: 'lesson-1',
+            originalSource: { type: 'embed', contentId: 'archive-embed' },
+          },
+        },
+        { id: 'new-1', data: { type: 'text' } },
+      ],
+    }
+
+    expect(
+      summarizeCourseProgress(
+        [{ lessons: [lesson] }],
+        [{ contentId: 'archive-embed', completed: false }],
+        { courseId: 'course-1' }
+      )
+    ).toMatchObject({
+      totalContents: 1,
+      completedContents: 0,
+      progressPercentage: 0,
+      completedContentIds: [],
+    })
+  })
 })
 
 describe('hasPassedExam (#92)', () => {
