@@ -40,7 +40,6 @@
     "driveFileId": "1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO",
     "title": "I need someone to...- Unit 37.pptx",
     "presentationSha256": "26f7059232086b1335d54d69e6acf58e7fdd185c3aee70c34e2434855a86980d",
-    "path": "docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
     "nativeSourceFile": "docs/audit/source-files-native/unit-37.json",
     "nativeSourceFileSha256": "937d587dd12c85d7c5dd90804988882b67cc59e61275eb2e88620fc67a1fa4c4",
     "nativeSlideTextDigest": {
@@ -317,7 +316,18 @@
         "Preference can have an extended meaning if we use the more complex grammar points to regular ones. "
       ],
       "joinedText": "Preference can have an extended meaning if we use the more complex grammar points to regular ones."
-    }
+    },
+    "rawPptxProvenance": {
+      "kind": "native-pptx",
+      "absolutePath": "C:/Users/ACER/.codex/worktrees/course-source-import/docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+      "relativePath": "docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+      "driveFileId": "1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO",
+      "sha256": "26f7059232086b1335d54d69e6acf58e7fdd185c3aee70c34e2434855a86980d",
+      "validatedSourceRef": false,
+      "reason": "Raw PPTX provenance is retained outside sourceRefs because the raw file belongs to the isolated source-import worktree; the native audit JSON is the validated reference."
+    },
+    "nativeGeometryConfirmed": true,
+    "nativeIdentityConfirmed": false
   },
   "visualEvidence": {
     "method": "Chrome CUA live source inspection",
@@ -361,7 +371,18 @@
       "publishedTitle": "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here.",
       "publishedVisibleTexts": [
         "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here.",
-        "Preference can have an extended meaning if we use the more complex grammar points to regular ones."
+        "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+        "Grammar",
+        "Examples",
+        "Observation",
+        "1",
+        "Preferences + Non-finite clause",
+        "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+        "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses",
+        "2",
+        "Preferences + Relative clause",
+        "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+        "Relative clauses need to respect their principles even here."
       ],
       "publishedRenderedNote": "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
       "publishedRenderedTable": {
@@ -801,12 +822,25 @@
           "reason": "The JSON/native extraction contains U+FFFD in \"I�m\"; the live published slide and accessibility SVG visibly render \"I’m\"."
         }
       ],
-      "encodingNote": "The published source JSON and native audit retain replacement characters in the apostrophe of the third relative-clause example. The live rendered source is authoritative for the authored curly apostrophe."
+      "encodingNote": "The published source JSON and native audit retain replacement characters in the apostrophe of the third relative-clause example. The live rendered source is authoritative for the authored curly apostrophe.",
+      "publishedRenderedCellQuotes": [
+        "Grammar",
+        "Examples",
+        "Observation",
+        "1",
+        "Preferences + Non-finite clause",
+        "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+        "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses",
+        "2",
+        "Preferences + Relative clause",
+        "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+        "Relative clauses need to respect their principles even here."
+      ]
     },
     "approvedProjection": {
       "approved": true,
-      "source": "published-visible-table-projection",
-      "nativeIdentityConfirmed": true,
+      "source": "published-visible-text",
+      "nativeIdentityConfirmed": false,
       "nativeContentAligned": false,
       "publishedLayout": "Separate note above a four-column chart: blank ordinal column, Grammar, Examples, Observation; two numbered row groups.",
       "nativeShapeEvidence": {
@@ -831,7 +865,8 @@
           559525,
           523100
         ],
-        "note": "Native a:tbl geometry confirms the chart boundaries, four columns, three rows, and grouping. Cell text is not accepted where it differs from the live published source."
+        "note": "Native a:tbl geometry confirms the chart boundaries, four columns, three rows, and grouping. Cell text is not accepted where it differs from the live published source.",
+        "geometryConfirmed": true
       },
       "spansGroupingVerified": true,
       "tables": [
@@ -938,7 +973,8 @@
           }
         }
       ],
-      "notes": "Rows and examples are literal from the live published slide. The note above the chart is preserved outside the editable table. No merged cells or inferred relationships are present."
+      "notes": "Rows and examples are literal from the live published slide. The note above the chart is preserved outside the editable table. No merged cells or inferred relationships are present.",
+      "nativeGeometryConfirmed": true
     },
     "sourceRefs": [
       {
@@ -947,17 +983,20 @@
         "sha256": "53a2d3415452769cf4154b20afef579bde96e5987ad3bc06c94cfe183ab9cf17"
       },
       {
-        "kind": "native-audit",
+        "kind": "native",
         "path": "docs/audit/source-files-native/unit-37.json",
         "sha256": "937d587dd12c85d7c5dd90804988882b67cc59e61275eb2e88620fc67a1fa4c4"
-      },
-      {
-        "kind": "native-pptx",
-        "path": "docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
-        "driveFileId": "1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO",
-        "sha256": "26f7059232086b1335d54d69e6acf58e7fdd185c3aee70c34e2434855a86980d"
       }
-    ]
+    ],
+    "rawPptxProvenance": {
+      "kind": "native-pptx",
+      "absolutePath": "C:/Users/ACER/.codex/worktrees/course-source-import/docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+      "relativePath": "docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+      "driveFileId": "1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO",
+      "sha256": "26f7059232086b1335d54d69e6acf58e7fdd185c3aee70c34e2434855a86980d",
+      "validatedSourceRef": false,
+      "reason": "Raw PPTX provenance is retained outside sourceRefs because the raw file belongs to the isolated source-import worktree; the native audit JSON is the validated reference."
+    }
   },
   "structuredContent": {
     "nativeType": "structured-content",
@@ -971,12 +1010,6 @@
       ],
       "rows": [
         [
-          "",
-          "Grammar",
-          "Examples",
-          "Observation"
-        ],
-        [
           "1",
           "Preferences + Non-finite clause",
           "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
@@ -989,7 +1022,15 @@
           "Relative clauses need to respect their principles even here."
         ]
       ],
-      "note": "Preference can have an extended meaning if we use the more complex grammar points to regular ones."
+      "note": "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+      "notes": [
+        {
+          "text": "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+          "learnerVisible": true,
+          "sourceShapeId": "263",
+          "placement": "above-table"
+        }
+      ]
     },
     "tables": [
       [
@@ -1017,7 +1058,6 @@
       "tableGroups": [
         {
           "key": "preference-grammar-chart",
-          "sourceHeader": "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
           "headers": [
             "",
             "Grammar",
@@ -1026,12 +1066,6 @@
           ],
           "layout": "four-column-chart-with-ordinal-column",
           "rows": [
-            [
-              "",
-              "Grammar",
-              "Examples",
-              "Observation"
-            ],
             [
               "1",
               "Preferences + Non-finite clause",
@@ -1047,7 +1081,15 @@
           ],
           "sourceShapeId": "262",
           "spansGroupingVerified": true,
-          "mergedCells": []
+          "mergedCells": [],
+          "notes": [
+            {
+              "text": "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+              "learnerVisible": true,
+              "sourceShapeId": "263",
+              "placement": "above-table"
+            }
+          ]
         }
       ]
     },
@@ -1066,7 +1108,9 @@
         "262",
         "263"
       ],
-      "visualEvidence": "Live published slide screenshot verified the complete four-column chart, two numbered groups, and separate top note. No replacement image or inferred cell relation is used."
+      "visualEvidence": "Live published slide screenshot verified the complete four-column chart, two numbered groups, and separate top note. No replacement image or inferred cell relation is used.",
+      "nativeGeometryConfirmed": true,
+      "nativeIdentityConfirmed": false
     }
   }
 }
