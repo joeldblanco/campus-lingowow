@@ -75,6 +75,7 @@ import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 import { GuidedChoiceActivity } from './guided-choice-activity'
 import { GuidedFillActivity } from './guided-fill-activity'
+import { GuidedShortAnswerActivity } from './guided-short-answer'
 import { canUseAIGrading, recordAIGradingUsage } from '@/lib/actions/ai-grading-limits'
 
 interface BlockPreviewProps {
@@ -304,6 +305,9 @@ export function BlockPreview({
             block={block as ShortAnswerBlock}
             isExamMode={isExamMode}
             hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+            onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'multi_select':
@@ -4767,7 +4771,39 @@ interface AIGradingResult {
   suggestedCorrection?: string
 }
 
-function ShortAnswerBlockPreview({
+type ShortAnswerBlockPreviewProps = {
+  block: ShortAnswerBlock
+  isExamMode?: boolean
+  hideHeader?: boolean
+  guidedAppearance?: boolean
+  onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
+}
+
+function ShortAnswerBlockPreview(props: ShortAnswerBlockPreviewProps) {
+  const classroom = useClassroomSync()
+  const automatic = Boolean(
+    props.guidedAppearance &&
+      !props.isExamMode &&
+      (!classroom.isInClassroom || !classroom.isTeacher)
+  )
+
+  useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
+
+  return automatic ? (
+    <GuidedShortAnswerActivity
+      blockId={props.block.id}
+      items={props.block.items || []}
+      caseSensitive={props.block.caseSensitive}
+      context={props.block.context}
+      onCompletionChange={props.onGuidedCompletionChange}
+    />
+  ) : (
+    <ClassicShortAnswerBlockPreview {...props} />
+  )
+}
+
+function ClassicShortAnswerBlockPreview({
   block,
   isExamMode,
   hideHeader,

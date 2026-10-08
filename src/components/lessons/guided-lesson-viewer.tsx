@@ -48,7 +48,7 @@ type StepTransition = {
 }
 
 const GUIDED_ACTIVITIES = new Set<Block['type']>([
-  'match', 'fill_blanks', 'multiple_choice', 'true_false', 'essay', 'recording',
+  'match', 'fill_blanks', 'multiple_choice', 'true_false', 'short_answer', 'essay', 'recording',
 ])
 
 export function GuidedLessonViewer({
@@ -450,7 +450,7 @@ export function GuidedLessonViewer({
         <div
           className={cn(
             'guided-lesson-footer order-4 mt-2 flex flex-col-reverse gap-4 border-t border-[#506187]/20 pt-4 sm:flex-row sm:items-center sm:justify-between',
-            illustratedContent && currentStep?.blocks.some((block) => ['match', 'multiple_choice', 'true_false', 'fill_blanks'].includes(block.type)) && 'guided-lesson-footer--exercise',
+            illustratedContent && currentStep?.blocks.some((block) => ['match', 'multiple_choice', 'true_false', 'short_answer', 'fill_blanks'].includes(block.type)) && 'guided-lesson-footer--exercise',
             currentStepArt && 'md:col-span-2'
           )}
           data-guided-footer-shell
