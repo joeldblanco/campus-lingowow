@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Source-preserving teacher-led vocabulary/listening review for the 16 items that have no deterministic learner answer key.",
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "expectedEntryCount": 16,
+  "baseReview": {
+    "path": "docs/audit/course-exercise-review.json",
+    "sha256": "d8c6966d26c3601eb2f499169a8f69ef90a94dfae74f098ee66426c9a4d21dc8"
+  },
+  "sourcePolicy": {
+    "publishedSlidesAuthoritative": true,
+    "sourceFilesReadOnly": true,
+    "preserveOriginalPromptsAndProvenance": true,
+    "noAudioSubstitution": true,
+    "noSyntheticAnswerKey": true,
+    "teacherNotesOnly": true
+  },
+  "entries": [
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "itemId": "u04-s15-d",
+      "publishedSlide": 15,
+      "originalPrompt": "D. Listen to your teacher and then tell him about your preferences; E. write about a friend’s preferences.",
+      "sourcePrompt": "D. Listen to your teacher narrating his preferences. After that, tell him about yours. Remember to include different phrases and also when and how you do your hobbies.",
+      "sourceInstruction": "D. Listen to your teacher narrating his preferences. After that, tell him about yours. Remember to include different phrases and also when and how you do your hobbies.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmk0vijvj0001i904j8k1di8d.json",
+        "sha256": "bd369d31f4195207dcaecb9c87f3c7f3c692b15dd421f7119d7e6f8532346e9c",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRgxWtL8xzbN0T7LRq8z5zMOsGQcnyml5D5_7MoEgmVdUagXY305wQscCvI0sD4AA/pub?start=false&loop=false&delayms=3000",
+        "slideNumber": 15
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 21,
+      "lessonId": "cmkq3xx5w0001jr04cw7bh9g7",
+      "itemId": "u21-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nTRAVEL\nSIGHTSEEING\nHOTEL\nBOARDING HOUSE\nINN\nLODGE\nTRADITIONAL FOOD\nLOCATION\nWe can also include other type of vocabulary like gadgets or devices.",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmkq3xx5w0001jr04cw7bh9g7.json",
+        "sha256": "083af2e6574b83666a444e31bc6eafdb39234cfe276fab7374fc82094369a115",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQb8RLm6sfy4e9DpYOLOTTL0vopEA4QT1uVGcupQK3y93Le4V1SZcgwLMJpaKtXHA/pub?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 22,
+      "lessonId": "cmkpx0d310001gy04zr4lq99y",
+      "itemId": "u22-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nWe can also include other type of vocabulary evoking nice feelings and behaviour.\nRUDE\nMOODY\nSPOILED\nDISRESPECTFUL\nCARELESS\nHYPOCRITE\nUNGRATEFUL\nGOSSIPER",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmkpx0d310001gy04zr4lq99y.json",
+        "sha256": "7eb5c223bb1b4c59f9581bd0dc7d6ef274a3ee781928003833c0c06f3a64437e",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSnE7nV13b3CHtxW--tM13-EZPfNSDRJ1M0Pw8OoIQjSsK6zMKkvKdF6DxRgzhaiQ/pub?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 23,
+      "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+      "itemId": "u23-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the phrases. Talk about them.\nFOOTLOOSE AND FANCY FREE\nIN FULL SWING\nTO BE BUZZING\nFEAST YOUR EYES ON SOMETHING\nHAPPY-GO- LUCKY\nLET ONE’S HAIR DOWN\nWITH BELLS ON\nA WHALE OF A TIME",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the phrases. Talk about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the phrases. Talk about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmn7vbcg20005l804sg2hxgf4.json",
+        "sha256": "cd0e1653f833109e0d91350c1af915ae3cca8aab936d72e460601839ff35a911",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQI7zg35VOPtJWlCBM5G_PtIusM9XyhD4Ozm5Qa_H-7NZNDiNrn5nYaM36Hu0C5Hw/pub?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 24,
+      "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+      "itemId": "u24-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Talk about them.\nKEENER\nJELLYBEAN\nBUSYBODY\nGOAT\nLUSH\nLEGLESS\nWISHY-WASHY\nDISMAL",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Talk about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Talk about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmn7vc7pm0001le04qfcuwa27.json",
+        "sha256": "b2ecd8880928751bb76cf8cdf054b818cfb226d9d0b2fd0a52514cda2b6a4581",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRk370vkyIbuMUWybLp3m2rz0xK3X656Z9QEkfeHy5D0eyBMoVoO0D0ySP3y8i56g/pub?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 25,
+      "lessonId": "cmnmm9m3i000hw1qklyh7h658",
+      "itemId": "u25-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nTERRIFIED\nSURPRISING\nEXHAUSTED\nCONFUSED\nEMBARRASSING\nINTERESTED\nRELAXING\nFRUSTRATING",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9m3i000hw1qklyh7h658.json",
+        "sha256": "f3426cacafaf093c3b01e6c9e5591ad47ca8ed8470fc5c8184e7f20b6f73b1a1",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSSfcY1Y49L9sK9_hhB7wcX-SJt15BVnBqhQFCTVggP5ytCPeAl-jmSZrZmEMUDsQ/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 26,
+      "lessonId": "cmnmm9mm1000kw1qkgi2bize8",
+      "itemId": "u26-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Talk about them.\nBITE NAILS\nSMOKE\nSHOUT\nNOT PAY ATTENTION\nBE LATE\nGOSSIP\nMISBEHAVE\nPICK NOSE",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Talk about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Talk about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9mm1000kw1qkgi2bize8.json",
+        "sha256": "577e7271ddc2765c24221351a6cbaca66f25eca9f723ceebff1d13d28234cf67",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRwIGF33lxLEdWxQcB3rWjPAQIw8k6vFUPr1cRfhpxzfNEIx79i0JQJwcJYoDwKYw/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 27,
+      "lessonId": "cmnmm9my8000nw1qkfl8lpdxz",
+      "itemId": "u27-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and discuss about the vocabulary you see.\nBE SICK\nBE HOSPITALIZED\nHEART ATTACK\nHEADACHE\nSTOMACHACHE\nTOOTHACHE\nFRACTURE\nINJURY\n*There is more vocabulary to check on the OPD.",
+      "sourcePrompt": "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+      "sourceInstruction": "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9my8000nw1qkfl8lpdxz.json",
+        "sha256": "7d6d43a8469f0c9a094428f785e07bbdaaca712c5075b8f770dd615d800b1ceb",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSFHqonMxVHEDt993Rk4qm9PSCcC5mo2wFAikmt96s3qpKsJWyddaL3X6P68Dy6rQ/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 28,
+      "lessonId": "cmnmm9naj000qw1qkkzistoi6",
+      "itemId": "u28-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and talk about the vocabulary you see.\nGO TO COLLEGE\nFIND A JOB\nMOVE AWAY\nFOLLOW A DREAM\nGO FREELANCE\nFORM A FAMILY\nLEARN A LANGUAGE\nGET A PROPERTY\n*Any life decision can be inserted here.",
+      "sourcePrompt": "Look at the information, listen to your teacher and talk about the vocabulary you see.",
+      "sourceInstruction": "Look at the information, listen to your teacher and talk about the vocabulary you see.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9naj000qw1qkkzistoi6.json",
+        "sha256": "1b8fcad9d7f28d9f0c721b7f2ae07958a266c0e81444e7a9f0ab6b5cf2b84cc5",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQ-EKB1-vnrORlSY6mJZBpIqUd6MoEQVuJBMLPDcbo5inH1zF88zzSlaFLuv0upvg/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 29,
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "itemId": "u29-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and try to guess the meaning of the phrases. Discuss about them.\nSORRY AT SIGHT\nTO COME CLEAN\nECONOMICAL WITH THE TRUTH\nSPILL THE BEANS\nAT A SORRY STATE\nFUNNY BUSINESS\nSMOKE & MIRRORS\nTHROW DUST IN THE EYE",
+      "sourcePrompt": "Look at the information, listen to your teacher and try to guess the meaning of the phrases. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and try to guess the meaning of the phrases. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9nmo000tw1qkxzhh3pwc.json",
+        "sha256": "7ede44e57ae26cc37d2b806a4cfd8d90031ef65e6b4801e01d6a7dfc84df4379",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRkbbiqHgxtQo1qQatUlVkLe8CZKrL4g2DrMS3VKHmx_AchSgx7MPbJH2MUF-sR3g/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 31,
+      "lessonId": "cmnmm9ob2000zw1qkel9nezp5",
+      "itemId": "u31-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nRUN LATE\nMAKE EXCUSE\nGET STOOD UP\nGET IGNORED\nTAKE FOOD FROM\nTAKE SOMEONE’S CLOTHES\nLAUGH OUT LOUD\nPLAY WITH GUM",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9ob2000zw1qkel9nezp5.json",
+        "sha256": "33db862310b58598ca4e76affe5f52bbf748cb935223602e1b642c18bdb10949",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQAZfQIK_fdlR-ZUA_Soau-AjF_dcxFC3V5hMfCKwLci6hXqRBfQ3Kvrwnc1EHcOg/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 32,
+      "lessonId": "cmnmm9on70012w1qka03chue1",
+      "itemId": "u32-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and discuss about the vocabulary you see.\nGIVE A LIFT\nPICK SOMEONE UP\nADVISE TO DO SOMETHING\nCARE FOR SOMETHING\nGRAB A BITE\nLOOK AFTER\nMAKE A MOVE\nCALL OFF",
+      "sourcePrompt": "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+      "sourceInstruction": "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9on70012w1qka03chue1.json",
+        "sha256": "45e10862eab7b7c741bb563133553343a8a2d965f55bcaf05a64f1fb11fdd549",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS6oq8u56rowczxpTMuIiYpc3xLQX4TJZNA_1qmWLsF-KXGW0scNdRCNXVmBRGLeg/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 37,
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "itemId": "u37-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nRIGHT UP MY ALLEY (STREET)\nDIG IT\nDOESN’T FLOAT MY BOAT\nNOT MY CUP OF TEA\nFANCY\nFEEL LIKE\nCAN’T BEAR\nCAN’T STAND",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9qca001hw1qkpe089f8f.json",
+        "sha256": "53a2d3415452769cf4154b20afef579bde96e5987ad3bc06c94cfe183ab9cf17",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRMRjGZ4IHFTwwqFhYK_35jQTGU7rjsOO4ijsEN_SHWbluWO899yBYtNrPglv8ohg/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 38,
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "itemId": "u38-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nTHE BIGGEST PIECE OF THE ACTION\nCARROT AND STICK APPROACH\nCHANCE YOUR ARM\nCHIME IN\nCLIP SOMEONE’S WINGS\nCUT THE CACKLE\nDIG YOUR OWN GRAVE\nCROSS THE RUBICON",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9qog001kw1qkht1v6i81.json",
+        "sha256": "c5dd9c7999b9adc9cfbae82ac497f7cc2efd42dbd6a8c3e683f60c301d88320d",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTRpvGytWJK57nUqkzdpf9JCTBi5ZA9GWqK1BeQ7v2VRQWW-Ae17Vo6j2Iumgqz6g/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 39,
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "itemId": "u39-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them.\nIDIOM MEANING EXAMPLE GET ON THE BANDWAGON To join an activity that has become very popular. The success of the product led many firms to try to get on the bandwagon. KEEP THE CHIN UP To be stalwart and courageous in a tough situation. Don't let the difficulties intimidate you; keep your chin up. WALK OUT ON To suddenly leave a job, a relationship or other situation. Everyone was shocked when he walked out on his wife of fourteen years. COME OUT SWINGING To be confrontational. He came out swinging at his critics, accusing them of having their own agenda. BEEF UP To become big and muscular. We need to find some new players to beef up the team. TURN ASIDE To refuse entry to somewhere. His job application was turned aside when they saw his criminal record. TIDE OVER Temporary help (often financial) Have another piece of cake. It'll tide you over till supper. CRACK UP Go through an emotional breakdown. The entire group cracked up at the joke of their teacher.\nsuccess\nproduct\nled\nfirms\ntry",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9r0u001nw1qkmd7iwebn.json",
+        "sha256": "e844b95c21208858911260a5c316912d7619a055c06fe615fbee13e6c7d2f886",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTA6lJbKMjKZ_EFQvfoiPPoisBPCueYfN3WPc8B2hRQvOwdcX4L0G36zEm-6hxSqw/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    },
+    {
+      "unit": 40,
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "itemId": "u40-s06-review",
+      "publishedSlide": 6,
+      "originalPrompt": "IDIOM MEANING EXAMPLE GIVE SOMETHING A SHOT To have a try at something. I have never eaten sushi, but I will give it a shot. HAVE A BONE TO PICK An unpleasant issue or grievance that need discussion. I have a bone to pick with you about that email. GO FOR BROKE To risk everything and go for an all out effort. If you decide to go for broke, you can’t be thinking about what will happen if you fail. MAKE A CLEAN SWEEP To remove all unwanted people or things in order to start afresh. The new leaders wanted to make a clean sweep of the discredited old order GIVE THE NOD To show one's approval of someone or something. I gave Amanda the nod because she is the most qualified candidate. HAVE AN AXE TO GRIND To have a private reason for doing or being involved in something. He has no political axe to grind. GO-TO GUY/GAL The person is frequently asked for help in that topic. Amanda’s our go-to gal for computer issues. MAKE A KILLING To earn a lot of money in a short time and with little effort. They made a killing with the sale of their London house.\nLook at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourcePrompt": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceInstruction": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "publishedSource": {
+        "path": "docs/audit/source-files/cmnmm9rcz001qw1qka3igty9u.json",
+        "sha256": "1d1a43056af86749f302c98f83881d85b28bb4ed01ab8cd2f3239da923f104e4",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQI_H9BeKDyW3h-FdaicGC-hd-woEYocRD-IPgNtZ3_lLBPVzfgrEToq0sVgGvHbQ/embed?start=false&loop=false&delayms=3000",
+        "slideNumber": 6
+      },
+      "mergeContract": {
+        "preserveOriginalPrompt": true,
+        "preserveOriginalProvenance": true,
+        "noAudioSubstitution": true,
+        "noSyntheticAnswerKey": true,
+        "teacherNotesOnly": true
+      },
+      "rationale": "Published source is a teacher-led listening or vocabulary instruction. Preserve it as reviewed teacher notes without attaching an unavailable clip or deterministic answer key."
+    }
+  ]
+}

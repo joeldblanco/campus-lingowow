@@ -349,6 +349,104 @@ class ComposeCourseBuilderInputsTests(unittest.TestCase):
             self.assertIn("figure-proof-not-exact", [item["code"] for item in blockers])
             self.assertNotIn("figure-correspondence-not-exact", [item["code"] for item in blockers])
 
+    def test_figure_uses_verified_absolute_staged_source_when_review_path_is_elsewhere(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source-original.jpg"
+            source.write_bytes(b"source-import original bytes")
+            destination = root / "public-optimized.webp"
+            destination.write_bytes(b"optimized browser bytes")
+            digest = hashlib.sha256(source.read_bytes()).hexdigest()
+            destination_digest = hashlib.sha256(destination.read_bytes()).hexdigest()
+            blockers: list[dict] = []
+            figures, _ = composer._figure_candidates(
+                {
+                    "units": {
+                        "2": {
+                            "slides": {
+                                "4": {
+                                    "confirmedInstructionalAssets": [
+                                        {
+                                            "confirmedInstructional": True,
+                                            "sha256": digest,
+                                            "localPath": "missing-from-application-worktree.jpg",
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                None,
+                {
+                    digest: {
+                        "status": "already-staged",
+                        "sourceSha256": digest,
+                        "sourcePath": str(source),
+                        "destinationPath": str(destination),
+                        "outputSha256": destination_digest,
+                        "publicUrl": "/images/public-optimized.webp",
+                    }
+                },
+                {},
+                {2: {"lesson": {"id": "lesson-2"}}},
+                [root],
+                blockers,
+            )
+
+            self.assertEqual(len(figures), 1)
+            self.assertEqual(figures[0]["assetPath"], str(source.resolve()))
+            self.assertEqual(figures[0]["nativeEvidence"]["sourcePath"], str(source.resolve()))
+            self.assertEqual(
+                figures[0]["nativeEvidence"]["stagedDestinationPath"],
+                str(destination.resolve()),
+            )
+            self.assertNotIn("figure-source-file-missing", [item["code"] for item in blockers])
+            self.assertNotIn("figure-source-sha-mismatch", [item["code"] for item in blockers])
+            self.assertNotIn("figure-destination-sha-mismatch", [item["code"] for item in blockers])
+
+    def test_figure_rejects_existing_source_with_wrong_digest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            wrong_source = root / "wrong.jpg"
+            wrong_source.write_bytes(b"wrong bytes")
+            expected_digest = "a" * 64
+            blockers: list[dict] = []
+            figures, _ = composer._figure_candidates(
+                {
+                    "units": {
+                        "2": {
+                            "slides": {
+                                "4": {
+                                    "confirmedInstructionalAssets": [
+                                        {
+                                            "confirmedInstructional": True,
+                                            "sha256": expected_digest,
+                                            "localPath": str(wrong_source),
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                None,
+                {
+                    expected_digest: {
+                        "status": "ready",
+                        "sourceSha256": expected_digest,
+                        "publicUrl": "/figure.webp",
+                    }
+                },
+                {},
+                {2: {"lesson": {"id": "lesson-2"}}},
+                [root],
+                blockers,
+            )
+
+            self.assertEqual(figures, [])
+            self.assertIn("figure-source-sha-mismatch", [item["code"] for item in blockers])
+
     def test_explicit_semantic_patch_validates_sha_evidence_and_rekeys_item(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -429,6 +527,195 @@ class ComposeCourseBuilderInputsTests(unittest.TestCase):
             self.assertEqual(item["reviewStatus"], "reviewed")
             self.assertEqual(item["semanticPatch"]["patchReviewStatus"], "reviewed-manual-source-alignment")
             self.assertEqual(item["answerItems"][0]["canonical"], "yes")
+            self.assertEqual(blockers, [])
+
+    def test_teacher_notes_sidecar_preserves_prompt_without_audio_or_answer_key(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source_path = root / "published.json"
+            source = {
+                "lesson": {"id": "lesson-21"},
+                "sourceUrl": "https://example.test/unit-21",
+                "deck": {
+                    "slides": [
+                        {
+                            "number": 6,
+                            "title": "Vocabulary",
+                            "visibleTexts": ["Look at the information, listen to your teacher and repeat the words."],
+                        }
+                    ]
+                },
+            }
+            source_path.write_text(json.dumps(source), encoding="utf-8")
+            base_path = root / "exercise-review.json"
+            base_path.write_text("base review", encoding="utf-8")
+            review = {
+                "courseId": composer.COURSE_ID,
+                "lessons": {
+                    "lesson-21": {
+                        "slides": {
+                            "6": {
+                                "items": [
+                                    {
+                                        "id": "u21-s06-review",
+                                        "kind": "listening",
+                                        "prompt": "Look at the vocabulary.",
+                                        "responseMode": "teacher-listening",
+                                        "reviewStatus": "blocked-awaiting-transcript",
+                                        "answerItems": [],
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+            }
+            digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+            sidecar = {
+                "courseId": composer.COURSE_ID,
+                "expectedEntryCount": 1,
+                "baseReview": {"path": base_path.name, "sha256": digest(base_path)},
+                "sourcePolicy": {
+                    "publishedSlidesAuthoritative": True,
+                    "sourceFilesReadOnly": True,
+                    "preserveOriginalPromptsAndProvenance": True,
+                    "noAudioSubstitution": True,
+                    "noSyntheticAnswerKey": True,
+                    "teacherNotesOnly": True,
+                },
+                "entries": [
+                    {
+                        "lessonId": "lesson-21",
+                        "itemId": "u21-s06-review",
+                        "publishedSlide": 6,
+                        "originalPrompt": "Look at the vocabulary.",
+                        "sourcePrompt": "Look at the information, listen to your teacher and repeat the words.",
+                        "publishedSource": {
+                            "path": source_path.name,
+                            "sha256": digest(source_path),
+                            "sourceUrl": source["sourceUrl"],
+                            "slideNumber": 6,
+                        },
+                        "mergeContract": {
+                            "preserveOriginalPrompt": True,
+                            "preserveOriginalProvenance": True,
+                            "noAudioSubstitution": True,
+                            "noSyntheticAnswerKey": True,
+                            "teacherNotesOnly": True,
+                        },
+                    }
+                ],
+            }
+            blockers: list[dict] = []
+            merged, summary = composer._apply_exercise_teacher_notes_review(
+                review,
+                sidecar,
+                {"lesson-21": source},
+                [root],
+                blockers,
+                "teacher-notes.json",
+            )
+
+            item = merged["lessons"]["lesson-21"]["slides"]["6"]["items"][0]
+            self.assertEqual(summary["applied"], 1)
+            self.assertEqual(item["reviewStatus"], "reviewed-teacher-notes")
+            self.assertEqual(item["originalPrompt"], "Look at the vocabulary.")
+            self.assertEqual(item["teacherNotes"]["sourcePrompt"], sidecar["entries"][0]["sourcePrompt"])
+            self.assertEqual(item["answerItems"], [])
+            self.assertNotIn("sourceAudioSha256", item)
+            self.assertEqual(blockers, [])
+
+    def test_unit38_errata_clears_stale_ambiguous_status_and_keeps_formative_response(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source_path = root / "published.json"
+            source = {
+                "lesson": {"id": "lesson-38"},
+                "sourceUrl": "https://example.test/unit-38",
+                "deck": {"slides": [{"number": 13, "visibleTexts": ["I have chance my arm so long for this company."]}]},
+            }
+            source_path.write_text(json.dumps(source), encoding="utf-8")
+            base_path = root / "exercise-review.json"
+            base_path.write_text("base review", encoding="utf-8")
+            review = {
+                "courseId": composer.COURSE_ID,
+                "lessons": {
+                    "lesson-38": {
+                        "slides": {
+                            "13": {
+                                "items": [
+                                    {
+                                        "id": "u38-s13-a",
+                                        "prompt": "Correct the sentences.",
+                                        "reviewStatus": "reviewed",
+                                        "answerItems": [
+                                            {"id": "item-1", "canonical": "A"},
+                                            {"id": "item-2", "canonical": "B", "status": "source-ambiguous"},
+                                        ],
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+            }
+            digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+            sidecar = {
+                "courseId": composer.COURSE_ID,
+                "baseReview": {"path": base_path.name, "sha256": digest(base_path)},
+                "publishedSource": {
+                    "path": source_path.name,
+                    "sha256": digest(source_path),
+                    "sourceUrl": source["sourceUrl"],
+                },
+                "patches": [
+                    {
+                        "lessonId": "lesson-38",
+                        "slideNumber": 13,
+                        "itemId": "u38-s13-a",
+                        "sourcePrompt": "I have chance my arm so long for this company.",
+                        "openResponse": {
+                            "prompt": "Propón una corrección clara.",
+                            "sourcePrompt": "I have chance my arm so long for this company.",
+                            "feedbackContext": "Multiple source-grounded repairs are possible.",
+                        },
+                        "answerPolicy": {
+                            "canonicalAnswer": None,
+                            "acceptedAnswers": [],
+                            "preserveOriginalItem": True,
+                        },
+                        "deterministicItems": ["item-1"],
+                        "nestedAnswerItemId": "item-2",
+                        "mergeContract": {
+                            "replaceReviewStatus": True,
+                            "setOpenResponse": True,
+                            "setAmbiguousAnswerCanonicalToNull": True,
+                            "setAmbiguousAnswerAcceptedToEmpty": True,
+                            "nativeOpenType": "essay",
+                            "aiGrading": True,
+                            "responseMode": "formative-open-response",
+                            "archiveOriginalPromptInMetadata": True,
+                        },
+                    }
+                ],
+            }
+            blockers: list[dict] = []
+            merged, summary = composer._apply_exercise_errata_review(
+                review,
+                sidecar,
+                {"lesson-38": source},
+                [root],
+                blockers,
+                "unit38-errata.json",
+            )
+
+            item = merged["lessons"]["lesson-38"]["slides"]["13"]["items"][0]
+            self.assertEqual(summary["applied"], 1)
+            self.assertEqual(item["reviewStatus"], "open-response-preserved")
+            self.assertEqual(item["responseMode"], "formative-open-response")
+            self.assertIsNone(item["answerItems"][1]["canonical"])
+            self.assertEqual(item["answerItems"][1]["status"], "source-ambiguous")
+            self.assertEqual(item["openResponse"]["sourcePrompt"], sidecar["patches"][0]["sourcePrompt"])
             self.assertEqual(blockers, [])
 
     def test_staged_audio_overrides_review_record_with_public_url(self) -> None:

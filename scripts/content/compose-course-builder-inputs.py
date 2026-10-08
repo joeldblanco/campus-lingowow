@@ -688,6 +688,57 @@ def _record_path(record: Mapping[str, Any]) -> str:
     return ""
 
 
+def _record_destination_path(record: Mapping[str, Any]) -> str:
+    """Return the staged browser asset path when staging records expose it."""
+
+    for key in (
+        "destinationPath",
+        "outputPath",
+        "stagedPath",
+        "optimizedPath",
+        "publicPath",
+    ):
+        value = _text(record.get(key))
+        if value:
+            return value
+    return ""
+
+
+def _verified_media_source_path(
+    candidate_path: Any,
+    staged: Mapping[str, Any],
+    expected_sha256: str,
+    roots: Sequence[Path],
+) -> str | None:
+    """Resolve the immutable original from either review or staging evidence.
+
+    Review records can retain a path from the source-import worktree while the
+    composer runs from the application worktree.  A staged record carries the
+    authoritative absolute source path in that case.  A path is accepted only
+    after hashing its bytes against the reviewed source digest.
+    """
+
+    expected = _text(expected_sha256).casefold()
+    if not SHA256_RE.fullmatch(expected):
+        return None
+    paths: list[str] = []
+    for raw in (candidate_path, _record_path(staged)):
+        resolved = _resolve_local_path(raw, roots)
+        if resolved and resolved not in paths:
+            paths.append(resolved)
+    for raw in paths:
+        path = Path(raw)
+        if not path.is_file():
+            continue
+        try:
+            actual = _sha256_file(path).casefold()
+        except OSError:
+            continue
+        if actual == expected:
+            return str(path.resolve())
+    return None
+
+
 def _record_status(record: Mapping[str, Any]) -> str:
     return _text(record.get("status") or record.get("stageStatus") or "ready").casefold()
 
@@ -1081,7 +1132,12 @@ def _figure_candidates(
             continue
         status = _record_status(staged)
         public_url = _record_url(staged)
-        source_path = _resolve_local_path(candidate["sourcePath"], asset_roots)
+        source_path = _verified_media_source_path(
+            candidate["sourcePath"],
+            staged,
+            digest,
+            asset_roots,
+        )
         if status not in READY_MEDIA_STATUSES:
             blockers.append(
                 {
@@ -1103,21 +1159,72 @@ def _figure_candidates(
                     "code": "figure-public-url-missing",
                 }
             )
-        if not Path(source_path).is_file():
+        if source_path is None:
+            candidate_path = _resolve_local_path(candidate["sourcePath"], asset_roots)
+            source_exists = Path(candidate_path).is_file()
             blockers.append(
                 {
                     "kind": "image",
                     "unit": unit,
                     "slide": slide,
                     "sourceSha256": digest,
-                    "code": "figure-source-file-missing",
+                    "code": "figure-source-sha-mismatch" if source_exists else "figure-source-file-missing",
                 }
             )
-        if status not in READY_MEDIA_STATUSES or not public_url or not Path(source_path).is_file():
+        destination_path = _record_destination_path(staged)
+        destination_sha = _text(
+            staged.get("outputSha256")
+            or staged.get("destinationSha256")
+            or staged.get("optimizedSha256")
+        ).casefold()
+        if destination_path:
+            resolved_destination = _resolve_local_path(destination_path, asset_roots)
+            if not Path(resolved_destination).is_file():
+                blockers.append(
+                    {
+                        "kind": "image",
+                        "unit": unit,
+                        "slide": slide,
+                        "sourceSha256": digest,
+                        "code": "figure-destination-file-missing",
+                    }
+                )
+            elif destination_sha and SHA256_RE.fullmatch(destination_sha):
+                try:
+                    actual_destination_sha = _sha256_file(Path(resolved_destination)).casefold()
+                except OSError:
+                    actual_destination_sha = ""
+                if actual_destination_sha != destination_sha:
+                    blockers.append(
+                        {
+                            "kind": "image",
+                            "unit": unit,
+                            "slide": slide,
+                            "sourceSha256": digest,
+                            "code": "figure-destination-sha-mismatch",
+                            "destinationSha256": destination_sha,
+                            "observedDestinationSha256": actual_destination_sha,
+                        }
+                    )
+        destination_ready = True
+        if destination_path:
+            resolved_destination = _resolve_local_path(destination_path, asset_roots)
+            destination_ready = Path(resolved_destination).is_file()
+            if destination_ready and destination_sha and SHA256_RE.fullmatch(destination_sha):
+                try:
+                    destination_ready = _sha256_file(Path(resolved_destination)).casefold() == destination_sha
+                except OSError:
+                    destination_ready = False
+        if status not in READY_MEDIA_STATUSES or not public_url or source_path is None or not destination_ready:
             continue
         trace = copy.deepcopy(candidate.get("reviewedFigure") or {})
         trace["sourceSha256"] = digest
         trace["sourcePath"] = source_path
+        trace["verifiedSourceSha256"] = digest
+        if destination_path:
+            trace["stagedDestinationPath"] = _resolve_local_path(destination_path, asset_roots)
+            if destination_sha:
+                trace["stagedDestinationSha256"] = destination_sha
         trace["mapping"] = candidate["mapping"]
         if candidate.get("sourceProofRef"):
             trace["sourceProofRef"] = copy.deepcopy(candidate["sourceProofRef"])
@@ -1549,6 +1656,21 @@ def _apply_exercise_semantic_patch(
             updated["responseMode"] = copy.deepcopy(patch_item["responseMode"])
         if "doNotAutoGrade" in patch_item:
             updated["doNotAutoGrade"] = patch_item["doNotAutoGrade"] is True
+        # Preserve source-scoped formative metadata supplied by a manual
+        # review.  The builder consumes these fields for teacher-led notes and
+        # ambiguous open responses; they never create an audio URL or answer
+        # key by themselves.
+        for key in (
+            "sourcePrompt",
+            "sourceInstruction",
+            "openResponse",
+            "nativeOpenType",
+            "aiGrading",
+            "teacherNotes",
+            "teacherNotesReviewed",
+        ):
+            if key in patch_item:
+                updated[key] = copy.deepcopy(patch_item[key])
         if isinstance(patch_item.get("builderHints"), Mapping):
             hints = updated.get("builderHints") if isinstance(updated.get("builderHints"), Mapping) else {}
             updated["builderHints"] = {**copy.deepcopy(dict(hints)), **copy.deepcopy(dict(patch_item["builderHints"]))}
@@ -1567,6 +1689,12 @@ def _apply_exercise_semantic_patch(
                 for key in ("canonical", "accepted", "evidence", "rationale", "status"):
                     if key in patch_item:
                         nested_target[key] = copy.deepcopy(patch_item[key])
+                # A reviewed source correction can replace an older
+                # ``source-ambiguous`` marker with an explicit, source-backed
+                # answer.  Do not leave the stale marker in place when the
+                # patch supplies a canonical value and no replacement status.
+                if "status" not in patch_item and _text(patch_item.get("canonical")):
+                    nested_target.pop("status", None)
         if reason is not None:
             blocker = {
                 "kind": "exercise",
@@ -1623,6 +1751,548 @@ def _apply_exercise_semantic_patch(
         "rejected": len(rejected),
         "remainingHardBlocks": len(_as_list(patch.get("remainingHardBlocks"))),
         "sourcePatchRef": patch_ref,
+    }
+
+
+def _sidecar_file(
+    reference: Mapping[str, Any] | None,
+    asset_roots: Sequence[Path],
+    blockers: list[dict[str, Any]],
+    *,
+    code_prefix: str,
+) -> Path | None:
+    """Validate a sidecar's immutable JSON reference and return its path."""
+
+    if not isinstance(reference, Mapping):
+        blockers.append({"kind": "exercise", "code": f"{code_prefix}-reference-missing"})
+        return None
+    raw_path = _text(reference.get("path") or reference.get("file"))
+    expected = _text(reference.get("sha256")).casefold()
+    path = Path(_resolve_local_path(raw_path, asset_roots))
+    if not raw_path or not path.is_file() or not SHA256_RE.fullmatch(expected):
+        blockers.append({"kind": "exercise", "code": f"{code_prefix}-file-missing-or-sha-invalid", "path": raw_path})
+        return None
+    try:
+        observed = _sha256_file(path).casefold()
+    except OSError:
+        observed = ""
+    if observed != expected:
+        blockers.append(
+            {
+                "kind": "exercise",
+                "code": f"{code_prefix}-sha-mismatch",
+                "path": raw_path,
+                "expectedSha256": expected,
+                "observedSha256": observed,
+            }
+        )
+        return None
+    return path
+
+
+def _review_item_by_id(
+    lesson: Mapping[str, Any],
+    item_id: str,
+) -> tuple[dict[str, Any] | None, dict[str, Any] | None, int | None]:
+    slides = lesson.get("slides")
+    if not isinstance(slides, Mapping):
+        return None, None, None
+    for raw_slide, slide in slides.items():
+        if not isinstance(slide, Mapping) or not isinstance(slide.get("items"), list):
+            continue
+        for item in slide["items"]:
+            if isinstance(item, dict) and _text(item.get("id")) == item_id:
+                return item, slide, _int(raw_slide)
+    return None, None, None
+
+
+def _apply_exercise_teacher_notes_review(
+    exercise_review: Mapping[str, Any] | None,
+    sidecar: Mapping[str, Any] | None,
+    sources_by_lesson: Mapping[str, Mapping[str, Any]],
+    asset_roots: Sequence[Path],
+    blockers: list[dict[str, Any]],
+    sidecar_ref: str,
+) -> tuple[Mapping[str, Any] | None, dict[str, Any]]:
+    """Merge reviewed teacher-led vocabulary/listening instructions.
+
+    These entries preserve the published prompt as teacher notes.  They do
+    not attach a clip, infer an audio ordinal, or create a deterministic key.
+    Every entry is tied to a published source slide and a SHA-verified source
+    file before it can clear the builder's listening gate.
+    """
+
+    if not isinstance(sidecar, Mapping):
+        return exercise_review, {"status": "not-supplied", "applied": 0, "rejected": 0}
+    if not isinstance(exercise_review, Mapping):
+        blockers.append({"kind": "exercise", "code": "exercise-review-missing-for-teacher-notes"})
+        return exercise_review, {"status": "blocked", "applied": 0, "rejected": 0}
+    if _text(sidecar.get("courseId")) not in {"", COURSE_ID}:
+        raise ComposeError("teacher-notes review course id does not match the course builder")
+    policy = sidecar.get("sourcePolicy")
+    required_policy = (
+        "publishedSlidesAuthoritative",
+        "sourceFilesReadOnly",
+        "preserveOriginalPromptsAndProvenance",
+        "noAudioSubstitution",
+        "noSyntheticAnswerKey",
+        "teacherNotesOnly",
+    )
+    if not isinstance(policy, Mapping) or any(policy.get(key) is not True for key in required_policy):
+        raise ComposeError("teacher-notes review source policy is incomplete or unsafe")
+    base_path = _sidecar_file(
+        sidecar.get("baseReview"),
+        asset_roots,
+        blockers,
+        code_prefix="teacher-notes-base-review",
+    )
+    result = copy.deepcopy(dict(exercise_review))
+    raw_lessons = result.get("lessons")
+    if not isinstance(raw_lessons, Mapping):
+        blockers.append({"kind": "exercise", "code": "exercise-review-lessons-missing-for-teacher-notes"})
+        return result, {"status": "blocked", "applied": 0, "rejected": 0}
+    entries = [item for item in _as_list(sidecar.get("entries")) if isinstance(item, Mapping)]
+    applied: list[str] = []
+    rejected: list[dict[str, Any]] = []
+    for entry in entries:
+        lesson_id = _text(entry.get("lessonId"))
+        item_id = _text(entry.get("itemId"))
+        lesson = raw_lessons.get(lesson_id)
+        source = sources_by_lesson.get(lesson_id)
+        reason: str | None = None
+        if not lesson_id or not item_id or not isinstance(lesson, Mapping):
+            reason = "item-or-lesson-missing"
+        elif not isinstance(source, Mapping):
+            reason = "published-source-missing"
+        source_ref = entry.get("publishedSource")
+        source_path: Path | None = None
+        if reason is None:
+            source_path = _sidecar_file(
+                source_ref,
+                asset_roots,
+                blockers,
+                code_prefix="teacher-notes-published-source",
+            )
+            if source_path is None:
+                reason = "published-source-reference-invalid"
+        target_item: dict[str, Any] | None = None
+        target_slide: dict[str, Any] | None = None
+        current_slide: int | None = None
+        if reason is None:
+            target_item, target_slide, current_slide = _review_item_by_id(lesson, item_id)
+            if target_item is None:
+                reason = "review-item-missing"
+        source_slide_number = _int(entry.get("publishedSlide") or (source_ref or {}).get("slideNumber"))
+        published_slide = _source_slide(source or {}, source_slide_number or -1)
+        if reason is None and published_slide is None:
+            reason = "published-source-slide-not-found"
+        source_prompt = _text(entry.get("sourcePrompt") or entry.get("sourceInstruction"))
+        if reason is None and not source_prompt:
+            reason = "source-prompt-missing"
+        if reason is None:
+            visible_text = _normalise_review_text(
+                "\n".join(_text(value) for value in _as_list((published_slide or {}).get("visibleTexts")))
+            )
+            if _normalise_review_text(source_prompt) not in visible_text:
+                reason = "source-prompt-mismatch"
+        source_url = _text((source_ref or {}).get("sourceUrl")) if isinstance(source_ref, Mapping) else ""
+        if reason is None and source_url != _source_url(source or {}):
+            reason = "published-source-url-mismatch"
+        original_prompt = _text(entry.get("originalPrompt"))
+        if reason is None and original_prompt and _normalise_review_text(original_prompt) != _normalise_review_text((target_item or {}).get("prompt")):
+            reason = "original-prompt-mismatch"
+        if reason is None and _text((target_item or {}).get("kind")).casefold() != "listening":
+            reason = "item-is-not-listening"
+        if reason is None and _text((target_item or {}).get("responseMode")).casefold() != "teacher-listening":
+            reason = "item-is-not-teacher-listening"
+        if reason is None and _as_list((target_item or {}).get("answerItems")):
+            reason = "answer-key-present"
+        merge_contract = entry.get("mergeContract")
+        contract_keys = (
+            "preserveOriginalPrompt",
+            "preserveOriginalProvenance",
+            "noAudioSubstitution",
+            "noSyntheticAnswerKey",
+            "teacherNotesOnly",
+        )
+        if reason is None and (not isinstance(merge_contract, Mapping) or any(merge_contract.get(key) is not True for key in contract_keys)):
+            reason = "merge-contract-incomplete"
+        if reason is not None:
+            blocker = {
+                "kind": "exercise",
+                "lessonId": lesson_id,
+                "itemId": item_id,
+                "unit": _int(entry.get("unit")),
+                "code": f"exercise-teacher-notes-{reason}",
+            }
+            blockers.append(blocker)
+            rejected.append(blocker)
+            continue
+        assert target_item is not None and published_slide is not None and source_path is not None
+        previous_prompt = _text(target_item.get("prompt"))
+        previous_status = _text(target_item.get("reviewStatus"))
+        notes = {
+            "reviewed": True,
+            "reviewStatus": "reviewed-teacher-notes",
+            "sourceInstruction": source_prompt,
+            "sourcePrompt": source_prompt,
+            "content": source_prompt,
+            "responseMode": "teacher-notes-preserved",
+            "originalPrompt": previous_prompt,
+            "originalReviewStatus": previous_status,
+            "noAudioSubstitution": True,
+            "noSyntheticAnswerKey": True,
+            "provenance": {
+                "review": sidecar_ref,
+                "publishedSourceFile": _text((source_ref or {}).get("path")) if isinstance(source_ref, Mapping) else "",
+                "publishedSourceSha256": _text((source_ref or {}).get("sha256")) if isinstance(source_ref, Mapping) else "",
+                "publishedSourceSlide": source_slide_number,
+                "sourceUrl": source_url,
+            },
+        }
+        target_item.setdefault("originalPrompt", previous_prompt)
+        target_item.setdefault("originalReviewStatus", previous_status)
+        target_item["sourcePrompt"] = source_prompt
+        target_item["sourceInstruction"] = source_prompt
+        target_item["teacherNotes"] = notes
+        target_item["teacherNotesReviewed"] = True
+        target_item["reviewStatus"] = "reviewed-teacher-notes"
+        target_item["doNotAutoGrade"] = True
+        target_item["answerItems"] = []
+        target_item["teacherNotesReview"] = {
+            "sourceReviewRef": sidecar_ref,
+            "sourcePath": str(source_path.resolve()),
+            "sourceSha256": _text((source_ref or {}).get("sha256")) if isinstance(source_ref, Mapping) else "",
+            "publishedSlide": source_slide_number,
+            "preservedPrompt": previous_prompt,
+        }
+        applied.append(item_id)
+    expected_count = _int(sidecar.get("expectedEntryCount"))
+    if expected_count is not None and expected_count != len(entries):
+        blockers.append(
+            {
+                "kind": "exercise",
+                "code": "exercise-teacher-notes-entry-count-mismatch",
+                "expected": expected_count,
+                "actual": len(entries),
+            }
+        )
+    return result, {
+        "status": "applied" if not rejected else "partially-applied",
+        "applied": len(applied),
+        "rejected": len(rejected),
+        "appliedItemIds": applied,
+        "rejectedItemIds": [item["itemId"] for item in rejected],
+        "baseReviewPath": str(base_path) if base_path else None,
+        "sourceReviewRef": sidecar_ref,
+    }
+
+
+def _apply_exercise_errata_review(
+    exercise_review: Mapping[str, Any] | None,
+    sidecar: Mapping[str, Any] | None,
+    sources_by_lesson: Mapping[str, Mapping[str, Any]],
+    asset_roots: Sequence[Path],
+    blockers: list[dict[str, Any]],
+    sidecar_ref: str,
+) -> tuple[Mapping[str, Any] | None, dict[str, Any]]:
+    """Merge the Unit 38 slide-13 source erratum under its exact contract."""
+
+    if not isinstance(sidecar, Mapping):
+        return exercise_review, {"status": "not-supplied", "applied": 0, "rejected": 0}
+    if not isinstance(exercise_review, Mapping):
+        blockers.append({"kind": "exercise", "code": "exercise-review-missing-for-errata"})
+        return exercise_review, {"status": "blocked", "applied": 0, "rejected": 0}
+    if _text(sidecar.get("courseId")) not in {"", COURSE_ID}:
+        raise ComposeError("exercise errata course id does not match the course builder")
+    base_path = _sidecar_file(sidecar.get("baseReview"), asset_roots, blockers, code_prefix="exercise-errata-base-review")
+    result = copy.deepcopy(dict(exercise_review))
+    raw_lessons = result.get("lessons")
+    if not isinstance(raw_lessons, Mapping):
+        blockers.append({"kind": "exercise", "code": "exercise-review-lessons-missing-for-errata"})
+        return result, {"status": "blocked", "applied": 0, "rejected": 0}
+    applied: list[str] = []
+    rejected: list[dict[str, Any]] = []
+    for patch in [item for item in _as_list(sidecar.get("patches")) if isinstance(item, Mapping)]:
+        lesson_id = _text(patch.get("lessonId"))
+        item_id = _text(patch.get("itemId"))
+        lesson = raw_lessons.get(lesson_id)
+        source = sources_by_lesson.get(lesson_id)
+        reason: str | None = None
+        source_ref = sidecar.get("publishedSource")
+        if not lesson_id or not item_id or not isinstance(lesson, Mapping):
+            reason = "item-or-lesson-missing"
+        elif not isinstance(source, Mapping):
+            reason = "published-source-missing"
+        source_path: Path | None = None
+        if reason is None:
+            source_path = _sidecar_file(source_ref, asset_roots, blockers, code_prefix="exercise-errata-published-source")
+            if source_path is None:
+                reason = "published-source-reference-invalid"
+        target_item: dict[str, Any] | None = None
+        current_slide: int | None = None
+        if reason is None:
+            target_item, _slide, current_slide = _review_item_by_id(lesson, item_id)
+            if target_item is None:
+                reason = "review-item-missing"
+        source_slide_number = _int(patch.get("slideNumber") or (source_ref or {}).get("slideNumber"))
+        published_slide = _source_slide(source or {}, source_slide_number or -1)
+        if reason is None and published_slide is None:
+            reason = "published-source-slide-not-found"
+        source_prompt = _text(patch.get("sourcePrompt"))
+        if reason is None and (not source_prompt or _normalise_review_text(source_prompt) not in _normalise_review_text("\n".join(_as_list((published_slide or {}).get("visibleTexts"))))):
+            reason = "source-prompt-mismatch"
+        source_url = _text((source_ref or {}).get("sourceUrl")) if isinstance(source_ref, Mapping) else ""
+        if reason is None and source_url != _source_url(source or {}):
+            reason = "published-source-url-mismatch"
+        if reason is None and _text(patch.get("originalPrompt")) and _text(patch.get("originalPrompt")) != _text((target_item or {}).get("prompt")):
+            reason = "original-prompt-mismatch"
+        contract = patch.get("mergeContract")
+        required_contract = (
+            "replaceReviewStatus",
+            "setOpenResponse",
+            "setAmbiguousAnswerCanonicalToNull",
+            "setAmbiguousAnswerAcceptedToEmpty",
+            "nativeOpenType",
+            "aiGrading",
+            "responseMode",
+            "archiveOriginalPromptInMetadata",
+        )
+        if reason is None and (not isinstance(contract, Mapping) or any(key not in contract for key in required_contract)):
+            reason = "merge-contract-incomplete"
+        open_response = patch.get("openResponse")
+        if reason is None and (
+            not isinstance(open_response, Mapping)
+            or not _text(open_response.get("prompt"))
+            or not _text(open_response.get("sourcePrompt"))
+            or not _text(open_response.get("feedbackContext"))
+        ):
+            reason = "open-response-metadata-missing"
+        answers = (target_item or {}).get("answerItems")
+        if reason is None and not isinstance(answers, list):
+            reason = "answer-items-missing"
+        nested_id = _text(patch.get("nestedAnswerItemId")) or "item-3"
+        nested = next((item for item in _as_list(answers) if isinstance(item, Mapping) and _text(item.get("id")) == nested_id), None)
+        if reason is None and nested is None:
+            reason = "ambiguous-answer-item-missing"
+        deterministic_ids = {_text(value) for value in _as_list(patch.get("deterministicItems")) if _text(value)}
+        answer_ids = {_text(value.get("id")) for value in _as_list(answers) if isinstance(value, Mapping) and _text(value.get("id"))}
+        if reason is None and deterministic_ids != answer_ids - {nested_id}:
+            reason = "deterministic-item-set-mismatch"
+        answer_policy = patch.get("answerPolicy")
+        if reason is None and (
+            not isinstance(answer_policy, Mapping)
+            or answer_policy.get("canonicalAnswer") is not None
+            or _as_list(answer_policy.get("acceptedAnswers"))
+            or answer_policy.get("preserveOriginalItem") is not True
+        ):
+            reason = "answer-policy-unsafe"
+        if reason is not None:
+            blocker = {
+                "kind": "exercise",
+                "lessonId": lesson_id,
+                "itemId": item_id,
+                "unit": _int(patch.get("unit")),
+                "code": f"exercise-errata-{reason}",
+            }
+            blockers.append(blocker)
+            rejected.append(blocker)
+            continue
+        assert target_item is not None and nested is not None and source_path is not None
+        previous_prompt = _text(target_item.get("prompt"))
+        previous_status = _text(target_item.get("reviewStatus"))
+        nested["canonical"] = None
+        nested["accepted"] = []
+        nested["evidence"] = source_prompt
+        nested["rationale"] = _text(patch.get("rationale"))
+        nested["status"] = "source-ambiguous"
+        target_item["reviewStatus"] = "open-response-preserved"
+        target_item["responseMode"] = "formative-open-response"
+        target_item["openResponse"] = copy.deepcopy(dict(open_response))
+        target_item["nativeOpenType"] = "essay"
+        target_item["aiGrading"] = True
+        target_item["doNotAutoGrade"] = True
+        target_item["sourceEvidence"] = [source_prompt]
+        target_item.setdefault("originalPrompt", previous_prompt)
+        target_item.setdefault("originalReviewStatus", previous_status)
+        target_item["errataReview"] = {
+            "sourceReviewRef": sidecar_ref,
+            "sourcePath": str(source_path.resolve()),
+            "sourceSha256": _text((source_ref or {}).get("sha256")) if isinstance(source_ref, Mapping) else "",
+            "publishedSlide": source_slide_number,
+            "preservedPrompt": previous_prompt,
+            "preservedReviewStatus": previous_status,
+        }
+        target_item["semanticPatch"] = {
+            "sourcePatchRef": sidecar_ref,
+            "patchItemId": f"{item_id}:{nested_id}",
+            "originalPrompt": previous_prompt,
+            "originalReviewStatus": previous_status,
+            "provenance": copy.deepcopy(source_ref),
+            "sourceEvidence": [source_prompt],
+            "patchReviewStatus": _text(patch.get("reviewStatus")),
+            "validatedPublishedSourceSlide": source_slide_number,
+        }
+        if source_slide_number != current_slide:
+            target_item["id"] = _patch_rekey_item(item_id, source_slide_number)
+        applied.append(item_id)
+    return result, {
+        "status": "applied" if not rejected else "partially-applied",
+        "applied": len(applied),
+        "rejected": len(rejected),
+        "appliedItemIds": applied,
+        "rejectedItemIds": [item["itemId"] for item in rejected],
+        "baseReviewPath": str(base_path) if base_path else None,
+        "sourceReviewRef": sidecar_ref,
+    }
+
+
+def _apply_unit6_recovery(
+    exercise_review: Mapping[str, Any] | None,
+    recovery: Mapping[str, Any] | None,
+    sources_by_lesson: Mapping[str, Mapping[str, Any]],
+    asset_roots: Sequence[Path],
+    blockers: list[dict[str, Any]],
+    recovery_ref: str,
+) -> tuple[Mapping[str, Any] | None, dict[str, Any]]:
+    """Add the reviewed Unit 6 vocabulary source slide as teacher notes only."""
+
+    if not isinstance(recovery, Mapping):
+        return exercise_review, {"status": "not-supplied", "applied": 0, "rejected": 0}
+    if not isinstance(exercise_review, Mapping):
+        blockers.append({"kind": "exercise", "code": "exercise-review-missing-for-unit6-recovery"})
+        return exercise_review, {"status": "blocked", "applied": 0, "rejected": 0}
+    if _text(recovery.get("courseId")) not in {"", COURSE_ID}:
+        raise ComposeError("Unit 6 recovery course id does not match the course builder")
+    policy = recovery.get("sourcePolicy")
+    required_policy = (
+        "publishedDeckReadOnly",
+        "sourceFileReadOnly",
+        "noSourceArchiveWrites",
+        "noSyntheticExerciseItem",
+        "noSyntheticAnswerKey",
+        "originalMediaPreserved",
+    )
+    if not isinstance(policy, Mapping) or any(policy.get(key) is not True for key in required_policy):
+        raise ComposeError("Unit 6 recovery source policy is incomplete or unsafe")
+    lesson_id = _text(recovery.get("lessonId"))
+    source = sources_by_lesson.get(lesson_id)
+    if not isinstance(source, Mapping):
+        blockers.append({"kind": "exercise", "unit": 6, "lessonId": lesson_id, "code": "unit6-recovery-source-missing"})
+        return exercise_review, {"status": "blocked", "applied": 0, "rejected": 1}
+    source_manifest = recovery.get("sourceManifest") if isinstance(recovery.get("sourceManifest"), Mapping) else {}
+    source_path = _sidecar_file(source_manifest, asset_roots, blockers, code_prefix="unit6-recovery-source")
+    source_slide_data = source_manifest.get("slide") if isinstance(source_manifest.get("slide"), Mapping) else {}
+    source_slide_number = _int(source_slide_data.get("number")) or 6
+    source_slide = _source_slide(source, source_slide_number)
+    reason: str | None = None
+    if source_path is None:
+        reason = "source-reference-invalid"
+    elif _text(recovery.get("recoveryStatus")) != "recovered-source-slide":
+        reason = "status-invalid"
+    elif source_slide is None:
+        reason = "source-slide-missing"
+    elif _text((recovery.get("publishedDeck") or {}).get("sourceUrl")) != _source_url(source):
+        reason = "source-url-mismatch"
+    elif _text(source_manifest.get("contentId")) and _text(source.get("contentId")) != _text(source_manifest.get("contentId")):
+        reason = "content-id-mismatch"
+    expected_texts = [_text(value) for value in _as_list(source_slide_data.get("visibleTexts")) if _text(value)]
+    actual_texts = [_text(value) for value in _as_list(source_slide.get("visibleTexts")) if _text(value)] if source_slide else []
+    if reason is None and any(_normalise_review_text(value) not in _normalise_review_text("\n".join(actual_texts)) for value in expected_texts):
+        reason = "source-slide-evidence-mismatch"
+    evidence = [_text(value) for value in _as_list(recovery.get("sourceEvidence")) if _text(value)]
+    if reason is None and any(_normalise_review_text(value) not in _normalise_review_text("\n".join(actual_texts)) for value in evidence):
+        reason = "source-evidence-mismatch"
+    exercise_use = recovery.get("exerciseUse") if isinstance(recovery.get("exerciseUse"), Mapping) else {}
+    if reason is None and (exercise_use.get("itemId") is not None or _as_list(exercise_use.get("answerItems"))):
+        reason = "synthetic-exercise-policy-violation"
+    result = copy.deepcopy(dict(exercise_review))
+    lessons = result.get("lessons")
+    lesson = lessons.get(lesson_id) if isinstance(lessons, Mapping) else None
+    if reason is None and not isinstance(lesson, Mapping):
+        reason = "review-lesson-missing"
+    if reason is not None:
+        blocker = {"kind": "exercise", "unit": 6, "lessonId": lesson_id, "code": f"unit6-recovery-{reason}"}
+        blockers.append(blocker)
+        return result, {"status": "blocked", "applied": 0, "rejected": 1}
+    assert source_slide is not None and source_path is not None and isinstance(lesson, Mapping)
+    slides = lesson.get("slides")
+    if not isinstance(slides, dict):
+        slides = {}
+        lesson["slides"] = slides
+    review_slide = slides.get(str(source_slide_number))
+    if not isinstance(review_slide, dict):
+        review_slide = {
+            "source": copy.deepcopy(dict(source_slide)),
+            "number": source_slide_number,
+            "title": _text(source_slide.get("title")),
+            "visibleTexts": copy.deepcopy(_as_list(source_slide.get("visibleTexts"))),
+            "items": [],
+        }
+        slides[str(source_slide_number)] = review_slide
+    else:
+        review_slide.setdefault("source", copy.deepcopy(dict(source_slide)))
+        review_slide.setdefault("number", source_slide_number)
+        review_slide.setdefault("title", _text(source_slide.get("title")))
+        review_slide.setdefault("visibleTexts", copy.deepcopy(_as_list(source_slide.get("visibleTexts"))))
+    if not isinstance(review_slide.get("items"), list):
+        review_slide["items"] = []
+    item_id = "unit6-slide6-teacher-notes"
+    existing = next((item for item in review_slide["items"] if isinstance(item, Mapping) and _text(item.get("id")) == item_id), None)
+    source_prompt = next(
+        (_text(value) for value in actual_texts if "repeat the words" in _text(value).casefold()),
+        _text(source_slide.get("title")),
+    )
+    if existing is None:
+        review_slide["items"].append(
+            {
+                "id": item_id,
+                "kind": "listening",
+                "prompt": source_prompt,
+                "sourcePrompt": source_prompt,
+                "sourceInstruction": source_prompt,
+                "responseMode": "teacher-listening",
+                "reviewStatus": "reviewed-teacher-notes",
+                "teacherNotesReviewed": True,
+                "teacherNotes": {
+                    "reviewed": True,
+                    "reviewStatus": "reviewed-teacher-notes",
+                    "sourceInstruction": source_prompt,
+                    "sourcePrompt": source_prompt,
+                    "content": source_prompt,
+                    "responseMode": "teacher-notes-preserved",
+                    "sourceEvidence": evidence,
+                    "rationale": "Published Unit 6 slide is a teacher-led vocabulary repetition activity; no clip or answer key is present on the source slide.",
+                    "provenance": {
+                        "recoveryReview": recovery_ref,
+                        "sourceManifest": _text(source_manifest.get("path") or source_manifest.get("file")),
+                        "sourceSha256": _text(source_manifest.get("sha256")),
+                        "publishedSlide": source_slide_number,
+                    },
+                },
+                "answerItems": [],
+                "doNotAutoGrade": True,
+                "sourceEvidence": evidence,
+                "recoveryProvenance": {
+                    "recoveryReview": recovery_ref,
+                    "sourcePath": str(source_path.resolve()),
+                    "sourceSha256": _text(source_manifest.get("sha256")),
+                    "publishedSlide": source_slide_number,
+                    "originalMediaPreserved": True,
+                },
+            }
+        )
+        status = "applied"
+        applied = 1
+    else:
+        status = "already-present"
+        applied = 0
+    return result, {
+        "status": status,
+        "applied": applied,
+        "rejected": 0,
+        "itemId": item_id,
+        "sourceReviewRef": recovery_ref,
     }
 
 
@@ -1824,6 +2494,9 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     native_match = _load_json(args.native_match) if args.native_match else None
     exercise_review = _load_json(args.exercise_review) if args.exercise_review else None
     exercise_semantic_patch = _load_json(args.exercise_semantic_patch) if args.exercise_semantic_patch else None
+    exercise_teacher_notes_review = _load_json(args.exercise_teacher_notes_review) if args.exercise_teacher_notes_review else None
+    exercise_errata_review = _load_json(args.exercise_errata_review) if args.exercise_errata_review else None
+    unit6_recovery = _load_json(args.unit6_recovery) if args.unit6_recovery else None
     table_review = _load_json(args.table_review) if args.table_review else None
     listening_documents = [_load_json(path) for path in args.listening_review]
     pronunciation_review = getattr(args, "pronunciation_review", None)
@@ -1855,6 +2528,36 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             args.asset_root,
             blockers,
             str(args.exercise_semantic_patch),
+        )
+    teacher_notes_summary = {"status": "not-supplied", "applied": 0, "rejected": 0}
+    if exercise_teacher_notes_review is not None:
+        exercise_review, teacher_notes_summary = _apply_exercise_teacher_notes_review(
+            exercise_review,
+            exercise_teacher_notes_review,
+            source_by_lesson,
+            args.asset_root,
+            blockers,
+            str(args.exercise_teacher_notes_review),
+        )
+    errata_summary = {"status": "not-supplied", "applied": 0, "rejected": 0}
+    if exercise_errata_review is not None:
+        exercise_review, errata_summary = _apply_exercise_errata_review(
+            exercise_review,
+            exercise_errata_review,
+            source_by_lesson,
+            args.asset_root,
+            blockers,
+            str(args.exercise_errata_review),
+        )
+    unit6_recovery_summary = {"status": "not-supplied", "applied": 0, "rejected": 0}
+    if unit6_recovery is not None:
+        exercise_review, unit6_recovery_summary = _apply_unit6_recovery(
+            exercise_review,
+            unit6_recovery,
+            source_by_lesson,
+            args.asset_root,
+            blockers,
+            str(args.unit6_recovery),
         )
 
     _reviewed_audio, reviewed_images = _index_reviewed_media(reviewed_media)
@@ -1939,6 +2642,9 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "nativeMatch": str(args.native_match) if args.native_match else None,
             "exerciseReview": str(args.exercise_review) if args.exercise_review else None,
             "exerciseSemanticPatch": str(args.exercise_semantic_patch) if args.exercise_semantic_patch else None,
+            "exerciseTeacherNotesReview": str(args.exercise_teacher_notes_review) if args.exercise_teacher_notes_review else None,
+            "exerciseErrataReview": str(args.exercise_errata_review) if args.exercise_errata_review else None,
+            "unit6Recovery": str(args.unit6_recovery) if args.unit6_recovery else None,
             "tableReview": str(args.table_review) if args.table_review else None,
             "listeningReview": [str(path) for path in args.listening_review],
             "pronunciationReview": str(pronunciation_review) if pronunciation_review else None,
@@ -1974,6 +2680,9 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "figures": figure_counts,
             "exerciseReviewLessons": len(normalized_exercise["lessons"]),
             "exerciseSemanticPatch": exercise_patch_summary,
+            "exerciseTeacherNotesReview": teacher_notes_summary,
+            "exerciseErrataReview": errata_summary,
+            "unit6Recovery": unit6_recovery_summary,
             "tableReview": table_review_summary,
             "listeningReviewEntries": len(normalized_listening["exercises"]),
             "listeningReviewRejectedEntries": len(normalized_listening.get("rejectedEntries", [])),
@@ -2049,6 +2758,9 @@ def compose(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
             "unit33To36FiguresRequireVisualProof": True,
             "oldFigureCorrespondenceIgnoredWhenProofProvided": bool(figure_proof),
             "exerciseSemanticPatchExplicitOnly": True,
+            "teacherNotesReviewExplicitOnly": True,
+            "exerciseErrataReviewExplicitOnly": True,
+            "unit6RecoveryExplicitOnly": True,
             "tableReviewPublishedPriority": bool(table_review),
             "tableReviewNativeMismatchesExcluded": table_review_summary["excludedNativeTables"] > 0,
             "exerciseSemanticPatchSummary": exercise_patch_summary,
@@ -2091,6 +2803,21 @@ def _parse_args(argv: Sequence[str]) -> argparse.Namespace:
         "--exercise-semantic-patch",
         type=Path,
         help="explicit source-validated semantic exercise patch; remaining hard blocks stay blocked",
+    )
+    parser.add_argument(
+        "--exercise-teacher-notes-review",
+        type=Path,
+        help="source-validated teacher-led vocabulary/listening notes review",
+    )
+    parser.add_argument(
+        "--exercise-errata-review",
+        type=Path,
+        help="source-validated exercise errata merge contract",
+    )
+    parser.add_argument(
+        "--unit6-recovery",
+        type=Path,
+        help="source-validated Unit 6 slide-6 teacher-notes recovery",
     )
     parser.add_argument(
         "--table-review",
