@@ -419,6 +419,120 @@ def unit3_slide4_vector_fixture() -> tuple[dict, dict, dict]:
     return source, review, audio_manifest
 
 
+def duplicate_passage_source_cases() -> list[dict[str, object]]:
+    """Published passages that previously rendered twice beside native tables."""
+
+    used_to = (
+        "TO CONSIDER 1. Used to is a fixed expression that comes before a verb in simple form. "
+        "2. If the sentence has the auxiliary DID, used to goes in simple form. "
+        "3. Other useful expressions: but not anymore / Back in my childhood / When I was a child / "
+        "When I was younger etc. 4. Used to can be used in simple present tense to talk about customs people have. "
+        "E.G. She is used to read the newspaper in the mornings."
+    )
+    survivors = (
+        "Survivors! 2 years ago, my family and I went to Thailand for spending our holidays. "
+        "We were having a good time and the city was giving us all what we expected. When we arrived, "
+        "we were having problems to find the hotel, but a woman helped us and we got safe. The days were passing by "
+        "while we were having the greatest time of our lives; we had the chance to try traditional food when we were "
+        "visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm "
+        "sounded�it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay "
+        "together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots "
+        "of water was running over people while they were trying to escape� fortunately, we could get to high hill and survived."
+    )
+    picking_up = (
+        "Picking you up! Sean, I will pick you up in some minutes. Ok, almost ready. Do I need any sweater or jacket? "
+        "It will probably be cold since it is rainy, so take something with you. Ok, I will take my hoody. I am ready. "
+        "You know this new gamers pub they all talk about? Of course, I do. Wait� Is that where we are going? Yes, I "
+        "will take you there as a birthday present. Oh man! I will wear my lucky jeans� I will have so much fun. Thanks! "
+        "Not to worry, I am almost there. Hey! You owe me big for my birthday. I will get you a date with Nancy, I promise. "
+        "Magnificent, we will be even then."
+    )
+    insight = (
+        "An insight I always talk to myself, I find it interesting and refreshing. I know I should talk to other people "
+        "for advise or just to share some of the things or situations I live, but it is very difficult. People have to be "
+        "trustworthy and they need to prove themselves friend. �I should not look back into other bad experiences� I say "
+        "to myself all the time; however, I must be clear too and I can�t be friends with everyone at first. People must "
+        "give back what they receive and they should act towards others the same way others act towards them, but I guess "
+        "not everyone thinks like me."
+    )
+    party = (
+        "About the party Tanya (T) / Mia (M) - T: So, how was the party? - M: It was marvelous, and I had a blast. "
+        "- T: Did everyone go with their bells on? - M: Most people; though, SOMEONE was just wandering out of boredom. "
+        "- T: SOMEONE? WAIT! Mike was there? - M: Yeap! He was asking everybody about you... If they had seen you anywhere. "
+        "- T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything? - M: Yeah, right? "
+        "I guess someone is realizing he lost his chance. - T: Indeed! I will go nowhere with that dude again."
+    )
+    return [
+        {
+            "lesson": "Unit 15",
+            "slide": 8,
+            "title": "Talking about habits in the past leads us to use simple past tense structure; though, it is necessary to work with used to.",
+            "visibleTexts": [
+                "Talking about habits in the past leads us to use simple past tense structure; though, it is necessary to work with used to.",
+                used_to,
+                "Used to John used to attend dancing classes all nights. Did John use to attend dancing classes all nights? I used to make cakes back in my school days. Did you use to make cakes back in your school day?",
+            ],
+            "passage": used_to,
+            "tables": [[
+                ["Used to", ""],
+                ["John used to attend dancing classes all nights.", "Did John use to attend dancing classes all nights?"],
+                ["I used to make cakes back in my school days.", "Did you use to make cakes back in your school day?"],
+            ]],
+        },
+        {
+            "lesson": "Unit 16",
+            "slide": 13,
+            "title": survivors,
+            "visibleTexts": [
+                survivors,
+                "C. Read the following paragraph and extract the sentences to put them under the corresponding function.",
+                "Actions happening in the past. / Actions happening in the past interrupted by another one. Actions happening simultaneously in the past.",
+            ],
+            "passage": survivors,
+            "tables": [[
+                ["Actions happening in the past. / Actions happening in the past interrupted by another one.", "Actions happening simultaneously in the past."],
+                ["", ""],
+            ]],
+        },
+        {
+            "lesson": "Unit 20",
+            "slide": 13,
+            "title": picking_up,
+            "visibleTexts": [
+                picking_up,
+                "C. Read the following dialogue and take out sentences as examples for the different functions studied. After that, read the dialogue with your teacher.",
+                "Predictions Promises Instant Decisions",
+            ],
+            "passage": picking_up,
+            "tables": [["Predictions", "Promises", "Instant Decisions"], ["", "", ""]],
+        },
+        {
+            "lesson": "Unit 22",
+            "slide": 13,
+            "title": "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+            "visibleTexts": [
+                "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+                insight,
+                "Suggestions Responsibility Obligation Prohibition",
+            ],
+            "passage": insight,
+            "tables": [["Suggestions", ""], ["Responsibility", ""], ["Obligation", ""], ["Prohibition", ""]],
+        },
+        {
+            "lesson": "Unit 23",
+            "slide": 13,
+            "title": "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.",
+            "visibleTexts": [
+                "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.",
+                party,
+                "Generalization Being Indefinite Being Secretive",
+            ],
+            "passage": party,
+            "tables": [["Generalization", ""], ["Being indefinite", ""], ["Being secretive", ""]],
+        },
+    ]
+
+
 class BuildCourseLearningTests(unittest.TestCase):
     def test_goal_slide_renders_one_concise_source_block(self) -> None:
         goal = "Describe oneself and others� origins by talking about countries and nationalities."
@@ -3613,6 +3727,53 @@ class BuildCourseLearningTests(unittest.TestCase):
         text_specs = [payload for native_type, payload in specs if native_type == "text"]
         self.assertEqual(len(text_specs), 1)
         self.assertEqual(text_specs[0]["content"].count("When the alarm"), 1)
+
+    def test_real_source_passages_do_not_render_nested_duplicate_text_rows(self) -> None:
+        """Keep each long authored passage once when native tables are present."""
+
+        for case in duplicate_passage_source_cases():
+            source = source_fixture()
+            slide = {
+                "number": case["slide"],
+                "title": case["title"],
+                "visibleTexts": case["visibleTexts"],
+                # These are the reviewed native table projections attached to
+                # the published slides. Their presence is what previously
+                # caused the context and passage rows to overlap.
+                "_nativeAudit": {"tables": case["tables"]},
+            }
+            source["deck"]["slides"] = [slide]
+            source["deck"]["slideCount"] = 1
+            blockers: list[dict] = []
+            specs = builder._native_block_specs(
+                source,
+                slide,
+                LESSON_ID,
+                builder._source_digest(source),
+                None,
+                [],
+                None,
+                blockers,
+            )
+
+            text_specs = [payload for native_type, payload in specs if native_type == "text"]
+            passage = builder._plain_learner_text(case["passage"])
+            containing_rows = [
+                payload
+                for payload in text_specs
+                if passage in builder._plain_learner_text(payload.get("content"))
+            ]
+            self.assertEqual(
+                len(containing_rows),
+                1,
+                msg=f"{case['lesson']} slide {case['slide']} rendered a repeated passage",
+            )
+            self.assertEqual(
+                len(text_specs),
+                1,
+                msg=f"{case['lesson']} slide {case['slide']} retained a duplicate text row",
+            )
+            self.assertFalse(blockers, msg=f"unexpected blocker on {case['lesson']} slide {case['slide']}")
 
     def test_combined_review_placeholder_keeps_one_source_control_per_final_prompt(self) -> None:
         source = source_fixture()

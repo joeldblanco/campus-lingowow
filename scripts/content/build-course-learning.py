@@ -2033,6 +2033,64 @@ def _readable_html(texts: Sequence[str]) -> str:
     return "".join(paragraphs)
 
 
+def _plain_learner_text(value: Any) -> str:
+    """Return learner-visible text for strict duplicate containment checks."""
+
+    # The builder creates paragraph wrappers itself. Strip those wrappers
+    # before comparing, while leaving punctuation and authored wording intact.
+    without_tags = re.sub(r"<[^>]*>", " ", _text(value))
+    return _normalise(html.unescape(without_tags)).casefold()
+
+
+def _drop_contained_passage_specs(
+    specs: Sequence[tuple[str, dict[str, Any]]],
+    source_slide_number: int,
+) -> list[tuple[str, dict[str, Any]]]:
+    """Remove a repeated long passage from one published source slide.
+
+    A native audit can cause the published passage to be emitted once in the
+    teaching context and again as the dedicated reading passage. The context
+    is the learner-visible source block we keep: a shorter text is removable
+    only when its complete normalized text occurs literally inside a longer
+    learner-visible text from this same slide. Activities, audio, teacher
+    notes, and short labels are never candidates.
+    """
+
+    # ``specs`` is assembled for one slide by ``_native_block_specs``. Keep an
+    # explicit slide argument in the helper contract so callers cannot reuse
+    # this rule across source slides accidentally.
+    if source_slide_number <= 0:
+        return list(specs)
+    text_candidates: list[tuple[int, str, str]] = []
+    for index, (native_type, payload) in enumerate(specs):
+        if native_type != "text" or payload.get("hiddenFromLearners") is True:
+            continue
+        content = payload.get("content")
+        if not isinstance(content, str):
+            continue
+        plain = _plain_learner_text(content)
+        if len(plain) < 300:
+            continue
+        text_candidates.append((index, plain, _text(payload.get("sourceRole"))))
+
+    remove: set[int] = set()
+    for shorter_index, shorter, _shorter_role in text_candidates:
+        for longer_index, longer, _longer_role in text_candidates:
+            if shorter_index == longer_index or len(longer) <= len(shorter):
+                continue
+            # The current list is source-slide scoped; this guard documents and
+            # enforces the intended provenance when a caller adds metadata.
+            shorter_slide = specs[shorter_index][1].get("sourceSlide")
+            longer_slide = specs[longer_index][1].get("sourceSlide")
+            if shorter_slide not in (None, source_slide_number) or longer_slide not in (None, source_slide_number):
+                continue
+            if shorter in longer:
+                remove.add(shorter_index)
+                break
+
+    return [item for index, item in enumerate(specs) if index not in remove]
+
+
 def _extract_pairs(texts: Sequence[str]) -> list[dict[str, str]]:
     pairs: list[dict[str, str]] = []
     pattern = re.compile(r"([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' ]{1,38}?)\s*[-–—]\s*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' ]{1,58})")
@@ -4635,6 +4693,7 @@ def _native_block_specs(
             return (7, 0)
         return (8, 0)
 
+    specs = _drop_contained_passage_specs(specs, number)
     return [item for _, item in sorted(enumerate(specs), key=lambda pair: (*spec_priority(pair[1]), pair[0]))]
 
 
