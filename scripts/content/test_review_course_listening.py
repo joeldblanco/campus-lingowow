@@ -181,6 +181,82 @@ class CourseListeningReviewTests(unittest.TestCase):
         )
         self.assertEqual(output["items"][0]["questions"], [])
 
+    def test_reviewed_exercise_keeps_sha_and_archives_unsupported_source_claims(self):
+        source_slide = slide(
+            13,
+            "B. Listen to the audio. After that state if the sentences are true or false.",
+            visible=[
+                "B. Listen to the audio. After that state if the sentences are true or false.",
+                "1. He is from Venezuela. (T) (F) 2. His mother lives in the USA. (T) (F)",
+            ],
+            item_id="u02-s13-b",
+        )
+        exercise = {
+            "courseId": MODULE.COURSE_ID,
+            "lessons": {
+                "lesson-2": {
+                    "unit": 2,
+                    "lessonTitle": "I come from...",
+                    "slides": {"4": slide(4, "B. Listen to the audio and discuss the topic."), "13": source_slide},
+                }
+            },
+        }
+        source = transcript(2, 2, "He is from Venezuela. Welcome to the USA.")
+        output = MODULE.build_reviewed_exercises(exercise, {"transcripts": [transcript(2, 1, "The topic is origins."), source]})
+        item_set = next(item for item in output["exercises"] if item["unit"] == 2)
+        self.assertEqual(item_set["reviewStatus"], "reviewed")
+        self.assertEqual(item_set["sourceAudioSha256"], source["sourceSha256"])
+        self.assertIn("He is from Venezuela.", item_set["items"][0]["answerItems"][0]["evidence"])
+        self.assertEqual(len(item_set["originalQuestionsOmitted"]), 1)
+        self.assertEqual(item_set["originalQuestionsOmitted"][0]["question"], "His mother lives in the USA")
+
+    def test_missing_source_questions_get_four_transcript_grounded_items(self):
+        exercise = {
+            "courseId": MODULE.COURSE_ID,
+            "lessons": {
+                "lesson-15": {
+                    "unit": 15,
+                    "lessonTitle": "I remember I...",
+                    "slides": {"4": slide(4, "B. Listen to the audio and discuss the topic.")},
+                }
+            },
+        }
+        output = MODULE.build_reviewed_exercises(
+            exercise,
+            {"transcripts": [transcript(15, 2, "We used to play near the river. We went there every Saturday. We were good kids. We listened to music.")]},
+        )
+        item_set = output["exercises"][0]
+        self.assertEqual(item_set["reviewStatus"], "reviewed")
+        self.assertEqual(len(item_set["items"]), 4)
+        self.assertTrue(all(item["answerItems"][0]["sourceAudioSha256"] == item_set["sourceAudioSha256"] for item in item_set["items"]))
+        self.assertTrue(all(item["originalQuestion"] is None for item in item_set["items"]))
+
+    def test_audio3_pronunciation_stays_blocked_without_source_answer_labels(self):
+        pronunciation = slide(
+            13,
+            "B. Listen to the word list and classify each inflectional ending.",
+            visible=["B. Listen to the word list and classify each inflectional ending."],
+            item_id="u14-s13-b",
+        )
+        exercise = {
+            "courseId": MODULE.COURSE_ID,
+            "lessons": {
+                "lesson-14": {
+                    "unit": 14,
+                    "lessonTitle": "Back then",
+                    "slides": {"4": slide(4, "B. Listen to the audio and discuss the topic."), "13": pronunciation},
+                }
+            },
+        }
+        output = MODULE.build_reviewed_exercises(
+            exercise,
+            {"transcripts": [transcript(14, 3, "Number 1. Walked. Number 2. Played. Number 3. Wanted.")]},
+        )
+        item_set = output["exercises"][0]
+        self.assertEqual(item_set["reviewStatus"], "blocked-manual")
+        self.assertEqual(item_set["items"][0]["reviewStatus"], "blocked-manual-source-key")
+        self.assertEqual(item_set["items"][0]["answerItems"], [])
+
 
 if __name__ == "__main__":
     unittest.main()

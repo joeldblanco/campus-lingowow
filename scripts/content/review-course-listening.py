@@ -22,6 +22,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 COURSE_ID = "cmjnr0g5x0001jp04fsw2fejs"
 DEFAULT_OUTPUT = Path("docs/audit/course-listening-review.json")
+DEFAULT_REVIEWED_EXERCISES_OUTPUT = Path("docs/audit/reviewed-listening-exercises.json")
 DEFAULT_EXERCISE_REVIEW = Path("docs/audit/course-exercise-review.json")
 DEFAULT_TRANSCRIPTS = Path("docs/audit/course-audio-transcripts/course-audio-transcripts.json")
 
@@ -663,6 +664,392 @@ def build_review(exercise_review: Mapping[str, Any], transcripts: Mapping[str, A
     }
 
 
+def _transcripts_by_key(transcripts: Mapping[str, Any]) -> dict[tuple[int, int], Mapping[str, Any]]:
+    rows = transcripts.get("transcripts")
+    if not isinstance(rows, list):
+        raise ListeningReviewError("transcript aggregate must contain a transcripts array")
+    result: dict[tuple[int, int], Mapping[str, Any]] = {}
+    for row in rows:
+        if not isinstance(row, Mapping):
+            continue
+        unit = row.get("unit")
+        index = row.get("audioIndex")
+        if isinstance(unit, int) and isinstance(index, int):
+            result[(unit, index)] = row
+    return result
+
+
+def _lesson_contexts(exercise_review: Mapping[str, Any]) -> list[tuple[str, Mapping[str, Any]]]:
+    lessons = exercise_review.get("lessons")
+    if not isinstance(lessons, Mapping):
+        raise ListeningReviewError("exercise review must contain a lessons object")
+    return sorted(
+        ((str(lesson_id), lesson) for lesson_id, lesson in lessons.items() if isinstance(lesson, Mapping)),
+        key=lambda pair: (_unit(pair[1].get("unit")), pair[0]),
+    )
+
+
+def _is_audio3_context(text: str) -> bool:
+    lower = text.casefold()
+    return bool(
+        re.search(
+            r"inflectional\s+ending|ending\s+(?:each|the)\s+word|word\s+list|\/(?:t|d|s|z|ə?d)\/|pronounc",
+            lower,
+        )
+    )
+
+
+def _source_comprehension_candidates(
+    exercise_review: Mapping[str, Any], listening_review: Mapping[str, Any]
+) -> dict[tuple[str, int], list[dict[str, Any]]]:
+    """Index later listening source contexts, including parser-only prompts."""
+
+    review_items = listening_review.get("items", [])
+    review_by_key: dict[tuple[str, int, str], Mapping[str, Any]] = {}
+    if isinstance(review_items, list):
+        for item in review_items:
+            if isinstance(item, Mapping):
+                review_by_key[(str(item.get("lessonId")), int(item.get("slideNumber", -1)), str(item.get("itemId")))] = item
+
+    candidates: dict[tuple[str, int], list[dict[str, Any]]] = {}
+    for lesson_id, lesson in _lesson_contexts(exercise_review):
+        unit = _unit(lesson.get("unit"))
+        if not 2 <= unit <= 52:
+            continue
+        slides = lesson.get("slides")
+        if not isinstance(slides, Mapping):
+            continue
+        for raw_slide, slide in sorted(slides.items(), key=lambda pair: _slide_number(pair[0])):
+            if not isinstance(slide, Mapping):
+                continue
+            slide_number = _slide_number(raw_slide)
+            if slide_number <= 5:
+                continue
+            source = slide.get("source") if isinstance(slide.get("source"), Mapping) else {}
+            visible = source.get("visibleTexts") if isinstance(source.get("visibleTexts"), list) else []
+            source_text = " ".join(str(value) for value in visible)
+            if not re.search(r"(?i)\blisten(?:\s+to)?\b|\baudio\b", source_text):
+                continue
+            role = _role(slide_number, source_text)
+            if role in {"vocabulary-repeat", "teacher-roleplay"}:
+                continue
+            audio_index = 3 if _is_audio3_context(source_text) else 2
+            source_item_ids: list[str] = []
+            source_prompts: list[str] = []
+            for item in slide.get("items", []) if isinstance(slide.get("items"), list) else []:
+                if not isinstance(item, Mapping) or item.get("kind") != "listening":
+                    continue
+                item_id = str(item.get("id", ""))
+                review_item = review_by_key.get((lesson_id, slide_number, item_id))
+                if review_item is not None and review_item.get("role") not in {"comprehension", "other-audio"}:
+                    continue
+                source_item_ids.append(item_id)
+                source_prompts.append(str(item.get("prompt", "")))
+            candidates.setdefault((lesson_id, audio_index), []).append(
+                {
+                    "lessonId": lesson_id,
+                    "unit": unit,
+                    "lessonTitle": str(lesson.get("lessonTitle", "")),
+                    "slideNumber": slide_number,
+                    "sourceExactTexts": [str(value) for value in visible],
+                    "sourceItemIds": source_item_ids,
+                    "sourcePrompts": source_prompts,
+                    "sourceAudioIconCount": _source_audio_count(slide),
+                    "audioIndex": audio_index,
+                }
+            )
+
+    # Keep one source context per lesson/audio index. Prefer a source with a
+    # concrete listening item and then the earliest later slide.
+    for key, rows in candidates.items():
+        rows.sort(key=lambda row: (not bool(row["sourceItemIds"]), row["slideNumber"]))
+        candidates[key] = rows
+    return candidates
+
+
+def _sentence_clauses(transcript: Mapping[str, Any]) -> list[str]:
+    clauses: list[str] = []
+    seen: set[str] = set()
+    segments = transcript.get("segments", [])
+    segment_texts = [str(segment.get("text", "")) for segment in segments if isinstance(segment, Mapping)]
+    # Segment timing gives the strongest evidence boundary. Split long ASR
+    # segments only at punctuation so authored prompts remain verbatim.
+    for text in [*segment_texts, str(transcript.get("text", ""))]:
+        for clause in re.split(r"(?<=[.!?])\s+", text):
+            clean = " ".join(clause.split()).strip(" -")
+            if len(clean.split()) < 4 or len(clean) > 220:
+                continue
+            signature = clean.casefold()
+            if signature not in seen:
+                seen.add(signature)
+                clauses.append(clean)
+    return clauses
+
+
+def _answer_item(
+    *,
+    question_id: str,
+    kind: str,
+    prompt: str,
+    correct: str | None,
+    evidence: str | None,
+    transcript: Mapping[str, Any],
+    review_status: str,
+    original_question: str | None,
+    rationale: str,
+) -> dict[str, Any]:
+    digest = transcript.get("sourceSha256")
+    answer_items: list[dict[str, Any]] = []
+    if correct in {"true", "false"} and evidence and review_status == "reviewed":
+        answer_items.append(
+            {
+                "id": correct,
+                "canonical": correct,
+                "accepted": [correct, correct[0]],
+                "evidence": evidence,
+                "sourceAudioSha256": digest,
+            }
+        )
+    return {
+        "id": question_id,
+        "kind": kind,
+        "prompt": prompt,
+        "reviewStatus": review_status,
+        "answerItems": answer_items,
+        "explicitOptions": ["true", "false"],
+        "correct": correct if review_status == "reviewed" else None,
+        "evidence": evidence,
+        "sourceAudioSha256": digest,
+        "originalQuestion": original_question,
+        "rationale": rationale,
+    }
+
+
+def _fallback_audio_items(
+    transcript: Mapping[str, Any], *, start_index: int, confidence_flags: Sequence[str], reason: str
+) -> list[dict[str, Any]]:
+    clauses = _sentence_clauses(transcript)[:4]
+    status = "blocked-manual-transcript-review" if confidence_flags else "reviewed"
+    result: list[dict[str, Any]] = []
+    for offset, clause in enumerate(clauses):
+        prompt = f"According to the audio, is this statement true or false? {clause}"
+        result.append(
+            _answer_item(
+                question_id=f"audio-tf-{start_index + offset}",
+                kind="true-false",
+                prompt=prompt,
+                correct="true" if status == "reviewed" else None,
+                evidence=clause,
+                transcript=transcript,
+                review_status=status,
+                original_question=None,
+                rationale=reason,
+            )
+        )
+    return result
+
+
+def _audio1_preservation(listening_review: Mapping[str, Any]) -> list[dict[str, Any]]:
+    preserved: list[dict[str, Any]] = []
+    for item in listening_review.get("items", []) if isinstance(listening_review.get("items"), list) else []:
+        if not isinstance(item, Mapping) or item.get("audioIndex") != 1 or item.get("role") != "intro":
+            continue
+        transcript = item.get("transcript") if isinstance(item.get("transcript"), Mapping) else {}
+        preserved.append(
+            {
+                "lessonId": item.get("lessonId"),
+                "unit": item.get("unit"),
+                "slideNumber": item.get("slideNumber"),
+                "itemId": item.get("itemId"),
+                "prompt": item.get("prompt", ""),
+                "audioIndex": 1,
+                "sourceAudioSha256": transcript.get("sourceSha256"),
+                "reviewStatus": "open-response-preserved",
+                "answerItems": [],
+                "rationale": "Original Audio 1 introduction/discussion remains teacher-led open response.",
+            }
+        )
+    return preserved
+
+
+def build_reviewed_exercises(
+    exercise_review: Mapping[str, Any],
+    transcripts: Mapping[str, Any],
+    listening_review: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Create source-linked builder records for comprehension audio exercises."""
+
+    listening_review = listening_review or build_review(exercise_review, transcripts)
+    transcript_by_key = _transcripts_by_key(transcripts)
+    source_candidates = _source_comprehension_candidates(exercise_review, listening_review)
+    exercises: list[dict[str, Any]] = []
+
+    for lesson_id, lesson in _lesson_contexts(exercise_review):
+        unit = _unit(lesson.get("unit"))
+        if not 2 <= unit <= 52:
+            continue
+        source_indices = sorted(index for (candidate_lesson_id, index) in source_candidates if candidate_lesson_id == lesson_id)
+        available_indices = sorted(index for (candidate_unit, index) in transcript_by_key if candidate_unit == unit and index >= 2)
+        # Audio 2 is the default comprehension clip for every unit. Keep it
+        # in the audit even when an explicit Audio 3 pronunciation task also
+        # exists, then append that Audio 3 task for its separate manual review.
+        wanted_indices = [2] if 2 in available_indices else []
+        if 3 in source_indices and 3 in available_indices:
+            wanted_indices.append(3)
+
+        for audio_index in wanted_indices:
+            transcript = transcript_by_key.get((unit, audio_index))
+            if transcript is None:
+                continue
+            candidate_rows = source_candidates.get((lesson_id, audio_index), [])
+            candidate = candidate_rows[0] if candidate_rows else {
+                "lessonId": lesson_id,
+                "unit": unit,
+                "lessonTitle": str(lesson.get("lessonTitle", "")),
+                "slideNumber": None,
+                "sourceExactTexts": [],
+                "sourceItemIds": [],
+                "sourcePrompts": [],
+                "sourceAudioIconCount": 0,
+                "audioIndex": audio_index,
+            }
+            confidence_flags = _confidence_flags(transcript)
+            audio3_manual = audio_index == 3 and _is_audio3_context(" ".join(candidate["sourceExactTexts"]))
+            source_claims: list[str] = []
+            if candidate["sourcePrompts"]:
+                for prompt in candidate["sourcePrompts"]:
+                    if TF_MARKER_RE.search(prompt):
+                        source_claims.extend(_extract_tf_claims(candidate["sourceExactTexts"]))
+            source_claims = list(dict.fromkeys(source_claims))
+            items: list[dict[str, Any]] = []
+            omitted: list[dict[str, Any]] = []
+            if source_claims and not audio3_manual:
+                for claim_index, claim in enumerate(source_claims, start=1):
+                    result = resolve_tf_claim(claim, transcript)
+                    if result["resolution"] == "unsupported-by-transcript":
+                        omitted.append(
+                            {
+                                "question": claim,
+                                "sourceAudioSha256": transcript.get("sourceSha256"),
+                                "reason": "The transcript does not directly support or contradict the source claim; omitted rather than auto-marked false.",
+                            }
+                        )
+                        continue
+                    item_status = "blocked-manual-transcript-review" if confidence_flags else "reviewed"
+                    items.append(
+                        _answer_item(
+                            question_id=f"source-tf-{claim_index}",
+                            kind="true-false",
+                            prompt=claim,
+                            correct=result["correct"] if not confidence_flags else None,
+                            evidence=result.get("evidence"),
+                            transcript=transcript,
+                            review_status=item_status,
+                            original_question=claim,
+                            rationale="Source T/F claim retained because the transcript directly supports or contradicts it.",
+                        )
+                    )
+            if audio3_manual:
+                blocked_reason = "Published exercise asks for pronunciation-ending classification; the word-list transcript has no source-labeled ending key, so no answer is inferred."
+                items = [
+                    _answer_item(
+                        question_id=f"audio3-manual-{index}",
+                        kind="prompt",
+                        prompt=str(prompt),
+                        correct=None,
+                        evidence=None,
+                        transcript=transcript,
+                        review_status="blocked-manual-source-key",
+                        original_question=prompt,
+                        rationale=blocked_reason,
+                    )
+                    for index, prompt in enumerate(candidate["sourcePrompts"] or ["Review the audio exercise manually."], start=1)
+                ]
+            elif len(items) < 4:
+                items.extend(
+                    _fallback_audio_items(
+                        transcript,
+                        start_index=len(items) + 1,
+                        confidence_flags=confidence_flags,
+                        reason=(
+                            "Unsupported source questions were archived and replaced with transcript-verbatim facts."
+                            if omitted
+                            else "No answerable published listening questions were extracted; facts quote transcript clauses verbatim."
+                        ),
+                    )[: max(0, 4 - len(items))]
+                )
+            # A low-confidence source claim must never leave a reviewed key.
+            if confidence_flags and not audio3_manual:
+                for item in items:
+                    if item["reviewStatus"] == "reviewed":
+                        item["reviewStatus"] = "blocked-manual-transcript-review"
+                        item["answerItems"] = []
+                        item["correct"] = None
+            set_status = "reviewed" if items and all(item["reviewStatus"] == "reviewed" for item in items) else "blocked-manual"
+            if not items:
+                set_status = "blocked-awaiting-manual-review"
+            exercises.append(
+                {
+                    "key": {
+                        "lessonId": lesson_id,
+                        "slideNumber": candidate["slideNumber"],
+                        "unit": unit,
+                        "audioIndex": audio_index,
+                    },
+                    "lessonId": lesson_id,
+                    "unit": unit,
+                    "lessonTitle": candidate["lessonTitle"],
+                    "slideNumber": candidate["slideNumber"],
+                    "audioIndex": audio_index,
+                    "sourceAudioSha256": transcript.get("sourceSha256"),
+                    "sourceFilename": transcript.get("sourceFilename"),
+                    "sourcePath": transcript.get("sourcePath"),
+                    "sourceExactTexts": candidate["sourceExactTexts"],
+                    "sourceItemIds": candidate["sourceItemIds"],
+                    "sourcePrompts": candidate["sourcePrompts"],
+                    "transcriptConfidence": {
+                        "languageProbability": transcript.get("languageProbability"),
+                        "avgLogprob": transcript.get("avgLogprob"),
+                        "uncertaintyFlags": confidence_flags,
+                    },
+                    "reviewStatus": set_status,
+                    "manualReviewRequired": bool(confidence_flags or audio3_manual or omitted),
+                    "originalQuestionsOmitted": omitted,
+                    "revisionRationale": (
+                        "Original unsupported questions are archived above; replacement facts quote explicit transcript clauses while retaining the lesson topic."
+                        if omitted
+                        else "Published source prompt retained; answerable facts use transcript evidence only."
+                    ),
+                    "items": items,
+                }
+            )
+
+    exercises.sort(key=lambda item: (item["unit"], item["audioIndex"], item["slideNumber"] or 0))
+    counts = {
+        "exerciseSets": len(exercises),
+        "reviewedSets": sum(item["reviewStatus"] == "reviewed" for item in exercises),
+        "blockedSets": sum(item["reviewStatus"] != "reviewed" for item in exercises),
+        "reviewedItems": sum(answer["reviewStatus"] == "reviewed" for item in exercises for answer in item["items"]),
+        "blockedItems": sum(answer["reviewStatus"] != "reviewed" for item in exercises for answer in item["items"]),
+        "originalQuestionsOmitted": sum(len(item["originalQuestionsOmitted"]) for item in exercises),
+        "audio3ManualSets": sum(item["audioIndex"] == 3 for item in exercises),
+    }
+    return {
+        "schemaVersion": 1,
+        "courseId": str(exercise_review.get("courseId", COURSE_ID)),
+        "sourcePolicy": {
+            "sourceArchive": "course-exercise-review.json is read-only; source prompts/text are copied exactly into audit metadata",
+            "audioEvidence": "Every answerItem carries sourceAudioSha256 and verbatim transcript evidence",
+            "unsupportedClaims": "Unsupported source claims are omitted/archived or replaced with transcript-verbatim facts; they are never auto-false",
+            "uncertainTranscripts": "Low-confidence ASR and pronunciation word lists remain blocked for manual review",
+            "audio1": "Audio 1 introduction/discussion prompts remain teacher-led open response",
+        },
+        "counts": counts,
+        "preservedAudio1": _audio1_preservation(listening_review),
+        "exercises": exercises,
+    }
+
+
 def write_json_atomic(path: Path, payload: Mapping[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False, suffix=".tmp") as handle:
@@ -677,12 +1064,25 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--exercise-review", type=Path, default=DEFAULT_EXERCISE_REVIEW)
     parser.add_argument("--transcripts", type=Path, default=DEFAULT_TRANSCRIPTS)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--reviewed-exercises-output", type=Path, default=DEFAULT_REVIEWED_EXERCISES_OUTPUT)
     args = parser.parse_args(argv)
     exercise_review = _read_json(args.exercise_review, "exercise review")
     transcripts = _read_json(args.transcripts, "transcript aggregate")
     output = build_review(exercise_review, transcripts)
+    reviewed_exercises = build_reviewed_exercises(exercise_review, transcripts, output)
     write_json_atomic(args.output, output)
-    print(json.dumps({"output": args.output.as_posix(), **output["counts"]}, ensure_ascii=False))
+    write_json_atomic(args.reviewed_exercises_output, reviewed_exercises)
+    print(
+        json.dumps(
+            {
+                "output": args.output.as_posix(),
+                "reviewedExercisesOutput": args.reviewed_exercises_output.as_posix(),
+                **output["counts"],
+                "reviewedExerciseCounts": reviewed_exercises["counts"],
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 
