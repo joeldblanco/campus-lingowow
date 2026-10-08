@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "scope": "Published-visible text projection for Unit 56 slide 8",
+  "sourcePriority": "published-source-priority; no native presentation identity was available",
+  "reviewPolicy": {
+    "sourceQuotesRequired": true,
+    "nativeShapeProvenanceRequiredWhenNativeExists": true,
+    "noInventedCells": true,
+    "preserveNotesAsLearnerVisibleText": true,
+    "renderedSlideImageNotNativeAsset": true
+  },
+  "entries": [
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "sourceSlide": 8,
+      "publishedSourceFile": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+      "status": "published-text-projection-approved",
+      "clearTableSemanticsBlocker": false,
+      "review": "Visible published slide shows a two-column STRUCTURES/EXAMPLES table and a separate To Consider note block. Native PPTX is unavailable, so this preserves the visible grouping as a source projection and does not claim native shape identity.",
+      "sourceEvidence": {
+        "publishedTitle": "We consider right phrases, to introduce simple or complex topics, NOMINAL phrases. These can be presented differently, Check the chart.",
+        "publishedVisibleTexts": [
+          "We consider right phrases, to introduce simple or complex topics, NOMINAL phrases. These can be presented differently, Check the chart.",
+          "STRUCTURES EXAMPLES Gerunds as nouns + complements Infinitive clauses + complements Relative pronouns Learning quantum physics requires great discipline. To design this crafts will change the way we see space. . What I don’t get is all those references. To Consider 1. Having gerunds, infinitive clauses and relative pronouns as subjects is what we called in English nominalization. 2. This nominalization process makes a structure work as the subject of a sentence. 3. Each of the nominalized clause, have specific complements that go before the verb of the sentences 4. Gerunds and Infinitive clauses normally have NOUNS as complements. 5. Relative pronouns work on their own to be the subject of the sentence. 6. This can be used at any tense."
+        ],
+        "publishedSlideProof": {
+          "unit": 56,
+          "slideNumber": 8,
+          "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+          "screenshotBytes": 110946,
+          "screenshotSha256": "5c8f95080bd544d777795cdf10f8bec80462cb0df15fa8dcda892ddc0fa68919"
+        },
+        "nativePresentationAvailable": false,
+        "nativeSourceFinding": "No authoritative native presentation candidate in the source folder or published identity HTML."
+      },
+      "approvedProjection": {
+        "approved": true,
+        "source": "published-visible-text",
+        "nativeIdentityConfirmed": false,
+        "publishedLayout": "two-column table with a full-width To Consider note block below",
+        "tables": [
+          {
+            "shapeName": "published-visible-text-projection",
+            "shapeId": null,
+            "bbox": null,
+            "rows": [
+              [
+                "STRUCTURES",
+                "EXAMPLES"
+              ],
+              [
+                "Gerunds as nouns + complements",
+                "Learning quantum physics requires great discipline."
+              ],
+              [
+                "Infinitive clauses + complements",
+                "To design this crafts will change the way we see space. ."
+              ],
+              [
+                "Relative pronouns",
+                "What I’t get is all those references."
+              ]
+            ],
+            "literalSourceNote": "The source extraction contains the visible separator `. .` after `space`; it is preserved in the second example rather than silently corrected."
+          }
+        ],
+        "notes": [
+          {
+            "heading": "To Consider",
+            "text": "1. Having gerunds, infinitive clauses and relative pronouns as subjects is what we called in English nominalization. 2. This nominalization process makes a structure work as the subject of a sentence. 3. Each of the nominalized clause, have specific complements that go before the verb of the sentences 4. Gerunds and Infinitive clauses normally have NOUNS as complements. 5. Relative pronouns work on their own to be the subject of the sentence. 6. This can be used at any tense."
+          }
+        ]
+      },
+      "sourceRefs": [
+        {
+          "kind": "published-visible-source-json",
+          "path": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+          "sha256": "aedae0aeef4f2ce5b9e37c5d59594a0633c964bf9ee971cfd269333402e4d429",
+          "slideNumber": 8
+        },
+        {
+          "kind": "published-html-fetch",
+          "path": "docs/audit/published-source-identity-53-56.json",
+          "sha256": "24e4209af43b4be21c3f88bb9ebdc46155b5cfbf45014297789b0567fd3998b6",
+          "publishedHtmlSha256": "d56b9fbcae87728ef9ba102fba05246e9711f632cd8d4b3f546d9d8f58873c47"
+        }
+      ]
+    }
+  ]
+}

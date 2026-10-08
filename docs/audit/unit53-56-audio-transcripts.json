@@ -466,6 +466,128 @@
       "doNotAutoAuthorKeys": true
     },
     {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "sourceLabel": "Auido 2 - Unit 55.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
+      "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+      "sourceBytes": 756259,
+      "durationSeconds": 47.182948,
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9799962043762207,
+      "text": "Dave, did everyone send their documents? Not everyone, but all of them are here. How is that possible? Well, someone gave some other people a free ride. Marcus again? Oh my. If he weren't given people free rides, people would have been more responsible this time. I said the same thing. Nevertheless, he stated that the main issue was to have all documents on time and sent. So what else can we do? Nothing. I mean, he's a great guy always tensing his arm. What really annoys me is people taking advantage of him. Don't even mention it. I'm sure that if they weren't having a good cover for the end of the month, the boss would have sent some of them home already. I know. One can only hope.",
+      "segments": [
+        {
+          "start": 1.68,
+          "end": 4.68,
+          "text": "Dave, did everyone send their documents?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 4.68,
+          "end": 6.68,
+          "text": "Not everyone, but all of them are here.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 6.68,
+          "end": 8.68,
+          "text": "How is that possible?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 8.68,
+          "end": 11.68,
+          "text": "Well, someone gave some other people a free ride.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 11.68,
+          "end": 12.68,
+          "text": "Marcus again?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 12.68,
+          "end": 13.68,
+          "text": "Oh my.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 13.68,
+          "end": 18.68,
+          "text": "If he weren't given people free rides, people would have been more responsible this time.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 18.68,
+          "end": 20.68,
+          "text": "I said the same thing.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 20.68,
+          "end": 25.68,
+          "text": "Nevertheless, he stated that the main issue was to have all documents on time and sent.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 25.68,
+          "end": 27.68,
+          "text": "So what else can we do?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 27.68,
+          "end": 31.68,
+          "text": "Nothing. I mean, he's a great guy always tensing his arm.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 31.68,
+          "end": 35.68,
+          "text": "What really annoys me is people taking advantage of him.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 35.68,
+          "end": 36.68,
+          "text": "Don't even mention it.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 36.68,
+          "end": 40.68,
+          "text": "I'm sure that if they weren't having a good cover for the end of the month,",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 40.68,
+          "end": 43.68,
+          "text": "the boss would have sent some of them home already.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 43.68,
+          "end": 44.68,
+          "text": "I know.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 44.68,
+          "end": 46.68,
+          "text": "One can only hope.",
+          "avgLogprob": -0.07558594781091843
+        }
+      ],
+      "reviewStatus": "transcribed-source-awaiting-semantic-review",
+      "doNotAutoAuthorKeys": true
+    },
+    {
       "unit": 56,
       "lessonId": "cmnmm9wv00032w1qkxr02azgp",
       "slideNumber": 4,
@@ -632,25 +754,12 @@
       "doNotAutoAuthorKeys": true
     }
   ],
-  "blocked": [
-    {
-      "unit": 55,
-      "audioNumber": 2,
-      "slideNumber": 13,
-      "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ",
-      "label": "Auido 2 - Unit 55.mp3",
-      "viewerUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ/view",
-      "status": "blocked-not-found",
-      "observedTitle": "Page Not Found",
-      "observedText": "Sorry, the file you have requested does not exist.",
-      "actionTaken": "One exact observed ID checked in the visible Drive viewer; no URL variants or guessed IDs tried.",
-      "doNotSubstitute": true
-    }
-  ],
+  "blocked": [],
   "counts": {
-    "available": 7,
-    "transcribed": 7,
-    "blocked": 1
+    "available": 8,
+    "transcribed": 8,
+    "blocked": 0,
+    "expected": 8
   },
   "policy": "Transcripts are source evidence only. They do not authorize synthetic audio or automatic exercise answer keys."
 }

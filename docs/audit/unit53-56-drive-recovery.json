@@ -9,7 +9,15 @@
     "downloadMethod": "Visible Google Drive viewer UI only",
     "networkHiddenFetchUsed": false,
     "driveMutation": false,
-    "accountSwitchOrLogin": false
+    "accountSwitchOrLogin": false,
+    "correctedUnit55Audio2": {
+      "exactUserSuppliedUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh/view?usp=sharing",
+      "sourceIdObservedInVisibleViewer": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "downloadVerified": true,
+      "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+      "sourceBytes": 756259,
+      "durationSeconds": 47.182948
+    }
   },
   "recovered": [
     {
@@ -203,6 +211,44 @@
       "readyForParentStage": true
     },
     {
+      "unit": 55,
+      "audioNumber": 2,
+      "slideNumber": 13,
+      "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "label": "Auido 2 - Unit 55.mp3",
+      "sourceFile": "unit55-audio2.mp3",
+      "bytes": 756259,
+      "sha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+      "durationSeconds": 47.182948,
+      "pageObjectId": "g729cfa641f_0_32",
+      "elementObjectId": "g1c92c3ceb08_0_1",
+      "status": "recovered",
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "contentId": "cmnmm9wly0030w1qk4vrdc4a7",
+      "moduleId": "cmnmm9lx3000fw1qkh6ijo1px",
+      "moduleTitle": "M�dulo 14",
+      "deckTitle": "NEW That's anyone's call - Unit 55.pptx",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+      "publishedSourceSlide": 13,
+      "publishedZeroBasedSlide": 12,
+      "publishedMediaObjectId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "idKind": "published-media-object",
+      "identityEvidence": "User supplied corrected exact Drive URL with trailing h; visible Drive viewer title matched label and published media object ID.",
+      "viewerUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh/view?usp=sharing",
+      "downloadMethod": "Chrome UI: visible Google Drive Download button",
+      "accountDisplay": "Lingowow",
+      "mimeType": "audio/mpeg",
+      "materializedPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\audio-unit53-56\\unit55-audio2.mp3",
+      "materializedPathRelative": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
+      "sourceBytesVerified": true,
+      "sha256Verified": true,
+      "durationVerifiedWith": "ffprobe local file",
+      "doNotSynthesize": true,
+      "publicPath": "public/audio/lessons/course/unit-55-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-55-audio-02.mp3",
+      "readyForParentStage": true
+    },
+    {
       "unit": 56,
       "audioNumber": 1,
       "slideNumber": 4,
@@ -279,26 +325,12 @@
       "readyForParentStage": true
     }
   ],
-  "blockers": [
-    {
-      "unit": 55,
-      "audioNumber": 2,
-      "slideNumber": 13,
-      "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ",
-      "label": "Auido 2 - Unit 55.mp3",
-      "viewerUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ/view",
-      "status": "blocked-not-found",
-      "observedTitle": "Page Not Found",
-      "observedText": "Sorry, the file you have requested does not exist.",
-      "actionTaken": "One exact observed ID checked in the visible Drive viewer; no URL variants or guessed IDs tried.",
-      "doNotSubstitute": true
-    }
-  ],
+  "blockers": [],
   "counts": {
     "expectedAudioRefs": 8,
-    "recovered": 7,
-    "blocked": 1,
-    "missingSubstitution": 1
+    "recovered": 8,
+    "blocked": 0,
+    "missingSubstitution": 0
   },
   "rawMediaPolicy": "Raw original bytes are materialized locally for parent staging and intentionally excluded from this docs-only commit."
 }

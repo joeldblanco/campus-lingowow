@@ -1,0 +1,1503 @@
+{
+  "schemaVersion": 1,
+  "manifestContract": "course-reviewed-media-final-extension-v1",
+  "scope": "Original published media recovery and source proof for Units 53-56",
+  "generatedAtUtc": "2026-10-08T10:52:48.391720+00:00",
+  "sourcePriority": [
+    "published-source-identity",
+    "visible Drive original download",
+    "published-visible-text"
+  ],
+  "sourceManifests": {
+    "recovery": "docs/audit/unit53-56-drive-recovery.json",
+    "transcripts": "docs/audit/unit53-56-audio-transcripts.json",
+    "listeningReview": "docs/audit/unit53-56-listening-recovery-review.json",
+    "publishedIdentity": "docs/audit/published-source-identity-53-56.json",
+    "publishedDeckSlides": "docs/audit/source-files/*.json"
+  },
+  "tableReviewRef": "docs/audit/unit53-56-table-review.json",
+  "counts": {
+    "units": 4,
+    "audioRecords": 8,
+    "audioRecordsRecovered": 8,
+    "audioRefsBlocked": 0,
+    "confirmedInstructionalImages": 0,
+    "imageReferencesBlockedNativeSource": 4,
+    "publishedProofs": 5
+  },
+  "validation": {
+    "sourceFilesPresentAndSha256Matched": true,
+    "publishedAudioObjectIdsMatched": true,
+    "originalDriveDownloadMethod": "visible Google Drive viewer UI",
+    "renderedSlidesUsedAsNativeAssets": false,
+    "syntheticAudioOrImageUsed": false,
+    "semanticListeningKeysAuthored": false,
+    "unit55Audio2CorrectedExactId": true
+  },
+  "blockers": [
+    {
+      "kind": "native-presentation",
+      "units": [
+        53,
+        54,
+        55,
+        56
+      ],
+      "status": "blocked",
+      "reason": "No authoritative native PPTX candidate was found; original instructional figures cannot be optimized or emitted without native source bytes.",
+      "doNotSubstitute": true
+    },
+    {
+      "kind": "semantic-listening-review",
+      "units": [
+        53,
+        54,
+        55,
+        56
+      ],
+      "status": "pending",
+      "reason": "All eight original audio clips now have source-verified transcripts; no deterministic listening answer keys were authored in this recovery pass.",
+      "doNotAutoAuthorKeys": true
+    }
+  ],
+  "audio": [
+    {
+      "id": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "audioIndex": 1,
+      "audioNumber": 1,
+      "sourceFilename": "Audio 1 - Unit 53.mp3",
+      "materializedFilename": "unit53-audio1.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit53-audio1.mp3",
+      "sourceSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
+      "sourceBytes": 907142,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.995961606502533,
+      "avgLogprob": -0.18134447253654462,
+      "text": "So what happened? Camille was in an accident on her way back home. I know, but what have the doctors said? I came as fast as I could. This is a matter of life and death, Tyler. The doctors came out an hour ago and asked for our consent. Consent for what, Dylan? They needed to shove the leg in order to save her. You're kidding, right? I'm not. If they hadn't done that, she would be dead now. Oh my god, I told her not to attend that meeting. If she had not gone, she would be fine at home. What meeting did she attend? The one for signing the petitions? I thought that it was dead in the water. It is, but you know how she is when she feels she's fighting for right cause? I should have been there, Dylan, to stop her from going. Oh no, Tyler. Stop it. We cannot be sure if that would have made any difference. We know her. Stop blaming yourself. The doctor is coming. Let's see what news he brings.",
+      "segments": [
+        {
+          "start": 0.91,
+          "end": 2.91,
+          "text": "So what happened?",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 2.95,
+          "end": 5.55,
+          "text": "Camille was in an accident on her way back home.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 5.55,
+          "end": 8.55,
+          "text": "I know, but what have the doctors said? I came as fast as I could.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 9.19,
+          "end": 16.31,
+          "text": "This is a matter of life and death, Tyler. The doctors came out an hour ago and asked for our consent.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 16.31,
+          "end": 18.31,
+          "text": "Consent for what, Dylan?",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 18.39,
+          "end": 21.31,
+          "text": "They needed to shove the leg in order to save her.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 21.31,
+          "end": 22.51,
+          "text": "You're kidding, right?",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 22.51,
+          "end": 26.31,
+          "text": "I'm not. If they hadn't done that, she would be dead now.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 26.31,
+          "end": 28.71,
+          "text": "Oh my god, I told her not to attend that meeting.",
+          "avgLogprob": -0.25796533079075634
+        },
+        {
+          "start": 28.71,
+          "end": 31.71,
+          "text": "If she had not gone, she would be fine at home.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 31.71,
+          "end": 35.71,
+          "text": "What meeting did she attend? The one for signing the petitions?",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 35.71,
+          "end": 37.71,
+          "text": "I thought that it was dead in the water.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 37.71,
+          "end": 41.71,
+          "text": "It is, but you know how she is when she feels she's fighting for right cause?",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 41.71,
+          "end": 45.71,
+          "text": "I should have been there, Dylan, to stop her from going.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 45.71,
+          "end": 47.71,
+          "text": "Oh no, Tyler. Stop it.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 47.71,
+          "end": 50.71,
+          "text": "We cannot be sure if that would have made any difference.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 50.71,
+          "end": 53.71,
+          "text": "We know her. Stop blaming yourself. The doctor is coming.",
+          "avgLogprob": -0.10472361428233293
+        },
+        {
+          "start": 53.71,
+          "end": 55.71,
+          "text": "Let's see what news he brings.",
+          "avgLogprob": -0.10472361428233293
+        }
+      ],
+      "title": "Audio 1 - Unit 53.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "So what happened? Camille was in an accident on her way back home. I know, but what have the doctors said? I came as fast as I could. This is a matter of life and death, Tyler. The doctors came out an hour ago and asked for our consent. Consent for what, Dylan? They needed to shove the leg in order to save her. You're kidding, right? I'm not. If they hadn't done that, she would be dead now. Oh my god, I told her not to attend that meeting. If she had not gone, she would be fine at home. What meeting did she attend? The one for signing the petitions? I thought that it was dead in the water. It is, but you know how she is when she feels she's fighting for right cause? I should have been there, Dylan, to stop her from going. Oh no, Tyler. Stop it. We cannot be sure if that would have made any difference. We know her. Stop blaming yourself. The doctor is coming. Let's see what news he brings.",
+      "publicPath": "public/audio/lessons/course/unit-53-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-53-audio-01.mp3",
+      "publicHref": "/audio/lessons/course/unit-53-audio-01.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L/view",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 4,
+      "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "nativeTrace": {
+        "driveFileId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+        "driveUrl": "https://drive.google.com/file/d/1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L/view",
+        "driveTitle": "Audio 1 - Unit 53.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit53-audio1.mp3",
+        "materializedSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW Never say die- Unit 53.pptx",
+        "publishedSlideNumber": 4,
+        "publishedZeroBasedSlideNumber": 3,
+        "publishedSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "publishedPageObjectId": "g72967b2bcc_0_37",
+        "publishedElementObjectId": "g1c92af930e1_0_0",
+        "publishedMediaObjectId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+        "idKind": "published-media-object",
+        "identityEvidence": "Published source identity manifest audioRef: visible label + observed published media object ID; Drive viewer title matched label.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 56.633469,
+        "publishedHtmlSha256": "826f8934ebaf87a4f4850154f2bb2c242c0aa162681fdb3dd06b0870e4af58cc"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 18
+      }
+    },
+    {
+      "id": "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "audioIndex": 2,
+      "audioNumber": 2,
+      "sourceFilename": "Audio 2 - Unit 53.mp3",
+      "materializedFilename": "unit53-audio2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit53-audio2.mp3",
+      "sourceSha256": "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37",
+      "sourceBytes": 868272,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9909124374389648,
+      "avgLogprob": -0.14030754797659914,
+      "text": "Oh my god, I just need this semester to finish. Come on, easy. It has not been that dreadful, Daniel. Not at all, Marcus. How about the history assignment? What if the Nazis had won the world? Well, I think it is a pretty interesting matter. Imagine the scenario. If they had won, we all would be slaves, probably. Or worse, we would be dead. If they had won, we would not even exist, so why bother wondering? I think history is not a matter of dead in water. We are supposed to analyze the facts so we are not doomed to repeat them. I guess there's a point there. If we had not been born in a free country or world, we would not even have a bucket list to pursue. Definitely. I guess even when it seems the world crumbles down in some places, we are still pretty lucky to live the way we do. Indeed.",
+      "segments": [
+        {
+          "start": 0.75,
+          "end": 3.75,
+          "text": "Oh my god, I just need this semester to finish.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 3.75,
+          "end": 7.25,
+          "text": "Come on, easy. It has not been that dreadful, Daniel.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 7.25,
+          "end": 10.75,
+          "text": "Not at all, Marcus. How about the history assignment?",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 10.75,
+          "end": 13.25,
+          "text": "What if the Nazis had won the world?",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 13.25,
+          "end": 17.25,
+          "text": "Well, I think it is a pretty interesting matter. Imagine the scenario.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 17.25,
+          "end": 22.75,
+          "text": "If they had won, we all would be slaves, probably. Or worse, we would be dead.",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 22.75,
+          "end": 27.75,
+          "text": "If they had won, we would not even exist, so why bother wondering?",
+          "avgLogprob": -0.19491817737961636
+        },
+        {
+          "start": 27.75,
+          "end": 31.25,
+          "text": "I think history is not a matter of dead in water.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 31.25,
+          "end": 35.25,
+          "text": "We are supposed to analyze the facts so we are not doomed to repeat them.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 35.25,
+          "end": 40.75,
+          "text": "I guess there's a point there. If we had not been born in a free country or world,",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 40.75,
+          "end": 43.75,
+          "text": "we would not even have a bucket list to pursue.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 43.75,
+          "end": 50.25,
+          "text": "Definitely. I guess even when it seems the world crumbles down in some places,",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 50.25,
+          "end": 52.75,
+          "text": "we are still pretty lucky to live the way we do.",
+          "avgLogprob": -0.08569691857358194
+        },
+        {
+          "start": 52.75,
+          "end": 54.25,
+          "text": "Indeed.",
+          "avgLogprob": -0.08569691857358194
+        }
+      ],
+      "title": "Audio 2 - Unit 53.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "Oh my god, I just need this semester to finish. Come on, easy. It has not been that dreadful, Daniel. Not at all, Marcus. How about the history assignment? What if the Nazis had won the world? Well, I think it is a pretty interesting matter. Imagine the scenario. If they had won, we all would be slaves, probably. Or worse, we would be dead. If they had won, we would not even exist, so why bother wondering? I think history is not a matter of dead in water. We are supposed to analyze the facts so we are not doomed to repeat them. I guess there's a point there. If we had not been born in a free country or world, we would not even have a bucket list to pursue. Definitely. I guess even when it seems the world crumbles down in some places, we are still pretty lucky to live the way we do. Indeed.",
+      "publicPath": "public/audio/lessons/course/unit-53-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-53-audio-02.mp3",
+      "publicHref": "/audio/lessons/course/unit-53-audio-02.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ/view",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 12,
+      "sourceSlideTitle": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+      "nativeTrace": {
+        "driveFileId": "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ",
+        "driveUrl": "https://drive.google.com/file/d/1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ/view",
+        "driveTitle": "Audio 2 - Unit 53.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit53-audio2.mp3",
+        "materializedSha256": "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW Never say die- Unit 53.pptx",
+        "publishedSlideNumber": 12,
+        "publishedZeroBasedSlideNumber": 11,
+        "publishedSlideTitle": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+        "publishedPageObjectId": "g729cfa641f_0_19",
+        "publishedElementObjectId": "g1c92af930e1_0_1",
+        "publishedMediaObjectId": "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ",
+        "idKind": "published-media-object",
+        "identityEvidence": "Published source identity manifest audioRef: visible label + observed published media object ID; Drive viewer title matched label.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 54.195374,
+        "publishedHtmlSha256": "826f8934ebaf87a4f4850154f2bb2c242c0aa162681fdb3dd06b0870e4af58cc"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 14
+      }
+    },
+    {
+      "id": "14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "audioIndex": 1,
+      "audioNumber": 1,
+      "sourceFilename": "Audio 1 - Unit 54.mp3",
+      "materializedFilename": "unit54-audio1.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit54-audio1.mp3",
+      "sourceSha256": "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
+      "sourceBytes": 737033,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9957244396209717,
+      "avgLogprob": -0.2436734711660536,
+      "text": "So, what's new in the office, Dom? Not much, Dean. Well, Janice got gelled at by the boss. I mean, she made a mistake, but it was not okay. He gelled at her. No way. What happened? She forgot to reply to a message to a client confirming a launch meeting, but at the end it all worked out. So, okay, call her attention, but not yelling. If she got some nerve, she would have said something to him. I mean, not to defend herself, but to call for some respect. Maybe, if our boss weren't so feisty, she would have come up with something, but you know how he is. I know. She needs a shot in the arm just to finally make him understand that he must not yell at anyone to correct them. Indeed.",
+      "segments": [
+        {
+          "start": 0.88,
+          "end": 2.88,
+          "text": "So, what's new in the office, Dom?",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 3.44,
+          "end": 11.44,
+          "text": "Not much, Dean. Well, Janice got gelled at by the boss. I mean, she made a mistake, but it was not okay. He gelled at her.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 11.6,
+          "end": 13.6,
+          "text": "No way. What happened?",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 13.88,
+          "end": 20.08,
+          "text": "She forgot to reply to a message to a client confirming a launch meeting, but at the end it all worked out.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 20.26,
+          "end": 23.36,
+          "text": "So, okay, call her attention, but not yelling.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 23.36,
+          "end": 29.74,
+          "text": "If she got some nerve, she would have said something to him. I mean, not to defend herself, but to call for some respect.",
+          "avgLogprob": -0.2537860726951656
+        },
+        {
+          "start": 30.54,
+          "end": 37.06,
+          "text": "Maybe, if our boss weren't so feisty, she would have come up with something, but you know how he is.",
+          "avgLogprob": -0.22344826810782956
+        },
+        {
+          "start": 37.06,
+          "end": 43.5,
+          "text": "I know. She needs a shot in the arm just to finally make him understand that he must not yell at anyone to correct them.",
+          "avgLogprob": -0.22344826810782956
+        },
+        {
+          "start": 44.26,
+          "end": 46.26,
+          "text": "Indeed.",
+          "avgLogprob": -0.22344826810782956
+        }
+      ],
+      "title": "Audio 1 - Unit 54.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "So, what's new in the office, Dom? Not much, Dean. Well, Janice got gelled at by the boss. I mean, she made a mistake, but it was not okay. He gelled at her. No way. What happened? She forgot to reply to a message to a client confirming a launch meeting, but at the end it all worked out. So, okay, call her attention, but not yelling. If she got some nerve, she would have said something to him. I mean, not to defend herself, but to call for some respect. Maybe, if our boss weren't so feisty, she would have come up with something, but you know how he is. I know. She needs a shot in the arm just to finally make him understand that he must not yell at anyone to correct them. Indeed.",
+      "publicPath": "public/audio/lessons/course/unit-54-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-54-audio-01.mp3",
+      "publicHref": "/audio/lessons/course/unit-54-audio-01.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq/view",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 4,
+      "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "nativeTrace": {
+        "driveFileId": "14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq",
+        "driveUrl": "https://drive.google.com/file/d/14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq/view",
+        "driveTitle": "Audio 1 - Unit 54.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit54-audio1.mp3",
+        "materializedSha256": "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+        "publishedSlideNumber": 4,
+        "publishedZeroBasedSlideNumber": 3,
+        "publishedSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "publishedPageObjectId": "g72967b2bcc_0_37",
+        "publishedElementObjectId": "g1c91040b478_0_0",
+        "publishedMediaObjectId": "14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq",
+        "idKind": "published-media-object",
+        "identityEvidence": "Published source identity manifest audioRef: visible label + observed published media object ID; Drive viewer title matched label.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 45.99873,
+        "publishedHtmlSha256": "edffeae0e6d9731e601529ef67edd73511b45f6844d17046bf052b2f68e919f3"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 9
+      }
+    },
+    {
+      "id": "1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "audioIndex": 2,
+      "audioNumber": 2,
+      "sourceFilename": "Audio 2 - Unit 54.mp3",
+      "materializedFilename": "unit54-audio2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit54-audio2.mp3",
+      "sourceSha256": "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6",
+      "sourceBytes": 614571,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.991599440574646,
+      "avgLogprob": -0.21516365286825742,
+      "text": "Do you call mom Taylor if I had the time I would have done it I'm super busy getting ready for dad's party Joan Well, but she knows already we're coming and making this surprise party, right? Sure, if she didn't she would have not let us call all of our relatives Well, at least our uncles and aunts great Dana call and she says she had already organized a cocktail before dinner Amazing so one thing less to worry about. Yep. Do you get the suits from the cleaners? If I got them they would have been here already. I'm going there in a few great. See you at mom's tix",
+      "segments": [
+        {
+          "start": 0.91,
+          "end": 5.23,
+          "text": "Do you call mom Taylor if I had the time I would have done it",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 5.23,
+          "end": 8.35,
+          "text": "I'm super busy getting ready for dad's party Joan",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 8.63,
+          "end": 12.25,
+          "text": "Well, but she knows already we're coming and making this surprise party, right?",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 12.67,
+          "end": 16.83,
+          "text": "Sure, if she didn't she would have not let us call all of our relatives",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 16.83,
+          "end": 23.33,
+          "text": "Well, at least our uncles and aunts great Dana call and she says she had already organized a cocktail before dinner",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 24.23,
+          "end": 29.07,
+          "text": "Amazing so one thing less to worry about. Yep. Do you get the suits from the cleaners?",
+          "avgLogprob": -0.21864179420774266
+        },
+        {
+          "start": 29.07,
+          "end": 36.99,
+          "text": "If I got them they would have been here already. I'm going there in a few great. See you at mom's tix",
+          "avgLogprob": -0.19429480483134587
+        }
+      ],
+      "title": "Audio 2 - Unit 54.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "Do you call mom Taylor if I had the time I would have done it I'm super busy getting ready for dad's party Joan Well, but she knows already we're coming and making this surprise party, right? Sure, if she didn't she would have not let us call all of our relatives Well, at least our uncles and aunts great Dana call and she says she had already organized a cocktail before dinner Amazing so one thing less to worry about. Yep. Do you get the suits from the cleaners? If I got them they would have been here already. I'm going there in a few great. See you at mom's tix",
+      "publicPath": "public/audio/lessons/course/unit-54-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-54-audio-02.mp3",
+      "publicHref": "/audio/lessons/course/unit-54-audio-02.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ/view",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 13,
+      "sourceSlideTitle": "B. Listen to the audio and answer the questions your teacher makes.",
+      "nativeTrace": {
+        "driveFileId": "1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ",
+        "driveUrl": "https://drive.google.com/file/d/1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ/view",
+        "driveTitle": "Audio 2 - Unit 54.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit54-audio2.mp3",
+        "materializedSha256": "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+        "publishedSlideNumber": 13,
+        "publishedZeroBasedSlideNumber": 12,
+        "publishedSlideTitle": "B. Listen to the audio and answer the questions your teacher makes.",
+        "publishedPageObjectId": "g729cfa641f_0_32",
+        "publishedElementObjectId": "g1c91040b478_0_1",
+        "publishedMediaObjectId": "1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ",
+        "idKind": "published-media-object",
+        "identityEvidence": "Published source identity manifest audioRef: visible label + observed published media object ID; Drive viewer title matched label.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 38.336145,
+        "publishedHtmlSha256": "edffeae0e6d9731e601529ef67edd73511b45f6844d17046bf052b2f68e919f3"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 7
+      }
+    },
+    {
+      "id": "16vlShb_LW0tpQjPyM13l2TomvtxP1l_W",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "audioIndex": 1,
+      "audioNumber": 1,
+      "sourceFilename": "Audio 1 - Unit 55.mp3",
+      "materializedFilename": "unit55-audio1.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit55-audio1.mp3",
+      "sourceSha256": "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
+      "sourceBytes": 665980,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9811726212501526,
+      "avgLogprob": -0.15863542842174785,
+      "text": "Hey, John, how is it going? Just great. How about you, Tom? Good. Tell me, you're attending Santa's party this Saturday, right? Oh, Tom, I'm afraid I won't make it. No way. I told her that if she were having a party this Saturday, we all would have gone there. I know. If I weren't having my mom's birthday, I would have definitely stopped by. But it's impossible to be at two places at once. Or are they also having two birthdays the same day? You tell me, John. Some may see this as a fat chance, but it isn't. Indeed. Well, I let Tini know you sent your regards. Please do.",
+      "segments": [
+        {
+          "start": 0.69,
+          "end": 2.69,
+          "text": "Hey, John, how is it going?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 2.69,
+          "end": 4.69,
+          "text": "Just great. How about you, Tom?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 4.69,
+          "end": 8.69,
+          "text": "Good. Tell me, you're attending Santa's party this Saturday, right?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 8.69,
+          "end": 10.69,
+          "text": "Oh, Tom, I'm afraid I won't make it.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 10.69,
+          "end": 16.69,
+          "text": "No way. I told her that if she were having a party this Saturday, we all would have gone there.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 16.69,
+          "end": 21.69,
+          "text": "I know. If I weren't having my mom's birthday, I would have definitely stopped by.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 21.69,
+          "end": 25.69,
+          "text": "But it's impossible to be at two places at once.",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 25.69,
+          "end": 28.69,
+          "text": "Or are they also having two birthdays the same day?",
+          "avgLogprob": -0.16428989080982354
+        },
+        {
+          "start": 28.69,
+          "end": 33.69,
+          "text": "You tell me, John. Some may see this as a fat chance, but it isn't.",
+          "avgLogprob": -0.14355686205354604
+        },
+        {
+          "start": 33.69,
+          "end": 37.69,
+          "text": "Indeed. Well, I let Tini know you sent your regards.",
+          "avgLogprob": -0.14355686205354604
+        },
+        {
+          "start": 37.69,
+          "end": 39.69,
+          "text": "Please do.",
+          "avgLogprob": -0.14355686205354604
+        }
+      ],
+      "title": "Audio 1 - Unit 55.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "Hey, John, how is it going? Just great. How about you, Tom? Good. Tell me, you're attending Santa's party this Saturday, right? Oh, Tom, I'm afraid I won't make it. No way. I told her that if she were having a party this Saturday, we all would have gone there. I know. If I weren't having my mom's birthday, I would have definitely stopped by. But it's impossible to be at two places at once. Or are they also having two birthdays the same day? You tell me, John. Some may see this as a fat chance, but it isn't. Indeed. Well, I let Tini know you sent your regards. Please do.",
+      "publicPath": "public/audio/lessons/course/unit-55-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-55-audio-01.mp3",
+      "publicHref": "/audio/lessons/course/unit-55-audio-01.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/16vlShb_LW0tpQjPyM13l2TomvtxP1l_W/view",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 4,
+      "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "nativeTrace": {
+        "driveFileId": "16vlShb_LW0tpQjPyM13l2TomvtxP1l_W",
+        "driveUrl": "https://drive.google.com/file/d/16vlShb_LW0tpQjPyM13l2TomvtxP1l_W/view",
+        "driveTitle": "Audio 1 - Unit 55.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit55-audio1.mp3",
+        "materializedSha256": "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW That's anyone's call - Unit 55.pptx",
+        "publishedSlideNumber": 4,
+        "publishedZeroBasedSlideNumber": 3,
+        "publishedSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "publishedPageObjectId": "g72967b2bcc_0_37",
+        "publishedElementObjectId": "g1c92c3ceb08_0_0",
+        "publishedMediaObjectId": "16vlShb_LW0tpQjPyM13l2TomvtxP1l_W",
+        "idKind": "published-media-object",
+        "identityEvidence": "Published source identity manifest audioRef: visible label + observed published media object ID; Drive viewer title matched label.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 41.540499,
+        "publishedHtmlSha256": "72d081ed85130d987a9569aa02bf63144623564f67124956a4223220143f73c0"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 11
+      }
+    },
+    {
+      "id": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "audioIndex": 2,
+      "audioNumber": 2,
+      "sourceFilename": "Auido 2 - Unit 55.mp3",
+      "materializedFilename": "unit55-audio2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
+      "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+      "sourceBytes": 756259,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9799962043762207,
+      "avgLogprob": -0.120740280577541,
+      "text": "Dave, did everyone send their documents? Not everyone, but all of them are here. How is that possible? Well, someone gave some other people a free ride. Marcus again? Oh my. If he weren't given people free rides, people would have been more responsible this time. I said the same thing. Nevertheless, he stated that the main issue was to have all documents on time and sent. So what else can we do? Nothing. I mean, he's a great guy always tensing his arm. What really annoys me is people taking advantage of him. Don't even mention it. I'm sure that if they weren't having a good cover for the end of the month, the boss would have sent some of them home already. I know. One can only hope.",
+      "segments": [
+        {
+          "start": 1.68,
+          "end": 4.68,
+          "text": "Dave, did everyone send their documents?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 4.68,
+          "end": 6.68,
+          "text": "Not everyone, but all of them are here.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 6.68,
+          "end": 8.68,
+          "text": "How is that possible?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 8.68,
+          "end": 11.68,
+          "text": "Well, someone gave some other people a free ride.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 11.68,
+          "end": 12.68,
+          "text": "Marcus again?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 12.68,
+          "end": 13.68,
+          "text": "Oh my.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 13.68,
+          "end": 18.68,
+          "text": "If he weren't given people free rides, people would have been more responsible this time.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 18.68,
+          "end": 20.68,
+          "text": "I said the same thing.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 20.68,
+          "end": 25.68,
+          "text": "Nevertheless, he stated that the main issue was to have all documents on time and sent.",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 25.68,
+          "end": 27.68,
+          "text": "So what else can we do?",
+          "avgLogprob": -0.1523483135141768
+        },
+        {
+          "start": 27.68,
+          "end": 31.68,
+          "text": "Nothing. I mean, he's a great guy always tensing his arm.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 31.68,
+          "end": 35.68,
+          "text": "What really annoys me is people taking advantage of him.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 35.68,
+          "end": 36.68,
+          "text": "Don't even mention it.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 36.68,
+          "end": 40.68,
+          "text": "I'm sure that if they weren't having a good cover for the end of the month,",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 40.68,
+          "end": 43.68,
+          "text": "the boss would have sent some of them home already.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 43.68,
+          "end": 44.68,
+          "text": "I know.",
+          "avgLogprob": -0.07558594781091843
+        },
+        {
+          "start": 44.68,
+          "end": 46.68,
+          "text": "One can only hope.",
+          "avgLogprob": -0.07558594781091843
+        }
+      ],
+      "title": "Auido 2 - Unit 55.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "Dave, did everyone send their documents? Not everyone, but all of them are here. How is that possible? Well, someone gave some other people a free ride. Marcus again? Oh my. If he weren't given people free rides, people would have been more responsible this time. I said the same thing. Nevertheless, he stated that the main issue was to have all documents on time and sent. So what else can we do? Nothing. I mean, he's a great guy always tensing his arm. What really annoys me is people taking advantage of him. Don't even mention it. I'm sure that if they weren't having a good cover for the end of the month, the boss would have sent some of them home already. I know. One can only hope.",
+      "publicPath": "public/audio/lessons/course/unit-55-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-55-audio-02.mp3",
+      "publicHref": "/audio/lessons/course/unit-55-audio-02.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh/view?usp=sharing",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 13,
+      "sourceSlideTitle": "B. Listen to the audio and answer the questions your teacher makes.",
+      "nativeTrace": {
+        "driveFileId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+        "driveUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh/view?usp=sharing",
+        "driveTitle": "Auido 2 - Unit 55.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
+        "materializedSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW That's anyone's call - Unit 55.pptx",
+        "publishedSlideNumber": 13,
+        "publishedZeroBasedSlideNumber": 12,
+        "publishedSlideTitle": "B. Listen to the audio and answer the questions your teacher makes.",
+        "publishedPageObjectId": "g729cfa641f_0_32",
+        "publishedElementObjectId": "g1c92c3ceb08_0_1",
+        "publishedMediaObjectId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+        "idKind": "published-media-object",
+        "identityEvidence": "User supplied corrected exact Drive URL with trailing h; visible Drive viewer title matched label and published media object ID.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 47.182948,
+        "publishedHtmlSha256": "72d081ed85130d987a9569aa02bf63144623564f67124956a4223220143f73c0"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 17
+      }
+    },
+    {
+      "id": "12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "audioIndex": 1,
+      "audioNumber": 1,
+      "sourceFilename": "Unit 56 - Audio 1.mp3",
+      "materializedFilename": "unit56-audio1.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit56-audio1.mp3",
+      "sourceSha256": "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
+      "sourceBytes": 707102,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9983002543449402,
+      "avgLogprob": -0.18041338559004974,
+      "text": "I've been working on a case that I haven't been able to track. It had taken me blood, sweat, and tears by the time I found our first clue. Developing an investigation requires cunning skill and of course tons of patience. To get a clue is not as simple as to make it look on TV, since along with it, you have to keep up with all the paperwork that as a detective you have to fill in. So it means burning a candle at both ends. If I weren't having a meeting tonight with an informant, I would have gone mad already. It's been two weeks since the murder and we have just a note the killer left. She deserved it. If he hadn't left that, we would have nothing, but still we have nothing. I'm hoping I could get the most out of the meeting I'm having with him tonight.",
+      "segments": [
+        {
+          "start": 0.98,
+          "end": 4.38,
+          "text": "I've been working on a case that I haven't been able to track.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 4.38,
+          "end": 8.78,
+          "text": "It had taken me blood, sweat, and tears by the time I found our first clue.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 8.78,
+          "end": 13.42,
+          "text": "Developing an investigation requires cunning skill and of course tons of patience.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 13.42,
+          "end": 17.1,
+          "text": "To get a clue is not as simple as to make it look on TV, since along with it, you have",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 17.1,
+          "end": 21.14,
+          "text": "to keep up with all the paperwork that as a detective you have to fill in.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 21.14,
+          "end": 23.66,
+          "text": "So it means burning a candle at both ends.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 23.66,
+          "end": 27.18,
+          "text": "If I weren't having a meeting tonight with an informant, I would have gone mad",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 27.18,
+          "end": 28.18,
+          "text": "already.",
+          "avgLogprob": -0.15461400303527387
+        },
+        {
+          "start": 28.18,
+          "end": 32.9,
+          "text": "It's been two weeks since the murder and we have just a note the killer left.",
+          "avgLogprob": -0.23201215069960146
+        },
+        {
+          "start": 32.9,
+          "end": 34.66,
+          "text": "She deserved it.",
+          "avgLogprob": -0.23201215069960146
+        },
+        {
+          "start": 34.66,
+          "end": 39.74,
+          "text": "If he hadn't left that, we would have nothing, but still we have nothing.",
+          "avgLogprob": -0.23201215069960146
+        },
+        {
+          "start": 39.74,
+          "end": 42.78,
+          "text": "I'm hoping I could get the most out of the meeting I'm having with him tonight.",
+          "avgLogprob": -0.23201215069960146
+        }
+      ],
+      "title": "Unit 56 - Audio 1.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "I've been working on a case that I haven't been able to track. It had taken me blood, sweat, and tears by the time I found our first clue. Developing an investigation requires cunning skill and of course tons of patience. To get a clue is not as simple as to make it look on TV, since along with it, you have to keep up with all the paperwork that as a detective you have to fill in. So it means burning a candle at both ends. If I weren't having a meeting tonight with an informant, I would have gone mad already. It's been two weeks since the murder and we have just a note the killer left. She deserved it. If he hadn't left that, we would have nothing, but still we have nothing. I'm hoping I could get the most out of the meeting I'm having with him tonight.",
+      "publicPath": "public/audio/lessons/course/unit-56-audio-01.mp3",
+      "publicUrl": "/audio/lessons/course/unit-56-audio-01.mp3",
+      "publicHref": "/audio/lessons/course/unit-56-audio-01.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj/view",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 4,
+      "sourceSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "nativeTrace": {
+        "driveFileId": "12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj",
+        "driveUrl": "https://drive.google.com/file/d/12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj/view",
+        "driveTitle": "Unit 56 - Audio 1.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit56-audio1.mp3",
+        "materializedSha256": "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+        "publishedSlideNumber": 4,
+        "publishedZeroBasedSlideNumber": 3,
+        "publishedSlideTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "publishedPageObjectId": "g72967b2bcc_0_37",
+        "publishedElementObjectId": "g182170c32b5_0_0",
+        "publishedMediaObjectId": "12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj",
+        "idKind": "published-media-object",
+        "identityEvidence": "Published source identity manifest audioRef: visible label + observed published media object ID; Drive viewer title matched label.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 43.861338,
+        "publishedHtmlSha256": "d56b9fbcae87728ef9ba102fba05246e9711f632cd8d4b3f546d9d8f58873c47"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 12
+      }
+    },
+    {
+      "id": "1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ",
+      "kind": "audio",
+      "mediaType": "audio",
+      "role": "lesson-audio-candidate",
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "audioIndex": 2,
+      "audioNumber": 2,
+      "sourceFilename": "Unit 56 - Audio 2.mp3",
+      "materializedFilename": "unit56-audio2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio-unit53-56/unit56-audio2.mp3",
+      "sourceSha256": "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1",
+      "sourceBytes": 633123,
+      "mimeType": "audio/mpeg",
+      "model": "faster-whisper-small-int8",
+      "language": "en",
+      "languageProbability": 0.9987523555755615,
+      "avgLogprob": -0.13619911280488417,
+      "text": "What people normally want in life is exactly what they don't know. Knowing exactly what you want sometimes can be really tricky, especially if you're going through a crisis. If I had had a clear idea of what I wanted and where I wanted to go, it would have been a lot easier for me when I was younger. Nevertheless, I think that having this type of crisis in your life makes you stronger, once you've overcome them. Developing skills does not only require dedication, but sometimes they come from hardships. You live and teach you some things you would never learn by listening to others' experiences. To be a grown-up has never been only a matter of age, but something that comes with the different moments lived in life.",
+      "segments": [
+        {
+          "start": 1.07,
+          "end": 5.71,
+          "text": "What people normally want in life is exactly what they don't know. Knowing exactly what",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 5.71,
+          "end": 10.69,
+          "text": "you want sometimes can be really tricky, especially if you're going through a crisis. If I had",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 10.69,
+          "end": 14.71,
+          "text": "had a clear idea of what I wanted and where I wanted to go, it would have been a lot easier",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 14.71,
+          "end": 18.87,
+          "text": "for me when I was younger. Nevertheless, I think that having this type of crisis in",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 18.87,
+          "end": 23.59,
+          "text": "your life makes you stronger, once you've overcome them. Developing skills does not",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 23.59,
+          "end": 27.91,
+          "text": "only require dedication, but sometimes they come from hardships. You live and teach",
+          "avgLogprob": -0.11972319401376616
+        },
+        {
+          "start": 27.91,
+          "end": 32.15,
+          "text": "you some things you would never learn by listening to others' experiences. To be a",
+          "avgLogprob": -0.16915095038712025
+        },
+        {
+          "start": 32.15,
+          "end": 36.11,
+          "text": "grown-up has never been only a matter of age, but something that comes with the",
+          "avgLogprob": -0.16915095038712025
+        },
+        {
+          "start": 36.11,
+          "end": 39.75,
+          "text": "different moments lived in life.",
+          "avgLogprob": -0.16915095038712025
+        }
+      ],
+      "title": "Unit 56 - Audio 2.mp3",
+      "selected": true,
+      "reviewed": true,
+      "transcript": "What people normally want in life is exactly what they don't know. Knowing exactly what you want sometimes can be really tricky, especially if you're going through a crisis. If I had had a clear idea of what I wanted and where I wanted to go, it would have been a lot easier for me when I was younger. Nevertheless, I think that having this type of crisis in your life makes you stronger, once you've overcome them. Developing skills does not only require dedication, but sometimes they come from hardships. You live and teach you some things you would never learn by listening to others' experiences. To be a grown-up has never been only a matter of age, but something that comes with the different moments lived in life.",
+      "publicPath": "public/audio/lessons/course/unit-56-audio-02.mp3",
+      "publicUrl": "/audio/lessons/course/unit-56-audio-02.mp3",
+      "publicHref": "/audio/lessons/course/unit-56-audio-02.mp3",
+      "status": "ready",
+      "originalMediaUrl": "https://drive.google.com/file/d/1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ/view",
+      "reviewScope": "Original published media identity, Drive source bytes, SHA, duration and local transcript; listening questions remain pending semantic review.",
+      "sourceSlideNumber": 13,
+      "sourceSlideTitle": "B. Listen to the audio and answer the questions your teacher makes.",
+      "nativeTrace": {
+        "driveFileId": "1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ",
+        "driveUrl": "https://drive.google.com/file/d/1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ/view",
+        "driveTitle": "Unit 56 - Audio 2.mp3",
+        "driveMimeType": "audio/mpeg",
+        "driveRole": "published-original-audio",
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit56-audio2.mp3",
+        "materializedSha256": "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1",
+        "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+        "publishedDeckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+        "publishedSlideNumber": 13,
+        "publishedZeroBasedSlideNumber": 12,
+        "publishedSlideTitle": "B. Listen to the audio and answer the questions your teacher makes.",
+        "publishedPageObjectId": "g729cfa641f_0_32",
+        "publishedElementObjectId": "g182170c32b5_0_1",
+        "publishedMediaObjectId": "1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ",
+        "idKind": "published-media-object",
+        "identityEvidence": "Published source identity manifest audioRef: visible label + observed published media object ID; Drive viewer title matched label.",
+        "downloadMethod": "Chrome UI: visible Google Drive Download button",
+        "sourceDurationSeconds": 39.253333,
+        "publishedHtmlSha256": "d56b9fbcae87728ef9ba102fba05246e9711f632cd8d4b3f546d9d8f58873c47"
+      },
+      "transcriptEvidence": {
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1",
+        "reviewStatus": "transcribed-source-awaiting-semantic-review",
+        "doNotAutoAuthorKeys": true,
+        "segmentCount": 9
+      }
+    }
+  ],
+  "images": [],
+  "units": {
+    "53": {
+      "unit": 53,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "lesson": {
+        "id": "cmnmm9vul002tw1qkq6vmdn9t",
+        "order": 1,
+        "title": "Unit 53",
+        "videoUrl": null
+      },
+      "contentId": "cmnmm9vxn002uw1qkj2y4mtcl",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+      "publishedDeckTitle": "NEW Never say die- Unit 53.pptx",
+      "publishedSlideCount": 17,
+      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "audioNumbers": [
+        1,
+        2
+      ],
+      "audioIds": [
+        "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+        "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ"
+      ],
+      "audioSourceSha256": [
+        "60d8c83cbf90acf2ab91e22d763fdcae52a9b0a3a381712146e6c1f339efdb98",
+        "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37"
+      ],
+      "imageDedupSha256": [],
+      "imageReferenceCount": 0,
+      "mediaBlockers": [
+        {
+          "kind": "instructional-image",
+          "slideNumber": 4,
+          "status": "blocked-native-source-unavailable",
+          "confirmedInstructional": false,
+          "proofRef": "published-proof-unit53-slide4",
+          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "publishedScreenshotSha256": "757acd55a8507768347555ceee8caf9c117f1515c01d4a112504fd4aab6070ed",
+          "publishedScreenshotBytes": 63017,
+          "publishedMediaRefs": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSbGNHY8dq6PODcnQQd3TFzGQnb8G1mc5qelCFH4tJkjh6jFwvv8rR9n7AtoB4frSVn9eh8c7d5i6C6eCBmIvf2oSSjTiY6hi6VqF0jJLFj-ozDSR_1scL07fVeVtUkbUhJCA9nw0d6cmqHcQxzhF_BsoCTdlt7gHtViCFL-1JMipyLA-fV3a0_F-FiSC93WSA=s2048",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSYQAbrumPtSSW_8R7MRxJXb9T3R20LSyYaOQqCrRw9IFoRzrSOl1MbVHe90fYMDI7xqv8mezGZeghPVkII2YBjhII7bF_QEbhJ9aHKCicIbwKfQnBPIs5dpuDl8QHn3YS5Cnxlg0svVvP9uxQHOq8XnhpKWpghmjDN6CvA5ZOd0cLgKXwDSsbl4=s2048",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+              "kind": "audio-icon",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            }
+          ],
+          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
+          "doNotSubstitute": true
+        }
+      ]
+    },
+    "54": {
+      "unit": 54,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "lesson": {
+        "id": "cmnmm9w6q002ww1qkmhschbtj",
+        "order": 2,
+        "title": "Unit 54",
+        "videoUrl": null
+      },
+      "contentId": "cmnmm9w9s002xw1qk34wb2go5",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+      "publishedDeckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+      "publishedSlideCount": 17,
+      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "audioNumbers": [
+        1,
+        2
+      ],
+      "audioIds": [
+        "14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq",
+        "1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ"
+      ],
+      "audioSourceSha256": [
+        "3e66b7acccfd02b14241761a76d8085bbb99430cec23beccee5d9404ffbff7ab",
+        "0d3deb461926d8847cdc5f9dbe03210cd03c5c24e6a499686fa8fd7b119af4d6"
+      ],
+      "imageDedupSha256": [],
+      "imageReferenceCount": 0,
+      "mediaBlockers": [
+        {
+          "kind": "instructional-image",
+          "slideNumber": 4,
+          "status": "blocked-native-source-unavailable",
+          "confirmedInstructional": false,
+          "proofRef": "published-proof-unit54-slide4",
+          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "publishedScreenshotSha256": "05fe4213a6da49cd8e810c88d1a313caac9ae9ba5adc86ff350060df5c1b85d2",
+          "publishedScreenshotBytes": 59871,
+          "publishedMediaRefs": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSYFyNEK4UaliMANdj-f47rIk3M3aiYxiOPwntInqXQpjhGG_GOsFybGSKrQPWP8UbLlt8Y5Kio8vhBRUODY3LEuwgtK8vYpP3oReeeHcgcbfAQA3FLCKSwdTmANbO99nHZQOQt--1APcWNLPxplRtJTa_SRZc_vvzy19sCJUpjzp6TUTSajufoAnd3_yl2X8g=s2048",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSY-bhZR3-cWLVlfd4SwarFGGVsPL9hExkJ1jPKa-FhN8FLYsQAoLUTI96kTpnciFYWXm4DEWIPLRTgB8dDGp5-4Qd6CfVGWTk1fBy5lE0xvWWRcHF4eSzyXXuqrnzFgXh0ghrpBrt5IGIgFiaAbTgXuJ9T47_iOMY_g6INn1o9vVlwnWFKrgo2Z=s2048",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+              "kind": "audio-icon",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            }
+          ],
+          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
+          "doNotSubstitute": true
+        }
+      ]
+    },
+    "55": {
+      "unit": 55,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "lesson": {
+        "id": "cmnmm9wiv002zw1qkz23p6kdp",
+        "order": 3,
+        "title": "Unit 55",
+        "videoUrl": null
+      },
+      "contentId": "cmnmm9wly0030w1qk4vrdc4a7",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+      "publishedDeckTitle": "NEW That's anyone's call - Unit 55.pptx",
+      "publishedSlideCount": 17,
+      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "audioNumbers": [
+        1,
+        2
+      ],
+      "audioIds": [
+        "16vlShb_LW0tpQjPyM13l2TomvtxP1l_W",
+        "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh"
+      ],
+      "audioSourceSha256": [
+        "693e9e1af6b107bf33474a18d40d16d38f4245d89da9759ee7a09491202d5bf5",
+        "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301"
+      ],
+      "imageDedupSha256": [],
+      "imageReferenceCount": 0,
+      "mediaBlockers": [
+        {
+          "kind": "instructional-image",
+          "slideNumber": 4,
+          "status": "blocked-native-source-unavailable",
+          "confirmedInstructional": false,
+          "proofRef": "published-proof-unit55-slide4",
+          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "publishedScreenshotSha256": "ad16820bc3c0c6f185186a2a4dae701e985b92b1654b6edcaa361c39804f7848",
+          "publishedScreenshotBytes": 66676,
+          "publishedMediaRefs": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSbeQfZqzlP5W656xI0Cw-F3nox1yQyF1p4u8PN4wYoFpiVIBu4YaFI01g-OaNjUHV-YrzKq_RL5bPSuMKMVZFRTKNGydJC5rVT033F3-6XoIbs8OfT4q_sUDXP1WTC0fvMk7bNYfe2gNwNAy3c2rRBU9F3bQx4B0FA-AyTsFvH-Qi_PHWQlZWqfudq-KHMSCw=s2048",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSY0FEmUO1QWZzuaRJSW_VHn6hnt5fLQVOd0WjCIAX1q2jCglcvEvplOzxpnA6dCG0LMpv9H6e7fJro-og2bhwYZC5R2R6r_GtqHhti4LQ28AMMupOkH__4TU0Uni49vJ2MRhODkA8zAtoRM_-s8JNdZV8QWjBbbAgiJ-Z4YMq6j1fLEVqeAgXrU=s2048",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+              "kind": "audio-icon",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            }
+          ],
+          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
+          "doNotSubstitute": true
+        }
+      ]
+    },
+    "56": {
+      "unit": 56,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "lesson": {
+        "id": "cmnmm9wv00032w1qkxr02azgp",
+        "order": 4,
+        "title": "Unit 56",
+        "videoUrl": null
+      },
+      "contentId": "cmnmm9wy10033w1qk25duuj99",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+      "publishedDeckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+      "publishedSlideCount": 17,
+      "nativeImageMappingStatus": "published-proof-only-native-source-unavailable",
+      "audioNumbers": [
+        1,
+        2
+      ],
+      "audioIds": [
+        "12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj",
+        "1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ"
+      ],
+      "audioSourceSha256": [
+        "55e031fa88111a38719137cc621445b5dae416025d5360c3f49a3a420031ea3b",
+        "6283d8249c5241dfc7f67b39dbcca23a029f980bb67111d1a454fe26382c03f1"
+      ],
+      "imageDedupSha256": [],
+      "imageReferenceCount": 0,
+      "mediaBlockers": [
+        {
+          "kind": "instructional-image",
+          "slideNumber": 4,
+          "status": "blocked-native-source-unavailable",
+          "confirmedInstructional": false,
+          "proofRef": "published-proof-unit56-slide4",
+          "publishedPrompt": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "publishedScreenshotSha256": "ca9505c66e3bc6ce4b40fb9b47b7c99e1b2ee46c13b599656177580945d2f9c6",
+          "publishedScreenshotBytes": 67674,
+          "publishedMediaRefs": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSYSApPUGMcS94kTK8QweNolcDxaJEWMAB6MoL7fBlUv4ZsaH_bgZt3nnIUrjnTiUf-WrqbMN5RRiBOXw2VnDFAgrlw-5ubYsypV_QZSG0eWQ0gT5mRkpyVGajC0Ub2E7Mte-ELCp7a22GcSy8tWD0m91PUvpZ5OK0lGD5_DddZaSsKggAfBkAq1I0xSL9KsQg=nw",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSa7cpnvODk2JJz13PnC2ODCVH6SegvZE9kYa6LosuBtbiMswXMAh-PxkcRTzrS5CgA56JLR3nxR4PKiVqn62odjSWWHchMbF23e0ReYJDnDDxUNFpmfacXr3hOfssyZlhfW-Z3fC5smjjHohkLG0JxXQk7J0xmwdDg9A-48T3_JpegT__jjG_MB=nw",
+              "kind": "rendered-slide-image",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            },
+            {
+              "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+              "kind": "audio-icon",
+              "original": false,
+              "source": "image",
+              "doNotUseAsNativeAsset": true
+            }
+          ],
+          "reason": "The authoritative Drive folder has no native presentation candidate and the published deck exposes only rendered slide media. Preserve this proof as evidence; do not use the rendered screenshot as a native learning asset or invent a replacement.",
+          "doNotSubstitute": true
+        }
+      ]
+    }
+  },
+  "figureProof": [
+    {
+      "unit": 53,
+      "slideNumber": 4,
+      "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+      "screenshotBytes": 63017,
+      "screenshotSha256": "757acd55a8507768347555ceee8caf9c117f1515c01d4a112504fd4aab6070ed",
+      "proofType": "visible-rendered-published-slide",
+      "confirmedInstructional": false,
+      "nativeAssetSha256": null,
+      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+    },
+    {
+      "unit": 54,
+      "slideNumber": 4,
+      "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+      "screenshotBytes": 59871,
+      "screenshotSha256": "05fe4213a6da49cd8e810c88d1a313caac9ae9ba5adc86ff350060df5c1b85d2",
+      "proofType": "visible-rendered-published-slide",
+      "confirmedInstructional": false,
+      "nativeAssetSha256": null,
+      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+    },
+    {
+      "unit": 55,
+      "slideNumber": 4,
+      "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+      "screenshotBytes": 66676,
+      "screenshotSha256": "ad16820bc3c0c6f185186a2a4dae701e985b92b1654b6edcaa361c39804f7848",
+      "proofType": "visible-rendered-published-slide",
+      "confirmedInstructional": false,
+      "nativeAssetSha256": null,
+      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+    },
+    {
+      "unit": 56,
+      "slideNumber": 4,
+      "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+      "screenshotBytes": 67674,
+      "screenshotSha256": "ca9505c66e3bc6ce4b40fb9b47b7c99e1b2ee46c13b599656177580945d2f9c6",
+      "proofType": "visible-rendered-published-slide",
+      "confirmedInstructional": false,
+      "nativeAssetSha256": null,
+      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+    },
+    {
+      "unit": 56,
+      "slideNumber": 8,
+      "publishedSlideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_86",
+      "screenshotBytes": 110946,
+      "screenshotSha256": "5c8f95080bd544d777795cdf10f8bec80462cb0df15fa8dcda892ddc0fa68919",
+      "proofType": "visible-rendered-published-slide",
+      "confirmedInstructional": false,
+      "nativeAssetSha256": null,
+      "evidence": "Chrome visible published deck UI; screenshot hash is retained for audit only and is not a staged learning asset."
+    }
+  ]
+}

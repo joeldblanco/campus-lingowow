@@ -292,23 +292,30 @@
       "transcript": null,
       "uncertaintyFlags": [],
       "manualReviewRequired": true,
-      "reviewStatus": "blocked-source-not-found",
+      "reviewStatus": "source-recovered-transcript-available",
       "questions": [],
       "revision": null,
       "doNotAutoAuthorKeys": true,
       "audioSource": {
-        "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ",
+        "sourceId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
         "label": "Auido 2 - Unit 55.mp3",
-        "viewerUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQ/view",
+        "viewerUrl": "https://drive.google.com/file/d/1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh/view?usp=sharing",
         "slideNumber": 13,
-        "status": "blocked-not-found"
+        "status": "recovered",
+        "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+        "sourceBytes": 756259,
+        "durationSeconds": 47.182948,
+        "materializedPath": "docs/audit/source-originals/audio-unit53-56/unit55-audio2.mp3",
+        "mimeType": "audio/mpeg"
       },
       "transcriptEvidence": {
-        "status": "blocked-source-not-found",
-        "path": null,
-        "sourceSha256": null,
-        "transcriptTextAvailable": false,
-        "observedText": "Sorry, the file you have requested does not exist."
+        "status": "available",
+        "path": "docs/audit/unit53-56-audio-transcripts.json",
+        "sourceSha256": "4f7b7625510833363b36f2642eb22efaa3a7413d4f2d96d510ed0a0e19c48301",
+        "language": "en",
+        "languageProbability": 0.9799962043762207,
+        "segmentCount": 17,
+        "transcriptTextAvailable": true
       }
     },
     {
@@ -416,9 +423,9 @@
   ],
   "counts": {
     "items": 8,
-    "sourceRecovered": 7,
-    "transcriptAvailable": 7,
-    "blockedSource": 1,
+    "sourceRecovered": 8,
+    "transcriptAvailable": 8,
+    "blockedSource": 0,
     "questionsAuthored": 0
   }
 }
