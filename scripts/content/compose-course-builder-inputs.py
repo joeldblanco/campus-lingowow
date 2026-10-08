@@ -1789,7 +1789,9 @@ def _attach_published_source_review(
     for figure in figures:
         unit = _int(figure.get("unit"))
         slide = _int(figure.get("slideNumber"))
-        if unit is not None and slide is not None and figure.get("mapping") == "published-source-review":
+        evidence = figure.get("nativeEvidence")
+        mapping = evidence.get("mapping") if isinstance(evidence, Mapping) else None
+        if unit is not None and slide is not None and mapping == "published-source-review":
             figure_map[(unit, slide)].append(figure)
     for raw_unit, review in published_source_review.items():
         unit = _int(raw_unit)

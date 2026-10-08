@@ -173,6 +173,8 @@ class ComposerScopeTests(unittest.TestCase):
         self.assertFalse(source["deck"]["slides"][0]["tableSemantics"]["nativeIdentityConfirmed"])
         self.assertEqual(figures[0]["nativeEvidence"]["mapping"], "published-source-review")
         self.assertFalse(source["deck"]["slides"][0]["_nativeAudit"]["nativeIdentityConfirmed"])
+        self.assertEqual(source["deck"]["slides"][0]["_nativeAudit"]["figures"], figures)
+        self.assertTrue(source["deck"]["slides"][0]["_nativeAudit"]["figureEvidencePresent"])
 
     def test_listening_review_allows_proven_cross_slide_audio_and_preserves_source_slide(self) -> None:
         source = {
