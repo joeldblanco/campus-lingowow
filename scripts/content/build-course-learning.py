@@ -609,6 +609,20 @@ def _is_technical_text(value: str) -> bool:
     return False
 
 
+def _looks_like_flattened_source_chart(value: str) -> bool:
+    """Recognize a published chart serialized as one long text value."""
+
+    lowered = _normalise(value).casefold()
+    markers = (
+        "phrases meaning example",
+        "grammar examples observation",
+        "structures statements questions",
+        "non-finite clause",
+        "relative clause",
+    )
+    return len(lowered) >= 180 and any(marker in lowered for marker in markers)
+
+
 def _meaningful_texts(slide: Mapping[str, Any]) -> list[str]:
     texts = _slide_texts(slide)
     title = _normalise(slide.get("title"))
@@ -648,7 +662,12 @@ def _is_overhead_source_slide(slide: Mapping[str, Any]) -> bool:
     lowered = raw.casefold()
     if re.search(r"(?:all rights reserved|copyright|©)", lowered):
         return True
-    if re.search(r"\b(?:congrats|congratulations|lesson complete|end of (?:the )?lesson)\b", lowered):
+    # Match closing slides by their own authored line. A chart/example can
+    # legitimately contain a word such as "congrats" and must stay visible.
+    if any(
+        re.search(r"^\s*(?:congrats|congratulations|lesson complete|end of (?:the )?lesson)\b", _normalise(value).casefold())
+        for value in raw_texts
+    ):
         return True
     if _tables(slide) or _is_audio_required(slide) or _is_picture_prompt_required(slide):
         return False
@@ -814,7 +833,10 @@ def _learner_context_texts(
     # ``Let's Talk`` remain eligible teaching text when there is no reviewed
     # activity block.
     title_key = _normalise(slide.get("title")).casefold()
-    if len(title_key) >= 32:
+    # Long authored reading/chart titles are source material, not a duplicate
+    # activity heading. Only suppress a long title when it is clearly an
+    # instruction that will be rendered by a native control.
+    if len(title_key) >= 32 and not _is_reading(title_key) and not _looks_like_flattened_source_chart(title_key):
         prompt_keys.add(title_key)
     # Published extraction is authoritative. Put it first so a native audit's
     # joined paragraph is recognized as coverage of already-visible source
@@ -983,6 +1005,18 @@ def _is_picture_prompt_required(slide: Mapping[str, Any]) -> bool:
         _PICTURE_VISUAL_DIRECTIVE_PATTERN.search(evidence)
         or _PICTURE_NOUN_CONTEXT_PATTERN.search(evidence)
     )
+
+
+def _picture_prompt_texts(slide: Mapping[str, Any]) -> list[str]:
+    """Return the authored visual instruction for learner-visible rendering."""
+
+    if not _is_picture_prompt_required(slide):
+        return []
+    values = _meaningful_texts(slide)
+    prompts = [value for value in values if _PICTURE_VISUAL_DIRECTIVE_PATTERN.search(value)]
+    if prompts:
+        return _unique_texts(prompts)
+    return values[:1]
 
 
 _CONFIRMED_FIGURE_LABELS = {
@@ -2103,40 +2137,47 @@ def _reading_passage_texts(slide: Mapping[str, Any], evidence_texts: Sequence[st
     values = _unique_texts(evidence_texts)
     if not values:
         return []
-    candidates: list[str] = []
-    for value in values:
-        lowered = value.casefold()
-        # Some published extractors flatten the instruction and passage into
-        # one string (``Read ... questions. Maria ...``). Preserve the prose
-        # after the authored instruction when it is long enough to be a real
-        # passage; a standalone writing or role-play prompt has no such tail.
-        instruction_tail = re.search(r"\bquestions?\s*(?:below)?\s*[.!?]\s+", lowered)
-        if instruction_tail:
-            tail = value[instruction_tail.end() :].strip()
-            if len(tail) >= 120 and not re.search(r"\b(?:write|act out|listen to the audio|choose|select|complete)\b", tail.casefold()):
-                candidates.append(tail)
+
+    def collect(values_to_check: Sequence[str]) -> list[str]:
+        candidates: list[str] = []
+        for value in _unique_texts(values_to_check):
+            lowered = value.casefold()
+            # Some published extractors flatten the instruction and passage
+            # into one string. Preserve the authored prose after its closing
+            # instruction sentence, including extraction/dialogue variants.
+            instruction_tail = re.search(
+                r"\b(?:questions?\s*(?:below)?|space\s+provided|corresponding\s+function|read\s+the\s+(?:text|dialogue|paragraph)|teacher)\s*[.!?]\s+",
+                lowered,
+            )
+            if instruction_tail:
+                tail = value[instruction_tail.end() :].strip()
+                if len(tail) >= 120 and not re.search(
+                    r"\b(?:write|act out|listen to the audio|choose|select|complete)\b",
+                    tail.casefold(),
+                ):
+                    candidates.append(tail)
+                    continue
+            if re.search(
+                r"\b(?:read the following|answer the questions?|after that|questions? below|read .* aloud|choose|select|complete|listen to the audio|write|act out|discuss with|look at)\b",
+                lowered[:260],
+            ):
                 continue
-        if re.search(
-            r"\b(?:read the following|answer the questions?|after that|questions? below|read .* aloud|choose|select|complete|listen to the audio|write|act out|discuss with|look at)\b",
-            lowered,
-        ):
-            continue
-        # A question list extracted as one paragraph is activity metadata, not
-        # the reading passage. A real passage may contain punctuation but does
-        # not consist primarily of numbered questions.
-        question_count = len(re.findall(r"\b\d+\.\s+[^.!?]*\?", value))
-        if question_count >= 2:
-            continue
-        if len(value) >= 120:
-            candidates.append(value)
+            # A question list extracted as one paragraph is activity metadata,
+            # not the reading passage.
+            question_count = len(re.findall(r"\b\d+\.\s+[^.!?]*\?", value))
+            if question_count >= 2:
+                continue
+            if len(value) >= 120:
+                candidates.append(value)
+        return candidates
+
+    # Published text is authoritative. Native paragraphs are supplemental and
+    # must never replace an aligned published reading with another deck's text.
+    published_values = _unique_texts(_meaningful_texts(slide))
+    published_candidates = collect(published_values)
+    candidates = published_candidates or collect([value for value in values if value not in published_values])
     if candidates:
-        longest = max(
-            candidates,
-            key=lambda value: (
-                len(value),
-                -next((index for index, original in enumerate(values) if value == original or value in original), len(values)),
-            ),
-        )
+        longest = max(candidates, key=lambda value: (len(value), -values.index(value) if value in values else 0))
         return [longest]
     if any(
         re.search(
@@ -2395,7 +2436,7 @@ def _exercise_review_index(
             evidence = _exercise_review_item_evidence(item)
             if not evidence:
                 _add_blocker(blockers, _blocker("exercise-review-evidence-missing", number, f"Exercise review item {item_id!r} has no source evidence."))
-            elif not any(_exercise_review_evidence_matches(value, actual_slide) for value in evidence):
+            elif not any(_exercise_review_evidence_matches(value, actual_slide) for value in evidence) and not _review_item_uses_source_open_parts(item, actual_slide):
                 _add_blocker(
                     blockers,
                     _blocker("exercise-review-evidence-mismatch", number, f"Exercise review item {item_id!r} has no matching published evidence."),
@@ -3063,7 +3104,100 @@ def _exercise_review_options(item: Mapping[str, Any]) -> Any:
     return copy.deepcopy(item.get("options") or item.get("sourceOptions"))
 
 
-def _exercise_review_open_parts(item: Mapping[str, Any]) -> list[tuple[str, str]]:
+def _authored_letter_prompts(slide: Mapping[str, Any]) -> dict[str, str]:
+    """Extract authored A--E prompts without rewriting their requirements.
+
+    Published extraction frequently stores the final D/E activities as either
+    separate visible text values or one title containing both labels.  Review
+    manifests intentionally use a short placeholder for those open activities,
+    so the published prompt must remain the source of truth here.
+    """
+
+    parts: dict[str, list[str]] = {}
+    for value in _meaningful_texts(slide):
+        for match in re.finditer(r"(?<![A-Za-z0-9])([A-E])\.\s+", value):
+            label = match.group(1).upper()
+            next_match = re.search(r"(?<![A-Za-z0-9])[A-E]\.\s+", value[match.end() :])
+            end = match.end() + next_match.start() if next_match else len(value)
+            prompt = _normalise(value[match.start() : end]).strip()
+            if len(prompt) > 4:
+                parts.setdefault(label, []).append(prompt)
+    return {
+        label: _unique_texts(values)[0]
+        for label, values in parts.items()
+        if _unique_texts(values)
+    }
+
+
+def _source_open_parts(slide: Mapping[str, Any]) -> list[tuple[str, str]]:
+    """Return source-authored final speaking/writing prompts as separate parts."""
+
+    prompts = _authored_letter_prompts(slide)
+    result: list[tuple[str, str]] = []
+    speaking = prompts.get("D")
+    writing = prompts.get("E")
+    # Lettered examples can occur in ordinary authored material. Require the
+    # final-activity heading when only one of D/E is present so those examples
+    # cannot silently become learner controls. A slide with both explicit D/E
+    # parts remains unambiguous even when the deck omits the heading.
+    slide_values = _meaningful_texts(slide)
+    final_headings = {
+        "let's talk",
+        "let’s talk",
+        "let's write",
+        "let’s write",
+    }
+    has_final_heading = any(
+        _normalise(value).casefold().strip() in final_headings
+        for value in slide_values
+    )
+    has_open_signal = bool(
+        (speaking and _is_speaking_prompt(speaking))
+        or (writing and (_is_essay_prompt(writing) or _is_speaking_prompt(writing)))
+    )
+    if not has_final_heading and not (speaking and writing) and not has_open_signal:
+        return []
+    # Final D activities are learner production even when the source says to
+    # listen to a teacher first. Keep that teacher direction in provenance and
+    # expose the learner's speaking action without inventing an audio clip.
+    if speaking and len(speaking) > 20:
+        result.append(("recording", speaking))
+    if writing and len(writing) > 20:
+        if _is_essay_prompt(writing) or _word_limits(writing) != (None, None):
+            result.append(("essay", writing))
+        elif _is_speaking_prompt(writing):
+            result.append(("recording", writing))
+    return result
+
+
+def _review_item_uses_source_open_parts(item: Mapping[str, Any], slide: Mapping[str, Any]) -> bool:
+    """Allow a reviewed placeholder to inherit exact published D/E text."""
+
+    if not _source_open_parts(slide):
+        return False
+    kind = _text(item.get("kind")).casefold()
+    prompt = _text(item.get("prompt")).casefold()
+    return any(token in kind for token in ("roleplay", "role-play", "conversation", "writing")) or (
+        "complete the final activity" in prompt
+    )
+
+
+def _exercise_review_open_parts(
+    item: Mapping[str, Any],
+    slide: Mapping[str, Any] | None = None,
+) -> list[tuple[str, str]]:
+    if slide is not None:
+        source_parts = _source_open_parts(slide)
+        kind = _text(item.get("kind")).casefold()
+        # The reviewed final-activity item may be a compact placeholder, or a
+        # reading/classification review may share the final D/E slide. The
+        # published D/E prompts still need their own learner controls.
+        if source_parts and (
+            any(token in kind for token in ("roleplay", "role-play", "conversation", "writing"))
+            or "complete the final activity" in _text(item.get("prompt")).casefold()
+            or "listen" in kind
+        ):
+            return source_parts
     prompt = _text(item.get("prompt"))
     if not prompt:
         return []
@@ -3185,6 +3319,7 @@ def _exercise_review_specs(
         has_transcript = bool(audio_item and _audio_transcript(audio_item))
         reflection_prompt = _reviewed_listening_reflection_prompt(item)
         is_open_listening_reflection = bool(reflection_prompt)
+        source_open_parts = _source_open_parts(slide)
         reviewed_teacher_notes = _exercise_review_teacher_notes(item) if listening_item else None
         if reviewed_teacher_notes is not None:
             teacher_content, teacher_notes_metadata = reviewed_teacher_notes
@@ -3203,6 +3338,36 @@ def _exercise_review_specs(
             teacher_payload["data"]["teacherNotes"] = teacher_notes_metadata
             open_specs.append(("teacher_notes", teacher_payload))
             continue
+        # A teacher-led D prompt can be paired with a published E writing
+        # prompt on the same slide. The source has no playable clip or closed
+        # answer key, but the learner's speaking and writing practice remain
+        # valid self-study activities. Archive the teacher direction separately
+        # and continue through the open-response path below.
+        source_teacher_prompt = next(
+            (prompt for native_type, prompt in source_open_parts if native_type == "recording"),
+            "",
+        )
+        if (
+            listening_item
+            and source_teacher_prompt
+            and status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"}
+        ):
+            teacher_payload = {
+                "content": _readable_html([source_teacher_prompt]),
+                "format": "html",
+                "hiddenFromLearners": True,
+                "sourceRole": "teacher-guided-listening",
+                "sourcePrompt": _text(item.get("prompt")) or source_teacher_prompt,
+                "reviewStatus": status,
+                "sourceReviewId": item_id,
+                "doNotAutoGrade": True,
+                "data": _exercise_review_metadata(item),
+            }
+            teacher_payload["data"]["responseMode"] = "teacher-notes-preserved"
+            teacher_payload["data"]["sourceInstruction"] = source_teacher_prompt
+            teacher_payload["data"]["adaptedForSelfStudy"] = True
+            open_specs.append(("teacher_notes", teacher_payload))
+            status = "open-response-preserved"
         if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"} and not (listening_item and has_transcript):
             if listening_item:
                 if is_open_listening_reflection:
@@ -3358,15 +3523,19 @@ def _exercise_review_specs(
                 }
                 open_specs.append(("essay", payload))
         elif not canonical_items and not ambiguous_answer:
-            for native_type, prompt in _exercise_review_open_parts(item):
+            for native_type, prompt in _exercise_review_open_parts(item, slide):
                 learner_prompt = reflection_prompt or prompt
                 min_words, max_words = _word_limits(prompt)
                 teacher_only = response_mode in {"teacher", "teacher-only", "teacher-practice"}
-                ai_context = _exercise_review_ai_context(slide, item, learner_prompt, audio_item, source)
+                context_item = dict(item)
+                if source_open_parts and prompt in {source_prompt for _, source_prompt in source_open_parts}:
+                    context_item["prompt"] = prompt
+                ai_context = _exercise_review_ai_context(slide, context_item, learner_prompt, audio_item, source)
                 payload: dict[str, Any] = {
                     "data": _exercise_review_metadata(item),
                     "reviewStatus": status,
                     "sourceReviewId": item_id,
+                    "sourcePrompt": prompt,
                 }
                 payload["data"]["aiGradingContext"] = ai_context
                 if reflection_prompt:
@@ -3375,7 +3544,21 @@ def _exercise_review_specs(
                 if native_type == "recording":
                     kind = _text(item.get("kind")).casefold()
                     if any(token in kind for token in ("roleplay", "role-play", "conversation")):
-                        payload["data"].update(_exercise_review_conversation_metadata(item))
+                        conversation_metadata = _exercise_review_conversation_metadata(item)
+                        if source_open_parts and prompt in {source_prompt for _, source_prompt in source_open_parts}:
+                            # A combined reviewed role-play may mention a
+                            # later writing task. The recording scenario must
+                            # expose only its authored oral D (or E) prompt;
+                            # the full review item remains in exerciseReview.
+                            conversation_metadata["turns"] = [
+                                {
+                                    "id": "scenario",
+                                    "question": prompt,
+                                    "answerPrompt": "Responde a la situación.",
+                                }
+                            ]
+                            conversation_metadata["learnerPrompt"] = prompt
+                        payload["data"].update(conversation_metadata)
                     payload.update(
                         {
                             "instruction": learner_prompt,
@@ -3412,6 +3595,44 @@ def _exercise_review_specs(
     specs.extend(multiple_specs)
     specs.extend(open_specs)
     return specs, listening_blocked
+
+
+def _source_open_activity_specs(
+    slide: Mapping[str, Any],
+    source: Mapping[str, Any],
+    audio_item: Mapping[str, Any] | None,
+) -> list[tuple[str, dict[str, Any]]]:
+    """Build missing D/E learner controls directly from published prompts."""
+
+    specs: list[tuple[str, dict[str, Any]]] = []
+    for native_type, prompt in _source_open_parts(slide):
+        ai_context = _ai_grading_context(slide, prompt, audio_item, source)
+        payload: dict[str, Any] = {
+            "sourcePrompt": prompt,
+            "reviewStatus": "source-published-open",
+            "data": {
+                "sourceOpenActivity": True,
+                "originalPromptAIContext": prompt,
+                "aiGradingContext": ai_context,
+            },
+        }
+        if native_type == "recording":
+            payload.update(
+                {
+                    "instruction": prompt,
+                    "mode": "teacher-and-self-study",
+                    "aiGrading": True,
+                }
+            )
+        else:
+            min_words, max_words = _word_limits(prompt)
+            payload.update({"prompt": prompt, "aiGrading": True})
+            if min_words is not None:
+                payload["minWords"] = min_words
+            if max_words is not None:
+                payload["maxWords"] = max_words
+        specs.append((native_type, payload))
+    return specs
 
 
 def _listening_review_specs(
@@ -3580,6 +3801,20 @@ def _native_block_specs(
             audio_item,
             source,
         )
+    source_open_specs = _source_open_activity_specs(slide, source, audio_item)
+    if review_supplied and source_open_specs:
+        # Keep one control per authored D/E prompt when another reviewed item
+        # (for example a reading extraction) shares the same final slide.
+        existing_open_prompts = {
+            _normalise(payload.get("sourcePrompt") or payload.get("instruction") or payload.get("prompt")).casefold()
+            for native_type, payload in review_specs
+            if native_type in {"recording", "essay"}
+        }
+        for native_type, payload in source_open_specs:
+            prompt_key = _normalise(payload.get("sourcePrompt")).casefold()
+            if prompt_key and prompt_key not in existing_open_prompts:
+                review_specs.append((native_type, payload))
+                existing_open_prompts.add(prompt_key)
     if _is_picture_prompt_required(slide) and not native_figures and vector_projection is None:
         _add_blocker(
             blockers,
@@ -3609,6 +3844,8 @@ def _native_block_specs(
                 )
 
     specs: list[tuple[str, dict[str, Any]]] = []
+    if not review_supplied and not listening_review_supplied:
+        specs.extend(source_open_specs)
     prompt_text = _prompt_text(slide, texts)
     pairs = _extract_pairs(texts)
     covered_texts = [
@@ -3768,7 +4005,11 @@ def _native_block_specs(
         )
 
     lower_title = _text(slide.get("title")).casefold()
-    if len(pairs) >= 2 and ("vocab" in lower_title or "word" in lower_title or all(len(item["term"].split()) <= 3 for item in pairs)):
+    if (
+        len(pairs) >= 2
+        and not _looks_like_flattened_source_chart(_text(slide.get("title")))
+        and ("vocab" in lower_title or "word" in lower_title or all(len(item["term"].split()) <= 3 for item in pairs))
+    ):
         vocabulary_items = [
             {"id": f"course-vocabulary-{number}-{index:03d}", **pair}
             for index, pair in enumerate(pairs, start=1)
@@ -3886,7 +4127,21 @@ def _native_block_specs(
             )
         )
 
-    if not review_supplied and not listening_review_supplied and _is_speaking_prompt(prompt_text):
+    picture_prompts = _picture_prompt_texts(slide)
+    if picture_prompts:
+        specs.append(
+            (
+                "text",
+                {
+                    **common,
+                    "content": _readable_html(picture_prompts),
+                    "format": "html",
+                    "sourceRole": "picture-instruction",
+                },
+            )
+        )
+
+    if not source_open_specs and not review_supplied and not listening_review_supplied and _is_speaking_prompt(prompt_text):
         recording_time_limit = _time_limit(prompt_text)
         specs.append(
             (
@@ -3904,7 +4159,7 @@ def _native_block_specs(
             )
         )
 
-    if not review_supplied and not listening_review_supplied and explicit_answer is None and _is_closed_answer_prompt(prompt_text):
+    if not source_open_specs and not review_supplied and not listening_review_supplied and explicit_answer is None and _is_closed_answer_prompt(prompt_text):
         closed_answer_blocked = True
         _add_blocker(
             blockers,
@@ -3914,7 +4169,7 @@ def _native_block_specs(
                 "Closed-answer activity has no reviewed authored answer key; it remains a source instruction until reviewed.",
             ),
         )
-    elif not review_supplied and not listening_review_supplied and _is_essay_prompt(prompt_text):
+    elif not source_open_specs and not review_supplied and not listening_review_supplied and _is_essay_prompt(prompt_text):
         min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
@@ -3931,7 +4186,7 @@ def _native_block_specs(
                 },
             )
         )
-    elif not review_supplied and not listening_review_supplied and explicit_answer is None and _is_short_answer_prompt(prompt_text):
+    elif not source_open_specs and not review_supplied and not listening_review_supplied and explicit_answer is None and _is_short_answer_prompt(prompt_text):
         min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
@@ -3984,7 +4239,7 @@ def _native_block_specs(
 
     # Preserve a long authored reading passage as readable HTML even when the
     # same slide also has questions or a read-aloud instruction.
-    if has_reading_passage and not tables:
+    if has_reading_passage:
         specs.append(
             (
                 "text",
@@ -4029,8 +4284,10 @@ def _native_block_specs(
             return (0, 0)
         if tables and native_type == "structured-content":
             return (0, 0)
-        if native_type == "image":
+        if native_type == "text" and item[1].get("sourceRole") == "picture-instruction":
             return (1, 0)
+        if native_type == "image":
+            return (1, 1)
         if native_type == "audio":
             return (2, 0)
         if has_reading_passage and native_type == "text":

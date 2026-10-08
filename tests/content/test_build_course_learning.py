@@ -3107,6 +3107,247 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertIn("I come from Peru.", reflection["data"]["data"]["aiGradingContext"])
         self.assertIn("write two phrases", reflection["data"]["prompt"])
 
+    def test_published_final_d_and_e_prompts_stay_separate_around_review_placeholder(self) -> None:
+        source = source_fixture()
+        d_prompt = (
+            "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? "
+            "Having answered that, what are the circumstances likely to happen depending on people’s response to them?"
+        )
+        e_prompt = (
+            "E. Write a 170-200 word text about the impact socialism is having in the world and hot it may turn out in case it keeps spreading and gaining power. "
+            "What if the world receives it? Support your ideas and remember to use the language studied."
+        )
+        slide = {
+            "number": 15,
+            "title": d_prompt,
+            "visibleTexts": [d_prompt, e_prompt, "Let’s Talk", "Let’s Write"],
+        }
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "15": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u49-s15-d",
+                                    "kind": "roleplay-and-writing",
+                                    "prompt": "Complete the role-play or writing activity shown on the published slide.",
+                                    "responseMode": "open-response",
+                                    "reviewStatus": "open-response-preserved",
+                                    "sourceEvidence": ["D. Complete the final activity on the published slide."],
+                                    "doNotAutoGrade": True,
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertFalse(any(blocker["code"] == "exercise-review-evidence-mismatch" for blocker in plan["blockers"]))
+        generated = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") == [15]]
+        recording = next(row for row in generated if row["data"]["type"] == "recording")
+        essay = next(row for row in generated if row["data"]["type"] == "essay")
+        self.assertEqual(recording["data"]["instruction"], d_prompt)
+        self.assertEqual(essay["data"]["prompt"], e_prompt)
+        self.assertEqual(recording["data"]["data"]["turns"][0]["question"], d_prompt)
+        self.assertNotIn("word paragraph", recording["data"]["data"]["turns"][0]["question"])
+        self.assertEqual((essay["data"]["minWords"], essay["data"]["maxWords"]), (170, 200))
+        self.assertNotIn("Complete the final activity", recording["data"]["instruction"])
+        self.assertNotIn("Complete the final activity", essay["data"]["prompt"])
+
+    def test_teacher_led_final_activity_preserves_visible_self_study_practice_without_audio(self) -> None:
+        source = source_fixture()
+        d_prompt = (
+            "D. Listen to your teacher narrating his preferences. After that, tell him about yours. "
+            "Remember to include different phrases and also when and how you do your hobbies."
+        )
+        e_prompt = "E. Write a 30 - 50 word text talking about your best friend’s likes and preferences. Include all the likeness degrees."
+        slide = {
+            "number": 15,
+            "title": d_prompt,
+            "visibleTexts": [d_prompt, "Let’s Talk", e_prompt, "Let’s Write"],
+        }
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "15": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u04-s15-d",
+                                    "kind": "listening",
+                                    "prompt": "D. Listen to your teacher narrating his preferences... E. Write a 30 - 50 word text...",
+                                    "responseMode": "teacher-listening",
+                                    "reviewStatus": "blocked-awaiting-transcript",
+                                    "sourceEvidence": [d_prompt],
+                                    "blocker": "No original clip is available.",
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        generated = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") == [15]]
+        teacher_note = next(row for row in generated if row["data"]["type"] == "teacher_notes")
+        recording = next(row for row in generated if row["data"]["type"] == "recording")
+        essay = next(row for row in generated if row["data"]["type"] == "essay")
+        self.assertTrue(teacher_note["data"]["hiddenFromLearners"])
+        self.assertEqual(recording["data"]["instruction"], d_prompt)
+        self.assertEqual(essay["data"]["prompt"], e_prompt)
+        self.assertTrue(recording["data"]["aiGrading"])
+        self.assertTrue(essay["data"]["aiGrading"])
+        self.assertEqual((essay["data"]["minWords"], essay["data"]["maxWords"]), (30, 50))
+        self.assertFalse(any(row["data"]["type"] == "audio" for row in generated))
+        self.assertFalse(any(blocker["code"] == "exercise-review-listening-blocked" for blocker in plan["blockers"]))
+
+    def test_reviewed_reading_context_is_visible_before_extraction_activity(self) -> None:
+        source = source_fixture()
+        passage = (
+            "Survivors! 2 years ago, my family and I went to Thailand for spending our holidays. "
+            "We were having a good time and the city was giving us all what we expected. "
+            "When we arrived, we were having problems to find the hotel, but a woman helped us and we got safe. "
+            "The days were passing by while we were having the greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. "
+            "On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. "
+            "Everybody was running while we were trying to stay together in the middle of the terrible moment."
+        )
+        instruction = "C. Read the following paragraph and extract the sentences to put them under the corresponding function."
+        slide = {
+            "number": 13,
+            "title": "Survivors!",
+            "visibleTexts": [
+                passage,
+                instruction,
+                "Actions happening in the past. / Actions happening in the past interrupted by another one. Actions happening simultaneously in the past.",
+            ],
+        }
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "13": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u16-s13-c",
+                                    "kind": "reading-function-extraction",
+                                    "prompt": "Extract the sentences under the three past-action functions.",
+                                    "responseMode": "teacher-reviewed-extraction",
+                                    "reviewStatus": "reviewed",
+                                    "answerItems": [{"id": "past", "acceptedSourceQuotes": ["we were having a good time"]}],
+                                    "sourceEvidence": ["we were having a good time"],
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        generated = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") == [13]]
+        reading = next(row for row in generated if row["data"]["type"] == "text")
+        activity = next(row for row in generated if row["data"]["type"] == "essay")
+        self.assertIn("Survivors! 2 years ago", reading["data"]["content"])
+        self.assertIn("tsunami was approaching", reading["data"]["content"])
+        self.assertLess(reading["order"], activity["order"])
+
+    def test_flattened_published_charts_remain_visible_source_text_without_vocab_fragments(self) -> None:
+        source = source_fixture()
+        chart = (
+            "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. "
+            "Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. "
+            "Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses "
+            "2 Preferences + Relative clause Josh would love a company that can value his talent. "
+            "Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. "
+            "Relative clauses need to respect their principles even here."
+        )
+        slide = {
+            "number": 8,
+            "title": chart,
+            "visibleTexts": [chart, "Preference can have an extended meaning if we use the more complex grammar points to regular ones."],
+        }
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        generated = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") == [8]]
+        text = next(row for row in generated if row["data"]["type"] == "text")
+        self.assertIn("Non-finite clauses are built from", text["data"]["content"])
+        self.assertIn("-Infinitive Clauses", text["data"]["content"])
+        self.assertIn("Relative clauses need to respect", text["data"]["content"])
+        self.assertFalse(any(row["data"]["type"] == "vocabulary" for row in generated))
+        self.assertFalse(any(row["data"]["type"] == "teacher_notes" and row["data"].get("hiddenFromLearners") for row in generated))
+
+    def test_chart_example_word_does_not_hide_the_published_phrase_matrix(self) -> None:
+        source = source_fixture()
+        chart = (
+            "PHRASES MEANING EXAMPLE ONCE IN A BLUE MOON Something that is rare. "
+            "Events that are not as common as some others Once in a blue moon, Pete gets good grades. "
+            "HUNKY DORY It may be understood as something out of this world or wicked The presentations was pretty hunky dory, congrats!"
+        )
+        slide = {"number": 6, "title": chart, "visibleTexts": [chart, "Look at the phrases and discuss them with your teacher. Did you know them?"]}
+        source["deck"]["slides"] = [slide]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        generated = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") == [6]]
+        visible = next(row for row in generated if row["data"]["type"] == "text" and not row["data"].get("hiddenFromLearners"))
+        self.assertIn("ONCE IN A BLUE MOON", visible["data"]["content"])
+        self.assertIn("HUNKY DORY", visible["data"]["content"])
+
+    def test_standalone_conversation_d_and_e_prompts_keep_authored_recording_text(self) -> None:
+        source = source_fixture()
+        d_prompt = (
+            "D. Read the following sentences and organize the conversation by numbering the interventions. "
+            "After that, act out the conversation with your teacher."
+        )
+        e_prompt = (
+            "E. Read the following directions in order to improvise a conversation with your teacher. "
+            "Imagine you are applying for the administrative sales assistant position in a big company and you are already in the interview: "
+            "Introduce yourself; answer your teacher questions; talk about your experience; say thanks when you get the job."
+        )
+        source["deck"]["slides"] = [
+            {"number": 16, "title": "Interview dialogue", "visibleTexts": ["A: Welcome.", d_prompt]},
+            {"number": 17, "title": e_prompt, "visibleTexts": [e_prompt, "Let’s Talk"]},
+        ]
+        source["deck"]["slideCount"] = 2
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        generated = [row for row in plan["nextRows"] if row["data"].get("data", {}).get("sourceSlides") in ([16], [17])]
+        recordings = {
+            row["data"]["instruction"]
+            for row in generated
+            if row["data"]["type"] == "recording"
+        }
+        self.assertIn(d_prompt, recordings)
+        self.assertIn(e_prompt, recordings)
+        self.assertFalse(any("Organize the interview interventions" in instruction for instruction in recordings if instruction != d_prompt))
+
     def test_audio_manifest_with_wrong_lesson_or_slide_is_not_attached(self) -> None:
         source = source_fixture()
         source["deck"]["slides"][5].pop("media")
