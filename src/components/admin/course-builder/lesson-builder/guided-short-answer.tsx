@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { createPortal } from 'react-dom'
 import type { ShortAnswerItem } from '@/types/course-builder'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 
@@ -9,6 +10,8 @@ export interface GuidedShortAnswerActivityProps {
   items: ShortAnswerItem[]
   caseSensitive?: boolean
   context?: string
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
   onCompletionChange?: (completed: boolean) => void
 }
 
@@ -48,6 +51,8 @@ export function GuidedShortAnswerActivity({
   items,
   caseSensitive = false,
   context,
+  guidedActionTarget,
+  onGuidedActionPresence,
   onCompletionChange,
 }: GuidedShortAnswerActivityProps) {
   const classroomSync = useClassroomSync()
@@ -66,6 +71,7 @@ export function GuidedShortAnswerActivity({
   const feedbackTimerRef = useRef<number | null>(null)
   const previousSignatureRef = useRef(itemSignature)
   const completionCallbackRef = useRef(onCompletionChange)
+  const actionPresenceCallbackRef = useRef(onGuidedActionPresence)
   const answersRef = useRef(answers)
 
   answersRef.current = answers
@@ -73,6 +79,10 @@ export function GuidedShortAnswerActivity({
   useEffect(() => {
     completionCallbackRef.current = onCompletionChange
   }, [onCompletionChange])
+
+  useEffect(() => {
+    actionPresenceCallbackRef.current = onGuidedActionPresence
+  }, [onGuidedActionPresence])
 
   useEffect(() => {
     if (previousSignatureRef.current === itemSignature) return
@@ -163,6 +173,12 @@ export function GuidedShortAnswerActivity({
   const currentItem = items[currentIndex]
   const currentAnswer = currentItem ? answers[currentItem.id] || '' : ''
   const feedbackId = currentItem ? `guided-short-answer-feedback-${currentItem.id}` : undefined
+  const hasCheckAction = Boolean(currentItem && !feedback && !completed)
+
+  useEffect(() => {
+    actionPresenceCallbackRef.current?.(hasCheckAction)
+    return () => actionPresenceCallbackRef.current?.(false)
+  }, [hasCheckAction])
 
   const updateAnswer = (value: string) => {
     if (!currentItem || feedback || completed) return
@@ -200,6 +216,20 @@ export function GuidedShortAnswerActivity({
     event.preventDefault()
     checkAnswer()
   }
+
+  const checkAction = currentItem && !feedback ? (
+    <button
+      type="button"
+      onClick={checkAnswer}
+      disabled={!currentAnswer.trim()}
+      className="min-h-11 w-full rounded-full bg-[#245CFF] px-5 py-2 text-base font-semibold leading-6 text-white transition-colors hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+    >
+      Comprobar
+    </button>
+  ) : null
+  const renderedCheckAction = checkAction && guidedActionTarget
+    ? createPortal(checkAction, guidedActionTarget)
+    : checkAction
 
   if (!items.length) {
     return (
@@ -276,7 +306,7 @@ export function GuidedShortAnswerActivity({
           aria-invalid={isCorrect === false || undefined}
           autoComplete="off"
           className={
-            'min-h-12 w-full rounded-none border-x-0 border-t-0 border-b-2 bg-transparent px-1 py-2 text-base leading-6 text-[#10245C] outline-none transition-colors focus:border-[#245CFF] focus:outline-none focus:ring-0 focus-visible:border-[#245CFF] focus-visible:outline-none focus-visible:shadow-[0_2px_0_#245CFF] ' +
+            'min-h-12 w-full appearance-none rounded-none border-x-0 border-t-0 border-b-2 bg-transparent px-1 py-2 text-base leading-6 text-[#10245C] outline-none transition-colors focus:border-[#245CFF] focus:shadow-[0_2px_0_#245CFF] focus:outline-none focus:ring-0 focus-visible:border-[#245CFF] focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-[0_2px_0_#245CFF] ' +
             (isCorrect === true
               ? 'border-[#08775E] text-[#08775E]'
               : isCorrect === false
@@ -285,16 +315,7 @@ export function GuidedShortAnswerActivity({
           }
         />
 
-        {!feedback && (
-          <button
-            type="button"
-            onClick={checkAnswer}
-            disabled={!currentAnswer.trim()}
-            className="min-h-11 w-full rounded-full bg-[#245CFF] px-5 py-2 text-base font-semibold leading-6 text-white transition-colors hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-          >
-            Comprobar
-          </button>
-        )}
+        {renderedCheckAction}
 
         {feedback && (
           <p

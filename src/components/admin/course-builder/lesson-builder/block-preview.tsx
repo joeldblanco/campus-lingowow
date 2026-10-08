@@ -213,7 +213,13 @@ export function BlockPreview({
       case 'text':
         return <TextBlockPreview block={block as TextBlock} hideHeader={hideBlockHeader} />
       case 'video':
-        return <VideoBlockPreview block={block as VideoBlock} hideHeader={hideBlockHeader} />
+        return (
+          <VideoBlockPreview
+            block={block as VideoBlock}
+            hideHeader={hideBlockHeader}
+            guidedAppearance={guidedAppearance}
+          />
+        )
       case 'image':
         return <ImageBlockPreview block={block as ImageBlock} hideHeader={hideBlockHeader} />
       case 'audio':
@@ -306,6 +312,7 @@ export function BlockPreview({
             isExamMode={isExamMode}
             hideHeader={hideBlockHeader}
             guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
             onGuidedActionPresence={onGuidedActionPresence}
             onGuidedCompletionChange={onGuidedCompletionChange}
           />
@@ -462,7 +469,15 @@ function TextBlockPreview({ block, hideHeader }: { block: TextBlock; hideHeader?
 }
 
 // Video Block Preview
-function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeader?: boolean }) {
+function VideoBlockPreview({
+  block,
+  hideHeader,
+  guidedAppearance = false,
+}: {
+  block: VideoBlock
+  hideHeader?: boolean
+  guidedAppearance?: boolean
+}) {
   // Extract YouTube video ID for thumbnail
   const getYouTubeThumbnail = (url: string) => {
     if (!url) return null
@@ -481,7 +496,7 @@ function VideoBlockPreview({ block, hideHeader }: { block: VideoBlock; hideHeade
         </div>
       )}
 
-      {block.title && (
+      {block.title && !guidedAppearance && (
         <div>
           <h3 className="text-xl font-bold">{block.title}</h3>
         </div>
@@ -4841,6 +4856,7 @@ type ShortAnswerBlockPreviewProps = {
   isExamMode?: boolean
   hideHeader?: boolean
   guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
   onGuidedCompletionChange?: (completed: boolean) => void
 }
@@ -4853,14 +4869,14 @@ function ShortAnswerBlockPreview(props: ShortAnswerBlockPreviewProps) {
       (!classroom.isInClassroom || !classroom.isTeacher)
   )
 
-  useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
-
   return automatic ? (
     <GuidedShortAnswerActivity
       blockId={props.block.id}
       items={props.block.items || []}
       caseSensitive={props.block.caseSensitive}
       context={props.block.context}
+      guidedActionTarget={props.guidedActionTarget}
+      onGuidedActionPresence={props.onGuidedActionPresence}
       onCompletionChange={props.onGuidedCompletionChange}
     />
   ) : (

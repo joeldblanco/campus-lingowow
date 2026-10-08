@@ -7,6 +7,12 @@ import {
 } from './block-preview'
 import { ClassroomSyncContext } from '@/components/classroom/use-classroom-sync'
 
+vi.mock('next/image', () => ({
+  default: ({ src, alt }: { src: string; alt: string }) => (
+    <div role="img" aria-label={alt} data-src={src} />
+  ),
+}))
+
 vi.mock('@/components/lessons/essay-ai-grading', () => ({
   EssayAIGrading: ({
     label = 'Enviar',
@@ -127,6 +133,31 @@ describe('BlockPreview guided appearance', () => {
     expect(screen.getByText('Write about your routine.')).toHaveClass('text-base', 'leading-6')
     expect(screen.getByText('Record a short introduction.')).toHaveClass('text-base', 'leading-6')
     expect(screen.getByRole('button', { name: 'Reproducir audio' })).toBeInTheDocument()
+  })
+
+  it('hides the repeated video title in guided mode while keeping the authored thumbnail', () => {
+    const video = {
+      id: 'video',
+      type: 'video' as const,
+      order: 0,
+      title: 'Watch the conversation about introductions',
+      url: 'https://youtu.be/EMWmCb1CIdc',
+    }
+
+    const { rerender } = render(<BlockPreview guidedAppearance block={video} />)
+
+    expect(
+      screen.queryByRole('heading', { name: 'Watch the conversation about introductions' })
+    ).not.toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Watch the conversation about introductions' })).toHaveAttribute(
+      'data-src',
+      'https://img.youtube.com/vi/EMWmCb1CIdc/hqdefault.jpg'
+    )
+
+    rerender(<BlockPreview block={video} />)
+    expect(
+      screen.getByRole('heading', { name: 'Watch the conversation about introductions' })
+    ).toBeInTheDocument()
   })
 
   it('hydrates guided audio duration from an already-loaded media element', () => {

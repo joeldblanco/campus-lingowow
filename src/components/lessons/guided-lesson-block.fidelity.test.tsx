@@ -70,6 +70,99 @@ describe('guided lesson visual language fidelity', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('renders explicitly authored table groups as readable two-column panels', () => {
+    const toBeExplanation = 'Use To Be to describe identity, origin, and location.'
+    const otherVerbsExplanation = 'Use do or does to form questions with other verbs.'
+
+    const { container } = render(
+      <GuidedLessonBlock
+        block={{
+          id: 'unit2-reference',
+          type: 'structured-content',
+          order: 0,
+          title: 'Language reference',
+          subtitle: 'Presente Simple',
+          content: {
+            headers: ['To Be verb', '', 'Other verbs – Auxiliary Introduction', ''],
+            rows: [
+              ['John is American', 'Is he American?', 'She comes from England.', 'Does she come from England?'],
+              ['They are from Mexico', 'Where are they from?', 'You speak Italian', 'Do you speak Italian?'],
+              [toBeExplanation, '', otherVerbsExplanation, ''],
+            ],
+          },
+          data: {
+            tableGroups: [
+              {
+                key: 'to-be',
+                sourceHeader: 'To Be verb',
+                headers: ['To Be verb', ''],
+                rows: [
+                  ['John is American', 'Is he American?'],
+                  ['They are from Mexico', 'Where are they from?'],
+                  [toBeExplanation, ''],
+                ],
+              },
+              {
+                key: 'other-verbs',
+                sourceHeader: 'Other verbs – Auxiliary Introduction',
+                headers: ['Other verbs – Auxiliary Introduction', ''],
+                rows: [
+                  ['She comes from England.', 'Does she come from England?'],
+                  ['You speak Italian', 'Do you speak Italian?'],
+                  [otherVerbsExplanation, ''],
+                ],
+              },
+            ],
+          },
+        }}
+      >
+        fallback
+      </GuidedLessonBlock>
+    )
+
+    expect(container.querySelector('[data-guided-table-grouped]')).toBeInTheDocument()
+    expect(container.querySelectorAll('[data-guided-table-group]')).toHaveLength(2)
+    expect(container.querySelector('[data-guided-table-group="to-be"]')).toBeInTheDocument()
+    expect(container.querySelector('[data-guided-table-group="other-verbs"]')).toBeInTheDocument()
+    expect(container.querySelectorAll('[data-guided-table-group] table')).toHaveLength(2)
+    expect(screen.getByRole('table', { name: 'To Be verb' })).toBeVisible()
+    expect(screen.getByRole('table', { name: 'Other verbs – Auxiliary Introduction' })).toBeVisible()
+    expect(screen.getByText(toBeExplanation)).toBeVisible()
+    expect(screen.getByText(otherVerbsExplanation)).toBeVisible()
+    expect(container.querySelectorAll('[data-guided-table-group] thead th')).toHaveLength(4)
+    expect(container.querySelector('[data-guided-table-panels]')).toHaveClass('space-y-4')
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument()
+  })
+
+  it('keeps a numbered source column narrow while preserving its authored rows', () => {
+    render(
+      <GuidedLessonBlock
+        block={{
+          id: 'unit2-functions',
+          type: 'structured-content',
+          order: 0,
+          title: 'Functions and Examples',
+          content: {
+            headers: ['', 'Functions', 'Examples'],
+            rows: [
+              ['1', 'Talk about origins.', 'I am from Spain.'],
+              ['2', 'State nationalities.', 'She is Spanish.'],
+              ['3', 'Talk about language.', 'We speak English.'],
+            ],
+          },
+        }}
+      >
+        fallback
+      </GuidedLessonBlock>
+    )
+
+    const table = screen.getByRole('table', { name: 'Functions and Examples' })
+    expect(table.querySelector('thead th:first-child')).toHaveClass('w-12', 'min-w-12')
+    expect(table.querySelector('tbody td:first-child')).toHaveClass('w-12', 'min-w-12')
+    expect(table.querySelectorAll('tbody tr')).toHaveLength(3)
+    expect(screen.getByText('3')).toBeVisible()
+  })
+
   it('shows the authored grammar transformation and keeps the negative variant below it', () => {
     const { container } = render(
       <GuidedLessonBlock

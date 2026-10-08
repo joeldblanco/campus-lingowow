@@ -30,15 +30,23 @@ const answerItems = [
 
 describe('GuidedShortAnswerActivity', () => {
   it('accepts a reviewed contraction with typographic punctuation without losing negation', () => {
-    render(<GuidedShortAnswerActivity blockId="grammar-variant" items={[{
-      id: 'negative', question: 'Make the sentence negative', correctAnswer: 'She does not come from France.',
-      acceptedAnswers: ["She doesn't come from France."],
-    }]} />)
+    render(
+      <GuidedShortAnswerActivity
+        blockId="grammar-variant"
+        items={[{
+          id: 'negative',
+          question: 'Make the sentence negative',
+          correctAnswer: 'She does not come from France.',
+          acceptedAnswers: ["She doesn't come from France."],
+        }]}
+      />
+    )
     const input = screen.getByRole('textbox', { name: 'Make the sentence negative' })
     fireEvent.change(input, { target: { value: 'She doesn’t come from France' } })
     fireEvent.keyDown(input, { key: 'Enter' })
     expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
   })
+
   it('accepts reviewed answer variants and completes after the 900ms feedback pause', () => {
     vi.useFakeTimers()
     const onCompletionChange = vi.fn()
@@ -75,12 +83,67 @@ describe('GuidedShortAnswerActivity', () => {
     )
 
     const input = screen.getByRole('textbox', { name: 'Type the code' })
+    expect(input).toHaveClass(
+      'focus:outline-none',
+      'focus-visible:outline-none',
+      'focus-visible:ring-0',
+      'focus:shadow-[0_2px_0_#245CFF]'
+    )
     fireEvent.change(input, { target: { value: 'abc' } })
     fireEvent.click(screen.getByRole('button', { name: 'Comprobar' }))
 
     expect(screen.getByRole('status')).toHaveTextContent('Respuesta correcta: AbC')
     expect(screen.queryAllByRole('button', { name: /Anterior|Siguiente|Reintentar/ })).toHaveLength(0)
     expect(screen.queryAllByRole('button', { name: 'Comprobar' })).toHaveLength(0)
+  })
+
+  it('ports the guided check action to the footer target and reports its presence', () => {
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+    const onGuidedActionPresence = vi.fn()
+
+    render(
+      <GuidedShortAnswerActivity
+        blockId="short-answer-footer"
+        items={[{ id: 'first', question: 'Type the answer', correctAnswer: 'one' }]}
+        guidedActionTarget={target}
+        onGuidedActionPresence={onGuidedActionPresence}
+      />
+    )
+
+    expect(target).toContainElement(screen.getByRole('button', { name: 'Comprobar' }))
+    expect(document.querySelector('[data-guided-short-answer] > section button')).toBeNull()
+    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(true)
+
+    fireEvent.change(screen.getByRole('textbox', { name: 'Type the answer' }), {
+      target: { value: 'one' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Comprobar' }))
+
+    expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
+    expect(target.querySelector('button')).toBeNull()
+    expect(onGuidedActionPresence).toHaveBeenLastCalledWith(false)
+  })
+
+  it('forwards the guided footer target through the block preview', () => {
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+
+    render(
+      <BlockPreview
+        guidedAppearance
+        guidedActionTarget={target}
+        block={{
+          id: 'short-answer-preview',
+          type: 'short_answer',
+          order: 0,
+          items: [{ id: 'first', question: 'Type the answer', correctAnswer: 'one' }],
+        }}
+      />
+    )
+
+    expect(target.querySelector('button')).toHaveTextContent('Comprobar')
+    expect(document.querySelector('[data-guided-short-answer] > section button')).toBeNull()
   })
 
   it('advances one question at a time, retains responses, and completes after the final answer', () => {
