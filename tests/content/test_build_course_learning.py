@@ -307,6 +307,8 @@ class BuildCourseLearningTests(unittest.TestCase):
         row = rows[0]
         self.assertEqual(row["data"]["type"], "text")
         self.assertEqual(row["data"]["title"], "Communicative Function")
+        self.assertEqual(row["title"], "Communicative Function")
+        self.assertEqual(row["data"]["data"]["guidedTitle"], "Communicative Function")
         self.assertEqual(row["data"]["sourceRole"], "learning-goal")
         self.assertEqual(row["data"]["content"].count(goal), 1)
         self.assertEqual(row["data"]["content"].count(competency), 1)
@@ -544,6 +546,58 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertIn("Authored audio transcript", context)
         self.assertIn("I come from Peru.", context)
 
+    def test_incidental_listen_phrase_in_reading_does_not_require_audio(self) -> None:
+        slide = {
+            "number": 13,
+            "title": "Memories",
+            "visibleTexts": [
+                "Memories! I remember my childhood. We used to play by the river and listen to good music.",
+                "C. Read the following paragraph and state if the sentences are true or false.",
+            ],
+        }
+        blockers: list[dict] = []
+        specs = builder._native_block_specs(
+            source_fixture(),
+            slide,
+            LESSON_ID,
+            builder._source_digest(source_fixture()),
+            None,
+            None,
+            None,
+            blockers,
+        )
+
+        self.assertFalse(any(native_type == "audio" for native_type, _ in specs))
+        self.assertFalse(any(blocker["code"].startswith("audio-") for blocker in blockers))
+
+    def test_teacher_led_vocabulary_prompt_is_archived_without_fabricated_audio(self) -> None:
+        slide = {
+            "number": 6,
+            "title": "Vocabulary",
+            "visibleTexts": [
+                "Listen and repeat after your teacher.",
+                "FARMER",
+                "FIREFIGHTER",
+                "TEACHER",
+            ],
+        }
+        blockers: list[dict] = []
+        specs = builder._native_block_specs(
+            source_fixture(),
+            slide,
+            LESSON_ID,
+            builder._source_digest(source_fixture()),
+            None,
+            None,
+            None,
+            blockers,
+        )
+
+        teacher_note = next(payload for native_type, payload in specs if native_type == "teacher_notes")
+        self.assertIn("Listen and repeat after your teacher.", teacher_note["content"])
+        self.assertFalse(any(native_type == "audio" for native_type, _ in specs))
+        self.assertFalse(any(blocker["code"].startswith("audio-") for blocker in blockers))
+
     def test_explicit_authored_answer_key_is_preserved_when_present(self) -> None:
         source = source_fixture(complete_audio=True)
         source["deck"]["slideCount"] = 9
@@ -739,6 +793,37 @@ class BuildCourseLearningTests(unittest.TestCase):
         serialized = json.dumps(structured["data"]["content"], ensure_ascii=False)
         self.assertNotIn("{'text'", serialized)
         self.assertNotIn('"paragraphs"', serialized)
+        self.assertEqual(
+            structured["data"]["data"]["tableGroups"],
+            [
+                {
+                    "key": "to-be",
+                    "sourceHeader": "To Be verb",
+                    "headers": ["To Be verb", ""],
+                    "rows": [
+                        ["John is American", "Is he American?"],
+                        ["They are from Mexico", "Where are they from?"],
+                        [
+                            "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
+                            "",
+                        ],
+                    ],
+                },
+                {
+                    "key": "other-verbs",
+                    "sourceHeader": "Other verbs – Auxiliary Introduction",
+                    "headers": ["Other verbs – Auxiliary Introduction", ""],
+                    "rows": [
+                        ["She comes from England.", "Does she come from England?"],
+                        ["You speak Italian", "Do you speak Italian?"],
+                        [
+                            "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. Do - I/You/We/They Does - He/She/ It (3rd person singular) *Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
+                            "",
+                        ],
+                    ],
+                },
+            ],
+        )
 
         context = next(
             row
@@ -1341,6 +1426,8 @@ class BuildCourseLearningTests(unittest.TestCase):
             ],
         )
         self.assertEqual(short_answer["data"]["title"], "Transforma la frase.")
+        self.assertEqual(short_answer["title"], "Transforma la frase.")
+        self.assertEqual(short_answer["data"]["data"]["guidedTitle"], "Transforma la frase.")
         self.assertEqual(short_answer["data"]["context"], "Convierte cada frase en pregunta y negativa.")
         self.assertEqual(
             [item["sourcePrompt"] for item in short_answer["data"]["items"]],

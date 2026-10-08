@@ -596,12 +596,49 @@ def _media_kind(item: Mapping[str, Any]) -> str:
     return kind
 
 
+def _is_teacher_led_listening_prompt(text: str) -> bool:
+    lowered = _normalise(text).casefold()
+    if not lowered:
+        return False
+    return bool(
+        re.search(r"\b(?:listen|hear)\s+to\s+(?:your|the)\s+teacher\b", lowered)
+        or re.search(r"\brepeat\b[^.!?\n]{0,100}\b(?:after|with)\s+(?:your|the)\s+teacher\b", lowered)
+        or re.search(r"\bread\b[^.!?\n]{0,100}\baloud\s+to\s+(?:your|the)\s+teacher\b", lowered)
+    )
+
+
+def _teacher_led_listening_prompts(slide: Mapping[str, Any]) -> list[str]:
+    return [
+        value
+        for value in _meaningful_texts(slide)
+        if _is_teacher_led_listening_prompt(value)
+    ]
+
+
 def _is_audio_required(slide: Mapping[str, Any]) -> bool:
-    if any(_media_kind(item) == "audio" for item in _media(slide)):
-        return True
-    lowered = " ".join(_meaningful_texts(slide)).casefold()
-    return bool(re.search(r"\b(?:listen|audio|hear)\b", lowered)) and (
-        "audio" in lowered or "listen to" in lowered or "listen for" in lowered
+    media_audio = [item for item in _media(slide) if _media_kind(item) == "audio"]
+    meaningful = _meaningful_texts(slide)
+    if media_audio:
+        # A real source clip is authoritative. Audio icons are only evidence
+        # of a possible listening prompt; teacher-led and incidental prose
+        # still needs to pass the textual listening check below.
+        if any(not _is_audio_placeholder(item) for item in media_audio):
+            return True
+        if not meaningful:
+            return True
+    lowered = " ".join(meaningful).casefold()
+    if not lowered or _is_teacher_led_listening_prompt(lowered):
+        return False
+    # Do not turn a reading sentence such as "listen to good music" into a
+    # missing-audio blocker. Require a source-listening object or action.
+    return bool(
+        re.search(
+            r"\blisten\s+(?:carefully\s+)?to\s+(?:(?:the|an?)\s+)?(?:audio|recording|conversation|dialogue|speaker|people\b[^.!?\n]{0,50}\b(?:talk|speak|say)|[a-z]+\s+[^.!?\n]{0,50}\b(?:talk|speak|say))",
+            lowered,
+        )
+        or re.search(r"\blisten\s+for\s+(?:the\s+)?(?:words?|information|details?|sentences?|answer)", lowered)
+        or re.search(r"\blisten\s+and\s+(?:answer|choose|identify|write|state|complete|select)", lowered)
+        or re.search(r"\bhear\s+(?:the\s+)?(?:audio|recording|conversation|dialogue)", lowered)
     )
 
 
@@ -2275,6 +2312,50 @@ def _grammar_worksheet_projection(
     return None
 
 
+def _table_group_key(source_header: str, index: int) -> str:
+    normalized = _normalise(source_header).casefold().replace("–", "-").replace("—", "-")
+    if normalized.startswith("to be"):
+        return "to-be"
+    if normalized.startswith("other verbs"):
+        return "other-verbs"
+    slug = re.sub(r"[^a-z0-9]+", "-", normalized).strip("-")
+    return slug or f"table-group-{index + 1}"
+
+
+def _table_groups(tables: Sequence[Sequence[Sequence[str]]]) -> list[dict[str, Any]]:
+    """Expose explicitly paired source columns for the guided table renderer."""
+
+    groups: list[dict[str, Any]] = []
+    for table in tables:
+        if len(table) < 2:
+            continue
+        source_headers = list(table[0])
+        paired_columns = [
+            column
+            for column in range(0, len(source_headers) - 1, 2)
+            if _normalise(source_headers[column]) and not _normalise(source_headers[column + 1])
+        ]
+        if len(paired_columns) < 2:
+            continue
+        for group_index, column in enumerate(paired_columns):
+            source_header = _normalise(source_headers[column])
+            groups.append(
+                {
+                    "key": _table_group_key(source_header, group_index),
+                    "sourceHeader": source_header,
+                    "headers": [source_headers[column], source_headers[column + 1]],
+                    "rows": [
+                        [
+                            row[column] if column < len(row) else "",
+                            row[column + 1] if column + 1 < len(row) else "",
+                        ]
+                        for row in table[1:]
+                    ],
+                }
+            )
+    return groups
+
+
 def _exercise_review_ai_context(
     slide: Mapping[str, Any],
     item: Mapping[str, Any],
@@ -2787,6 +2868,20 @@ def _native_block_specs(
                 },
             )
         ]
+    teacher_listening_prompts = _teacher_led_listening_prompts(slide)
+    if teacher_listening_prompts and not audio_required:
+        specs.append(
+            (
+                "teacher_notes",
+                {
+                    **common,
+                    "content": _readable_html(teacher_listening_prompts),
+                    "format": "html",
+                    "hiddenFromLearners": True,
+                    "sourceRole": "teacher-guided-listening",
+                },
+            )
+        )
     native_paragraphs = _native_paragraphs(slide)
     if native_paragraphs:
         common["nativeParagraphs"] = copy.deepcopy(native_paragraphs)
@@ -2823,6 +2918,7 @@ def _native_block_specs(
         worksheet_metadata: dict[str, Any] | None = None
         if worksheet_projection is not None:
             learner_headers, learner_rows, worksheet_metadata = worksheet_projection
+        table_groups = _table_groups(tables)
         specs.append(
             (
                 "structured-content",
@@ -2831,6 +2927,7 @@ def _native_block_specs(
                     "content": {"headers": learner_headers, "rows": learner_rows},
                     "tables": copy.deepcopy(tables),
                     **({"worksheetProjection": worksheet_metadata} if worksheet_metadata else {}),
+                    **({"data": {"tableGroups": table_groups}} if table_groups else {}),
                 },
             )
         )
@@ -3260,11 +3357,13 @@ def _native_row(
     # ``mapContentToBlock`` reads the nested data object and does not expose a
     # Prisma row's top-level title. Store a concise authored label there so the
     # guided viewer can name the step without rendering the full slide prompt.
-    data["title"] = _native_row_title(slide, native_type, payload)
+    guided_title = _native_row_title(slide, native_type, payload)
+    metadata["guidedTitle"] = guided_title
+    data["title"] = guided_title
     data["data"] = metadata
     return {
         "id": row_id,
-        "title": title,
+        "title": guided_title,
         "order": order,
         "contentType": "RICH_TEXT",
         "lessonId": lesson_id,
