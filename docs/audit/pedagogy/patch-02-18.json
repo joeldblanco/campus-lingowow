@@ -1925,6 +1925,60 @@
           "after": "She is opening her own business this month. My baby is due this Friday. She is attending her first day of school tomorrow."
         }
       ]
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "rowId": "course-guided-cmk0vijvj0001i904j8k1di8d-recording-15-d-listen-to-your-teacher-narrating-his-preferences-after-th-037",
+      "reason": "Make the preferences role-play usable in self-study with topic-specific turns and an explicit dual-mode scaffold.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "conversation"
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": [
+            {
+              "id": "favorite-hobby",
+              "question": "Tell your partner about one hobby you love and say when and how you do it. Then ask what hobby they love.",
+              "answerPrompt": "Por tu cuenta, interpreta ambos papeles; con tu profesora, alternen. Model: I love [hobby]. I do it [time/place]. What hobby do you love?"
+            },
+            {
+              "id": "preference-degree",
+              "question": "Describe one hobby you like, one you are fond of, and one you are crazy about; ask your partner about one preference.",
+              "answerPrompt": "Model: I like [hobby], I’m fond of [hobby], and I’m crazy about [hobby]. What are you fond of?"
+            },
+            {
+              "id": "hobby-routine",
+              "question": "Explain when and how you do one hobby, then ask your partner when and how they do one.",
+              "answerPrompt": "Model: I [verb] on [day] at [place]. When and how do you [verb]?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Describe three hobbies with different preference phrases, say when and how you do them, and ask your partner two questions."
+        }
+      ]
     }
   ]
 }
