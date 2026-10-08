@@ -140,9 +140,9 @@ describe('authored U19–37 pedagogical patch', () => {
     const after = applyPatch(baseline, patchDocument)
     const rows = new Map(after.plans.flatMap((plan) => plan.nextRows.map((row) => [row.id, row])))
     const oralPatches = patchDocument.patches.filter((patch) =>
-      patch.changes.some((change) => change.path.join('.') === 'data.turns')
+      patch.changes.some((change) => change.path.join('.') === 'data.turns' && Array.isArray(change.after))
     )
-    expect(oralPatches.length).toBeGreaterThanOrEqual(19)
+    expect(oralPatches.length).toBe(19)
     for (const patch of oralPatches) {
       const turns = rows.get(patch.rowId).data.data.turns
       expect(turns.length).toBeGreaterThanOrEqual(3)
