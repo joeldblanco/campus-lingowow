@@ -16,6 +16,7 @@ import { EssayAIGrading } from './essay-ai-grading'
 import { RecordingAIGrading } from './recording-ai-grading'
 import { cn } from '@/lib/utils'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
+import recordingControlStyles from './unit1-production.module.css'
 
 import { getUnit1ProductionRole } from '@/lib/unit1-production-role'
 export { getUnit1ProductionRole, isUnit1ProductionBlock } from '@/lib/unit1-production-role'
@@ -582,14 +583,16 @@ function ConversationProduction({
               aria-label={isRecording ? 'Detener grabación' : 'Grabar respuesta'}
               onClick={isRecording ? stopRecording : startRecording}
               className={cn(
-                'relative flex min-h-28 min-w-28 flex-col items-center justify-center gap-1 rounded-full border-2 px-4 text-base font-semibold shadow-[0_0_0_12px_rgba(238,232,250,0.8)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C]',
+                recordingControlStyles.recordButton,
+                'relative flex shrink-0 flex-col items-center justify-center gap-1 rounded-full border-2 text-base font-semibold shadow-[0_0_0_12px_rgba(238,232,250,0.8)] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C]',
                 isRecording
                   ? 'border-[#C13E50] bg-white text-[#C13E50]'
                   : 'border-[#245CFF] bg-[#245CFF] text-white hover:bg-[#10245C]'
               )}
+              data-unit1-recording-control="circle"
             >
               {isRecording ? <Square className="h-8 w-8" aria-hidden="true" /> : <Mic className="h-8 w-8" aria-hidden="true" />}
-              <span>{isRecording ? 'Detener' : 'Grabar respuesta'}</span>
+              <span className={recordingControlStyles.recordingLabel}>{isRecording ? 'Detener' : 'Grabar respuesta'}</span>
               {isRecording && <span className="sr-only">Grabando</span>}
             </button>
             <span className="text-base leading-6 text-[#506187]">Turno {turnIndex + 1} de {turns.length}</span>

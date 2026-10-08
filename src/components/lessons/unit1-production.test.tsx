@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { Block } from '@/types/course-builder'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
 import { Unit1Production, isUnit1ProductionBlock } from './unit1-production'
+import recordingControlStyles from './unit1-production.module.css'
 
 type EssayGradingProps = {
   label?: string
@@ -248,8 +249,12 @@ describe('Unit 1 conversation production', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Grabar respuesta' }))
+    const recordButton = screen.getByRole('button', { name: 'Grabar respuesta' })
+    expect(recordButton).toHaveClass(recordingControlStyles.recordButton)
+    expect(recordButton).toHaveAttribute('data-unit1-recording-control', 'circle')
+    fireEvent.click(recordButton)
     await waitFor(() => expect(screen.getByRole('button', { name: 'Detener grabación' })).toBeInTheDocument())
+    expect(screen.getByRole('button', { name: 'Detener grabación' })).toHaveClass(recordingControlStyles.recordButton)
     fireEvent.click(screen.getByRole('button', { name: 'Detener grabación' }))
     await waitFor(() => expect(target.querySelector('button')).toHaveTextContent('Enviar respuesta'))
     expect(onRecordingStateChange).toHaveBeenCalledWith(true)

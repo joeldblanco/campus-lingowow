@@ -1,0 +1,12 @@
+.recordButton {
+  width: 9rem;
+  height: 9rem;
+  min-width: 9rem;
+  min-height: 9rem;
+  padding: 0;
+}
+
+.recordingLabel {
+  max-width: 7.5rem;
+  text-align: center;
+}

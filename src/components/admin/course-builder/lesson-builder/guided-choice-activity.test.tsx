@@ -6,6 +6,7 @@ import {
   WRONG_FEEDBACK_MS,
   type GuidedChoiceQuestion,
 } from './guided-choice-activity'
+import motion from './guided-choice-activity.module.css'
 
 const questions: GuidedChoiceQuestion[] = [
   {
@@ -45,7 +46,10 @@ describe('GuidedChoiceActivity', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Her' }))
 
     expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
-    expect(screen.getByRole('button', { name: 'Her' })).toBeDisabled()
+    const correctChoice = screen.getByRole('button', { name: 'Her' })
+    expect(correctChoice).toBeDisabled()
+    expect(correctChoice).toHaveAttribute('data-guided-choice-celebrating', 'true')
+    expect(correctChoice).toHaveClass(motion.correctChoice)
     expect(screen.getByText('She is Ana. ___ name is Ana.')).toBeInTheDocument()
 
     act(() => vi.advanceTimersByTime(CORRECT_FEEDBACK_MS - 1))
@@ -70,6 +74,9 @@ describe('GuidedChoiceActivity', () => {
     expect(container.querySelector('[data-guided-choice="her"]')).toHaveAttribute(
       'data-guided-choice-state',
       'correct'
+    )
+    expect(container.querySelector('[data-guided-choice="her"]')).not.toHaveAttribute(
+      'data-guided-choice-celebrating'
     )
     expect(
       screen.queryByRole('button', { name: /comprobar|siguiente|anterior|reintentar/i })

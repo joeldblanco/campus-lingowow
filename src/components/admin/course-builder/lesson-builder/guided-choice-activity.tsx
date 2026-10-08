@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Check, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import motion from './guided-choice-activity.module.css'
 
 export interface GuidedChoice {
   id: string
@@ -125,18 +126,36 @@ function choiceClassName(state: ChoiceState, isInteractive: boolean) {
   }
 }
 
-function ChoiceMarker({ state }: { state: ChoiceState }) {
+function ChoiceMarker({ state, celebrate = false }: { state: ChoiceState; celebrate?: boolean }) {
   const markerClass = cn(
     'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold leading-none',
     state === 'correct' && 'border-[#08775E] bg-[#08775E] text-white',
     state === 'wrong' && 'border-[#C13E50] bg-[#C13E50] text-white',
     state === 'selected' && 'border-[#10245C] bg-[#10245C] text-white',
-    (state === 'idle' || state === 'neutral') && 'border-[#506187]/50 bg-white text-transparent'
+    (state === 'idle' || state === 'neutral') && 'border-[#506187]/50 bg-white text-transparent',
+    celebrate && motion.correctMarker
   )
 
   return (
     <span className={markerClass} aria-hidden="true">
-      {state === 'correct' && <Check className="h-4 w-4" strokeWidth={2.5} />}
+      {state === 'correct' && (
+        <svg
+          viewBox="0 0 24 24"
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            d="M20 6 9 17l-5-5"
+            pathLength="1"
+            className={celebrate ? motion.correctCheckPath : undefined}
+          />
+        </svg>
+      )}
       {state === 'wrong' && <X className="h-4 w-4" strokeWidth={2.5} />}
       {state === 'selected' && <span className="h-2.5 w-2.5 rounded-full bg-white" />}
     </span>
@@ -385,6 +404,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
   const renderChoiceButton = (choice: GuidedChoice) => {
     const state = choiceState(choice.id, currentQuestion, selectedChoiceId, currentFeedback)
     const label = stateLabel(state)
+    const isCorrectSelection = state === 'correct' && selectedChoiceId === choice.id
 
     return (
       <button
@@ -395,11 +415,15 @@ export function GuidedChoiceActivity({ questions, onCompletionChange }: GuidedCh
         aria-label={choice.text}
         aria-pressed={selectedChoiceId === choice.id}
         aria-describedby={currentFeedback ? feedbackId : undefined}
-        className={choiceClassName(state, !currentFeedback && !completed)}
+        className={cn(
+          choiceClassName(state, !currentFeedback && !completed),
+          isCorrectSelection && motion.correctChoice
+        )}
         data-guided-choice={choice.id}
         data-guided-choice-state={state}
+        data-guided-choice-celebrating={isCorrectSelection ? 'true' : undefined}
       >
-        <ChoiceMarker state={state} />
+        <ChoiceMarker state={state} celebrate={isCorrectSelection} />
         <span className="min-w-0 flex-1 break-words">{choice.text}</span>
         {label && (
           <span className="shrink-0 text-sm font-semibold" aria-hidden="true">
