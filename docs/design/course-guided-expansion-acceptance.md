@@ -1,88 +1,56 @@
-# Lingowow Esencial — course expansion acceptance
+# Course-guided expansion acceptance report
 
-Approved references: `graphic-guide-v1/README.md`,
-`content-format-mockups/v3/README.md`, the deployed Unit 1 dual-mode compositions,
-and the user's 2026-10-07 recording reference
-`C:/Users/ACER/AppData/Local/Temp/codex-clipboard-0cf09da4-193e-4e26-8c76-23995ede84b2.png`.
+**Date:** 2026-10-08
+**Course:** `cmjnr0g5x0001jp04fsw2fejs`
+**Scope:** the guided runtime and the final materialized plans for Units 2–52. Unit 1 remains governed by its authored pilot environment.
 
-## Required compositions before implementation
+## Decision
 
-- Correct selected answer: retain the full-width answer surface and readable
-  positive state; add a short emphasis animation and animated check. Do not
-  animate unselected answers or change assessment/navigation semantics.
-- Recording: preserve the speaking environment and task placement; use an
-  exactly circular microphone control with the visible label fitted inside it.
-  Recording, stopping and retry states remain accessible. No microphone access
-  is needed for screenshot validation.
-- Other course units: full illustrated environments occupy the lesson canvas,
-  excluding header/sidebar; white fades protect the live content without a pasted
-  rectangle. Keep one task heading, concise instruction, one primary action,
-  secondary skip and explicit previous-step navigation.
-- Preserve authored material and original audio URLs. Scene selection must not
-  invent a character identity or use Unit 1's Peter/Carl for unrelated readings.
-  Related vocabulary parts may retain their environment; unrelated scenes must
-  use different environments within each lesson.
-- Keep mobile content legible above the illustration. Preserve teacher/classroom
-  operation, student progress and unfinished drafts; completed review starts at
-  the beginning. Respect reduced motion.
+The current visual evidence is **partially accepted for local preview review**. The scene allocation gate is green: the final 29-entry registry supports every audited plan without an unrelated environment repeat. The representative responsive grammar recheck is green after the contained table scroll treatment. The evidence does not certify the public shell, deployment, or Units 53–56; those remain open.
 
-## Delivery gate
+This report records actual local-preview captures and links the external side-by-side comparison. The mockups and guide plates remain references; they are not substituted for actual runtime captures.
 
-Unit 1 controls were rendered at desktop 1920×1080 and mobile 390×844.
-Actual screenshots are saved in
-`C:/Users/ACER/.codex/visualizations/2026/10/03/01a102c6-28e9-7d12-ab7a-d8b58f36616a/course-guided-expansion/`:
+## Approved references and requirements
 
-| Requirement | Evidence | Result |
-| --- | --- | --- |
-| Circular recording control, unchanged environment | record-circle-desktop.png; record-circle-mobile.png | 144×144 control; readable label; pass |
-| Correct selected answer emphasis and check | correct-choice-desktop.png; correct-choice-mobile.png | Visible green halo and animated check; pass |
-| Reduced-motion preference | Real Chrome emulated media; computed animation values | Choice surface/check animations disabled; pass |
-| Recording permissions | No microphone control activated during visual inspection | No unexpected permission requested |
+The acceptance baseline is the approved [graphic guide v1](graphic-guide-v1/README.md), its [scene and footer requirements](graphic-guide-v1/scene-acceptance-v5.md), and [content-format mockups v3](content-format-mockups/v3/README.md). The exact boards used in the comparison are:
 
-The temporary preview reproduces lesson content without the application shell;
-public dev comparisons and a reference/actual comparison sheet remain pending.
-Course expansion content inventory is captured in `docs/audit/`; native source
-tables, figures and audio alignment are still being reviewed. Full technical
-validation and all remaining course compositions are pending. This is a partial
-acceptance record, not a claim that the course expansion is complete.
+- [01 · Basic practice](content-format-mockups/v3/01-basic-practice.webp) for choice, true/false, matching, and completion tasks.
+- [02 · Advanced practice](content-format-mockups/v3/02-advanced-practice.webp) for short answer, ordering, classification, and multi-select.
+- [03 · Language](content-format-mockups/v3/03-language.webp) for vocabulary, grammar, tables, and visualizers.
+- [04 · Multimedia](content-format-mockups/v3/04-multimedia.webp) for reading, meaningful images, video, and audio.
+- [05 · Production](content-format-mockups/v3/05-production.webp) for writing and recording.
+- [06 · Resources and structure](content-format-mockups/v3/06-resources-structure.webp) for resource and grouping formats.
+- [Canonical characters](graphic-guide-v1/characters.webp), [scene family](graphic-guide-v1/scenes-ui.webp), and [runtime tokens](graphic-guide-v1/tokens.json) for identity, painterly treatment, color, type, spacing, focus, and control dimensions.
 
-## Unit 2 actual review — 8 October, changes required
+The required composition is a full painted environment with a soft white content fade; one discrete unit cue, one concise task heading, and the prompt in body text; real DOM content and controls; one cobalt primary footer action plus skip/secondary controls; and mobile text, response, feedback, and footer before the illustration. Body text remains at least 16px, task headings use the approved 32px desktop / 26px mobile scale, and targets remain at least 44px. Tables preserve source headers and relationships, use a narrow index column where present, and keep mobile overflow inside the table with a visible cue instead of chopping words. Source media, nested authored material, audio, practice state, and teacher classroom behavior remain content/runtime responsibilities rather than rasterized mockup content.
 
-The composed Unit 2 plan was rendered in Chrome at desktop 1521×667 and mobile
-390×844 against the approved content-format v3 requirements. The original flags
-photograph and both original MP3s load. Listening presents four vertically stacked
-choices and checks/advances automatically after selection; mobile text is readable.
-Actual evidence in the directory above: `unit2-vocabulary-desktop-before.png`,
-`unit2-table-desktop-before.png`, `unit2-short-answer-desktop-before.png`,
-`unit2-listening-mobile.png`. The file `unit2-listening-correct-desktop.png` captures
-the next question after the feedback timer, not the correct-answer animation.
+The guide also requires adult semi-realistic painterly scenes, stable identities when a source needs a character, no invented personal identities, no decorative UI baked into assets, accessible names and focus, and a keyboard/click alternative for drag interactions. The course adapter uses semantic topics for non-Unit 1 environments; Unit 1 authored character roles remain special-cased.
 
-Failed requirements: duplicate objective prose, generic/overlong titles, narrow
-four-column teaching charts, a static blank worksheet before its interactive
-equivalent, redundant exercise context, and the native black short-answer focus
-outline. The short-answer primary action also needs the shared footer placement.
-These discrepancies are being repaired; this plan is not visually accepted or
-published. Teacher and final mobile/table comparisons remain pending.
+## Actual evidence matrix
 
-## Follow-up actual checks — 8 October
+The actual captures below were taken from the local guided preview at desktop `1536×864` and mobile `390×844`, unless the evidence row says otherwise. The parent reviewed and saved the Unit 37 table captures. The [external comparison HTML](C:/Users/ACER/.codex/visualizations/2026/10/03/01a102c6-28e9-7d12-ab7a-d8b58f36616a/course-guided-expansion/advanced/course-guided-expansion-acceptance-comparison.html) shows each approved reference beside the corresponding actual desktop and mobile captures.
 
-The Unit 2 duplicate goals, four-column chart, duplicated blank worksheet,
-exercise context card, black input outline and duplicated primary action have
-been repaired. `unit2-grammar-desktop.png`, `unit2-grammar-mobile.png`,
-`unit2-worked-example-desktop.png` and `unit2-short-answer-desktop.png` show the
-actual implementation. These checks do not establish complete source coverage.
+| Screen family | Approved reference | Actual evidence | Result |
+|---|---|---|---|
+| Grammar and structured tables | `content-format-mockups/v3/03-language.webp` | Units 33, 38, 44, and 48 final recheck captures in the external `advanced/` folder; Unit 37 table desktop/mobile captures in the course folder | **Pass for checked states.** Desktop tables remain complete; mobile keeps words intact, shows the scroll cue, and exposes the right columns after horizontal movement. |
+| Reading | `content-format-mockups/v3/04-multimedia.webp` | `advanced/fresh-unit33-reading-*`, `fresh-unit38-reading-*`, `fresh-unit44-reading-*`, and `fresh-unit48-reading-*` | **Pass for checked states.** Source text stays readable above the illustration on mobile; lower captures show the scene and controls. |
+| Choice and listening exercises | `content-format-mockups/v3/01-basic-practice.webp` and `graphic-guide-v1/auto-listening-reference.png` | `advanced/fresh-unit33-exercise-*`, `fresh-unit38-exercise-*`, `fresh-unit44-exercise-*`, `fresh-unit48-exercise-*`, plus the Unit 2 listening/choice captures | **Pass for checked representative states.** Prompts, options, audio, and the single primary action remain visible. |
+| Short answer and production | `content-format-mockups/v3/02-advanced-practice.webp` and `content-format-mockups/v3/05-production.webp` | `unit2-short-answer-desktop.png`, `unit2-short-answer-mobile.png`, `unit5-recording-desktop.png`, `unit5-original-family-desktop.png`, `unit5-original-family-mobile.png` | **Captured for review.** These are local evidence records; the public shell and deployment remain unverified. |
+| New thematic environments | `graphic-guide-v1/scenes-ui.webp` and `graphic-guide-v1/runtime-scenes-v3.json` | `advanced/latest-unit48-step19-art-studio-*` and `latest-unit48-step20-mountain-cabin-*` | **Pass for checked asset loads.** The full painted scenes render on desktop and mobile while live prompt/action content remains separate. |
+| Calendar/table source content | `content-format-mockups/v3/03-language.webp` | `unit3-calendar-desktop.png`, `unit3-calendar-mobile.png`, and `unit37-table-desktop.png`, `unit37-table-mobile.png` | **Captured and reviewed.** Source structures remain visible; Unit 37 evidence is parent-reviewed. |
 
-| Screen | Approved composition requirement | Actual evidence | Result |
-| --- | --- | --- | --- |
-| Unit 3 source calendar | Complete original seven-day content, readable mobile columns, full painted environment, one primary | unit3-calendar-desktop.png; unit3-calendar-mobile.png | Calendar and mobile words pass; heading correction pending refreshed capture |
-| Unit 5 original instructional photograph | Preserve complete figure, no crop; environment fills canvas; controls remain reachable | unit5-original-family-desktop.png; unit5-original-family-mobile.png | Pass; photograph fits within 60vh, all four people retained |
+The initial four representative mobile grammar captures documented an earlier failure in `advanced/advanced-visual-qa.md`. The subsequent [responsive recheck](C:/Users/ACER/.codex/visualizations/2026/10/03/01a102c6-28e9-7d12-ab7a-d8b58f36616a/course-guided-expansion/advanced/advanced-visual-qa-recheck.md) is the current result and supersedes that earlier mobile-table status.
 
-The source composer now reports 51 eligible plans with no hard source/asset
-blockers. A separate learner-visible audit found missing reading passages and
-final writing/recording activities in some plans. Those omissions are release
-blockers despite the technical preflight passing. Corrections, advanced visual
-checks, teacher mode and the final reference comparison remain pending.
+## Scene capacity and course coverage
 
-Units 53–56 remain outside this release plan: original downloadable audio bytes
-have not been obtained. Unit 53's published player was observed playing; this is
-an access/retrieval limitation, not evidence that its audio is absent.
+The final [scene assignment audit](C:/Users/ACER/.codex/visualizations/2026/10/03/01a102c6-28e9-7d12-ab7a-d8b58f36616a/course-guided-expansion/advanced/scene-assignment-audit.md) ran the latest materialized composer plan for all 51 plans (Units 2–52), producing 1,262 guided steps. The registry contains 29 backgrounds. After excluding only adjacent vocabulary parts and same-source-slide figure activities as approved continuity, the maximum required scene count in one unit is 28 (Unit 6). The audit reports **zero unrelated repeats, zero capacity shortfalls, and zero missing unit mappings**. The machine-readable assignment is [scene-assignment-audit.json](C:/Users/ACER/.codex/visualizations/2026/10/03/01a102c6-28e9-7d12-ab7a-d8b58f36616a/course-guided-expansion/advanced/scene-assignment-audit.json).
+
+## Product and delivery status
+
+- The focused progression checks reported by the parent are green: 28 checks passed, including converted completion, visible-content filtering, and payload sanitization.
+- Original source content and URLs remain the authority. The runtime evidence does not replace real video, audio, figures, questions, or nested material with a mockup image.
+- Units 53–56 remain blocked on original-source account clarification. No replacement audio or inferred source was used.
+- Public authenticated shell, deployment, and production delivery were not verified in this report.
+- No database, server, deployment, or asset-generation operation was performed for this documentation task.
+
+The comparison and evidence establish local visual coverage for the checked representative screens and the final scene-capacity result. They do not close the blocked source review or public-shell/deployment gate.
