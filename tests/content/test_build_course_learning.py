@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).resolve().parents[2] / "content" / "build-course-learning.py"
+SCRIPT = Path(__file__).resolve().parents[2] / "scripts" / "content" / "build-course-learning.py"
 SPEC = importlib.util.spec_from_file_location("build_course_learning", SCRIPT)
 assert SPEC and SPEC.loader
 builder = importlib.util.module_from_spec(SPEC)
@@ -157,29 +157,33 @@ class BuildCourseLearningTests(unittest.TestCase):
             (original["title"], original["contentType"], original["lessonId"], original["parentId"]),
             (copied["title"], copied["contentType"], copied["lessonId"], copied["parentId"]),
         )
-        self.assertEqual(copied["data"]["metadata"]["originalIDs"], ["embed-original-1"])
-        self.assertEqual(copied["data"]["metadata"]["originalSource"]["sourceUrl"], source["sourceUrl"])
+        self.assertEqual(copied["data"]["type"], "teacher_notes")
+        self.assertEqual(copied["data"]["data"]["originalIDs"], ["embed-original-1"])
+        self.assertEqual(copied["data"]["data"]["originalSource"], original["data"])
         generated = [row for row in first["nextRows"] if row["id"] != original["id"]]
         self.assertTrue(generated)
+        self.assertEqual([row["order"] for row in first["nextRows"]], list(range(len(first["nextRows"]))))
         for row in generated:
             self.assertTrue(row["id"].startswith(f"course-guided-{LESSON_ID}-"))
             self.assertEqual(row["contentType"], "RICH_TEXT")
-            self.assertEqual(row["data"]["metadata"]["learningRevision"], "course-guided-v1")
-            self.assertTrue(row["data"]["metadata"]["sourceSlides"])
-            self.assertEqual(row["data"]["metadata"]["originalSource"]["sourceUrl"], source["sourceUrl"])
-            self.assertEqual(row["data"]["metadata"]["originalSource"]["sourceDigest"], first["sourceDigest"])
+            self.assertEqual(row["data"]["data"]["learningRevision"], "course-guided-v1")
+            self.assertTrue(row["data"]["data"]["sourceSlides"])
+            self.assertEqual(row["data"]["data"]["originalSource"]["sourceUrl"], source["sourceUrl"])
+            self.assertEqual(row["data"]["data"]["originalSource"]["sourceDigest"], first["sourceDigest"])
 
         structured = next(row for row in generated if row["data"]["type"] == "structured-content")
         self.assertEqual(structured["data"]["content"]["headers"], ["Subject", "Verb"])
         self.assertEqual(structured["data"]["content"]["rows"], [["I", "am"], ["You", "are"]])
 
         vocabulary = next(row for row in generated if row["data"]["type"] == "vocabulary")
-        self.assertEqual(vocabulary["data"]["items"][0], {"term": "Peru", "definition": "Peruvian"})
+        self.assertEqual(vocabulary["data"]["items"][0]["term"], "Peru")
+        self.assertEqual(vocabulary["data"]["items"][0]["definition"], "Peruvian")
+        self.assertTrue(vocabulary["data"]["items"][0]["id"])
 
         reading = next(
             row
             for row in generated
-            if row["data"]["type"] == "text" and row["data"]["metadata"]["sourceSlides"] == [4]
+            if row["data"]["type"] == "text" and row["data"]["data"]["sourceSlides"] == [4]
         )
         self.assertIn("<p>", reading["data"]["content"])
         self.assertIn("Maria is from Peru", reading["data"]["content"])
@@ -190,6 +194,26 @@ class BuildCourseLearningTests(unittest.TestCase):
 
         self.assertNotIn(7, first["sourceSlideNumbers"])
         self.assertNotIn(8, first["sourceSlideNumbers"])
+
+    def test_snapshot_rows_without_lesson_id_are_normalized_to_verified_parent(self) -> None:
+        snapshot = snapshot_fixture()
+        snapshot["modules"][0]["lessons"][0]["rows"][0].pop("lessonId")
+        source = source_fixture(complete_audio=True)
+        plan = builder.build_plan(snapshot["modules"][0]["lessons"][0], source)
+
+        self.assertEqual(plan["previousRows"][0]["lessonId"], LESSON_ID)
+        self.assertEqual(plan["nextRows"][0]["lessonId"], LESSON_ID)
+        self.assertEqual([row["order"] for row in plan["nextRows"]], list(range(len(plan["nextRows"]))))
+
+    def test_authored_video_link_becomes_a_native_video_block(self) -> None:
+        source = source_fixture(complete_audio=True)
+        source["deck"]["slides"][0]["links"] = [{"url": "https://youtu.be/example", "kind": "video"}]
+        lesson = snapshot_fixture()["modules"][0]["lessons"][0]
+        plan = builder.build_plan(lesson, source)
+
+        video = next(row for row in plan["nextRows"] if row.get("data", {}).get("type") == "video")
+        self.assertEqual(video["data"]["url"], "https://youtu.be/example")
+        self.assertEqual(video["contentType"], "RICH_TEXT")
 
     def test_audio_requires_immutable_media_evidence_and_preserves_transcript(self) -> None:
         source = source_fixture(complete_audio=True)
@@ -202,7 +226,7 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertEqual(audio["data"]["url"], "https://cdn.example/lesson/audio-6.mp3")
         self.assertEqual(audio["data"]["mediaDigest"], "audio-sha256-fixture")
         self.assertEqual(audio["data"]["transcript"], "I come from Peru.")
-        self.assertEqual(audio["data"]["metadata"]["originalSource"]["audio"]["digest"], "audio-sha256-fixture")
+        self.assertEqual(audio["data"]["data"]["originalSource"]["audio"]["digest"], "audio-sha256-fixture")
 
     def test_nested_audio_manifest_is_keyed_by_lesson_and_slide(self) -> None:
         source = source_fixture()
@@ -238,7 +262,7 @@ class BuildCourseLearningTests(unittest.TestCase):
         )
         lesson = snapshot_fixture()["modules"][0]["lessons"][0]
         plan = builder.build_plan(lesson, source)
-        exercise = next(row for row in plan["nextRows"] if row.get("data", {}).get("type") == "short-answer")
+        exercise = next(row for row in plan["nextRows"] if row.get("data", {}).get("type") == "essay")
         self.assertTrue(exercise["data"]["aiGrading"])
         self.assertNotIn("correctAnswer", exercise["data"])
         self.assertNotIn("answer", exercise["data"])
@@ -258,9 +282,9 @@ class BuildCourseLearningTests(unittest.TestCase):
         )
         lesson = snapshot_fixture()["modules"][0]["lessons"][0]
         plan = builder.build_plan(lesson, source)
-        exercise = next(row for row in plan["nextRows"] if row.get("data", {}).get("type") == "multiple-choice")
-        self.assertEqual(exercise["data"]["options"], ["Peru", "Brazil"])
-        self.assertEqual(exercise["data"]["correctAnswer"], "Peru")
+        exercise = next(row for row in plan["nextRows"] if row.get("data", {}).get("type") == "multiple_choice")
+        self.assertEqual([option["text"] for option in exercise["data"]["options"]], ["Peru", "Brazil"])
+        self.assertEqual(exercise["data"]["correctOptionId"], exercise["data"]["options"][0]["id"])
 
     def test_missing_snapshot_lesson_is_blocked_without_dropping_source_evidence(self) -> None:
         source = source_fixture(complete_audio=True)
@@ -270,7 +294,7 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(any(blocker["code"] == "lesson-missing-from-snapshot" for blocker in plan["blockers"]))
         generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
         self.assertTrue(generated)
-        self.assertEqual(generated[0]["data"]["metadata"]["originalSource"]["contentId"], source["contentId"])
+        self.assertEqual(generated[0]["data"]["data"]["originalSource"]["contentId"], source["contentId"])
 
     def test_audio_only_slide_is_reported_as_unsupported_with_source_coverage(self) -> None:
         source = source_fixture()

@@ -205,6 +205,34 @@ def _meaningful_texts(slide: Mapping[str, Any]) -> list[str]:
     return _unique_texts(result)
 
 
+def _prompt_text(slide: Mapping[str, Any], texts: Sequence[str] | None = None) -> str:
+    """Return authored prompt text without duplicating the slide heading."""
+
+    values = list(texts if texts is not None else _meaningful_texts(slide))
+    title = _normalise(slide.get("title"))
+    if title and values and values[0] == title:
+        values = values[1:]
+    return "\n".join(values).strip() or "\n".join(texts or _slide_texts(slide)).strip()
+
+
+def _word_limits(text: str) -> tuple[int | None, int | None]:
+    match = re.search(r"\b(\d{1,3})\s*[-–—]\s*(\d{1,3})\s+words?\b", text.casefold())
+    if not match:
+        return None, None
+    return int(match.group(1)), int(match.group(2))
+
+
+def _time_limit(text: str) -> int | None:
+    lowered = text.casefold()
+    range_match = re.search(r"\b(\d{1,3})\s*(?:[-–—]|to)\s*(\d{1,3})\s*(?:seconds?|secs?)\b", lowered)
+    if range_match:
+        # For a range, keep the authored upper bound; no duration is invented
+        # when the source gives no recording limit.
+        return int(range_match.group(2))
+    match = re.search(r"\b(\d{1,3})\s*(?:seconds?|secs?)\b", lowered)
+    return int(match.group(1)) if match else None
+
+
 def _tables(slide: Mapping[str, Any]) -> list[list[list[str]]]:
     raw_tables = slide.get("tables")
     if raw_tables is None and isinstance(slide.get("table"), Mapping):
@@ -265,6 +293,25 @@ def _is_audio_required(slide: Mapping[str, Any]) -> bool:
     return bool(re.search(r"\b(?:listen|audio|hear)\b", lowered)) and (
         "audio" in lowered or "listen to" in lowered or "listen for" in lowered
     )
+
+
+def _video_urls(slide: Mapping[str, Any]) -> list[str]:
+    values: list[str] = []
+    for item in _as_list(slide.get("media")):
+        if isinstance(item, Mapping) and "video" in _media_kind(item):
+            values.append(_text(item.get("url") or item.get("mediaUrl") or item.get("sourceUrl")))
+    summary = slide.get("mediaSummary")
+    if isinstance(summary, Mapping):
+        values.extend(_text(value) for value in _as_list(summary.get("videoUrls")))
+    for item in _as_list(slide.get("links")):
+        if not isinstance(item, Mapping):
+            continue
+        kind = _normalise(item.get("kind")).casefold()
+        url = _text(item.get("url") or item.get("href"))
+        if "video" in kind or re.search(r"(?:youtube\.com|youtu\.be|vimeo\.com)/", url.casefold()):
+            values.append(url)
+    values.append(_text(slide.get("videoUrl")))
+    return list(dict.fromkeys(value for value in values if value))
 
 
 def _audio_url(item: Mapping[str, Any]) -> str:
@@ -470,6 +517,32 @@ def _explicit_options(slide: Mapping[str, Any]) -> Any:
     return walk(slide)
 
 
+def _multiple_choice_options(options: Any, answer: Any, slide_number: int) -> tuple[list[dict[str, str]], str]:
+    normalized: list[dict[str, str]] = []
+    for index, option in enumerate(_as_list(options), start=1):
+        if isinstance(option, Mapping):
+            option_id = _text(option.get("id") or option.get("value"))
+            option_text = _text(option.get("text") or option.get("label") or option.get("value"))
+        else:
+            option_id = ""
+            option_text = _text(option)
+        option_id = option_id or f"course-choice-{slide_number}-{index:03d}"
+        normalized.append({"id": option_id, "text": option_text})
+
+    answer_id = ""
+    answer_text = ""
+    if isinstance(answer, Mapping):
+        answer_id = _text(answer.get("id") or answer.get("optionId") or answer.get("correctOptionId"))
+        answer_text = _text(answer.get("text") or answer.get("label") or answer.get("value"))
+    else:
+        answer_text = _text(answer)
+        answer_id = answer_text
+    for option in normalized:
+        if option["id"] == answer_id or option["text"] == answer_text:
+            return normalized, option["id"]
+    return normalized, answer_id
+
+
 def _is_speaking_prompt(text: str) -> bool:
     return bool(
         re.search(
@@ -577,6 +650,7 @@ def _native_block_specs(
     audio_required = _is_audio_required(slide)
     audio_items = _audio_candidates(source, slide, lesson_id, audio_manifest) if audio_required else []
     audio_item = audio_items[0] if audio_items else None
+    video_urls = _video_urls(slide)
     if audio_required:
         if audio_item is None or not _audio_url(audio_item):
             _add_blocker(
@@ -597,6 +671,7 @@ def _native_block_specs(
                 )
 
     specs: list[tuple[str, dict[str, Any]]] = []
+    prompt_text = _prompt_text(slide, texts)
     common = {
         "sourceText": texts,
         "sourceTitle": _text(slide.get("title")),
@@ -631,33 +706,56 @@ def _native_block_specs(
     pairs = _extract_pairs(texts)
     lower_title = _text(slide.get("title")).casefold()
     if len(pairs) >= 2 and ("vocab" in lower_title or "word" in lower_title or all(len(item["term"].split()) <= 3 for item in pairs)):
-        specs.append(("vocabulary", {**common, "items": pairs, "content": _readable_html(texts)}))
+        vocabulary_items = [
+            {"id": f"course-vocabulary-{number}-{index:03d}", **pair}
+            for index, pair in enumerate(pairs, start=1)
+        ]
+        specs.append(
+            (
+                "vocabulary",
+                {
+                    **common,
+                    "title": _text(slide.get("title")) or "Vocabulary",
+                    "items": vocabulary_items,
+                },
+            )
+        )
 
     explicit_answer = _explicit_answer_key(slide)
     explicit_options = _explicit_options(slide)
     if explicit_answer is not None:
         if explicit_options:
-            specs.append(
-                (
-                    "multiple-choice",
-                    {
-                        **common,
-                        "prompt": full_text,
-                        "options": explicit_options,
-                        "correctAnswer": explicit_answer,
-                    },
+            choice_options, correct_option_id = _multiple_choice_options(explicit_options, explicit_answer, number)
+            if correct_option_id not in {option["id"] for option in choice_options}:
+                _add_blocker(
+                    blockers,
+                    _blocker("answer-key-unmatched", number, "The authored answer key does not match any authored option."),
                 )
-            )
+            else:
+                specs.append(
+                    (
+                        "multiple_choice",
+                        {
+                            **common,
+                            "question": prompt_text,
+                            "options": choice_options,
+                            "correctOptionId": correct_option_id,
+                        },
+                    )
+                )
         else:
             specs.append(
                 (
-                    "short-answer",
+                    "short_answer",
                     {
                         **common,
-                        "prompt": full_text,
-                        "answerKey": explicit_answer,
-                        "aiGrading": False,
-                        "gradingContext": "Use the authored source answer key.",
+                        "items": [
+                            {
+                                "id": f"course-short-answer-{number}-001",
+                                "question": prompt_text,
+                                "correctAnswer": _text(explicit_answer),
+                            }
+                        ],
                     },
                 )
             )
@@ -668,7 +766,7 @@ def _native_block_specs(
                 "audio",
                 {
                     **common,
-                    "instruction": full_text,
+                    "instruction": prompt_text,
                     "url": _audio_url(audio_item),
                     "transcript": _audio_transcript(audio_item),
                     "mediaDigest": _audio_digest(audio_item),
@@ -676,41 +774,67 @@ def _native_block_specs(
             )
         )
 
-    if _is_speaking_prompt(full_text):
+    for video_url in video_urls:
+        specs.append(
+            (
+                "video",
+                {
+                    **common,
+                    "url": video_url,
+                    "title": _text(slide.get("title")) or "Video",
+                },
+            )
+        )
+
+    if _is_speaking_prompt(prompt_text):
+        recording_time_limit = _time_limit(prompt_text)
         specs.append(
             (
                 "recording",
                 {
                     **common,
-                    "instruction": full_text,
+                    "instruction": prompt_text,
+                    **({"timeLimit": recording_time_limit} if recording_time_limit is not None else {}),
                     "mode": "teacher-and-self-study",
                     "aiGrading": True,
-                    "gradingContext": "No authored answer key is assumed; evaluate the learner recording against the instruction.",
+                    "data": {
+                        "aiGradingContext": "No authored answer key is assumed; evaluate the learner recording against the instruction.",
+                    },
                 },
             )
         )
 
-    if _is_essay_prompt(full_text):
+    if _is_essay_prompt(prompt_text):
+        min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
                 "essay",
                 {
                     **common,
-                    "prompt": full_text,
+                    "prompt": prompt_text,
                     "aiGrading": True,
-                    "gradingContext": "No authored answer key is assumed; evaluate the learner response against the source prompt.",
+                    **({"minWords": min_words} if min_words is not None else {}),
+                    **({"maxWords": max_words} if max_words is not None else {}),
+                    "data": {
+                        "aiGradingContext": "No authored answer key is assumed; evaluate the learner response against the source prompt.",
+                    },
                 },
             )
         )
-    elif explicit_answer is None and _is_short_answer_prompt(full_text):
+    elif explicit_answer is None and _is_short_answer_prompt(prompt_text):
+        min_words, max_words = _word_limits(prompt_text)
         specs.append(
             (
-                "short-answer",
+                "essay",
                 {
                     **common,
-                    "prompt": full_text,
+                    "prompt": prompt_text,
                     "aiGrading": True,
-                    "gradingContext": "No authored answer key is assumed; evaluate the learner response against the source prompt.",
+                    **({"minWords": min_words} if min_words is not None else {}),
+                    **({"maxWords": max_words} if max_words is not None else {}),
+                    "data": {
+                        "aiGradingContext": "No authored answer key is assumed; evaluate the learner response against the source prompt.",
+                    },
                 },
             )
         )
@@ -718,16 +842,16 @@ def _native_block_specs(
     # Preserve a long authored reading passage as readable HTML even when the
     # same slide also has questions or a read-aloud instruction.
     if _is_reading(full_text) and not tables:
-        specs.append(("text", {**common, "content": _readable_html(texts)}))
+        specs.append(("text", {**common, "content": _readable_html(texts), "format": "html"}))
 
     if not specs and full_text:
-        specs.append(("text", {**common, "content": _readable_html(texts)}))
+        specs.append(("text", {**common, "content": _readable_html(texts), "format": "html"}))
     if audio_required and not audio_item and not full_text:
         # The blocker is the evidence for an audio-only source slide; do not
         # fabricate a playable block or a transcript.
         return specs
     if audio_required and audio_item and not _audio_url(audio_item) and full_text and not specs:
-        specs.append(("text", {**common, "content": _readable_html(texts)}))
+        specs.append(("text", {**common, "content": _readable_html(texts), "format": "html"}))
     return specs
 
 
@@ -771,34 +895,29 @@ def _archive_existing_rows(
     source_digest: str,
     lesson_id: str,
 ) -> list[dict[str, Any]]:
-    """Attach source provenance while retaining each existing row's identity."""
+    """Archive old embeds as teacher-only notes without changing row identity."""
 
     result: list[dict[str, Any]] = []
     for row in rows:
         copied = copy.deepcopy(dict(row))
-        data = copied.get("data")
-        if not isinstance(data, Mapping):
-            data = {"originalData": copy.deepcopy(data)}
-        else:
-            data = copy.deepcopy(dict(data))
-        metadata = data.get("metadata")
-        metadata = copy.deepcopy(dict(metadata)) if isinstance(metadata, Mapping) else {}
-        original_id = _text(copied.get("id"))
-        metadata.setdefault("originalIDs", [original_id])
-        metadata.setdefault(
-            "originalSource",
-            {
-                "sourceUrl": _source_url(source),
-                "sourceDigest": source_digest,
-                "contentId": _text(source.get("contentId")),
-                "lessonId": lesson_id,
-                "originalIds": [original_id],
-                "originalIDs": [original_id],
-                "slideNumbers": [],
-            },
-        )
-        data["metadata"] = metadata
-        copied["data"] = data
+        original_data = copy.deepcopy(copied.get("data"))
+        data = original_data if isinstance(original_data, Mapping) else {}
+        is_embed = _text(copied.get("contentType")).casefold() == "embed" or _text(data.get("type")).casefold() == "embed"
+        if is_embed:
+            original_id = _text(copied.get("id"))
+            copied["data"] = {
+                "type": "teacher_notes",
+                "title": _text(copied.get("title")) or "Archived source",
+                "content": "Original source embed archived for teacher review.",
+                "data": {
+                    "learningRevision": LEARNING_REVISION,
+                    "originalIDs": [original_id],
+                    "originalSource": original_data,
+                    "sourceUrl": _source_url(source),
+                    "sourceDigest": source_digest,
+                    "lessonId": lesson_id,
+                },
+            }
         result.append(copied)
     return result
 
@@ -826,14 +945,14 @@ def _native_row(
         }
     metadata = _row_data_metadata(source, source_digest, lesson_id, slide, native_type, audio_evidence)
     data = copy.deepcopy(dict(payload))
-    existing_metadata = data.get("metadata")
+    existing_metadata = data.pop("metadata", None)
+    existing_nested = data.get("data")
+    if isinstance(existing_nested, Mapping):
+        metadata = {**copy.deepcopy(dict(existing_nested)), **metadata}
     if isinstance(existing_metadata, Mapping):
-        metadata = {**metadata, **copy.deepcopy(dict(existing_metadata))}
-        metadata["learningRevision"] = LEARNING_REVISION
-        metadata["sourceSlides"] = [_slide_number(slide)]
-        metadata["originalSource"] = _original_source(source, lesson_id, source_digest, slide)
+        metadata = {**copy.deepcopy(dict(existing_metadata)), **metadata}
     data["type"] = native_type
-    data["metadata"] = metadata
+    data["data"] = metadata
     return {
         "id": row_id,
         "title": title,
@@ -854,7 +973,9 @@ def _lesson_from_snapshot(snapshot: Mapping[str, Any], lesson_id: str) -> Mappin
     raw_lessons = snapshot.get("lessons")
     if raw_lessons is not None:
         lessons.extend(item for item in _as_list(raw_lessons) if isinstance(item, Mapping))
-    for module in _as_list(snapshot.get("modules")) + _as_list(snapshot.get("units")):
+    course = snapshot.get("course")
+    course_modules = course.get("modules") if isinstance(course, Mapping) else None
+    for module in _as_list(snapshot.get("modules")) + _as_list(snapshot.get("units")) + _as_list(course_modules):
         if not isinstance(module, Mapping):
             continue
         lessons.extend(item for item in _as_list(module.get("lessons")) if isinstance(item, Mapping))
@@ -874,6 +995,60 @@ def _validate_course_id(value: Any) -> None:
     candidate = _text(value)
     if candidate and candidate != COURSE_ID:
         raise PlanError(f"unexpected course id: {candidate}")
+
+
+def _validate_native_payload(data: Mapping[str, Any], row_id: str) -> None:
+    native_type = _text(data.get("type"))
+    if native_type == "text":
+        if not isinstance(data.get("content"), str):
+            raise PlanError(f"text row has no string content: {row_id}")
+    elif native_type == "video":
+        if not isinstance(data.get("url"), str) or not data.get("url"):
+            raise PlanError(f"video row has no source URL: {row_id}")
+    elif native_type == "audio":
+        if not all(isinstance(data.get(key), str) and data.get(key) for key in ("url", "mediaDigest", "transcript")):
+            raise PlanError(f"audio row is missing immutable media evidence: {row_id}")
+    elif native_type == "vocabulary":
+        if not isinstance(data.get("title"), str) or not isinstance(data.get("items"), list):
+            raise PlanError(f"vocabulary row has an invalid shape: {row_id}")
+        for item in data["items"]:
+            if not isinstance(item, Mapping) or not all(isinstance(item.get(key), str) and item.get(key) for key in ("id", "term", "definition")):
+                raise PlanError(f"vocabulary row has an invalid item: {row_id}")
+    elif native_type == "structured-content":
+        content = data.get("content")
+        if not isinstance(content, Mapping) or not isinstance(content.get("headers"), list) or not isinstance(content.get("rows"), list):
+            raise PlanError(f"structured-content row has an invalid table shape: {row_id}")
+    elif native_type == "essay":
+        if not isinstance(data.get("prompt"), str) or not data.get("prompt"):
+            raise PlanError(f"essay row has no source prompt: {row_id}")
+        for key in ("minWords", "maxWords"):
+            if key in data and (not isinstance(data[key], int) or isinstance(data[key], bool)):
+                raise PlanError(f"essay row has an invalid {key}: {row_id}")
+    elif native_type == "recording":
+        if not isinstance(data.get("instruction"), str) or not data.get("instruction"):
+            raise PlanError(f"recording row has no source instruction: {row_id}")
+        if "timeLimit" in data and (not isinstance(data["timeLimit"], int) or isinstance(data["timeLimit"], bool)):
+            raise PlanError(f"recording row has an invalid timeLimit: {row_id}")
+    elif native_type == "multiple_choice":
+        options = data.get("options")
+        if not isinstance(data.get("question"), str) or not isinstance(options, list) or not isinstance(data.get("correctOptionId"), str):
+            raise PlanError(f"multiple_choice row has an invalid shape: {row_id}")
+        option_ids: list[str] = []
+        for option in options:
+            if not isinstance(option, Mapping) or not isinstance(option.get("id"), str) or not isinstance(option.get("text"), str):
+                raise PlanError(f"multiple_choice row has an invalid option: {row_id}")
+            option_ids.append(option["id"])
+        if data["correctOptionId"] not in option_ids:
+            raise PlanError(f"multiple_choice row has an unmatched answer: {row_id}")
+    elif native_type == "short_answer":
+        items = data.get("items")
+        if not isinstance(items, list):
+            raise PlanError(f"short_answer row has no items: {row_id}")
+        for item in items:
+            if not isinstance(item, Mapping) or not all(isinstance(item.get(key), str) and item.get(key) for key in ("id", "question", "correctAnswer")):
+                raise PlanError(f"short_answer row has an invalid item: {row_id}")
+    else:
+        raise PlanError(f"generated row uses unsupported native type {native_type!r}: {row_id}")
 
 
 def build_plan(
@@ -912,6 +1087,11 @@ def build_plan(
             _add_blocker(blockers, _blocker("source-slide-count-invalid", detail=f"Invalid slideCount {declared_count!r}."))
 
     previous_rows = _existing_rows(lesson or {})
+    for row in previous_rows:
+        if not _text(row.get("lessonId")):
+            row["lessonId"] = lesson_id
+        elif _text(row.get("lessonId")) != lesson_id:
+            raise PlanError(f"existing row {row.get('id')} belongs to another lesson")
     next_rows = _archive_existing_rows(previous_rows, source, source_digest, lesson_id)
     next_order = max([int(row.get("order", 0)) for row in previous_rows if str(row.get("order", "")).lstrip("-").isdigit()] or [0]) + 1
     generated_sequence = 1
@@ -938,6 +1118,8 @@ def build_plan(
             next_order += 1
 
     next_rows = sorted(next_rows, key=_row_sort_key)
+    for index, row in enumerate(next_rows):
+        row["order"] = index
     plan = {
         "courseId": COURSE_ID,
         "lessonId": lesson_id,
@@ -1004,6 +1186,15 @@ def validate_plan(plan: Mapping[str, Any]) -> None:
             raise PlanError(f"existing row identity changed: {row_id}")
         if _text(after.get("lessonId")) != lesson_id:
             raise PlanError(f"existing row has wrong lesson id: {row_id}")
+        before_data = before.get("data")
+        before_data_map = before_data if isinstance(before_data, Mapping) else {}
+        if _text(before.get("contentType")).casefold() == "embed" or _text(before_data_map.get("type")).casefold() == "embed":
+            after_data = after.get("data")
+            if not isinstance(after_data, Mapping) or after_data.get("type") != "teacher_notes":
+                raise PlanError(f"existing embed must be archived as teacher_notes: {row_id}")
+            nested = after_data.get("data")
+            if not isinstance(nested, Mapping) or nested.get("originalSource") != before_data:
+                raise PlanError(f"existing embed archive lost original source data: {row_id}")
     for row in following:
         row_id = _text(row.get("id"))
         if _text(row.get("lessonId")) != lesson_id:
@@ -1017,7 +1208,7 @@ def validate_plan(plan: Mapping[str, Any]) -> None:
         data = row.get("data")
         if not isinstance(data, Mapping):
             raise PlanError(f"generated row has no data: {row_id}")
-        metadata = data.get("metadata")
+        metadata = data.get("data")
         if not isinstance(metadata, Mapping) or metadata.get("learningRevision") != LEARNING_REVISION:
             raise PlanError(f"generated row has no learning revision metadata: {row_id}")
         if not _as_list(metadata.get("sourceSlides")):
@@ -1025,9 +1216,7 @@ def validate_plan(plan: Mapping[str, Any]) -> None:
         original = metadata.get("originalSource")
         if not isinstance(original, Mapping) or not _text(original.get("sourceDigest")):
             raise PlanError(f"generated row has no archived source metadata: {row_id}")
-        if _text(data.get("type")) == "audio":
-            if not _text(data.get("url")) or not _text(data.get("mediaDigest")) or not _text(data.get("transcript")):
-                raise PlanError(f"audio row is missing immutable media evidence: {row_id}")
+        _validate_native_payload(data, row_id)
 
 
 def build_manifest(
