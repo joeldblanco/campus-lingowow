@@ -915,10 +915,9 @@ class BuildCourseLearningTests(unittest.TestCase):
                     "rows": [
                         ["John is American", "Is he American?"],
                         ["They are from Mexico", "Where are they from?"],
-                        [
-                            "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
-                            "",
-                        ],
+                    ],
+                    "notes": [
+                        "The verb to be is an independent verb it can say a sentence, it can make a question or deny by itself. NO AUXILIARY NEEDED",
                     ],
                 },
                 {
@@ -928,14 +927,16 @@ class BuildCourseLearningTests(unittest.TestCase):
                     "rows": [
                         ["She comes from England.", "Does she come from England?"],
                         ["You speak Italian", "Do you speak Italian?"],
-                        [
-                            "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. Do - I/You/We/They Does - He/She/ It (3rd person singular) *Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
-                            "",
-                        ],
+                    ],
+                    "notes": [
+                        "The rest of the verbs are dependent. They use auxiliaries to make questions and to deny an action. Do - I/You/We/They Does - He/She/ It (3rd person singular) *Pronunciation hint: https://youtu.be/EMWmCb1CIdc",
                     ],
                 },
             ],
         )
+        for group in structured["data"]["data"]["tableGroups"]:
+            for note in group.get("notes", []):
+                self.assertIn(note, json.dumps(structured["data"]["tables"], ensure_ascii=False))
 
         context = next(
             row
@@ -948,6 +949,24 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertIn("To Be", context["data"]["content"])
         self.assertIn("MOST COMMON QUESTIONS", context["data"]["content"])
         self.assertNotIn("To Be verb Other verbs", context["data"]["content"])
+
+    def test_incidental_table_noun_does_not_create_missing_table_blocker(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 9,
+                "title": "9",
+                "visibleTexts": [
+                    "To consider the possessive case.",
+                    "The legs of the table / The tail of the cat.",
+                ],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        self.assertFalse(any(blocker["code"] == "table-semantics-missing" for blocker in plan["blockers"]))
 
     def test_unit2_flow_keeps_reviewed_listening_compact_and_deduplicates_activity_prose(self) -> None:
         """Exercise flow mirrors the authored Unit 2 sequence without prompt dumps."""

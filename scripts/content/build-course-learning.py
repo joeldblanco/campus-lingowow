@@ -2339,21 +2339,54 @@ def _table_groups(tables: Sequence[Sequence[Sequence[str]]]) -> list[dict[str, A
             continue
         for group_index, column in enumerate(paired_columns):
             source_header = _normalise(source_headers[column])
+            rows: list[list[str]] = []
+            notes: list[str] = []
+            for row in table[1:]:
+                left = row[column] if column < len(row) else ""
+                right = row[column + 1] if column + 1 < len(row) else ""
+                # A long single-cell explanation is authored prose, not a
+                # second table entry. Keep it as a full-width note so the
+                # paired columns remain readable while ``tables`` retains the
+                # complete source matrix for provenance.
+                if (
+                    _normalise(left)
+                    and not _normalise(right)
+                    and len(_normalise(left).split()) > 15
+                ) or (
+                    _normalise(right)
+                    and not _normalise(left)
+                    and len(_normalise(right).split()) > 15
+                ):
+                    notes.append(_normalise(left or right))
+                    continue
+                rows.append([left, right])
             groups.append(
                 {
                     "key": _table_group_key(source_header, group_index),
                     "sourceHeader": source_header,
                     "headers": [source_headers[column], source_headers[column + 1]],
-                    "rows": [
-                        [
-                            row[column] if column < len(row) else "",
-                            row[column + 1] if column + 1 < len(row) else "",
-                        ]
-                        for row in table[1:]
-                    ],
+                    "rows": rows,
+                    **({"notes": notes} if notes else {}),
                 }
             )
     return groups
+
+
+def _has_table_instruction(slide: Mapping[str, Any], full_text: str) -> bool:
+    """Detect an authored chart/table instruction without matching incidental nouns."""
+
+    title = _text(slide.get("title"))
+    combined = f"{title} {full_text}".casefold()
+    if re.fullmatch(r"\s*(?:table|chart|grid|columns?)\s*", title, flags=re.IGNORECASE):
+        return True
+    reference = r"(?:table|chart|grid|columns?)"
+    instruction = (
+        r"(?:check|consider|complete|consult|fill|look\s+at|read|refer\s+to|review|see|study|use|following|below|above)"
+    )
+    return bool(
+        re.search(rf"\b{instruction}\b[^.!?\n]{{0,80}}\b{reference}\b", combined)
+        or re.search(rf"\b{reference}\b[^.!?\n]{{0,80}}\b{instruction}\b", combined)
+    )
 
 
 def _exercise_review_ai_context(
@@ -2931,11 +2964,7 @@ def _native_block_specs(
                 },
             )
         )
-    table_reference = re.search(
-        r"\b(?:table|chart|grid|columns?)\b",
-        f"{_text(slide.get('title'))} {full_text}".casefold(),
-    )
-    if not tables and table_reference:
+    if not tables and _has_table_instruction(slide, full_text):
         _add_blocker(
             blockers,
             _blocker("table-semantics-missing", number, "The source mentions a table or chart without authored cell semantics."),
