@@ -679,7 +679,9 @@
       "nativeShapeProvenanceRequired": true,
       "noInventedCellsOrExamples": true,
       "preserveExcludedNotesAsLearnerText": true,
-      "blockedWhenNativePublishedIdentityIsUnresolved": true
+      "blockedWhenNativePublishedIdentityIsUnresolved": true,
+      "publishedSourceProjectionAllowedWhenNativeDiffers": true,
+      "publishedSourceProjectionRequiresLiteralCellQuotes": true
     },
     "sourceRefs": [
       {
@@ -985,7 +987,9 @@
               ]
             }
           ],
-          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+          "source": "native-a:tbl",
+          "nativeIdentityConfirmed": true
         },
         "sourceRefs": [
           {
@@ -1006,9 +1010,9 @@
         "sourceSlide": 9,
         "publishedSourceFile": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
         "nativeSourceFile": "docs/audit/source-files-native/unit-05.json",
-        "status": "blocked-no-native-table",
-        "clearTableSemanticsBlocker": false,
-        "review": "The published slide is authored prose about the possessive case. Native extraction has text/group shapes but no a:tbl or equivalent chart cells; the phrase “table” appears only in an example about objects, so no semantic table may be invented.",
+        "status": "reviewed-text-only",
+        "clearTableSemanticsBlocker": true,
+        "review": "The published slide is authored prose about the possessive case. Native extraction has text/group shapes but no a:tbl or equivalent chart cells; “The legs of the table / The tail of the cat” is an example noun phrase, not a missing chart.",
         "sourceEvidence": {
           "publishedTitle": "9",
           "publishedVisibleTexts": [
@@ -1085,12 +1089,16 @@
           ],
           "nativeTables": [],
           "preserveNativeRows": [],
-          "differences": []
+          "differences": [],
+          "resolution": "text-only-source"
         },
         "approvedProjection": {
           "approved": false,
+          "source": "published-visible-text",
+          "nativeIdentityConfirmed": false,
+          "mode": "text-only",
           "tables": [],
-          "notes": "No approved editable projection; retain published source text and blocker."
+          "notes": "Render the published prose as learner text. Do not invent a table from the example mentioning a table."
         },
         "sourceRefs": [
           {
@@ -1372,7 +1380,9 @@
               ]
             }
           ],
-          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+          "source": "native-a:tbl",
+          "nativeIdentityConfirmed": true
         },
         "sourceRefs": [
           {
@@ -1540,7 +1550,9 @@
               ]
             }
           ],
-          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+          "source": "native-a:tbl",
+          "nativeIdentityConfirmed": true
         },
         "sourceRefs": [
           {
@@ -1706,7 +1718,9 @@
               ]
             }
           ],
-          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+          "source": "native-a:tbl",
+          "nativeIdentityConfirmed": true
         },
         "sourceRefs": [
           {
@@ -1881,7 +1895,9 @@
               ]
             }
           ],
-          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+          "source": "native-a:tbl",
+          "nativeIdentityConfirmed": true
         },
         "sourceRefs": [
           {
@@ -2067,7 +2083,9 @@
               ]
             }
           ],
-          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+          "source": "native-a:tbl",
+          "nativeIdentityConfirmed": true
         },
         "sourceRefs": [
           {
@@ -2088,9 +2106,9 @@
         "sourceSlide": 11,
         "publishedSourceFile": "docs/audit/source-files/cmnmm9sq20022w1qkn3bi0mm7.json",
         "nativeSourceFile": "docs/audit/source-files-native/unit-44.json",
-        "status": "blocked-native-published-mismatch",
-        "clearTableSemanticsBlocker": false,
-        "review": "The native three-column a:tbl has the expected header and row structure, but row 3 examples disagree with the published source. Do not project the native chart until the source deck identity or row evidence is resolved.",
+        "status": "reviewed-published-source",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native three-column a:tbl has the expected header and row structure, but row 3 examples disagree with the published source. Use this explicit published-source matrix for editable content and retain the native mismatch as provenance; do not claim native cell identity.",
         "sourceEvidence": {
           "publishedTitle": "We can use passive voice for the following functions:",
           "publishedVisibleTexts": [
@@ -2257,9 +2275,64 @@
           ]
         },
         "approvedProjection": {
-          "approved": false,
-          "tables": [],
-          "notes": "No approved editable projection; retain published source text and blocker."
+          "approved": true,
+          "source": "published-visible-text",
+          "nativeIdentityConfirmed": false,
+          "publishedLayout": "Published visible text is ordered as Functions, Examples, then numbered rows 1–4; the native shape bbox and columns are retained only as conflicting layout evidence.",
+          "nativeShapeEvidence": {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "bbox": {
+              "x": 860175,
+              "y": 399525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3860175,
+              "bottom": 3399525
+            },
+            "columnWidths": [
+              417750,
+              3468050,
+              4020700
+            ],
+            "note": "Shape geometry supports the three-column chart layout but native cell content is not authoritative on this slide."
+          },
+          "tables": [
+            {
+              "shapeId": null,
+              "shapeName": "published-visible-text-projection",
+              "bbox": null,
+              "columnWidths": null,
+              "rows": [
+                [
+                  "",
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "1",
+                  "State what things are made of",
+                  "The legs of the table are iron-made.\nThe spoon was handcrafted in wood."
+                ],
+                [
+                  "2",
+                  "Declare when things are made / done",
+                  "The meeting will be set for tomorrow.\nIs this piano being played this week?"
+                ],
+                [
+                  "3",
+                  "Point who things are made / done by",
+                  "The stuffed clams were made by Jake.\nThose dresses will be designed by Ericka."
+                ],
+                [
+                  "4.",
+                  "Focus on objects rather than subjects in general actions",
+                  "Why was my burger eaten from the fridge?\nFive points will be taken from your test for cheating."
+                ]
+              ]
+            }
+          ],
+          "notes": "Every cell is transcribed from the published visibleTexts quote. Native mismatches remain in sourceEvidence.differences."
         },
         "sourceRefs": [
           {
@@ -2280,9 +2353,9 @@
         "sourceSlide": 8,
         "publishedSourceFile": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
         "nativeSourceFile": "docs/audit/source-files-native/unit-46.json",
-        "status": "blocked-native-published-mismatch",
-        "clearTableSemanticsBlocker": false,
-        "review": "The native three-column a:tbl matches the chart through the first five rows, but the final conditional example and question differ materially from the published source. Keep the table blocker until the native source is reconciled.",
+        "status": "reviewed-published-source",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native three-column a:tbl matches the chart through the first five rows, but the final conditional example and question differ materially from the published source. Use the literal published-source matrix, including its grammar and spacing, and retain the native conflict as provenance.",
         "sourceEvidence": {
           "publishedTitle": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.",
           "publishedVisibleTexts": [
@@ -2397,9 +2470,74 @@
           ]
         },
         "approvedProjection": {
-          "approved": false,
-          "tables": [],
-          "notes": "No approved editable projection; retain published source text and blocker."
+          "approved": true,
+          "source": "published-visible-text",
+          "nativeIdentityConfirmed": false,
+          "publishedLayout": "Published visible text is ordered as STRUCTURES, STATEMENTS, QUESTIONS, with blank structure cells continuing the preceding modal group.",
+          "nativeShapeEvidence": {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 282913,
+              "y": 891150,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3282913,
+              "bottom": 3891150
+            },
+            "columnWidths": [
+              1825375,
+              3636375,
+              3152250
+            ],
+            "note": "Shape geometry supports the three-column chart layout but native cell content is not authoritative on this slide."
+          },
+          "tables": [
+            {
+              "shapeId": null,
+              "shapeName": "published-visible-text-projection",
+              "bbox": null,
+              "columnWidths": null,
+              "rows": [
+                [
+                  "STRUCTURES",
+                  "STATEMENTS",
+                  "QUESTIONS"
+                ],
+                [
+                  "Should Have + Past Participle",
+                  "Dylan should have called them before going.",
+                  "What should he have done before going?"
+                ],
+                [
+                  "",
+                  "If it had been me, I should have brought more money.",
+                  "What should you have done?"
+                ],
+                [
+                  "Would have + Past Participle",
+                  "My family would have wanted him to be different, but he wasn’t.",
+                  "How would have your family wanted him to be?"
+                ],
+                [
+                  "",
+                  "He would not have expected me to drop school.",
+                  "Would he have expected you to drop school?"
+                ],
+                [
+                  "Must have + Past Participle",
+                  "We must have seen the straw in the wind, but we did not.",
+                  "Would you have seen the straw in the wind?"
+                ],
+                [
+                  "",
+                  "If he had not done things that way , the boss must have given him the chance.",
+                  "What if he had not done things that way?"
+                ]
+              ]
+            }
+          ],
+          "notes": "Every cell is transcribed from the published visibleTexts quote. Native mismatches remain in sourceEvidence.differences."
         },
         "sourceRefs": [
           {
@@ -2420,9 +2558,9 @@
         "sourceSlide": 8,
         "publishedSourceFile": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
         "nativeSourceFile": "docs/audit/source-files-native/unit-48.json",
-        "status": "blocked-native-published-mismatch",
-        "clearTableSemanticsBlocker": false,
-        "review": "The native three-column a:tbl has the expected structures, but the May row question differs from the published source. Keep the chart blocked rather than exposing the alternate question.",
+        "status": "reviewed-published-source",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native three-column a:tbl has the expected structures, but the May row question differs from the published source. Use this literal published-source matrix and retain native mismatch metadata; no alternate question is substituted.",
         "sourceEvidence": {
           "publishedTitle": "STRUCTURES STATEMENTS QUESTIONS Could + Have + Past Participle I could have gotten lost if we had not seen then on time. What could have happened to them? You could have said that before all went to nothing. What could I have said? May + Have + Past Participle John may have caught that flu at the hospital. Where may John have caught that flu? We may have called a few times, but he never picked up. May you really have expected an answer from him? Might + Have + Past Participle I might have eaten a cheese burger once. Did you eat a burger even being a vegetarian? They might have been here, but they are gone now. Were they here before?",
           "publishedVisibleTexts": [
@@ -2528,9 +2666,74 @@
           ]
         },
         "approvedProjection": {
-          "approved": false,
-          "tables": [],
-          "notes": "No approved editable projection; retain published source text and blocker."
+          "approved": true,
+          "source": "published-visible-text",
+          "nativeIdentityConfirmed": false,
+          "publishedLayout": "Published visible text is ordered as STRUCTURES, STATEMENTS, QUESTIONS, with blank structure cells continuing the preceding modal group.",
+          "nativeShapeEvidence": {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 282913,
+              "y": 891150,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3282913,
+              "bottom": 3891150
+            },
+            "columnWidths": [
+              1825375,
+              3636375,
+              3152250
+            ],
+            "note": "Shape geometry supports the three-column chart layout but native cell content is not authoritative on this slide."
+          },
+          "tables": [
+            {
+              "shapeId": null,
+              "shapeName": "published-visible-text-projection",
+              "bbox": null,
+              "columnWidths": null,
+              "rows": [
+                [
+                  "STRUCTURES",
+                  "STATEMENTS",
+                  "QUESTIONS"
+                ],
+                [
+                  "Could + Have + Past Participle",
+                  "I could have gotten lost if we had not seen then on time.",
+                  "What could have happened to them?"
+                ],
+                [
+                  "",
+                  "You could have said that before all went to nothing.",
+                  "What could I have said?"
+                ],
+                [
+                  "May + Have + Past Participle",
+                  "John may have caught that flu at the hospital.",
+                  "Where may John have caught that flu?"
+                ],
+                [
+                  "",
+                  "We may have called a few times, but he never picked up.",
+                  "May you really have expected an answer from him?"
+                ],
+                [
+                  "Might + Have + Past Participle",
+                  "I might have eaten a cheese burger once.",
+                  "Did you eat a burger even being a vegetarian?"
+                ],
+                [
+                  "",
+                  "They might have been here, but they are gone now.",
+                  "Were they here before?"
+                ]
+              ]
+            }
+          ],
+          "notes": "Every cell is transcribed from the published visibleTexts quote. Native mismatches remain in sourceEvidence.differences."
         },
         "sourceRefs": [
           {
@@ -2548,22 +2751,23 @@
     ],
     "summary": {
       "auditedCount": 10,
-      "approvedProjectionCount": 6,
-      "clearTableSemanticsBlockerCount": 6,
-      "blockedCount": 4,
+      "approvedProjectionCount": 9,
+      "clearTableSemanticsBlockerCount": 10,
+      "blockedCount": 0,
       "approvedUnits": [
         4,
         30,
         33,
         34,
         35,
-        42
-      ],
-      "blockedUnits": [
-        5,
+        42,
         44,
         46,
         48
+      ],
+      "blockedUnits": [],
+      "textOnlyUnits": [
+        5
       ]
     }
   }

@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import unittest
 from pathlib import Path
 
@@ -22,9 +23,10 @@ class CourseBuilderBlockerClassificationTests(unittest.TestCase):
         self.assertEqual(review["summary"]["auditedCount"], len(EXPECTED_UNITS))
         self.assertEqual(
             review["summary"]["approvedUnits"],
-            [4, 30, 33, 34, 35, 42],
+            [4, 30, 33, 34, 35, 42, 44, 46, 48],
         )
-        self.assertEqual(review["summary"]["blockedUnits"], [5, 44, 46, 48])
+        self.assertEqual(review["summary"]["blockedUnits"], [])
+        self.assertEqual(review["summary"]["textOnlyUnits"], [5])
 
         for entry in entries:
             evidence = entry["sourceEvidence"]
@@ -33,21 +35,25 @@ class CourseBuilderBlockerClassificationTests(unittest.TestCase):
             for reference in entry["sourceRefs"]:
                 self.assertRegex(reference["sha256"], r"^[0-9a-f]{64}$")
             approved = entry["approvedProjection"]
-            self.assertEqual(approved["approved"], entry["clearTableSemanticsBlocker"])
+            self.assertTrue(entry["clearTableSemanticsBlocker"])
             for table in approved["tables"]:
-                self.assertTrue(table["shapeId"])
-                self.assertTrue(table["bbox"])
-                self.assertTrue(table["columnWidths"])
                 self.assertTrue(table["rows"])
                 self.assertTrue(all(isinstance(row, list) for row in table["rows"]))
+                if approved["source"] == "native-a:tbl":
+                    self.assertTrue(table["shapeId"])
+                    self.assertTrue(table["bbox"])
+                    self.assertTrue(table["columnWidths"])
 
         unit5 = next(entry for entry in entries if entry["unit"] == 5)
         self.assertEqual(unit5["sourceEvidence"]["nativeTables"], [])
         self.assertFalse(unit5["approvedProjection"]["approved"])
+        self.assertEqual(unit5["approvedProjection"]["mode"], "text-only")
 
         for unit in (44, 46, 48):
             entry = next(item for item in entries if item["unit"] == unit)
-            self.assertEqual(entry["status"], "blocked-native-published-mismatch")
+            self.assertEqual(entry["status"], "reviewed-published-source")
+            self.assertEqual(entry["approvedProjection"]["source"], "published-visible-text")
+            self.assertFalse(entry["approvedProjection"]["nativeIdentityConfirmed"])
             self.assertTrue(entry["sourceEvidence"]["differences"])
 
     def test_declared_hashes_match_audit_files_when_source_root_is_available(self) -> None:
@@ -60,6 +66,27 @@ class CourseBuilderBlockerClassificationTests(unittest.TestCase):
         self.assertTrue(root.is_dir(), raw_root)
         document = json.loads(REVIEW.read_text(encoding="utf-8"))
         for entry in document["tableReview"]["entries"]:
+            published_path = root / Path(entry["publishedSourceFile"]).relative_to("docs/audit")
+            published_document = json.loads(published_path.read_text(encoding="utf-8"))
+            published_slide = next(
+                slide
+                for slide in published_document["deck"]["slides"]
+                if int(slide.get("number", 0) or 0) == entry["sourceSlide"]
+            )
+            published_text = re.sub(
+                r"[^a-z0-9]+",
+                "",
+                "".join(str(value) for value in published_slide.get("visibleTexts", [])).casefold(),
+            )
+            for table in entry["approvedProjection"]["tables"]:
+                for row in table["rows"]:
+                    for cell in row:
+                        if cell:
+                            self.assertIn(
+                                re.sub(r"[^a-z0-9]+", "", cell.casefold()),
+                                published_text,
+                                f"Unit {entry['unit']} cell is absent from the published quote: {cell}",
+                            )
             for reference in entry["sourceRefs"]:
                 relative = Path(reference["path"])
                 if relative.parts[:2] == ("docs", "audit"):
