@@ -1,0 +1,1978 @@
+{
+  "schemaVersion": 1,
+  "units": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "patches": [
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "rowId": "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+      "reason": "Make the origins role-play interactive with short topic-specific turns and an explicit learner criterion.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Act out the following situation with your teacher. Imagine you are a new student in USA and you get to the classroom and you find a classmate. Introduce yourself, talk about your personal information and about your origins. Ask and answer questions.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "introduction",
+              "question": "Introduce yourself: say where you are from, your nationality, and one language you speak. Then ask your teacher where they are from.",
+              "answerPrompt": "Model: I’m from [country]. I’m [nationality]. I speak [language]. Where are you from?"
+            },
+            {
+              "id": "origin-follow-up",
+              "question": "Ask your teacher one follow-up question about their country or nationality, then answer a question about your own origin.",
+              "answerPrompt": "Ask: What nationality are you? / What language do you speak? Then answer with your own information."
+            },
+            {
+              "id": "family-origin",
+              "question": "Tell your teacher where one family member is from and ask where one of their family members is from.",
+              "answerPrompt": "Model: My [family member] is from [country]. Where is your [family member] from?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Act out the following situation with your teacher. Imagine you are a new student in USA and you get to the classroom and you find a classmate. Introduce yourself, talk about your personal information and about your origins. Ask and answer questions.",
+          "after": "Introduce yourself and your origins, ask your teacher where they are from, and ask one follow-up question."
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "rowId": "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028",
+      "reason": "Expose the authored E task as typed writing with its stated word range.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write a 30 - 50 word paragraph where you talk about your origins and your family’s origins too. Check the example given in exercise D.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "mode"
+          ],
+          "before": "teacher-and-self-study",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Habla.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 30 - 50 word paragraph where you talk about your origins and your family’s origins too. Check the example given in exercise D."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 30
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 50
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "rowId": "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+      "reason": "Accept the source-supported full sentence as well as the place name.",
+      "changes": [
+        {
+          "path": [
+            "items",
+            4,
+            "acceptedAnswers"
+          ],
+          "before": [
+            "Monterrey"
+          ],
+          "after": [
+            "Monterrey",
+            "They come from Monterrey.",
+            "They come from Monterrey"
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "rowId": "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024",
+      "reason": "Teach the article in the country name used by the answer key.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>A glimpse to Jenny’s life Jenny is from USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican, they come from Monterrey; Jenny speaks English but she speaks Spanish too because her parents speak Spanish. Jenny’s boyfriend is Takaishi, he is American too but his parents are from Japan. He speaks English and Japanese.</p>",
+          "after": "<p>A glimpse to Jenny’s life Jenny is from the USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican, they come from Monterrey; Jenny speaks English but she speaks Spanish too because her parents speak Spanish. Jenny’s boyfriend is Takaishi, he is American too but his parents are from Japan. He speaks English and Japanese.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "rowId": "course-guided-cmk0vi2e30003l404hjqaqibj-recording-15-c-improvise-a-conversation-with-your-teacher-ask-and-answer-033",
+      "reason": "Turn the daily-routine role-play into a short learner-teacher exchange.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "C. Improvise a conversation with your teacher. Ask and answer questions about daily routine. Do not forget to include all the aspects studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "routine",
+              "question": "Describe your weekday routine with two frequency words, then ask your teacher about their routine.",
+              "answerPrompt": "Model: I usually wake up at [time], and I sometimes [activity]. What do you usually do in the morning?"
+            },
+            {
+              "id": "frequency",
+              "question": "Ask your teacher how often they do one daily activity, then answer the same question about yourself.",
+              "answerPrompt": "Ask: How often do you [activity]? Answer: I [usually/sometimes/never] [activity]."
+            },
+            {
+              "id": "comparison",
+              "question": "Compare one part of your routine with your teacher’s routine and ask one follow-up question.",
+              "answerPrompt": "Model: I usually [activity], but I never [activity]. What about you?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "C. Improvise a conversation with your teacher. Ask and answer questions about daily routine. Do not forget to include all the aspects studied.",
+          "after": "Describe your daily routine with frequency adverbs, ask your teacher about theirs, and ask one follow-up question."
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "rowId": "course-guided-cmk0vi2e30003l404hjqaqibj-text-13-tom-wakes-up-at-5-am-every-day-he-takes-a-shower-and-after-that--029",
+      "reason": "Use the standard collocation for arriving at work in the learner-facing reading.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Tom wakes up at 5 AM every day. He takes a shower and after that, he has breakfast. At 7:30 AM, he goes out to go to work and he arrives to his job at 8:00 AM. He is a lawyer, so he is sometimes in the office but he is usually at the supreme court. He always finishes work after 5:00 PM and he normally gets home at 8:00 PM. 1. Tom never wakes up at 6 AM. (T) (F) 2. He has breakfast first. (T) (F) 3. He starts work at 7 AM. (T) (F) 4. He is usually at court. (T) (F) 5. He is normally at home at 8 PM. (T) (F)</p>",
+          "after": "<p>Tom wakes up at 5 AM every day. He takes a shower and after that, he has breakfast. At 7:30 AM, he goes out to go to work and he arrives at work at 8:00 AM. He is a lawyer, so he is sometimes in the office but he is usually at the supreme court. He always finishes work after 5:00 PM and he normally gets home at 8:00 PM. 1. Tom never wakes up at 6 AM. (T) (F) 2. He has breakfast first. (T) (F) 3. He starts work at 7 AM. (T) (F) 4. He is usually at court. (T) (F) 5. He is normally at home at 8 PM. (T) (F)</p>"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "rowId": "course-guided-cmk0vi2e30003l404hjqaqibj-text-9-another-common-thing-in-english-are-the-interrogative-words-which-024",
+      "reason": "Correct agreement and add a concise frequency-adverb routine model.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Another common thing in English are the interrogative words which can be used in any tense. Check out the following examples and how to identify them.</p><p>Peter sometimes goes to the beach on weekends by car because he loves it. Who How often What Where When How Why</p><p>Every interrogative word asks for specific information; look at the chart:</p><p>Bonus: I normally go to class with Jane. Who do you normally go to class with?</p><p>Who How often What Where When How Why</p>",
+          "after": "<p>Another common thing in English is the use of interrogative words, which can be used in any tense. Check out the following examples and how to identify them.</p><p>Peter sometimes goes to the beach on weekends by car because he loves it. Who How often What Where When How Why</p><p>Every interrogative word asks for specific information; look at the chart:</p><p>Bonus: I normally go to class with Jane. Who do you normally go to class with?</p><p>Who How often What Where When How Why</p><p>Example: I usually wake up at 7 a.m. and take the bus to work.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "rowId": "course-guided-cmk0vijvj0001i904j8k1di8d-multiple-choice-13-a-listen-to-the-audio-and-extract-the-information-abo-034",
+      "reason": "Replace an off-target age question with a preference-intensity question supported by the audio.",
+      "changes": [
+        {
+          "path": [
+            "items",
+            0
+          ],
+          "before": {
+            "id": "course-listening-13-manual-mc-1-001",
+            "question": "How old is the speaker?",
+            "options": [
+              {
+                "id": "course-choice-13-001",
+                "text": "28 years old"
+              },
+              {
+                "id": "course-choice-13-002",
+                "text": "18 years old"
+              },
+              {
+                "id": "course-choice-13-003",
+                "text": "38 years old"
+              },
+              {
+                "id": "course-choice-13-004",
+                "text": "48 years old"
+              }
+            ],
+            "correctOptionId": "course-choice-13-001"
+          },
+          "after": {
+            "id": "course-listening-13-manual-mc-1-001",
+            "question": "What is the speaker crazy about?",
+            "options": [
+              {
+                "id": "course-choice-13-001",
+                "text": "Desserts"
+              },
+              {
+                "id": "course-choice-13-002",
+                "text": "Pasta"
+              },
+              {
+                "id": "course-choice-13-003",
+                "text": "Rice"
+              },
+              {
+                "id": "course-choice-13-004",
+                "text": "Cooking"
+              }
+            ],
+            "correctOptionId": "course-choice-13-001"
+          }
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "rowId": "course-guided-cmk0vijvj0001i904j8k1di8d-text-7-hobbies-are-activities-that-we-make-regularly-because-we-like-the-021",
+      "reason": "Correct the definition of hobbies while retaining the preference theme.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Hobbies are activities that we make regularly because we like them. It can be any type of interest that we have. What are your hobbies?</p>",
+          "after": "<p>Hobbies are activities we do regularly because we like them. They can be any type of interest we have. What are your hobbies?</p>"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "rowId": "course-guided-cmk0wu7xk0001lb04z0pauq4e-recording-16-d-talk-about-your-family-present-a-family-tree-to-your-teac-036",
+      "reason": "Make the family-tree conversation concrete and reciprocal.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Talk about your family. Present a family tree to your teacher and use the language studied during this lesson.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "family-tree",
+              "question": "Present your family tree and describe three family members or relationships. Then ask your teacher about one family member.",
+              "answerPrompt": "Model: This is my [relationship], [name]. They are [age/description]. Who is in your family?"
+            },
+            {
+              "id": "family-questions",
+              "question": "Ask your teacher whether they have siblings, cousins, or children, then answer a family question about yourself.",
+              "answerPrompt": "Ask: How many siblings do you have? Answer with your own family information."
+            },
+            {
+              "id": "family-detail",
+              "question": "Say where one relative lives or how old they are, and ask your teacher for one similar detail.",
+              "answerPrompt": "Model: My [relative] lives in [place]. How old is your [relative]?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Talk about your family. Present a family tree to your teacher and use the language studied during this lesson.",
+          "after": "Present your family tree, describe three family members or relationships, and ask your teacher about their family."
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "rowId": "course-guided-cmk0wu7xk0001lb04z0pauq4e-recording-16-d-talk-about-your-family-present-a-family-tree-to-your-teac-037",
+      "reason": "Expose the authored E task as typed writing and remove recording-only metadata.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "mode"
+          ],
+          "before": "teacher-and-self-study",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Habla.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 50
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": "conversation",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "kind"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "writing"
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write a 50–80 word paragraph about someone else’s family, including family relationships and members."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "aiGradingContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 50 - 80 word paragraph where you talk about someone else’s family. Include all the details learned during this lesson.\n\nAuthored review criteria/context:\nconstraints:\n50–80 words for the writing task; include family relationships and members."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "originalPromptAIContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write a 50–80 word paragraph about someone else’s family, including family relationships and members."
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "rowId": "course-guided-cmk0wu7xk0001lb04z0pauq4e-text-13-questions-answers-0-do-you-have-a-big-family-yes-i-do-we-are-sev-027",
+      "reason": "Use the correct have-question form for siblings.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Questions Answers 0. Do you have a big family? Yes, I do. We are seven people. 1. How many siblings are you? 2. What is your cousin’s name? 3. Do you have any children? 4. Where does your uncle live? 5. How old is your sister? 6. 7. 8.</p>",
+          "after": "<p>Questions Answers 0. Do you have a big family? Yes, I do. We are seven people. 1. How many siblings do you have? 2. What is your cousin’s name? 3. Do you have any children? 4. Where does your uncle live? 5. How old is your sister? 6. 7. 8.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-recording-16-a-excuse-me-my-name-is-aida-i-am-here-for-the-interview-a-y-041",
+      "reason": "Make the interview role-play an understandable sequence with reciprocal questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Read the following sentences and organize the conversation by numbering the interventions. After that, act out the conversation with your teacher.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "interview-intro",
+              "question": "Role-play the interview opening: introduce yourself and say why you are there. Then ask your teacher one interview question.",
+              "answerPrompt": "Model: My name is [name]. I’m here for the [job] interview. What experience are you looking for?"
+            },
+            {
+              "id": "experience",
+              "question": "Answer your teacher’s question about your experience, describe two tasks you can do, and ask about one task they do.",
+              "answerPrompt": "Model: I work as a [job]. I [task] and [task]. What tasks do you do?"
+            },
+            {
+              "id": "role-question",
+              "question": "Ask your teacher one question about the position, then answer a follow-up question about your availability.",
+              "answerPrompt": "Ask: When would I start? Answer with a day or time that suits you."
+            },
+            {
+              "id": "close",
+              "question": "Close the interview politely and ask one final question about the job.",
+              "answerPrompt": "Model: Thank you for your time. Could you tell me one more detail about the role?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Read the following sentences and organize the conversation by numbering the interventions. After that, act out the conversation with your teacher.",
+          "after": "Organize the interview dialogue, role-play the interview, answer about your experience, and ask one question about the job."
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-recording-17-e-read-the-following-directions-in-order-to-improvise-a-con-042",
+      "reason": "Make the application interview practice reciprocal and scaffolded.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Read the following directions in order to improvise a conversation with your teacher. Imagine you are applying for the administrative sales assistant position in a big company and you are already in the interview: - Introduce yourself - Answer your teacher questions (He plays the CEO) - Talk about your Experience - Say thanks when you get the job.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "application-intro",
+              "question": "Introduce yourself as an applicant for the administrative sales assistant position, then ask the CEO what the role involves.",
+              "answerPrompt": "Model: I’m applying for the administrative sales assistant position. What does the role involve?"
+            },
+            {
+              "id": "experience-answer",
+              "question": "Answer your teacher’s questions about your experience, describe two professional tasks, and ask about one task they do.",
+              "answerPrompt": "Model: I have experience as a [job]. I [task] and [task]. What experience do you have?"
+            },
+            {
+              "id": "availability",
+              "question": "Ask one question about the position or start date, then answer your teacher’s follow-up question.",
+              "answerPrompt": "Ask: When would I start? Answer with your availability."
+            },
+            {
+              "id": "thanks",
+              "question": "Finish the interview by thanking the CEO and asking one polite closing question.",
+              "answerPrompt": "Model: Thank you for the opportunity. When will I hear from you?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "E. Read the following directions in order to improvise a conversation with your teacher. Imagine you are applying for the administrative sales assistant position in a big company and you are already in the interview: - Introduce yourself - Answer your teacher questions (He plays the CEO) - Talk about your Experience - Say thanks when you get the job.",
+          "after": "Introduce yourself, answer interview questions about your experience, ask one question about the role, and close politely."
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-structured-content-13-sentences-questions-negative-statements-0-john-wor-031",
+      "reason": "Correct the preposition in the worked job example while retaining the transformation exercise.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            0,
+            1
+          ],
+          "before": "John works in a farm.",
+          "after": "John works on a farm."
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            0,
+            2
+          ],
+          "before": "Does he work in a farm?",
+          "after": "Does he work on a farm?"
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            0,
+            3
+          ],
+          "before": "He doesn’t work in a farm.",
+          "after": "He doesn’t work on a farm."
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-text-16-a-excuse-me-my-name-is-aida-i-am-here-for-the-interview-a-yes-at-040",
+      "reason": "Use the standard interview expression have/take a seat.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>__A: Excuse me, My name is Aida , I am here for the interview. __A: Yes! At 9 o’clock. __A: Wow, sir! Yes! I will be here on Monday. Thanks. ----------- Aida enters the office ---------------- __C: Have a sit, miss. I’m Mr. Jenkins, The CEO of the company. __A: Thanks, sir. My name is Aida and I am here for the post of administrative assistant. __B: Hello! Do you have an appointment with Mr. Jenkins? __C: I see. I will ask you some questions. What is your experience as assistant? __A: I work as an assistant now in a small gas company, but I want to change job to grow professionally. __B: Take a sit. Mr. Jenkins will see you in a minute. __C: Magnificent! The company here is bigger but I think you can manage the job. How about starting on Monday? __A: Well, I check mails and send them, I organize meetings and have materials and presentations ready for my boss and I represent the company in different events. __C: I understand. Tell me, Aida, as an assistant, What do you do?</p>",
+          "after": "<p>__A: Excuse me, My name is Aida , I am here for the interview. __A: Yes! At 9 o’clock. __A: Wow, sir! Yes! I will be here on Monday. Thanks. ----------- Aida enters the office ---------------- __C: Have a seat, miss. I’m Mr. Jenkins, The CEO of the company. __A: Thanks, sir. My name is Aida and I am here for the post of administrative assistant. __B: Hello! Do you have an appointment with Mr. Jenkins? __C: I see. I will ask you some questions. What is your experience as assistant? __A: I work as an assistant now in a small gas company, but I want to change job to grow professionally. __B: Take a seat. Mr. Jenkins will see you in a minute. __C: Magnificent! The company here is bigger but I think you can manage the job. How about starting on Monday? __A: Well, I check mails and send them, I organize meetings and have materials and presentations ready for my boss and I represent the company in different events. __C: I understand. Tell me, Aida, as an assistant, What do you do?</p>"
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-recording-17-d-pretend-you-are-organizing-a-party-with-your-teacher-talk-034",
+      "reason": "Make the party-planning conversation progress through quantities, products, and stock.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Pretend you are organizing a party with your teacher. Talk about how many people and how much food you need for this party. What products do you need to buy? What do you have? REMEMBER, use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "party-size",
+              "question": "Plan the party size: say how many people are coming and ask your teacher how many guests they expect.",
+              "answerPrompt": "Model: There are [number] people coming. How many guests do you expect?"
+            },
+            {
+              "id": "food-quantities",
+              "question": "Discuss how much uncountable food and how many countable items you need, then ask your teacher about one quantity.",
+              "answerPrompt": "Model: We need some/much [food] and [number] [items]. How many [items] do we need?"
+            },
+            {
+              "id": "shopping-list",
+              "question": "Say what products you have and what you still need to buy. Ask your teacher one final shopping question.",
+              "answerPrompt": "Model: We have [item], but there isn’t any [item]. What else should we buy?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Pretend you are organizing a party with your teacher. Talk about how many people and how much food you need for this party. What products do you need to buy? What do you have? REMEMBER, use the language studied.",
+          "after": "Plan a party with quantities, products, and what you already have; ask your teacher at least one quantity question."
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-recording-17-d-pretend-you-are-organizing-a-party-with-your-teacher-talk-035",
+      "reason": "Expose the authored E task as typed writing and remove recording-only metadata.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "mode"
+          ],
+          "before": "teacher-and-self-study",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Habla.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 100
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": "conversation",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "kind"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "writing"
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write an 80–100 word paragraph about your family’s shopping habits using countable and uncountable quantities."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "aiGradingContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 80 - 100 word paragraph where you talk about your family’s shopping habits as in the example stated in the reading activity.\n\nAuthored review criteria/context:\nconstraints:\nUse countable/uncountable quantities and quantifiers; 80–100 words for writing."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "originalPromptAIContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write an 80–100 word paragraph about your family’s shopping habits using countable and uncountable quantities."
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-structured-content-10-we-normally-use-simple-present-tense-to-talk-about-018",
+      "reason": "Remove the extra of in the plural food example.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            1,
+            3
+          ],
+          "before": "There aren’t any of eggs in the basket.",
+          "after": "There aren’t any eggs in the basket."
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-recording-15-d-pretend-you-and-your-teacher-are-in-your-house-describe-t-036",
+      "reason": "Make the belongings conversation cover ownership, family items, and reciprocal questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Pretend you and your teacher are in your house. Describe the different belongings you and your family have there. Talk about yours, talk about your brothers’ belongings, your parents’. Do not leave out the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "belongings",
+              "question": "Describe three belongings in your home and say who each item belongs to. Then ask your teacher about one item.",
+              "answerPrompt": "Model: These are my keys. That is my brother’s watch. Whose bag is this?"
+            },
+            {
+              "id": "family-possessions",
+              "question": "Describe one belonging of a sibling or parent using a possessive adjective or pronoun, then ask your teacher a whose question.",
+              "answerPrompt": "Model: This is her wallet. It is hers. Whose phone is that?"
+            },
+            {
+              "id": "demonstratives",
+              "question": "Point out one nearby and one distant object, state who owns them, and ask your teacher to do the same.",
+              "answerPrompt": "Model: These are my glasses. Those are my parents’ books. What are those?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Pretend you and your teacher are in your house. Describe the different belongings you and your family have there. Talk about yours, talk about your brothers’ belongings, your parents’. Do not leave out the language studied.",
+          "after": "Describe three belongings, use possessive forms and demonstratives, and ask your teacher whose one item is."
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-recording-15-d-pretend-you-and-your-teacher-are-in-your-house-describe-t-037",
+      "reason": "Expose the authored E task as typed writing and remove recording-only metadata.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write a conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as much interventions as needed to include the language studied.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "mode"
+          ],
+          "before": "teacher-and-self-study",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Habla.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 50–80 word conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as many interventions as needed to include the language studied."
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": "conversation",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Write a conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as much interventions as needed to include the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "kind"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "writing"
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 50–80 word conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as many interventions as needed to include the language studied."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "aiGradingContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 50–80 word conversation about an argument. You and your brother are having a fight over your clothes, shoes and colognes. Use as many interventions as needed to include the language studied."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "originalPromptAIContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write a 50–80 word argument conversation using belongings language."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 50
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-text-10-language-targets-025",
+      "reason": "Separate use from the possessive forms in the language-target note.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>When we talk about belongings we can consider the following aspects.</p><p>TO CONSIDER When we talk about belongings we cannot only used the demonstrative, but we can also use the possessive pronouns and adjectives. Additionally, the possessive case is useful.</p><p>TO CONSIDER</p>",
+          "after": "<p>When we talk about belongings we can consider the following aspects.</p><p>TO CONSIDER When we talk about belongings, we cannot only use demonstratives; we can also use possessive pronouns and adjectives. Additionally, the possessive case is useful.</p><p>TO CONSIDER</p>"
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-text-6-when-we-talk-about-belongings-we-always-talk-about-things-objects-019",
+      "reason": "Correct possess in the belongings definition.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>When we talk about belongings we always talk about things / objects people posses.</p><p>GLASSES</p><p>KEYS</p><p>WATCH</p><p>AGENDA</p><p>WALLET</p><p>CREDIT CARD</p><p>CELLPHONE</p><p>SPORT BOTTLE</p><p>MECHANICAL PENCIL</p>",
+          "after": "<p>When we talk about belongings we always talk about things / objects people possess.</p><p>GLASSES</p><p>KEYS</p><p>WATCH</p><p>AGENDA</p><p>WALLET</p><p>CREDIT CARD</p><p>CELLPHONE</p><p>SPORT BOTTLE</p><p>MECHANICAL PENCIL</p>"
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "rowId": "course-guided-cmk3zalwi0001jo04hy9a1qi7-recording-15-d-pretend-you-just-arrived-to-a-city-you-are-a-tourist-and--033",
+      "reason": "Make the city-directions role-play progress through destinations, routes, and follow-up questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Pretend you just arrived to a city. You are a tourist and your teacher is your companion. Talk about the places you want to visit and discuss how you are getting there.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "destination",
+              "question": "Tell your teacher about two places you want to visit in the city, then ask which place they want to visit.",
+              "answerPrompt": "Model: I want to visit the [place] and the [place]. Which place do you want to visit?"
+            },
+            {
+              "id": "route",
+              "question": "Ask your teacher how to get to one place and explain one route using a street, landmark, or direction.",
+              "answerPrompt": "Ask: How do I get to the [place]? Model: Go [direction] and walk [number] blocks."
+            },
+            {
+              "id": "location",
+              "question": "Say where a third place is, then ask your teacher one indirect location question.",
+              "answerPrompt": "Model: The [place] is next to/in front of the [place]. Do you know where the [place] is?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Pretend you just arrived to a city. You are a tourist and your teacher is your companion. Talk about the places you want to visit and discuss how you are getting there.",
+          "after": "Name places to visit, ask for directions, and use location language in a three-part tourist conversation."
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "rowId": "course-guided-cmk3zalwi0001jo04hy9a1qi7-recording-15-d-pretend-you-just-arrived-to-a-city-you-are-a-tourist-and--034",
+      "reason": "Expose the authored E task as typed writing and remove recording-only metadata.",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "E. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "mode"
+          ],
+          "before": "teacher-and-self-study",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "type"
+          ],
+          "before": "recording",
+          "after": "essay"
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Habla.",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "E. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied."
+        },
+        {
+          "path": [
+            "minWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 80
+        },
+        {
+          "path": [
+            "maxWords"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": 100
+        },
+        {
+          "path": [
+            "data",
+            "guidedRole"
+          ],
+          "before": "conversation",
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "E. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": {
+            "$delete": true
+          }
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "kind"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "writing"
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "exerciseReview",
+            "prompt"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write an 80–100 word city description with at least six places and how to get there."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "aiGradingContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Evaluate the learner’s written response against the authored source prompt.\n\nAuthored source prompt:\nE. Write a 80 - 100 word paragraph describing your city. Talk about at least 6 places and state how to get there. Use the language studied.\n\nAuthored review criteria/context:\nconstraints:\nMention at least six places and how to get there; 80–100 words."
+        },
+        {
+          "path": [
+            "data",
+            "data",
+            "originalPromptAIContext"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Write an 80–100 word city description with at least six places and routes."
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "rowId": "course-guided-cmk3zalwi0001jo04hy9a1qi7-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--021",
+      "reason": "Correct the embedded indirect question order.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            1,
+            3
+          ],
+          "before": "I am not sure, Do you know where is it?",
+          "after": "I am not sure. Do you know where it is?"
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "rowId": "course-guided-cmk3zca590009jp04suhvg28s-recording-14-d-describe-a-city-town-country-you-like-or-that-you-want-to-035",
+      "reason": "Make the place-description role-play cover location, qualities, and reciprocal questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Describe a city / town / country you like or that you want to visit. Use very detailed information. Remember to work with the language studied. Your teacher will ask you questions to help you describe.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "place",
+              "question": "Name a city, town, or country you like or want to visit, say where it is, and ask your teacher about a place they like.",
+              "answerPrompt": "Model: I like [place]. It is in [country/region]. What place do you like?"
+            },
+            {
+              "id": "adjectives",
+              "question": "Describe the place with three adjectives, then ask your teacher how their place is.",
+              "answerPrompt": "Model: It is [adjective], [adjective], and [adjective]. How is your place?"
+            },
+            {
+              "id": "features",
+              "question": "Say what the place has and why you like it, then ask one follow-up question about your teacher’s place.",
+              "answerPrompt": "Model: It has [feature], so I like it because [reason]. What does your place have?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Describe a city / town / country you like or that you want to visit. Use very detailed information. Remember to work with the language studied. Your teacher will ask you questions to help you describe.",
+          "after": "Describe a place with its location, three adjectives, and one feature; ask your teacher two follow-up questions."
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "rowId": "course-guided-cmk3zca590009jp04suhvg28s-structured-content-8-we-normally-talk-about-places-and-we-include-the-us-021",
+      "reason": "Use quiet, the adjective that completes the place description.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            2,
+            3
+          ],
+          "before": "I live in a tiny and cozy town but it is not quite.",
+          "after": "I live in a tiny and cozy town, but it is not quiet."
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-recording-15-d-compare-two-different-places-you-have-already-visited-how-035",
+      "reason": "Make the comparison role-play build from place qualities to people and food.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Compare two different places you have already visited. How are theses places? How are the people? How is the food? Similar? Different? Remember to use comparisons.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "places",
+              "question": "Name two places you have visited and compare their size, atmosphere, or appearance. Then ask your teacher about two places they know.",
+              "answerPrompt": "Model: [Place A] is [comparative] than [Place B]. Which places have you visited?"
+            },
+            {
+              "id": "people",
+              "question": "Compare the people in the two places and ask your teacher how the people differ in their examples.",
+              "answerPrompt": "Model: The people in [Place A] are [comparative] than the people in [Place B]. How are they in your places?"
+            },
+            {
+              "id": "food",
+              "question": "Compare the food in the two places, then state one similarity using as ... as and ask one follow-up question.",
+              "answerPrompt": "Model: The food is as [adjective] as [other food]. Which food do you prefer?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Compare two different places you have already visited. How are theses places? How are the people? How is the food? Similar? Different? Remember to use comparisons.",
+          "after": "Compare two places, their people, and their food using comparative and as ... as forms; ask your teacher one follow-up question."
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-text-9-to-consider-1-adjectives-can-be-divided-into-two-groups-short-1-o-020",
+      "reason": "Clarify the common comparative patterns for one-, two-, and longer adjectives.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>TO CONSIDER 1. Adjectives can be divided into two groups: / Short (1 or 2 syllables) / Long (2 or more syllables). 2. Short adjectives take the –er + than particles: Joe is taller than Jim. 3.Long adjectives take the more + than particles: It is more expensive here than there. 4.Short adjectives that finish in –y change to I + er: She is prettier than you. 5. There are irregular adjectives: Good – Better than / Bad – Worse than. 6. We use the particles ‘as / as’ to state similarities: Joe is as tall as Jake. 7. There are adjectives who do not receive comparison degrees; those adjective have absolute meaning: This is the final test / Those people are dead. 8. Less + Adjective + than is used to state inferiority between two nouns. E.G. Alex is less determined than his brother. 9. There are three levels of comparison: Superiority , Equality and Inferiority</p>",
+          "after": "<p>TO CONSIDER 1. One-syllable adjectives usually take –er + than: Joe is taller than Jim. Some two-syllable adjectives also take –er, especially those ending in –y: pretty → prettier. Many two-syllable adjectives use more + than, and adjectives with three or more syllables normally use more + than: It is more expensive here than there. 2. There are irregular adjectives: Good → better than / bad → worse than. 3. Use as + adjective + as to state similarities: Joe is as tall as Jake. 4. Absolute adjectives do not usually take comparison degrees. 5. Less + adjective + than states inferiority. 6. There are three levels of comparison: superiority, equality, and inferiority.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+      "rowId": "course-guided-cmk3zidzg0001ic04ffiveeqx-recording-15-d-improvise-a-conversation-with-your-teacher-talk-about-whi-035",
+      "reason": "Make the superlative conversation move from a choice to reasons and questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Improvise a conversation with your teacher. Talk about which are the best countries in your opinion. Be very detailed, ask and answer questions.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "choice",
+              "question": "Choose a country you consider one of the best and tell your teacher why. Then ask which country they consider the best.",
+              "answerPrompt": "Model: I think [country] is one of the best because it is [adjective]. Which country is the best in your opinion?"
+            },
+            {
+              "id": "superlative",
+              "question": "Describe the country with two superlatives and ask your teacher for two superlatives about their choice.",
+              "answerPrompt": "Model: It has the most [adjective] [noun] and the [superlative] [noun]. What is the most [adjective] feature of your country?"
+            },
+            {
+              "id": "context",
+              "question": "Give one concrete context for your opinion, then ask one follow-up question about your teacher’s choice.",
+              "answerPrompt": "Model: It is the best place for [activity] because [reason]. Why do you think yours is the best?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Improvise a conversation with your teacher. Talk about which are the best countries in your opinion. Be very detailed, ask and answer questions.",
+          "after": "Choose a country, support the choice with two superlatives and a reason, and ask your teacher two follow-up questions."
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+      "rowId": "course-guided-cmk3zidzg0001ic04ffiveeqx-text-14-b-listen-to-carter-and-richie-talking-about-their-visit-to-tokyo-030",
+      "reason": "Use the standard fixed expression of all time in the superlative reading.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>My Best Friend My best friend, Cloe, lives in the most wonderful city of all times. She lives in Seoul where the greatest technological advances occur every day. She studies in one of the biggest designing institute of the city and it has the best reputation of the local people. I want to visit her, but right now I have the worst economic situation ever. However, she has the most amazing job too, so she wants to pay for my plane ticket, I am so excited!</p>",
+          "after": "<p>My Best Friend My best friend, Cloe, lives in the most wonderful city of all time. She lives in Seoul where the greatest technological advances occur every day. She studies in one of the biggest designing institute of the city and it has the best reputation of the local people. I want to visit her, but right now I have the worst economic situation ever. However, she has the most amazing job too, so she wants to pay for my plane ticket, I am so excited!</p>"
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+      "rowId": "course-guided-cmk3zidzg0001ic04ffiveeqx-text-9-to-consider-1-adjectives-are-divided-into-two-groups-short-1-or-2-020",
+      "reason": "Clarify the common superlative patterns without overlapping syllable categories.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>TO CONSIDER 1. Adjectives are divided into two groups: / Short (1 or 2 syllables) / Long (2 or more syllables). 2. Short adjectives take the –est particles: Joe is the tallest in his family. 3. Long adjectives take the most particle: It is the most expensive restaurant in the city. 4. Short adjectives that finish in –y change to I + est: She is the prettiest at school. 5. There are irregular adjectives: Good – Better than – The Best / Bad – Worse than – The Worst. 6. The superlative for less than is: The least. E.G: That is the least of my worries. 7. ABSOLUTE adjectives do not take superlative level</p>",
+          "after": "<p>TO CONSIDER 1. One-syllable adjectives usually take –est: Joe is the tallest in his family. Some two-syllable adjectives also take –est, especially those ending in –y: pretty → prettiest. Many two-syllable adjectives use the most, and adjectives with three or more syllables normally use the most: It is the most expensive restaurant in the city. 2. Irregular forms include good → better → the best and bad → worse → the worst. 3. The superlative of less is the least. 4. Absolute adjectives do not usually take a superlative.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 13,
+      "lessonId": "cmk3zq5rb0001ju05muzrd2c4",
+      "rowId": "course-guided-cmk3zq5rb0001ju05muzrd2c4-recording-14-d-you-are-talking-on-the-phone-with-your-best-friend-who-is-031",
+      "reason": "Make the present-progressive phone conversation cover the friend’s activity and the learner’s situation.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "phone-opening",
+              "question": "Open the phone call and ask your teacher what they are doing right now.",
+              "answerPrompt": "Model: Hi! What are you doing right now?"
+            },
+            {
+              "id": "experiences",
+              "question": "Ask about one current experience, then answer a question about what you are doing while staying home.",
+              "answerPrompt": "Model: Are you visiting any places? I’m [verb]-ing [activity] at home."
+            },
+            {
+              "id": "time-phrases",
+              "question": "Describe two activities happening now or these days and ask your teacher one follow-up question.",
+              "answerPrompt": "Model: At the moment I’m [verb]-ing [activity]. These days I’m also [verb]-ing [activity]. What about you?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. You are talking on the phone with your best friend who is in Europe now. Ask him what is he doing and all about his experiences. Tell him how your vacations are going while staying home. Your teacher will be your friend.",
+          "after": "Ask what your friend is doing, describe two activities happening now or these days, and ask one follow-up question."
+        }
+      ]
+    },
+    {
+      "unit": 13,
+      "lessonId": "cmk3zq5rb0001ju05muzrd2c4",
+      "rowId": "course-guided-cmk3zq5rb0001ju05muzrd2c4-text-6-when-we-talk-about-on-going-actions-we-normally-need-to-consider--016",
+      "reason": "Correct ongoing and are key in the learner-facing time-phrase note.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>When we talk about on going actions we normally need to consider certain time phrases that are are key for this topic.</p><p>NOW</p><p>RIGHT NOW</p><p>AT THE MOMENT</p><p>CURRENTLY</p><p>IN THIS VERY INSTANT</p><p>THESE DAYS</p>",
+          "after": "<p>When we talk about ongoing actions, we normally need to consider certain time phrases that are key for this topic.</p><p>NOW</p><p>RIGHT NOW</p><p>AT THE MOMENT</p><p>CURRENTLY</p><p>IN THIS VERY INSTANT</p><p>THESE DAYS</p>"
+        }
+      ]
+    },
+    {
+      "unit": 14,
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "rowId": "course-guided-cmk3zr60x0001l804vyj6hctk-multiple-choice-14-what-a-place-two-years-ago-we-visited-one-of-the-most-035",
+      "reason": "Use arrive in in the learner-facing true/false statement while keeping its source evidence.",
+      "changes": [
+        {
+          "path": [
+            "items",
+            3,
+            "question"
+          ],
+          "before": "They arrived to Odaiba.",
+          "after": "They arrived in Odaiba."
+        }
+      ]
+    },
+    {
+      "unit": 14,
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "rowId": "course-guided-cmk3zr60x0001l804vyj6hctk-recording-15-d-tell-your-teacher-about-one-trip-you-made-in-your-life-an-037",
+      "reason": "Make the past-trip conversation proceed through destination, companions, activities, and a follow-up question.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher about one trip you made in your life and that you liked a lot. Where did you go? When did you go? Who did you go with? What did you do?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "destination",
+              "question": "Tell your teacher where and when you took a trip, then ask where they went on a memorable trip.",
+              "answerPrompt": "Model: I went to [place] in [time]. Where did you go?"
+            },
+            {
+              "id": "companions",
+              "question": "Say who you went with and ask your teacher who accompanied them.",
+              "answerPrompt": "Model: I went with [person/people]. Who did you go with?"
+            },
+            {
+              "id": "activities",
+              "question": "Describe two things you did on the trip and ask your teacher what they did on theirs.",
+              "answerPrompt": "Model: We visited [place] and tried [activity/food]. What did you do?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Tell your teacher about one trip you made in your life and that you liked a lot. Where did you go? When did you go? Who did you go with? What did you do?",
+          "after": "Describe where, when, with whom, and what you did on a past trip; ask your teacher the same questions."
+        }
+      ]
+    },
+    {
+      "unit": 14,
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "rowId": "course-guided-cmk3zr60x0001l804vyj6hctk-structured-content-8-talking-about-the-past-can-also-have-two-main-gramm-018",
+      "reason": "Use at Christmas and the correct question preposition in the past-tense model.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            4,
+            0
+          ],
+          "before": "I visited my family in Christmas.",
+          "after": "I visited my family at Christmas."
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            4,
+            1
+          ],
+          "before": "Did you visit your family? / What did you do in Christmas?",
+          "after": "Did you visit your family? / What did you do at Christmas?"
+        }
+      ]
+    },
+    {
+      "unit": 14,
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "rowId": "course-guided-cmk3zr60x0001l804vyj6hctk-text-14-what-a-place-two-years-ago-we-visited-one-of-the-most-amazing-pl-034",
+      "reason": "Use arrive in for the city in the learner-facing travel reading.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>What a place! Two years ago, we visited one of the most amazing places of the world. We went to Japan. We arrived to Tokyo and we stayed there for 3 days. After that, we traveled by train to Odaiba; the trip was marvelous and it was super fast. When we arrived there, we looked for a hotel and we decided to stay in a typical Japanese inn that we found downtown. We tried the traditional Ramen and the original sushi, IT WAS AMAZING! After 3 days, we took another train and went to Hikarigaoka; We visited my dad’s friend there and after two days, we flew back home. This was one of the best trips in my life.</p>",
+          "after": "<p>What a place! Two years ago, we visited one of the most amazing places of the world. We went to Japan. We arrived in Tokyo and we stayed there for 3 days. After that, we traveled by train to Odaiba; the trip was marvelous and it was super fast. When we arrived there, we looked for a hotel and we decided to stay in a typical Japanese inn that we found downtown. We tried the traditional Ramen and the original sushi, IT WAS AMAZING! After 3 days, we took another train and went to Hikarigaoka; We visited my dad’s friend there and after two days, we flew back home. This was one of the best trips in my life.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 15,
+      "lessonId": "cmk3zs4250003l8047krvt8qc",
+      "rowId": "course-guided-cmk3zs4250003l8047krvt8qc-recording-14-d-tell-your-teacher-about-some-things-you-used-to-do-some-y-035",
+      "reason": "Make the past-habits conversation cover former habits, reasons, and questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher about some things you used to do some years ago but not anymore. Why did you stop making them? Also, make your teacher questions.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "past-habit",
+              "question": "Tell your teacher about one thing you used to do when you were younger but do not do anymore. Then ask what they used to do.",
+              "answerPrompt": "Model: I used to [verb] when I was younger. What did you use to do?"
+            },
+            {
+              "id": "reason",
+              "question": "Explain why you stopped one past habit and ask your teacher why they stopped one habit.",
+              "answerPrompt": "Model: I stopped because [reason]. Why did you stop?"
+            },
+            {
+              "id": "follow-up",
+              "question": "Ask a question with Did ... use to ...? and answer a question about a present routine or familiarity.",
+              "answerPrompt": "Model: Did you use to [verb]? I usually [verb] now / I am used to [verb]-ing now."
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Tell your teacher about some things you used to do some years ago but not anymore. Why did you stop making them? Also, make your teacher questions.",
+          "after": "Describe one past habit, explain why it stopped, contrast it with a present routine, and ask your teacher two questions."
+        }
+      ]
+    },
+    {
+      "unit": 15,
+      "lessonId": "cmk3zs4250003l8047krvt8qc",
+      "rowId": "course-guided-cmk3zs4250003l8047krvt8qc-structured-content-10-language-targets-024",
+      "reason": "Correct the be used to example in the language targets.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            3,
+            2
+          ],
+          "before": "They are used to drink coffee only in the mornings.",
+          "after": "They are used to drinking coffee only in the mornings."
+        }
+      ]
+    },
+    {
+      "unit": 15,
+      "lessonId": "cmk3zs4250003l8047krvt8qc",
+      "rowId": "course-guided-cmk3zs4250003l8047krvt8qc-text-8-talking-about-habits-in-the-past-leads-us-to-use-simple-past-tens-022",
+      "reason": "Separate used to, be used to, and usually with clear forms.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Talking about habits in the past leads us to use simple past tense structure; though, it is necessary to work with used to.</p><p>TO CONSIDER 1. Used to is a fixed expression that comes before a verb in simple form. 2. If the sentence has the auxiliary DID, used to goes in simple form. 3. Other useful expressions: but not anymore / Back in my childhood / When I was a child / When I was younger etc. 4. Used to can be used in simple present tense to talk about customs people have. E.G. She is used to read the newspaper in the mornings.</p><p>TO CONSIDER</p>",
+          "after": "<p>Talking about habits in the past leads us to use simple past tense structure; though, it is necessary to work with used to.</p><p>TO CONSIDER 1. Used to + base verb describes past habits or states: I used to play outside. 2. After DID, use use to in the base form: Did you use to play outside? 3. Other useful expressions: but not anymore / back in my childhood / when I was a child / when I was younger. 4. Be used to + noun or -ing describes present familiarity or a custom: She is used to reading the newspaper in the mornings. Use usually + base verb for a present routine: She usually reads the newspaper in the mornings.</p><p>TO CONSIDER</p>"
+        }
+      ]
+    },
+    {
+      "unit": 16,
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-recording-14-d-tell-your-teacher-about-a-experience-you-had-with-a-natur-032",
+      "reason": "Make the past-progressive disaster conversation progress through setting, interruption, and reflection.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience?",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "setting",
+              "question": "Describe where you were and what you were doing when the event began.",
+              "answerPrompt": "Model: I was at/in [place], and I was [verb]-ing when it happened."
+            },
+            {
+              "id": "interruption",
+              "question": "Explain what happened next using a simple-past event that interrupted an ongoing action, then ask your teacher what they were doing.",
+              "answerPrompt": "Model: I was [verb]-ing when [event] happened. What were you doing?"
+            },
+            {
+              "id": "reflection",
+              "question": "Describe how the experience ended and ask your teacher one question about their experience.",
+              "answerPrompt": "Model: We [past action] and finally got to safety. How did you feel?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Tell your teacher about a experience you had with a natural disaster or an accident. What were you doing when it happened? How was the experience?",
+          "after": "Describe what you were doing, the event that interrupted it, and how the experience ended; ask your teacher one question."
+        }
+      ]
+    },
+    {
+      "unit": 16,
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-structured-content-12-sentences-questions-0-i-was-calling-him-when-the-t-024",
+      "reason": "Correct the progressive volcano example while retaining the interruption exercise.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            2,
+            1
+          ],
+          "before": "They were watching the volcano while it was making eruption.",
+          "after": "They were watching the volcano while it was erupting."
+        }
+      ]
+    },
+    {
+      "unit": 16,
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-text-13-survivors-2-years-ago-my-family-and-i-went-to-thailand-for-spend-030",
+      "reason": "Correct the learner-facing past-event sentence while preserving the authored source evidence.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Survivors! 2 years ago, my family and I went to Thailand for spending our holidays. We were having a good time and the city was giving us all what we expected. When we arrived, we were having problems to find the hotel, but a woman helped us and we got safe. The days were passing by while we were having the greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived.</p><p>C. Read the following paragraph and extract the sentences to put them under the corresponding function.</p><p>Survivors!</p>",
+          "after": "<p>Survivors! 2 years ago, my family and I went to Thailand for spending our holidays. We were having a good time and the city was giving us all what we expected. When we arrived, we were having problems to find the hotel, but a woman helped us and we got to safety. The days were passing by while we were having the greatest time of our lives; we had the chance to try traditional food when we were visiting local markets. On the fifth day, we were having a great time at the beach when suddenly an alarm sounded…it was announcing that a tsunami was approaching. Everybody was running while we were trying to stay together in the middle of the terrible moment. Some minutes later, a big wave crashed over the land and lots of water was running over people while they were trying to escape… fortunately, we could get to high hill and survived.</p><p>C. Read the following paragraph and extract the sentences to put them under the corresponding function.</p><p>Survivors!</p>"
+        }
+      ]
+    },
+    {
+      "unit": 17,
+      "lessonId": "cmk400jyo0003ic0464j0gv1l",
+      "rowId": "course-guided-cmk400jyo0003ic0464j0gv1l-recording-14-d-tell-your-teacher-about-some-of-the-plans-you-have-for-th-028",
+      "reason": "Make the plans conversation cover categories, planned actions, and reciprocal questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher about some of the plans you have for the upcoming future. Include information about job, free time, personal things etc. Also, ask your teacher questions.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "categories",
+              "question": "Tell your teacher one plan about work or study and one plan about free time, then ask about their plans.",
+              "answerPrompt": "Model: I’m going to [verb] for work/study, and I’m going to [verb] in my free time. What are you going to do?"
+            },
+            {
+              "id": "personal-plan",
+              "question": "Describe one personal plan with a future time phrase and ask your teacher one specific question about timing.",
+              "answerPrompt": "Model: I’m going to [verb] in [month/on day]. When are you going to [verb]?"
+            },
+            {
+              "id": "intention",
+              "question": "Explain why one plan matters to you and ask one follow-up question about your teacher’s plan.",
+              "answerPrompt": "Model: I’m going to [verb] because [reason]. Why are you going to [verb]?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Tell your teacher about some of the plans you have for the upcoming future. Include information about job, free time, personal things etc. Also, ask your teacher questions.",
+          "after": "Describe plans for work or study, free time, and a personal event with future time phrases; ask your teacher two questions."
+        }
+      ]
+    },
+    {
+      "unit": 17,
+      "lessonId": "cmk400jyo0003ic0464j0gv1l",
+      "rowId": "course-guided-cmk400jyo0003ic0464j0gv1l-text-13-children-chit-chat-you-know-what-i-am-going-to-become-a-youtuber-026",
+      "reason": "Use in July for the month expression in the learner-facing dialogue.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Children Chit chat! You know what? I am going to become a YouTuber when I get older. No way! It is better to work as a trader. I am going to be one of the best traders ever. Well, that too. Hey, how about VR developer? Joe’s brother is going to start working at a VR company as a developer. Amazing! When is he going to start working there? I guess on July, but I am going to ask Joe to confirm. Do you think he is going to get free demos to try? I hope he does! So maybe, we are going to be able to play with Joe. OMG! If that is true, we are going to be the luckiest kids on the block. Totally! I am going to ask Joe now. Let’s go!</p>",
+          "after": "<p>Children Chit chat! You know what? I am going to become a YouTuber when I get older. No way! It is better to work as a trader. I am going to be one of the best traders ever. Well, that too. Hey, how about VR developer? Joe’s brother is going to start working at a VR company as a developer. Amazing! When is he going to start working there? I guess in July, but I am going to ask Joe to confirm. Do you think he is going to get free demos to try? I hope he does! So maybe, we are going to be able to play with Joe. OMG! If that is true, we are going to be the luckiest kids on the block. Totally! I am going to ask Joe now. Let’s go!</p>"
+        }
+      ]
+    },
+    {
+      "unit": 17,
+      "lessonId": "cmk400jyo0003ic0464j0gv1l",
+      "rowId": "course-guided-cmk400jyo0003ic0464j0gv1l-text-8-when-we-talk-plans-we-normally-work-in-english-using-the-going-to-016",
+      "reason": "Correct the heading and add a concise plan-versus-intention distinction.",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>When we talk plans, we normally work in English using the “going to” structure. Check the following examples.</p><p>TO CONSIDER 1. Going to is a fixed structure that denotes future. 2. The verbs after this grammatical structure go in simple form. 3. The future phrases at the end can be specific or general.</p><p>TO CONSIDER</p>",
+          "after": "<p>When we talk about plans, we normally use the “going to” structure. Check the following examples.</p><p>TO CONSIDER 1. Going to is a fixed structure that denotes the future. 2. The verb after this structure goes in the simple form. 3. The future phrase at the end can be specific or general. 4. Use going to for a planned intention; use will for a decision or prediction made at the moment.</p><p>TO CONSIDER</p>"
+        }
+      ]
+    },
+    {
+      "unit": 18,
+      "lessonId": "cmk4011yd0003ju0505ofufnq",
+      "rowId": "course-guided-cmk4011yd0003ju0505ofufnq-recording-14-d-tell-your-teacher-about-some-of-the-arrangements-you-have-034",
+      "reason": "Make the arrangements conversation move through important events, simple events, and reciprocal questions.",
+      "changes": [
+        {
+          "path": [
+            "data",
+            "turns"
+          ],
+          "before": [
+            {
+              "id": "scenario",
+              "question": "D. Tell your teacher about some of the arrangements you have made for the upcoming month. What important events do you have? What simple events do you have? Ask him about his events too.",
+              "answerPrompt": "Responde a la situación."
+            }
+          ],
+          "after": [
+            {
+              "id": "important-event",
+              "question": "Tell your teacher about one important arrangement and give its date. Then ask about one important event they have arranged.",
+              "answerPrompt": "Model: I’m [verb]-ing on [date]. What important event are you attending?"
+            },
+            {
+              "id": "simple-event",
+              "question": "Tell your teacher about one simple arrangement for the month and ask when they are doing a similar activity.",
+              "answerPrompt": "Model: I’m [verb]-ing on [date]. When are you [verb]-ing?"
+            },
+            {
+              "id": "arrangement-detail",
+              "question": "Explain one detail of an arrangement and ask one final question about your teacher’s plans.",
+              "answerPrompt": "Model: I’m [verb]-ing with [person] at [place]. Who are you going with?"
+            }
+          ]
+        },
+        {
+          "path": [
+            "data",
+            "learnerPrompt"
+          ],
+          "before": "D. Tell your teacher about some of the arrangements you have made for the upcoming month. What important events do you have? What simple events do you have? Ask him about his events too.",
+          "after": "Describe one important and one simple arrangement with dates, then ask your teacher two questions about their arrangements."
+        }
+      ]
+    },
+    {
+      "unit": 18,
+      "lessonId": "cmk4011yd0003ju0505ofufnq",
+      "rowId": "course-guided-cmk4011yd0003ju0505ofufnq-structured-content-10-language-targets-024",
+      "reason": "Use natural present-progressive arrangement examples and clarify the school-day subject.",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            0,
+            2
+          ],
+          "before": "She is opening her own business this month. My baby is being born this Friday. They are attending her first school day tomorrow.",
+          "after": "She is opening her own business this month. My baby is due this Friday. She is attending her first day of school tomorrow."
+        }
+      ]
+    }
+  ]
+}
