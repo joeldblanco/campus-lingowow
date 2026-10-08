@@ -1,4 +1,5 @@
 import type { GuidedLessonStep } from './guided-lesson'
+import type { Block } from '@/types/course-builder'
 import {
   getIllustratedLessonScene,
   getIllustratedLessonTopic,
@@ -88,9 +89,24 @@ function fallbackBackground(index: number): string {
   return LESSON_BACKGROUNDS[index % LESSON_BACKGROUNDS.length]
 }
 
-function vocabularyContinuityKey(step: GuidedLessonStep): string | undefined {
-  if (!step.vocabularyPart) return undefined
-  return step.id.replace(/-vocabulary-\d+$/, '')
+function sourceMetadata(block: Block, key: string): unknown {
+  const direct = block.data || {}
+  const nested = direct.data
+  return direct[key] ?? (nested && typeof nested === 'object' ? (nested as Record<string, unknown>)[key] : undefined)
+    ?? (block as unknown as Record<string, unknown>)[key]
+}
+
+function relatedVisualContinuityKey(step: GuidedLessonStep): string | undefined {
+  if (step.vocabularyPart) return step.id.replace(/-vocabulary-\d+$/, '')
+  const figures = step.blocks.filter((block) => block.type === 'image')
+  if (!figures.length || step.blocks.some((block) => block.type !== 'image' && block.type !== 'title' &&
+    !(block.type === 'text' && sourceMetadata(block, 'sourceRole') === 'picture-instruction'))) return undefined
+  const slides = figures.map((block) => sourceMetadata(block, 'sourceSlides'))
+  if (figures.some((block) => sourceMetadata(block, 'learningRevision') !== 'course-guided-v1') ||
+    slides.some((value) => !Array.isArray(value) || value.length !== 1 || value[0] !== (slides[0] as unknown[])[0])) return undefined
+  // These are references within the same authored visual activity,
+  // like vocabulary parts, rather than unrelated tasks reusing a backdrop.
+  return `source-figures:${(slides[0] as unknown[])[0]}`
 }
 
 export function assignLessonBackgrounds(
@@ -111,7 +127,7 @@ export function assignLessonBackgrounds(
   const vocabularyScenes = new Map<string, string>()
   let fallbackIndex = 0
   for (const [stepIndex, step] of steps.entries()) {
-    const continuityKey = vocabularyContinuityKey(step)
+    const continuityKey = relatedVisualContinuityKey(step)
     const continuousSource = continuityKey ? vocabularyScenes.get(continuityKey) : undefined
     if (continuousSource) {
       result[step.id] = continuousSource

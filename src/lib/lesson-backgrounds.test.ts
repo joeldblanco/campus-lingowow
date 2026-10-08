@@ -12,6 +12,15 @@ describe('lesson background library', () => {
     const backgrounds = assignLessonBackgrounds(steps, { unitOneAuthored: false })
     expect(new Set(Object.values(backgrounds)).size).toBe(25)
   })
+  it('keeps related source figures in one setting without sharing it with another slide', () => {
+    const figure = (id: string, slide: number): GuidedLessonStep => ({
+      ...step(id, 'content'),
+      blocks: [{ id, type: 'image', order: 0, url: `/${id}.webp`, data: { learningRevision: 'course-guided-v1', sourceSlides: [slide] } } as Block],
+    })
+    const result = assignLessonBackgrounds([figure('first', 5), figure('second', 5), figure('next-topic', 6)], { unitOneAuthored: false })
+    expect(result.second).toBe(result.first)
+    expect(result['next-topic']).not.toBe(result.first)
+  })
   it('reserves listening and Carl environments even when earlier exercises need a background', () => {
     const listening = { ...step('listen'), blocks: [{ type: 'true_false' } as Block] }
     const readingPractice = { ...step('reading-practice'), label: 'Comprensión de lectura: Carl Johnson', blocks: [{ type: 'multiple_choice' } as Block] }
