@@ -184,6 +184,302 @@ def _native_audit_payload(slide: Mapping[str, Any]) -> Mapping[str, Any] | None:
     return value if isinstance(value, Mapping) else None
 
 
+def _native_vector_projection(slide: Mapping[str, Any]) -> Mapping[str, Any] | None:
+    """Return a reviewed editable-vector projection attached to a slide.
+
+    Vector evidence is deliberately kept separate from ``figures``.  A native
+    shape calendar is usable as structured content, but it is not a raster
+    image and must never be emitted as an ``image`` block.
+    """
+
+    native = _native_audit_payload(slide)
+    if native is None:
+        return None
+    value = native.get("vectorSemanticProjection")
+    return value if isinstance(value, Mapping) else None
+
+
+_VECTOR_REVIEW_KEYS = (
+    "vectorReview",
+    "vectorCalendarReview",
+    "vectorSemanticProjection",
+    "semanticProjection",
+    "vectorProjection",
+)
+
+
+def _native_vector_review_candidates(audit: Any) -> list[Mapping[str, Any]]:
+    """Find standalone or wrapped reviewed vector projections.
+
+    The native PPTX audit remains the generic ``records`` contract.  The
+    Unit 3 calendar review is a small, independently authored record, so the
+    loader accepts that record directly and the named wrapper forms used by
+    audit composition without traversing arbitrary source payloads.
+    """
+
+    result: list[Mapping[str, Any]] = []
+    seen: set[int] = set()
+
+    def visit(value: Any) -> None:
+        if isinstance(value, Mapping):
+            if (
+                isinstance(value.get("scope"), Mapping)
+                and isinstance(value.get("structuredContent"), Mapping)
+                and isinstance(value.get("slide"), Mapping)
+            ):
+                marker = id(value)
+                if marker not in seen:
+                    seen.add(marker)
+                    result.append(value)
+                return
+            for key in ("records", "reviews", "vectorReviews", "projections", *_VECTOR_REVIEW_KEYS):
+                child = value.get(key)
+                if isinstance(child, (Mapping, list, tuple)):
+                    visit(child)
+            return
+        for item in _as_list(value):
+            if isinstance(item, Mapping):
+                visit(item)
+
+    visit(audit)
+    return result
+
+
+def _valid_vector_bbox(value: Any) -> bool:
+    if not isinstance(value, Mapping):
+        return False
+    numeric_keys = ("x", "y", "cx", "cy", "right", "bottom")
+    if any(
+        key not in value
+        or isinstance(value.get(key), bool)
+        or not isinstance(value.get(key), (int, float))
+        for key in numeric_keys
+    ):
+        return False
+    return float(value["cx"]) > 0 and float(value["cy"]) > 0
+
+
+def _vector_digest(value: Any) -> bool:
+    return bool(re.fullmatch(r"[0-9a-f]{64}", _text(value).casefold()))
+
+
+def _vector_shape_id(shape: Any) -> str:
+    return _text(shape.get("shapeId")) if isinstance(shape, Mapping) else ""
+
+
+def _vector_shape_text(shape: Any) -> str:
+    if not isinstance(shape, Mapping):
+        return ""
+    return _normalise(shape.get("text") or shape.get("label"))
+
+
+def _vector_calendar_projection_for_slide(
+    review: Mapping[str, Any],
+    source: Mapping[str, Any],
+    slide: Mapping[str, Any],
+) -> tuple[dict[str, Any] | None, str | None]:
+    """Validate the Unit 3 slide 4 editable calendar evidence.
+
+    The review must prove the exact published slide, native shape boundaries,
+    and every authored day/activity pair before it can clear the normal
+    picture-evidence blocker.  The returned projection contains only reviewed
+    data and is safe to store as provenance on the generated row.
+    """
+
+    scope = review.get("scope")
+    source_evidence = review.get("source")
+    native_evidence = review.get("native")
+    slide_evidence = review.get("slide")
+    structured = review.get("structuredContent")
+    if not all(isinstance(value, Mapping) for value in (scope, source_evidence, native_evidence, slide_evidence, structured)):
+        return None, "vector review is missing scope, source, native, slide, or structuredContent evidence"
+
+    source_unit = _source_unit_number(source)
+    source_lesson = _source_lesson_id(source)
+    source_number = _slide_number(slide)
+    if source_unit != 3 or source_number != 4:
+        return None, "vector calendar projection is scoped only to Unit 3 slide 4"
+    try:
+        scope_unit = int(scope.get("unit"))
+        scope_slide = int(scope.get("publishedSlide"))
+        native_slide_number = int(scope.get("nativeSlide"))
+    except (TypeError, ValueError):
+        return None, "vector review scope has invalid unit or slide numbers"
+    if scope_unit != 3 or _text(scope.get("lessonId")) != source_lesson or scope_slide != source_number or native_slide_number != source_number:
+        return None, "vector review scope does not match Unit 3 slide 4"
+
+    errors: list[str] = []
+    published_url = _text(source_evidence.get("publishedSourceUrl"))
+    if not published_url or published_url != _source_url(source):
+        errors.append("published source URL does not match the source extraction")
+    published_title = _normalise(source_evidence.get("publishedDeckTitle"))
+    source_title = _normalise(_deck(source).get("deckTitle") or source.get("title"))
+    if not published_title or published_title != source_title:
+        errors.append("published deck title does not match the source extraction")
+    expected_texts = [_normalise(value) for value in _slide_texts(slide) if _normalise(value)]
+    reviewed_texts = [_normalise(value) for value in _as_list(source_evidence.get("publishedVisibleTexts")) if _normalise(value)]
+    if reviewed_texts != expected_texts:
+        errors.append("published visible text evidence does not match the source slide")
+    published_text_digest = _text(source_evidence.get("publishedSlideTextSha256"))
+    if not _vector_digest(published_text_digest):
+        errors.append("published slide text SHA-256 is missing or malformed")
+
+    joined_text = _normalise(native_evidence.get("joinedText"))
+    if not joined_text or joined_text != _normalise("\n".join(expected_texts)):
+        errors.append("native joined text does not match the published slide text")
+    for key in ("presentationSha256", "slideTextSha256", "joinedTextSha256"):
+        if not _vector_digest(native_evidence.get(key)):
+            errors.append(f"native {key} is missing or malformed")
+
+    title_shape = slide_evidence.get("titleShape")
+    if not isinstance(title_shape, Mapping) or not _vector_shape_id(title_shape) or not _valid_vector_bbox(title_shape.get("bbox")):
+        errors.append("native title shape is missing a shapeId or complete bbox")
+    elif _vector_shape_text(title_shape) != _normalise(_text(slide.get("title"))):
+        errors.append("native title shape text does not match the published title")
+
+    expected_days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"]
+    weekday_shapes = [item for item in _as_list(slide_evidence.get("weekdayShapes")) if isinstance(item, Mapping)]
+    if len(weekday_shapes) != len(expected_days):
+        errors.append("native weekday shape evidence must contain seven columns")
+    else:
+        weekday_ids: list[str] = []
+        for expected_day, shape in zip(expected_days, weekday_shapes):
+            if _vector_shape_text(shape).casefold() != expected_day.casefold() or not _valid_vector_bbox(shape.get("bbox")):
+                errors.append(f"native weekday shape for {expected_day} is incomplete or out of order")
+            weekday_ids.append(_vector_shape_id(shape))
+        if not all(weekday_ids) or len(set(weekday_ids)) != len(weekday_ids):
+            errors.append("native weekday shape IDs must be unique")
+
+    activity_shapes = [item for item in _as_list(slide_evidence.get("activityShapes")) if isinstance(item, Mapping)]
+    activity_by_day: dict[str, str] = {}
+    if len(activity_shapes) != len(expected_days):
+        errors.append("native activity shape evidence must contain seven rows")
+    else:
+        activity_ids: list[str] = []
+        for expected_day, shape in zip(expected_days, activity_shapes):
+            day = _text(shape.get("day")).upper()
+            activity = _vector_shape_text(shape)
+            if day != expected_day or not activity or not _valid_vector_bbox(shape.get("bbox")):
+                errors.append(f"native activity shape for {expected_day} is incomplete or out of order")
+            activity_ids.append(_vector_shape_id(shape))
+            if day and activity:
+                activity_by_day[day] = activity
+        if not all(activity_ids) or len(set(activity_ids)) != len(activity_ids):
+            errors.append("native activity shape IDs must be unique")
+
+    prompt_shapes = [item for item in _as_list(slide_evidence.get("promptShapes")) if isinstance(item, Mapping)]
+    if not prompt_shapes:
+        errors.append("native prompt shape evidence is missing")
+    for prompt_shape in prompt_shapes:
+        if not _vector_shape_id(prompt_shape) or not _valid_vector_bbox(prompt_shape.get("bbox")):
+            errors.append("native prompt shape is missing a shapeId or complete bbox")
+    prompt_texts = {_normalise(_vector_shape_text(item)).casefold() for item in prompt_shapes if _vector_shape_text(item)}
+    authored_prompts = [
+        value
+        for value in expected_texts
+        if re.search(r"\b(?:look\s+at\s+the\s+picture|listen\s+to\s+the\s+audio)\b", value, flags=re.IGNORECASE)
+    ]
+    if any(value.casefold() not in prompt_texts for value in authored_prompts):
+        errors.append("native prompt shapes do not preserve the authored picture/audio instructions")
+
+    if _text(structured.get("nativeType")).casefold() != "structured-content":
+        errors.append("vector review structuredContent must be structured-content")
+    if _text(structured.get("sourceRole")).casefold() != "native-vector-calendar":
+        errors.append("vector review sourceRole must be native-vector-calendar")
+    content = structured.get("content")
+    table_groups = structured.get("data", {}).get("tableGroups") if isinstance(structured.get("data"), Mapping) else None
+    content_headers = list(content.get("headers")) if isinstance(content, Mapping) and isinstance(content.get("headers"), list) else []
+    content_rows = content.get("rows") if isinstance(content, Mapping) else None
+    if content_headers != ["DAY", "ACTIVITIES"] or not isinstance(content_rows, list) or len(content_rows) != 7:
+        errors.append("vector structured content must expose DAY/ACTIVITIES rows for all seven days")
+        content_rows = []
+    normalized_rows: list[list[str]] = []
+    for index, row in enumerate(content_rows):
+        if not isinstance(row, list) or len(row) != 2 or not all(_normalise(value) for value in row):
+            errors.append(f"vector structured row {index + 1} is empty or malformed")
+            continue
+        normalized_rows.append([_normalise(row[0]), _normalise(row[1])])
+    if len(normalized_rows) == 7:
+        if [row[0].upper() for row in normalized_rows] != expected_days:
+            errors.append("vector structured rows must retain Sunday through Saturday order")
+        for day, activity in normalized_rows:
+            source_values = {_normalise(value).casefold() for value in expected_texts}
+            if day.casefold() not in source_values or activity.casefold() not in source_values:
+                errors.append(f"vector structured row {day!r} contains text absent from the published slide")
+            if activity_by_day.get(day.upper(), "").casefold() != activity.casefold():
+                errors.append(f"vector structured row {day!r} does not match its native activity shape")
+
+    raw_tables = structured.get("tables")
+    if not isinstance(raw_tables, list) or len(raw_tables) != 1 or not isinstance(raw_tables[0], list):
+        errors.append("vector structured content must retain its source table matrix")
+    else:
+        expected_matrix = [content_headers, *normalized_rows]
+        matrix = [[_normalise(cell) for cell in row] for row in raw_tables[0] if isinstance(row, list)]
+        if matrix != expected_matrix:
+            errors.append("vector source table matrix does not match structured rows")
+
+    if not isinstance(table_groups, list) or len(table_groups) != 1 or not isinstance(table_groups[0], Mapping):
+        errors.append("vector structured content must expose one day tableGroup")
+        table_group: Mapping[str, Any] = {}
+    else:
+        table_group = table_groups[0]
+        if _text(table_group.get("sourceHeader")).casefold() != _normalise(_text(slide.get("title"))).casefold():
+            errors.append("vector tableGroup sourceHeader does not match the authored slide title")
+        if list(table_group.get("headers") or []) != content_headers:
+            errors.append("vector tableGroup headers do not match structured content")
+        group_rows = table_group.get("rows")
+        if group_rows != normalized_rows:
+            errors.append("vector tableGroup rows do not match structured content")
+        traces = [item for item in _as_list(table_group.get("rowShapeTrace")) if isinstance(item, Mapping)]
+        if len(traces) != 7:
+            errors.append("vector tableGroup must trace all seven day/activity shape pairs")
+        else:
+            weekday_ids = [_vector_shape_id(item) for item in weekday_shapes]
+            activity_ids = [_vector_shape_id(item) for item in activity_shapes]
+            for index, trace in enumerate(traces):
+                if _text(trace.get("day")).upper() != expected_days[index]:
+                    errors.append("vector tableGroup shape trace is out of order")
+                if _text(trace.get("headerShapeId")) != weekday_ids[index] or _text(trace.get("activityShapeId")) != activity_ids[index]:
+                    errors.append("vector tableGroup shape trace does not match native shape IDs")
+
+    figure_proof = structured.get("figureProof")
+    if not isinstance(figure_proof, Mapping):
+        errors.append("vector structured content is missing figureProof")
+    else:
+        if _text(figure_proof.get("kind")).casefold() != "native-vector" or _text(figure_proof.get("visualRole")).casefold() != "week-calendar":
+            errors.append("vector figureProof has an unsupported visual role")
+        if figure_proof.get("confirmedInstructional") is not True or figure_proof.get("rasterRequired") is not False:
+            errors.append("vector figureProof must be confirmed instructional editable evidence")
+        try:
+            proof_source_slide = int(figure_proof.get("sourceSlideNumber"))
+            proof_published_slide = int(figure_proof.get("publishedSlideNumber"))
+        except (TypeError, ValueError):
+            proof_source_slide = proof_published_slide = 0
+        if proof_source_slide != source_number or proof_published_slide != source_number:
+            errors.append("vector figureProof slide scope does not match slide 4")
+        if _text(figure_proof.get("sourcePresentationSha256")) != _text(native_evidence.get("presentationSha256")):
+            errors.append("vector figureProof source presentation digest does not match native evidence")
+        if _text(figure_proof.get("publishedSlideTextSha256")) != published_text_digest:
+            errors.append("vector figureProof published text digest does not match source evidence")
+        if _text(figure_proof.get("nativeSlideTextSha256")) != _text(native_evidence.get("slideTextSha256")):
+            errors.append("vector figureProof native text digest does not match native evidence")
+        if not _text(figure_proof.get("visualEvidence")):
+            errors.append("vector figureProof is missing visual evidence text")
+        required_shape_ids = {
+            _vector_shape_id(title_shape),
+            *[_vector_shape_id(item) for item in weekday_shapes],
+            *[_vector_shape_id(item) for item in activity_shapes],
+        }
+        proof_shape_ids = [_text(item) for item in _as_list(figure_proof.get("sourceShapeIds"))]
+        if not required_shape_ids or not required_shape_ids.issubset(set(proof_shape_ids)) or len(set(proof_shape_ids)) != len(proof_shape_ids):
+            errors.append("vector figureProof does not trace every title/day/activity shape")
+
+    if errors:
+        return None, "; ".join(dict.fromkeys(errors))
+
+    return copy.deepcopy(dict(review)), None
+
+
 def _native_paragraphs(slide: Mapping[str, Any]) -> list[str]:
     native = _native_audit_payload(slide)
     if native is None:
@@ -1399,6 +1695,44 @@ def _prepare_native_audit(
     audit_path = _text(native_audit.get("_auditPath")) if isinstance(native_audit, Mapping) else ""
     candidate = record.get("candidate") if isinstance(record.get("candidate"), Mapping) else {}
     record_id = _text(candidate.get("id") or record.get("id"))
+    vector_projection_by_slide: dict[int, Mapping[str, Any]] = {}
+    for vector_review in _native_vector_review_candidates(native_audit):
+        scope = vector_review.get("scope")
+        if not isinstance(scope, Mapping):
+            continue
+        try:
+            scoped_unit = int(scope.get("unit"))
+            scoped_lesson = _text(scope.get("lessonId"))
+            scoped_slide = int(scope.get("publishedSlide"))
+        except (TypeError, ValueError):
+            continue
+        if scoped_unit != _source_unit_number(source) or scoped_lesson != _source_lesson_id(source):
+            continue
+        target_slide = next((item for item in source_slides if _slide_number(item) == scoped_slide), None)
+        if target_slide is None:
+            continue
+        projection, projection_error = _vector_calendar_projection_for_slide(vector_review, source, target_slide)
+        if projection is None:
+            _add_blocker(
+                blockers,
+                _blocker(
+                    "native-vector-calendar-invalid",
+                    scoped_slide,
+                    projection_error or "Reviewed vector calendar evidence failed validation.",
+                ),
+            )
+            continue
+        if scoped_slide in vector_projection_by_slide:
+            _add_blocker(
+                blockers,
+                _blocker(
+                    "native-vector-calendar-ambiguous",
+                    scoped_slide,
+                    "More than one reviewed vector calendar projection matched the published slide.",
+                ),
+            )
+            continue
+        vector_projection_by_slide[scoped_slide] = projection
     for slide in source_slides:
         number = _slide_number(slide)
         native_slide = matched.get(number)
@@ -1544,6 +1878,22 @@ def _prepare_native_audit(
             "audio": copy.deepcopy(audio_entries),
             "nativeTexts": copy.deepcopy(_alignment_texts(native_slide)),
         }
+    for slide in source_slides:
+        projection = vector_projection_by_slide.get(_slide_number(slide))
+        if projection is None:
+            continue
+        existing = slide.get("_nativeAudit") if isinstance(slide.get("_nativeAudit"), Mapping) else {}
+        merged = copy.deepcopy(dict(existing))
+        merged.setdefault("recordId", record_id or "vector-calendar-review")
+        merged.setdefault("slideNumber", _slide_number(slide))
+        merged.setdefault("paragraphs", [])
+        merged.setdefault("tables", None)
+        merged.setdefault("figures", [])
+        merged.setdefault("figureEvidencePresent", False)
+        merged.setdefault("audio", [])
+        merged.setdefault("nativeTexts", [])
+        merged["vectorSemanticProjection"] = copy.deepcopy(dict(projection))
+        slide["_nativeAudit"] = merged
     return copied
 
 
@@ -2378,6 +2728,9 @@ def _original_source(
             "figureEvidencePresent": bool(native.get("figureEvidencePresent")),
             "audio": copy.deepcopy(_as_list(native.get("audio"))),
         }
+        vector_projection = _native_vector_projection(slide)
+        if vector_projection is not None:
+            result["nativeEvidence"]["vectorSemanticProjection"] = copy.deepcopy(dict(vector_projection))
     return result
 
 
@@ -3215,6 +3568,7 @@ def _native_block_specs(
     video_urls = _video_urls(slide)
     native_figures = _native_figures(slide)
     native_evidence = _native_audit_payload(slide)
+    vector_projection = _native_vector_projection(slide)
     review_supplied = exercise_items is not None
     review_specs: list[tuple[str, dict[str, Any]]] = []
     review_listening_blocked = False
@@ -3226,7 +3580,7 @@ def _native_block_specs(
             audio_item,
             source,
         )
-    if _is_picture_prompt_required(slide) and not native_figures:
+    if _is_picture_prompt_required(slide) and not native_figures and vector_projection is None:
         _add_blocker(
             blockers,
             _blocker(
@@ -3262,6 +3616,13 @@ def _native_block_specs(
         for pair in pairs
         if pair.get("term") and pair.get("definition")
     ]
+    if vector_projection is not None:
+        vector_content = vector_projection.get("structuredContent")
+        if isinstance(vector_content, Mapping):
+            vector_rows = vector_content.get("content", {}).get("rows") if isinstance(vector_content.get("content"), Mapping) else []
+            for row in _as_list(vector_rows):
+                if isinstance(row, (list, tuple)):
+                    covered_texts.extend(_text(value) for value in row if _text(value))
     activity_prompts = [
         _text(item.get("prompt"))
         for item in (exercise_items or [])
@@ -3356,7 +3717,26 @@ def _native_block_specs(
         # recording/essay activities merely because a goal sentence contains
         # words such as "conversation" or "write".
         return specs
-    if tables:
+    vector_structured_content = vector_projection.get("structuredContent") if isinstance(vector_projection, Mapping) else None
+    if isinstance(vector_structured_content, Mapping):
+        vector_content = vector_structured_content.get("content")
+        vector_data = vector_structured_content.get("data")
+        vector_proof = vector_structured_content.get("figureProof")
+        if isinstance(vector_content, Mapping) and isinstance(vector_data, Mapping):
+            vector_payload: dict[str, Any] = {
+                **common,
+                "title": _text(slide.get("title")) or "Week",
+                "content": copy.deepcopy(dict(vector_content)),
+                "tables": copy.deepcopy(_as_list(vector_structured_content.get("tables"))),
+                "sourceRole": _text(vector_structured_content.get("sourceRole")) or "native-vector-calendar",
+                "data": {
+                    "tableGroups": copy.deepcopy(_as_list(vector_data.get("tableGroups"))),
+                    "vectorFigureProof": copy.deepcopy(dict(vector_proof)) if isinstance(vector_proof, Mapping) else {},
+                    "vectorSemanticProjection": copy.deepcopy(dict(vector_projection)),
+                },
+            }
+            specs.append(("structured-content", vector_payload))
+    if tables and vector_structured_content is None:
         combined_rows: list[list[str]] = []
         for table in tables:
             combined_rows.extend(copy.deepcopy(table))
@@ -3645,6 +4025,8 @@ def _native_block_specs(
         specs.append(("text", {**common, "content": _readable_html(context_texts or evidence_texts), "format": "html"}))
     def spec_priority(item: tuple[str, dict[str, Any]]) -> tuple[int, int]:
         native_type = item[0]
+        if vector_structured_content is not None and native_type == "structured-content":
+            return (0, 0)
         if tables and native_type == "structured-content":
             return (0, 0)
         if native_type == "image":

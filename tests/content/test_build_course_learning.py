@@ -260,6 +260,165 @@ def unit2_slide8_native_fixture() -> tuple[dict, dict]:
     return published, native_audit
 
 
+def unit3_slide4_vector_fixture() -> tuple[dict, dict, dict]:
+    """Reviewed Unit 3 slide 4 editable week-calendar evidence."""
+
+    lesson_id = "unit-3-vector-fixture"
+    source_url = "https://docs.google.com/presentation/d/e/unit-3-vector/pub?slide=id.p4"
+    visible_texts = [
+        "Week",
+        "SUNDAY",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "DINNER AT MOM’S",
+        "SCHOOL MEETING",
+        "PROJECT PRESENTATION",
+        "DAVID’S CONCERT",
+        "CHESS TOURNAMENT",
+        "BREAKFAST W/ CLIENTS",
+        "FAMILY NIGHT",
+        "A. Look at the picture. What does it talk about? What is the information on it?",
+        "B. Listen to the audio and tell your teacher the activities the man makes.",
+        "👨",
+    ]
+    activities = [
+        ("SUNDAY", "DINNER AT MOM’S"),
+        ("MONDAY", "PROJECT PRESENTATION"),
+        ("TUESDAY", "SCHOOL MEETING"),
+        ("WEDNESDAY", "DAVID’S CONCERT"),
+        ("THURSDAY", "CHESS TOURNAMENT"),
+        ("FRIDAY", "BREAKFAST W/ CLIENTS"),
+        ("SATURDAY", "FAMILY NIGHT"),
+    ]
+
+    def bbox(index: int) -> dict[str, int]:
+        return {"x": index * 100, "y": 500, "cx": 90, "cy": 1800, "right": index * 100 + 90, "bottom": 2300}
+
+    title_shape = {"shapeId": "title-shape", "text": "Week", "bbox": bbox(0)}
+    weekday_shapes = [
+        {"label": day, "shapeId": f"weekday-{index}", "bbox": bbox(index + 1)}
+        for index, (day, _activity) in enumerate(activities)
+    ]
+    activity_shapes = [
+        {"day": day, "text": activity, "shapeId": f"activity-{index}", "bbox": bbox(index + 1)}
+        for index, (day, activity) in enumerate(activities)
+    ]
+    rows = [[day, activity] for day, activity in activities]
+    table_group = {
+        "key": "week-overview",
+        "sourceHeader": "Week",
+        "headers": ["DAY", "ACTIVITIES"],
+        "layout": "compact-two-column",
+        "rows": rows,
+        "rowShapeTrace": [
+            {
+                "day": day,
+                "headerShapeId": weekday_shapes[index]["shapeId"],
+                "activityShapeId": activity_shapes[index]["shapeId"],
+            }
+            for index, (day, _activity) in enumerate(activities)
+        ],
+    }
+    published_text_sha = "1" * 64
+    native_slide_sha = "2" * 64
+    native_joined_sha = "3" * 64
+    presentation_sha = "4" * 64
+    review = {
+        "schemaVersion": 1,
+        "scope": {
+            "unit": 3,
+            "lessonId": lesson_id,
+            "publishedSlide": 4,
+            "nativeSlide": 4,
+        },
+        "source": {
+            "publishedSourceUrl": source_url,
+            "publishedDeckTitle": "Unit 3 - Every day I.pptx",
+            "publishedSlideTextSha256": published_text_sha,
+            "publishedVisibleTexts": visible_texts,
+        },
+        "native": {
+            "presentationSha256": presentation_sha,
+            "slideTextSha256": native_slide_sha,
+            "joinedTextSha256": native_joined_sha,
+            "joinedText": "\n".join(visible_texts),
+        },
+        "slide": {
+            "publishedSlide": 4,
+            "nativeSlide": 4,
+            "titleShape": title_shape,
+            "weekdayShapes": weekday_shapes,
+            "activityShapes": activity_shapes,
+            "promptShapes": [
+                {"shapeId": "prompt-a", "text": visible_texts[-3], "bbox": bbox(9)},
+                {"shapeId": "prompt-b", "text": visible_texts[-2], "bbox": bbox(10)},
+                {"shapeId": "person", "text": "👨", "bbox": bbox(11)},
+            ],
+        },
+        "structuredContent": {
+            "nativeType": "structured-content",
+            "sourceRole": "native-vector-calendar",
+            "content": {"headers": ["DAY", "ACTIVITIES"], "rows": rows},
+            "tables": [[["DAY", "ACTIVITIES"], *rows]],
+            "data": {"tableGroups": [table_group]},
+            "figureProof": {
+                "kind": "native-vector",
+                "visualRole": "week-calendar",
+                "confirmedInstructional": True,
+                "rasterRequired": False,
+                "sourceSlideNumber": 4,
+                "publishedSlideNumber": 4,
+                "sourcePresentationSha256": presentation_sha,
+                "publishedSlideTextSha256": published_text_sha,
+                "nativeSlideTextSha256": native_slide_sha,
+                "sourceShapeIds": [
+                    title_shape["shapeId"],
+                    *[item["shapeId"] for item in weekday_shapes],
+                    *[item["shapeId"] for item in activity_shapes],
+                ],
+                "visualEvidence": "The authored week calendar is represented by editable text shapes.",
+            },
+        },
+    }
+    source = {
+        "courseId": COURSE_ID,
+        "lesson": {"id": lesson_id, "order": 3, "title": "Every Day I"},
+        "contentId": "unit-3-vector-source",
+        "sourceUrl": source_url,
+        "status": "ok",
+        "deck": {
+            "deckTitle": "Unit 3 - Every day I.pptx",
+            "slideCount": 1,
+            "slides": [
+                {
+                    "number": 4,
+                    "title": "Week",
+                    "visibleTexts": visible_texts,
+                    "media": [{"kind": "audio-icon", "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png"}],
+                    "tables": [],
+                }
+            ],
+        },
+    }
+    audio_manifest = {
+        "entries": [
+            {
+                "lessonId": lesson_id,
+                "slideNumber": 4,
+                "audioIndex": 1,
+                "url": "https://cdn.example/unit3-week.mp3",
+                "digest": "unit3-week-audio-sha",
+                "transcript": "The man makes these activities.",
+            }
+        ]
+    }
+    return source, review, audio_manifest
+
+
 class BuildCourseLearningTests(unittest.TestCase):
     def test_goal_slide_renders_one_concise_source_block(self) -> None:
         goal = "Describe oneself and others� origins by talking about countries and nationalities."
@@ -881,6 +1040,57 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertEqual(image["data"]["url"], "/images/lessons/course/native-fixture.png")
         self.assertNotIn("slides-images-rt", image["data"]["assetPath"])
         self.assertEqual(image["data"]["data"]["originalSource"]["nativeEvidence"]["figures"][0]["assetPath"], str(asset.resolve()))
+
+    def test_unit3_vector_calendar_clears_picture_blocker_and_emits_day_groups(self) -> None:
+        source, review, audio_manifest = unit3_slide4_vector_fixture()
+        lesson = {"id": source["lesson"]["id"], "title": source["lesson"]["title"], "rows": []}
+
+        plan = builder.build_plan(lesson, source, audio_manifest=audio_manifest, native_audit=review)
+
+        self.assertTrue(plan["publishable"], plan["blockers"])
+        self.assertFalse(any(blocker["code"] == "native-figure-required" for blocker in plan["blockers"]))
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        structured = next(row for row in generated if row["data"]["type"] == "structured-content")
+        self.assertEqual(
+            structured["data"]["content"]["rows"],
+            [
+                ["SUNDAY", "DINNER AT MOM’S"],
+                ["MONDAY", "PROJECT PRESENTATION"],
+                ["TUESDAY", "SCHOOL MEETING"],
+                ["WEDNESDAY", "DAVID’S CONCERT"],
+                ["THURSDAY", "CHESS TOURNAMENT"],
+                ["FRIDAY", "BREAKFAST W/ CLIENTS"],
+                ["SATURDAY", "FAMILY NIGHT"],
+            ],
+        )
+        self.assertEqual(len(structured["data"]["data"]["tableGroups"]), 1)
+        self.assertEqual(structured["data"]["data"]["tableGroups"][0]["sourceHeader"], "Week")
+        self.assertFalse(any(row["data"]["type"] == "image" for row in generated))
+        self.assertEqual(
+            structured["data"]["data"]["originalSource"]["nativeEvidence"]["vectorSemanticProjection"]["scope"]["publishedSlide"],
+            4,
+        )
+
+    def test_unit3_vector_calendar_rejects_changed_day_projection(self) -> None:
+        source, review, audio_manifest = unit3_slide4_vector_fixture()
+        review = copy.deepcopy(review)
+        review["structuredContent"]["content"]["rows"][2][1] = "INVENTED ACTIVITY"
+        review["structuredContent"]["data"]["tableGroups"][0]["rows"][2][1] = "INVENTED ACTIVITY"
+        lesson = {"id": source["lesson"]["id"], "title": source["lesson"]["title"], "rows": []}
+
+        plan = builder.build_plan(lesson, source, audio_manifest=audio_manifest, native_audit=review)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "native-vector-calendar-invalid" for blocker in plan["blockers"]))
+        self.assertTrue(any(blocker["code"] == "native-figure-required" for blocker in plan["blockers"]))
+        self.assertFalse(
+            any(
+                row["data"]["type"] == "structured-content"
+                and row["data"]["data"].get("vectorFigureProof")
+                for row in plan["nextRows"]
+                if row["id"].startswith("course-guided-")
+            )
+        )
 
     def test_unit2_slide8_native_table_preserves_matrix_and_teaching_prose(self) -> None:
         source, native_audit = unit2_slide8_native_fixture()
