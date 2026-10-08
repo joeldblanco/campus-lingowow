@@ -408,7 +408,7 @@ function guidedTableCells(value: unknown): GuidedTableCell[] | undefined {
 
 function numericIndexColumn(headers: GuidedTableCell[], rows: GuidedTableCell[][]): number | undefined {
   const candidate = headers.findIndex((header) => header.text.trim() === '')
-  if (candidate < 0 || rows.length < 2) return undefined
+  if (candidate < 0 || rows.length === 0) return undefined
   const values = rows.map((row) => row[candidate]?.text.trim() || '')
   return values.every((value) => /^\d{1,3}[.)]?$/.test(value)) ? candidate : undefined
 }
