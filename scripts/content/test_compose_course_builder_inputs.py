@@ -176,6 +176,77 @@ class ComposerScopeTests(unittest.TestCase):
         self.assertEqual(source["deck"]["slides"][0]["_nativeAudit"]["figures"], figures)
         self.assertTrue(source["deck"]["slides"][0]["_nativeAudit"]["figureEvidencePresent"])
 
+    def test_published_source_review_preserves_notes_for_learner_table_subtitle(self) -> None:
+        note = "The result in the present uses WOULD plus the simple form of the verb."
+        source = {
+            "unit": 53,
+            "lesson": {"id": "lesson-53"},
+            "sourceUrl": "https://example.test/unit-53",
+            "deck": {
+                "slides": [
+                    {
+                        "number": 8,
+                        "visibleTexts": [
+                            "STRUCTURES EXAMPLES If I had called, I would be there.",
+                            f"To Consider {note}",
+                        ],
+                    }
+                ]
+            },
+        }
+        review = {
+            "records": [
+                {
+                    "unit": 53,
+                    "lessonId": "lesson-53",
+                    "sourceUrl": source["sourceUrl"],
+                    "status": "reviewed",
+                    "sourceProofSlides": [
+                        {
+                            "slideNumber": 8,
+                            "sourceUrl": source["sourceUrl"],
+                            "visibleTexts": source["deck"]["slides"][0]["visibleTexts"],
+                        }
+                    ],
+                    "reviewedTables": [
+                        {
+                            "sourceSlide": 8,
+                            "status": "reviewed",
+                            "clearTableSemanticsBlocker": True,
+                            "sourceEvidence": {
+                                "publishedVisibleTexts": source["deck"]["slides"][0]["visibleTexts"]
+                            },
+                            "approvedProjection": {
+                                "approved": True,
+                                "mode": "structured",
+                                "source": "published-visible-text",
+                                "nativeIdentityConfirmed": False,
+                                "tables": [{"rows": [["STRUCTURES", "EXAMPLES"], ["If", "I would be there."]]}],
+                                "notes": [{"heading": "To Consider", "text": note}],
+                            },
+                        }
+                    ],
+                }
+            ]
+        }
+        blockers: list[dict] = []
+        summary, accepted = composer._apply_published_source_review(
+            review,
+            {53: source},
+            {"lesson-53": source},
+            [],
+            blockers,
+            scope=composer._unit_scope(53, 53),
+        )
+
+        self.assertEqual(summary["applied"], 1)
+        self.assertEqual(blockers, [])
+        self.assertEqual(accepted[53]["reviewedTables"][0]["notes"][0]["text"], note)
+        slide = source["deck"]["slides"][0]
+        self.assertEqual(slide["tableSemantics"]["approvedProjection"]["notes"][0]["text"], note)
+        self.assertEqual(slide["tableReview"]["projection"]["notes"][0]["text"], note)
+        self.assertIn(note, slide["tableReview"]["sourceEvidence"]["publishedNote"])
+
     def test_listening_review_allows_proven_cross_slide_audio_and_preserves_source_slide(self) -> None:
         source = {
             "unit": 53,

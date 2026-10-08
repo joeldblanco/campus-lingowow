@@ -707,6 +707,37 @@ def _published_source_review_table_rows(raw_table: Mapping[str, Any]) -> list[li
     return tables
 
 
+def _published_source_review_notes(projection: Mapping[str, Any]) -> list[dict[str, str]]:
+    """Normalize reviewed explanatory notes without flattening them away."""
+
+    notes: list[dict[str, str]] = []
+    for raw_note in _as_list(projection.get("notes")):
+        if isinstance(raw_note, Mapping):
+            heading = _text(raw_note.get("heading") or raw_note.get("title"))
+            text = _text(raw_note.get("text") or raw_note.get("content") or raw_note.get("body"))
+        else:
+            heading = ""
+            text = _text(raw_note)
+        if not heading and not text:
+            continue
+        notes.append({"heading": heading, "text": text})
+    return notes
+
+
+def _published_source_review_notes_text(notes: Sequence[Mapping[str, Any]]) -> str:
+    """Return the learner-visible note text while retaining every note."""
+
+    parts: list[str] = []
+    for note in notes:
+        heading = _text(note.get("heading"))
+        text = _text(note.get("text"))
+        if heading and text:
+            parts.append(f"{heading}: {text}")
+        elif heading or text:
+            parts.append(heading or text)
+    return "\n".join(parts)
+
+
 def _apply_published_source_review(
     document: Mapping[str, Any] | None,
     sources_by_unit: Mapping[int, Mapping[str, Any]],
@@ -807,6 +838,7 @@ def _apply_published_source_review(
                 continue
             proof_by_slide[slide_number] = raw_proof
         tables_by_slide: dict[int, list[list[list[str]]]] = defaultdict(list)
+        reviewed_tables_by_slide: dict[int, list[dict[str, Any]]] = defaultdict(list)
         review_tables = _published_source_review_tables(raw_record)
         for raw_table in review_tables:
             slide_number = _int(raw_table.get("slideNumber") or raw_table.get("sourceSlide"))
@@ -830,7 +862,26 @@ def _apply_published_source_review(
                 blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-table-source-mismatch"})
                 valid = False
                 continue
+            projection = raw_table.get("approvedProjection") if isinstance(raw_table.get("approvedProjection"), Mapping) else raw_table
+            notes = _published_source_review_notes(projection)
+            if any(
+                value
+                and not _table_review_contains(source_text, value)
+                for note in notes
+                for value in (note.get("text"),)
+            ):
+                blockers.append({"kind": "source-review", "unit": unit, "slide": slide_number, "code": "published-source-review-note-source-mismatch"})
+                valid = False
+                continue
             tables_by_slide[slide_number].extend(tables)
+            reviewed_tables_by_slide[slide_number].append(
+                {
+                    **copy.deepcopy(dict(raw_table)),
+                    "slideNumber": slide_number,
+                    "tables": [{"rows": copy.deepcopy(matrix)} for matrix in tables],
+                    "notes": copy.deepcopy(notes),
+                }
+            )
         figures = _published_source_review_figures(raw_record)
         canonical_figures: list[dict[str, Any]] = []
         for raw_figure in figures:
@@ -869,8 +920,9 @@ def _apply_published_source_review(
             "status": PUBLISHED_SOURCE_REVIEW_STATUS,
             "sourceProofSlides": [copy.deepcopy(proof_by_slide[number]) for number in sorted(proof_by_slide)],
             "reviewedTables": [
-                {"slideNumber": number, "tables": [{"rows": rows} for rows in matrices]}
-                for number, matrices in sorted(tables_by_slide.items())
+                table
+                for number in sorted(reviewed_tables_by_slide)
+                for table in reviewed_tables_by_slide[number]
             ],
             "reviewedFigures": canonical_figures,
         }
@@ -905,15 +957,60 @@ def _apply_published_source_review(
             ]
             if not existing_rows:
                 slide["tables"] = [{"rows": copy.deepcopy(matrix)} for matrix in matrices]
+            reviewed_slide_tables = reviewed_tables_by_slide[number]
+            reviewed_table = reviewed_slide_tables[0] if reviewed_slide_tables else {}
+            projection = reviewed_table.get("approvedProjection") if isinstance(reviewed_table.get("approvedProjection"), Mapping) else reviewed_table
+            notes = [
+                note
+                for reviewed_slide_table in reviewed_slide_tables
+                for note in _published_source_review_notes(
+                    reviewed_slide_table.get("approvedProjection")
+                    if isinstance(reviewed_slide_table.get("approvedProjection"), Mapping)
+                    else reviewed_slide_table
+                )
+            ]
+            projection = copy.deepcopy(dict(projection)) if isinstance(projection, Mapping) else {}
+            projection["notes"] = copy.deepcopy(notes)
+            source_evidence = reviewed_table.get("sourceEvidence")
+            source_evidence = copy.deepcopy(dict(source_evidence)) if isinstance(source_evidence, Mapping) else {}
+            note_text = _published_source_review_notes_text(notes)
+            if note_text and not _text(source_evidence.get("publishedNote")):
+                source_evidence["publishedNote"] = note_text
+            review_status = _text(reviewed_table.get("status")) or PUBLISHED_SOURCE_REVIEW_STATUS
+            table_review = {
+                "schemaVersion": 1,
+                "unit": unit,
+                "lessonId": lesson_id,
+                "sourceSlide": number,
+                "reviewStatus": review_status,
+                "clearTableSemanticsBlocker": reviewed_table.get("clearTableSemanticsBlocker") is not False,
+                "tableReferenceResolved": reviewed_table.get("clearTableSemanticsBlocker") is not False,
+                "projection": {
+                    "approved": projection.get("approved") is not False,
+                    "mode": _text(projection.get("mode")) or "structured",
+                    "source": _text(projection.get("source")) or "published-visible-text",
+                    "nativeIdentityConfirmed": projection.get("nativeIdentityConfirmed") is True,
+                    "notes": copy.deepcopy(notes),
+                    "tableCount": len(matrices),
+                },
+                "sourceRefs": copy.deepcopy(_as_list(reviewed_table.get("sourceRefs"))),
+                "sourceEvidence": source_evidence,
+            }
+            slide["tableReview"] = table_review
             slide["tableSemantics"] = {
                 "mode": "structured",
                 "tables": copy.deepcopy(matrices),
                 "tableReferenceResolved": True,
                 "source": "published-visible-text",
                 "nativeIdentityConfirmed": False,
+                "approvedProjection": copy.deepcopy(projection),
             }
             slide_data = slide.get("data") if isinstance(slide.get("data"), Mapping) else {}
-            slide["data"] = {**copy.deepcopy(dict(slide_data)), "tableSemantics": copy.deepcopy(slide["tableSemantics"])}
+            slide["data"] = {
+                **copy.deepcopy(dict(slide_data)),
+                "tableReview": copy.deepcopy(slide["tableReview"]),
+                "tableSemantics": copy.deepcopy(slide["tableSemantics"]),
+            }
         if not canonical:
             continue
         for number, proof in proof_by_slide.items():
