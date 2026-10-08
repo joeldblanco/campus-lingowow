@@ -15,7 +15,7 @@ describe('lesson background library', () => {
   it('keeps related source figures in one setting without sharing it with another slide', () => {
     const figure = (id: string, slide: number): GuidedLessonStep => ({
       ...step(id, 'content'),
-      blocks: [{ id, type: 'image', order: 0, url: `/${id}.webp`, data: { learningRevision: 'course-guided-v1', sourceSlides: [slide] } } as Block],
+      blocks: [{ id, type: 'image', order: 0, url: `/${id}.webp`, alt: 'Source figure', data: { learningRevision: 'course-guided-v1', sourceSlides: [slide] } } as Block],
     })
     const result = assignLessonBackgrounds([figure('first', 5), figure('second', 5), figure('next-topic', 6)], { unitOneAuthored: false })
     expect(result.second).toBe(result.first)

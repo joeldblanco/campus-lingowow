@@ -47,6 +47,12 @@ The final [scene assignment audit](C:/Users/ACER/.codex/visualizations/2026/10/0
 
 ## Product and delivery status
 
+### Unit 1 control polish
+
+The approved recording reference is the user's `codex-clipboard-0cf09da4-193e-4e26-8c76-23995ede84b2.png`; choice behavior follows `graphic-guide-v1/auto-choice-reference.png`. Actual `record-circle-desktop.png` and `record-circle-mobile.png` show a 144×144 circular recording control with zero horizontal padding and a two-line label. Actual `correct-choice-desktop.png` and `correct-choice-mobile.png` capture the stronger success halo, bounce, and check treatment. Reduced-motion inspection confirms that the animation is disabled when requested. These are styling changes; the recorded audio and turn behavior remain unchanged.
+
+Unit 2's current `unit2-short-answer-mobile.png` supersedes the earlier card-based context capture: the instruction is plain text, the input uses an underline, and the footer has one primary action plus skip. Unit 37's parent-reviewed desktop capture is 1920×1080; its mobile capture is 390×844 with full-page height. Its explanatory source note is visible above the original four-column table.
+
 - The focused progression checks reported by the parent are green: 28 checks passed, including converted completion, visible-content filtering, and payload sanitization.
 - Original source content and URLs remain the authority. The runtime evidence does not replace real video, audio, figures, questions, or nested material with a mockup image.
 - Units 53–56 remain blocked on original-source account clarification. No replacement audio or inferred source was used.

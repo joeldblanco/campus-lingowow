@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 REVIEW = Path(__file__).resolve().parents[2] / "docs" / "audit" / "course-builder-blocker-classification.json"
-EXPECTED_UNITS = {4, 5, 30, 33, 34, 35, 42, 44, 46, 48}
+EXPECTED_UNITS = {4, 5, 30, 33, 34, 35, 37, 42, 44, 46, 48}
 
 
 class CourseBuilderBlockerClassificationTests(unittest.TestCase):
@@ -23,7 +23,7 @@ class CourseBuilderBlockerClassificationTests(unittest.TestCase):
         self.assertEqual(review["summary"]["auditedCount"], len(EXPECTED_UNITS))
         self.assertEqual(
             review["summary"]["approvedUnits"],
-            [4, 30, 33, 34, 35, 42, 44, 46, 48],
+            [4, 30, 33, 34, 35, 37, 42, 44, 46, 48],
         )
         self.assertEqual(review["summary"]["blockedUnits"], [])
         self.assertEqual(review["summary"]["textOnlyUnits"], [5])
@@ -49,9 +49,12 @@ class CourseBuilderBlockerClassificationTests(unittest.TestCase):
         self.assertFalse(unit5["approvedProjection"]["approved"])
         self.assertEqual(unit5["approvedProjection"]["mode"], "text-only")
 
-        for unit in (44, 46, 48):
+        for unit in (37, 44, 46, 48):
             entry = next(item for item in entries if item["unit"] == unit)
-            self.assertEqual(entry["status"], "reviewed-published-source")
+            self.assertEqual(
+                entry["status"],
+                "reviewed-with-published-corrections" if unit == 37 else "reviewed-published-source",
+            )
             self.assertEqual(entry["approvedProjection"]["source"], "published-visible-text")
             self.assertFalse(entry["approvedProjection"]["nativeIdentityConfirmed"])
             self.assertTrue(entry["sourceEvidence"]["differences"])

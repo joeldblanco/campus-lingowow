@@ -1,0 +1,709 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "units": [
+      3,
+      5,
+      33,
+      34,
+      35,
+      36
+    ]
+  },
+  "sourceRefs": [
+    {
+      "path": "docs\\audit\\figure-proof\\units-33-36-visual-proof.json",
+      "sha256": "bfb074c15f91fa8c82b098f63440e665ee79c0eadb2a423469b06a2d21c07688"
+    },
+    {
+      "path": "docs\\audit\\figure-proof\\units-3-5-visual-proof.json",
+      "sha256": "8a55095203ecc1fb3b26508f38bcf5c3f7f69d8c8a88d3b68954f0cf9ea8196b"
+    }
+  ],
+  "units": [
+    {
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTgbM5EqOu9mCR4_xlGt7SojjpKIYqvKaUkbOvVVjpVp3qrZWpmho5EeqcWc9i9Fg/embed?start=false&loop=false&delayms=3000",
+      "observedSlideIds": {
+        "4": "id.g72967b2bcc_0_37",
+        "6": "id.g72967b2bcc_0_57"
+      },
+      "requiredSlides": [
+        {
+          "publishedSlide": 4,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "liveScreenshot": {
+            "capturedInSeparateChromeTab": true,
+            "captureMethod": "Chrome published deck UI; slide picker/Next button; screenshot displayed during audit",
+            "savedReferenceAsset": "docs/audit/figure-proof/comparisons/u33-s4-published-vs-native.jpg",
+            "note": "The browser policy blocked data: URL download of raw viewport screenshot. The saved contact sheet pairs downloaded published figure payloads with native candidates; live viewport screenshots were inspected during the run."
+          },
+          "candidates": [
+            {
+              "sourceSlide": 4,
+              "publishedSlide": 4,
+              "publishedMediaOrdinal": 1,
+              "mediaPath": "ppt/media/image12.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image12.jpg",
+              "nativeSha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s4-published-media2.jpg",
+              "publishedReferenceSha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+              "publishedReferenceBytes": 219391,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            }
+          ],
+          "confirmedCount": 1,
+          "candidateCount": 1,
+          "status": "confirmed"
+        },
+        {
+          "publishedSlide": 6,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedTitle": "Look at the information, Where do you think these customs are from? Discuss about them.",
+          "liveScreenshot": {
+            "capturedInSeparateChromeTab": true,
+            "captureMethod": "Chrome published deck UI; slide picker/Next button; screenshot displayed during audit",
+            "savedReferenceAsset": "docs/audit/figure-proof/comparisons/u33-s6-published-vs-native.jpg",
+            "note": "The browser policy blocked data: URL download of raw viewport screenshot. The saved contact sheet pairs downloaded published figure payloads with native candidates; live viewport screenshots were inspected during the run."
+          },
+          "candidates": [
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 1,
+              "mediaPath": "ppt/media/image14.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image14.jpg",
+              "nativeSha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media2.jpg",
+              "publishedReferenceSha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+              "publishedReferenceBytes": 241729,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 2,
+              "mediaPath": "ppt/media/image10.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image10.jpg",
+              "nativeSha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media3.jpg",
+              "publishedReferenceSha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+              "publishedReferenceBytes": 184047,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 3,
+              "mediaPath": "ppt/media/image13.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image13.jpg",
+              "nativeSha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media4.jpg",
+              "publishedReferenceSha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+              "publishedReferenceBytes": 167680,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 4,
+              "mediaPath": "ppt/media/image8.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image8.jpg",
+              "nativeSha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media5.jpg",
+              "publishedReferenceSha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+              "publishedReferenceBytes": 61369,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 5,
+              "mediaPath": "ppt/media/image6.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image6.jpg",
+              "nativeSha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media6.jpg",
+              "publishedReferenceSha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+              "publishedReferenceBytes": 70483,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 6,
+              "mediaPath": "ppt/media/image9.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image9.jpg",
+              "nativeSha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media7.jpg",
+              "publishedReferenceSha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+              "publishedReferenceBytes": 106136,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 7,
+              "mediaPath": "ppt/media/image11.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image11.jpg",
+              "nativeSha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media8.jpg",
+              "publishedReferenceSha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+              "publishedReferenceBytes": 232794,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 8,
+              "mediaPath": "ppt/media/image7.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image7.jpg",
+              "nativeSha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u33-s6-published-media9.jpg",
+              "publishedReferenceSha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+              "publishedReferenceBytes": 66134,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            }
+          ],
+          "confirmedCount": 8,
+          "candidateCount": 8,
+          "status": "confirmed"
+        }
+      ],
+      "confirmedCandidateCount": 9,
+      "candidateCount": 9,
+      "status": "confirmed"
+    },
+    {
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRyTEsKeEx6Q3JQWJzaF-A9WI8yo-wNNPg7WWy7ccH6nAm7kAlBOqXcXstrtDX1LA/embed?start=false&loop=false&delayms=3000",
+      "observedSlideIds": {
+        "4": "id.g72967b2bcc_0_37",
+        "6": "id.g72967b2bcc_0_57"
+      },
+      "requiredSlides": [
+        {
+          "publishedSlide": 4,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "liveScreenshot": {
+            "capturedInSeparateChromeTab": true,
+            "captureMethod": "Chrome published deck UI; slide picker/Next button; screenshot displayed during audit",
+            "savedReferenceAsset": "docs/audit/figure-proof/comparisons/u34-s4-published-vs-native.jpg",
+            "note": "The browser policy blocked data: URL download of raw viewport screenshot. The saved contact sheet pairs downloaded published figure payloads with native candidates; live viewport screenshots were inspected during the run."
+          },
+          "candidates": [
+            {
+              "sourceSlide": 4,
+              "publishedSlide": 4,
+              "publishedMediaOrdinal": 1,
+              "mediaPath": "ppt/media/image9.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image9.jpg",
+              "nativeSha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s4-published-media2.jpg",
+              "publishedReferenceSha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+              "publishedReferenceBytes": 331478,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            }
+          ],
+          "confirmedCount": 1,
+          "candidateCount": 1,
+          "status": "confirmed"
+        },
+        {
+          "publishedSlide": 6,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedTitle": "Look at the information, Where do you think these phrases belong to? Match them with a picture.",
+          "liveScreenshot": {
+            "capturedInSeparateChromeTab": true,
+            "captureMethod": "Chrome published deck UI; slide picker/Next button; screenshot displayed during audit",
+            "savedReferenceAsset": "docs/audit/figure-proof/comparisons/u34-s6-published-vs-native.jpg",
+            "note": "The browser policy blocked data: URL download of raw viewport screenshot. The saved contact sheet pairs downloaded published figure payloads with native candidates; live viewport screenshots were inspected during the run."
+          },
+          "candidates": [
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 1,
+              "mediaPath": "ppt/media/image6.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image6.jpg",
+              "nativeSha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media2.jpg",
+              "publishedReferenceSha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+              "publishedReferenceBytes": 150351,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 2,
+              "mediaPath": "ppt/media/image8.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image8.jpg",
+              "nativeSha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media3.jpg",
+              "publishedReferenceSha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+              "publishedReferenceBytes": 311907,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            },
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 3,
+              "mediaPath": "ppt/media/image7.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image7.jpg",
+              "nativeSha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u34-s6-published-media4.jpg",
+              "publishedReferenceSha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+              "publishedReferenceBytes": 227434,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            }
+          ],
+          "confirmedCount": 3,
+          "candidateCount": 3,
+          "status": "confirmed"
+        }
+      ],
+      "confirmedCandidateCount": 4,
+      "candidateCount": 4,
+      "status": "confirmed"
+    },
+    {
+      "unit": 35,
+      "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRNt2DWUL7WelOabuFQqj2IwGFLNMJS5nkOpuJ0f6RHQ4M_GEnGSW_QK6lhQ2mJhg/embed?start=false&loop=false&delayms=3000",
+      "observedSlideIds": {
+        "4": "id.g72967b2bcc_0_37",
+        "6": "id.g72967b2bcc_0_57"
+      },
+      "requiredSlides": [
+        {
+          "publishedSlide": 4,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "liveScreenshot": {
+            "capturedInSeparateChromeTab": true,
+            "captureMethod": "Chrome published deck UI; slide picker/Next button; screenshot displayed during audit",
+            "savedReferenceAsset": "docs/audit/figure-proof/comparisons/u35-s4-published-vs-native.jpg",
+            "note": "The browser policy blocked data: URL download of raw viewport screenshot. The saved contact sheet pairs downloaded published figure payloads with native candidates; live viewport screenshots were inspected during the run."
+          },
+          "candidates": [
+            {
+              "sourceSlide": 4,
+              "publishedSlide": 4,
+              "publishedMediaOrdinal": 1,
+              "mediaPath": "ppt/media/image6.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-35-1uf4e0qmsGhMSF7VuMTQzafcjni_CtvJW/image6.jpg",
+              "nativeSha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u35-s4-published-media2.jpg",
+              "publishedReferenceSha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+              "publishedReferenceBytes": 16527,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            }
+          ],
+          "confirmedCount": 1,
+          "candidateCount": 1,
+          "status": "confirmed"
+        }
+      ],
+      "confirmedCandidateCount": 1,
+      "candidateCount": 1,
+      "status": "confirmed"
+    },
+    {
+      "unit": 36,
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS1T-BEGUK8u0Fcj65jVu9HMcTLrhutFcgHVmXKr2HtNlSe-UeQUgSU0JXlzF1zdQ/embed?start=false&loop=false&delayms=3000",
+      "observedSlideIds": {
+        "4": "id.g72967b2bcc_0_37",
+        "6": "id.g72967b2bcc_0_57"
+      },
+      "requiredSlides": [
+        {
+          "publishedSlide": 4,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_37",
+          "publishedTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "liveScreenshot": {
+            "capturedInSeparateChromeTab": true,
+            "captureMethod": "Chrome published deck UI; slide picker/Next button; screenshot displayed during audit",
+            "savedReferenceAsset": "docs/audit/figure-proof/comparisons/u36-s4-published-vs-native.jpg",
+            "note": "The browser policy blocked data: URL download of raw viewport screenshot. The saved contact sheet pairs downloaded published figure payloads with native candidates; live viewport screenshots were inspected during the run."
+          },
+          "candidates": [
+            {
+              "sourceSlide": 4,
+              "publishedSlide": 4,
+              "publishedMediaOrdinal": 1,
+              "mediaPath": "ppt/media/image7.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image7.jpg",
+              "nativeSha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u36-s4-published-media2.jpg",
+              "publishedReferenceSha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+              "publishedReferenceBytes": 228446,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            }
+          ],
+          "confirmedCount": 1,
+          "candidateCount": 1,
+          "status": "confirmed"
+        },
+        {
+          "publishedSlide": 6,
+          "observedSlideUrlSuffix": "slide=id.g72967b2bcc_0_57",
+          "publishedTitle": "Look at the information. Where do you think these phrases belong?",
+          "liveScreenshot": {
+            "capturedInSeparateChromeTab": true,
+            "captureMethod": "Chrome published deck UI; slide picker/Next button; screenshot displayed during audit",
+            "savedReferenceAsset": "docs/audit/figure-proof/comparisons/u36-s6-published-vs-native.jpg",
+            "note": "The browser policy blocked data: URL download of raw viewport screenshot. The saved contact sheet pairs downloaded published figure payloads with native candidates; live viewport screenshots were inspected during the run."
+          },
+          "candidates": [
+            {
+              "sourceSlide": 6,
+              "publishedSlide": 6,
+              "publishedMediaOrdinal": 1,
+              "mediaPath": "ppt/media/image4.jpg",
+              "nativePath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image4.jpg",
+              "nativeSha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+              "publishedReferencePath": "docs/audit/figure-proof/published-figures/u36-s6-published-media2.jpg",
+              "publishedReferenceSha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+              "publishedReferenceBytes": 10114,
+              "byteExactMatch": true,
+              "visualStatus": "confirmed",
+              "evidence": [
+                "live published deck rendered in Chrome at observed slide parameter",
+                "native candidate opened with local image viewer",
+                "published image payload downloaded from source manifest media URL",
+                "SHA-256 equality between downloaded published payload and native bytes"
+              ],
+              "mainCorrespondenceConfirmedBeforeReview": false
+            }
+          ],
+          "confirmedCount": 1,
+          "candidateCount": 1,
+          "status": "confirmed"
+        }
+      ],
+      "confirmedCandidateCount": 2,
+      "candidateCount": 2,
+      "status": "confirmed"
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "lessonTitle": "Every Day I…",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQZD_yEu7BqadWPb9vuZA3gzbu1YbGWjXxNmgLcmNerMU4LScFt1bcYPmBLHKAK0A/pub?start=false&loop=false&delayms=3000",
+      "observedSlide": {
+        "publishedSlide": 4,
+        "urlSuffix": "slide=id.p4",
+        "title": "Week",
+        "visibleContent": [
+          "A seven-column week schedule with weekday labels and activity cards",
+          "A. Look at the picture. What does it talk about? What is the information on it?",
+          "B. Listen to the audio and tell your teacher the activities the man makes.",
+          "audio speaker icon and template decoration"
+        ],
+        "visualConclusion": "The picture prompt refers to the rendered week schedule, which is made from native text/shape content. The live slide contains no human/person photograph or standalone person image."
+      },
+      "nativeSource": {
+        "driveFileId": "1XyJQLPMputviAvZkXAGFLIEwUFNHuEax",
+        "title": "Unit 3 - Every day I.pptx",
+        "sha256": "7e6b9948e217cbc613092b4d19ad120ad35618726b4676397f439f833127ebb2",
+        "path": "docs/audit/source-originals/A-unit-03-primary-02-1XyJQLPMputviAvZkXAGFLIEwUFNHuEax.pptx",
+        "slide": 4,
+        "nativePictureRefs": [
+          {
+            "mediaPath": "ppt/media/image11.png",
+            "localPath": "docs/audit/source-originals/images/A-unit-03-1XyJQLPMputviAvZkXAGFLIEwUFNHuEax/image11.png",
+            "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475",
+            "bytes": 17718,
+            "role": "template-logo",
+            "bbox": {
+              "x": 8693238,
+              "y": 4673522,
+              "cx": 410472,
+              "cy": 408081,
+              "right": 9103710,
+              "bottom": 5081603
+            }
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "localPath": "docs/audit/source-originals/images/A-unit-03-1XyJQLPMputviAvZkXAGFLIEwUFNHuEax/image1.png",
+            "sha256": "0fdd09f9557fe6e265af4b096f031625b571bae5022bf1d65cee1d07113642a0",
+            "bytes": 3101,
+            "role": "audio-icon",
+            "bbox": {
+              "x": 2246900,
+              "y": 4013900,
+              "cx": 846325,
+              "cy": 846325,
+              "right": 3093225,
+              "bottom": 4860225
+            }
+          }
+        ]
+      },
+      "publishedMediaEvidence": {
+        "exactSourceMedia": [
+          {
+            "kind": "rendered-slide-image",
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "sha256": "a8d0df9898f29ff5c4732db2353e04d410ca23589e8135185bf8cdbd98208475",
+            "bytes": 17718,
+            "matchesNativeMediaPath": "ppt/media/image11.png",
+            "role": "template-logo"
+          },
+          {
+            "kind": "audio-icon",
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "role": "audio-icon"
+          }
+        ]
+      },
+      "figureReview": {
+        "status": "vector-only-confirmed",
+        "confirmedInstructionalAssets": [],
+        "confirmedInstructionalVector": "docs/audit/unit3-slide4-vector-review.json",
+        "excludedNativeAssets": [
+          "ppt/media/image11.png",
+          "ppt/media/image1.png"
+        ],
+        "reason": "The only extracted raster payloads are the repeated template logo and audio icon. The actual instructional week schedule is native editable text/shape content and has no standalone image payload or source image SHA to stage.",
+        "requiredAction": "Compose the published schedule as editable learner-visible vector/table content using the source-verified Unit 3 slide-4 projection. Do not synthesize or substitute a human figure."
+      },
+      "blocker": {
+        "kind": "vector-only-picture-prompt",
+        "sourceEvidence": "live published slide 4 plus native slide 4 text/shape and imageRefs",
+        "studentVisibleGap": "none in the published source; the picture is the week schedule",
+        "builderGap": "image-only confirmed-figure contract cannot represent the schedule board as a source image"
+      }
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "lessonTitle": "About us and Relatives",
+      "publishedSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTunsVrRmjfofEd5dQiCSvJqxrgpxBlBRxRhlDUEYHPGn-UXUl3GGOZHMhJkHgVZA/pub?start=false&loop=false&delayms=3000",
+      "requiredSlides": [
+        {
+          "publishedSlide": 4,
+          "observedSlideUrlSuffix": "slide=id.p4",
+          "publishedTitle": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "candidates": [
+            {
+              "publishedSlide": 4,
+              "publishedMediaOrdinal": 2,
+              "nativePath": "docs/audit/source-originals/images/A-unit-05-1W1AD05WazXgbqJrtcG4xmXF0Fv9TzrOp/image4.jpg",
+              "nativeSha256": "c24ecc90ed24dcc40b496221ded0669021a3582178d1fbe119eeb9a83982f4c5",
+              "publishedReferencePath": "https://docs.google.com/slides-images-rt/AE1YXSaR1sTe8YS76yCqqGxAnZpCgrWSiFyFytB3ytk9smHTfmWkOG2qyUNmr7hG3Wy4u9H6zUcWbLnurS99cjJ823xYkfS6CrWwYXK5uf77g8dGZXgf7do_PuLL5FpMxm8ZmXBhUh1sTGkPU4ri1tjAGbMrcjlOsHd566R4JKwSiuj74SSIzsY1ZL-_gTD9=s2048",
+              "publishedReferenceSha256": "c24ecc90ed24dcc40b496221ded0669021a3582178d1fbe119eeb9a83982f4c5",
+              "publishedReferenceBytes": 94310,
+              "visualStatus": "confirmed",
+              "byteExactMatch": true
+            }
+          ]
+        }
+      ],
+      "observedSlide": {
+        "publishedSlide": 4,
+        "urlSuffix": "slide=id.p4",
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleContent": [
+          "Grayscale family portrait of two adults and two children",
+          "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details? Write them in the chat box. / Tell your teacher."
+        ],
+        "visualConclusion": "The live published slide visibly places the same family portrait used by the native source."
+      },
+      "nativeSource": {
+        "driveFileId": "1W1AD05WazXgbqJrtcG4xmXF0Fv9TzrOp",
+        "title": "Unit 5 - About us and Relatives.pptx",
+        "sha256": "c24ecc90ed24dcc40b496221ded0669021a3582178d1fbe119eeb9a83982f4c5",
+        "path": "docs/audit/source-originals/A-unit-05-primary-01-1W1AD05WazXgbqJrtcG4xmXF0Fv9TzrOp.pptx",
+        "slide": 4,
+        "mediaPath": "ppt/media/image4.jpg",
+        "localPath": "docs/audit/source-originals/images/A-unit-05-1W1AD05WazXgbqJrtcG4xmXF0Fv9TzrOp/image4.jpg",
+        "bytes": 94310,
+        "dimensions": [
+          521,
+          651
+        ],
+        "role": "instructional-family-portrait",
+        "bbox": {
+          "x": 1074850,
+          "y": 415957,
+          "cx": 1724634,
+          "cy": 2155793,
+          "right": 2799484,
+          "bottom": 2571750
+        }
+      },
+      "publishedMediaEvidence": {
+        "exactSourceMedia": {
+          "kind": "rendered-slide-image",
+          "url": "https://docs.google.com/slides-images-rt/AE1YXSaR1sTe8YS76yCqqGxAnZpCgrWSiFyFytB3ytk9smHTfmWkOG2qyUNmr7hG3Wy4u9H6zUcWbLnurS99cjJ823xYkfS6CrWwYXK5uf77g8dGZXgf7do_PuLL5FpMxm8ZmXBhUh1sTGkPU4ri1tjAGbMrcjlOsHd566R4JKwSiuj74SSIzsY1ZL-_gTD9=s2048",
+          "sha256": "c24ecc90ed24dcc40b496221ded0669021a3582178d1fbe119eeb9a83982f4c5",
+          "bytes": 94310,
+          "matchesNativeMediaPath": "ppt/media/image4.jpg",
+          "role": "instructional-family-portrait"
+        },
+        "fetchMethod": "Exact published media URL from course-source-manifest.json via urllib; no endpoint guessing"
+      },
+      "textAlignment": {
+        "status": "independent-text-mismatch",
+        "publishedText": "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details? Write them in the chat box. / Tell your teacher.",
+        "nativeText": [
+          "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+          "Write them in the chat box. / Tell your teacher."
+        ],
+        "metrics": {
+          "coverage": 0.8780487804878049,
+          "precision": 1.0,
+          "sequence": 0.9287257019438445
+        },
+        "doNotLowerThreshold": true,
+        "implication": "The figure is independently verified and already staged, but the slide remains text-alignment-blocked until the published/native text projection is handled explicitly."
+      },
+      "stagingEvidence": {
+        "status": "already-staged",
+        "sourceSha256": "c24ecc90ed24dcc40b496221ded0669021a3582178d1fbe119eeb9a83982f4c5",
+        "publicUrl": "/images/lessons/course/source-c24ecc90ed24dcc4.webp",
+        "outputSha256": "3cc182ae2b964649bb035dfb011242cf6814fc81da20923525cba8772e8cd86c",
+        "destinationPath": "C:/Users/ACER/.codex/worktrees/lesson-guided-pilot/web/public/images/lessons/course/source-c24ecc90ed24dcc4.webp"
+      },
+      "figureReview": {
+        "status": "confirmed",
+        "confirmedInstructionalAssets": [
+          "ppt/media/image4.jpg"
+        ],
+        "proofIndependentOfTextAlignment": true,
+        "evidence": [
+          "live published slide 4 visibly shows the family portrait",
+          "native image4.jpg opened and visually matches the published portrait",
+          "exact published image payload fetched from the manifest media URL",
+          "SHA-256 equality between published payload and native image4.jpg"
+        ]
+      }
+    }
+  ]
+}

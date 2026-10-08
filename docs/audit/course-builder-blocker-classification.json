@@ -2747,12 +2747,652 @@
             "sha256": "3849c56d47b609b82fffaf47a1803808f7579dbb61fa8d412ce88164da91007f"
           }
         ]
+      },
+      {
+        "unit": 37,
+        "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9qca001hw1qkpe089f8f.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-37.json",
+        "status": "reviewed-with-published-corrections",
+        "clearTableSemanticsBlocker": true,
+        "review": "The live published slide visibly shows a four-column chart with a blank ordinal column, Grammar, Examples, and Observation; it has two numbered row groups. Native shape 262 confirms the editable table geometry and row grouping. Use the published cell wording below because several native cells differ; preserve the separate note above the chart as learner text.",
+        "sourceEvidence": {
+          "publishedTitle": "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here.",
+          "publishedVisibleTexts": [
+            "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here.",
+            "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+            "Grammar",
+            "Examples",
+            "Observation",
+            "1",
+            "Preferences + Non-finite clause",
+            "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+            "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses",
+            "2",
+            "Preferences + Relative clause",
+            "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+            "Relative clauses need to respect their principles even here."
+          ],
+          "publishedRenderedNote": "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+          "publishedRenderedTable": {
+            "headers": [
+              "",
+              "Grammar",
+              "Examples",
+              "Observation"
+            ],
+            "rows": [
+              [
+                "",
+                "Grammar",
+                "Examples",
+                "Observation"
+              ],
+              [
+                "1",
+                "Preferences + Non-finite clause",
+                "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses"
+              ],
+              [
+                "2",
+                "Preferences + Relative clause",
+                "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+                "Relative clauses need to respect their principles even here."
+              ]
+            ],
+            "sourceAuthority": "live published slide rendered in Chrome; source JSON text is retained above for provenance"
+          },
+          "nativeJoinedText": "Grammar\nExamples\nObservation\n1\nPreferences + Non finite clauses.\nI need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.\nNon Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses\n2\nPreferences + Relative clauses.\nJosh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.\nRelative clauses need to respect their principles even here.\nPreference can have an extended meaning if we use the more complex grammar points to regular ones.",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "262",
+              "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 582800,
+                "y": 1167700,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3582800,
+                "bottom": 4167700
+              },
+              "parentShapeId": null,
+              "paragraphs": [
+                {
+                  "text": "Grammar",
+                  "runs": []
+                },
+                {
+                  "text": "Examples",
+                  "runs": []
+                },
+                {
+                  "text": "Observation",
+                  "runs": []
+                },
+                {
+                  "text": "1",
+                  "runs": []
+                },
+                {
+                  "text": "Preferences + Non finite clauses.",
+                  "runs": []
+                },
+                {
+                  "text": "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                  "runs": []
+                },
+                {
+                  "text": "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+                  "runs": []
+                },
+                {
+                  "text": "2",
+                  "runs": []
+                },
+                {
+                  "text": "Preferences + Relative clauses.",
+                  "runs": []
+                },
+                {
+                  "text": "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+                  "runs": []
+                },
+                {
+                  "text": "Relative clauses need to respect their principles even here.",
+                  "runs": []
+                }
+              ],
+              "texts": [
+                "Grammar",
+                "Examples",
+                "Observation",
+                "1",
+                "Preferences + Non finite clauses.",
+                "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+                "2",
+                "Preferences + Relative clauses.",
+                "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+                "Relative clauses need to respect their principles even here."
+              ],
+              "joinedText": "Grammar\nExamples\nObservation\n1\nPreferences + Non finite clauses.\nI need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.\nNon Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses\n2\nPreferences + Relative clauses.\nJosh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.\nRelative clauses need to respect their principles even here.",
+              "tableIndex": 0
+            },
+            {
+              "shapeId": "263",
+              "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 1091550,
+                "y": 105638,
+                "cx": 6960900,
+                "cy": 685200,
+                "right": 8052450,
+                "bottom": 790838
+              },
+              "parentShapeId": null,
+              "paragraphs": [
+                {
+                  "text": "Preference can have an extended meaning if we use the more complex grammar points to regular ones. ",
+                  "runs": [
+                    "Preference can have an extended meaning if we use the more complex grammar points to regular ones. "
+                  ]
+                }
+              ],
+              "texts": [
+                "Preference can have an extended meaning if we use the more complex grammar points to regular ones. "
+              ],
+              "joinedText": "Preference can have an extended meaning if we use the more complex grammar points to regular ones."
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "262",
+              "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 582800,
+                "y": 1167700,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3582800,
+                "bottom": 4167700
+              },
+              "columnWidths": [
+                396800,
+                1563225,
+                4078425,
+                1939950
+              ],
+              "rows": [
+                {
+                  "height": 350500,
+                  "cells": [
+                    {
+                      "text": "",
+                      "paragraphs": [
+                        {
+                          "text": "",
+                          "runs": []
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Grammar",
+                      "paragraphs": [
+                        {
+                          "text": "Grammar",
+                          "runs": [
+                            "Grammar"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Examples",
+                      "paragraphs": [
+                        {
+                          "text": "Examples",
+                          "runs": [
+                            "Examples"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Observation",
+                      "paragraphs": [
+                        {
+                          "text": "Observation",
+                          "runs": [
+                            "Observation"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "height": 559525,
+                  "cells": [
+                    {
+                      "text": "1",
+                      "paragraphs": [
+                        {
+                          "text": "1",
+                          "runs": [
+                            "1"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Preferences + Non finite clauses.",
+                      "paragraphs": [
+                        {
+                          "text": "Preferences + Non finite clauses.",
+                          "runs": [
+                            "Preferences + ",
+                            "Non finite clauses",
+                            "."
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                      "paragraphs": [
+                        {
+                          "text": "I need someone to build a life with. ",
+                          "runs": [
+                            "I need someone ",
+                            "to build a life with",
+                            ". "
+                          ]
+                        },
+                        {
+                          "text": "",
+                          "runs": []
+                        },
+                        {
+                          "text": "Any woman needs a good guy devoted to share her life.",
+                          "runs": [
+                            "Any woman needs a good guy ",
+                            "devoted",
+                            " to share her life",
+                            "."
+                          ]
+                        },
+                        {
+                          "text": "",
+                          "runs": []
+                        },
+                        {
+                          "text": "Being ethical and committed, Paul wishes to get the same from his employees. ",
+                          "runs": [
+                            "Being ethical and committed",
+                            ", Paul wishes to get the same from his employees. "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+                      "paragraphs": [
+                        {
+                          "text": "Non Finite clause are built from:",
+                          "runs": [
+                            "Non Finite clause ",
+                            "are built from:"
+                          ]
+                        },
+                        {
+                          "text": "",
+                          "runs": []
+                        },
+                        {
+                          "text": "-Infinitive Clauses",
+                          "runs": [
+                            "-Infinitive Clauses"
+                          ]
+                        },
+                        {
+                          "text": "-Ed Clauses.",
+                          "runs": [
+                            "-Ed Clauses."
+                          ]
+                        },
+                        {
+                          "text": "-Ing Clauses",
+                          "runs": [
+                            "-Ing Clauses"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "height": 523100,
+                  "cells": [
+                    {
+                      "text": "2",
+                      "paragraphs": [
+                        {
+                          "text": "2",
+                          "runs": [
+                            "2"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Preferences + Relative clauses.",
+                      "paragraphs": [
+                        {
+                          "text": "Preferences + Relative clauses.",
+                          "runs": [
+                            "Preferences + ",
+                            "Relative clauses",
+                            "."
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+                      "paragraphs": [
+                        {
+                          "text": "Josh would love a company that can value his talent. ",
+                          "runs": [
+                            "Josh would love a company ",
+                            "that can value his talent",
+                            ". "
+                          ]
+                        },
+                        {
+                          "text": "",
+                          "runs": []
+                        },
+                        {
+                          "text": "Mary fancies a car where she can fit all her friends. ",
+                          "runs": [
+                            "Mary fancies a car ",
+                            "where she can fit all her friends",
+                            ". "
+                          ]
+                        },
+                        {
+                          "text": "",
+                          "runs": []
+                        },
+                        {
+                          "text": "I’m desperate for a partner who can meet my professional standards. ",
+                          "runs": [
+                            "I’m desperate for a partner",
+                            " who can meet my professional standards",
+                            ". "
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "text": "Relative clauses need to respect their principles even here.",
+                      "paragraphs": [
+                        {
+                          "text": "Relative clauses need to respect their principles even here. ",
+                          "runs": [
+                            "Relative clauses need to respect their principles even here. "
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "preserveOutsideTable": [
+            {
+              "shapeId": "263",
+              "bbox": {
+                "x": 1091550,
+                "y": 105638,
+                "cx": 6960900,
+                "cy": 685200,
+                "right": 8052450,
+                "bottom": 790838
+              },
+              "text": "Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+              "reason": "The note is a separate text shape above the chart and remains learner-visible outside the table projection."
+            }
+          ],
+          "differences": [
+            {
+              "kind": "published-cell-correction",
+              "rowIndex": 1,
+              "columnIndex": 1,
+              "native": "Preferences + Non finite clauses.",
+              "published": "Preferences + Non-finite clause",
+              "reason": "The published rendered slide uses the hyphenated singular phrase \"Non-finite clause\"; published wording is authoritative."
+            },
+            {
+              "kind": "substantive-published-cell-correction",
+              "rowIndex": 1,
+              "columnIndex": 2,
+              "native": "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+              "published": "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+              "reason": "The published rendered example says \"devoted to share his life with her\"; the native cell says \"devoted to share her life\" and omits the final phrase."
+            },
+            {
+              "kind": "published-cell-correction",
+              "rowIndex": 1,
+              "columnIndex": 3,
+              "native": "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+              "published": "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses",
+              "reason": "The published rendered observation uses \"Non-finite clauses\" and names \"Past participle Clauses\"; the native cell has different number, punctuation, and \"-Ed Clauses.\" wording."
+            },
+            {
+              "kind": "published-cell-correction",
+              "rowIndex": 2,
+              "columnIndex": 1,
+              "native": "Preferences + Relative clauses.",
+              "published": "Preferences + Relative clause",
+              "reason": "The published rendered slide uses the singular \"Relative clause\" without the native trailing period."
+            },
+            {
+              "kind": "encoding-repair-from-live-render",
+              "rowIndex": 2,
+              "columnIndex": 2,
+              "native": "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+              "publishedExtraction": "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here.",
+              "published": "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+              "reason": "The JSON/native extraction contains U+FFFD in \"I�m\"; the live published slide and accessibility SVG visibly render \"I’m\"."
+            }
+          ],
+          "encodingNote": "The published source JSON and native audit retain replacement characters in the apostrophe of the third relative-clause example. The live rendered source is authoritative for the authored curly apostrophe.",
+          "publishedRenderedCellQuotes": [
+            "Grammar",
+            "Examples",
+            "Observation",
+            "1",
+            "Preferences + Non-finite clause",
+            "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+            "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses",
+            "2",
+            "Preferences + Relative clause",
+            "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+            "Relative clauses need to respect their principles even here."
+          ]
+        },
+        "approvedProjection": {
+          "approved": true,
+          "source": "published-visible-text",
+          "nativeIdentityConfirmed": false,
+          "nativeContentAligned": false,
+          "publishedLayout": "Separate note above a four-column chart: blank ordinal column, Grammar, Examples, Observation; two numbered row groups.",
+          "nativeShapeEvidence": {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 582800,
+              "y": 1167700,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3582800,
+              "bottom": 4167700
+            },
+            "columnWidths": [
+              396800,
+              1563225,
+              4078425,
+              1939950
+            ],
+            "rowHeights": [
+              350500,
+              559525,
+              523100
+            ],
+            "note": "Native a:tbl geometry confirms the chart boundaries, four columns, three rows, and grouping. Cell text is not accepted where it differs from the live published source.",
+            "geometryConfirmed": true
+          },
+          "spansGroupingVerified": true,
+          "tables": [
+            {
+              "shapeId": "262",
+              "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 582800,
+                "y": 1167700,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3582800,
+                "bottom": 4167700
+              },
+              "columnWidths": [
+                396800,
+                1563225,
+                4078425,
+                1939950
+              ],
+              "rowHeights": [
+                350500,
+                559525,
+                523100
+              ],
+              "headers": [
+                "",
+                "Grammar",
+                "Examples",
+                "Observation"
+              ],
+              "rows": [
+                [
+                  "",
+                  "Grammar",
+                  "Examples",
+                  "Observation"
+                ],
+                [
+                  "1",
+                  "Preferences + Non-finite clause",
+                  "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                  "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses"
+                ],
+                [
+                  "2",
+                  "Preferences + Relative clause",
+                  "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+                  "Relative clauses need to respect their principles even here."
+                ]
+              ],
+              "sourceCellQuotes": {
+                "header": [
+                  "",
+                  "Grammar",
+                  "Examples",
+                  "Observation"
+                ],
+                "row1": [
+                  "1",
+                  "Preferences + Non-finite clause",
+                  "I need someone to build a life with.\n\nAny woman needs a good guy devoted to share his life with her.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                  "Non-finite clauses are built from:\n\n-Infinitive Clauses\n-Past participle Clauses\n-ing Clauses"
+                ],
+                "row2": [
+                  "2",
+                  "Preferences + Relative clause",
+                  "Josh would love a company that can value his talent.\n\nMary fancies a car where she can fit all her friends.\n\nI’m desperate for a partner who can meet my professional standards.",
+                  "Relative clauses need to respect their principles even here."
+                ]
+              },
+              "spans": {
+                "columnCount": 4,
+                "rowCount": 3,
+                "mergedCells": [],
+                "blankHeaderCell": {
+                  "rowIndex": 0,
+                  "columnIndex": 0
+                },
+                "ordinalColumn": {
+                  "columnIndex": 0,
+                  "values": [
+                    "1",
+                    "2"
+                  ]
+                },
+                "groupingVerified": true,
+                "groupRows": [
+                  {
+                    "ordinal": "1",
+                    "rowIndex": 1,
+                    "grammarColumn": 1,
+                    "examplesColumn": 2,
+                    "observationColumn": 3
+                  },
+                  {
+                    "ordinal": "2",
+                    "rowIndex": 2,
+                    "grammarColumn": 1,
+                    "examplesColumn": 2,
+                    "observationColumn": 3
+                  }
+                ]
+              }
+            }
+          ],
+          "notes": "Rows and examples are literal from the live published slide. The note above the chart is preserved outside the editable table. No merged cells or inferred relationships are present.",
+          "nativeGeometryConfirmed": true
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9qca001hw1qkpe089f8f.json",
+            "sha256": "53a2d3415452769cf4154b20afef579bde96e5987ad3bc06c94cfe183ab9cf17"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-37.json",
+            "sha256": "937d587dd12c85d7c5dd90804988882b67cc59e61275eb2e88620fc67a1fa4c4"
+          }
+        ],
+        "rawPptxProvenance": {
+          "kind": "native-pptx",
+          "absolutePath": "C:/Users/ACER/.codex/worktrees/course-source-import/docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+          "relativePath": "docs/audit/source-originals/B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+          "driveFileId": "1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO",
+          "sha256": "26f7059232086b1335d54d69e6acf58e7fdd185c3aee70c34e2434855a86980d",
+          "validatedSourceRef": false,
+          "reason": "Raw PPTX provenance is retained outside sourceRefs because the raw file belongs to the isolated source-import worktree; the native audit JSON is the validated reference."
+        }
       }
     ],
     "summary": {
-      "auditedCount": 10,
-      "approvedProjectionCount": 9,
-      "clearTableSemanticsBlockerCount": 10,
+      "auditedCount": 11,
+      "approvedProjectionCount": 10,
+      "clearTableSemanticsBlockerCount": 11,
       "blockedCount": 0,
       "approvedUnits": [
         4,
@@ -2760,6 +3400,7 @@
         33,
         34,
         35,
+        37,
         42,
         44,
         46,

@@ -5459,7 +5459,7 @@ function MultiSelectBlockPreview({
   )
 }
 
-function guidedTruthOptionLabels(options: MultipleChoiceBlock['options']) {
+function guidedTruthOptionLabels(options: NonNullable<MultipleChoiceBlock['options']>) {
   if (options.length !== 2 ||
       !options.some((option) => option.id === 'true' && /^(t|true)$/i.test(option.text.trim())) ||
       !options.some((option) => option.id === 'false' && /^(f|false)$/i.test(option.text.trim()))) return options

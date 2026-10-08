@@ -17,11 +17,11 @@ describe('illustrated vocabulary sequence', () => {
       data: { learningRevision: 'course-guided-v1', sourceSlides: [4] },
     } as Block
     const figure: Block = {
-      id: 'figure', type: 'image', order: 1, url: '/source-figure.webp',
+      id: 'figure', type: 'image', order: 1, url: '/source-figure.webp', alt: 'Source figure',
       data: { learningRevision: 'course-guided-v1', sourceSlides: [4] },
     }
     const unrelated: Block = {
-      id: 'next-figure', type: 'image', order: 2, url: '/next-figure.webp',
+      id: 'next-figure', type: 'image', order: 2, url: '/next-figure.webp', alt: 'Next source figure',
       data: { learningRevision: 'course-guided-v1', sourceSlides: [5] },
     }
     const steps = buildIllustratedLessonSteps([prompt, figure, unrelated])
