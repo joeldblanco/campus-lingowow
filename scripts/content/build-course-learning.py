@@ -288,8 +288,12 @@ def _is_overhead_source_slide(slide: Mapping[str, Any]) -> bool:
         # Keep a bare section heading out of the learner stream. If the slide
         # has a short authored subtitle, retain it as teacher-only provenance;
         # actionable text remains learner-facing below.
+        # Native extraction can add the heading and slide number as separate
+        # paragraphs, while the published record only carries the heading. A
+        # heading with no learner prose is still a divider and belongs in the
+        # source archive, even when there is no secondary subtitle.
         if not meaningful:
-            return False
+            return True
         if _extract_pairs(meaningful) or re.search(
             r"\b(?:complete|answer|choose|describe|discuss|identify|listen|match|read|select|talk|write)\b",
             " ".join(meaningful),
@@ -408,6 +412,8 @@ def _learner_context_texts(
     slide: Mapping[str, Any],
     tables: Sequence[Sequence[Sequence[str]]],
     prompt_text: str,
+    covered_texts: Sequence[str] | None = None,
+    activity_prompts: Sequence[str] | None = None,
 ) -> list[str]:
     """Return authored teaching prose that needs its own visible text block.
 
@@ -421,14 +427,33 @@ def _learner_context_texts(
 
     cell_texts = _table_cell_texts(tables)
     video_urls = {_normalise(url).casefold() for url in _video_urls(slide)}
-    prompt_key = _normalise(prompt_text).casefold()
+    covered_keys = {
+        _normalise(value).casefold()
+        for value in (covered_texts or [])
+        if _normalise(value)
+    }
+    prompt_keys = {
+        _normalise(value).casefold()
+        for value in ([prompt_text, *(activity_prompts or [])])
+        if _normalise(value)
+    }
+    # A source title is frequently the complete activity prompt (for example
+    # the role-play and writing slides). Keep it in provenance, but do not
+    # render it again beside the native activity. Short labels such as
+    # ``Let's Talk`` remain eligible teaching text when there is no reviewed
+    # activity block.
+    title_key = _normalise(slide.get("title")).casefold()
+    if len(title_key) >= 32:
+        prompt_keys.add(title_key)
     candidates = [*_native_paragraphs(slide), *_meaningful_texts(slide)]
     result: list[str] = []
     seen: set[str] = set()
     for raw_value in candidates:
         value = _normalise(raw_value)
         key = value.casefold()
-        if not value or key in seen or key == prompt_key or key in video_urls:
+        if not value or key in seen or key in prompt_keys or key in video_urls or key in covered_keys:
+            continue
+        if _is_technical_text(value):
             continue
         if key in cell_texts:
             continue
@@ -442,6 +467,20 @@ def _learner_context_texts(
                 if len(cell) >= 8 and cell in key
             )
             if matching_cells >= 2:
+                continue
+        # Native paragraphs commonly arrive one-per-cell while the published
+        # extractor also supplies one flattened paragraph. Once at least two
+        # authored paragraphs are already visible, discard a later value that
+        # is mostly their concatenation. This keeps rules and explanations
+        # while avoiding a second rendered copy of the same table or heading.
+        matching_prior = [
+            prior
+            for prior in result
+            if len(prior) >= 8 and prior.casefold() in key
+        ]
+        if len(matching_prior) >= 2:
+            covered_length = sum(len(prior) for prior in matching_prior)
+            if covered_length / max(len(value), 1) >= 0.5:
                 continue
         seen.add(key)
         result.append(value)
@@ -1422,6 +1461,66 @@ def _is_reading(text: str) -> bool:
     return len(text) >= 160 or bool(re.search(r"\b(?:read the text|reading|read aloud)\b", lowered))
 
 
+def _reading_passage_texts(slide: Mapping[str, Any], evidence_texts: Sequence[str]) -> list[str]:
+    """Select the authored passage while leaving reviewed questions in activity rows.
+
+    Published slide extraction often puts a reading passage, its instruction,
+    and a compact question list in one slide. The question review already has
+    native rows, so rendering every evidence string here repeats the activity
+    and can put the questions before the passage. Prefer the longest authored
+    prose that is not an instruction/question list; keep all evidence only as
+    a conservative fallback for unusual short readings.
+    """
+
+    values = _unique_texts(evidence_texts)
+    if not values:
+        return []
+    candidates: list[str] = []
+    for value in values:
+        lowered = value.casefold()
+        # Some published extractors flatten the instruction and passage into
+        # one string (``Read ... questions. Maria ...``). Preserve the prose
+        # after the authored instruction when it is long enough to be a real
+        # passage; a standalone writing or role-play prompt has no such tail.
+        instruction_tail = re.search(r"\bquestions?\s*(?:below)?\s*[.!?]\s+", lowered)
+        if instruction_tail:
+            tail = value[instruction_tail.end() :].strip()
+            if len(tail) >= 120 and not re.search(r"\b(?:write|act out|listen to the audio|choose|select|complete)\b", tail.casefold()):
+                candidates.append(tail)
+                continue
+        if re.search(
+            r"\b(?:read the following|answer the questions?|after that|questions? below|read .* aloud|choose|select|complete|listen to the audio|write|act out|discuss with|look at)\b",
+            lowered,
+        ):
+            continue
+        # A question list extracted as one paragraph is activity metadata, not
+        # the reading passage. A real passage may contain punctuation but does
+        # not consist primarily of numbered questions.
+        question_count = len(re.findall(r"\b\d+\.\s+[^.!?]*\?", value))
+        if question_count >= 2:
+            continue
+        if len(value) >= 120:
+            candidates.append(value)
+    if candidates:
+        longest = max(
+            candidates,
+            key=lambda value: (
+                len(value),
+                -next((index for index, original in enumerate(values) if value == original or value in original), len(values)),
+            ),
+        )
+        return [longest]
+    if any(
+        re.search(
+            r"\b(?:write|act out|listen to the audio|answer the questions?|complete|choose|select|look at|discuss with)\b",
+            value.casefold(),
+        )
+        for value in values
+    ):
+        return []
+    return values
+
+
 def _ai_grading_context(
     slide: Mapping[str, Any],
     prompt_text: str,
@@ -2317,7 +2416,11 @@ def _listening_review_specs(
             "multiple_choice",
             {
                 "items": choices,
-                "context": "\n".join(_slide_texts(slide)),
+                # The published deck's old true/false prompt remains in the
+                # immutable source archive. Reviewed listening questions use a
+                # short learner instruction so unsupported source wording is
+                # not rendered a second time beside the new four-option block.
+                "context": "Escucha y elige la respuesta.",
                 "data": {
                     "listeningReview": {
                         "audioIndex": review_entry.get("audioIndex"),
@@ -2436,7 +2539,41 @@ def _native_block_specs(
 
     specs: list[tuple[str, dict[str, Any]]] = []
     prompt_text = _prompt_text(slide, texts)
-    context_texts = _learner_context_texts(slide, tables, prompt_text)
+    pairs = _extract_pairs(texts)
+    covered_texts = [
+        f"{pair['term']} - {pair['definition']}"
+        for pair in pairs
+        if pair.get("term") and pair.get("definition")
+    ]
+    activity_prompts = [
+        _text(item.get("prompt"))
+        for item in (exercise_items or [])
+        if isinstance(item, Mapping) and _text(item.get("prompt"))
+    ]
+    if listening_review is not None:
+        activity_prompts.extend(
+            _text(item.get("prompt") or item.get("question"))
+            for item in _as_list(listening_review.get("items"))
+            if isinstance(item, Mapping) and _text(item.get("prompt") or item.get("question"))
+        )
+    context_texts = _learner_context_texts(
+        slide,
+        tables,
+        prompt_text,
+        covered_texts=covered_texts,
+        activity_prompts=activity_prompts,
+    )
+    reading_passage_texts = _reading_passage_texts(slide, evidence_texts)
+    reading_marker = re.search(
+        r"\b(?:read(?:ing)?|paragraph|passage|reading aloud|read aloud)\b",
+        full_text.casefold(),
+    )
+    has_reading_passage = bool(
+        _is_reading(full_text)
+        and reading_marker
+        and reading_passage_texts
+        and any(len(value) >= 120 for value in reading_passage_texts)
+    )
     common = {
         "sourceText": texts,
         "sourceTitle": _text(slide.get("title")),
@@ -2485,7 +2622,6 @@ def _native_block_specs(
             _blocker("table-semantics-missing", number, "The source mentions a table or chart without authored cell semantics."),
         )
 
-    pairs = _extract_pairs(texts)
     lower_title = _text(slide.get("title")).casefold()
     if len(pairs) >= 2 and ("vocab" in lower_title or "word" in lower_title or all(len(item["term"].split()) <= 3 for item in pairs)):
         vocabulary_items = [
@@ -2550,7 +2686,11 @@ def _native_block_specs(
                 "audio",
                 {
                     **common,
-                    "instruction": prompt_text,
+                    "instruction": (
+                        "Escucha y elige la respuesta."
+                        if listening_review_supplied and listening_specs
+                        else prompt_text
+                    ),
                     "url": _audio_url(audio_item),
                     "transcript": _audio_transcript(audio_item),
                     "mediaDigest": _audio_digest(audio_item),
@@ -2658,8 +2798,14 @@ def _native_block_specs(
     if listening_review_supplied:
         specs.extend(listening_specs)
 
-    if context_texts and not closed_answer_blocked and not listening_review_supplied and (tables or not _is_reading(full_text)):
-        visible_context = list(context_texts)
+    # Reviewed activities already render their authored prompt in a native
+    # control. Keep surrounding teaching prose only when no reviewed activity
+    # owns the slide; source text remains available through originalSource.
+    render_context_texts = context_texts
+    if review_specs or listening_specs:
+        render_context_texts = []
+    if render_context_texts and not closed_answer_blocked and not listening_review_supplied and (tables or not has_reading_passage):
+        visible_context = list(render_context_texts)
         # When no structured block survived (for example an audio source whose
         # URL is missing), retain the authored instruction in the reviewable
         # fallback text instead of leaving only a heading visible.
@@ -2682,8 +2828,17 @@ def _native_block_specs(
 
     # Preserve a long authored reading passage as readable HTML even when the
     # same slide also has questions or a read-aloud instruction.
-    if _is_reading(full_text) and not tables:
-        specs.append(("text", {**common, "content": _readable_html(evidence_texts), "format": "html"}))
+    if has_reading_passage and not tables:
+        specs.append(
+            (
+                "text",
+                {
+                    **common,
+                    "content": _readable_html(reading_passage_texts),
+                    "format": "html",
+                },
+            )
+        )
 
     if closed_answer_blocked and not any(native_type == "text" for native_type, _ in specs):
         blocked_texts = [*context_texts]
@@ -2712,7 +2867,27 @@ def _native_block_specs(
         return specs
     if audio_required and audio_item and not _audio_url(audio_item) and full_text and not specs:
         specs.append(("text", {**common, "content": _readable_html(context_texts or evidence_texts), "format": "html"}))
-    return specs
+    def spec_priority(item: tuple[str, dict[str, Any]]) -> tuple[int, int]:
+        native_type = item[0]
+        if tables and native_type == "structured-content":
+            return (0, 0)
+        if native_type == "image":
+            return (1, 0)
+        if native_type == "audio":
+            return (2, 0)
+        if has_reading_passage and native_type == "text":
+            return (3, 0)
+        if native_type in {"recording", "essay", "multiple_choice", "short_answer"}:
+            return (4, 0)
+        if native_type in {"structured-content", "vocabulary"}:
+            return (5, 0)
+        if native_type == "video":
+            return (6, 0)
+        if native_type == "text":
+            return (7, 0)
+        return (8, 0)
+
+    return [item for _, item in sorted(enumerate(specs), key=lambda pair: (*spec_priority(pair[1]), pair[0]))]
 
 
 def _row_data_metadata(
@@ -3027,7 +3202,28 @@ def build_plan(
             or _native_figures(slide)
             or _is_audio_required(slide)
         )
-        if specs or source_has_content:
+        # A bare divider such as ``Introduction`` is archived as teacher notes
+        # for provenance, but it is not authored learner material and should
+        # not claim source coverage as a meaningful extracted slide.
+        pure_divider_title = _normalise(slide.get("title")).casefold().replace("�", "'").replace("’", "'")
+        if (
+            _is_overhead_source_slide(slide)
+            and pure_divider_title in _SOURCE_DIVIDER_TITLES
+            and not _meaningful_texts(slide)
+            and not _tables(slide)
+            and not _native_figures(slide)
+            and not _is_audio_required(slide)
+        ):
+            source_has_content = False
+        pure_divider = (
+            _is_overhead_source_slide(slide)
+            and _normalise(slide.get("title")).casefold().replace("�", "'").replace("’", "'") in _SOURCE_DIVIDER_TITLES
+            and not _meaningful_texts(slide)
+            and not _tables(slide)
+            and not _native_figures(slide)
+            and not _is_audio_required(slide)
+        )
+        if (specs and not pure_divider) or source_has_content:
             covered_slides.add(number)
         if source_has_content and not specs:
             unsupported = {

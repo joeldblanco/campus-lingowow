@@ -672,6 +672,196 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertIn("MOST COMMON QUESTIONS", context["data"]["content"])
         self.assertNotIn("To Be verb Other verbs", context["data"]["content"])
 
+    def test_unit2_flow_keeps_reviewed_listening_compact_and_deduplicates_activity_prose(self) -> None:
+        """Exercise flow mirrors the authored Unit 2 sequence without prompt dumps."""
+
+        lesson = snapshot_fixture()["modules"][0]["lessons"][0]
+        digest = "unit2-audio-2-digest"
+        transcript = "Good morning. You are here to visit him. My dad is American. We speak very great English."
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "I come from…"},
+            "contentId": "unit2-flow-fixture",
+            "sourceUrl": "https://slides.example/unit-2-flow",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Unit 2 - I come from.pptx",
+                "slideCount": 7,
+                "slides": [
+                    {
+                        "number": 4,
+                        "title": "Listen to the introduction",
+                        "visibleTexts": ["Listen to the introduction", "Listen to the audio and discuss with your teacher."],
+                        "media": [
+                            {
+                                "kind": "audio",
+                                "url": "https://audio.example/unit2-1.mp3",
+                                "audioIndex": 1,
+                                "digest": "unit2-audio-1-digest",
+                                "transcript": "This is the Unit 2 introduction.",
+                            }
+                        ],
+                    },
+                    {
+                        "number": 6,
+                        "title": "Olá!",
+                        "visibleTexts": [
+                            "Olá!",
+                            "Hello!",
+                            "Brazil - Brazilian",
+                            "China - Chinese",
+                            "We can group nationalities because of suffixes. Some can’t be grouped",
+                        ],
+                    },
+                    {"number": 7, "title": "Grammar Analysis", "visibleTexts": ["Grammar Analysis", "Language bricks", "2"]},
+                    {
+                        "number": 8,
+                        "title": "Grammar rules",
+                        "visibleTexts": [
+                            "Grammar rules",
+                            "Even when we talk about this topic, the grammar rules must be respected.",
+                            "To Be – works alone.",
+                            "Other verbs – Use auxiliaries.",
+                            "To Be verb Other verbs",
+                        ],
+                        "tables": [{"rows": [["To Be verb", "Other verbs"], ["John is American", "Does she come from England?"]]}],
+                    },
+                    {
+                        "number": 13,
+                        "title": "13",
+                        "visibleTexts": [
+                            "13",
+                            "Listen to the audio and answer the questions.",
+                            "The old true or false questions stay in the source archive.",
+                        ],
+                        "media": [
+                            {
+                                "kind": "audio",
+                                "url": "/audio/lessons/course/unit-02-audio-02.mp3",
+                                "publicHref": "/audio/lessons/course/unit-02-audio-02.mp3",
+                                "audioIndex": 2,
+                                "digest": digest,
+                                "transcript": transcript,
+                            }
+                        ],
+                    },
+                    {
+                        "number": 14,
+                        "title": "A glimpse to Jenny’s life",
+                        "visibleTexts": [
+                            "A glimpse to Jenny’s life",
+                            "Jenny is from USA. She speaks English and Spanish. Her parents are Mexican and she talks with her friend every afternoon about school, family, and the languages they use at home.",
+                            "Read the paragraph and answer the questions below.",
+                            "What is her name?",
+                        ],
+                    },
+                    {
+                        "number": 15,
+                        "title": "Act out the situation",
+                        "visibleTexts": ["Act out the situation", "Let’s Talk"],
+                    },
+                ],
+            },
+        }
+        listening_review = {
+            "exercises": [
+                {
+                    "lessonId": LESSON_ID,
+                    "slideNumber": 13,
+                    "audioIndex": 2,
+                    "sourceAudioSha256": digest,
+                    "reviewStatus": "reviewed",
+                    "items": [
+                        {
+                            "id": "unit2-q1",
+                            "prompt": "Where is the man?",
+                            "reviewStatus": "reviewed",
+                            "explicitOptions": ["At home", "At work", "At the airport", "At school"],
+                            "answerItems": [{"canonical": "At work", "evidence": "You are here to visit him."}],
+                            "evidence": "You are here to visit him.",
+                        }
+                    ],
+                }
+            ]
+        }
+
+        plan = builder.build_plan(lesson, source, listening_review=listening_review)
+        self.assertTrue(plan["publishable"])
+        rows = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        generated_types = [row["data"]["type"] for row in rows]
+        self.assertIn("teacher_notes", generated_types)
+        divider = next(row for row in rows if row["data"]["data"]["sourceSlides"] == [7])
+        self.assertEqual(divider["data"]["type"], "teacher_notes")
+
+        vocabulary = next(row for row in rows if row["data"]["type"] == "vocabulary")
+        vocab_text = next(row for row in rows if row["data"].get("type") == "text" and row["data"]["data"]["sourceSlides"] == [6])
+        self.assertIn("suffixes", vocab_text["data"]["content"])
+        self.assertNotIn("Brazil - Brazilian", vocab_text["data"]["content"])
+        self.assertEqual(vocabulary["data"]["items"][0]["term"], "Brazil")
+
+        listening_rows = [row for row in rows if row["data"]["data"]["sourceSlides"] == [13]]
+        self.assertEqual([row["data"]["type"] for row in listening_rows], ["audio", "multiple_choice"])
+        self.assertEqual(listening_rows[0]["data"]["instruction"], "Escucha y elige la respuesta.")
+        self.assertEqual(listening_rows[1]["data"]["context"], "Escucha y elige la respuesta.")
+        learner_payload = [
+            {key: value for key, value in row["data"].items() if key not in {"sourceText", "sourceTitle", "nativeParagraphs", "data"}}
+            for row in listening_rows
+        ]
+        self.assertNotIn("true or false", json.dumps(learner_payload, ensure_ascii=False).casefold())
+
+        reading = [row for row in rows if row["data"]["data"]["sourceSlides"] == [14]]
+        self.assertEqual(reading[0]["data"]["type"], "text")
+        self.assertNotIn("answer the questions", reading[0]["data"]["content"].casefold())
+
+        activity_blockers: list[dict] = []
+        review_items = [
+            {
+                "id": "u02-roleplay",
+                "kind": "roleplay",
+                "prompt": "D. Act out the situation with your teacher.",
+                "reviewStatus": "open-response-preserved",
+                "sourceEvidence": ["Act out the situation"],
+            }
+        ]
+        activity_specs = builder._native_block_specs(
+            source,
+            source["deck"]["slides"][-1],
+            LESSON_ID,
+            builder._source_digest(source),
+            None,
+            review_items,
+            None,
+            activity_blockers,
+        )
+        self.assertEqual([kind for kind, _ in activity_specs], ["recording"])
+        self.assertFalse(activity_blockers)
+
+        writing_blockers: list[dict] = []
+        writing_specs = builder._native_block_specs(
+            source,
+            {
+                "number": 16,
+                "title": "E. Write a 30–50 word paragraph about your origins.",
+                "visibleTexts": ["E. Write a 30–50 word paragraph about your origins.", "Let’s Write"],
+            },
+            LESSON_ID,
+            builder._source_digest(source),
+            None,
+            [
+                {
+                    "id": "u02-writing",
+                    "kind": "writing",
+                    "prompt": "Write a 30–50 word paragraph about your origins.",
+                    "reviewStatus": "open-response-preserved",
+                    "sourceEvidence": ["E. Write a 30–50 word paragraph about your origins."],
+                }
+            ],
+            None,
+            writing_blockers,
+        )
+        self.assertEqual([kind for kind, _ in writing_specs], ["essay"])
+        self.assertFalse(writing_blockers)
+
     def test_native_audit_rejects_slide_mismatch_and_untraceable_figure(self) -> None:
         source = {
             "courseId": COURSE_ID,
