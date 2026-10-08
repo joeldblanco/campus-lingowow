@@ -45,3 +45,21 @@ Course expansion content inventory is captured in `docs/audit/`; native source
 tables, figures and audio alignment are still being reviewed. Full technical
 validation and all remaining course compositions are pending. This is a partial
 acceptance record, not a claim that the course expansion is complete.
+
+## Unit 2 actual review — 8 October, changes required
+
+The composed Unit 2 plan was rendered in Chrome at desktop 1521×667 and mobile
+390×844 against the approved content-format v3 requirements. The original flags
+photograph and both original MP3s load. Listening presents four vertically stacked
+choices and checks/advances automatically after selection; mobile text is readable.
+Actual evidence in the directory above: `unit2-vocabulary-desktop-before.png`,
+`unit2-table-desktop-before.png`, `unit2-short-answer-desktop-before.png`,
+`unit2-listening-mobile.png`. The file `unit2-listening-correct-desktop.png` captures
+the next question after the feedback timer, not the correct-answer animation.
+
+Failed requirements: duplicate objective prose, generic/overlong titles, narrow
+four-column teaching charts, a static blank worksheet before its interactive
+equivalent, redundant exercise context, and the native black short-answer focus
+outline. The short-answer primary action also needs the shared footer placement.
+These discrepancies are being repaired; this plan is not visually accepted or
+published. Teacher and final mobile/table comparisons remain pending.
