@@ -669,5 +669,1902 @@
     "audioCoordinatesRequireSlideOrdinalAndSha": true,
     "noAudioSubstitution": true,
     "unit33To36FigureCorrespondenceHeld": true
+  },
+  "tableReview": {
+    "schemaVersion": 1,
+    "purpose": "Manual source-grounded review of the ten table-semantics-missing blockers. Native table cells are accepted only when aligned to the published slide; mismatched examples remain blocked.",
+    "reviewPolicy": {
+      "publishedSlidesAuthoritativeOnMismatch": true,
+      "sourceQuotesRequired": true,
+      "nativeShapeProvenanceRequired": true,
+      "noInventedCellsOrExamples": true,
+      "preserveExcludedNotesAsLearnerText": true,
+      "blockedWhenNativePublishedIdentityIsUnresolved": true
+    },
+    "sourceRefs": [
+      {
+        "kind": "publishedDirectory",
+        "path": "docs/audit/source-files/"
+      },
+      {
+        "kind": "nativeDirectory",
+        "path": "docs/audit/source-files-native/"
+      },
+      {
+        "kind": "classificationBaseline",
+        "path": "docs/audit/course-builder-blocker-classification.json"
+      }
+    ],
+    "entries": [
+      {
+        "unit": 4,
+        "lessonId": "cmk0vijvj0001i904j8k1di8d",
+        "sourceSlide": 9,
+        "publishedSourceFile": "docs/audit/source-files/cmk0vijvj0001i904j8k1di8d.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-04.json",
+        "status": "reviewed",
+        "clearTableSemanticsBlocker": true,
+        "review": "Both native a:tbl shapes align cell-for-cell with the published preference chart. Keep them as two editable three-column groups.",
+        "sourceEvidence": {
+          "publishedTitle": "It is common to use verbs that state preferences when we talk about hobbies. Check the following chart.",
+          "publishedVisibleTexts": [
+            "It is common to use verbs that state preferences when we talk about hobbies. Check the following chart.",
+            "MOST COMMON VERBS FOR PREFERENCES NEGATIVE COUNTERPARTS EXAMPLES LIKE DISLIKE / DON’T LIKE She likes eating ice cream. ENJOY DON’T ENJOY I don’t enjoy cooking. LOVE HATE I love listening to music.",
+            "TO BE FOR PREFERENCES NEGATIVE COUNTERPARTS EXAMPLES TO BE FOND OF NOT TO BE FOND OF I am fond of playing soccer. TO BE A FAN OF NOT TO BE A FAN OF I am not a fan of watching horror movies. TO BE THRILLED ABOUT NOT TO BE THRILLED ABOUT I am thrilled about reading books.",
+            "HINT Notice that after a preference expression, the action can go in ing form."
+          ],
+          "nativeJoinedText": "It is common to use verbs that state preferences when we talk about hobbies. Check the following chart. MOST COMMON VERBS FOR PREFERENCES NEGATIVE COUNTERPARTS EXAMPLES LIKE DISLIKE / DON’T LIKE She likes eating ice cream. ENJOY DON’T ENJOY I don’t enjoy cooking. LOVE HATE I love listening to music. TO BE FOR PREFERENCES NEGATIVE COUNTERPARTS EXAMPLES TO BE FOND OF NOT TO BE FOND OF I am fond of playing soccer. TO BE A FAN OF NOT TO BE A FAN OF I am not a fan of watching horror movies. TO BE THRILLED ABOUT NOT TO BE THRILLED ABOUT I am thrilled about reading books. HINT Notice that after a preference expression, the action can go in ing form.",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "326",
+              "shapeName": "Google Shape;326;p9",
+              "kind": "picture",
+              "bbox": {
+                "x": 8693238,
+                "y": 4673522,
+                "cx": 410472,
+                "cy": 408081,
+                "right": 9103710,
+                "bottom": 5081603
+              }
+            },
+            {
+              "shapeId": "327",
+              "shapeName": "Google Shape;327;p9",
+              "kind": "text",
+              "bbox": {
+                "x": 648587,
+                "y": 368968,
+                "cx": 6733054,
+                "cy": 875042,
+                "right": 7381641,
+                "bottom": 1244010
+              }
+            },
+            {
+              "shapeId": "328",
+              "shapeName": "Google Shape;328;p9",
+              "kind": "table",
+              "bbox": {
+                "x": 648587,
+                "y": 1436281,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3648587,
+                "bottom": 4436281
+              }
+            },
+            {
+              "shapeId": "329",
+              "shapeName": "Google Shape;329;p9",
+              "kind": "table",
+              "bbox": {
+                "x": 648587,
+                "y": 3228778,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3648587,
+                "bottom": 6228778
+              }
+            },
+            {
+              "shapeId": "330",
+              "shapeName": "Google Shape;330;p9",
+              "kind": "group",
+              "bbox": {
+                "x": 7198241,
+                "y": 1391537,
+                "cx": 1818505,
+                "cy": 2340491,
+                "right": 9016746,
+                "bottom": 3732028
+              }
+            },
+            {
+              "shapeId": "331",
+              "shapeName": "Google Shape;331;p9",
+              "kind": "text",
+              "bbox": {
+                "x": 7200036,
+                "y": 1391536,
+                "cx": 1816710,
+                "cy": 2360426,
+                "right": 9016746,
+                "bottom": 3751962
+              }
+            },
+            {
+              "shapeId": "332",
+              "shapeName": "Google Shape;332;p9",
+              "kind": "text",
+              "bbox": {
+                "x": 7119315,
+                "y": 3063631,
+                "cx": 767258,
+                "cy": 609405,
+                "right": 7886573,
+                "bottom": 3673036
+              }
+            },
+            {
+              "shapeId": "333",
+              "shapeName": "Google Shape;333;p9",
+              "kind": "text",
+              "bbox": {
+                "x": 7381641,
+                "y": 1591763,
+                "cx": 1422117,
+                "cy": 1384995,
+                "right": 8803758,
+                "bottom": 2976758
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "328",
+              "shapeName": "Google Shape;328;p9",
+              "bbox": {
+                "x": 648587,
+                "y": 1436281,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3648587,
+                "bottom": 4436281
+              },
+              "columnWidths": [
+                1998925,
+                1988300,
+                2392325
+              ],
+              "rows": [
+                [
+                  "MOST COMMON VERBS FOR PREFERENCES",
+                  "NEGATIVE COUNTERPARTS",
+                  "EXAMPLES"
+                ],
+                [
+                  "LIKE",
+                  "DISLIKE / DON’T LIKE",
+                  "She likes eating ice cream."
+                ],
+                [
+                  "ENJOY",
+                  "DON’T ENJOY",
+                  "I don’t enjoy cooking."
+                ],
+                [
+                  "LOVE",
+                  "HATE",
+                  "I love listening to music."
+                ]
+              ]
+            },
+            {
+              "shapeId": "329",
+              "shapeName": "Google Shape;329;p9",
+              "bbox": {
+                "x": 648587,
+                "y": 3228778,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3648587,
+                "bottom": 6228778
+              },
+              "columnWidths": [
+                1998925,
+                2009550,
+                2360425
+              ],
+              "rows": [
+                [
+                  "TO BE FOR PREFERENCES",
+                  "NEGATIVE COUNTERPARTS",
+                  "EXAMPLES"
+                ],
+                [
+                  "TO BE FOND OF",
+                  "NOT TO BE FOND OF",
+                  "I am fond of playing soccer."
+                ],
+                [
+                  "TO BE A FAN OF",
+                  "NOT TO BE A FAN OF",
+                  "I am not a fan of watching horror movies."
+                ],
+                [
+                  "TO BE THRILLED ABOUT",
+                  "NOT TO BE THRILLED ABOUT",
+                  "I am thrilled about reading books."
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [],
+          "differences": []
+        },
+        "approvedProjection": {
+          "approved": true,
+          "tables": [
+            {
+              "shapeId": "328",
+              "shapeName": "Google Shape;328;p9",
+              "bbox": {
+                "x": 648587,
+                "y": 1436281,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3648587,
+                "bottom": 4436281
+              },
+              "columnWidths": [
+                1998925,
+                1988300,
+                2392325
+              ],
+              "rows": [
+                [
+                  "MOST COMMON VERBS FOR PREFERENCES",
+                  "NEGATIVE COUNTERPARTS",
+                  "EXAMPLES"
+                ],
+                [
+                  "LIKE",
+                  "DISLIKE / DON’T LIKE",
+                  "She likes eating ice cream."
+                ],
+                [
+                  "ENJOY",
+                  "DON’T ENJOY",
+                  "I don’t enjoy cooking."
+                ],
+                [
+                  "LOVE",
+                  "HATE",
+                  "I love listening to music."
+                ]
+              ]
+            },
+            {
+              "shapeId": "329",
+              "shapeName": "Google Shape;329;p9",
+              "bbox": {
+                "x": 648587,
+                "y": 3228778,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3648587,
+                "bottom": 6228778
+              },
+              "columnWidths": [
+                1998925,
+                2009550,
+                2360425
+              ],
+              "rows": [
+                [
+                  "TO BE FOR PREFERENCES",
+                  "NEGATIVE COUNTERPARTS",
+                  "EXAMPLES"
+                ],
+                [
+                  "TO BE FOND OF",
+                  "NOT TO BE FOND OF",
+                  "I am fond of playing soccer."
+                ],
+                [
+                  "TO BE A FAN OF",
+                  "NOT TO BE A FAN OF",
+                  "I am not a fan of watching horror movies."
+                ],
+                [
+                  "TO BE THRILLED ABOUT",
+                  "NOT TO BE THRILLED ABOUT",
+                  "I am thrilled about reading books."
+                ]
+              ]
+            }
+          ],
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmk0vijvj0001i904j8k1di8d.json",
+            "sha256": "bd369d31f4195207dcaecb9c87f3c7f3c692b15dd421f7119d7e6f8532346e9c"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-04.json",
+            "sha256": "11954ca6a0513c60ca70ee4550d9905f5bacd07b7e1a26caff9e6a3e0b0e55ac"
+          }
+        ]
+      },
+      {
+        "unit": 5,
+        "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+        "sourceSlide": 9,
+        "publishedSourceFile": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-05.json",
+        "status": "blocked-no-native-table",
+        "clearTableSemanticsBlocker": false,
+        "review": "The published slide is authored prose about the possessive case. Native extraction has text/group shapes but no a:tbl or equivalent chart cells; the phrase “table” appears only in an example about objects, so no semantic table may be invented.",
+        "sourceEvidence": {
+          "publishedTitle": "9",
+          "publishedVisibleTexts": [
+            "9",
+            "TO CONSIDER 1. To talk about relationships among family members, we normally use the possessive case (‘s) which denotes belonging and possession and in this case states family relationships. 2. There is more than one scenario for the possessive case: a. Joe’s wife is a doctor. - One owner and one possession. b. Those are my aunt’s (kids). - When the noun was already mentioned and we do not need to state again. c. This is Ted and Mary’s child. - Two owners - One possession. d. These are Jake’s and Jill’s children - Two owners and two possessions. 3. When the noun finishes in ‘s’ we only add the (‘) and the end of the word. E.G. This is James’ child. When this happens, we add an extra syllable in spoken language that is pronounced /әz/. 4. This is not only used to talk about family. E.G. Adrian’s car is blue. 5. When we talk about objects or animals, it is common to use: The legs of the table / The tail of the cat. However, you may find examples using the (‘s)."
+          ],
+          "nativeJoinedText": "‹#› TO CONSIDER To talk about relationships among family members, we normally use the possessive case (‘s) which denotes belonging and possession and in this case states family relationships. There is more than one scenario for the possessive case: a. Joe’s wife is a doctor. - One owner and one possession. b. Those are my aunt’s (kids). - When the noun was already mentioned and we do not need to state again. c. This is Ted and Mary’s child. - Two owners - One possession. d. These are Jake’s and Jill’s children - Two owners and two possessions. When the noun finishes in ‘s’ we only add the (‘) and the end of the word. E.G. This is James’ child. When this happens, we add an extra syllable in spoken language that is pronounced /әz/. This is not only used to talk about family. E.G. Adrian’s car is blue. When we talk about objects or animals, it is common to use: The legs of the table / The tail of the cat. However, you may find examples using the (‘s).",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "329",
+              "shapeName": "Google Shape;329;ge57991b305_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 8480584,
+                "y": 4749851,
+                "cx": 548700,
+                "cy": 393600,
+                "right": 9029284,
+                "bottom": 5143451
+              }
+            },
+            {
+              "shapeId": "330",
+              "shapeName": "Google Shape;330;ge57991b305_0_0",
+              "kind": "group",
+              "bbox": {
+                "x": 396820,
+                "y": 309804,
+                "cx": 8632748,
+                "cy": 4647629,
+                "right": 9029568,
+                "bottom": 4957433
+              }
+            },
+            {
+              "shapeId": "331",
+              "shapeName": "Google Shape;331;ge57991b305_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 6680890,
+                "y": 966570,
+                "cx": 2209107,
+                "cy": 2464958,
+                "right": 8889997,
+                "bottom": 3431528
+              }
+            },
+            {
+              "shapeId": "332",
+              "shapeName": "Google Shape;332;ge57991b305_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 6388942,
+                "y": 2939665,
+                "cx": 846600,
+                "cy": 238200,
+                "right": 7235542,
+                "bottom": 3177865
+              }
+            },
+            {
+              "shapeId": "333",
+              "shapeName": "Google Shape;333;ge57991b305_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 1264175,
+                "y": 306975,
+                "cx": 7671900,
+                "cy": 4345800,
+                "right": 8936075,
+                "bottom": 4652775
+              }
+            }
+          ],
+          "nativeTables": [],
+          "preserveNativeRows": [],
+          "differences": []
+        },
+        "approvedProjection": {
+          "approved": false,
+          "tables": [],
+          "notes": "No approved editable projection; retain published source text and blocker."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmk0wu7xk0001lb04z0pauq4e.json",
+            "sha256": "31e88935d33bd299fed496a4447dbe6f143e897a2dc16422fa97063a237256ce"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-05.json",
+            "sha256": "794a4a569ad48da81f4885174df84bece94038966298049960ac60acaab4f322"
+          }
+        ]
+      },
+      {
+        "unit": 30,
+        "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9nyt000ww1qkoxsumpck.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-30.json",
+        "status": "reviewed-with-published-correction",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native six-column a:tbl preserves the chart spans and section rows. The published source contains “Short, Long, Bob, Shoulder length” where native extraction omits “Bob”; use the published cell verbatim and retain the native shape provenance.",
+        "sourceEvidence": {
+          "publishedTitle": "We need to consider the following chart.",
+          "publishedVisibleTexts": [
+            "We need to consider the following chart.",
+            "Height Size He is… They are… I am... Short Average height Tall Weight Weight We are… He is… You are Thin, Slim, Skinny Average, Well-built Chubby, Fat Complexion Skin tone / Color Joe has got… They have... Light complexion Dark complexion Hair Length Type Color Noun You have... Short, Long, Bob, Shoulder length Straight, Wavy, Curly Black, Brown, Blond, Red... Hair Eyes Size Shape Color Noun They have got... Big, Small, Large Round, Almond shape, Asian Blac, Brown, Green, Blue... Eyes"
+          ],
+          "nativeJoinedText": "We need to consider the following chart. Height Size He is… They are… I am... Short Average height Tall Weight Weight We are… He is… You are Thin, Slim, Skinny Average, Well-built Chubby, Fat Complexion Skin tone / Color Joe has got… They have... Light complexion Dark complexion Hair Length Type Color Noun You have... Short, Long, Shoulder length Straight, Wavy, Curly Black, Brown, Blond, Red... Hair Eyes Size Shape Color Noun They have got... Big, Small, Large Round, Almond shape, Asian Blac, Brown, Green, Blue... Eyes",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "250",
+              "shapeName": "Google Shape;250;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 1091550,
+                "y": 29450,
+                "cx": 6960900,
+                "cy": 415800,
+                "right": 8052450,
+                "bottom": 445250
+              }
+            },
+            {
+              "shapeId": "251",
+              "shapeName": "Google Shape;251;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 723900,
+                "y": 552450,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3723900,
+                "bottom": 3552450
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "251",
+              "shapeName": "Google Shape;251;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 723900,
+                "y": 552450,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3723900,
+                "bottom": 3552450
+              },
+              "columnWidths": [
+                1206500,
+                1651900,
+                1105900,
+                617450,
+                1896150,
+                1407625
+              ],
+              "rows": [
+                [
+                  "Height",
+                  "Size",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "He is… They are… I am...",
+                  "",
+                  "Short",
+                  "Average height",
+                  "",
+                  "Tall"
+                ],
+                [
+                  "Weight",
+                  "Weight",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "We are… He is… You are",
+                  "",
+                  "Thin, Slim, Skinny",
+                  "",
+                  "Average, Well-built",
+                  "Chubby, Fat"
+                ],
+                [
+                  "Complexion",
+                  "Skin tone / Color",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "Joe has got… They have...",
+                  "",
+                  "Light complexion",
+                  "",
+                  "Dark complexion",
+                  ""
+                ],
+                [
+                  "Hair",
+                  "Length",
+                  "Type",
+                  "",
+                  "Color",
+                  "Noun"
+                ],
+                [
+                  "You have...",
+                  "Short, Long, Shoulder length",
+                  "Straight, Wavy, Curly",
+                  "",
+                  "Black, Brown, Blond, Red...",
+                  "Hair"
+                ],
+                [
+                  "Eyes",
+                  "Size",
+                  "Shape",
+                  "",
+                  "Color",
+                  "Noun"
+                ],
+                [
+                  "They have got...",
+                  "Big, Small, Large",
+                  "Round, Almond shape, Asian",
+                  "",
+                  "Blac, Brown, Green, Blue...",
+                  "Eyes"
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [],
+          "differences": [
+            {
+              "kind": "published-cell-correction",
+              "tableIndex": 0,
+              "rowIndex": 7,
+              "columnIndex": 1,
+              "native": "Short, Long, Shoulder length",
+              "published": "Short, Long, Bob, Shoulder length",
+              "reason": "Published source is authoritative; the native cell omitted the authored item Bob."
+            }
+          ]
+        },
+        "approvedProjection": {
+          "approved": true,
+          "tables": [
+            {
+              "shapeId": "251",
+              "shapeName": "Google Shape;251;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 723900,
+                "y": 552450,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3723900,
+                "bottom": 3552450
+              },
+              "columnWidths": [
+                1206500,
+                1651900,
+                1105900,
+                617450,
+                1896150,
+                1407625
+              ],
+              "rows": [
+                [
+                  "Height",
+                  "Size",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "He is… They are… I am...",
+                  "",
+                  "Short",
+                  "Average height",
+                  "",
+                  "Tall"
+                ],
+                [
+                  "Weight",
+                  "Weight",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "We are… He is… You are",
+                  "",
+                  "Thin, Slim, Skinny",
+                  "",
+                  "Average, Well-built",
+                  "Chubby, Fat"
+                ],
+                [
+                  "Complexion",
+                  "Skin tone / Color",
+                  "",
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "Joe has got… They have...",
+                  "",
+                  "Light complexion",
+                  "",
+                  "Dark complexion",
+                  ""
+                ],
+                [
+                  "Hair",
+                  "Length",
+                  "Type",
+                  "",
+                  "Color",
+                  "Noun"
+                ],
+                [
+                  "You have...",
+                  "Short, Long, Bob, Shoulder length",
+                  "Straight, Wavy, Curly",
+                  "",
+                  "Black, Brown, Blond, Red...",
+                  "Hair"
+                ],
+                [
+                  "Eyes",
+                  "Size",
+                  "Shape",
+                  "",
+                  "Color",
+                  "Noun"
+                ],
+                [
+                  "They have got...",
+                  "Big, Small, Large",
+                  "Round, Almond shape, Asian",
+                  "",
+                  "Blac, Brown, Green, Blue...",
+                  "Eyes"
+                ]
+              ]
+            }
+          ],
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9nyt000ww1qkoxsumpck.json",
+            "sha256": "4e12edfd0098e190bba976a1ccad3d8a8c599cbc866a4ae2e9bf2e8ebcb7cd7c"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-30.json",
+            "sha256": "efb7f8649815920220127667f78ac73f85b8a8cc7e66ed24c026b6293085c722"
+          }
+        ]
+      },
+      {
+        "unit": 33,
+        "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9ozb0015w1qkj7gth0wy.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-33.json",
+        "status": "reviewed-with-preserved-published-notes",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native four-column a:tbl rows 1–4 align to the published customs structures. The final native row is a joined To Consider note; keep that source prose outside the editable chart so its numbered wording and example remain intact.",
+        "sourceEvidence": {
+          "publishedTitle": "1 To be + Supposed to In my country, you are supposed to say your first name when introducing yourself. What are you supposed to do when…? Am I expected do something special? 2 To be + Expected to People are not expected to hug others in Asia. 3 To be + Adjective + Infinitive It is not acceptable for women to wear miniskirts in Dubai. 4 To be + Custom + Infinitive It is the custom to double kiss in some European countries. To Consider 1. These expressions are not the only ones we can use. 2. There are different ways on how we can ask about customs and traditions. 3. Simple present is also useful to talk about this matter. E:G: We don’t do that here.",
+          "publishedVisibleTexts": [
+            "1 To be + Supposed to In my country, you are supposed to say your first name when introducing yourself. What are you supposed to do when…? Am I expected do something special? 2 To be + Expected to People are not expected to hug others in Asia. 3 To be + Adjective + Infinitive It is not acceptable for women to wear miniskirts in Dubai. 4 To be + Custom + Infinitive It is the custom to double kiss in some European countries. To Consider 1. These expressions are not the only ones we can use. 2. There are different ways on how we can ask about customs and traditions. 3. Simple present is also useful to talk about this matter. E:G: We don’t do that here.",
+            "There are many ways in which we can state our ideas regarding customs. Check the following chart."
+          ],
+          "nativeJoinedText": "1 To be + Supposed to In my country, you are supposed to say your first name when introducing yourself What are you supposed to do when…? Am I expected do something special? 2 To be + Expected to People are not expected to hug others in Asia. 3 To be + Adjective + Infinitive It is not acceptable for women to wear miniskirts in Dubai. 4 To be + Custom + Infinitive It is the custom to double kiss in some European countries. To Consider These expressions are not the only ones we can use. There are different ways on how we can ask about customs and traditions. Simple present is also useful to talk about this matter. There are many ways in which we can state our ideas regarding customs. Check the following chart.",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "262",
+              "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              }
+            },
+            {
+              "shapeId": "263",
+              "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 1091550,
+                "y": 181852,
+                "cx": 6960900,
+                "cy": 958500,
+                "right": 8052450,
+                "bottom": 1140352
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "262",
+              "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              },
+              "columnWidths": [
+                386300,
+                1816150,
+                3706950,
+                1153900
+              ],
+              "rows": [
+                [
+                  "1",
+                  "To be + Supposed to",
+                  "In my country, you are supposed to say your first name when introducing yourself",
+                  "What are you supposed to do when…? Am I expected do something special?"
+                ],
+                [
+                  "2",
+                  "To be + Expected to",
+                  "People are not expected to hug others in Asia.",
+                  ""
+                ],
+                [
+                  "3",
+                  "To be + Adjective + Infinitive",
+                  "It is not acceptable for women to wear miniskirts in Dubai.",
+                  ""
+                ],
+                [
+                  "4",
+                  "To be + Custom + Infinitive",
+                  "It is the custom to double kiss in some European countries.",
+                  ""
+                ],
+                [
+                  "To Consider These expressions are not the only ones we can use. There are different ways on how we can ask about customs and traditions. Simple present is also useful to talk about this matter.",
+                  "",
+                  "",
+                  ""
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [
+            {
+              "tableIndex": 0,
+              "rowIndex": 4,
+              "reason": "Joined To Consider prose is preserved from the published visible text, not projected as a chart row."
+            }
+          ],
+          "differences": []
+        },
+        "approvedProjection": {
+          "approved": true,
+          "tables": [
+            {
+              "shapeId": "262",
+              "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              },
+              "columnWidths": [
+                386300,
+                1816150,
+                3706950,
+                1153900
+              ],
+              "rows": [
+                [
+                  "1",
+                  "To be + Supposed to",
+                  "In my country, you are supposed to say your first name when introducing yourself",
+                  "What are you supposed to do when…? Am I expected do something special?"
+                ],
+                [
+                  "2",
+                  "To be + Expected to",
+                  "People are not expected to hug others in Asia.",
+                  ""
+                ],
+                [
+                  "3",
+                  "To be + Adjective + Infinitive",
+                  "It is not acceptable for women to wear miniskirts in Dubai.",
+                  ""
+                ],
+                [
+                  "4",
+                  "To be + Custom + Infinitive",
+                  "It is the custom to double kiss in some European countries.",
+                  ""
+                ]
+              ]
+            }
+          ],
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9ozb0015w1qkj7gth0wy.json",
+            "sha256": "4d47258f271f74d47fee9ee2ad7006d9b9bc7a9298fb0103467763efd476cd53"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-33.json",
+            "sha256": "6609ab42de3c48a4131355882dd84609453bd9aab1c267910d60a98eb1ec7d99"
+          }
+        ]
+      },
+      {
+        "unit": 34,
+        "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9pbg0018w1qkdkv1gbma.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-34.json",
+        "status": "reviewed-with-preserved-published-notes",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native four-column a:tbl rows 1–3 align to the published tense examples. The final native row is a joined To Consider note; preserve the published numbered guidance and parenthetical text separately.",
+        "sourceEvidence": {
+          "publishedTitle": "1 Simple present Today, computers are smaller and faster. Let’s See! 2 Simple past However, 40 to 50 years ago, computers used to be huge and way heavier than now. 3 Future In 10 years, computers will be definitely lighter and faster, so humans will be able to do greater things. To Consider 1. We need to pay attention to time phrases. 2. Transitional words are necessary (next page has a list). 3. The differences and similarities are expressed not only with the use of adjectives but also with correct tenses.",
+          "publishedVisibleTexts": [
+            "1 Simple present Today, computers are smaller and faster. Let’s See! 2 Simple past However, 40 to 50 years ago, computers used to be huge and way heavier than now. 3 Future In 10 years, computers will be definitely lighter and faster, so humans will be able to do greater things. To Consider 1. We need to pay attention to time phrases. 2. Transitional words are necessary (next page has a list). 3. The differences and similarities are expressed not only with the use of adjectives but also with correct tenses.",
+            "There are many ways in which we can state differences and similarities about something in time. Check the following chart."
+          ],
+          "nativeJoinedText": "1 Simple present Today, computers are smaller and faster. Let’s See! 2 Simple past. However, 40 to 50 years ago, computers used to be huge and way heavier than now. 3 Future In 10 years, computers will be definitely lighter and faster so humans will be able to do greater things. To Consider We need to pay attention to time phrases. Transitional words are necessary. The differences and similarities are expressed not only with the use of adjectives but also with correct tenses. There are many ways in which we can state differences and similarities about something in time. Check the following chart.",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "257",
+              "shapeName": "Google Shape;257;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              }
+            },
+            {
+              "shapeId": "258",
+              "shapeName": "Google Shape;258;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 1091550,
+                "y": 181852,
+                "cx": 6960900,
+                "cy": 958500,
+                "right": 8052450,
+                "bottom": 1140352
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "257",
+              "shapeName": "Google Shape;257;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              },
+              "columnWidths": [
+                386300,
+                1816150,
+                3706950,
+                1153900
+              ],
+              "rows": [
+                [
+                  "1",
+                  "Simple present",
+                  "Today, computers are smaller and faster.",
+                  "Let’s See!"
+                ],
+                [
+                  "2",
+                  "Simple past.",
+                  "However, 40 to 50 years ago, computers used to be huge and way heavier than now.",
+                  ""
+                ],
+                [
+                  "3",
+                  "Future",
+                  "In 10 years, computers will be definitely lighter and faster so humans will be able to do greater things.",
+                  ""
+                ],
+                [
+                  "To Consider We need to pay attention to time phrases. Transitional words are necessary. The differences and similarities are expressed not only with the use of adjectives but also with correct tenses.",
+                  "",
+                  "",
+                  ""
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [
+            {
+              "tableIndex": 0,
+              "rowIndex": 3,
+              "reason": "Joined To Consider prose is preserved from the published visible text, not projected as a chart row."
+            }
+          ],
+          "differences": [
+            {
+              "kind": "native-punctuation",
+              "tableIndex": 0,
+              "rowIndex": 1,
+              "columnIndex": 1,
+              "native": "Simple past.",
+              "published": "Simple past",
+              "reason": "Use the published source wording in the learner cell; punctuation does not change the tense label."
+            }
+          ]
+        },
+        "approvedProjection": {
+          "approved": true,
+          "tables": [
+            {
+              "shapeId": "257",
+              "shapeName": "Google Shape;257;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              },
+              "columnWidths": [
+                386300,
+                1816150,
+                3706950,
+                1153900
+              ],
+              "rows": [
+                [
+                  "1",
+                  "Simple present",
+                  "Today, computers are smaller and faster.",
+                  "Let’s See!"
+                ],
+                [
+                  "2",
+                  "Simple past",
+                  "However, 40 to 50 years ago, computers used to be huge and way heavier than now.",
+                  ""
+                ],
+                [
+                  "3",
+                  "Future",
+                  "In 10 years, computers will be definitely lighter and faster so humans will be able to do greater things.",
+                  ""
+                ]
+              ]
+            }
+          ],
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9pbg0018w1qkdkv1gbma.json",
+            "sha256": "8320422b8be381f522d1fb6ef0583142c7144116195775d5f85d86a700137e90"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-34.json",
+            "sha256": "fc20b52d67c288577d7c4cb910328b09a510103a457a162e56871ae8e5c18ea8"
+          }
+        ]
+      },
+      {
+        "unit": 35,
+        "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9pns001bw1qki5fh6r0j.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-35.json",
+        "status": "reviewed-with-preserved-published-notes",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native four-column a:tbl rows 1–3 align to the probability structures and examples. The joined native To Consider row omits authored point 4; retain the complete published To Consider prose separately.",
+        "sourceEvidence": {
+          "publishedTitle": "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+          "publishedVisibleTexts": [
+            "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+            "There are many ways in which we can express probability in English. Check the following chart."
+          ],
+          "nativeJoinedText": "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider All of the three modals deal with probability. Some grammarians establish that might states a higher level of probability. Could can also be used to talk about about abilities or facts in the past. E.G. She could walk before the accident. There are many ways in which we can express probability in English. Check the following chart.",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "258",
+              "shapeName": "Google Shape;258;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              }
+            },
+            {
+              "shapeId": "259",
+              "shapeName": "Google Shape;259;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 1091550,
+                "y": 181852,
+                "cx": 6960900,
+                "cy": 958500,
+                "right": 8052450,
+                "bottom": 1140352
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "258",
+              "shapeName": "Google Shape;258;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              },
+              "columnWidths": [
+                386300,
+                1816150,
+                3706950,
+                1153900
+              ],
+              "rows": [
+                [
+                  "1",
+                  "Might + Verb simple form",
+                  "David might not answer as usual.",
+                  "The modals are organized from the highest level to the lowest."
+                ],
+                [
+                  "2",
+                  "May + Verb simple form",
+                  "They may attend to the concert, but I would not bet on it.",
+                  ""
+                ],
+                [
+                  "3",
+                  "Could + Verb simple form",
+                  "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+                  ""
+                ],
+                [
+                  "To Consider All of the three modals deal with probability. Some grammarians establish that might states a higher level of probability. Could can also be used to talk about about abilities or facts in the past. E.G. She could walk before the accident.",
+                  "",
+                  "",
+                  ""
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [
+            {
+              "tableIndex": 0,
+              "rowIndex": 3,
+              "reason": "Native joined note omits published point 4; preserve the complete published note as learner text."
+            }
+          ],
+          "differences": [
+            {
+              "kind": "native-note-omission",
+              "tableIndex": 0,
+              "rowIndex": 3,
+              "columnIndex": 0,
+              "native": "To Consider All of the three modals deal with probability. Some grammarians establish that might states a higher level of probability. Could can also be used to talk about about abilities or facts in the past. E.G. She could walk before the accident.",
+              "published": "To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+              "reason": "The chart rows remain aligned; the full published note, including point 4, must remain visible outside the projection."
+            },
+            {
+              "kind": "published-cell-correction",
+              "tableIndex": 0,
+              "rowIndex": 0,
+              "columnIndex": 3,
+              "native": "The modals are organized from the highest level to the lowest.",
+              "published": "The modals are organized from the highest level of probability to the lowest.",
+              "reason": "Published source retains the complete authored phrase; native extraction omitted “of probability”."
+            }
+          ]
+        },
+        "approvedProjection": {
+          "approved": true,
+          "tables": [
+            {
+              "shapeId": "258",
+              "shapeName": "Google Shape;258;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 910550,
+                "y": 1427625,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3910550,
+                "bottom": 4427625
+              },
+              "columnWidths": [
+                386300,
+                1816150,
+                3706950,
+                1153900
+              ],
+              "rows": [
+                [
+                  "1",
+                  "Might + Verb simple form",
+                  "David might not answer as usual.",
+                  "The modals are organized from the highest level of probability to the lowest."
+                ],
+                [
+                  "2",
+                  "May + Verb simple form",
+                  "They may attend to the concert, but I would not bet on it.",
+                  ""
+                ],
+                [
+                  "3",
+                  "Could + Verb simple form",
+                  "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+                  ""
+                ]
+              ]
+            }
+          ],
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9pns001bw1qki5fh6r0j.json",
+            "sha256": "11ae7781af3dc47301191c803eded405a661f48f10e7ba1bbcc99f2937625ae5"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-35.json",
+            "sha256": "f0c9cf1e1ae547378986c0b84d023c35aa7027c4a647e89417846bb88de786fd"
+          }
+        ]
+      },
+      {
+        "unit": 42,
+        "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9s1b001ww1qkz2zll59e.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-42.json",
+        "status": "reviewed",
+        "clearTableSemanticsBlocker": true,
+        "review": "The native three-column a:tbl aligns all six tense rows and preserves the direct/reported speech matrix. Use published punctuation in the first direct-speech cell.",
+        "sourceEvidence": {
+          "publishedTitle": "Structures DIRECT SPEECH REPORTED SPEECH Simple Present We are students. I have a dog. They said they were students. He told us he had a dog. Present Progressive I am having so much fun. He told me he was having so much fun. Past simple I was at home all night. She said she had been at home all night. Past Progressive I was just eating a burger. He said that he had just been eating a burger. Future We will buy the car. Are you going to sell the house? They told us they would buy the car. She asked me if I was going to sell the house. Present Perfect Has he gone for good? He asked me if he had gone for good.",
+          "publishedVisibleTexts": [
+            "Structures DIRECT SPEECH REPORTED SPEECH Simple Present We are students. I have a dog. They said they were students. He told us he had a dog. Present Progressive I am having so much fun. He told me he was having so much fun. Past simple I was at home all night. She said she had been at home all night. Past Progressive I was just eating a burger. He said that he had just been eating a burger. Future We will buy the car. Are you going to sell the house? They told us they would buy the car. She asked me if I was going to sell the house. Present Perfect Has he gone for good? He asked me if he had gone for good.",
+            "Any tense can be used to report utterances. Check the chart to see how tenses change depending on which one we are reporting."
+          ],
+          "nativeJoinedText": "Structures DIRECT SPEECH REPORTED SPEECH Simple Present We are students I have a dog They said they were students. He told us he had a dog. Present Progressive I am having so much fun. He told me he was having so much fun. Past simple I was at home all night. She said she had been at home all night. Past Progressive I was just eating a burger. He said that he had just been eating a burger. Future We will buy the car. Are you going to sell the house? They told us they would buy the car. She asked me if I was going to sell the house. Present Perfect Has he gone for good? He asked me if he had gone for good. Any tense can be used to report utterances. Check the chart.",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "247",
+              "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 326963,
+                "y": 859450,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3326963,
+                "bottom": 3859450
+              }
+            },
+            {
+              "shapeId": "248",
+              "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 1091550,
+                "y": 258054,
+                "cx": 6960900,
+                "cy": 487500,
+                "right": 8052450,
+                "bottom": 745554
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "247",
+              "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 326963,
+                "y": 859450,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3326963,
+                "bottom": 3859450
+              },
+              "columnWidths": [
+                2048450,
+                2818400,
+                3846300
+              ],
+              "rows": [
+                [
+                  "Structures",
+                  "DIRECT SPEECH",
+                  "REPORTED SPEECH"
+                ],
+                [
+                  "Simple Present",
+                  "We are students I have a dog",
+                  "They said they were students. He told us he had a dog."
+                ],
+                [
+                  "Present Progressive",
+                  "I am having so much fun.",
+                  "He told me he was having so much fun."
+                ],
+                [
+                  "Past simple",
+                  "I was at home all night.",
+                  "She said she had been at home all night."
+                ],
+                [
+                  "Past Progressive",
+                  "I was just eating a burger.",
+                  "He said that he had just been eating a burger."
+                ],
+                [
+                  "Future",
+                  "We will buy the car. Are you going to sell the house?",
+                  "They told us they would buy the car. She asked me if I was going to sell the house."
+                ],
+                [
+                  "Present Perfect",
+                  "Has he gone for good?",
+                  "He asked me if he had gone for good."
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [],
+          "differences": [
+            {
+              "kind": "native-punctuation",
+              "tableIndex": 0,
+              "rowIndex": 1,
+              "columnIndex": 1,
+              "native": "We are students I have a dog",
+              "published": "We are students. I have a dog.",
+              "reason": "Native extraction joined two authored sentences; keep the published sentence punctuation in the learner cell."
+            }
+          ]
+        },
+        "approvedProjection": {
+          "approved": true,
+          "tables": [
+            {
+              "shapeId": "247",
+              "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 326963,
+                "y": 859450,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3326963,
+                "bottom": 3859450
+              },
+              "columnWidths": [
+                2048450,
+                2818400,
+                3846300
+              ],
+              "rows": [
+                [
+                  "Structures",
+                  "DIRECT SPEECH",
+                  "REPORTED SPEECH"
+                ],
+                [
+                  "Simple Present",
+                  "We are students. I have a dog.",
+                  "They said they were students. He told us he had a dog."
+                ],
+                [
+                  "Present Progressive",
+                  "I am having so much fun.",
+                  "He told me he was having so much fun."
+                ],
+                [
+                  "Past simple",
+                  "I was at home all night.",
+                  "She said she had been at home all night."
+                ],
+                [
+                  "Past Progressive",
+                  "I was just eating a burger.",
+                  "He said that he had just been eating a burger."
+                ],
+                [
+                  "Future",
+                  "We will buy the car. Are you going to sell the house?",
+                  "They told us they would buy the car. She asked me if I was going to sell the house."
+                ],
+                [
+                  "Present Perfect",
+                  "Has he gone for good?",
+                  "He asked me if he had gone for good."
+                ]
+              ]
+            }
+          ],
+          "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9s1b001ww1qkz2zll59e.json",
+            "sha256": "905a3063d559bffa63584960b7b371c18c6d7e96e3fa24017fbcb5f0a2fe703c"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-42.json",
+            "sha256": "e9fe67f942858b6c5585fdc6f927073208a2051619aa507442906b8cecab5c3a"
+          }
+        ]
+      },
+      {
+        "unit": 44,
+        "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+        "sourceSlide": 11,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9sq20022w1qkn3bi0mm7.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-44.json",
+        "status": "blocked-native-published-mismatch",
+        "clearTableSemanticsBlocker": false,
+        "review": "The native three-column a:tbl has the expected header and row structure, but row 3 examples disagree with the published source. Do not project the native chart until the source deck identity or row evidence is resolved.",
+        "sourceEvidence": {
+          "publishedTitle": "We can use passive voice for the following functions:",
+          "publishedVisibleTexts": [
+            "We can use passive voice for the following functions:",
+            "Functions Examples 1 State what things are made of The legs of the table are iron-made. The spoon was handcrafted in wood. 2 Declare when things are made / done The meeting will be set for tomorrow. Is this piano being played this week? 3 Point who things are made / done by The stuffed clams were made by Jake. Those dresses will be designed by Ericka. 4. Focus on objects rather than subjects in general actions Why was my burger eaten from the fridge? Five points will be taken from your test for cheating.",
+            "To consider Passive voice is not only used for the first three aspects; it can also be implemented in regular actions or everyday matters."
+          ],
+          "nativeJoinedText": "We can use passive voice for the following functions: Functions Examples 1 State what things are made of The legs of the table are iron-made. The spoon was handcrafted in wood. 2 Declare when things are made / done. The meeting will be set for tomorrow. Is this piano being played this week? 3 Point who things are made / done by. They were married, weren’t they? You have not told them, have you? 4. Focus on objects rather than subjects in general actions. Why was my burger eaten from the fridge? Five points will be taken from your test for cheating. To consider Passive voice is not only used for the first three asécts; It can also be implemented in regular actions or everyday matters.",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "265",
+              "shapeName": "Google Shape;265;g729cfa641f_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 1643496,
+                "y": 43426,
+                "cx": 5316300,
+                "cy": 584700,
+                "right": 6959796,
+                "bottom": 628126
+              }
+            },
+            {
+              "shapeId": "266",
+              "shapeName": "Google Shape;266;g729cfa641f_0_0",
+              "kind": "table",
+              "bbox": {
+                "x": 860175,
+                "y": 399525,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3860175,
+                "bottom": 3399525
+              }
+            },
+            {
+              "shapeId": "267",
+              "shapeName": "Google Shape;267;g729cfa641f_0_0",
+              "kind": "group",
+              "bbox": {
+                "x": 1041099,
+                "y": 3020039,
+                "cx": 7373094,
+                "cy": 1193820,
+                "right": 8414193,
+                "bottom": 4213859
+              }
+            },
+            {
+              "shapeId": "268",
+              "shapeName": "Google Shape;268;g729cfa641f_0_0",
+              "kind": "group",
+              "bbox": {
+                "x": 693800,
+                "y": 3470422,
+                "cx": 7286344,
+                "cy": 1761297,
+                "right": 7980144,
+                "bottom": 5231719
+              }
+            },
+            {
+              "shapeId": "269",
+              "shapeName": "Google Shape;269;g729cfa641f_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 7436504,
+                "y": 3927471,
+                "cx": 613500,
+                "cy": 391500,
+                "right": 8050004,
+                "bottom": 4318971
+              }
+            },
+            {
+              "shapeId": "270",
+              "shapeName": "Google Shape;270;g729cfa641f_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 776753,
+                "y": 3927474,
+                "cx": 7273200,
+                "cy": 1152000,
+                "right": 8049953,
+                "bottom": 5079474
+              }
+            },
+            {
+              "shapeId": "271",
+              "shapeName": "Google Shape;271;g729cfa641f_0_0",
+              "kind": "text",
+              "bbox": {
+                "x": 607050,
+                "y": 3505150,
+                "cx": 6758400,
+                "cy": 1761300,
+                "right": 7365450,
+                "bottom": 5266450
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "266",
+              "shapeName": "Google Shape;266;g729cfa641f_0_0",
+              "bbox": {
+                "x": 860175,
+                "y": 399525,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3860175,
+                "bottom": 3399525
+              },
+              "columnWidths": [
+                417750,
+                3468050,
+                4020700
+              ],
+              "rows": [
+                [
+                  "",
+                  "Functions",
+                  "Examples"
+                ],
+                [
+                  "1",
+                  "State what things are made of",
+                  "The legs of the table are iron-made. The spoon was handcrafted in wood."
+                ],
+                [
+                  "",
+                  "",
+                  ""
+                ],
+                [
+                  "2",
+                  "Declare when things are made / done.",
+                  "The meeting will be set for tomorrow. Is this piano being played this week?"
+                ],
+                [
+                  "3",
+                  "Point who things are made / done by.",
+                  "They were married, weren’t they? You have not told them, have you?"
+                ],
+                [
+                  "4.",
+                  "Focus on objects rather than subjects in general actions.",
+                  "Why was my burger eaten from the fridge? Five points will be taken from your test for cheating."
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [],
+          "differences": [
+            {
+              "kind": "substantive-native-mismatch",
+              "tableIndex": 0,
+              "rowIndex": 4,
+              "columnIndex": 2,
+              "native": "They were married, weren’t they? You have not told them, have you?",
+              "published": "The stuffed clams were made by Jake. Those dresses will be designed by Ericka.",
+              "reason": "The native examples are from different authored content; source text alone does not prove native cell identity."
+            }
+          ]
+        },
+        "approvedProjection": {
+          "approved": false,
+          "tables": [],
+          "notes": "No approved editable projection; retain published source text and blocker."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9sq20022w1qkn3bi0mm7.json",
+            "sha256": "22444005d588825b82bc79e8ce2a94c104a1a641c7ffd6c82fdcf53cce021017"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-44.json",
+            "sha256": "87aa06b2c5185ac5705eb8214a2be6962b5d7b3b0b4621193ba8376c487754fe"
+          }
+        ]
+      },
+      {
+        "unit": 46,
+        "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-46.json",
+        "status": "blocked-native-published-mismatch",
+        "clearTableSemanticsBlocker": false,
+        "review": "The native three-column a:tbl matches the chart through the first five rows, but the final conditional example and question differ materially from the published source. Keep the table blocker until the native source is reconciled.",
+        "sourceEvidence": {
+          "publishedTitle": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.",
+          "publishedVisibleTexts": [
+            "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.",
+            "STRUCTURES STATEMENTS QUESTIONS Should Have + Past Participle Dylan should have called them before going. What should he have done before going? If it had been me, I should have brought more money. What should you have done? Would have + Past Participle My family would have wanted him to be different, but he wasn’t. How would have your family wanted him to be? He would not have expected me to drop school. Would he have expected you to drop school? Must have + Past Participle We must have seen the straw in the wind, but we did not. Would you have seen the straw in the wind? If he had not done things that way , the boss must have given him the chance. What if he had not done things that way?"
+          ],
+          "nativeJoinedText": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart. STRUCTURES STATEMENTS QUESTIONS Should Have + Past Participle Dylan should have called them before going. What should he have done before going? If it had been me, I should have brought more money. What should you have done? Would have + Past Participle My family would have wanted him to be different, but he wasn’t. How would have your family wanted him to be? He would not have expected me to drop school. would he have expected you to drop school? Must have + Past Participle We must have seen the straw in the wind, but we did not. Would you have seen the straw in the wind? If he had done things differently, the boss would have given him the chance. What if he had done things differently?",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "247",
+              "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 793225,
+                "y": -46750,
+                "cx": 7919700,
+                "cy": 699900,
+                "right": 8712925,
+                "bottom": 653150
+              }
+            },
+            {
+              "shapeId": "248",
+              "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 282913,
+                "y": 891150,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3282913,
+                "bottom": 3891150
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "248",
+              "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 282913,
+                "y": 891150,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3282913,
+                "bottom": 3891150
+              },
+              "columnWidths": [
+                1825375,
+                3636375,
+                3152250
+              ],
+              "rows": [
+                [
+                  "STRUCTURES",
+                  "STATEMENTS",
+                  "QUESTIONS"
+                ],
+                [
+                  "Should Have + Past Participle",
+                  "Dylan should have called them before going.",
+                  "What should he have done before going?"
+                ],
+                [
+                  "",
+                  "If it had been me, I should have brought more money.",
+                  "What should you have done?"
+                ],
+                [
+                  "Would have + Past Participle",
+                  "My family would have wanted him to be different, but he wasn’t.",
+                  "How would have your family wanted him to be?"
+                ],
+                [
+                  "",
+                  "He would not have expected me to drop school.",
+                  "would he have expected you to drop school?"
+                ],
+                [
+                  "Must have + Past Participle",
+                  "We must have seen the straw in the wind, but we did not.",
+                  "Would you have seen the straw in the wind?"
+                ],
+                [
+                  "",
+                  "If he had done things differently, the boss would have given him the chance.",
+                  "What if he had done things differently?"
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [],
+          "differences": [
+            {
+              "kind": "substantive-native-mismatch",
+              "tableIndex": 0,
+              "rowIndex": 6,
+              "columnIndex": 1,
+              "native": "If he had done things differently, the boss would have given him the chance.",
+              "published": "If he had not done things that way, the boss must have given him the chance.",
+              "reason": "Different condition and modal meaning; do not silently repair or choose between them."
+            },
+            {
+              "kind": "substantive-native-mismatch",
+              "tableIndex": 0,
+              "rowIndex": 6,
+              "columnIndex": 2,
+              "native": "What if he had done things differently?",
+              "published": "What if he had not done things that way?",
+              "reason": "Question wording depends on the conflicting condition; source alignment is unresolved."
+            }
+          ]
+        },
+        "approvedProjection": {
+          "approved": false,
+          "tables": [],
+          "notes": "No approved editable projection; retain published source text and blocker."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9tei0028w1qkri0q23eb.json",
+            "sha256": "f70150fc8d4802426c20dccfc0bbd3e2054e3dc850702060065987b0bb7073a4"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-46.json",
+            "sha256": "504d26147a46a497aa04f269af28b40fb4343412b551b498b0a6e04d3fac325a"
+          }
+        ]
+      },
+      {
+        "unit": 48,
+        "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+        "sourceSlide": 8,
+        "publishedSourceFile": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
+        "nativeSourceFile": "docs/audit/source-files-native/unit-48.json",
+        "status": "blocked-native-published-mismatch",
+        "clearTableSemanticsBlocker": false,
+        "review": "The native three-column a:tbl has the expected structures, but the May row question differs from the published source. Keep the chart blocked rather than exposing the alternate question.",
+        "sourceEvidence": {
+          "publishedTitle": "STRUCTURES STATEMENTS QUESTIONS Could + Have + Past Participle I could have gotten lost if we had not seen then on time. What could have happened to them? You could have said that before all went to nothing. What could I have said? May + Have + Past Participle John may have caught that flu at the hospital. Where may John have caught that flu? We may have called a few times, but he never picked up. May you really have expected an answer from him? Might + Have + Past Participle I might have eaten a cheese burger once. Did you eat a burger even being a vegetarian? They might have been here, but they are gone now. Were they here before?",
+          "publishedVisibleTexts": [
+            "STRUCTURES STATEMENTS QUESTIONS Could + Have + Past Participle I could have gotten lost if we had not seen then on time. What could have happened to them? You could have said that before all went to nothing. What could I have said? May + Have + Past Participle John may have caught that flu at the hospital. Where may John have caught that flu? We may have called a few times, but he never picked up. May you really have expected an answer from him? Might + Have + Past Participle I might have eaten a cheese burger once. Did you eat a burger even being a vegetarian? They might have been here, but they are gone now. Were they here before?",
+            "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart."
+          ],
+          "nativeJoinedText": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart. STRUCTURES STATEMENTS QUESTIONS Could + Have + Past Participle I could have gotten lost if we had not seen then on time. What could have happened to them? You could have said that before all went to nothing. What could I have said? May + Have + Past Participle John may have caught that flu at the hospital. Where may John have caught that flu? We may have called a few times; but he never picked up. would you really have expected nothing from them? Might + Have + Past Participle I might have eaten a cheese burger once. Did you eat a burger even being a vegetarian? They might have been here but they are gone now. Were they here before?",
+          "nativeShapeInventory": [
+            {
+              "shapeId": "247",
+              "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+              "kind": "text",
+              "bbox": {
+                "x": 793225,
+                "y": -46750,
+                "cx": 7919700,
+                "cy": 699900,
+                "right": 8712925,
+                "bottom": 653150
+              }
+            },
+            {
+              "shapeId": "248",
+              "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+              "kind": "table",
+              "bbox": {
+                "x": 282913,
+                "y": 891150,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3282913,
+                "bottom": 3891150
+              }
+            }
+          ],
+          "nativeTables": [
+            {
+              "shapeId": "248",
+              "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+              "bbox": {
+                "x": 282913,
+                "y": 891150,
+                "cx": 3000000,
+                "cy": 3000000,
+                "right": 3282913,
+                "bottom": 3891150
+              },
+              "columnWidths": [
+                1825375,
+                3636375,
+                3152250
+              ],
+              "rows": [
+                [
+                  "STRUCTURES",
+                  "STATEMENTS",
+                  "QUESTIONS"
+                ],
+                [
+                  "Could + Have + Past Participle",
+                  "I could have gotten lost if we had not seen then on time.",
+                  "What could have happened to them?"
+                ],
+                [
+                  "",
+                  "You could have said that before all went to nothing.",
+                  "What could I have said?"
+                ],
+                [
+                  "May + Have + Past Participle",
+                  "John may have caught that flu at the hospital.",
+                  "Where may John have caught that flu?"
+                ],
+                [
+                  "",
+                  "We may have called a few times; but he never picked up.",
+                  "would you really have expected nothing from them?"
+                ],
+                [
+                  "Might + Have + Past Participle",
+                  "I might have eaten a cheese burger once.",
+                  "Did you eat a burger even being a vegetarian?"
+                ],
+                [
+                  "",
+                  "They might have been here but they are gone now.",
+                  "Were they here before?"
+                ]
+              ]
+            }
+          ],
+          "preserveNativeRows": [],
+          "differences": [
+            {
+              "kind": "substantive-native-mismatch",
+              "tableIndex": 0,
+              "rowIndex": 4,
+              "columnIndex": 2,
+              "native": "would you really have expected nothing from them?",
+              "published": "May you really have expected an answer from him?",
+              "reason": "Different subject, modal, object, and meaning; no answer may be inferred."
+            }
+          ]
+        },
+        "approvedProjection": {
+          "approved": false,
+          "tables": [],
+          "notes": "No approved editable projection; retain published source text and blocker."
+        },
+        "sourceRefs": [
+          {
+            "kind": "published",
+            "path": "docs/audit/source-files/cmnmm9u2w002ew1qkvb9dzxjp.json",
+            "sha256": "2da48aab899d4e3f00249fc40cddf2ea2886e7ed46c1d8cb5e9e0aa207203631"
+          },
+          {
+            "kind": "native",
+            "path": "docs/audit/source-files-native/unit-48.json",
+            "sha256": "3849c56d47b609b82fffaf47a1803808f7579dbb61fa8d412ce88164da91007f"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "auditedCount": 10,
+      "approvedProjectionCount": 6,
+      "clearTableSemanticsBlockerCount": 6,
+      "blockedCount": 4,
+      "approvedUnits": [
+        4,
+        30,
+        33,
+        34,
+        35,
+        42
+      ],
+      "blockedUnits": [
+        5,
+        44,
+        46,
+        48
+      ]
+    }
   }
 }
