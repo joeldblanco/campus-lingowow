@@ -2178,6 +2178,103 @@ def _exercise_review_metadata(item: Mapping[str, Any]) -> dict[str, Any]:
     return {"exerciseReview": copy.deepcopy(dict(item))}
 
 
+def _reviewed_grammar_prompt(item: Mapping[str, Any], prompt: str | None = None) -> str:
+    """Turn a reviewed grammar answer label into a short learner instruction.
+
+    The source sentence remains in ``sourcePrompt`` and in the immutable review
+    metadata.  The native control needs an actionable prompt, though, rather
+    than a label such as ``interrogative`` that does not tell the learner what
+    to do.
+    """
+
+    original = _text(prompt if prompt is not None else item.get("prompt"))
+    label = _text(item.get("_answerLabel") or item.get("answerLabel")).casefold()
+    if label in {"interrogative", "question", "questions", "interrogation"}:
+        return f"Convierte en pregunta: {original}" if original else "Convierte en pregunta."
+    if label in {"negative", "negation", "negative form", "negativa"}:
+        return f"Convierte en negativa: {original}" if original else "Convierte en negativa."
+    return original
+
+
+def _reviewed_listening_reflection_prompt(item: Mapping[str, Any]) -> str:
+    """Adapt a teacher/chat listening prompt for independent study.
+
+    This only handles the known authored reflection pattern.  Other listening
+    prompts stay blocked until their transcript and answer evidence are ready.
+    """
+
+    prompt = _text(item.get("prompt"))
+    lowered = prompt.casefold()
+    if not prompt or "listen" not in lowered:
+        return ""
+    markers = (
+        "discuss with your teacher",
+        "what is the topic",
+        "what are the topic",
+        "phrases you know",
+        "chat box",
+    )
+    return "¿De qué trata el audio? Escribe las frases que reconoces." if any(marker in lowered for marker in markers) else ""
+
+
+def _exercise_review_context(review_items: Sequence[Mapping[str, Any]]) -> str:
+    """Give reviewed controls one concise context line without prompt dumps."""
+
+    kinds = {_text(item.get("kind")).casefold() for item in review_items}
+    non_grammar_support = {
+        kind
+        for kind in kinds
+        if "grammar-transform" not in kind
+        and "grammar-choice" not in kind
+        and "grammar-production" not in kind
+    }
+    if any("grammar-transform" in kind for kind in kinds) and not non_grammar_support:
+        return "Convierte cada frase en pregunta y negativa."
+    if any("reading" in kind or "comprehension" in kind for kind in kinds):
+        return "Responde las preguntas de comprensión."
+    if len(review_items) == 1:
+        return _text(review_items[0].get("prompt"))
+    return "Completa cada respuesta de la actividad."
+
+
+def _grammar_worksheet_projection(
+    tables: Sequence[Sequence[Sequence[str]]],
+    review_items: Sequence[Mapping[str, Any]] | None,
+) -> tuple[list[str], list[list[str]], dict[str, Any]] | None:
+    """Project a reviewed transform worksheet to its authored worked example.
+
+    Unit 2's worksheet contains four answerable prompts plus blank authoring
+    rows.  Those prompts are represented by reviewed short-answer items.  The
+    learner-facing table therefore keeps the worked example only; ``tables``
+    on the emitted payload still carries every original row for provenance.
+    """
+
+    if not review_items or not any("grammar-transform" in _text(item.get("kind")).casefold() for item in review_items):
+        return None
+    for table in tables:
+        if len(table) < 2:
+            continue
+        headers = list(table[0])
+        normalized_headers = [_normalise(value).casefold() for value in headers]
+        has_statements = any("statement" in value for value in normalized_headers)
+        has_questions = any("question" in value for value in normalized_headers)
+        has_negative = any("negative" in value for value in normalized_headers)
+        if not (has_statements and has_questions and has_negative):
+            continue
+        for source_index, row in enumerate(table[1:], start=1):
+            nonempty = [value for value in row if _normalise(value)]
+            # A worked example has the statement, question, and negative form;
+            # numbered blank rows and empty practice cells do not qualify.
+            if len(nonempty) >= 4 or (len(row) >= 3 and len(nonempty) >= 3):
+                return headers, [list(row)], {
+                    "mode": "worked-example-only",
+                    "sourceRowCount": len(table) - 1,
+                    "sourceWorkedExampleRow": source_index,
+                    "learnerRowCount": 1,
+                }
+    return None
+
+
 def _exercise_review_ai_context(
     slide: Mapping[str, Any],
     item: Mapping[str, Any],
@@ -2297,14 +2394,24 @@ def _exercise_review_specs(
         response_mode = _text(item.get("responseMode")).casefold()
         listening_item = "listen" in kind or "audio" in response_mode or response_mode == "teacher-listening"
         has_transcript = bool(audio_item and _audio_transcript(audio_item))
+        reflection_prompt = _reviewed_listening_reflection_prompt(item)
+        is_open_listening_reflection = bool(reflection_prompt)
         if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"} and not (listening_item and has_transcript):
             if listening_item:
-                listening_blocked = True
-                code = "exercise-review-listening-blocked"
+                if is_open_listening_reflection:
+                    # The authored prompt is an open reflection, so it can be
+                    # offered for self-study even while the closed listening
+                    # answer review remains blocked. Audio evidence blockers
+                    # still prevent publication when the clip is incomplete.
+                    status = "open-response-preserved"
+                else:
+                    listening_blocked = True
+                    code = "exercise-review-listening-blocked"
             else:
                 code = "exercise-review-item-blocked"
-            _add_blocker(blockers, _blocker(code, number, _text(item.get("blocker")) or f"Exercise review item {item_id!r} is blocked."))
-            continue
+            if status != "open-response-preserved":
+                _add_blocker(blockers, _blocker(code, number, _text(item.get("blocker")) or f"Exercise review item {item_id!r} is blocked."))
+                continue
         if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"} and listening_item and has_transcript:
             # A staged original transcript resolves the review gate for an
             # open listening reflection; it still does not invent a closed
@@ -2366,7 +2473,9 @@ def _exercise_review_specs(
             label = _text(answer_item.get("id"))
             question = _text(item.get("prompt"))
             if kind == "grammar-transform" and label:
-                question = f"{label.replace('-', ' ').replace('_', ' ').title()}: {question}"
+                prompt_item = dict(item)
+                prompt_item["_answerLabel"] = label.replace("-", " ").replace("_", " ")
+                question = _reviewed_grammar_prompt(prompt_item, question)
             canonical_items.append(
                 {
                     "id": f"course-short-answer-{number}-{item_id}-{answer_index:03d}",
@@ -2374,33 +2483,38 @@ def _exercise_review_specs(
                     "correctAnswer": canonical,
                     "acceptedAnswers": accepted,
                     "sourceReviewId": item_id,
+                    "sourcePrompt": _text(item.get("prompt")),
                 }
             )
         short_items.extend(canonical_items)
         if not canonical_items and not ambiguous_answer:
             for native_type, prompt in _exercise_review_open_parts(item):
+                learner_prompt = reflection_prompt or prompt
                 min_words, max_words = _word_limits(prompt)
                 teacher_only = response_mode in {"teacher", "teacher-only", "teacher-practice"}
-                ai_context = _exercise_review_ai_context(slide, item, prompt, audio_item, source)
+                ai_context = _exercise_review_ai_context(slide, item, learner_prompt, audio_item, source)
                 payload: dict[str, Any] = {
                     "data": _exercise_review_metadata(item),
                     "reviewStatus": status,
                     "sourceReviewId": item_id,
                 }
                 payload["data"]["aiGradingContext"] = ai_context
+                if reflection_prompt:
+                    payload["title"] = "Escucha y reflexiona."
+                    payload["sourcePrompt"] = _text(item.get("prompt"))
                 if native_type == "recording":
                     kind = _text(item.get("kind")).casefold()
                     if any(token in kind for token in ("roleplay", "role-play", "conversation")):
                         payload["data"].update(_exercise_review_conversation_metadata(item))
                     payload.update(
                         {
-                            "instruction": prompt,
+                            "instruction": learner_prompt,
                             "mode": "teacher-and-self-study",
                             "aiGrading": not teacher_only,
                         }
                     )
                 else:
-                    payload.update({"prompt": prompt, "aiGrading": not teacher_only})
+                    payload.update({"prompt": learner_prompt, "aiGrading": not teacher_only})
                     if min_words is not None:
                         payload["minWords"] = min_words
                     if max_words is not None:
@@ -2410,15 +2524,19 @@ def _exercise_review_specs(
                 open_specs.append((native_type, payload))
     specs: list[tuple[str, dict[str, Any]]] = []
     if short_items:
+        grammar_transform = any("grammar-transform" in _text(item.get("kind")).casefold() for item in review_items)
+        short_payload: dict[str, Any] = {
+            "question": short_items[0]["question"],
+            "items": short_items,
+            "context": _exercise_review_context(review_items),
+            "data": {"exerciseReviewItems": copy.deepcopy([dict(item) for item in review_items])},
+        }
+        if grammar_transform:
+            short_payload["title"] = "Transforma la frase."
         specs.append(
             (
                 "short_answer",
-                {
-                    "question": short_items[0]["question"],
-                    "items": short_items,
-                    "context": "\n".join(_unique_texts(_text(item.get("prompt")) for item in review_items if _text(item.get("prompt")))),
-                    "data": {"exerciseReviewItems": copy.deepcopy([dict(item) for item in review_items])},
-                },
+                short_payload,
             )
         )
     specs.extend(multiple_specs)
@@ -2699,13 +2817,20 @@ def _native_block_specs(
             combined_rows.extend(copy.deepcopy(table))
         headers = combined_rows[0] if combined_rows else []
         rows = combined_rows[1:] if len(combined_rows) > 1 else []
+        worksheet_projection = _grammar_worksheet_projection(tables, exercise_items)
+        learner_headers = headers
+        learner_rows = rows
+        worksheet_metadata: dict[str, Any] | None = None
+        if worksheet_projection is not None:
+            learner_headers, learner_rows, worksheet_metadata = worksheet_projection
         specs.append(
             (
                 "structured-content",
                 {
                     **common,
-                    "content": {"headers": headers, "rows": rows},
+                    "content": {"headers": learner_headers, "rows": learner_rows},
                     "tables": copy.deepcopy(tables),
+                    **({"worksheetProjection": worksheet_metadata} if worksheet_metadata else {}),
                 },
             )
         )
@@ -2776,6 +2901,14 @@ def _native_block_specs(
                 )
             )
 
+    listening_reflection = next(
+        (
+            _reviewed_listening_reflection_prompt(item)
+            for item in (exercise_items or [])
+            if isinstance(item, Mapping) and _reviewed_listening_reflection_prompt(item)
+        ),
+        "",
+    )
     if not review_listening_blocked and not listening_review_blocked and audio_required and audio_item is not None and _audio_url(audio_item) and _audio_digest(audio_item) and _audio_transcript(audio_item):
         audio_provenance = _audio_provenance(audio_item)
         specs.append(
@@ -2783,9 +2916,12 @@ def _native_block_specs(
                 "audio",
                 {
                     **common,
+                    **({"title": "Escucha y reflexiona."} if listening_reflection else {}),
                     "instruction": (
                         "Escucha y elige la respuesta."
                         if listening_review_supplied and listening_specs
+                        else "Escucha el audio y responde la reflexión."
+                        if listening_reflection
                         else prompt_text
                     ),
                     "url": _audio_url(audio_item),

@@ -1,16 +1,24 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "scope": {
-    "units": [33, 34, 35, 36],
+    "units": [
+      33,
+      34,
+      35,
+      36
+    ],
     "purpose": "Per-slide audit of required instructional figures where the published deck and native PPTX differ at whole-deck level.",
     "publishedSourceIsAuthoritativeOnMismatch": true,
-    "generatedFromExactArtifacts": true
+    "generatedFromExactArtifacts": true,
+    "visualReviewAvailable": false,
+    "confirmationStatus": "no-confirmed-correspondences"
   },
   "confirmationPolicy": {
-    "confirmed": "A figure is confirmed only when the reviewed asset has an instructional-candidate role, sourceSlide equals publishedSlide, bbox is present, the local file SHA matches the reviewed SHA, and a published slide media payload has the same SHA-256.",
-    "excluded": "Template logos/footers, audio icons, repeated package media, and rendered slide screenshots are excluded.",
-    "wholeDeckMismatch": "Whole-deck token/sequence mismatch does not block a figure when the individual slide text and exact payload evidence satisfy the rule.",
-    "blockerRule": "Any required figure without all evidence remains blocked; no alternate or generated figure is substituted."
+    "confirmed": "A figure is confirmed only with a published original asset payload or a saved visual comparison that verifies the native pixels against the published slide. Text sequence, slide ordinal, bbox, and native SHA alone are insufficient.",
+    "currentEvidence": "Published source manifests expose rendered-slide-image URLs only for these slides; they expose no original media SHA or native asset reference. The native review marks every instructional candidate as instructional-candidate-published-mismatch.",
+    "candidate": "Candidate correspondences retain native local SHA, bbox, source slide, published slide ordinal, and text sequence ratio for follow-up. They are not confirmed media mappings.",
+    "excluded": "Template logos/footers, audio icons, repeated package media, and rendered slide screenshots are excluded as instructional figures.",
+    "blockerRule": "Any required figure without original payload or saved visual proof remains blocked; no alternate or generated figure is substituted."
   },
   "sourceRefs": [
     {
@@ -83,26 +91,39 @@
         "publishedSlideCount": 16,
         "publicTokenCoverage": 0.690289,
         "sequenceRatio": 0.464761,
-        "differenceSlides": [2, 4, 6, 8, 12, 13, 14],
+        "differenceSlides": [
+          2,
+          4,
+          6,
+          8,
+          12,
+          13,
+          14
+        ],
         "strongMatchSelected": false
       },
-      "requiredFigureSlides": [4, 6],
+      "requiredFigureSlides": [
+        4,
+        6
+      ],
       "slideFindings": [
         {
           "sourceSlide": 4,
           "purpose": "intro-look-at-picture",
-          "status": "confirmed",
+          "status": "blocked-unverified",
           "candidateAssetCount": 1,
-          "confirmedAssetCount": 1,
-          "publishedTextSequenceRatio": 0.976608
+          "confirmedAssetCount": 0,
+          "publishedTextSequenceRatio": 0.976608,
+          "blocker": "No published original asset SHA or saved visual comparison is available."
         },
         {
           "sourceSlide": 6,
           "purpose": "vocabulary-visual",
-          "status": "confirmed",
+          "status": "blocked-unverified",
           "candidateAssetCount": 8,
-          "confirmedAssetCount": 8,
-          "publishedTextSequenceRatio": 0.989691
+          "confirmedAssetCount": 0,
+          "publishedTextSequenceRatio": 0.989691,
+          "blocker": "No published original asset SHA or saved visual comparison is available."
         }
       ],
       "correspondences": [
@@ -113,8 +134,30 @@
           "mediaPath": "ppt/media/image12.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image12.jpg",
           "sha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
-          "bbox": {"x": 5489900, "y": 534475, "cx": 2565848, "cy": 1710724, "right": 8055748, "bottom": 2245199},
-          "publishedTextSequenceRatio": 0.976608
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "publishedTextSequenceRatio": 0.976608,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSZwufQPbK-Dd7axUO9CJxqMBKwdOSZwCZ32eT9IVCR-vxMad-3FEqZ8CVjoqNW3KcqZGb4Ce31hHDwWWDOOSmhF1XapO3eHyOs55d_lXFfc-Jahawzig97EmeJO1BxtBSlNPcuFIB1tH-uz7j6MT2p62Owr6wB1YWwkB3KXzPkfBvFW4g0hUzdDTTOs9Klghg=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -123,8 +166,30 @@
           "mediaPath": "ppt/media/image14.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image14.jpg",
           "sha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
-          "bbox": {"x": 1123500, "y": 1063975, "cx": 1450199, "cy": 912776, "right": 2573699, "bottom": 1976751},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 1123500,
+            "y": 1063975,
+            "cx": 1450199,
+            "cy": 912776,
+            "right": 2573699,
+            "bottom": 1976751
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSZegy5QWyz3RIHPTB39Ab5iCWdnN22qrs7oskTwun2b0DBBkkTMTH4iIunJlVax4LbBhl69IzjOr9Xp1OlsqKbP-swfWJxVNP85waLjMaSWZlIO2NGlss5G670hgdGuM-vJku-WDFVkEkr3_z0GhLiqpN9a4hleK6CqVI6wil9HCqMv0QzI-7I-2Zsu2afaPQ=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -133,8 +198,30 @@
           "mediaPath": "ppt/media/image10.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image10.jpg",
           "sha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
-          "bbox": {"x": 2918925, "y": 1048451, "cx": 1490675, "cy": 912776, "right": 4409600, "bottom": 1961227},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 2918925,
+            "y": 1048451,
+            "cx": 1490675,
+            "cy": 912776,
+            "right": 4409600,
+            "bottom": 1961227
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSYy3kQTVapb8b7mkRC-rRBuw2jNI4s20wcm56wVor469k2R5y4LOxrgW1DnhSfblEotF2MQ25Kk_0oYQ64ergk7NLtD_ncXk1L5klALR72FGrzFu-QPSob_Tj8JL5tTRRyIlxo3MSYlvh_LjEbv9j2GHDhYBlEGrPCvjhR-rgAD0vABbYCPGihnrTJftMs=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -143,8 +230,30 @@
           "mediaPath": "ppt/media/image13.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image13.jpg",
           "sha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
-          "bbox": {"x": 4754790, "y": 1111469, "cx": 1490657, "cy": 854029, "right": 6245447, "bottom": 1965498},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 4754790,
+            "y": 1111469,
+            "cx": 1490657,
+            "cy": 854029,
+            "right": 6245447,
+            "bottom": 1965498
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSZZB1mcnFrlkMhERexCciRsTzD1bIOKop1-IVbD1u7-Zk03WZJwwmO4GSGgRsPgOlGrbWzJVc7N3hCv0AUJEGfIWytXRqOiPY16eijRK6H_uFFGSr29xcNpwYBIPmUVK_hFfqHleOUccMWNaagGcXjfXVaTkxlGTKywfxL8T3GRuvch3-MHDqb-0yVydoTQbA=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -153,8 +262,30 @@
           "mediaPath": "ppt/media/image8.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image8.jpg",
           "sha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
-          "bbox": {"x": 4754794, "y": 2846030, "cx": 1490705, "cy": 903884, "right": 6245499, "bottom": 3749914},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 4754794,
+            "y": 2846030,
+            "cx": 1490705,
+            "cy": 903884,
+            "right": 6245499,
+            "bottom": 3749914
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSbzUq_5XGXdCIgFS8OzqJVq8FdYfh14zzunACq1AyZfCfvybW-NKYS56jsLLuGgdxAxX0zwnT3lgabNV093JDmU0lx6VZtVi1X2tzLouxmyK33gKo_m48WZYWtdlPwRQYQ8RWD6Mf8WeT8oec0T4Em848oqw51pmd4kFvR4jXHebph5pQaAOdaZChFdFdM=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -163,8 +294,30 @@
           "mediaPath": "ppt/media/image6.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image6.jpg",
           "sha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
-          "bbox": {"x": 1123491, "y": 2851732, "cx": 1450224, "cy": 903880, "right": 2573715, "bottom": 3755612},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 1123491,
+            "y": 2851732,
+            "cx": 1450224,
+            "cy": 903880,
+            "right": 2573715,
+            "bottom": 3755612
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSbxwspjolTuD7DmEMW0mVIYwiXvIKLlbSEwvF9mNSwCzQEvZGAM4Kzoy637DHQ6bbY6IQ29kSRq9ZbG-0WhK4v4dWlEroBga23pswjYMwc1qnb_-z7T3CWzFt_QCGAzA68YLaORZ6HaIABg077IeD5_05a-qF0H742rsSB5Oo1ILGTDiyx5KkrGk9Y1_LeMKQ=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -173,8 +326,30 @@
           "mediaPath": "ppt/media/image9.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image9.jpg",
           "sha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
-          "bbox": {"x": 2985575, "y": 2747900, "cx": 1450378, "cy": 1012975, "right": 4435953, "bottom": 3760875},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 2985575,
+            "y": 2747900,
+            "cx": 1450378,
+            "cy": 1012975,
+            "right": 4435953,
+            "bottom": 3760875
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSbTFhyDqdFg2QppSX7SRuTT_aeAMmqylLg90Z1SDajChvYFGgC9-w_hTNkCyorpERwf4rUKhsHZkWi5Uhq0ZA3B4eTVHYbhEZHqCcNgkuIheyn5i4Q8xi3gheP93BU7eGU0LsvEkThjlBVGqaTJczg-Q3j0Kw2B9WZnu9F9bVtgSMjYkazvZdaSr04oTNo=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -183,8 +358,30 @@
           "mediaPath": "ppt/media/image11.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image11.jpg",
           "sha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
-          "bbox": {"x": 6551667, "y": 2842820, "cx": 1450194, "cy": 903880, "right": 8001861, "bottom": 3746700},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 6551667,
+            "y": 2842820,
+            "cx": 1450194,
+            "cy": 903880,
+            "right": 8001861,
+            "bottom": 3746700
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSbfB-p3NMRNeMh2m1HKgNDskVGV5NQAvHKrL3Rj_5liRd3-GqVcPfnI1_91uv5lO00kiZB9eFnp_7dHD54WWrNBAmu4e6iCKQo9-jB7IFaZWpW3nTqquwN3lfWBldiXIesvAfk6CVudEaTiVYG6XOZULkbJqQWOzoNPkqX5jfGRkUwbXOLcgyp_1etXAYI=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -193,11 +390,43 @@
           "mediaPath": "ppt/media/image7.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-33-111FslIrt1Ryd46e0p8tRG9ceIA02pXHP/image7.jpg",
           "sha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
-          "bbox": {"x": 6530050, "y": 1106725, "cx": 1490601, "cy": 903874, "right": 8020651, "bottom": 2010599},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 6530050,
+            "y": 1106725,
+            "cx": 1490601,
+            "cy": 903874,
+            "right": 8020651,
+            "bottom": 2010599
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSbv46zusVHor6i5PctfB3XKTj5Mng4V7VjszEaDk0V5zQUlUi2uWXx9EarkcJCnhcTVUh1uP4P-DgAKf9OfPHlx7cqAM5LpASc3FAVNTMU3Eyje-lONQqaP0IQSWRRiG17KgxL7ysAjp3aL2jwaTZ07WEipOmUiYjutHOPKmSG5NI_y8S25msM4BARH31PBug=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         }
       ],
-      "excludedRoleCounts": {"template-logo": 2, "audio-icon": 2, "template-footer": 1}
+      "excludedRoleCounts": {
+        "template-logo": 2,
+        "audio-icon": 2,
+        "template-footer": 1
+      },
+      "mappingStatus": "candidate-correspondence-blocked",
+      "blockers": [
+        "Published media payload has no original asset SHA-256 for candidate matching.",
+        "No saved native-versus-published visual comparison is available."
+      ],
+      "confirmationNote": "Text sequence and ordinal alignment are candidate evidence only; do not stage these assets."
     },
     {
       "unit": 34,
@@ -211,26 +440,45 @@
         "publishedSlideCount": 17,
         "publicTokenCoverage": 0.522863,
         "sequenceRatio": 0.321711,
-        "differenceSlides": [1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+        "differenceSlides": [
+          1,
+          2,
+          4,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
         "strongMatchSelected": false
       },
-      "requiredFigureSlides": [4, 6],
+      "requiredFigureSlides": [
+        4,
+        6
+      ],
       "slideFindings": [
         {
           "sourceSlide": 4,
           "purpose": "intro-look-at-picture",
-          "status": "confirmed",
+          "status": "blocked-unverified",
           "candidateAssetCount": 1,
-          "confirmedAssetCount": 1,
-          "publishedTextSequenceRatio": 0.989691
+          "confirmedAssetCount": 0,
+          "publishedTextSequenceRatio": 0.989691,
+          "blocker": "No published original asset SHA or saved visual comparison is available."
         },
         {
           "sourceSlide": 6,
           "purpose": "vocabulary-visual",
-          "status": "confirmed",
+          "status": "blocked-unverified",
           "candidateAssetCount": 3,
-          "confirmedAssetCount": 3,
-          "publishedTextSequenceRatio": 1.0
+          "confirmedAssetCount": 0,
+          "publishedTextSequenceRatio": 1.0,
+          "blocker": "No published original asset SHA or saved visual comparison is available."
         }
       ],
       "correspondences": [
@@ -241,8 +489,30 @@
           "mediaPath": "ppt/media/image9.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image9.jpg",
           "sha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
-          "bbox": {"x": 5489900, "y": 534475, "cx": 2565848, "cy": 1710724, "right": 8055748, "bottom": 2245199},
-          "publishedTextSequenceRatio": 0.989691
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "publishedTextSequenceRatio": 0.989691,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSZTApJUTPqMJv6vSvrUMaSzADz0jBxM6MtubI-Z5VqCqA-bCpFVZh9HmEnNXVSLDuECwUO4EpV6d7P1Ud7o1NM21vOAOJae-6olLtE6Sm4YFvAorDoI8CZRGN-BBFVrGGcVDhcwuMEsxLq1XJQLVe6mvk9OcNsyXjgUlfTR-JGBBiLYxDhu-JAVeF883BI=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -251,8 +521,30 @@
           "mediaPath": "ppt/media/image6.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image6.jpg",
           "sha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
-          "bbox": {"x": 5561975, "y": 2934200, "cx": 2031224, "cy": 1694550, "right": 7593199, "bottom": 4628750},
-          "publishedTextSequenceRatio": 1.0
+          "bbox": {
+            "x": 5561975,
+            "y": 2934200,
+            "cx": 2031224,
+            "cy": 1694550,
+            "right": 7593199,
+            "bottom": 4628750
+          },
+          "publishedTextSequenceRatio": 1.0,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSZqQ1SKLiIqpX77gH9Sg4lLKj27NLMKPWB4vr4RcgTaprCujVBvnuJGJKTh5NsiD9d3Y4sz97cr2BkJYdrggJG9iMkIcwJg8BLlAUkd_j5WsWNlUON17F8GvCzZZa8MtxwCwGBH8k-g-XeQXime8DNKVRtwFr_yaJan89HPtsXx2_zEaWbxe0Bf9Nl9bwxOxA=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -261,8 +553,30 @@
           "mediaPath": "ppt/media/image8.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image8.jpg",
           "sha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
-          "bbox": {"x": 6702228, "y": 1062045, "cx": 1987475, "cy": 1324631, "right": 8689703, "bottom": 2386676},
-          "publishedTextSequenceRatio": 1.0
+          "bbox": {
+            "x": 6702228,
+            "y": 1062045,
+            "cx": 1987475,
+            "cy": 1324631,
+            "right": 8689703,
+            "bottom": 2386676
+          },
+          "publishedTextSequenceRatio": 1.0,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSYBk0j6C2Tl0m32hKDjfxtLNpkXc7ny7Yr4R-IoQ-dtjevhJLcyH4Q_YBpr3VadTKMY5VJk9i2L1WihjcNAEFbex2o5Ap-ZXh0MPf5xojT2ykwDvS6zKaEtwPOpsfcniQK6cQ3HMnMyvHjsCarzaH7PXNK7WSTEbRu9BXMLNh2Hu2b7Rwv53lnX03bEGHeaoA=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -271,11 +585,43 @@
           "mediaPath": "ppt/media/image7.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-34-17S1N4NcqI18h8oie7ciSG5SAzy0X2RtP/image7.jpg",
           "sha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
-          "bbox": {"x": 4458925, "y": 1062050, "cx": 1987451, "cy": 1324625, "right": 6446376, "bottom": 2386675},
-          "publishedTextSequenceRatio": 1.0
+          "bbox": {
+            "x": 4458925,
+            "y": 1062050,
+            "cx": 1987451,
+            "cy": 1324625,
+            "right": 6446376,
+            "bottom": 2386675
+          },
+          "publishedTextSequenceRatio": 1.0,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSadMhluh90al9ZX9JZ0Khhe6TScoaM9ocJjLQqjp2AUZt4Ejv35lnoKrYr7UPQTRtF9UldlAceBXDI5yDIA4fz4lx7hST672MCPQOa3dqJ0BXOcnZZo1GhGtbgXCv6NN-e4vhD6E2dRkXzcCih_XSlJxw2QTCV0Tjivqv-PETGyUGj6RQ3WWjLubMxx0Ro=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         }
       ],
-      "excludedRoleCounts": {"template-logo": 2, "audio-icon": 2, "template-footer": 1}
+      "excludedRoleCounts": {
+        "template-logo": 2,
+        "audio-icon": 2,
+        "template-footer": 1
+      },
+      "mappingStatus": "candidate-correspondence-blocked",
+      "blockers": [
+        "Published media payload has no original asset SHA-256 for candidate matching.",
+        "No saved native-versus-published visual comparison is available."
+      ],
+      "confirmationNote": "Text sequence and ordinal alignment are candidate evidence only; do not stage these assets."
     },
     {
       "unit": 35,
@@ -289,18 +635,31 @@
         "publishedSlideCount": 16,
         "publicTokenCoverage": 0.691011,
         "sequenceRatio": 0.088364,
-        "differenceSlides": [1, 2, 4, 6, 8, 10, 12, 13, 14],
+        "differenceSlides": [
+          1,
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          13,
+          14
+        ],
         "strongMatchSelected": false
       },
-      "requiredFigureSlides": [4],
+      "requiredFigureSlides": [
+        4
+      ],
       "slideFindings": [
         {
           "sourceSlide": 4,
           "purpose": "intro-look-at-picture",
-          "status": "confirmed",
+          "status": "blocked-unverified",
           "candidateAssetCount": 1,
-          "confirmedAssetCount": 1,
-          "publishedTextSequenceRatio": 0.979592
+          "confirmedAssetCount": 0,
+          "publishedTextSequenceRatio": 0.979592,
+          "blocker": "No published original asset SHA or saved visual comparison is available."
         }
       ],
       "correspondences": [
@@ -311,11 +670,43 @@
           "mediaPath": "ppt/media/image6.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-35-1uf4e0qmsGhMSF7VuMTQzafcjni_CtvJW/image6.jpg",
           "sha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
-          "bbox": {"x": 5489900, "y": 534475, "cx": 2565848, "cy": 1710724, "right": 8055748, "bottom": 2245199},
-          "publishedTextSequenceRatio": 0.979592
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "publishedTextSequenceRatio": 0.979592,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSadKfBvWaVRe92Fgg8peZHnwvP5czo-ioq-K12xFelmgXe_Fc3nROzbbVan0qJ3C7sqxdVcIcy2S63ibYu9g7-KeKNbvYSbRfk3Gubj15heHdegapGa2GfPdyL1pP8hN7fuJOSM9dGVuc4Obf2RyQaD38ncWR08LeY5h6cCbEPWs4DIFkw9f3WjAacVh56rtg=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         }
       ],
-      "excludedRoleCounts": {"template-logo": 2, "audio-icon": 2, "template-footer": 1}
+      "excludedRoleCounts": {
+        "template-logo": 2,
+        "audio-icon": 2,
+        "template-footer": 1
+      },
+      "mappingStatus": "candidate-correspondence-blocked",
+      "blockers": [
+        "Published media payload has no original asset SHA-256 for candidate matching.",
+        "No saved native-versus-published visual comparison is available."
+      ],
+      "confirmationNote": "Text sequence and ordinal alignment are candidate evidence only; do not stage these assets."
     },
     {
       "unit": 36,
@@ -329,26 +720,40 @@
         "publishedSlideCount": 16,
         "publicTokenCoverage": 0.678922,
         "sequenceRatio": 0.471999,
-        "differenceSlides": [2, 4, 6, 8, 10, 12, 13, 14],
+        "differenceSlides": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          13,
+          14
+        ],
         "strongMatchSelected": false
       },
-      "requiredFigureSlides": [4, 6],
+      "requiredFigureSlides": [
+        4,
+        6
+      ],
       "slideFindings": [
         {
           "sourceSlide": 4,
           "purpose": "intro-look-at-picture",
-          "status": "confirmed",
+          "status": "blocked-unverified",
           "candidateAssetCount": 1,
-          "confirmedAssetCount": 1,
-          "publishedTextSequenceRatio": 0.979592
+          "confirmedAssetCount": 0,
+          "publishedTextSequenceRatio": 0.979592,
+          "blocker": "No published original asset SHA or saved visual comparison is available."
         },
         {
           "sourceSlide": 6,
           "purpose": "vocabulary-visual",
-          "status": "confirmed",
+          "status": "blocked-unverified",
           "candidateAssetCount": 1,
-          "confirmedAssetCount": 1,
-          "publishedTextSequenceRatio": 0.97284
+          "confirmedAssetCount": 0,
+          "publishedTextSequenceRatio": 0.97284,
+          "blocker": "No published original asset SHA or saved visual comparison is available."
         }
       ],
       "correspondences": [
@@ -359,8 +764,30 @@
           "mediaPath": "ppt/media/image7.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image7.jpg",
           "sha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
-          "bbox": {"x": 5489900, "y": 534475, "cx": 2565848, "cy": 1710724, "right": 8055748, "bottom": 2245199},
-          "publishedTextSequenceRatio": 0.979592
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "publishedTextSequenceRatio": 0.979592,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSYfGJuzGE3UtX8bWDC8hYicDzA9ge3ccpBgFb2SnqQXEQ2P5LKJbsBpn-sjKkeF00nr5fBrDTNXKpbQ6cINRHklt_B0ULINGYBorvYpBIb7qrYnj-uae6_bj0wHRgFAiT7Ey16U8TSRoFZury6TOaACOGz0ex1hKRAUGLb9FnYSdgiZLkC1rdItNN-yn0RN-w=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         },
         {
           "sourceSlide": 6,
@@ -369,23 +796,60 @@
           "mediaPath": "ppt/media/image4.jpg",
           "localPath": "docs/audit/source-originals/images/B-unit-36-17j5e6oibQHQvOYlT446cQOYANPKRklcn/image4.jpg",
           "sha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
-          "bbox": {"x": 4310175, "y": 1234300, "cx": 4025050, "cy": 2683350, "right": 8335225, "bottom": 3917650},
-          "publishedTextSequenceRatio": 0.97284
+          "bbox": {
+            "x": 4310175,
+            "y": 1234300,
+            "cx": 4025050,
+            "cy": 2683350,
+            "right": 8335225,
+            "bottom": 3917650
+          },
+          "publishedTextSequenceRatio": 0.97284,
+          "status": "unverified-candidate",
+          "confirmed": false,
+          "publishedMediaSha256": null,
+          "evidence": [
+            "native local asset SHA and bbox",
+            "per-slide text sequence ratio",
+            "published media ordinal"
+          ],
+          "missingEvidence": [
+            "published original media SHA-256 or saved visual pixel comparison"
+          ],
+          "publishedMediaUrl": "https://docs.google.com/slides-images-rt/AE1YXSYC9sKTwmJ1bSSzczCyU2MVuJAuXNTxRH9h6egU3BMuVqyB5LR8A9hhvqGSgWAnyEjI3Jc-fnbphjGgx-66JF6F__CK8NfMEXA-DOAinCpIFE9Owa4kr2K5-Eq8HZt8BQ0mODx9XHRyjSqptrW3XLOhqSejmUJQRVL1_0BQCfYC6lGSabtqwZHkV6fWAicHag=s2048",
+          "publishedMediaKind": "rendered-slide-image",
+          "publishedMediaOriginal": false,
+          "publishedMediaSource": "image"
         }
       ],
-      "excludedRoleCounts": {"template-logo": 2, "audio-icon": 2, "template-footer": 1}
+      "excludedRoleCounts": {
+        "template-logo": 2,
+        "audio-icon": 2,
+        "template-footer": 1
+      },
+      "mappingStatus": "candidate-correspondence-blocked",
+      "blockers": [
+        "Published media payload has no original asset SHA-256 for candidate matching.",
+        "No saved native-versus-published visual comparison is available."
+      ],
+      "confirmationNote": "Text sequence and ordinal alignment are candidate evidence only; do not stage these assets."
     }
   ],
   "summary": {
-    "confirmedAssetCount": 16,
-    "confirmedSlideCount": 7,
+    "confirmedAssetCount": 0,
+    "confirmedSlideCount": 0,
+    "candidateAssetCount": 16,
+    "blockedCandidateCount": 16,
     "unitsAudited": 4,
-    "unitsWithConfirmedFigures": 4,
+    "unitsWithConfirmedFigures": 0,
     "wholeDeckMismatchUnits": 4,
-    "unresolvedRequiredFigureSlides": 0
-  }
+    "unresolvedRequiredFigureSlides": 7,
+    "publishedOriginalShaAvailable": false,
+    "visualComparisonsAvailable": false
+  },
+  "auditLimitations": [
+    "Published slide media entries for Units 33-36 are rendered-slide-image URLs; no published original asset SHA-256 is present.",
+    "No saved published/native screenshot comparison was found in the source audit artifacts.",
+    "The native reviewed-figures records classify every instructional candidate on these units as instructional-candidate-published-mismatch; none is confirmedInstructional."
+  ]
 }
-
-
-
-

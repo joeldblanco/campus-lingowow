@@ -1333,10 +1333,203 @@ class BuildCourseLearningTests(unittest.TestCase):
 
         self.assertTrue(plan["publishable"])
         short_answer = next(row for row in plan["nextRows"] if row["data"].get("type") == "short_answer")
-        self.assertEqual([item["question"] for item in short_answer["data"]["items"]], ["Interrogative: Jared comes from Morocco.", "Negative: Jared comes from Morocco."])
+        self.assertEqual(
+            [item["question"] for item in short_answer["data"]["items"]],
+            [
+                "Convierte en pregunta: Jared comes from Morocco.",
+                "Convierte en negativa: Jared comes from Morocco.",
+            ],
+        )
+        self.assertEqual(short_answer["data"]["title"], "Transforma la frase.")
+        self.assertEqual(short_answer["data"]["context"], "Convierte cada frase en pregunta y negativa.")
+        self.assertEqual(
+            [item["sourcePrompt"] for item in short_answer["data"]["items"]],
+            ["Jared comes from Morocco.", "Jared comes from Morocco."],
+        )
         multiple_choice = next(row for row in plan["nextRows"] if row["data"].get("type") == "multiple_choice")
         self.assertEqual([option["text"] for option in multiple_choice["data"]["options"]], ["Jared", "Morocco", "comes", "from"])
         self.assertEqual(multiple_choice["data"]["correctOptionId"], "a")
+
+    def test_grammar_worksheet_projects_worked_example_and_archives_full_matrix(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 12,
+                "title": "Grammar practice",
+                "visibleTexts": [
+                    "Grammar practice",
+                    "Change the following sentences into the interrogative and negative form.",
+                    "Jared comes from Morocco.",
+                    "The Jenkins speak English.",
+                    "We are Chinese.",
+                    "I am Venezuelan.",
+                    "Create four new sentences with questions and negative statements.",
+                ],
+                "_nativeAudit": {
+                    "tables": [
+                        {
+                            "rows": [
+                                ["", "Statements", "Questions", "Negative statements"],
+                                ["0.", "Julia is from Italy.", "Is Julia from Italy?", "Julia is not from Italy."],
+                                ["1.", "Jared comes from Morocco.", "", ""],
+                                ["2.", "The Jenkins speak English.", "", ""],
+                                ["3.", "We are Chinese.", "", ""],
+                                ["4.", "I am Venezuelan.", "", ""],
+                                ["5.", "", "", ""],
+                                ["6.", "", "", ""],
+                                ["7.", "", "", ""],
+                                ["8.", "", "", ""],
+                            ]
+                        }
+                    ]
+                },
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        transform_items = []
+        sentences = [
+            "Jared comes from Morocco.",
+            "The Jenkins speak English.",
+            "We are Chinese.",
+            "I am Venezuelan.",
+        ]
+        for index, sentence in enumerate(sentences, start=1):
+            transform_items.append(
+                {
+                    "id": f"u02-s12-a{index}",
+                    "kind": "grammar-transform",
+                    "prompt": sentence,
+                    "responseMode": "typed-short-answer",
+                    "reviewStatus": "reviewed",
+                    "answerItems": [
+                        {
+                            "id": "interrogative",
+                            "canonical": f"Question {index}",
+                            "accepted": [f"Question {index}"],
+                            "evidence": sentence,
+                        },
+                        {
+                            "id": "negative",
+                            "canonical": f"Negative {index}",
+                            "accepted": [f"Negative {index}"],
+                            "evidence": sentence,
+                        },
+                    ],
+                    "sourceEvidence": [sentence],
+                }
+            )
+        transform_items.append(
+            {
+                "id": "u02-s12-open",
+                "kind": "grammar-production",
+                "prompt": "Create four new sentences with questions and negative statements.",
+                "responseMode": "typed-essay",
+                "reviewStatus": "open-response-preserved",
+                "sourceEvidence": ["Create four new sentences"],
+                "constraints": "Create four new sentences with questions and negative statements.",
+            }
+        )
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "12": {"source": copy.deepcopy(slide), "items": transform_items}
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        structured = next(row for row in generated if row["data"]["type"] == "structured-content")
+        self.assertEqual(
+            structured["data"]["content"],
+            {
+                "headers": ["", "Statements", "Questions", "Negative statements"],
+                "rows": [["0.", "Julia is from Italy.", "Is Julia from Italy?", "Julia is not from Italy."]],
+            },
+        )
+        self.assertEqual(len(structured["data"]["tables"][0]), 10)
+        self.assertEqual(structured["data"]["worksheetProjection"]["mode"], "worked-example-only")
+        self.assertEqual(structured["data"]["worksheetProjection"]["sourceRowCount"], 9)
+        short_answer = next(row for row in generated if row["data"]["type"] == "short_answer")
+        self.assertEqual(len(short_answer["data"]["items"]), 8)
+        self.assertEqual(short_answer["data"]["title"], "Transforma la frase.")
+        essay = next(row for row in generated if row["data"]["type"] == "essay")
+        self.assertEqual(essay["data"]["prompt"], "Create four new sentences with questions and negative statements.")
+        self.assertTrue(essay["data"]["aiGrading"])
+
+    def test_teacher_listening_reflection_is_self_study_prompt_with_original_context(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 4,
+                "title": "Listen to the introduction",
+                "visibleTexts": [
+                    "Listen to the introduction",
+                    "B. Listen to the audio and discuss with your teacher: what is the topic? Are there phrases you know? Write them in the chat box.",
+                ],
+                "media": [
+                    {
+                        "kind": "audio",
+                        "url": "https://audio.example/unit2-intro.mp3",
+                        "digest": "unit2-intro-digest",
+                        "transcript": "This is the original authored introduction.",
+                    }
+                ],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        original_prompt = slide["visibleTexts"][1]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "4": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u02-s04-b",
+                                    "kind": "listening",
+                                    "prompt": original_prompt,
+                                    "responseMode": "teacher-listening",
+                                    "reviewStatus": "blocked-awaiting-transcript",
+                                    "sourceEvidence": [original_prompt],
+                                    "blocker": "Closed answers are not reviewed.",
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        audio = next(row for row in generated if row["data"]["type"] == "audio")
+        self.assertEqual(audio["data"]["title"], "Escucha y reflexiona.")
+        self.assertEqual(audio["data"]["instruction"], "Escucha el audio y responde la reflexión.")
+        reflection = next(row for row in generated if row["data"]["type"] == "essay")
+        self.assertEqual(reflection["data"]["prompt"], "¿De qué trata el audio? Escribe las frases que reconoces.")
+        self.assertEqual(reflection["data"]["title"], "Escucha y reflexiona.")
+        self.assertTrue(reflection["data"]["aiGrading"])
+        self.assertEqual(reflection["data"]["sourcePrompt"], original_prompt)
+        self.assertEqual(
+            reflection["data"]["data"]["exerciseReview"]["prompt"],
+            original_prompt,
+        )
+        self.assertIn(original_prompt, reflection["data"]["data"]["aiGradingContext"])
+        self.assertIn("This is the original authored introduction.", reflection["data"]["data"]["aiGradingContext"])
 
     def test_exercise_review_keeps_ambiguous_answer_out_of_native_key(self) -> None:
         source = source_fixture()
