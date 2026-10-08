@@ -665,6 +665,7 @@ export function GuidedLessonViewer({
           background: #ffffffed; box-shadow: 0 0 40px 40px #ffffffed;
         }
         .guided-lesson-viewer[data-illustrated] .guided-lesson-footer {
+          position: static;
           background: transparent;
           border-top: 0;
         }
