@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "manifest": "docs/audit/course-source-manifest.json",
+    "driveManifest": "docs/audit/drive-source-manifest.json",
+    "scope": "exact published embed URLs for Units 53-56",
+    "rawHtmlStored": false,
+    "renderedSlidesStored": false
+  },
+  "units": {
+    "53": {
+      "unit": 53,
+      "published": {
+        "module": {
+          "id": "cmnmm9lx3000fw1qkh6ijo1px",
+          "order": 14,
+          "title": "Módulo 14"
+        },
+        "lesson": {
+          "id": "cmnmm9vul002tw1qkq6vmdn9t",
+          "order": 1,
+          "title": "Unit 53",
+          "videoUrl": null
+        },
+        "contentId": "cmnmm9vxn002uw1qkj2y4mtcl",
+        "deckTitle": "NEW Never say die- Unit 53.pptx",
+        "slideCount": 17,
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000"
+      },
+      "fetch": {
+        "httpStatus": 200,
+        "finalUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+        "contentType": "text/html; charset=utf-8",
+        "bytes": 3831895,
+        "sha256": "826f8934ebaf87a4f4850154f2bb2c242c0aa162681fdb3dd06b0870e4af58cc"
+      },
+      "identity": {
+        "sourceToken": "2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg",
+        "tokensObservedInHtml": [
+          "2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg"
+        ],
+        "routesObserved": [
+          "edit",
+          "embed",
+          "preview"
+        ],
+        "canonicalLink": null,
+        "ogUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&usp=embed_facebook",
+        "nativePresentationIdsObserved": [],
+        "nativePresentationIdResolved": null,
+        "identityFinding": "HTML exposes only the published /d/e token; no native /d/<presentation-id> route was observed."
+      },
+      "media": {
+        "audioRefs": [
+          {
+            "zeroBasedSlideNumber": 3,
+            "slideNumber": 4,
+            "pageObjectId": "g72967b2bcc_0_37",
+            "elementObjectId": "g1c92af930e1_0_0",
+            "publishedMediaObjectId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+            "label": "Audio 1 - Unit 53.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          },
+          {
+            "zeroBasedSlideNumber": 11,
+            "slideNumber": 12,
+            "pageObjectId": "g729cfa641f_0_19",
+            "elementObjectId": "g1c92af930e1_0_1",
+            "publishedMediaObjectId": "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ",
+            "label": "Audio 2 - Unit 53.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          }
+        ],
+        "directAudioUrls": [],
+        "renderedSlideImageUrlCount": 6,
+        "originalAssetUrlsObserved": [],
+        "finding": "Audio labels and published media object IDs are present, but no direct audio URL or original asset URL is present."
+      },
+      "authoritativeDriveContext": {
+        "presentationCandidateCount": 0,
+        "audioCandidateCount": 0,
+        "finding": "No native presentation or audio candidate is present in the authoritative source manifest."
+      }
+    },
+    "54": {
+      "unit": 54,
+      "published": {
+        "module": {
+          "id": "cmnmm9lx3000fw1qkh6ijo1px",
+          "order": 14,
+          "title": "Módulo 14"
+        },
+        "lesson": {
+          "id": "cmnmm9w6q002ww1qkmhschbtj",
+          "order": 2,
+          "title": "Unit 54",
+          "videoUrl": null
+        },
+        "contentId": "cmnmm9w9s002xw1qk34wb2go5",
+        "deckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+        "slideCount": 17,
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000"
+      },
+      "fetch": {
+        "httpStatus": 200,
+        "finalUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+        "contentType": "text/html; charset=utf-8",
+        "bytes": 3730026,
+        "sha256": "edffeae0e6d9731e601529ef67edd73511b45f6844d17046bf052b2f68e919f3"
+      },
+      "identity": {
+        "sourceToken": "2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ",
+        "tokensObservedInHtml": [
+          "2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ"
+        ],
+        "routesObserved": [
+          "edit",
+          "embed",
+          "preview"
+        ],
+        "canonicalLink": null,
+        "ogUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000&usp=embed_facebook",
+        "nativePresentationIdsObserved": [],
+        "nativePresentationIdResolved": null,
+        "identityFinding": "HTML exposes only the published /d/e token; no native /d/<presentation-id> route was observed."
+      },
+      "media": {
+        "audioRefs": [
+          {
+            "zeroBasedSlideNumber": 3,
+            "slideNumber": 4,
+            "pageObjectId": "g72967b2bcc_0_37",
+            "elementObjectId": "g1c91040b478_0_0",
+            "publishedMediaObjectId": "14FBEUnBPPmbXaMeWw5tIbhUmyGscFSPq",
+            "label": "Audio 1 - Unit 54.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          },
+          {
+            "zeroBasedSlideNumber": 12,
+            "slideNumber": 13,
+            "pageObjectId": "g729cfa641f_0_32",
+            "elementObjectId": "g1c91040b478_0_1",
+            "publishedMediaObjectId": "1E87FiFUoNDb3NHLnz9RvBrndBveuddXQ",
+            "label": "Audio 2 - Unit 54.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          }
+        ],
+        "directAudioUrls": [],
+        "renderedSlideImageUrlCount": 6,
+        "originalAssetUrlsObserved": [],
+        "finding": "Audio labels and published media object IDs are present, but no direct audio URL or original asset URL is present."
+      },
+      "authoritativeDriveContext": {
+        "presentationCandidateCount": 0,
+        "audioCandidateCount": 0,
+        "finding": "No native presentation or audio candidate is present in the authoritative source manifest."
+      }
+    },
+    "55": {
+      "unit": 55,
+      "published": {
+        "module": {
+          "id": "cmnmm9lx3000fw1qkh6ijo1px",
+          "order": 14,
+          "title": "Módulo 14"
+        },
+        "lesson": {
+          "id": "cmnmm9wiv002zw1qkz23p6kdp",
+          "order": 3,
+          "title": "Unit 55",
+          "videoUrl": null
+        },
+        "contentId": "cmnmm9wly0030w1qk4vrdc4a7",
+        "deckTitle": "NEW That's anyone's call - Unit 55.pptx",
+        "slideCount": 17,
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000"
+      },
+      "fetch": {
+        "httpStatus": 200,
+        "finalUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+        "contentType": "text/html; charset=utf-8",
+        "bytes": 4608432,
+        "sha256": "72d081ed85130d987a9569aa02bf63144623564f67124956a4223220143f73c0"
+      },
+      "identity": {
+        "sourceToken": "2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q",
+        "tokensObservedInHtml": [
+          "2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q"
+        ],
+        "routesObserved": [
+          "edit",
+          "embed",
+          "preview"
+        ],
+        "canonicalLink": null,
+        "ogUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000&usp=embed_facebook",
+        "nativePresentationIdsObserved": [],
+        "nativePresentationIdResolved": null,
+        "identityFinding": "HTML exposes only the published /d/e token; no native /d/<presentation-id> route was observed."
+      },
+      "media": {
+        "audioRefs": [
+          {
+            "zeroBasedSlideNumber": 3,
+            "slideNumber": 4,
+            "pageObjectId": "g72967b2bcc_0_37",
+            "elementObjectId": "g1c92c3ceb08_0_0",
+            "publishedMediaObjectId": "16vlShb_LW0tpQjPyM13l2TomvtxP1l_W",
+            "label": "Audio 1 - Unit 55.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          },
+          {
+            "zeroBasedSlideNumber": 12,
+            "slideNumber": 13,
+            "pageObjectId": "g729cfa641f_0_32",
+            "elementObjectId": "g1c92c3ceb08_0_1",
+            "publishedMediaObjectId": "1tdIPj8skOg-IT7Y1Ac9shpqw1Y6h6fQh",
+            "label": "Auido 2 - Unit 55.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          }
+        ],
+        "directAudioUrls": [],
+        "renderedSlideImageUrlCount": 6,
+        "originalAssetUrlsObserved": [],
+        "finding": "Audio labels and published media object IDs are present, but no direct audio URL or original asset URL is present."
+      },
+      "authoritativeDriveContext": {
+        "presentationCandidateCount": 0,
+        "audioCandidateCount": 0,
+        "finding": "No native presentation or audio candidate is present in the authoritative source manifest."
+      }
+    },
+    "56": {
+      "unit": 56,
+      "published": {
+        "module": {
+          "id": "cmnmm9lx3000fw1qkh6ijo1px",
+          "order": 14,
+          "title": "Módulo 14"
+        },
+        "lesson": {
+          "id": "cmnmm9wv00032w1qkxr02azgp",
+          "order": 4,
+          "title": "Unit 56",
+          "videoUrl": null
+        },
+        "contentId": "cmnmm9wy10033w1qk25duuj99",
+        "deckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+        "slideCount": 17,
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000"
+      },
+      "fetch": {
+        "httpStatus": 200,
+        "finalUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+        "contentType": "text/html; charset=utf-8",
+        "bytes": 4062455,
+        "sha256": "d56b9fbcae87728ef9ba102fba05246e9711f632cd8d4b3f546d9d8f58873c47"
+      },
+      "identity": {
+        "sourceToken": "2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg",
+        "tokensObservedInHtml": [
+          "2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg"
+        ],
+        "routesObserved": [
+          "edit",
+          "embed",
+          "preview"
+        ],
+        "canonicalLink": null,
+        "ogUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000&usp=embed_facebook",
+        "nativePresentationIdsObserved": [],
+        "nativePresentationIdResolved": null,
+        "identityFinding": "HTML exposes only the published /d/e token; no native /d/<presentation-id> route was observed."
+      },
+      "media": {
+        "audioRefs": [
+          {
+            "zeroBasedSlideNumber": 3,
+            "slideNumber": 4,
+            "pageObjectId": "g72967b2bcc_0_37",
+            "elementObjectId": "g182170c32b5_0_0",
+            "publishedMediaObjectId": "12jnpp6JpwXkqjaYGpVom9Od5xkXTkuFj",
+            "label": "Unit 56 - Audio 1.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          },
+          {
+            "zeroBasedSlideNumber": 12,
+            "slideNumber": 13,
+            "pageObjectId": "g729cfa641f_0_32",
+            "elementObjectId": "g182170c32b5_0_1",
+            "publishedMediaObjectId": "1UdkztnUMl9Pnp26TnTizoq5IJiuxo5wQ",
+            "label": "Unit 56 - Audio 2.mp3",
+            "idKind": "published-media-object",
+            "driveFileIdVerified": false
+          }
+        ],
+        "directAudioUrls": [],
+        "renderedSlideImageUrlCount": 6,
+        "originalAssetUrlsObserved": [],
+        "finding": "Audio labels and published media object IDs are present, but no direct audio URL or original asset URL is present."
+      },
+      "authoritativeDriveContext": {
+        "presentationCandidateCount": 0,
+        "audioCandidateCount": 0,
+        "finding": "No native presentation or audio candidate is present in the authoritative source manifest."
+      }
+    }
+  }
+}
