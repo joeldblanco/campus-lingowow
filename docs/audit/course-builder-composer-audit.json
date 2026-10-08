@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "composer": "scripts/content/compose-course-builder-inputs.py",
+  "draftInputs": "docs\\audit\\course-builder-inputs-draft.json",
+  "materializedInputs": {
+    "sourceDir": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\course-builder-materialized\\sources",
+    "nativeAudit": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\course-builder-materialized\\native-audit.json",
+    "audioManifest": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\course-builder-materialized\\audio-manifest.json",
+    "exerciseReview": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\course-builder-materialized\\exercise-review.json",
+    "listeningReview": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\course-builder-materialized\\listening-review.json"
+  },
+  "builder": {
+    "status": "ready",
+    "path": "docs\\audit\\course-builder-learning-draft.json",
+    "sourceCount": 51,
+    "planCount": 51,
+    "publishableCount": 13,
+    "blockedCount": 38,
+    "blockerCount": 96,
+    "blockersByCode": {
+      "audio-media-missing": 17,
+      "exercise-review-ambiguous": 1,
+      "exercise-review-answer-ambiguous": 2,
+      "exercise-review-evidence-mismatch": 26,
+      "exercise-review-listening-blocked": 25,
+      "exercise-review-slide-missing": 1,
+      "exercise-review-source-label-mismatch": 1,
+      "listening-review-audio-index-invalid": 1,
+      "listening-review-slide-missing": 2,
+      "native-figure-required": 10,
+      "table-semantics-missing": 10
+    },
+    "blockedLessons": [
+      "cmk0vi2e30003l404hjqaqibj",
+      "cmk0vijvj0001i904j8k1di8d",
+      "cmk0wu7xk0001lb04z0pauq4e",
+      "cmk0wvpbg0001jp04c8e0dhjt",
+      "cmk0wwx210003kz04s3qt526e",
+      "cmk3zs4250003l8047krvt8qc",
+      "cmk4011yd0003ju0505ofufnq",
+      "cmkpx0d310001gy04zr4lq99y",
+      "cmkq3xx5w0001jr04cw7bh9g7",
+      "cmn7vbcg20005l804sg2hxgf4",
+      "cmn7vc7pm0001le04qfcuwa27",
+      "cmnmm9m3i000hw1qklyh7h658",
+      "cmnmm9mm1000kw1qkgi2bize8",
+      "cmnmm9my8000nw1qkfl8lpdxz",
+      "cmnmm9naj000qw1qkkzistoi6",
+      "cmnmm9nmo000tw1qkxzhh3pwc",
+      "cmnmm9nyt000ww1qkoxsumpck",
+      "cmnmm9ob2000zw1qkel9nezp5",
+      "cmnmm9on70012w1qka03chue1",
+      "cmnmm9ozb0015w1qkj7gth0wy",
+      "cmnmm9pbg0018w1qkdkv1gbma",
+      "cmnmm9pns001bw1qki5fh6r0j",
+      "cmnmm9q04001ew1qke5tfufyk",
+      "cmnmm9qca001hw1qkpe089f8f",
+      "cmnmm9qog001kw1qkht1v6i81",
+      "cmnmm9r0u001nw1qkmd7iwebn",
+      "cmnmm9rcz001qw1qka3igty9u",
+      "cmnmm9rp6001tw1qk9ct8o936",
+      "cmnmm9s1b001ww1qkz2zll59e",
+      "cmnmm9sq20022w1qkn3bi0mm7",
+      "cmnmm9t2a0025w1qk877v6313",
+      "cmnmm9tei0028w1qkri0q23eb",
+      "cmnmm9tqo002bw1qklsuz2eli",
+      "cmnmm9u2w002ew1qkvb9dzxjp",
+      "cmnmm9uey002hw1qk4poj2sfe",
+      "cmnmm9ur4002kw1qkr4g1untw",
+      "cmnmm9v3a002nw1qkedoaw2od",
+      "cmnmm9vfh002qw1qknevwf813"
+    ],
+    "unsupportedSlideCount": 0,
+    "returnCode": 0,
+    "stdoutTail": "",
+    "stderrTail": ""
+  },
+  "counts": {
+    "publishedSources": 51,
+    "expectedPublishedSources": 51,
+    "stageAudioRecords": 103,
+    "stageImageRecords": 287,
+    "stageAudioReady": 103,
+    "stageImageReady": 285,
+    "stageImageDuplicates": 2,
+    "audio": {
+      "reviewedRecords": 103,
+      "stagedRecords": 103,
+      "normalizedRecords": 103,
+      "unitsWithAudio": 51,
+      "expectedUnits": 51
+    },
+    "figures": {
+      "candidateReferences": 303,
+      "readyReferences": 287,
+      "uniqueSourceSha256": 285,
+      "unitsWithFigures": 47,
+      "mappingCounts": {
+        "reviewed-figures": 287,
+        "units-33-36-correspondence": 16
+      }
+    },
+    "exerciseReviewLessons": 51,
+    "listeningReviewEntries": 51,
+    "listeningReviewItems": 204
+  },
+  "composerBlockers": {
+    "total": 16,
+    "byCode": {
+      "figure-media-not-staged": 16
+    },
+    "units": [
+      33,
+      34,
+      35,
+      36
+    ]
+  },
+  "composerBlockerDetails": [
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 4,
+      "sourceSha256": "176f9679a163729fb38a7eaaa23d0c4e95b30e2a0b969ad3e3dc2aa45efd5aa1",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "375e80b8a712d16bb287f24309897525ea09a3e9ac3f35fb55bd4f4dbfbdee51",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "78d4654af911a5a0d83d58f45b8ccdfde3f66742beeb1a4305bba7a9e5e79ded",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "3b1fd6a47c3abc7fa745e0d74e1f258176ceff16ef223a7c8c7d034be0b5cd79",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "210327264755df13adc2a279369a75cc73c10af9bcde140dc13a87155eb80cce",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "cabea1165cdeb6e05d319ae5e57fedb72c990a0bcf1991757e5246d2ba95e1f6",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "213557603377d015b37b87b405d6f655171b73f0db7d55886ee578d2bc4c8ab0",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "0496bfbc49c4f311803e4049d5db6b2dff6a0caef8071a2f3b4775e5f6b287f6",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 33,
+      "slide": 6,
+      "sourceSha256": "8162989ff4b4f0013e0264c95684afa776df395f83fb4d622d6abc296537c044",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 34,
+      "slide": 4,
+      "sourceSha256": "d931da88b346615dbdf76559853d249ed3c3e9a48822a6fcaeef79d683e407c3",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 34,
+      "slide": 6,
+      "sourceSha256": "7b8aca98de03a88f614f005ebfd03ce51dcc80268b674311d6bc9058ccaef653",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 34,
+      "slide": 6,
+      "sourceSha256": "1f098ebfcf7dbb378a3d7e8be75fd93d728c09344980e39c6de825acba0fbe3c",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 34,
+      "slide": 6,
+      "sourceSha256": "386dc05b70b0f42001e70ffea700b4693207911db560e6b31baa5f641dc0f865",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 35,
+      "slide": 4,
+      "sourceSha256": "a3030929875e7041d24c095d088c9b3df7057581881deb7fb768a3ab620d07bb",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 36,
+      "slide": 4,
+      "sourceSha256": "f8bc4f7cffad083fbd4f0a49a22af61cffcd66a7ba14191f20036f3e43bbf3fa",
+      "code": "figure-media-not-staged"
+    },
+    {
+      "kind": "image",
+      "unit": 36,
+      "slide": 6,
+      "sourceSha256": "0c9ba549ea2cdf400f4c90c03c6f9fd10f68ad0b9cce324ec449c81bb00472d5",
+      "code": "figure-media-not-staged"
+    }
+  ],
+  "readyForApply": false,
+  "policy": {
+    "publishedSlidesAuthoritative": true,
+    "genericNativeImageRefsExcluded": true,
+    "unresolvedUnit33To36FiguresStayBlocked": true,
+    "unit3DoesNotInventAudio1": true,
+    "databaseOrPublicWrites": false
+  }
+}
