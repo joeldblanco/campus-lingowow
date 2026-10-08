@@ -5,6 +5,7 @@ import {
   GUIDED_MATCH_CORRECT_FEEDBACK_MS,
   GUIDED_MATCH_WRONG_FEEDBACK_MS,
 } from './block-preview'
+import { ClassroomSyncContext } from '@/components/classroom/use-classroom-sync'
 
 vi.mock('@/components/lessons/essay-ai-grading', () => ({
   EssayAIGrading: ({
@@ -236,6 +237,186 @@ describe('BlockPreview guided appearance', () => {
     expect(complete).toHaveBeenLastCalledWith(false)
     act(() => vi.advanceTimersByTime(900))
     expect(complete).toHaveBeenLastCalledWith(true)
+  })
+
+  it('sends guided true/false feedback and navigation with retained answers in student classroom mode', () => {
+    vi.useFakeTimers()
+    const sendBlockResponse = vi.fn()
+    const syncBlockNavigation = vi.fn()
+    const classroom = {
+      isInClassroom: true,
+      isTeacher: false,
+      remoteBlockNavigation: new Map(),
+      sendBlockResponse,
+      syncBlockNavigation,
+    }
+
+    render(
+      <ClassroomSyncContext.Provider value={classroom}>
+        <BlockPreview
+          guidedAppearance
+          block={{
+            id: 'student-tf',
+            type: 'true_false',
+            order: 0,
+            items: [
+              { id: 'first', statement: 'First statement.', correctAnswer: true },
+              { id: 'second', statement: 'Second statement.', correctAnswer: false },
+            ],
+          }}
+        />
+      </ClassroomSyncContext.Provider>
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Verdadero' }))
+    expect(sendBlockResponse).toHaveBeenCalledWith(
+      'student-tf',
+      'true_false',
+      { itemId: 'first', answer: true, isCorrect: true },
+      true,
+      1
+    )
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-tf',
+      0,
+      2,
+      true,
+      false,
+      { first: 'true' }
+    )
+
+    act(() => vi.advanceTimersByTime(900))
+    expect(screen.getByText('Second statement.')).toBeInTheDocument()
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-tf',
+      1,
+      2,
+      true,
+      false,
+      { first: 'true' }
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Falso' }))
+    act(() => vi.advanceTimersByTime(900))
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-tf',
+      1,
+      2,
+      true,
+      true,
+      { first: 'true', second: 'false' }
+    )
+  })
+
+  it('sends guided multiple-choice feedback while leaving the classic teacher renderer intact', () => {
+    vi.useFakeTimers()
+    const sendBlockResponse = vi.fn()
+    const syncBlockNavigation = vi.fn()
+    const classroom = {
+      isInClassroom: true,
+      isTeacher: false,
+      remoteBlockNavigation: new Map(),
+      sendBlockResponse,
+      syncBlockNavigation,
+    }
+
+    render(
+      <ClassroomSyncContext.Provider value={classroom}>
+        <BlockPreview
+          guidedAppearance
+          block={{
+            id: 'student-mc',
+            type: 'multiple_choice',
+            order: 0,
+            items: [
+              {
+                id: 'first',
+                question: 'Which answer is first?',
+                options: [
+                  { id: 'alpha', text: 'Alpha' },
+                  { id: 'beta', text: 'Beta' },
+                ],
+                correctOptionId: 'alpha',
+              },
+              {
+                id: 'second',
+                question: 'Which answer is second?',
+                options: [
+                  { id: 'gamma', text: 'Gamma' },
+                  { id: 'delta', text: 'Delta' },
+                ],
+                correctOptionId: 'gamma',
+              },
+            ],
+          }}
+        />
+      </ClassroomSyncContext.Provider>
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Alpha' }))
+    expect(sendBlockResponse).toHaveBeenCalledWith(
+      'student-mc',
+      'multiple_choice',
+      { itemId: 'first', answer: 'alpha', isCorrect: true },
+      true,
+      1
+    )
+    expect(syncBlockNavigation).toHaveBeenLastCalledWith(
+      'student-mc',
+      0,
+      2,
+      true,
+      false,
+      { first: 'alpha' }
+    )
+  })
+
+  it('keeps the teacher true/false renderer on the student navigation and answers', () => {
+    const sendBlockResponse = vi.fn()
+    const syncBlockNavigation = vi.fn()
+    const classroom = {
+      isInClassroom: true,
+      isTeacher: true,
+      remoteBlockNavigation: new Map([
+        [
+          'teacher-tf',
+          {
+            blockId: 'teacher-tf',
+            currentStep: 1,
+            totalSteps: 2,
+            hasStarted: true,
+            isCompleted: false,
+            participantName: 'Student',
+            timestamp: Date.now(),
+            currentAnswers: { first: 'true', second: 'false' },
+          },
+        ],
+      ]),
+      sendBlockResponse,
+      syncBlockNavigation,
+    }
+
+    render(
+      <ClassroomSyncContext.Provider value={classroom}>
+        <BlockPreview
+          guidedAppearance
+          block={{
+            id: 'teacher-tf',
+            type: 'true_false',
+            order: 0,
+            items: [
+              { id: 'first', statement: 'First statement.', correctAnswer: true },
+              { id: 'second', statement: 'Second statement.', correctAnswer: false },
+            ],
+          }}
+        />
+      </ClassroomSyncContext.Provider>
+    )
+
+    expect(screen.getByText('Second statement.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Falso' })).toHaveAttribute('aria-pressed', 'true')
+    expect(sendBlockResponse).not.toHaveBeenCalled()
+    expect(syncBlockNavigation).not.toHaveBeenCalled()
   })
 
   const guidedPairs = [

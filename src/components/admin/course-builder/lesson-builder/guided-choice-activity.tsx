@@ -21,6 +21,9 @@ export interface GuidedChoiceActivityProps {
   questions: GuidedChoiceQuestion[]
   onCompletionChange?: (completed: boolean) => void
   shuffleChoices?: boolean
+  onAnswer?: (questionId: string, choiceId: string, isCorrect: boolean) => void
+  onNavigation?: (index: number, total: number) => void
+  remoteIndex?: number
 }
 
 type ChoiceFeedback = {
@@ -185,7 +188,14 @@ function SummaryChoiceRow({ choice, state }: { choice: GuidedChoice; state: Choi
   )
 }
 
-export function GuidedChoiceActivity({ questions, onCompletionChange, shuffleChoices = false }: GuidedChoiceActivityProps) {
+export function GuidedChoiceActivity({
+  questions,
+  onCompletionChange,
+  shuffleChoices = false,
+  onAnswer,
+  onNavigation,
+  remoteIndex,
+}: GuidedChoiceActivityProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const promptRef = useRef<HTMLParagraphElement>(null)
   const summaryHeadingRef = useRef<HTMLHeadingElement>(null)
@@ -201,6 +211,8 @@ export function GuidedChoiceActivity({ questions, onCompletionChange, shuffleCho
   const focusIfVisibleRef = useRef<() => void>(() => undefined)
   const pendingFocusRef = useRef<'prompt' | 'summary' | null>(null)
   const completionCallbackRef = useRef(onCompletionChange)
+  const answerCallbackRef = useRef(onAnswer)
+  const navigationCallbackRef = useRef(onNavigation)
   const previousQuestionIndexRef = useRef(0)
 
   const [questionIndex, setQuestionIndex] = useState(0)
@@ -211,6 +223,8 @@ export function GuidedChoiceActivity({ questions, onCompletionChange, shuffleCho
 
   questionIndexRef.current = questionIndex
   completionCallbackRef.current = onCompletionChange
+  answerCallbackRef.current = onAnswer
+  navigationCallbackRef.current = onNavigation
 
   const clearTimer = () => {
     const pendingTimer = pendingTimerRef.current
@@ -230,9 +244,11 @@ export function GuidedChoiceActivity({ questions, onCompletionChange, shuffleCho
     setAnnouncement('')
 
     if (indexThatFinished < questions.length - 1) {
+      const nextIndex = indexThatFinished + 1
       setQuestionIndex((currentIndex) =>
-        currentIndex === indexThatFinished ? currentIndex + 1 : currentIndex
+        currentIndex === indexThatFinished ? nextIndex : currentIndex
       )
+      navigationCallbackRef.current?.(nextIndex, questions.length)
       return
     }
 
@@ -351,6 +367,18 @@ export function GuidedChoiceActivity({ questions, onCompletionChange, shuffleCho
   }, [questionSignature])
 
   useEffect(() => {
+    if (remoteIndex === undefined || questions.length === 0) return
+
+    const nextIndex = Math.min(Math.max(remoteIndex, 0), questions.length - 1)
+    if (nextIndex === questionIndexRef.current) return
+
+    clearTimerRef.current()
+    selectionLockRef.current = false
+    setAnnouncement('')
+    setQuestionIndex(nextIndex)
+  }, [questionSignature, questions.length, remoteIndex])
+
+  useEffect(() => {
     completionCallbackRef.current?.(completed)
   }, [completed])
 
@@ -400,6 +428,7 @@ export function GuidedChoiceActivity({ questions, onCompletionChange, shuffleCho
       [question.id]: { selectedChoiceId: choiceId, isCorrect },
     }))
     setAnnouncement(isCorrect ? '¡Correcto!' : 'Respuesta incorrecta.')
+    answerCallbackRef.current?.(question.id, choiceId, isCorrect)
     startTimer(questionIndexRef.current, isCorrect ? CORRECT_FEEDBACK_MS : WRONG_FEEDBACK_MS)
   }
 

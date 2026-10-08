@@ -3617,8 +3617,68 @@ function ClassicMatchBlockPreview({
   )
 }
 
+function useGuidedChoiceClassroomSync(
+  classroom: ReturnType<typeof useClassroomSync>,
+  blockId: string,
+  blockType: string,
+  total: number,
+  answerForResponse: (choiceId: string) => unknown = (choiceId) => choiceId
+) {
+  const currentIndexRef = useRef(0)
+  const answersRef = useRef<Record<string, string>>({})
+
+  const syncNavigation = (index: number, stepTotal: number, isCompleted = false) => {
+    currentIndexRef.current = index
+    if (!classroom.canInteract) return
+    classroom.syncBlockNavigation(
+      blockId,
+      index,
+      stepTotal,
+      true,
+      isCompleted,
+      answersRef.current
+    )
+  }
+
+  const handleAnswer = (questionId: string, choiceId: string, isCorrect: boolean) => {
+    answersRef.current = { ...answersRef.current, [questionId]: choiceId }
+    if (!classroom.canInteract) return
+
+    classroom.sendBlockResponse(
+      blockId,
+      blockType,
+      {
+        itemId: questionId,
+        answer: answerForResponse(choiceId),
+        isCorrect,
+      },
+      isCorrect,
+      isCorrect ? 1 : 0
+    )
+    syncNavigation(currentIndexRef.current, total)
+  }
+
+  const handleCompletion = (completed: boolean) => {
+    if (completed) syncNavigation(currentIndexRef.current, total, true)
+  }
+
+  return {
+    handleAnswer,
+    handleNavigation: (index: number, stepTotal: number) => syncNavigation(index, stepTotal),
+    handleCompletion,
+  }
+}
+
 function TrueFalseBlockPreview(props: Parameters<typeof ClassicTrueFalseBlockPreview>[0]) {
   const classroom = useClassroomSync()
+  const items = props.block.items || []
+  const guidedClassroomSync = useGuidedChoiceClassroomSync(
+    classroom,
+    props.block.id,
+    'true_false',
+    items.length,
+    (choiceId) => choiceId === 'true'
+  )
   const automatic = Boolean(
     props.guidedAppearance &&
       !props.isExamMode &&
@@ -3626,12 +3686,17 @@ function TrueFalseBlockPreview(props: Parameters<typeof ClassicTrueFalseBlockPre
   )
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
   return automatic ? <GuidedChoiceActivity
-    questions={(props.block.items || []).map(item => ({
+    questions={items.map(item => ({
       id: item.id, prompt: item.statement,
       choices: [{ id: 'true', text: 'Verdadero' }, { id: 'false', text: 'Falso' }],
       correctChoiceId: String(item.correctAnswer),
     }))}
-    onCompletionChange={props.onGuidedCompletionChange}
+    onAnswer={guidedClassroomSync.handleAnswer}
+    onNavigation={guidedClassroomSync.handleNavigation}
+    onCompletionChange={(completed) => {
+      props.onGuidedCompletionChange?.(completed)
+      guidedClassroomSync.handleCompletion(completed)
+    }}
   /> : <ClassicTrueFalseBlockPreview {...props} />
 }
 
@@ -5358,23 +5423,34 @@ function MultiSelectBlockPreview({
 
 function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoiceBlockPreview>[0]) {
   const classroom = useClassroomSync()
+  const items = props.block.items?.length ? props.block.items : props.block.question ? [{
+    id: props.block.id, question: props.block.question,
+    options: props.block.options || [], correctOptionId: props.block.correctOptionId || '',
+  }] : []
+  const guidedClassroomSync = useGuidedChoiceClassroomSync(
+    classroom,
+    props.block.id,
+    'multiple_choice',
+    items.length
+  )
   const automatic = Boolean(
     props.guidedAppearance &&
       !props.isExamMode &&
       (!classroom.isInClassroom || !classroom.isTeacher)
   )
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
-  const items = props.block.items?.length ? props.block.items : props.block.question ? [{
-    id: props.block.id, question: props.block.question,
-    options: props.block.options || [], correctOptionId: props.block.correctOptionId || '',
-  }] : []
   return automatic ? <GuidedChoiceActivity
     shuffleChoices
     questions={items.map(item => ({
       id: item.id, prompt: item.question, choices: item.options,
       correctChoiceId: item.correctOptionId, explanation: props.block.explanation,
     }))}
-    onCompletionChange={props.onGuidedCompletionChange}
+    onAnswer={guidedClassroomSync.handleAnswer}
+    onNavigation={guidedClassroomSync.handleNavigation}
+    onCompletionChange={(completed) => {
+      props.onGuidedCompletionChange?.(completed)
+      guidedClassroomSync.handleCompletion(completed)
+    }}
   /> : <ClassicMultipleChoiceBlockPreview {...props} />
 }
 
