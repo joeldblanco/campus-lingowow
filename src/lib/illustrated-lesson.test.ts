@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import type { Block, VocabularyBlock } from '@/types/course-builder'
-import { buildIllustratedLessonSteps, getIllustratedLessonTaskTitle } from './illustrated-lesson'
+import {
+  buildIllustratedLessonSteps,
+  getIllustratedLessonArt,
+  getIllustratedLessonScene,
+  getIllustratedLessonTaskTitle,
+} from './illustrated-lesson'
 
 const vocabulary: VocabularyBlock = { id: 'vocabulary', type: 'vocabulary', order: 1, title: 'Vocabulario', items: Array.from({ length: 9 }, (_, index) => ({ id: `item-${index}`, term: index === 0 ? 'Name' : `Term ${index}`, definition: index === 0 ? 'Peter' : `Definition ${index}` })) }
 
@@ -35,6 +40,24 @@ describe('illustrated vocabulary sequence', () => {
     expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Escucha y decide.')
   })
 
+  it('keeps audio adjacent to every authored practice type without replacing the source URL', () => {
+    const audio: Block = { id: 'audio', type: 'audio', order: 0, url: '/source.mp3' }
+    const exercise: Block = {
+      id: 'choose',
+      type: 'multiple_choice',
+      order: 1,
+      question: 'Which answer?',
+      options: [{ id: 'a', text: 'A' }],
+      correctOptionId: 'a',
+    }
+
+    const steps = buildIllustratedLessonSteps([audio, exercise])
+
+    expect(steps).toHaveLength(1)
+    expect(steps[0].blocks).toEqual([audio, exercise])
+    expect(steps[0].blocks.find((block) => block.type === 'audio')).toMatchObject({ url: '/source.mp3' })
+  })
+
   it('names the personal-data activity by its recognition objective', () => {
     const block: Block = { id: 'dev-unit1-interleaved-vocabulary', type: 'match', order: 0, pairs: [{ id: 'name', left: 'Name', right: 'Peter' }] }
     expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([block])[0])).toBe('Identifica el dato.')
@@ -44,5 +67,67 @@ describe('illustrated vocabulary sequence', () => {
     const steps = buildIllustratedLessonSteps([vocabulary])
     expect(steps.map(getIllustratedLessonTaskTitle)).toEqual(['Conoce a Peter.', 'Un poco más sobre Peter.', 'Sus datos personales.'])
     expect(getIllustratedLessonTaskTitle({ id: 'plain', kind: 'reading', label: 'Lectura', blocks: [] })).toBe('Lectura')
+  })
+
+  it('does not invent Unit 1 identities for generic vocabulary and writing tasks', () => {
+    const genericVocabulary: Block = {
+      id: 'generic-vocabulary',
+      type: 'vocabulary',
+      order: 0,
+      title: 'Words',
+      items: [{ id: 'one', term: 'Bread', definition: 'Pan' }],
+    }
+    const genericEssay: Block = {
+      id: 'generic-writing',
+      type: 'essay',
+      order: 1,
+      prompt: 'Write about your daily routine.',
+    }
+    const genericReading: Block = {
+      id: 'generic-reading',
+      type: 'text',
+      order: 2,
+      content: 'Carl Johnson is mentioned in this unrelated reading.',
+    }
+
+    const steps = buildIllustratedLessonSteps([genericVocabulary, genericEssay, genericReading])
+
+    expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Aprende estas palabras.')
+    expect(getIllustratedLessonTaskTitle(steps[1])).toBe('Describe tu rutina.')
+    expect(getIllustratedLessonTaskTitle(steps[2])).toBe('Lectura')
+    expect(steps.map(getIllustratedLessonTaskTitle).join(' ')).not.toMatch(/Peter|Carl|Lucas/)
+  })
+
+  it('derives a grammar heading from the authored topic for generic lessons', () => {
+    const grammar: Block = {
+      id: 'generic-grammar',
+      type: 'grammar-visualizer',
+      order: 0,
+      title: 'Past simple',
+      sets: [{ id: 'set', title: 'Past simple', variants: [] }],
+    }
+
+    expect(getIllustratedLessonTaskTitle(buildIllustratedLessonSteps([grammar])[0])).toBe('Consulta past simple.')
+  })
+
+  it('accepts only known scene assets and keeps generic steps on the setting path', () => {
+    const step = buildIllustratedLessonSteps([{
+      id: 'scene',
+      type: 'text',
+      order: 0,
+      content: 'A lesson',
+      data: { scene: '/images/lessons/backgrounds/library.webp', sceneSide: 'left' },
+    } as Block])[0]
+    const unknown = buildIllustratedLessonSteps([{
+      id: 'unknown',
+      type: 'text',
+      order: 0,
+      content: 'A lesson',
+      data: { scene: '/images/lessons/missing.webp' },
+    } as Block])[0]
+
+    expect(getIllustratedLessonScene(step)).toEqual({ src: '/images/lessons/backgrounds/library.webp', side: 'left' })
+    expect(getIllustratedLessonScene(unknown)).toBeUndefined()
+    expect(getIllustratedLessonArt(step, { unitOneAuthored: false })).toBeUndefined()
   })
 })

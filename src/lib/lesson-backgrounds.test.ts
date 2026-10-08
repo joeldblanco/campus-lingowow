@@ -39,4 +39,55 @@ describe('lesson background library', () => {
     expect(result['peter-2']).toBe(result['peter-1'])
     expect(result.exercise).not.toBe(result['peter-1'])
   })
+
+  it('assigns generic course scenes semantically without defaulting to Unit 1 characters', () => {
+    const steps = [
+      { ...step('bakery', 'content'), label: 'Food and cooking', blocks: [{ id: 'food', type: 'text', order: 0, content: 'Bread and coffee' } as Block] },
+      { ...step('reading', 'reading'), label: 'Reading about a city', blocks: [{ id: 'read', type: 'text', order: 0, content: 'Read this text' } as Block] },
+      { ...step('vocabulary', 'vocabulary'), label: 'Words', blocks: [{ id: 'words', type: 'vocabulary', order: 0, items: [{ id: 'one', term: 'Bread', definition: 'Pan' }] } as Block] },
+    ]
+
+    const result = assignLessonBackgrounds(steps, { unitOneAuthored: false })
+
+    expect(result.bakery).toContain('/images/lessons/backgrounds/bakery.webp')
+    expect(Object.values(result)).not.toContain('/images/lessons/this-is-me/peter.webp')
+    expect(Object.values(result)).not.toContain('/images/lessons/this-is-me/carl.webp')
+    expect(Object.values(result)).not.toContain('/images/lessons/this-is-me/lucas.webp')
+  })
+
+  it('supports the expanded thematic catalog through explicit semantic labels', () => {
+    const steps = [{
+      ...step('garden', 'content'),
+      blocks: [{ id: 'topic', type: 'text', order: 0, content: 'A lesson', data: { illustratedTopic: 'garden' } } as Block],
+    }]
+
+    expect(assignLessonBackgrounds(steps, { unitOneAuthored: false }).garden)
+      .toBe('/images/lessons/backgrounds/garden.webp')
+  })
+
+  it('reuses known local environments deterministically after the catalog is exhausted', () => {
+    const steps = Array.from({ length: LESSON_BACKGROUNDS.length + 5 }, (_, index) =>
+      step(`generic-${index}`, 'content')
+    )
+
+    const first = assignLessonBackgrounds(steps, { unitOneAuthored: false })
+    const second = assignLessonBackgrounds(steps, { unitOneAuthored: false })
+
+    expect(first).toEqual(second)
+    expect(Object.values(first)).toHaveLength(steps.length)
+    expect(Object.values(first).every((src) => LESSON_BACKGROUNDS.includes(src as never))).toBe(true)
+  })
+
+  it('keeps split generic vocabulary scenes in one environment', () => {
+    const steps = [
+      { ...step('words-vocabulary-1', 'vocabulary'), vocabularyPart: { index: 1, total: 2 } },
+      { ...step('words-vocabulary-2', 'vocabulary'), vocabularyPart: { index: 2, total: 2 } },
+      step('next', 'content'),
+    ]
+
+    const result = assignLessonBackgrounds(steps, { unitOneAuthored: false })
+
+    expect(result['words-vocabulary-1']).toBe(result['words-vocabulary-2'])
+    expect(result.next).not.toBe(result['words-vocabulary-1'])
+  })
 })

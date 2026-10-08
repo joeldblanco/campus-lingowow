@@ -30,7 +30,7 @@ beforeEach(() => sessionStorage.clear())
 
 describe('illustrated pilot content', () => {
   it('keeps the actual names and references, with Carl only on the reading step', () => {
-    render(<GuidedLessonViewer blocks={blocks} storageKey="pilot-content" illustratedContent />)
+    render(<GuidedLessonViewer blocks={blocks} storageKey="pilot-content" illustratedContent unitOneAuthored />)
     expect(screen.getByText('Peter')).toBeVisible()
     expect(screen.getByText('1/7')).toBeVisible()
     fireEvent.click(screen.getByRole('button', { name: 'Continuar' }))
@@ -45,7 +45,7 @@ describe('illustrated pilot content', () => {
   })
 
   it('retains an essay draft when returning to the speaking step and back', () => {
-    render(<GuidedLessonViewer blocks={blocks} storageKey="pilot-draft" illustratedContent />)
+    render(<GuidedLessonViewer blocks={blocks} storageKey="pilot-draft" illustratedContent unitOneAuthored />)
     for (let index = 0; index < 6; index++) fireEvent.click(screen.queryByRole('button', { name: 'Continuar' }) ?? screen.getByRole('button', { name: 'Saltar ejercicio' }))
     fireEvent.change(screen.getByRole('textbox', { name: 'Mi perfil' }), { target: { value: 'My name is Ana.' } })
     fireEvent.click(screen.getByRole('button', { name: 'Paso anterior' }))

@@ -5,17 +5,18 @@ import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
 import { GuidedLessonBlock } from './guided-lesson-block'
 import { GuidedLessonActionSlot, useGuidedLessonActions } from './guided-lesson-actions'
-import { GuidedLessonScene, LessonSceneBackdrop } from './guided-lesson-scene'
+import { GuidedLessonScene } from './guided-lesson-scene'
 import { focusGuidedLessonHeading, resetGuidedLessonViewport } from './guided-lesson-scroll'
 import { cn } from '@/lib/utils'
 import {
   buildGuidedLessonSteps,
   readGuidedLessonStepIndex,
   writeGuidedLessonStepIndex,
-  type GuidedLessonStep,
 } from '@/lib/guided-lesson'
 import {
   buildIllustratedLessonSteps,
+  getIllustratedLessonArt,
+  getIllustratedLessonScene,
   getIllustratedLessonTaskTitle,
 } from '@/lib/illustrated-lesson'
 import { Block } from '@/types/course-builder'
@@ -37,28 +38,13 @@ interface GuidedLessonViewerProps {
   isTeacher?: boolean
   isClassroom?: boolean
   illustratedContent?: boolean
+  /** Unit 1 keeps its authored character fallback art; future courses use scenes. */
+  unitOneAuthored?: boolean
 }
 
 type StepTransition = {
   stepIndex: number
   direction: 'forward' | 'backward'
-}
-
-const STEP_ART: Partial<
-  Record<GuidedLessonStep['kind'], { src: string; variant: 'portrait' | 'grammar' }>
-> = {
-  vocabulary: {
-    src: '/images/lessons/this-is-me/peter.webp',
-    variant: 'portrait',
-  },
-  reading: {
-    src: '/images/lessons/this-is-me/carl.webp',
-    variant: 'portrait',
-  },
-  grammar: {
-    src: '/images/lessons/this-is-me/lucas.webp',
-    variant: 'grammar',
-  },
 }
 
 const GUIDED_ACTIVITIES = new Set<Block['type']>([
@@ -74,6 +60,7 @@ export function GuidedLessonViewer({
   isTeacher,
   isClassroom,
   illustratedContent = false,
+  unitOneAuthored = false,
 }: GuidedLessonViewerProps) {
   const steps = useMemo(
     () =>
@@ -104,12 +91,14 @@ export function GuidedLessonViewer({
       : currentStep?.label
   const isFinalStep = steps.length > 0 && activeStepIndex === steps.length - 1
   const isRecordingActive = Object.values(recordingByBlockId).some(Boolean)
-  const authoredScene = currentStep?.blocks.find(block => typeof block.data?.scene === 'string')?.data?.scene
-  const sceneSide = currentStep?.blocks.find(block => block.data?.sceneSide === 'left') ? 'left' : 'right'
-  const currentStepArt = illustratedContent && currentStep && !authoredScene ? STEP_ART[currentStep.kind] : undefined
+  const authoredScene = currentStep ? getIllustratedLessonScene(currentStep) : undefined
+  const sceneSide = authoredScene?.side || 'right'
+  const currentStepArt = illustratedContent && currentStep && !authoredScene
+    ? getIllustratedLessonArt(currentStep, { unitOneAuthored })
+    : undefined
   const backgrounds = useMemo(
-    () => illustratedContent ? assignLessonBackgrounds(steps) : {},
-    [steps, illustratedContent]
+    () => illustratedContent ? assignLessonBackgrounds(steps, { unitOneAuthored }) : {},
+    [steps, illustratedContent, unitOneAuthored]
   )
   const currentSettingSrc = currentStep ? backgrounds[currentStep.id] : undefined
   const currentSceneSubject =
@@ -250,24 +239,24 @@ export function GuidedLessonViewer({
       className={cn(motion.viewer, 'guided-lesson-viewer relative isolate overflow-clip bg-[#FAF8F4] font-sans text-[#10245C]')}
       aria-label="Lección guiada"
       data-illustrated={illustratedContent || undefined}
-      data-unit1-authored={typeof authoredScene === 'string' || undefined}
+      data-unit1-authored={illustratedContent || undefined}
       data-scene-side={sceneSide}
       data-guided-step-transition={activeStepTransition?.direction}
     >
-      {typeof authoredScene === 'string' && (
+      {authoredScene && (
         <div
           key={`authored-scene-${currentStep?.id ?? 'empty'}`}
           className={cn(motion.sceneSlot, sceneTransitionClass)}
         >
-          <Unit1Scene src={authoredScene} side={sceneSide} />
+          <Unit1Scene src={authoredScene.src} side={sceneSide} />
         </div>
       )}
-      {illustratedContent && !currentStepArt && !authoredScene && (
+      {illustratedContent && !currentStepArt && !authoredScene && currentSettingSrc && (
         <div
           key={`setting-backdrop-${currentStep?.id ?? 'empty'}`}
           className={cn(motion.sceneSlot, sceneTransitionClass)}
         >
-          <LessonSceneBackdrop variant="plain" src={currentSettingSrc} />
+          <Unit1Scene src={currentSettingSrc} side={sceneSide} />
         </div>
       )}
       <div className="relative border-b border-[#506187]/20 px-5 py-2 sm:px-8 sm:py-3">
@@ -424,15 +413,15 @@ export function GuidedLessonViewer({
           </div>
         )}
 
-        {typeof authoredScene === 'string' && (
+        {authoredScene && (
           <div
             key={`authored-scene-mobile-${currentStep?.id ?? 'empty'}`}
             className={cn(motion.sceneSlot, sceneTransitionClass)}
           >
-            <Unit1Scene src={authoredScene} side={sceneSide} mobile />
+            <Unit1Scene src={authoredScene.src} side={sceneSide} mobile />
           </div>
         )}
-        {illustratedContent && !currentStepArt && !authoredScene && (
+        {illustratedContent && !currentStepArt && !authoredScene && currentSettingSrc && (
           <div
             key={`setting-mobile-${currentStep?.id ?? 'empty'}`}
             className={cn(motion.sceneSlot, sceneTransitionClass)}
