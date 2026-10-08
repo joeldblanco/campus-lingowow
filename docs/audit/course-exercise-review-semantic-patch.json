@@ -10,7 +10,8 @@
     "noInventedAudioOrIdentities": true,
     "ambiguousClaimsMustBeRewordedOrRemainBlocked": true,
     "openResponseNeverGetsSyntheticAnswerKey": true,
-    "reviewedOpenResponseHasNoSyntheticAnswerKey": true
+    "reviewedOpenResponseHasNoSyntheticAnswerKey": true,
+    "recoveredSourceSlidesRequireNoSyntheticExerciseKey": true
   },
   "summary": {
     "resolvedCount": 4,
@@ -20,10 +21,9 @@
       "u44-s13-a:item-3",
       "u41-s15-c"
     ],
-    "remainingHardBlockCount": 2,
+    "remainingHardBlockCount": 1,
     "sourceMismatchEntriesReviewed": 17,
     "remainingHardBlockItems": [
-      null,
       "u38-s13-a:item-3"
     ],
     "resolvedCodes": {
@@ -41,8 +41,8 @@
         "remaining": 1
       },
       "exercise-review-slide-missing": {
-        "resolved": 0,
-        "remaining": 1
+        "resolved": 1,
+        "remaining": 0
       },
       "exercise-review-source-label-mismatch": {
         "resolved": 1,
@@ -67,6 +67,10 @@
       "u51-s15-d",
       "u52-s12-a",
       "u52-s15-d"
+    ],
+    "recoveredSourceSlideCount": 1,
+    "recoveredSourceSlideItems": [
+      "unit6-slide6"
     ]
   },
   "resolved": [
@@ -277,27 +281,6 @@
     }
   ],
   "remainingHardBlocks": [
-    {
-      "unit": 6,
-      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
-      "slide": 6,
-      "itemId": null,
-      "blockerCode": "exercise-review-slide-missing",
-      "originalPrompt": null,
-      "originalReviewStatus": null,
-      "publishedSourceInstruction": null,
-      "originalSourceEvidence": [],
-      "provenance": {
-        "file": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
-        "sha256": "edd9a665774097c5f7aadb760d89adcf3dd36c83670acba362ed8d7b05a95a37",
-        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS2SkpEvv-4pNugWriBeDaC5uB0S3T1NEoHg0SyEYtWI7ZJ18C7KeRgaF97nzG7dQ/pub?start=false&loop=false&delayms=3000",
-        "contentId": "block_1767602602393",
-        "deckTitle": "Unit 6 - What do you do.pptx",
-        "publishedSlide": 6
-      },
-      "action": "remain-hard-blocked",
-      "reason": "The authoritative published source manifest has no slide 6 entry; no prompt or answer key can be derived without inventing source content."
-    },
     {
       "unit": 38,
       "lessonId": "cmnmm9qog001kw1qkht1v6i81",
@@ -1271,6 +1254,43 @@
       "reviewStatus": "reviewed-source-aligned-open-response",
       "revisedPrompt": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.",
       "rationale": "The original review label is generic, while the published slide gives the exact teacher-led discussion or presentation prompt. The patch preserves the original label and records the literal prompt and reading source. This is learner-generated open response, so no answerItems are added."
+    }
+  ],
+  "recoveredSourceSlides": [
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "slide": 6,
+      "itemId": null,
+      "blockerCode": "exercise-review-slide-missing",
+      "action": "recover-source-slide",
+      "reviewStatus": "recovered-source-slide",
+      "publishedSourceInstruction": "Look at the pictures and repeat the words you hear.",
+      "sourceEvidence": [
+        "Look at the pictures and repeat the words you hear.",
+        "FARMER",
+        "FIREFIGHTER",
+        "MECHANIC",
+        "CHEMIST",
+        "CHEF",
+        "PILOT",
+        "TEACHER",
+        "DOCTOR",
+        "Useful expressions: I am a doctor / She works as a waitress / He bakes cakes."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmk0wvpbg0001jp04c8e0dhjt.json",
+        "sha256": "edd9a665774097c5f7aadb760d89adcf3dd36c83670acba362ed8d7b05a95a37",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS2SkpEvv-4pNugWriBeDaC5uB0S3T1NEoHg0SyEYtWI7ZJ18C7KeRgaF97nzG7dQ/pub?start=false&loop=false&delayms=3000",
+        "contentId": "block_1767602602393",
+        "deckTitle": "Unit 6 - What do you do.pptx",
+        "publishedSlide": 6,
+        "publishedSourceSlide": 6,
+        "internalPageId": 6
+      },
+      "recoveryDocument": "docs/audit/unit6-slide6-recovery.json",
+      "answerItems": [],
+      "reason": "The published deck and read-only source manifest both contain native slide 6. The slide is recovered as exact vocabulary content; no exercise item or answer key is synthesized."
     }
   ]
 }
