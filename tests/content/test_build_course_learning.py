@@ -530,6 +530,96 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertFalse(any(row["data"].get("type") == "image" for row in plan["nextRows"]))
         self.assertFalse(any(row["data"].get("type") == "audio" for row in plan["nextRows"]))
 
+    def test_native_image_refs_require_confirmed_instructional_role(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "sourceUrl": "https://slides.example/native-image-role",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Where are you from?",
+                "slideCount": 1,
+                "slides": [{"number": 1, "title": "Art", "visibleTexts": ["Art"]}],
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            asset = Path(directory) / "instructional-figure.png"
+            asset.write_bytes(b"fixture image")
+            native_audit = {
+                "records": [
+                    {
+                        "unit": 2,
+                        "status": "ok",
+                        "candidate": {"id": "native-image-role-2", "title": "Where are you from?"},
+                        "native": {
+                            "slides": [
+                                {
+                                    "number": 1,
+                                    "texts": ["Art"],
+                                    "imageRefs": [
+                                        {"localPath": str(Path(directory) / "missing-logo.png"), "role": "logo"},
+                                        {"localPath": str(Path(directory) / "missing-candidate.png"), "role": "instructional-candidate"},
+                                        {"localPath": str(asset), "classification": "figure", "alt": "Confirmed figure"},
+                                    ],
+                                }
+                            ]
+                        },
+                    }
+                ]
+            }
+
+            plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertTrue(plan["publishable"])
+        self.assertEqual(plan["blockers"], [])
+        images = [row for row in plan["nextRows"] if row["data"].get("type") == "image"]
+        self.assertEqual(len(images), 1)
+        self.assertEqual(images[0]["data"]["assetPath"], str(asset.resolve()))
+        self.assertEqual(images[0]["data"]["alt"], "Confirmed figure")
+
+    def test_required_picture_prompt_blocks_without_confirmed_figure_evidence(self) -> None:
+        source = {
+            "courseId": COURSE_ID,
+            "lesson": {"id": LESSON_ID, "order": 2, "title": "Where are you from?"},
+            "sourceUrl": "https://slides.example/required-picture",
+            "status": "ok",
+            "deck": {
+                "deckTitle": "Where are you from?",
+                "slideCount": 1,
+                "slides": [
+                    {
+                        "number": 1,
+                        "title": "Picture Practice",
+                        "visibleTexts": ["Picture Practice", "Look at the picture and answer the question."],
+                    }
+                ],
+            },
+        }
+        native_audit = {
+            "records": [
+                {
+                    "unit": 2,
+                    "status": "ok",
+                    "candidate": {"id": "required-picture-2", "title": "Where are you from?"},
+                    "native": {
+                        "slides": [
+                            {
+                                "number": 1,
+                                "texts": ["Picture Practice", "Look at the picture and answer the question."],
+                                "imageRefs": [{"url": "https://assets.example/logo.png", "role": "logo"}],
+                            }
+                        ]
+                    },
+                }
+            ]
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, native_audit=native_audit)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "native-figure-required" and blocker["slide"] == 1 for blocker in plan["blockers"]))
+        self.assertFalse(any(blocker["code"] == "native-figure-untraceable" for blocker in plan["blockers"]))
+
     def test_audio_manifest_with_wrong_lesson_or_slide_is_not_attached(self) -> None:
         source = source_fixture()
         source["deck"]["slides"][5].pop("media")

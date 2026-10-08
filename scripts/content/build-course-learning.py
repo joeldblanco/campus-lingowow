@@ -348,6 +348,54 @@ def _is_audio_required(slide: Mapping[str, Any]) -> bool:
     )
 
 
+_PICTURE_REFERENCE_PATTERN = re.compile(r"\b(?:picture|photo(?:graph)?|image|illustration)\b", re.IGNORECASE)
+_PICTURE_ACTION_PATTERN = re.compile(
+    r"\b(?:look|see|describe|identify|match|choose|select|point|talk|discuss|answer|complete|write|what|which)\b",
+    re.IGNORECASE,
+)
+_PICTURE_TITLE_LABELS = {"picture", "pictures", "photo", "photos", "image", "images", "illustration", "illustrations"}
+
+
+def _is_picture_prompt_required(slide: Mapping[str, Any]) -> bool:
+    """Return whether authored slide text requires a confirmed instructional image."""
+
+    evidence = " ".join(_evidence_texts(slide)).strip()
+    if not evidence or not _PICTURE_REFERENCE_PATTERN.search(evidence):
+        return False
+    title = _normalise(slide.get("title")).casefold()
+    if title in _PICTURE_TITLE_LABELS:
+        return True
+    return bool(_PICTURE_ACTION_PATTERN.search(evidence))
+
+
+_CONFIRMED_FIGURE_LABELS = {
+    "figure",
+    "figures",
+    "illustration",
+    "illustrations",
+    "instructional",
+    "instructional-asset",
+    "instructional-figure",
+    "instructional-image",
+    "instructional-illustration",
+}
+
+
+def _is_confirmed_native_figure(item: Any, collection: str) -> bool:
+    """Accept generic image collections only with an explicit reviewed role."""
+
+    if collection in {"figures", "instructionalImages", "illustrations"}:
+        return True
+    if not isinstance(item, Mapping):
+        return False
+    labels = {
+        re.sub(r"[^a-z0-9]+", "-", _text(item.get(field)).casefold()).strip("-")
+        for field in ("role", "classification", "assetType", "kind", "sourceType")
+        if _text(item.get(field))
+    }
+    return bool(labels & _CONFIRMED_FIGURE_LABELS)
+
+
 def _video_urls(slide: Mapping[str, Any]) -> list[str]:
     values: list[str] = []
     for item in _as_list(slide.get("media")):
@@ -383,6 +431,8 @@ def _native_figures(slide: Mapping[str, Any]) -> list[Mapping[str, Any]]:
     result: list[Mapping[str, Any]] = []
     for key in ("figures", "instructionalImages", "illustrations", "imageRefs", "images"):
         for item in _as_list(native.get(key)):
+            if not _is_confirmed_native_figure(item, key):
+                continue
             if isinstance(item, Mapping):
                 result.append(item)
             elif _text(item):
@@ -655,6 +705,8 @@ def _native_figure_entries(native_slide: Mapping[str, Any]) -> list[Mapping[str,
     result: list[Mapping[str, Any]] = []
     for key in ("figures", "instructionalImages", "illustrations", "imageRefs", "images"):
         for item in _as_list(native_slide.get(key)):
+            if not _is_confirmed_native_figure(item, key):
+                continue
             if isinstance(item, Mapping):
                 result.append(item)
             elif _text(item):
@@ -791,7 +843,8 @@ def _prepare_native_audit(
                 paragraphs = _unique_texts([*paragraphs, *(_nested_text(value) for value in _as_list(shape.get("paragraphs")))])
         native_tables = _native_tables_payload(native_slide)
         figures: list[dict[str, Any]] = []
-        for figure in _native_figure_entries(native_slide):
+        figure_entries = _native_figure_entries(native_slide)
+        for figure in figure_entries:
             figure_lesson = _text(figure.get("lessonId") or figure.get("sourceLessonId"))
             figure_slide = figure.get("slideNumber", figure.get("slide", figure.get("slideNo")))
             if figure_lesson and figure_lesson != _source_lesson_id(source):
@@ -852,6 +905,7 @@ def _prepare_native_audit(
             "paragraphs": paragraphs,
             "tables": native_tables,
             "figures": figures,
+            "figureEvidencePresent": bool(figure_entries),
             "audio": copy.deepcopy(audio_entries),
             "nativeTexts": copy.deepcopy(_alignment_texts(native_slide)),
         }
@@ -1135,6 +1189,7 @@ def _original_source(
             "paragraphs": copy.deepcopy(_as_list(native.get("paragraphs"))),
             "tables": copy.deepcopy(native.get("tables")),
             "figures": copy.deepcopy(_as_list(native.get("figures"))),
+            "figureEvidencePresent": bool(native.get("figureEvidencePresent")),
             "audio": copy.deepcopy(_as_list(native.get("audio"))),
         }
     return result
@@ -1162,6 +1217,19 @@ def _native_block_specs(
         audio_items[0] if audio_items else None,
     )
     video_urls = _video_urls(slide)
+    native_figures = _native_figures(slide)
+    native_evidence = _native_audit_payload(slide)
+    if _is_picture_prompt_required(slide) and not native_figures and not (
+        native_evidence and native_evidence.get("figureEvidencePresent")
+    ):
+        _add_blocker(
+            blockers,
+            _blocker(
+                "native-figure-required",
+                number,
+                "The authored picture prompt requires confirmed instructional figure evidence.",
+            ),
+        )
     if audio_required:
         if audio_item is None or not _audio_url(audio_item):
             _add_blocker(
@@ -1301,7 +1369,7 @@ def _native_block_specs(
             )
         )
 
-    for figure in _native_figures(slide):
+    for figure in native_figures:
         asset_path = _text(figure.get("assetPath"))
         if not asset_path:
             continue
