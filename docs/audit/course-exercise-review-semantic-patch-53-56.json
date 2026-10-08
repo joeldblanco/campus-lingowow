@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Manual semantic exercise-review patch for Units 53–56 slide 12 grammar production and the U53 cross-slide listening-audio link; proposal only, not direct composer input.",
+  "scope": {
+    "units": [
+      53,
+      56
+    ],
+    "lessonIds": [
+      "cmnmm9vul002tw1qkq6vmdn9t",
+      "cmnmm9w6q002ww1qkmhschbtj",
+      "cmnmm9wiv002zw1qkz23p6kdp",
+      "cmnmm9wv00032w1qkxr02azgp"
+    ],
+    "slides": [
+      12
+    ]
+  },
+  "sourceAudit": "docs/audit/course-builder-blocker-classification.json",
+  "exerciseReview": "docs/audit/course-exercise-review.json",
+  "sourcePolicy": {
+    "publishedSlidesAuthoritative": true,
+    "sourceFilesReadOnly": true,
+    "preserveOriginalPromptsAndProvenance": true,
+    "noInventedAudioOrIdentities": true,
+    "ambiguousClaimsMustBeRewordedOrRemainBlocked": true,
+    "openResponseNeverGetsSyntheticAnswerKey": true,
+    "reviewedOpenResponseHasNoSyntheticAnswerKey": true,
+    "crossSlideAudioKeepsOriginalShaAndSourcePlacement": true
+  },
+  "summary": {
+    "resolvedCount": 4,
+    "resolvedItems": [
+      "u53-s12-a",
+      "u54-s12-a",
+      "u55-s12-a",
+      "u56-s12-a"
+    ],
+    "remainingHardBlockCount": 0,
+    "sourceMismatchEntriesReviewed": 4,
+    "resolvedCodes": {
+      "exercise-review-evidence-mismatch": {
+        "resolved": 4,
+        "remaining": 0
+      }
+    },
+    "reviewedOpenResponseCount": 4,
+    "crossSlideAudioLinkCount": 1
+  },
+  "resolved": [],
+  "remainingHardBlocks": [],
+  "reviewedOpenResponse": [
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "slide": 12,
+      "itemId": "u53-s12-a",
+      "sourceItemId": "u53-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+        "sha256": "fc9709bcf3de1372ef184ca60630df138cb37ed45f2723675ccd95bb6e4083e8",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9vxn002uw1qkj2y4mtcl",
+        "deckTitle": "NEW Never say die- Unit 53.pptx",
+        "publishedSlide": 12
+      },
+      "action": "replace-generic-evidence-with-published-source-open-response",
+      "reason": "The prior evidence was a generic placeholder. The published slide gives an exact learner-generated writing instruction and an authored example; retain both as source evidence and keep the activity open response without a fabricated key.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+        "0. If we had called before, they would be waiting."
+      ],
+      "sourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+        "0. If we had called before, they would be waiting."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "0. If we had called before, they would be waiting."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "teacherClassroomIntent": "Keep the learner-generated sentences available for teacher/classroom review; no unique canonical answer is asserted.",
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are unreal in both the past and present. Follow the example.",
+      "rationale": "The source instruction and example are copied from published slide 12. The task asks the learner to write eight sentences, so it remains an open response with no synthetic answer key; the original generic review prompt and provenance remain recorded."
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "slide": 12,
+      "itemId": "u54-s12-a",
+      "sourceItemId": "u54-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9w6q002ww1qkmhschbtj.json",
+        "sha256": "3a74c9931910a1b3b91eeced592839c360f09a380a446aca026435d43889d012",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9w9s002xw1qk34wb2go5",
+        "deckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+        "publishedSlide": 12
+      },
+      "action": "replace-generic-evidence-with-published-source-open-response",
+      "reason": "The prior evidence was a generic placeholder. The published slide gives an exact learner-generated writing instruction and an authored example; retain both as source evidence and keep the activity open response without a fabricated key.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+        "0. If they called before, they would have gotten an answer."
+      ],
+      "sourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+        "0. If they called before, they would have gotten an answer."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "0. If they called before, they would have gotten an answer."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "teacherClassroomIntent": "Keep the learner-generated sentences available for teacher/classroom review; no unique canonical answer is asserted.",
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that are hypothetical in the present with a past result. Follow the example.",
+      "rationale": "The source instruction and example are copied from published slide 12. The task asks the learner to write eight sentences, so it remains an open response with no synthetic answer key; the original generic review prompt and provenance remain recorded."
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "slide": 12,
+      "itemId": "u55-s12-a",
+      "sourceItemId": "u55-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9wiv002zw1qkz23p6kdp.json",
+        "sha256": "d98a0f676e58e9c7fd286acb6a2cc470cd4019d44791046ba143152122530d27",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9wly0030w1qk4vrdc4a7",
+        "deckTitle": "NEW That's anyone's call - Unit 55.pptx",
+        "publishedSlide": 12
+      },
+      "action": "replace-generic-evidence-with-published-source-open-response",
+      "reason": "The prior evidence was a generic placeholder. The published slide gives an exact learner-generated writing instruction and an authored example; retain both as source evidence and keep the activity open response without a fabricated key.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+        "0. If we weren’t going to call you for confirmation tonight, we would have not said that."
+      ],
+      "sourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+        "0. If we weren’t going to call you for confirmation tonight, we would have not said that."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "0. If we weren’t going to call you for confirmation tonight, we would have not said that."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "teacherClassroomIntent": "Keep the learner-generated sentences available for teacher/classroom review; no unique canonical answer is asserted.",
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the grammar learned in the lesson, write 8 sentences expressing events or actions that express a hypothetical future with a past result. Follow the example.",
+      "rationale": "The source instruction and example are copied from published slide 12. The task asks the learner to write eight sentences, so it remains an open response with no synthetic answer key; the original generic review prompt and provenance remain recorded."
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "slide": 12,
+      "itemId": "u56-s12-a",
+      "sourceItemId": "u56-s12-a",
+      "blockerCode": "exercise-review-evidence-mismatch",
+      "originalPrompt": "Complete the grammar practice shown on the published slide.",
+      "originalReviewStatus": "open-response-preserved",
+      "responseMode": "open-response",
+      "publishedSourceInstruction": "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+      "originalSourceEvidence": [
+        "A. Complete the grammar exercise on the published slide."
+      ],
+      "provenance": {
+        "file": "docs/audit/source-files/cmnmm9wv00032w1qkxr02azgp.json",
+        "sha256": "aedae0aeef4f2ce5b9e37c5d59594a0633c964bf9ee971cfd269333402e4d429",
+        "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+        "contentId": "cmnmm9wy10033w1qk25duuj99",
+        "deckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+        "publishedSlide": 12
+      },
+      "action": "replace-generic-evidence-with-published-source-open-response",
+      "reason": "The prior evidence was a generic placeholder. The published slide gives an exact learner-generated writing instruction and an authored example; retain both as source evidence and keep the activity open response without a fabricated key.",
+      "originalReviewSlide": 12,
+      "publishedSourceSlide": 12,
+      "publishedSourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+        "0. Developing sustainable energy will give this world a better chance."
+      ],
+      "sourceEvidence": [
+        "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+        "0. Developing sustainable energy will give this world a better chance."
+      ],
+      "sourceEvidenceLocations": [
+        {
+          "slide": 12,
+          "visibleTextIndex": 0,
+          "text": "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example."
+        },
+        {
+          "slide": 12,
+          "visibleTextIndex": 1,
+          "text": "0. Developing sustainable energy will give this world a better chance."
+        }
+      ],
+      "sourceTaskType": "grammar-production",
+      "answerItems": [],
+      "doNotAutoGrade": true,
+      "teacherClassroomIntent": "Keep the learner-generated sentences available for teacher/classroom review; no unique canonical answer is asserted.",
+      "reviewStatus": "reviewed-source-aligned-open-response",
+      "revisedPrompt": "A. Using the grammar learned in the lesson, write 8 sentences using right phrases to introduce simple and complex topics. Follow the example.",
+      "rationale": "The source instruction and example are copied from published slide 12. The task asks the learner to write eight sentences, so it remains an open response with no synthetic answer key; the original generic review prompt and provenance remain recorded."
+    }
+  ],
+  "crossSlideAudioLinks": [
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "audioIndex": 2,
+      "sourceAudioId": "1MKVNsi26svUAQ6Rw6Px4jqtQ467e7KPZ",
+      "sourceAudioSha256": "e2dbfac9997ff26812ae77a103ccf0d36de922fa0ed61b5246e9723973fe7e37",
+      "sourceAudioPublishedSlide": 12,
+      "listeningPromptSlide": 13,
+      "listeningPrompt": "B. Listen to the audio and answer the questions your teacher makes.",
+      "sourceManifest": "docs/audit/unit53-56-drive-recovery.json",
+      "reviewManifest": "docs/audit/unit53-56-listening-recovery-review.json",
+      "action": "retain-source-slide-12-audio-and-link-to-slide-13-listening-prompt",
+      "runtimeHint": "Resolve the audio by lessonId + audioIndex + sourceAudioSha256 when rendering the slide 13 listening activity; do not relabel or duplicate the original audio as slide 13 media.",
+      "reason": "Published source slide 12 carries the recovered media placement metadata, while published slide 13 carries the exact B listening prompt. The audio source slide and SHA remain unchanged."
+    }
+  ]
+}
