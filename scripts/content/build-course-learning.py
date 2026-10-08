@@ -3459,12 +3459,93 @@ def _exercise_review_specs(
     multiple_specs: list[tuple[str, dict[str, Any]]] = []
     open_specs: list[tuple[str, dict[str, Any]]] = []
     listening_blocked = False
+    active_multiple_scope: tuple[Any, ...] | None = None
+    active_multiple_items: list[dict[str, Any]] = []
+    active_multiple_review_items: list[dict[str, Any]] = []
+
+    def flush_multiple_group() -> None:
+        """Emit one learner step for the current consecutive MC activity."""
+
+        nonlocal active_multiple_scope, active_multiple_items, active_multiple_review_items
+        if not active_multiple_items:
+            active_multiple_scope = None
+            active_multiple_review_items = []
+            return
+        scope_data: dict[str, Any] = {
+            "sourceSlide": number,
+            "responseScope": active_multiple_scope[1],
+            "kind": active_multiple_scope[2],
+        }
+        if active_multiple_scope[3] and not active_multiple_scope[3].startswith("__missing-audio-scope__:"):
+            scope_data["sourceAudioSha256"] = active_multiple_scope[3]
+        if active_multiple_scope[4]:
+            scope_data["activityId"] = active_multiple_scope[4]
+        grouped_payload: dict[str, Any]
+        if len(active_multiple_items) == 1:
+            # Keep the existing single-question shape for isolated choices;
+            # only a real consecutive group needs the guided multi-step form.
+            single_item = active_multiple_items[0]
+            grouped_payload = {
+                "question": single_item["question"],
+                "options": single_item["options"],
+                "correctOptionId": single_item["correctOptionId"],
+            }
+        else:
+            grouped_payload = {"items": copy.deepcopy(active_multiple_items)}
+        grouped_payload["data"] = {
+            "exerciseReviewItems": copy.deepcopy(active_multiple_review_items),
+            "multipleChoiceScope": scope_data,
+        }
+        if len(active_multiple_review_items) == 1:
+            grouped_payload["data"]["exerciseReview"] = copy.deepcopy(active_multiple_review_items[0])
+        multiple_specs.append(("multiple_choice", grouped_payload))
+        active_multiple_scope = None
+        active_multiple_items = []
+        active_multiple_review_items = []
+
+    def multiple_scope(item: Mapping[str, Any], listening_item: bool) -> tuple[Any, ...]:
+        source_audio = _text(
+            item.get("sourceAudioSha256")
+            or item.get("audioSha256")
+            or item.get("sourceAudioDigest")
+        )
+        if listening_item and not source_audio:
+            source_audio = _audio_digest(audio_item) if audio_item else ""
+            if not source_audio:
+                # Without a verified clip digest, do not merge two listening
+                # choices merely because they share a slide number.
+                source_audio = f"__missing-audio-scope__:{_text(item.get('id'))}"
+        raw_slide = item.get("slideNumber") or item.get("sourceSlide") or number
+        try:
+            source_slide = int(raw_slide)
+        except (TypeError, ValueError):
+            source_slide = number
+        activity_id = _text(
+            item.get("activityId")
+            or item.get("sourceActivityId")
+            or item.get("groupId")
+            or item.get("activityKey")
+        )
+        return (
+            source_slide,
+            "listening" if listening_item else "reading",
+            _text(item.get("kind")).casefold(),
+            source_audio,
+            activity_id,
+        )
+
     for item in review_items:
         status = _text(item.get("reviewStatus")).casefold()
         item_id = _text(item.get("id")) or f"slide-{number}-item"
         kind = _text(item.get("kind")).casefold()
         response_mode = _text(item.get("responseMode")).casefold()
         listening_item = "listen" in kind or "audio" in response_mode or response_mode == "teacher-listening"
+        review_options = _exercise_review_options(item)
+        # Consecutive reviewed choices are one learner activity. Any open,
+        # blocked, malformed, or teacher-only item closes the group so that a
+        # later choice cannot cross an authored activity boundary.
+        if status != "reviewed" or not review_options:
+            flush_multiple_group()
         has_transcript = bool(audio_item and _audio_transcript(audio_item))
         reflection_prompt = _reviewed_listening_reflection_prompt(item)
         is_open_listening_reflection = bool(reflection_prompt)
@@ -3552,23 +3633,37 @@ def _exercise_review_specs(
         if options and status == "reviewed":
             choice_options, correct_option_id = _multiple_choice_options(options, answer_key, number)
             if not correct_option_id or correct_option_id not in {option["id"] for option in choice_options}:
+                flush_multiple_group()
                 _add_blocker(blockers, _blocker("exercise-review-answer-unmatched", number, f"Reviewed answer for item {item_id!r} does not match its source options."))
                 # Do not silently downgrade a malformed reviewed choice into a
                 # short-answer key; the source option/key relationship needs
                 # human review first.
                 continue
             else:
-                multiple_specs.append(
-                    (
-                        "multiple_choice",
-                        {
-                            "question": _text(item.get("prompt")),
-                            "options": choice_options,
-                            "correctOptionId": correct_option_id,
-                            "data": _exercise_review_metadata(item),
-                        },
-                    )
+                scope = multiple_scope(item, listening_item)
+                if active_multiple_scope != scope:
+                    flush_multiple_group()
+                    active_multiple_scope = scope
+                choice: dict[str, Any] = {
+                    "id": f"course-review-{number}-{item_id}-{len(active_multiple_items) + 1:03d}",
+                    "question": _text(item.get("prompt")),
+                    "options": choice_options,
+                    "correctOptionId": correct_option_id,
+                    "sourceReviewId": item_id,
+                    "sourcePrompt": _text(item.get("prompt")),
+                }
+                evidence = item.get("evidence") or item.get("sourceEvidence")
+                if evidence not in (None, "", [], {}):
+                    choice["sourceEvidence"] = copy.deepcopy(evidence)
+                source_audio = _text(
+                    item.get("sourceAudioSha256")
+                    or item.get("audioSha256")
+                    or item.get("sourceAudioDigest")
                 )
+                if source_audio:
+                    choice["sourceAudioSha256"] = source_audio
+                active_multiple_items.append(choice)
+                active_multiple_review_items.append(copy.deepcopy(dict(item)))
                 continue
 
         answer_items = [value for value in _as_list(item.get("answerItems")) if isinstance(value, Mapping)]
@@ -3724,6 +3819,7 @@ def _exercise_review_specs(
                 if teacher_only:
                     payload["doNotAutoGrade"] = True
                 open_specs.append((native_type, payload))
+    flush_multiple_group()
     specs: list[tuple[str, dict[str, Any]]] = []
     if short_items:
         grammar_transform = any("grammar-transform" in _text(item.get("kind")).casefold() for item in review_items)

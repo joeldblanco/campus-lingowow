@@ -2751,6 +2751,94 @@ class BuildCourseLearningTests(unittest.TestCase):
         self.assertTrue(all(item["correctOptionId"] == "a" for item in multiple_choice["data"]["items"]))
         self.assertFalse(any(row["data"].get("type") == "text" and row["data"]["data"].get("sourceSlides") == [6] for row in generated))
 
+    def test_reviewed_reading_choices_bundle_into_one_step_with_provenance(self) -> None:
+        source = source_fixture()
+        slide = {"number": 8, "title": "Read and choose", "visibleTexts": ["Read the passage."]}
+        items = [
+            {
+                "id": f"reading-q{index}",
+                "kind": "reading-true-false",
+                "prompt": f"Statement {index}",
+                "reviewStatus": "reviewed",
+                "options": ["T", "F"],
+                "answerItems": [{"canonical": "T" if index % 2 else "F", "evidence": f"Evidence {index}"}],
+                "evidence": f"Evidence {index}",
+            }
+            for index in range(1, 9)
+        ]
+        blockers: list[dict] = []
+        specs, listening_blocked = builder._exercise_review_specs(
+            slide,
+            items,
+            blockers,
+            None,
+            source,
+        )
+
+        self.assertFalse(listening_blocked)
+        self.assertEqual([native_type for native_type, _payload in specs], ["multiple_choice"])
+        payload = specs[0][1]
+        self.assertEqual(len(payload["items"]), 8)
+        self.assertEqual([item["sourceReviewId"] for item in payload["items"]], [f"reading-q{index}" for index in range(1, 9)])
+        self.assertEqual([item["correctOptionId"] for item in payload["items"]], [
+            "course-choice-8-001",
+            "course-choice-8-002",
+            "course-choice-8-001",
+            "course-choice-8-002",
+            "course-choice-8-001",
+            "course-choice-8-002",
+            "course-choice-8-001",
+            "course-choice-8-002",
+        ])
+        self.assertEqual(
+            [item["evidence"] for item in payload["data"]["exerciseReviewItems"]],
+            [f"Evidence {index}" for index in range(1, 9)],
+        )
+        self.assertEqual(payload["data"]["multipleChoiceScope"]["responseScope"], "reading")
+
+    def test_multiple_choice_bundle_does_not_cross_open_or_audio_scope(self) -> None:
+        source = source_fixture(complete_audio=True)
+        slide = {"number": 8, "title": "Mixed practice", "visibleTexts": ["Choose the answer."]}
+
+        def choice(item_id: str, prompt: str, *, kind: str = "reading-comprehension", audio_sha: str = "") -> dict:
+            item = {
+                "id": item_id,
+                "kind": kind,
+                "prompt": prompt,
+                "reviewStatus": "reviewed",
+                "options": ["A", "B", "C", "D"],
+                "answerItems": [{"canonical": "A", "evidence": f"Evidence {item_id}"}],
+            }
+            if audio_sha:
+                item["sourceAudioSha256"] = audio_sha
+                item["responseMode"] = "audio"
+            return item
+
+        items = [
+            choice("reading-1", "Reading one"),
+            {
+                "id": "open-1",
+                "kind": "open-writing",
+                "prompt": "Write a response.",
+                "reviewStatus": "open-response-preserved",
+            },
+            choice("listening-1", "Listening one", kind="listening", audio_sha="audio-one"),
+            choice("listening-2", "Listening two", kind="listening", audio_sha="audio-one"),
+            choice("listening-other", "Listening other clip", kind="listening", audio_sha="audio-two"),
+        ]
+        blockers: list[dict] = []
+        specs, _listening_blocked = builder._exercise_review_specs(slide, items, blockers, None, source)
+        multiple = [payload for native_type, payload in specs if native_type == "multiple_choice"]
+
+        self.assertEqual(len(multiple), 3)
+        self.assertEqual(multiple[0]["question"], "Reading one")
+        self.assertEqual(len(multiple[1]["items"]), 2)
+        self.assertEqual(multiple[2]["question"], "Listening other clip")
+        self.assertEqual(multiple[0]["data"]["multipleChoiceScope"]["responseScope"], "reading")
+        self.assertEqual(multiple[1]["data"]["multipleChoiceScope"]["sourceAudioSha256"], "audio-one")
+        self.assertEqual(multiple[2]["data"]["multipleChoiceScope"]["sourceAudioSha256"], "audio-two")
+        self.assertTrue(any(native_type == "essay" for native_type, _payload in specs))
+
     def test_listening_review_uses_one_based_audio_ordinal_and_prefers_complete_stage(self) -> None:
         source = source_fixture(complete_audio=True)
         source["deck"]["slides"] = [
