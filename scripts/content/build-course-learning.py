@@ -2197,6 +2197,13 @@ def _original_source(
             if value:
                 audio_source[key] = value
         result["audio"] = audio_source
+    slide_data = slide.get("data") if isinstance(slide.get("data"), Mapping) else {}
+    for key in ("tableReview", "tableSemantics"):
+        value = slide.get(key)
+        if not isinstance(value, Mapping):
+            value = slide_data.get(key)
+        if isinstance(value, Mapping):
+            result[key] = copy.deepcopy(dict(value))
     native = _native_audit_payload(slide)
     if native is not None:
         result["nativeEvidence"] = {
@@ -2389,6 +2396,108 @@ def _has_table_instruction(slide: Mapping[str, Any], full_text: str) -> bool:
     )
 
 
+def _reviewed_text_only_table(
+    slide: Mapping[str, Any],
+    lesson_id: str,
+) -> dict[str, Any] | None:
+    """Return a source-audited text-only table decision when it is exact.
+
+    Composer review is an explicit clearance for a chart reference whose
+    authored cells were not recoverable. It must match the published slide and
+    carry its own reviewed evidence before it can resolve the table blocker.
+    """
+
+    raw_review = slide.get("tableReview")
+    if not isinstance(raw_review, Mapping):
+        slide_data = slide.get("data")
+        raw_review = slide_data.get("tableReview") if isinstance(slide_data, Mapping) else None
+    semantics = slide.get("tableSemantics")
+    if not isinstance(raw_review, Mapping) or not isinstance(semantics, Mapping):
+        return None
+
+    try:
+        review_slide = int(raw_review.get("sourceSlide"))
+    except (TypeError, ValueError):
+        return None
+    if review_slide != _slide_number(slide):
+        return None
+    if raw_review.get("schemaVersion") != 1:
+        return None
+    review_lesson = _text(raw_review.get("lessonId"))
+    if review_lesson and review_lesson != lesson_id:
+        return None
+    review_status = _text(raw_review.get("reviewStatus")).casefold().replace("_", "-")
+    if review_status not in {"reviewed-text-only", "text-only-reviewed"}:
+        return None
+    # Older audit payloads omitted this redundant boolean; the explicit
+    # text-only status, resolved semantics, and source evidence are the
+    # authoritative review fields. If present, a false value still rejects
+    # the override rather than silently clearing a blocker.
+    if "clearTableSemanticsBlocker" in raw_review and raw_review.get("clearTableSemanticsBlocker") is not True:
+        return None
+    if raw_review.get("tableReferenceResolved") is False:
+        return None
+    if _text(semantics.get("mode")).casefold() != "text-only":
+        return None
+    if semantics.get("tables") not in (None, []):
+        return None
+    if semantics.get("tableReferenceResolved") is not True:
+        return None
+
+    projection = raw_review.get("projection")
+    if not isinstance(projection, Mapping):
+        return None
+    if _text(projection.get("mode")).casefold() != "text-only":
+        return None
+    if projection.get("approved") is True or projection.get("tables") not in (None, []):
+        return None
+    if "tableCount" in projection and projection.get("tableCount") != 0:
+        return None
+    projection_source = _text(projection.get("source")).casefold()
+    if projection_source and projection_source not in {"published-visible-text", "text-only-source"}:
+        return None
+
+    table_block = raw_review.get("tableBlock")
+    if table_block is not None:
+        if not isinstance(table_block, Mapping):
+            return None
+        if _text(table_block.get("mode")).casefold() != "text-only":
+            return None
+        if table_block.get("tableCount") not in (None, 0):
+            return None
+        if table_block.get("tableReferenceResolved") is False:
+            return None
+
+    evidence = raw_review.get("sourceEvidence")
+    if not isinstance(evidence, Mapping):
+        return None
+    published_texts = _unique_texts(evidence.get("publishedVisibleTexts"))
+    if not published_texts:
+        return None
+    actual_texts = {_normalise(value).casefold() for value in _slide_texts(slide)}
+    if any(value.casefold() not in actual_texts for value in published_texts):
+        return None
+
+    references = [value for value in _as_list(raw_review.get("sourceRefs")) if isinstance(value, Mapping)]
+    ref_hash = ""
+    for key, value in raw_review.items():
+        if _text(key).casefold() in {"refhash", "sourcerefhash", "sourcesha256", "sourcedigest"}:
+            ref_hash = _text(value)
+            break
+    valid_hash = bool(ref_hash and re.fullmatch(r"[0-9a-f]{64}", ref_hash.casefold()))
+    valid_reference = any(
+        bool(re.fullmatch(r"[0-9a-f]{64}", _text(reference.get("sha256")).casefold()))
+        for reference in references
+    )
+    if not valid_hash and not valid_reference:
+        return None
+
+    return {
+        "tableReview": copy.deepcopy(dict(raw_review)),
+        "tableSemantics": copy.deepcopy(dict(semantics)),
+    }
+
+
 def _exercise_review_ai_context(
     slide: Mapping[str, Any],
     item: Mapping[str, Any],
@@ -2476,6 +2585,39 @@ def _exercise_review_ambiguous_open_response(
     return learner_prompt, original_prompt, feedback_context
 
 
+def _exercise_review_teacher_notes(item: Mapping[str, Any]) -> tuple[str, dict[str, Any]] | None:
+    """Read an explicit reviewed teacher-led instruction as teacher notes.
+
+    A teacher-listening item stays blocked unless the source auditor supplies
+    this reviewed marker. The marker carries the authored instruction only; it
+    never turns an unavailable clip into playable audio.
+    """
+
+    raw_notes = item.get("teacherNotes")
+    if raw_notes is None:
+        raw_notes = item.get("teacher_notes")
+    config = raw_notes if isinstance(raw_notes, Mapping) else {}
+    item_status = _text(item.get("reviewStatus")).casefold().replace("_", "-")
+    note_status = _text(config.get("reviewStatus") or config.get("status")).casefold().replace("_", "-")
+    reviewed = (
+        item.get("teacherNotesReviewed") is True
+        or config.get("reviewed") is True
+        or item_status in {"reviewed-teacher-notes", "teacher-notes-preserved"}
+        or note_status in {"reviewed", "reviewed-teacher-notes", "teacher-notes-preserved"}
+    )
+    if not reviewed:
+        return None
+    content = _text(
+        config.get("sourceInstruction")
+        or config.get("content")
+        or config.get("prompt")
+        or item.get("sourceInstruction")
+    )
+    if not content:
+        return None
+    return content, copy.deepcopy(dict(config))
+
+
 def _exercise_review_conversation_metadata(item: Mapping[str, Any]) -> dict[str, Any]:
     """Preserve a reviewed role-play as a reusable conversation scenario."""
 
@@ -2527,6 +2669,24 @@ def _exercise_review_specs(
         has_transcript = bool(audio_item and _audio_transcript(audio_item))
         reflection_prompt = _reviewed_listening_reflection_prompt(item)
         is_open_listening_reflection = bool(reflection_prompt)
+        reviewed_teacher_notes = _exercise_review_teacher_notes(item) if listening_item else None
+        if reviewed_teacher_notes is not None:
+            teacher_content, teacher_notes_metadata = reviewed_teacher_notes
+            teacher_payload: dict[str, Any] = {
+                "content": _readable_html([teacher_content]),
+                "format": "html",
+                "hiddenFromLearners": True,
+                "sourceRole": "teacher-guided-listening",
+                "sourcePrompt": _text(item.get("prompt")),
+                "reviewStatus": status,
+                "sourceReviewId": item_id,
+                "doNotAutoGrade": True,
+                "data": _exercise_review_metadata(item),
+            }
+            teacher_payload["data"]["responseMode"] = "teacher-notes-preserved"
+            teacher_payload["data"]["teacherNotes"] = teacher_notes_metadata
+            open_specs.append(("teacher_notes", teacher_payload))
+            continue
         if status in {"blocked-awaiting-transcript", "blocked", "listening-blocked"} and not (listening_item and has_transcript):
             if listening_item:
                 if is_open_listening_reflection:
@@ -2839,7 +2999,11 @@ def _native_block_specs(
     texts = _meaningful_texts(slide)
     evidence_texts = _evidence_texts(slide)
     full_text = "\n".join(evidence_texts).strip()
-    tables = _tables(slide)
+    table_review = _reviewed_text_only_table(slide, lesson_id)
+    # A reviewed text-only decision explicitly says that no authored matrix
+    # was recovered. Keep any raw source data in originalSource, but never
+    # allow a native supplement to invent a learner-facing table here.
+    tables = [] if table_review is not None else _tables(slide)
     listening_review_supplied = listening_review is not None
     audio_required = _is_audio_required(slide) or bool(_native_audio_items(slide)) or listening_review_supplied
     audio_items = _audio_candidates(source, slide, lesson_id, audio_manifest) if audio_required else []
@@ -2968,6 +3132,13 @@ def _native_block_specs(
         "sourceText": texts,
         "sourceTitle": _text(slide.get("title")),
     }
+    if table_review is not None:
+        common.update(
+            {
+                "tableReview": copy.deepcopy(table_review["tableReview"]),
+                "tableSemantics": copy.deepcopy(table_review["tableSemantics"]),
+            }
+        )
     if _is_overhead_source_slide(slide):
         return [
             (
@@ -2982,7 +3153,10 @@ def _native_block_specs(
             )
         ]
     teacher_listening_prompts = _teacher_led_listening_prompts(slide)
-    if teacher_listening_prompts and not audio_required:
+    # A reviewed teacher-note entry already preserves this authored
+    # instruction. Do not prepend the generic detector's duplicate note.
+    has_reviewed_teacher_note = any(native_type == "teacher_notes" for native_type, _ in review_specs)
+    if teacher_listening_prompts and not audio_required and not has_reviewed_teacher_note:
         specs.append(
             (
                 "teacher_notes",
@@ -3044,7 +3218,7 @@ def _native_block_specs(
                 },
             )
         )
-    if not tables and _has_table_instruction(slide, full_text):
+    if not tables and table_review is None and _has_table_instruction(slide, full_text):
         _add_blocker(
             blockers,
             _blocker("table-semantics-missing", number, "The source mentions a table or chart without authored cell semantics."),
@@ -3338,12 +3512,17 @@ def _row_data_metadata(
     audio: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     original_ids = [f"{lesson_id}:slide:{_slide_number(slide)}"]
-    return {
+    metadata = {
         "learningRevision": LEARNING_REVISION,
         "sourceSlides": [_slide_number(slide)],
         "originalIDs": original_ids,
         "originalSource": _original_source(source, lesson_id, source_digest, slide, audio),
     }
+    for key in ("tableReview", "tableSemantics"):
+        value = slide.get(key)
+        if isinstance(value, Mapping):
+            metadata[key] = copy.deepcopy(dict(value))
+    return metadata
 
 
 def _row_sort_key(row: Mapping[str, Any]) -> tuple[float, str]:

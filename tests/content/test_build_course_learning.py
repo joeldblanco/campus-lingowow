@@ -968,6 +968,115 @@ class BuildCourseLearningTests(unittest.TestCase):
 
         self.assertFalse(any(blocker["code"] == "table-semantics-missing" for blocker in plan["blockers"]))
 
+    def test_reviewed_text_only_table_reference_resolves_without_inventing_matrix(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 9,
+                "title": "Grammar chart",
+                "visibleTexts": ["Grammar chart", "Check the chart below.", "Use the examples."],
+                "tables": [],
+                "tableSemantics": {
+                    "mode": "text-only",
+                    "tables": [],
+                    "tableReferenceResolved": True,
+                },
+                "tableReview": {
+                    "schemaVersion": 1,
+                    "lessonId": LESSON_ID,
+                    "sourceSlide": 9,
+                    "reviewStatus": "reviewed-text-only",
+                    "clearTableSemanticsBlocker": True,
+                    "tableReferenceResolved": True,
+                    "refHash": "a" * 64,
+                    "sourceEvidence": {
+                        "publishedVisibleTexts": [
+                            "Grammar chart",
+                            "Check the chart below.",
+                            "Use the examples.",
+                        ]
+                    },
+                    "projection": {
+                        "approved": False,
+                        "mode": "text-only",
+                        "source": "published-visible-text",
+                        "tables": [],
+                    },
+                },
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        self.assertTrue(plan["publishable"])
+        self.assertFalse(any(blocker["code"] == "table-semantics-missing" for blocker in plan["blockers"]))
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        self.assertFalse(any(row["data"].get("type") == "structured-content" for row in generated))
+        text_row = next(row for row in generated if row["data"].get("type") == "text")
+        self.assertEqual(text_row["data"]["data"]["tableReview"]["sourceSlide"], 9)
+        self.assertEqual(text_row["data"]["data"]["tableSemantics"]["tables"], [])
+        self.assertIn("Check the chart below.", text_row["data"]["content"])
+        self.assertEqual(
+            text_row["data"]["data"]["originalSource"]["tableReview"]["reviewStatus"],
+            "reviewed-text-only",
+        )
+
+    def test_unreviewed_chart_reference_still_blocks_table_projection(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 9,
+                "title": "Grammar chart",
+                "visibleTexts": ["Grammar chart", "Check the chart below."],
+                "tables": [],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(
+            any(
+                blocker["code"] == "table-semantics-missing" and blocker["slide"] == 9
+                for blocker in plan["blockers"]
+            )
+        )
+
+    def test_mismatched_text_only_table_review_does_not_resolve_blocker(self) -> None:
+        source = source_fixture()
+        source["deck"]["slides"] = [
+            {
+                "number": 9,
+                "title": "Grammar chart",
+                "visibleTexts": ["Grammar chart", "Check the chart below."],
+                "tables": [],
+                "tableSemantics": {
+                    "mode": "text-only",
+                    "tables": [],
+                    "tableReferenceResolved": True,
+                },
+                "tableReview": {
+                    "schemaVersion": 1,
+                    "lessonId": LESSON_ID,
+                    "sourceSlide": 8,
+                    "reviewStatus": "reviewed-text-only",
+                    "clearTableSemanticsBlocker": True,
+                    "tableReferenceResolved": True,
+                    "refHash": "a" * 64,
+                    "sourceEvidence": {"publishedVisibleTexts": ["Grammar chart", "Check the chart below."]},
+                    "projection": {"approved": False, "mode": "text-only", "tables": []},
+                },
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source)
+
+        self.assertFalse(plan["publishable"])
+        self.assertTrue(any(blocker["code"] == "table-semantics-missing" for blocker in plan["blockers"]))
+
     def test_unit2_flow_keeps_reviewed_listening_compact_and_deduplicates_activity_prose(self) -> None:
         """Exercise flow mirrors the authored Unit 2 sequence without prompt dumps."""
 
@@ -1748,6 +1857,88 @@ class BuildCourseLearningTests(unittest.TestCase):
         )
         self.assertIn(original_prompt, reflection["data"]["data"]["aiGradingContext"])
         self.assertIn("This is the original authored introduction.", reflection["data"]["data"]["aiGradingContext"])
+
+    def test_reviewed_teacher_vocabulary_instruction_becomes_teacher_notes_without_audio(self) -> None:
+        source = source_fixture()
+        original_prompt = "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nTRAVEL\nHOTEL"
+        source["deck"]["slides"] = [
+            {
+                "number": 6,
+                "title": "Vocabulary",
+                "visibleTexts": ["Vocabulary", original_prompt],
+                "media": [],
+            }
+        ]
+        source["deck"]["slideCount"] = 1
+        slide = source["deck"]["slides"][0]
+        review = {
+            "courseId": COURSE_ID,
+            "lessons": {
+                LESSON_ID: {
+                    "sourceUrl": source["sourceUrl"],
+                    "slides": {
+                        "6": {
+                            "source": copy.deepcopy(slide),
+                            "items": [
+                                {
+                                    "id": "u21-s06-review",
+                                    "kind": "teacher-vocabulary",
+                                    "prompt": original_prompt,
+                                    "responseMode": "teacher-listening",
+                                    "reviewStatus": "blocked-awaiting-transcript",
+                                    "sourceEvidence": [original_prompt],
+                                    "blocker": "No authored audio transcript is available.",
+                                    "teacherNotes": {
+                                        "reviewStatus": "reviewed",
+                                        "reviewed": True,
+                                        "sourceInstruction": original_prompt,
+                                    },
+                                }
+                            ],
+                        }
+                    },
+                }
+            },
+        }
+
+        plan = builder.build_plan(snapshot_fixture()["modules"][0]["lessons"][0], source, exercise_review=review)
+
+        self.assertTrue(plan["publishable"])
+        self.assertFalse(any(blocker["code"] == "exercise-review-listening-blocked" for blocker in plan["blockers"]))
+        generated = [row for row in plan["nextRows"] if row["id"].startswith("course-guided-")]
+        teacher_note = next(
+            row
+            for row in generated
+            if row["data"].get("type") == "teacher_notes"
+            and row["data"].get("data", {}).get("exerciseReview", {}).get("id") == "u21-s06-review"
+        )
+        self.assertEqual(teacher_note["data"]["sourceRole"], "teacher-guided-listening")
+        self.assertIn("listen to your teacher", teacher_note["data"]["content"])
+        self.assertEqual(
+            teacher_note["data"]["data"]["exerciseReview"]["id"],
+            "u21-s06-review",
+        )
+        self.assertEqual(teacher_note["data"]["data"]["responseMode"], "teacher-notes-preserved")
+        self.assertEqual(
+            sum(row["data"].get("type") == "teacher_notes" for row in generated),
+            1,
+        )
+        self.assertFalse(any(row["data"].get("type") == "audio" for row in generated))
+
+        unreviewed = copy.deepcopy(review)
+        del unreviewed["lessons"][LESSON_ID]["slides"]["6"]["items"][0]["teacherNotes"]
+        blocked_plan = builder.build_plan(
+            snapshot_fixture()["modules"][0]["lessons"][0],
+            source,
+            exercise_review=unreviewed,
+        )
+        self.assertFalse(blocked_plan["publishable"])
+        self.assertTrue(
+            any(
+                blocker["code"] == "exercise-review-listening-blocked"
+                for blocker in blocked_plan["blockers"]
+            )
+        )
 
     def test_exercise_review_keeps_ambiguous_answer_out_of_native_key(self) -> None:
         source = source_fixture()
