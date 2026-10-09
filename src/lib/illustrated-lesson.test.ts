@@ -10,6 +10,18 @@ import {
 const vocabulary: VocabularyBlock = { id: 'vocabulary', type: 'vocabulary', order: 1, title: 'Vocabulario', items: Array.from({ length: 9 }, (_, index) => ({ id: `item-${index}`, term: index === 0 ? 'Name' : `Term ${index}`, definition: index === 0 ? 'Peter' : `Definition ${index}` })) }
 
 describe('illustrated vocabulary sequence', () => {
+  it('keeps a reviewed pilot input and its one exercise in the authored scene', () => {
+    const metadata = { learningRevision: 'curriculum-pilot-v1', pilotSceneId: 'meaning', guidedTitle: 'Comprende la norma.' }
+    const input: Block = { id: 'meaning-input', type: 'text', order: 0, content: 'Required, forbidden, or optional.', data: metadata }
+    const practice: Block = { id: 'meaning-choice', type: 'multiple_choice', order: 1, items: [], data: metadata }
+    const next: Block = { id: 'new-scene', type: 'essay', order: 2, prompt: 'Write your rule.', data: { ...metadata, pilotSceneId: 'production' } }
+    const steps = buildIllustratedLessonSteps([input, practice, next])
+    expect(steps).toHaveLength(2)
+    expect(steps[0].id).toBe('meaning')
+    expect(steps[0].blocks).toEqual([input, practice])
+    expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Comprende la norma.')
+    expect(steps[1].blocks).toEqual([next])
+  })
   it('keeps a published picture question with its own figure instead of a separate step', () => {
     const prompt = {
       id: 'picture-prompt', type: 'text', order: 0, content: 'What is the picture suggesting?',

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import motion from './guided-choice-activity.module.css'
@@ -24,6 +25,9 @@ export interface GuidedChoiceActivityProps {
   onAnswer?: (questionId: string, choiceId: string, isCorrect: boolean) => void
   onNavigation?: (index: number, total: number) => void
   remoteIndex?: number
+  /** Immediate correction, with learner-controlled time to read authored feedback. */
+  waitForContinue?: boolean
+  actionTarget?: HTMLElement | null
 }
 
 type ChoiceFeedback = {
@@ -195,6 +199,8 @@ export function GuidedChoiceActivity({
   onAnswer,
   onNavigation,
   remoteIndex,
+  waitForContinue = false,
+  actionTarget,
 }: GuidedChoiceActivityProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const promptRef = useRef<HTMLParagraphElement>(null)
@@ -429,7 +435,7 @@ export function GuidedChoiceActivity({
     }))
     setAnnouncement(isCorrect ? '¡Correcto!' : 'Respuesta incorrecta.')
     answerCallbackRef.current?.(question.id, choiceId, isCorrect)
-    startTimer(questionIndexRef.current, isCorrect ? CORRECT_FEEDBACK_MS : WRONG_FEEDBACK_MS)
+    if (!waitForContinue) startTimer(questionIndexRef.current, isCorrect ? CORRECT_FEEDBACK_MS : WRONG_FEEDBACK_MS)
   }
 
   const renderChoiceButton = (choice: GuidedChoice) => {
@@ -527,6 +533,12 @@ export function GuidedChoiceActivity({
     </div>
   )
 
+  const continueAction = waitForContinue && !completed ? <button type="button"
+    disabled={!currentFeedback} onClick={() => advanceQuestion(questionIndexRef.current)}
+    className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#245CFF] px-6 text-base font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10245C] disabled:opacity-45">
+    {questionIndex < questions.length - 1 ? 'Siguiente pregunta' : 'Ver resultados'}
+  </button> : null
+
   return (
     <div
       ref={rootRef}
@@ -576,6 +588,7 @@ export function GuidedChoiceActivity({
           )}
         </>
       )}
+      {continueAction && (actionTarget ? createPortal(continueAction, actionTarget) : continueAction)}
     </div>
   )
 }

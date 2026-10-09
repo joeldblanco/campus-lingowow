@@ -1,6 +1,6 @@
 import { isPilotGuidedMatchProfile } from './guided-match-options'
 import type { Block } from '@/types/course-builder'
-import { buildGuidedLessonSteps, type GuidedLessonStep } from './guided-lesson'
+import { buildGuidedLessonSteps, getGuidedLessonStepKind, isIgnorableGuidedBlock, type GuidedLessonStep } from './guided-lesson'
 
 export type IllustratedLessonArtVariant = 'portrait' | 'grammar'
 
@@ -378,6 +378,20 @@ function getSpeakingTitle(step: GuidedLessonStep): string {
 
 /** Preserve authored material while presenting related activities in focused scenes. */
 export function buildIllustratedLessonSteps(blocks: Block[]): GuidedLessonStep[] {
+  const visible = blocks.filter(block => !isIgnorableGuidedBlock(block))
+  if (visible.length > 0 && visible.every(block => getMetadataValue(block, ['learningRevision']) === 'curriculum-pilot-v1' &&
+      typeof getMetadataValue(block, ['pilotSceneId']) === 'string')) {
+    const authored: GuidedLessonStep[] = []
+    for (const block of visible) {
+      const id = String(getMetadataValue(block, ['pilotSceneId']))
+      const previous = authored[authored.length - 1]
+      if (previous?.id === id) previous.blocks.push(block)
+      else authored.push({ id, kind: getGuidedLessonStepKind(block), label: String(getMetadataValue(block, ['guidedTitle']) || 'Aprende y practica.'), blocks: [block] })
+      const step = authored[authored.length - 1]
+      if (PRACTICE_BLOCK_TYPES.has(block.type) || block.type === 'essay' || block.type === 'recording') step.kind = getGuidedLessonStepKind(block)
+    }
+    return authored
+  }
   const relatedSteps: GuidedLessonStep[] = []
   for (const step of buildGuidedLessonSteps(blocks)) {
     const previous = relatedSteps[relatedSteps.length - 1]

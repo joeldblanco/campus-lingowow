@@ -40,6 +40,15 @@ function block(type: Block['type'], id: string, extra: Record<string, unknown> =
 }
 
 describe('GuidedLessonViewer', () => {
+  it('keeps archived pilot source rows out of the live teacher notes', () => {
+    render(<GuidedLessonViewer isTeacher blocks={[
+      block('text', 'teaching', { content: 'Current teaching.' }),
+      block('teacher_notes', 'archived-notes', { content: 'Superseded source.', data: { archivedPilotSource: true } }),
+      block('teacher_notes', 'current-notes', { content: 'Ask a follow-up question.' }),
+    ]} storageKey="teacher-pilot-archive" />)
+    expect(screen.queryByTestId('preview-archived-notes')).not.toBeInTheDocument()
+    expect(screen.getByTestId('preview-current-notes')).toBeInTheDocument()
+  })
   beforeEach(() => {
     sessionStorage.clear()
     vi.restoreAllMocks()

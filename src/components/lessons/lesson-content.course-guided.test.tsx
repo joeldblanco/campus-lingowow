@@ -14,6 +14,14 @@ vi.mock('./guided-lesson-viewer', () => ({
 }))
 
 describe('reviewed course guided teaching', () => {
+  it('opens the authored curriculum revision from the actual teacher lesson entry point', () => {
+    render(<LessonContent lesson={{ id: 'cmkpx0d310001gy04zr4lq99y', title: 'Behaving properly', activities: [],
+      module: { course: { id: 'cmjnr0g5x0001jp04fsw2fejs' } },
+      contents: [{ id: 'pilot-row', data: { type: 'text', data: { learningRevision: 'curriculum-pilot-v1' } } }],
+    } as never} isTeacher />)
+    expect(screen.getByTestId('course-viewer')).toHaveAttribute('data-teacher', 'true')
+    expect(screen.queryByText('Classic content')).not.toBeInTheDocument()
+  })
   const reviewed = {
     id: 'unit-two', title: 'I come from', activities: [],
     module: { course: { id: 'cmjnr0g5x0001jp04fsw2fejs' } },

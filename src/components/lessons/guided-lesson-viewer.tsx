@@ -27,6 +27,7 @@ import dynamic from 'next/dynamic'
 import { getUnit1ProductionRole, isUnit1ProductionBlock } from '@/lib/unit1-production-role'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 import motion from './guided-lesson-viewer-motion.module.css'
+import { LearningModeGuidance } from './learning-mode-guidance'
 const Unit1Production = dynamic(() => import('./unit1-production').then(module => module.Unit1Production))
 
 interface GuidedLessonViewerProps {
@@ -355,6 +356,7 @@ export function GuidedLessonViewer({
               >
                 {step.blocks.filter((block, blockIndex) => !(block.data?.unit1Role === 'transform' && blockIndex > 0 && step.blocks.some(previous => previous.type === 'structured-content' && previous.data?.unit1Role === 'transform'))).map((block) => (
                   <div key={block.id} data-block-id={block.id} data-guided-block-type={block.type}>
+                    {illustratedContent && Boolean(block.data?.learningModes) && <LearningModeGuidance modes={block.data?.learningModes} classroom={isClassroom} />}
                     <GuidedLessonBlock
                       block={block}
                       enabled={illustratedContent && !isUnit1TeachingBlock(block)}
@@ -510,9 +512,9 @@ export function GuidedLessonViewer({
         </div>
       </div>
 
-      {isTeacher && blocks.some(block => block.type === 'teacher_notes') && <details className="relative z-10 mx-6 mb-6 rounded-2xl bg-white/95 p-4 text-sm">
+      {isTeacher && blocks.some(block => block.type === 'teacher_notes' && !block.data?.archivedPilotSource) && <details className="relative z-10 mx-6 mb-6 rounded-2xl bg-white/95 p-4 text-sm">
         <summary className="cursor-pointer font-semibold">Guía para la profesora</summary>
-        <div className="mt-4 space-y-4">{blocks.filter(block => block.type === 'teacher_notes').map(block => <BlockPreview key={block.id} block={block} isTeacher hideBlockHeader />)}</div>
+        <div className="mt-4 space-y-4">{blocks.filter(block => block.type === 'teacher_notes' && !block.data?.archivedPilotSource).map(block => <BlockPreview key={block.id} block={block} isTeacher hideBlockHeader />)}</div>
       </details>}
 
       <style>{`

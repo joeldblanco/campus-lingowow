@@ -3,6 +3,12 @@ import { describe, expect, it } from 'vitest'
 import { GuidedLessonBlock } from './guided-lesson-block'
 
 describe('guided content presentation', () => {
+  it('keeps a pilot reference available without crowding the initial exercise', () => {
+    const { container } = render(<GuidedLessonBlock block={{ id: 'support', type: 'text', order: 0, content: '<p>Japan — Japanese.</p>', data: { supportLabel: 'Consultar los países' } }}>fallback</GuidedLessonBlock>)
+    expect(screen.getByText('Consultar los países')).toBeVisible()
+    expect(container.querySelector('details')).not.toHaveAttribute('open')
+    expect(screen.getByText('Japan — Japanese.')).not.toBeVisible()
+  })
   it('preserves actual vocabulary values rather than mockup names', () => {
     render(<GuidedLessonBlock block={{ id: 'vocab', type: 'vocabulary', order: 0, title: 'Vocabulario', items: [{ id: 'name', term: 'Name', definition: 'Peter', pronunciation: 'P-E-T-E-R' }] }}>fallback</GuidedLessonBlock>)
     expect(screen.getByText('Peter')).toBeInTheDocument()

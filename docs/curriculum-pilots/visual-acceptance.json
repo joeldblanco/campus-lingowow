@@ -1,0 +1,650 @@
+{
+  "scope": "Local actual GuidedLessonViewer, 31 scenes; existing application header not redesigned",
+  "planSha256": "cd40bc178e0916049eed87f74c0d43d32c7e9eeb83224c70c6d6bea2e931cf1a",
+  "viewports": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "screens": [
+    {
+      "unit": 2,
+      "step": 1,
+      "title": "País y nacionalidad.",
+      "illustration": "/images/lessons/backgrounds/travel-station.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-01-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-01-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-01-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 2,
+      "title": "Escucha el recorrido",
+      "illustration": "/images/lessons/backgrounds/airport-lounge.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-02-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-02-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-02-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 3,
+      "title": "País o nacionalidad",
+      "illustration": "/images/lessons/backgrounds/campus.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-03-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-03-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-03-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 4,
+      "title": "Comprueba lo que escuchaste",
+      "illustration": "/images/lessons/backgrounds/city-directions.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-04-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-04-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-04-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 5,
+      "title": "Tres formas para hablar del origen",
+      "illustration": "/images/lessons/backgrounds/community-bookshop.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-05-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-05-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-05-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 6,
+      "title": "Completa las frases",
+      "illustration": "/images/lessons/backgrounds/village-square.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-06-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-06-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-06-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 7,
+      "title": "Lee dos perfiles",
+      "illustration": "/images/lessons/backgrounds/library.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-07-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-07-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-07-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 8,
+      "title": "Escucha en el control de pasaportes",
+      "illustration": "/images/lessons/backgrounds/family-living-room.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-08-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-08-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-08-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 9,
+      "title": "Compara dos personas",
+      "illustration": "/images/lessons/backgrounds/harbor-promenade.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-09-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-09-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-09-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 10,
+      "title": "Practica el intercambio",
+      "illustration": "/images/lessons/backgrounds/restaurant.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-10-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-10-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-10-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 11,
+      "title": "Intercambia dos perfiles",
+      "illustration": "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-11-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-11-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-11-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 2,
+      "step": 12,
+      "title": "Intercambia dos perfiles",
+      "illustration": "/images/lessons/backgrounds/botanical-office.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\writing-instruction-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-12-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-12-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u02-step-12-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 1,
+      "title": "Comprende las normas.",
+      "illustration": "/images/lessons/backgrounds/campus.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-01-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-01-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-01-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 2,
+      "title": "Decide según el contexto.",
+      "illustration": "/images/lessons/backgrounds/workshop.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-02-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-02-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-02-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 3,
+      "title": "Escucha las normas de casa.",
+      "illustration": "/images/lessons/backgrounds/family-living-room.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-03-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-03-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-03-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 4,
+      "title": "Distingue obligación y consejo.",
+      "illustration": "/images/lessons/backgrounds/museum-gallery.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-04-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-04-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-04-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 5,
+      "title": "Pregunta y responde.",
+      "illustration": "/images/lessons/backgrounds/community-bookshop.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-05-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-05-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-05-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 6,
+      "title": "Escucha los consejos.",
+      "illustration": "/images/lessons/backgrounds/restaurant.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-06-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-06-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-06-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 7,
+      "title": "Prepara la visita.",
+      "illustration": "/images/lessons/backgrounds/daily-kitchen.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-07-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-07-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-07-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 8,
+      "title": "Explica tus normas.",
+      "illustration": "/images/lessons/backgrounds/library.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\writing-instruction-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-08-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-08-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-08-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 22,
+      "step": 9,
+      "title": "Explica tus normas.",
+      "illustration": "/images/lessons/backgrounds/garden.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-09-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-09-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u22-step-09-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 1,
+      "title": "Recupera la línea del tiempo.",
+      "illustration": "/images/lessons/backgrounds/workshop.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-01-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-01-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-01-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 2,
+      "title": "Escucha la situación.",
+      "illustration": "/images/lessons/backgrounds/botanical-office.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-02-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-02-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-02-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 3,
+      "title": "Mismo pasado, distintos significados.",
+      "illustration": "/images/lessons/backgrounds/science-lab.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-03-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-03-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-03-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 4,
+      "title": "Identifica la intención.",
+      "illustration": "/images/lessons/backgrounds/music-room.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-04-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-04-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-04-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 5,
+      "title": "¿Qué habría sido mejor?",
+      "illustration": "/images/lessons/backgrounds/library.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-05-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-05-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-05-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 6,
+      "title": "Imagina otro resultado.",
+      "illustration": "/images/lessons/backgrounds/travel-station.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-06-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-06-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-06-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 7,
+      "title": "Deduce con pistas.",
+      "illustration": "/images/lessons/backgrounds/listening-lounge.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\auto-choice-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-07-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-07-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-07-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 8,
+      "title": "Deduce con pistas.",
+      "illustration": "/images/lessons/backgrounds/airport-lounge.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-08-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-08-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-08-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 9,
+      "title": "Explica tu decisión.",
+      "illustration": "/images/lessons/backgrounds/community-bookshop.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\writing-instruction-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-09-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-09-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-09-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    },
+    {
+      "unit": 46,
+      "step": 10,
+      "title": "Explica tu decisión.",
+      "illustration": "/images/lessons/backgrounds/campus.webp",
+      "reference": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\design\\graphic-guide-v1\\practice-canvas-v4-reference.png",
+      "actual": {
+        "desktop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-10-desktop.jpg",
+        "mobileTop": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-10-mobile-top.jpg",
+        "mobileFooter": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\pilot-actual\\u46-step-10-mobile-footer.jpg"
+      },
+      "requirements": {
+        "fullEnvironment": "pass",
+        "textHierarchyAndReadingArea": "pass",
+        "singlePrimaryFooter": "pass",
+        "roundRecordingControl": "pass or not applicable",
+        "mobileControlsAndOverflow": "pass",
+        "uniqueEnvironmentWithinUnit": "pass"
+      }
+    }
+  ],
+  "interactionEvidence": [
+    "u02-feedback-desktop.jpg",
+    "u02-wrong-feedback-desktop.jpg",
+    "u22-teacher-mode-desktop.jpg",
+    "u22-self-review-mobile.jpg"
+  ],
+  "audioPolicy": "6 original files: exact URL and SHA256 retained; one Unit2 replay reuses its original audio",
+  "limits": [
+    "No new microphone permission or live recording was accepted in browser QA. Recording lifecycle and review are tested with a simulated MediaRecorder.",
+    "Open production is self-review or teacher observation, not a proficiency certification.",
+    "Audio transcripts are inherited from the earlier audit; this check does not claim a new complete listening audit.",
+    "Mobile uses actual top and footer screenshots because the browser full-page capture failed at this viewport."
+  ],
+  "unresolvedVisualDeviations": []
+}
