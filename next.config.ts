@@ -2,9 +2,15 @@ import { withSentryConfig } from '@sentry/nextjs'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
+  outputFileTracingIncludes: {
+    '/api/generate-pdf': ['./node_modules/@sparticuz/chromium/bin/**'],
+    '/*': ['./node_modules/.prisma/client/**'],
+  },
   /* config options here */
   // devIndicators: false,
   images: {
+    qualities: [75, 85],
     remotePatterns: [
       {
         protocol: 'https',
@@ -19,6 +25,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
         pathname: '/**',
       },
     ],

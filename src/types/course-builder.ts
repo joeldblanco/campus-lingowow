@@ -269,6 +269,8 @@ export interface MultipleChoiceItem {
   question: string
   options: { id: string; text: string }[]
   correctOptionId: string
+  /** Context-specific formative feedback; falls back to the block explanation. */
+  explanation?: string
 }
 
 export interface MultipleChoiceBlock extends BaseBlock {
@@ -287,6 +289,7 @@ export interface ShortAnswerItem {
   id: string
   question: string
   correctAnswer: string
+  acceptedAnswers?: string[]
   aiInstructions?: string // Instructions for AI to grade the answer
 }
 

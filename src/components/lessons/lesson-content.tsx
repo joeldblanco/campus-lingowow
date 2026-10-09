@@ -9,12 +9,17 @@ import { completeCourseLesson } from '@/lib/actions/lessons'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { toast } from 'sonner'
+import { GuidedLessonViewer } from './guided-lesson-viewer'
+import { buildCourseCompletionUrl } from '@/lib/course-completion'
+import { UNIT_ONE_LESSON_ID } from '@/lib/unit-one-learning'
+import { isGuidedLessonPilot } from '@/lib/lesson-pilot'
 
 interface LessonContentProps {
   lesson: LessonForView
   isTeacher?: boolean
   isClassroom?: boolean // When true, enables interactive block synchronization
   courseId?: string
+  guidedStorageKey?: string
   navigation?: {
     prevLessonId: string | null
     nextLessonId: string | null
@@ -28,13 +33,14 @@ export function LessonContent({
   isClassroom,
   courseId,
   navigation,
+  guidedStorageKey,
 }: LessonContentProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [isCompleted, setIsCompleted] = useState(navigation?.isCompleted ?? false)
 
   const handleComplete = () => {
-    if (!courseId) return
+    if (!courseId) { setIsCompleted(true); return }
 
     startTransition(async () => {
       try {
@@ -47,11 +53,7 @@ export function LessonContent({
 
         setIsCompleted(true)
         toast.success('Progreso guardado')
-        router.push(
-          result.nextLessonId
-            ? `/my-courses/${courseId}/lessons/${result.nextLessonId}`
-            : `/my-courses/${courseId}`
-        )
+        router.push(buildCourseCompletionUrl(courseId, lesson.id))
         router.refresh()
       } catch {
         toast.error('No se pudo guardar el progreso')
@@ -63,6 +65,31 @@ export function LessonContent({
   const blocks: Block[] = (lesson.contents ?? []).map((content) =>
     mapContentToBlock(content as Parameters<typeof mapContentToBlock>[0])
   )
+
+  const lessonCourseId = courseId || lesson.module?.course?.id
+  const guidedCourseLesson = Boolean(lessonCourseId && isGuidedLessonPilot(lesson.id, lessonCourseId, lesson.contents ?? []))
+  const unitOneClassroom = lesson.id === UNIT_ONE_LESSON_ID && Boolean(isTeacher || isClassroom)
+  const guidedClassroomLesson = guidedCourseLesson && Boolean(isTeacher || isClassroom)
+  const useGuidedViewer = Boolean(guidedStorageKey && !isTeacher && !isClassroom) || unitOneClassroom || guidedClassroomLesson
+  const viewerStorageKey = guidedStorageKey || (lesson.id === UNIT_ONE_LESSON_ID
+    ? `unit1:${lesson.id}`
+    : `guided:${lessonCourseId}:${lesson.id}`)
+  if (useGuidedViewer && !lesson.videoUrl && blocks.length > 0) {
+    return (
+      <GuidedLessonViewer
+        key={viewerStorageKey}
+        blocks={blocks}
+        storageKey={viewerStorageKey}
+        onComplete={courseId && navigation || unitOneClassroom ? handleComplete : undefined}
+        isPending={isPending}
+        isCompleted={isCompleted}
+        illustratedContent
+        unitOneAuthored={lesson.id === UNIT_ONE_LESSON_ID}
+        isTeacher={isTeacher}
+        isClassroom={isClassroom}
+      />
+    )
+  }
 
   return (
     <div className="space-y-8">

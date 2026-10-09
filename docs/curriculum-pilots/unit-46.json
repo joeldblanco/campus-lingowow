@@ -1,0 +1,3279 @@
+{
+  "specVersion": 1,
+  "artifact": "pilot-unit-46",
+  "kind": "guided-curriculum-implementation",
+  "status": "implementation-ready-content-spec",
+  "scope": "Content and visual handoff only. This artifact does not change the database, application code, or deployment.",
+  "runtimeFieldContract": {
+    "text": {
+      "type": "text",
+      "content": "<p>...</p>"
+    },
+    "structured-content": {
+      "type": "structured-content",
+      "content": {
+        "headers": [
+          "..."
+        ],
+        "rows": [
+          [
+            "..."
+          ]
+        ]
+      }
+    },
+    "multiple_choice": {
+      "type": "multiple_choice",
+      "items": [
+        {
+          "id": "...",
+          "question": "...",
+          "options": [
+            {
+              "id": "...",
+              "text": "..."
+            }
+          ],
+          "correctOptionId": "...",
+          "explanation": "..."
+        }
+      ]
+    },
+    "short_answer": {
+      "type": "short_answer",
+      "items": [
+        {
+          "question": "...",
+          "correctAnswer": "...",
+          "acceptedAnswers": [
+            "..."
+          ]
+        }
+      ]
+    },
+    "essay": {
+      "type": "essay",
+      "prompt": "...",
+      "minWords": null,
+      "maxWords": null,
+      "aiGrading": false
+    },
+    "recording": {
+      "type": "recording",
+      "instruction": "...",
+      "timeLimit": null
+    }
+  },
+  "unit": {
+    "number": 46,
+    "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+    "title": "If it had been me…",
+    "sourceDeckTitle": "NEW If it had been me.... - Unit 46.pptx",
+    "moduleOrder": 12,
+    "sourceRecordId": "1fPwDdnWKKiU26J_NLZal_Yps8mHasmSz",
+    "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
+    "sourceDigest": "6d6443a0df4ba82b2e9d5940315b4b63ef0e5cf66c3106fddc547bf8bdd7dab5"
+  },
+  "learningContract": {
+    "observableGoal": "Express retrospective advice with should have, an alternative past result with would have, and a past deduction with must have or a calibrated possibility with may/might/could have, using evidence and a clear timeline.",
+    "meaningBeforeForm": true,
+    "successCriteria": [
+      "The learner distinguishes advice or criticism, an imagined result, and an inference or possibility.",
+      "The learner keeps modal + have + past participle intact.",
+      "The learner chooses the strength of a deduction from the evidence instead of treating must have and should have as equivalents.",
+      "The learner produces five fictional sentences: two retrospective advice sentences, one hypothetical-result sentence, and two evidence-based deduction or possibility sentences.",
+      "At least four of five target forms are accurate and every sentence is labelled by function."
+    ],
+    "prerequisiteRecall": {
+      "id": "u46-prerequisite-recall",
+      "purpose": "Retrieve Unit 45 third conditional structure and past participles before the new modal meanings.",
+      "prompt": "Before we compare the three meanings, recall the past event, its imagined result, and the past participle.",
+      "responseType": "multiple_choice",
+      "runtimeType": "multiple_choice",
+      "items": [
+        {
+          "id": "u46-recall-1",
+          "question": "The train left before them. If they had left earlier, they ___ on time. Complete the hypothetical result with would.",
+          "options": [
+            {
+              "id": "u46-recall-1-a",
+              "text": "would have arrived"
+            },
+            {
+              "id": "u46-recall-1-b",
+              "text": "should have arrived"
+            },
+            {
+              "id": "u46-recall-1-c",
+              "text": "must have arrived"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-recall-1-a",
+            "acceptedText": [
+              "would have arrived",
+              "would've arrived"
+            ]
+          },
+          "feedback": {
+            "correct": "Would have gives the imagined result of the past condition.",
+            "incorrect": "The prompt names an unreal past condition and asks for its imagined result, so use would have + past participle."
+          }
+        },
+        {
+          "id": "u46-recall-2",
+          "question": "Which word is the past participle in had chosen?",
+          "options": [
+            {
+              "id": "u46-recall-2-a",
+              "text": "had"
+            },
+            {
+              "id": "u46-recall-2-b",
+              "text": "chosen"
+            },
+            {
+              "id": "u46-recall-2-c",
+              "text": "if"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-recall-2-b",
+            "acceptedText": [
+              "chosen"
+            ]
+          },
+          "feedback": {
+            "correct": "Chosen is the past participle; it follows the auxiliary had.",
+            "incorrect": "Had is the auxiliary. Chosen is the past participle that names the completed action."
+          }
+        },
+        {
+          "id": "u46-recall-3",
+          "question": "The speaker sees lights off and a locked door. What kind of meaning is They must have left?",
+          "options": [
+            {
+              "id": "u46-recall-3-a",
+              "text": "A deduction from evidence"
+            },
+            {
+              "id": "u46-recall-3-b",
+              "text": "Advice about a better past action"
+            },
+            {
+              "id": "u46-recall-3-c",
+              "text": "An imagined result of an if-clause"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-recall-3-a",
+            "acceptedText": [
+              "a deduction from evidence",
+              "deduction from evidence"
+            ]
+          },
+          "feedback": {
+            "correct": "Must have presents a conclusion about a past event from evidence now.",
+            "incorrect": "Advice uses should have and an imagined result uses would have. Evidence-based conclusions use must have or a weaker may/might/could have."
+          }
+        }
+      ]
+    }
+  },
+  "meaningTeaching": {
+    "id": "u46-contextual-meaning",
+    "sourceRefs": [
+      "course-guided-cmnmm9tei0028w1qkri0q23eb-text-2-competencies-understand-and-express-opinions-expectations-suggest-002",
+      "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017"
+    ],
+    "sceneId": "u46-scene-meaning",
+    "heading": "One past event, three ways to interpret it",
+    "prompt": "Read each neutral situation first. Decide whether the speaker gives advice, imagines a different result, or infers what probably happened. Then notice the form.",
+    "context": "A project team started late, missed a deadline, and is now deciding what the evidence means. The learner works with a fictional event and does not disclose a personal incident.",
+    "meaningMap": [
+      {
+        "id": "advice",
+        "function": "Retrospective advice or criticism",
+        "evidenceQuestion": "What would have been a better action?",
+        "form": "should have + past participle",
+        "example": "I missed the deadline because I started late. I should have started earlier.",
+        "acceptedVariants": [
+          "I should've started earlier.",
+          "I ought to have started earlier."
+        ],
+        "notEquivalentTo": "Must have does not give advice; it draws a conclusion from evidence."
+      },
+      {
+        "id": "hypothetical-result",
+        "function": "Alternative or hypothetical past result",
+        "evidenceQuestion": "What result is imagined if the past had been different?",
+        "form": "would have + past participle",
+        "example": "If we had left at six, we would have caught the train.",
+        "acceptedVariants": [
+          "If we had left at six, we'd have caught the train."
+        ],
+        "notEquivalentTo": "Should have does not state the imagined result; it evaluates the action."
+      },
+      {
+        "id": "strong-deduction",
+        "function": "Strong deduction about a past event",
+        "evidenceQuestion": "What conclusion is strongly supported by the clues?",
+        "form": "must have + past participle",
+        "example": "The lights are off, the door is locked, and the doorman saw them leave. They must have left.",
+        "acceptedVariants": [
+          "They must've left."
+        ],
+        "notEquivalentTo": "Should have left would be advice, not a conclusion."
+      },
+      {
+        "id": "open-possibility",
+        "function": "Open past possibility",
+        "evidenceQuestion": "What remains possible when the evidence is incomplete?",
+        "form": "may/might/could have + past participle",
+        "example": "The tracking record is incomplete. The package might have arrived at reception.",
+        "acceptedVariants": [
+          "The package may have arrived at reception.",
+          "The package could have arrived at reception."
+        ],
+        "notEquivalentTo": "Do not use must have when the clues support only an open possibility."
+      }
+    ],
+    "formNotice": {
+      "formula": "modal + have + past participle",
+      "contrast": [
+        "The modal carries the speaker’s function or certainty.",
+        "Have + past participle places the event before the current point of reflection.",
+        "In this frame we make the condition explicit with if; a conditional result can also be understood from context without an if-clause."
+      ]
+    },
+    "meaningCheck": {
+      "type": "multiple_choice",
+      "runtimeType": "multiple_choice",
+      "items": [
+        {
+          "id": "u46-meaning-check-1",
+          "question": "I missed the deadline because I started late. I should have started earlier. What is the function?",
+          "options": [
+            {
+              "id": "u46-meaning-check-1-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-meaning-check-1-b",
+              "text": "An imagined result"
+            },
+            {
+              "id": "u46-meaning-check-1-c",
+              "text": "A strong deduction"
+            },
+            {
+              "id": "u46-meaning-check-1-d",
+              "text": "An open possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-meaning-check-1-a",
+            "acceptedLabels": [
+              "retrospective advice",
+              "retrospective advice or criticism"
+            ]
+          },
+          "feedback": {
+            "correct": "Should have evaluates a past action and suggests a better one.",
+            "incorrect": "Look at the speaker's purpose: this sentence evaluates the late start; it does not infer a fact or imagine a result."
+          }
+        },
+        {
+          "id": "u46-meaning-check-2",
+          "question": "If we had left at six, we would have caught the train. What is the function?",
+          "options": [
+            {
+              "id": "u46-meaning-check-2-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-meaning-check-2-b",
+              "text": "An imagined result"
+            },
+            {
+              "id": "u46-meaning-check-2-c",
+              "text": "A strong deduction"
+            },
+            {
+              "id": "u46-meaning-check-2-d",
+              "text": "An open possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-meaning-check-2-b",
+            "acceptedLabels": [
+              "imagined result",
+              "hypothetical result"
+            ]
+          },
+          "feedback": {
+            "correct": "Would have names the result that is imagined under a different past condition.",
+            "incorrect": "The if-clause changes the past condition; would have gives its imagined result."
+          }
+        },
+        {
+          "id": "u46-meaning-check-3",
+          "question": "The lights are off, the door is locked, and the doorman saw them leave. They must have left. What is the function?",
+          "options": [
+            {
+              "id": "u46-meaning-check-3-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-meaning-check-3-b",
+              "text": "An imagined result"
+            },
+            {
+              "id": "u46-meaning-check-3-c",
+              "text": "A strong deduction"
+            },
+            {
+              "id": "u46-meaning-check-3-d",
+              "text": "An open possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-meaning-check-3-c",
+            "acceptedLabels": [
+              "strong deduction",
+              "deduction from evidence"
+            ]
+          },
+          "feedback": {
+            "correct": "Must have marks a conclusion strongly supported by the clues.",
+            "incorrect": "This sentence is about what probably happened, based on evidence now; that is a deduction, not advice."
+          }
+        }
+      ]
+    }
+  },
+  "sequence": [
+    {
+      "stage": 1,
+      "id": "recall",
+      "purpose": "Recover U45 third conditional, past participles, and the difference between an imagined alternative and an inference.",
+      "blockIds": [
+        "u46-prerequisite-recall"
+      ],
+      "sceneId": "u46-scene-meaning",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-1-teaching",
+          "title": "Recover the timeline",
+          "content": "<p>Primero ubica el evento en el pasado. <strong>If + had + past participle</strong> presenta una condición irreal y <strong>would have + past participle</strong> presenta su resultado imaginado.</p><p>Compara la intención: <strong>should have</strong> evalúa una acción, <strong>would have</strong> imagina un resultado y <strong>must have</strong> interpreta una pista. Example: <em>If they had left earlier, they would have arrived on time.</em></p>"
+        },
+        {
+          "type": "multiple_choice",
+          "id": "u46-stage-1-recall",
+          "title": "Prerequisite recall",
+          "instruction": "Before we compare the three meanings, recall the past event, its imagined result, and the past participle.",
+          "items": [
+            {
+              "id": "u46-recall-1",
+              "question": "The train left before them. If they had left earlier, they ___ on time. Complete the hypothetical result with would.",
+              "options": [
+                {
+                  "id": "u46-recall-1-a",
+                  "text": "would have arrived"
+                },
+                {
+                  "id": "u46-recall-1-b",
+                  "text": "should have arrived"
+                },
+                {
+                  "id": "u46-recall-1-c",
+                  "text": "must have arrived"
+                }
+              ],
+              "correctOptionId": "u46-recall-1-a",
+              "explanation": "Would have gives the imagined result of the past condition.",
+              "feedback": {
+                "correct": "Would have gives the imagined result of the past condition.",
+                "incorrect": "The prompt names an unreal past condition and asks for its imagined result, so use would have + past participle."
+              }
+            },
+            {
+              "id": "u46-recall-2",
+              "question": "Which word is the past participle in had chosen?",
+              "options": [
+                {
+                  "id": "u46-recall-2-a",
+                  "text": "had"
+                },
+                {
+                  "id": "u46-recall-2-b",
+                  "text": "chosen"
+                },
+                {
+                  "id": "u46-recall-2-c",
+                  "text": "if"
+                }
+              ],
+              "correctOptionId": "u46-recall-2-b",
+              "explanation": "Chosen is the past participle; it follows the auxiliary had.",
+              "feedback": {
+                "correct": "Chosen is the past participle; it follows the auxiliary had.",
+                "incorrect": "Had is the auxiliary. Chosen is the past participle that names the completed action."
+              }
+            },
+            {
+              "id": "u46-recall-3",
+              "question": "The speaker sees lights off and a locked door. What kind of meaning is They must have left?",
+              "options": [
+                {
+                  "id": "u46-recall-3-a",
+                  "text": "A deduction from evidence"
+                },
+                {
+                  "id": "u46-recall-3-b",
+                  "text": "Advice about a better past action"
+                },
+                {
+                  "id": "u46-recall-3-c",
+                  "text": "An imagined result of an if-clause"
+                }
+              ],
+              "correctOptionId": "u46-recall-3-a",
+              "explanation": "Must have presents a conclusion about a past event from evidence now.",
+              "feedback": {
+                "correct": "Must have presents a conclusion about a past event from evidence now.",
+                "incorrect": "Advice uses should have and an imagined result uses would have. Evidence-based conclusions use must have or a weaker may/might/could have."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "id": "global-listening",
+      "purpose": "Listen for the general situation and distinguish an attributed statement from a conclusive grammar model.",
+      "blockIds": [
+        "u46-audio-global-01"
+      ],
+      "sceneId": "u46-scene-introduction",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-2-teaching",
+          "title": "Listen for the situation",
+          "content": "<p>Escucha una vez para captar la situación general y comparte las frases que entiendas.</p><p>Decide si hablan de una decisión o de un hecho pasado. Example: <em>They are reflecting on a past decision.</em></p>",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:4"
+          ]
+        },
+        {
+          "type": "audio",
+          "id": "u46-audio-global-01-runtime",
+          "title": "Escucha global",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:4"
+          ],
+          "url": "/audio/lessons/course/unit-46-audio-01.mp3",
+          "audioUrl": "/audio/lessons/course/unit-46-audio-01.mp3",
+          "audioSha256": "9795a7aba993c240991d14b80c962a8672fbabd71c40ad26e784988211b598e4",
+          "graded": false,
+          "instruction": "Escucha una vez para captar la situación general y comparte con tu docente las frases que entiendas.",
+          "teacherOnly": {
+            "transcriptStatus": "unverified-asr",
+            "gradingBoundary": "Do not ask the learner to identify names, accusations, idioms, or any phrase whose transcript is garbled. No answer key is generated from this audio.",
+            "teacherFollowUp": [
+              "What broad situation did you hear?",
+              "Which speaker sounds certain, and which speaker sounds unsure?",
+              "Which phrase would you want to verify before using it as a grammar model?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "id": "notice-meaning",
+      "purpose": "Connect evidence, timeline, and speaker intention before naming the form.",
+      "blockIds": [
+        "u46-contextual-meaning",
+        "u46-meaning-check"
+      ],
+      "sceneId": "u46-scene-meaning",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-3-teaching",
+          "title": "Meaning before form",
+          "content": "<p>Lee la situación antes de mirar la forma. Pregunta qué hace el hablante: evalúa una acción pasada, imagina otro resultado o interpreta lo que probablemente ocurrió.</p><p><strong>Should have</strong> expresa una mejor acción; <strong>would have</strong>, un resultado alternativo; <strong>must have</strong>, una deducción fuerte; y <strong>may/might/could have</strong>, una posibilidad abierta.</p><p>La base es <strong>modal + have + past participle</strong>. Example: <em>The door is locked. They must have left.</em></p>",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:8"
+          ]
+        },
+        {
+          "type": "structured-content",
+          "id": "u46-stage-3-meaning-table",
+          "title": "Meaning map",
+          "content": {
+            "headers": [
+              "Function",
+              "Question",
+              "Form",
+              "Example"
+            ],
+            "rows": [
+              [
+                "Retrospective advice or criticism",
+                "What would have been a better action?",
+                "should have + past participle",
+                "I missed the deadline. I should have started earlier."
+              ],
+              [
+                "Alternative past result",
+                "What result is imagined?",
+                "would have + past participle",
+                "If we had left at six, we would have caught the train."
+              ],
+              [
+                "Strong deduction",
+                "What conclusion is supported by clues?",
+                "must have + past participle",
+                "The lights are off and the door is locked. They must have left."
+              ],
+              [
+                "Open possibility",
+                "What remains possible?",
+                "may/might/could have + past participle",
+                "The package might have arrived at reception."
+              ]
+            ]
+          },
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:11"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "id": "u46-stage-3-meaning-check",
+          "title": "Check the function",
+          "instruction": "Choose the function that matches the situation and timeline.",
+          "items": [
+            {
+              "id": "u46-meaning-check-1",
+              "question": "I missed the deadline because I started late. I should have started earlier. What is the function?",
+              "options": [
+                {
+                  "id": "u46-meaning-check-1-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-meaning-check-1-b",
+                  "text": "An imagined result"
+                },
+                {
+                  "id": "u46-meaning-check-1-c",
+                  "text": "A strong deduction"
+                },
+                {
+                  "id": "u46-meaning-check-1-d",
+                  "text": "An open possibility"
+                }
+              ],
+              "correctOptionId": "u46-meaning-check-1-a",
+              "explanation": "Should have evaluates a past action and suggests a better one.",
+              "feedback": {
+                "correct": "Should have evaluates a past action and suggests a better one.",
+                "incorrect": "Look at the speaker's purpose: this sentence evaluates the late start; it does not infer a fact or imagine a result."
+              }
+            },
+            {
+              "id": "u46-meaning-check-2",
+              "question": "If we had left at six, we would have caught the train. What is the function?",
+              "options": [
+                {
+                  "id": "u46-meaning-check-2-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-meaning-check-2-b",
+                  "text": "An imagined result"
+                },
+                {
+                  "id": "u46-meaning-check-2-c",
+                  "text": "A strong deduction"
+                },
+                {
+                  "id": "u46-meaning-check-2-d",
+                  "text": "An open possibility"
+                }
+              ],
+              "correctOptionId": "u46-meaning-check-2-b",
+              "explanation": "Would have names the result that is imagined under a different past condition.",
+              "feedback": {
+                "correct": "Would have names the result that is imagined under a different past condition.",
+                "incorrect": "The if-clause changes the past condition; would have gives its imagined result."
+              }
+            },
+            {
+              "id": "u46-meaning-check-3",
+              "question": "The lights are off, the door is locked, and the doorman saw them leave. They must have left. What is the function?",
+              "options": [
+                {
+                  "id": "u46-meaning-check-3-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-meaning-check-3-b",
+                  "text": "An imagined result"
+                },
+                {
+                  "id": "u46-meaning-check-3-c",
+                  "text": "A strong deduction"
+                },
+                {
+                  "id": "u46-meaning-check-3-d",
+                  "text": "An open possibility"
+                }
+              ],
+              "correctOptionId": "u46-meaning-check-3-c",
+              "explanation": "Must have marks a conclusion strongly supported by the clues.",
+              "feedback": {
+                "correct": "Must have marks a conclusion strongly supported by the clues.",
+                "incorrect": "This sentence is about what probably happened, based on evidence now; that is a deduction, not advice."
+              }
+            }
+          ],
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:11"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 4,
+      "id": "classify-functions",
+      "purpose": "Classify nine contextual sentences by advice, hypothetical result, strong deduction, or open possibility.",
+      "blockIds": [
+        "u46-classify-9"
+      ],
+      "sceneId": "u46-scene-practice",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-4-teaching",
+          "title": "Classify the whole context",
+          "content": "<p>Clasifica la oración completa y su situación. Busca una recomendación pendiente, una condición irreal, varias pistas fuertes o evidencia incompleta.</p><p>No elijas solo por el modal: la intención del hablante decide la función. Example: <em>The record is incomplete. The package might have arrived.</em></p>",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:11"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "id": "u46-stage-4-classification",
+          "title": "Nine contextual sentences",
+          "instruction": "Choose the function that best matches the whole context. Use the evidence or if-clause, not the modal alone.",
+          "items": [
+            {
+              "id": "u46-classify-1",
+              "question": "The form was missing a signature. We should have checked it before sending.",
+              "options": [
+                {
+                  "id": "u46-classify-1-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-1-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-1-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-1-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-1-a",
+              "explanation": "The speaker evaluates a past action and names a better action.",
+              "feedback": "The speaker evaluates a past action and names a better action."
+            },
+            {
+              "id": "u46-classify-2",
+              "question": "The meeting started without us. We should have checked the time.",
+              "options": [
+                {
+                  "id": "u46-classify-2-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-2-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-2-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-2-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-2-a",
+              "explanation": "Should have expresses a missed recommendation, not a conclusion about what happened.",
+              "feedback": "Should have expresses a missed recommendation, not a conclusion about what happened."
+            },
+            {
+              "id": "u46-classify-3",
+              "question": "The team lost the file. They should have saved a copy.",
+              "options": [
+                {
+                  "id": "u46-classify-3-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-3-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-3-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-3-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-3-a",
+              "explanation": "The sentence judges the past choice and suggests a safer choice.",
+              "feedback": "The sentence judges the past choice and suggests a safer choice."
+            },
+            {
+              "id": "u46-classify-4",
+              "question": "If we had left at six, we would have caught the train.",
+              "options": [
+                {
+                  "id": "u46-classify-4-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-4-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-4-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-4-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-4-b",
+              "explanation": "The if-clause supplies an unreal condition; would have supplies its imagined result.",
+              "feedback": "The if-clause supplies an unreal condition; would have supplies its imagined result."
+            },
+            {
+              "id": "u46-classify-5",
+              "question": "If the weather had improved, the organizers would have moved the event outside.",
+              "options": [
+                {
+                  "id": "u46-classify-5-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-5-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-5-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-5-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-5-b",
+              "explanation": "This is an alternative past outcome, not advice and not evidence-based certainty.",
+              "feedback": "This is an alternative past outcome, not advice and not evidence-based certainty."
+            },
+            {
+              "id": "u46-classify-6",
+              "question": "I would have joined the call, but I was already on another call.",
+              "options": [
+                {
+                  "id": "u46-classify-6-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-6-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-6-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-6-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-6-b",
+              "explanation": "Would have presents the action the speaker imagines under a different past circumstance.",
+              "feedback": "Would have presents the action the speaker imagines under a different past circumstance."
+            },
+            {
+              "id": "u46-classify-7",
+              "question": "The lights are off, the door is locked, and the doorman saw them leave. They must have left.",
+              "options": [
+                {
+                  "id": "u46-classify-7-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-7-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-7-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-7-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-7-c",
+              "explanation": "Several clues make the conclusion strong; this is not a recommendation.",
+              "feedback": "Several clues make the conclusion strong; this is not a recommendation."
+            },
+            {
+              "id": "u46-classify-8",
+              "question": "The delivery record is incomplete. The package might have arrived at reception.",
+              "options": [
+                {
+                  "id": "u46-classify-8-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-8-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-8-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-8-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-8-d",
+              "explanation": "The evidence is incomplete, so might have keeps the possibility open.",
+              "feedback": "The evidence is incomplete, so might have keeps the possibility open."
+            },
+            {
+              "id": "u46-classify-9",
+              "question": "The key is wet, so someone may have used it outside.",
+              "options": [
+                {
+                  "id": "u46-classify-9-a",
+                  "text": "Retrospective advice or criticism"
+                },
+                {
+                  "id": "u46-classify-9-b",
+                  "text": "Hypothetical past result"
+                },
+                {
+                  "id": "u46-classify-9-c",
+                  "text": "Strong deduction from evidence"
+                },
+                {
+                  "id": "u46-classify-9-d",
+                  "text": "Open past possibility"
+                }
+              ],
+              "correctOptionId": "u46-classify-9-d",
+              "explanation": "May have offers one possible explanation; the clue does not force a single conclusion.",
+              "feedback": "May have offers one possible explanation; the clue does not force a single conclusion."
+            }
+          ],
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:11"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "id": "rewrite-advice",
+      "purpose": "Use should have to evaluate a missed or incomplete past action.",
+      "blockIds": [
+        "u46-should-have"
+      ],
+      "sceneId": "u46-scene-practice",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-5-teaching",
+          "title": "Retrospective advice",
+          "content": "<p>Usa <strong>should have + past participle</strong> para evaluar una acción pasada y nombrar una opción mejor.</p><p>Example: <em>I missed the deadline because I started late. I should have started earlier.</em></p>",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:8"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "id": "u46-stage-5-should",
+          "title": "Choose the advice form",
+          "instruction": "Choose the form that gives retrospective advice. The context must show a better past action.",
+          "items": [
+            {
+              "id": "u46-should-1",
+              "question": "I missed the deadline because I started late. I ___ earlier.",
+              "options": [
+                {
+                  "id": "u46-should-1-a",
+                  "text": "should have started"
+                },
+                {
+                  "id": "u46-should-1-b",
+                  "text": "would have started"
+                },
+                {
+                  "id": "u46-should-1-c",
+                  "text": "must have started"
+                }
+              ],
+              "correctOptionId": "u46-should-1-a",
+              "explanation": "Should have + past participle evaluates the late start and recommends the better action.",
+              "feedback": {
+                "correct": "Should have + past participle evaluates the late start and recommends the better action.",
+                "incorrect": "Would have needs an unreal result frame; must have is an evidence-based deduction. This context asks for advice.",
+                "distractors": {
+                  "would have started": "This would describe an imagined action or result, not the speaker's advice.",
+                  "must have started": "This would infer that the start happened; the sentence says the issue was starting late."
+                }
+              }
+            },
+            {
+              "id": "u46-should-2",
+              "question": "Dylan did not call before going. He ___ them before going.",
+              "options": [
+                {
+                  "id": "u46-should-2-a",
+                  "text": "should have called"
+                },
+                {
+                  "id": "u46-should-2-b",
+                  "text": "would have called"
+                },
+                {
+                  "id": "u46-should-2-c",
+                  "text": "must have called"
+                }
+              ],
+              "correctOptionId": "u46-should-2-a",
+              "explanation": "The speaker names the action Dylan was expected or advised to take.",
+              "feedback": {
+                "correct": "The speaker names the action Dylan was expected or advised to take.",
+                "incorrect": "The sentence evaluates a missed action, so choose should have + past participle.",
+                "distractors": {
+                  "would have called": "This would require a different imagined condition or result.",
+                  "must have called": "This conflicts with the context because the call did not happen."
+                }
+              }
+            },
+            {
+              "id": "u46-should-3",
+              "question": "Mary did not buy the car, but it was the better choice. She ___ that car.",
+              "options": [
+                {
+                  "id": "u46-should-3-a",
+                  "text": "should have bought"
+                },
+                {
+                  "id": "u46-should-3-b",
+                  "text": "would have bought"
+                },
+                {
+                  "id": "u46-should-3-c",
+                  "text": "must have bought"
+                }
+              ],
+              "correctOptionId": "u46-should-3-a",
+              "explanation": "Should have bought gives the retrospective recommendation while the context says she did not buy it.",
+              "feedback": {
+                "correct": "Should have bought gives the retrospective recommendation while the context says she did not buy it.",
+                "incorrect": "Choose the modal that evaluates a past choice; the sentence does not imagine an if-result or infer a purchase.",
+                "distractors": {
+                  "would have bought": "This would present an imagined action under a condition.",
+                  "must have bought": "This would make a strong deduction, but the context says she did not buy it."
+                }
+              }
+            }
+          ],
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:8"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "id": "formulate-results",
+      "purpose": "Use would have to state the result of an unreal past condition.",
+      "blockIds": [
+        "u46-would-have"
+      ],
+      "sceneId": "u46-scene-hypothetical",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-6-teaching",
+          "title": "Alternative past results",
+          "content": "<p>Usa <strong>would have + past participle</strong> para expresar el resultado de una condición pasada diferente.</p><p>En este marco explicitamos la condición con <strong>if</strong>; puede entenderse por el contexto aunque no aparezca una cláusula con <strong>if</strong>.</p><p>Example: <em>If we had left at six, we would have caught the train.</em></p>",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:8"
+          ]
+        },
+        {
+          "type": "structured-content",
+          "id": "u46-stage-6-result-table",
+          "title": "Condition and result",
+          "content": {
+            "headers": [
+              "Context",
+              "Result",
+              "Meaning"
+            ],
+            "rows": [
+              [
+                "If we had left at six",
+                "we would have caught the train",
+                "imagined result of a different past"
+              ],
+              [
+                "The family wanted a different path",
+                "they would have wanted him to be different",
+                "unreal past expectation"
+              ],
+              [
+                "A condition can be understood from context",
+                "we would have finished on time",
+                "the result does not require a visible if-clause in every utterance"
+              ]
+            ]
+          },
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:9"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "id": "u46-stage-6-would",
+          "title": "Complete the imagined result",
+          "instruction": "Complete the imagined result of the unreal past condition.",
+          "items": [
+            {
+              "id": "u46-would-1",
+              "question": "We arrived after the train left. If we had left at six, we ___ the train.",
+              "options": [
+                {
+                  "id": "u46-would-1-a",
+                  "text": "would have caught"
+                },
+                {
+                  "id": "u46-would-1-b",
+                  "text": "should have caught"
+                },
+                {
+                  "id": "u46-would-1-c",
+                  "text": "must have caught"
+                }
+              ],
+              "correctOptionId": "u46-would-1-a",
+              "explanation": "Would have caught gives the result imagined under the past condition.",
+              "feedback": {
+                "correct": "Would have caught gives the result imagined under the past condition.",
+                "incorrect": "The if-clause asks for an imagined result, so use would have + past participle.",
+                "distractors": {
+                  "should have caught": "This would evaluate an action rather than state the conditional result.",
+                  "must have caught": "This would infer that they caught the train, which the context rules out."
+                }
+              }
+            },
+            {
+              "id": "u46-would-2",
+              "question": "The family wanted a different path, but it did not happen. They ___ him to be different.",
+              "options": [
+                {
+                  "id": "u46-would-2-a",
+                  "text": "would have wanted"
+                },
+                {
+                  "id": "u46-would-2-b",
+                  "text": "should have wanted"
+                },
+                {
+                  "id": "u46-would-2-c",
+                  "text": "must have wanted"
+                }
+              ],
+              "correctOptionId": "u46-would-2-a",
+              "explanation": "Would have wanted presents the expectation or desire in the unreal past frame.",
+              "feedback": {
+                "correct": "Would have wanted presents the expectation or desire in the unreal past frame.",
+                "incorrect": "The context asks for the imagined past expectation, not advice or evidence.",
+                "distractors": {
+                  "should have wanted": "This would criticize the family's desire rather than describe the imagined expectation.",
+                  "must have wanted": "This would claim a strong deduction, which the context does not support."
+                }
+              }
+            },
+            {
+              "id": "u46-would-3",
+              "question": "If he had done things differently, the boss ___ him the chance.",
+              "options": [
+                {
+                  "id": "u46-would-3-a",
+                  "text": "would have given"
+                },
+                {
+                  "id": "u46-would-3-b",
+                  "text": "should have given"
+                },
+                {
+                  "id": "u46-would-3-c",
+                  "text": "must have given"
+                }
+              ],
+              "correctOptionId": "u46-would-3-a",
+              "explanation": "Would have given completes the unreal past result.",
+              "feedback": {
+                "correct": "Would have given completes the unreal past result.",
+                "incorrect": "The if-clause sets an unreal past condition; its result uses would have + past participle.",
+                "distractors": {
+                  "should have given": "This would evaluate the boss's action, not state the imagined result.",
+                  "must have given": "This would infer that the boss gave the chance, which is not established."
+                }
+              }
+            }
+          ],
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:8"
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 7,
+      "id": "infer-with-evidence",
+      "purpose": "Use must have for strong evidence and may/might/could have for an open possibility; justify the strength.",
+      "blockIds": [
+        "u46-must-might-have",
+        "u46-audio-02"
+      ],
+      "sceneId": "u46-scene-listening",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-7-teaching",
+          "title": "Infer with evidence",
+          "content": "<p>Usa <strong>must have + past participle</strong> cuando varias pistas apoyan una conclusión. Usa <strong>may/might/could have + past participle</strong> cuando quedan varias explicaciones posibles.</p><p>Escucha y elige la opción que corresponda a la situación. Example: <em>The lights are off and the door is locked. They must have left.</em></p><p>For an open possibility: <em>The package might have arrived at reception.</em></p>",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:9"
+          ]
+        },
+        {
+          "type": "audio",
+          "id": "u46-audio-02-runtime",
+          "title": "Escucha con evidencia clara",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-023",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-023",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:14"
+          ],
+          "url": "/audio/lessons/course/unit-46-audio-02.mp3",
+          "audioUrl": "/audio/lessons/course/unit-46-audio-02.mp3",
+          "audioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908",
+          "graded": true,
+          "instruction": "Escucha y elige las opciones que puedas relacionar con la situación. Después comenta con tu docente qué frase entendiste.",
+          "teacherOnly": {
+            "transcriptStatus": "clear-evidence-only",
+            "uncertainSegments": [
+              {
+                "sourceText": "Sometimes, I even think that I must not have said something the way I did.",
+                "use": "listening observation only",
+                "teacherClarification": "Do not model this as the target evidence-based deduction. In the regret context, a natural target paraphrase is I should not have said it that way / I shouldn't have said it that way. Could not have said would express impossibility, while must have said would express a strong positive deduction; the source wording is not a key for either."
+              }
+            ]
+          }
+        },
+        {
+          "type": "multiple_choice",
+          "id": "u46-stage-7-audio-check",
+          "title": "Verified audio questions",
+          "instruction": "Listen and choose only what is explicitly supported by a clear segment.",
+          "items": [
+            {
+              "id": "u46-listening-1",
+              "question": "What does the speaker reflect on?",
+              "options": [
+                {
+                  "id": "u46-listen-1-a",
+                  "text": "Past decisions"
+                },
+                {
+                  "id": "u46-listen-1-b",
+                  "text": "A shopping list"
+                },
+                {
+                  "id": "u46-listen-1-c",
+                  "text": "A holiday route"
+                },
+                {
+                  "id": "u46-listen-1-d",
+                  "text": "A sports result"
+                }
+              ],
+              "correctOptionId": "u46-listen-1-a",
+              "explanation": "The speaker explicitly reflects on acting differently in the past.",
+              "feedback": {
+                "correct": "The speaker explicitly reflects on acting differently in the past.",
+                "incorrect": "Replay the sentence about how the speaker should have acted differently; the other options are not supported."
+              },
+              "evidence": "you should have acted differently"
+            },
+            {
+              "id": "u46-listening-2",
+              "question": "What does the speaker say about outcomes?",
+              "options": [
+                {
+                  "id": "u46-listen-2-a",
+                  "text": "They may differ from what we want"
+                },
+                {
+                  "id": "u46-listen-2-b",
+                  "text": "They always match our wishes"
+                },
+                {
+                  "id": "u46-listen-2-c",
+                  "text": "They never change"
+                },
+                {
+                  "id": "u46-listen-2-d",
+                  "text": "They depend only on luck"
+                }
+              ],
+              "correctOptionId": "u46-listen-2-a",
+              "explanation": "The speaker says outcomes can turn out differently from what people want.",
+              "feedback": {
+                "correct": "The speaker says outcomes can turn out differently from what people want.",
+                "incorrect": "Replay the clear phrase about outcomes turning out completely different; the audio does not say they always match, never change, or depend only on luck."
+              },
+              "evidence": "turn out to be completely different"
+            },
+            {
+              "id": "u46-listening-3",
+              "question": "Which expression appears in the audio?",
+              "options": [
+                {
+                  "id": "u46-listen-3-a",
+                  "text": "Cry over spilled milk"
+                },
+                {
+                  "id": "u46-listen-3-b",
+                  "text": "Break the ice"
+                },
+                {
+                  "id": "u46-listen-3-c",
+                  "text": "Hit the road"
+                },
+                {
+                  "id": "u46-listen-3-d",
+                  "text": "Under the weather"
+                }
+              ],
+              "correctOptionId": "u46-listen-3-a",
+              "explanation": "That expression is clearly audible in the recording.",
+              "feedback": {
+                "correct": "That expression is clearly audible in the recording.",
+                "incorrect": "Replay the final part of the sentence about not crying over spilled milk; the other expressions are not in this audio."
+              },
+              "evidence": "one cannot cry over spilled milk"
+            },
+            {
+              "id": "u46-listening-4",
+              "question": "What can difficult situations help us assess?",
+              "options": [
+                {
+                  "id": "u46-listen-4-a",
+                  "text": "Our lives and how we live"
+                },
+                {
+                  "id": "u46-listen-4-b",
+                  "text": "Only the weather"
+                },
+                {
+                  "id": "u46-listen-4-c",
+                  "text": "Only our clothing"
+                },
+                {
+                  "id": "u46-listen-4-d",
+                  "text": "Only travel prices"
+                }
+              ],
+              "correctOptionId": "u46-listen-4-a",
+              "explanation": "The speaker explicitly connects difficult situations with assessing our lives and the way we live them.",
+              "feedback": {
+                "correct": "The speaker explicitly connects difficult situations with assessing our lives and the way we live them.",
+                "incorrect": "Replay the sentence about what these situations help us assess; the other options are not supported."
+              },
+              "evidence": "our lives and the way we live them"
+            }
+          ],
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-multiple-choice-14-b-listen-to-the-audio-and-answer-the-questions-your-t-025",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-multiple-choice-14-b-listen-to-the-audio-and-answer-the-questions-your-t-025",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:14"
+          ]
+        },
+        {
+          "type": "short_answer",
+          "id": "u46-stage-7-inference",
+          "title": "Complete the inference",
+          "instruction": "Complete each sentence and explain whether the evidence is strong or open.",
+          "items": [
+            {
+              "id": "u46-infer-1",
+              "question": "It is 10 p.m.; the lights are off, the door is locked, and the doorman saw them leave at 9. They ___ left.",
+              "correctAnswer": "must have left",
+              "acceptedAnswers": [
+                "must have left",
+                "must've left"
+              ],
+              "explanation": "For these clues, must have is the strongest candidate. Check that the clues support one conclusion.",
+              "feedback": {
+                "correct": "For these clues, must have is the strongest candidate. Check that the clues support one conclusion.",
+                "acceptedAlternative": "A contraction is accepted. May/might/could have keep the possibility open and can also be discussed when the evidence is incomplete.",
+                "incorrect": "Choose the candidate that matches the evidence strength; should have gives advice, while would have needs an unreal condition."
+              },
+              "certainty": "strong"
+            },
+            {
+              "id": "u46-infer-2",
+              "question": "The delivery record is incomplete. The package ___ arrived at reception.",
+              "correctAnswer": "might have arrived",
+              "acceptedAnswers": [
+                "might have arrived",
+                "may have arrived",
+                "could have arrived",
+                "might've arrived",
+                "may've arrived"
+              ],
+              "explanation": "For this incomplete record, might have is one acceptable candidate; may have and could have also keep the possibility open.",
+              "feedback": {
+                "correct": "For this incomplete record, might have is one acceptable candidate; may have and could have also keep the possibility open.",
+                "acceptedAlternative": "May have, might have, and could have are all accepted when the context leaves more than one explanation open.",
+                "incorrect": "The clue is incomplete, so discuss an open possibility instead of presenting a strong conclusion as the only option."
+              },
+              "certainty": "open"
+            },
+            {
+              "id": "u46-infer-3",
+              "question": "The lights are off, no one answers, and the last bus left 20 minutes ago. They ___ gone home.",
+              "correctAnswer": "must have gone",
+              "acceptedAnswers": [
+                "must have gone",
+                "must've gone"
+              ],
+              "explanation": "For these combined clues, must have is the strongest candidate. Confirm that the clues support the conclusion.",
+              "feedback": {
+                "correct": "For these combined clues, must have is the strongest candidate. Confirm that the clues support the conclusion.",
+                "acceptedAlternative": "The contraction must have gone is equivalent.",
+                "incorrect": "Choose the candidate that best matches the clues; this item asks for an evidence-based conclusion, not advice."
+              },
+              "certainty": "strong"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stage": 8,
+      "id": "communicate",
+      "purpose": "Write or record a fictional incident note with two advice sentences, one hypothetical result, and two evidence-based inferences.",
+      "blockIds": [
+        "u46-source-practice",
+        "u46-final-note"
+      ],
+      "sceneId": "u46-scene-final-writing",
+      "runtimeBlocks": [
+        {
+          "type": "text",
+          "id": "u46-stage-8-teaching",
+          "title": "Communicate with evidence",
+          "content": "<p>Elige un proyecto ficticio y neutral. Primero anota los hechos y las pistas; después escribe o graba cinco oraciones.</p><p>Incluye dos consejos retrospectivos, un resultado alternativo y dos deducciones o posibilidades. Etiqueta la función de cada oración.</p><p>Example: <em>They should have saved a copy.</em> La revisión considera significado, tiempo y <strong>modal + have + past participle</strong>.</p>",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:16"
+          ]
+        },
+        {
+          "type": "essay",
+          "id": "u46-final-essay-runtime",
+          "mode": "autonomous",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:16"
+          ],
+          "prompt": "Escribe una nota ficticia de cinco oraciones sobre una decisión de proyecto. Incluye dos consejos retrospectivos, un resultado alternativo y dos deducciones o posibilidades basadas en evidencia. Etiqueta la función de cada oración.",
+          "guidance": "Elige una tarjeta neutral, completa primero la tabla de hecho/evidencia, función, modal y participio, y luego escribe la nota.",
+          "minWords": null,
+          "maxWords": null,
+          "aiGrading": false,
+          "autoGrade": false,
+          "rubric": [
+            "Incluye dos oraciones de consejo retrospectivo con should have.",
+            "Incluye una oración de resultado alternativo con would have; la condición puede estar expresada con if o entenderse por el contexto.",
+            "Incluye dos deducciones o posibilidades con must/may/might/could have y relaciona cada una con evidencia.",
+            "Usa modal + have + past participle y etiqueta la función de cada oración.",
+            "Acepta una variante léxica natural si conserva función, línea temporal y grado de certeza."
+          ]
+        },
+        {
+          "type": "recording",
+          "id": "u46-final-recording-runtime",
+          "mode": "teacherGuided",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:16"
+          ],
+          "instruction": "Graba una nota ficticia de cinco oraciones sobre una decisión de proyecto. Di dos consejos retrospectivos, un resultado alternativo y dos deducciones o posibilidades basadas en evidencia; anuncia la función de cada oración.",
+          "guidance": "El docente puede mostrar una tarjeta neutral y preguntar qué evidencia hace fuerte o abierta cada deducción. Puedes preparar la tabla antes de grabar.",
+          "timeLimit": null,
+          "aiGrading": false,
+          "autoGrade": false,
+          "rubric": [
+            "Incluye dos oraciones de consejo retrospectivo con should have.",
+            "Incluye una oración de resultado alternativo con would have; la condición puede estar expresada con if o entenderse por el contexto.",
+            "Incluye dos deducciones o posibilidades con must/may/might/could have y relaciona cada una con evidencia.",
+            "Usa modal + have + past participle y etiqueta la función de cada oración.",
+            "Acepta una variante léxica natural si conserva función, línea temporal y grado de certeza."
+          ]
+        }
+      ]
+    }
+  ],
+  "activities": {
+    "globalListening": {
+      "id": "u46-audio-global-01",
+      "type": "audio",
+      "sourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+      "audioUrl": "/audio/lessons/course/unit-46-audio-01.mp3",
+      "audioSha256": "9795a7aba993c240991d14b80c962a8672fbabd71c40ad26e784988211b598e4",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:4"
+      ],
+      "prompt": "Listen once for the general situation. Tell the teacher whether the speakers are discussing a past event, a present plan, or a future prediction.",
+      "responseMode": "teacher-listening",
+      "graded": false,
+      "transcriptStatus": "unverified-asr",
+      "gradingBoundary": "Do not ask the learner to identify names, accusations, idioms, or any phrase whose transcript is garbled. No answer key is generated from this audio.",
+      "teacherFollowUp": [
+        "What broad situation did you hear?",
+        "Which speaker sounds certain, and which speaker sounds unsure?",
+        "Which phrase would you want to verify before using it as a grammar model?"
+      ]
+    },
+    "meaningCheck": {
+      "id": "u46-meaning-check",
+      "type": "multiple_choice",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017"
+      ],
+      "itemsRef": "#/meaningTeaching/meaningCheck/items",
+      "answerPolicy": "Accept the listed labels and their acceptedLabels synonyms; feedback explains the function rather than penalizing a wording difference."
+    },
+    "classification": {
+      "id": "u46-classify-9",
+      "type": "multiple_choice",
+      "runtimeType": "multiple_choice",
+      "sourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+      "instruction": "Choose the function that best matches the whole context. Use the evidence or if-clause, not the modal alone.",
+      "options": [
+        "Retrospective advice or criticism",
+        "Hypothetical past result",
+        "Strong deduction from evidence",
+        "Open past possibility"
+      ],
+      "items": [
+        {
+          "id": "u46-classify-1",
+          "sentence": "The form was missing a signature. We should have checked it before sending.",
+          "options": [
+            {
+              "id": "u46-classify-1-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-1-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-1-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-1-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-1-a",
+            "acceptedLabels": [
+              "retrospective advice",
+              "advice about a past action"
+            ]
+          },
+          "acceptedLabels": [
+            "retrospective advice",
+            "advice about a past action"
+          ],
+          "feedback": "The speaker evaluates a past action and names a better action."
+        },
+        {
+          "id": "u46-classify-2",
+          "sentence": "The meeting started without us. We should have checked the time.",
+          "options": [
+            {
+              "id": "u46-classify-2-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-2-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-2-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-2-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-2-a",
+            "acceptedLabels": [
+              "retrospective advice",
+              "advice about a past action"
+            ]
+          },
+          "acceptedLabels": [
+            "retrospective advice",
+            "advice about a past action"
+          ],
+          "feedback": "Should have expresses a missed recommendation, not a conclusion about what happened."
+        },
+        {
+          "id": "u46-classify-3",
+          "sentence": "The team lost the file. They should have saved a copy.",
+          "options": [
+            {
+              "id": "u46-classify-3-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-3-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-3-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-3-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-3-a",
+            "acceptedLabels": [
+              "retrospective advice",
+              "advice about a past action"
+            ]
+          },
+          "acceptedLabels": [
+            "retrospective advice",
+            "advice about a past action"
+          ],
+          "feedback": "The sentence judges the past choice and suggests a safer choice."
+        },
+        {
+          "id": "u46-classify-4",
+          "sentence": "If we had left at six, we would have caught the train.",
+          "options": [
+            {
+              "id": "u46-classify-4-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-4-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-4-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-4-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-4-b",
+            "acceptedLabels": [
+              "hypothetical result",
+              "imagined past result"
+            ]
+          },
+          "acceptedLabels": [
+            "hypothetical result",
+            "imagined past result"
+          ],
+          "feedback": "The if-clause supplies an unreal condition; would have supplies its imagined result."
+        },
+        {
+          "id": "u46-classify-5",
+          "sentence": "If the weather had improved, the organizers would have moved the event outside.",
+          "options": [
+            {
+              "id": "u46-classify-5-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-5-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-5-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-5-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-5-b",
+            "acceptedLabels": [
+              "hypothetical result",
+              "imagined past result"
+            ]
+          },
+          "acceptedLabels": [
+            "hypothetical result",
+            "imagined past result"
+          ],
+          "feedback": "This is an alternative past outcome, not advice and not evidence-based certainty."
+        },
+        {
+          "id": "u46-classify-6",
+          "sentence": "I would have joined the call, but I was already on another call.",
+          "options": [
+            {
+              "id": "u46-classify-6-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-6-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-6-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-6-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-6-b",
+            "acceptedLabels": [
+              "hypothetical result",
+              "imagined past result"
+            ]
+          },
+          "acceptedLabels": [
+            "hypothetical result",
+            "imagined past result"
+          ],
+          "feedback": "Would have presents the action the speaker imagines under a different past circumstance."
+        },
+        {
+          "id": "u46-classify-7",
+          "sentence": "The lights are off, the door is locked, and the doorman saw them leave. They must have left.",
+          "options": [
+            {
+              "id": "u46-classify-7-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-7-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-7-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-7-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-7-c",
+            "acceptedLabels": [
+              "strong deduction",
+              "deduction from evidence"
+            ]
+          },
+          "acceptedLabels": [
+            "strong deduction",
+            "deduction from evidence"
+          ],
+          "feedback": "Several clues make the conclusion strong; this is not a recommendation."
+        },
+        {
+          "id": "u46-classify-8",
+          "sentence": "The delivery record is incomplete. The package might have arrived at reception.",
+          "options": [
+            {
+              "id": "u46-classify-8-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-8-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-8-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-8-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-8-d",
+            "acceptedLabels": [
+              "open possibility",
+              "past possibility",
+              "weak deduction"
+            ]
+          },
+          "acceptedLabels": [
+            "open possibility",
+            "past possibility",
+            "weak deduction"
+          ],
+          "feedback": "The evidence is incomplete, so might have keeps the possibility open."
+        },
+        {
+          "id": "u46-classify-9",
+          "sentence": "The key is wet, so someone may have used it outside.",
+          "options": [
+            {
+              "id": "u46-classify-9-a",
+              "text": "Retrospective advice or criticism"
+            },
+            {
+              "id": "u46-classify-9-b",
+              "text": "Hypothetical past result"
+            },
+            {
+              "id": "u46-classify-9-c",
+              "text": "Strong deduction from evidence"
+            },
+            {
+              "id": "u46-classify-9-d",
+              "text": "Open past possibility"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-classify-9-d",
+            "acceptedLabels": [
+              "open possibility",
+              "past possibility",
+              "weak deduction"
+            ]
+          },
+          "acceptedLabels": [
+            "open possibility",
+            "past possibility",
+            "weak deduction"
+          ],
+          "feedback": "May have offers one possible explanation; the clue does not force a single conclusion."
+        }
+      ]
+    },
+    "shouldPractice": {
+      "id": "u46-should-have",
+      "type": "multiple_choice",
+      "runtimeType": "multiple_choice",
+      "sourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "instruction": "Choose the form that gives retrospective advice. The context must show a better past action.",
+      "items": [
+        {
+          "id": "u46-should-1",
+          "question": "I missed the deadline because I started late. I ___ earlier.",
+          "options": [
+            {
+              "id": "u46-should-1-a",
+              "text": "should have started"
+            },
+            {
+              "id": "u46-should-1-b",
+              "text": "would have started"
+            },
+            {
+              "id": "u46-should-1-c",
+              "text": "must have started"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-should-1-a",
+            "acceptedText": [
+              "should have started",
+              "should've started",
+              "ought to have started"
+            ]
+          },
+          "feedback": {
+            "correct": "Should have + past participle evaluates the late start and recommends the better action.",
+            "incorrect": "Would have needs an unreal result frame; must have is an evidence-based deduction. This context asks for advice.",
+            "distractors": {
+              "would have started": "This would describe an imagined action or result, not the speaker's advice.",
+              "must have started": "This would infer that the start happened; the sentence says the issue was starting late."
+            }
+          }
+        },
+        {
+          "id": "u46-should-2",
+          "question": "Dylan did not call before going. He ___ them before going.",
+          "options": [
+            {
+              "id": "u46-should-2-a",
+              "text": "should have called"
+            },
+            {
+              "id": "u46-should-2-b",
+              "text": "would have called"
+            },
+            {
+              "id": "u46-should-2-c",
+              "text": "must have called"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-should-2-a",
+            "acceptedText": [
+              "should have called",
+              "should've called",
+              "ought to have called"
+            ]
+          },
+          "feedback": {
+            "correct": "The speaker names the action Dylan was expected or advised to take.",
+            "incorrect": "The sentence evaluates a missed action, so choose should have + past participle.",
+            "distractors": {
+              "would have called": "This would require a different imagined condition or result.",
+              "must have called": "This conflicts with the context because the call did not happen."
+            }
+          }
+        },
+        {
+          "id": "u46-should-3",
+          "question": "Mary did not buy the car, but it was the better choice. She ___ that car.",
+          "options": [
+            {
+              "id": "u46-should-3-a",
+              "text": "should have bought"
+            },
+            {
+              "id": "u46-should-3-b",
+              "text": "would have bought"
+            },
+            {
+              "id": "u46-should-3-c",
+              "text": "must have bought"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-should-3-a",
+            "acceptedText": [
+              "should have bought",
+              "should've bought",
+              "ought to have bought"
+            ]
+          },
+          "feedback": {
+            "correct": "Should have bought gives the retrospective recommendation while the context says she did not buy it.",
+            "incorrect": "Choose the modal that evaluates a past choice; the sentence does not imagine an if-result or infer a purchase.",
+            "distractors": {
+              "would have bought": "This would present an imagined action under a condition.",
+              "must have bought": "This would make a strong deduction, but the context says she did not buy it."
+            }
+          }
+        }
+      ]
+    },
+    "wouldPractice": {
+      "id": "u46-would-have",
+      "type": "multiple_choice",
+      "runtimeType": "multiple_choice",
+      "sourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "instruction": "Complete the imagined result of the unreal past condition.",
+      "items": [
+        {
+          "id": "u46-would-1",
+          "question": "We arrived after the train left. If we had left at six, we ___ the train.",
+          "options": [
+            {
+              "id": "u46-would-1-a",
+              "text": "would have caught"
+            },
+            {
+              "id": "u46-would-1-b",
+              "text": "should have caught"
+            },
+            {
+              "id": "u46-would-1-c",
+              "text": "must have caught"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-would-1-a",
+            "acceptedText": [
+              "would have caught",
+              "would've caught"
+            ]
+          },
+          "feedback": {
+            "correct": "Would have caught gives the result imagined under the past condition.",
+            "incorrect": "The if-clause asks for an imagined result, so use would have + past participle.",
+            "distractors": {
+              "should have caught": "This would evaluate an action rather than state the conditional result.",
+              "must have caught": "This would infer that they caught the train, which the context rules out."
+            }
+          }
+        },
+        {
+          "id": "u46-would-2",
+          "question": "The family wanted a different path, but it did not happen. They ___ him to be different.",
+          "options": [
+            {
+              "id": "u46-would-2-a",
+              "text": "would have wanted"
+            },
+            {
+              "id": "u46-would-2-b",
+              "text": "should have wanted"
+            },
+            {
+              "id": "u46-would-2-c",
+              "text": "must have wanted"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-would-2-a",
+            "acceptedText": [
+              "would have wanted",
+              "would've wanted"
+            ]
+          },
+          "feedback": {
+            "correct": "Would have wanted presents the expectation or desire in the unreal past frame.",
+            "incorrect": "The context asks for the imagined past expectation, not advice or evidence.",
+            "distractors": {
+              "should have wanted": "This would criticize the family's desire rather than describe the imagined expectation.",
+              "must have wanted": "This would claim a strong deduction, which the context does not support."
+            }
+          }
+        },
+        {
+          "id": "u46-would-3",
+          "question": "If he had done things differently, the boss ___ him the chance.",
+          "options": [
+            {
+              "id": "u46-would-3-a",
+              "text": "would have given"
+            },
+            {
+              "id": "u46-would-3-b",
+              "text": "should have given"
+            },
+            {
+              "id": "u46-would-3-c",
+              "text": "must have given"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-would-3-a",
+            "acceptedText": [
+              "would have given",
+              "would've given"
+            ]
+          },
+          "feedback": {
+            "correct": "Would have given completes the unreal past result.",
+            "incorrect": "The if-clause sets an unreal past condition; its result uses would have + past participle.",
+            "distractors": {
+              "should have given": "This would evaluate the boss's action, not state the imagined result.",
+              "must have given": "This would infer that the boss gave the chance, which is not established."
+            }
+          }
+        }
+      ]
+    },
+    "inferencePractice": {
+      "id": "u46-must-might-have",
+      "type": "short_answer_with_word_bank",
+      "runtimeType": "short_answer",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017"
+      ],
+      "instruction": "Complete each sentence and explain whether the evidence is strong or open.",
+      "wordBank": [
+        "must have",
+        "might have",
+        "may have",
+        "could have"
+      ],
+      "items": [
+        {
+          "id": "u46-infer-1",
+          "question": "It is 10 p.m.; the lights are off, the door is locked, and the doorman saw them leave at 9. They ___ left.",
+          "options": [
+            {
+              "id": "u46-infer-1-a",
+              "text": "must have"
+            },
+            {
+              "id": "u46-infer-1-b",
+              "text": "might have"
+            },
+            {
+              "id": "u46-infer-1-c",
+              "text": "may have"
+            },
+            {
+              "id": "u46-infer-1-d",
+              "text": "could have"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-infer-1-a",
+            "canonical": "must have left",
+            "acceptedText": [
+              "must have left",
+              "must've left"
+            ],
+            "certainty": "strong"
+          },
+          "feedback": {
+            "correct": "For these clues, must have is the strongest candidate. Check that the clues support one conclusion.",
+            "acceptedAlternative": "A contraction is accepted. May/might/could have keep the possibility open and can also be discussed when the evidence is incomplete.",
+            "incorrect": "Choose the candidate that matches the evidence strength; should have gives advice, while would have needs an unreal condition."
+          },
+          "correctAnswer": "must have left",
+          "acceptedAnswers": [
+            "must have left",
+            "must've left"
+          ]
+        },
+        {
+          "id": "u46-infer-2",
+          "question": "The delivery record is incomplete. The package ___ arrived at reception.",
+          "options": [
+            {
+              "id": "u46-infer-2-a",
+              "text": "must have"
+            },
+            {
+              "id": "u46-infer-2-b",
+              "text": "might have"
+            },
+            {
+              "id": "u46-infer-2-c",
+              "text": "may have"
+            },
+            {
+              "id": "u46-infer-2-d",
+              "text": "could have"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-infer-2-b",
+            "canonical": "might have arrived",
+            "acceptedText": [
+              "might have arrived",
+              "may have arrived",
+              "could have arrived",
+              "might've arrived",
+              "may've arrived"
+            ],
+            "certainty": "open"
+          },
+          "feedback": {
+            "correct": "For this incomplete record, might have is one acceptable candidate; may have and could have also keep the possibility open.",
+            "acceptedAlternative": "May have, might have, and could have are all accepted when the context leaves more than one explanation open.",
+            "incorrect": "The clue is incomplete, so discuss an open possibility instead of presenting a strong conclusion as the only option."
+          },
+          "correctAnswer": "might have arrived",
+          "acceptedAnswers": [
+            "might have arrived",
+            "may have arrived",
+            "could have arrived",
+            "might've arrived",
+            "may've arrived"
+          ]
+        },
+        {
+          "id": "u46-infer-3",
+          "question": "The lights are off, no one answers, and the last bus left 20 minutes ago. They ___ gone home.",
+          "options": [
+            {
+              "id": "u46-infer-3-a",
+              "text": "must have"
+            },
+            {
+              "id": "u46-infer-3-b",
+              "text": "might have"
+            },
+            {
+              "id": "u46-infer-3-c",
+              "text": "may have"
+            },
+            {
+              "id": "u46-infer-3-d",
+              "text": "could have"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-infer-3-a",
+            "canonical": "must have gone",
+            "acceptedText": [
+              "must have gone",
+              "must've gone"
+            ],
+            "certainty": "strong"
+          },
+          "feedback": {
+            "correct": "For these combined clues, must have is the strongest candidate. Confirm that the clues support the conclusion.",
+            "acceptedAlternative": "The contraction must have gone is equivalent.",
+            "incorrect": "Choose the candidate that best matches the clues; this item asks for an evidence-based conclusion, not advice."
+          },
+          "correctAnswer": "must have gone",
+          "acceptedAnswers": [
+            "must have gone",
+            "must've gone"
+          ]
+        }
+      ]
+    },
+    "audioListening": {
+      "id": "u46-audio-02",
+      "type": "multiple_choice",
+      "runtimeType": "multiple_choice",
+      "sourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-multiple-choice-14-b-listen-to-the-audio-and-answer-the-questions-your-t-025",
+      "audioSourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-023",
+      "audioUrl": "/audio/lessons/course/unit-46-audio-02.mp3",
+      "audioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:14"
+      ],
+      "transcriptStatus": "clear-evidence-only",
+      "instruction": "Listen and choose only what is explicitly supported by a clear segment.",
+      "items": [
+        {
+          "id": "u46-listening-1",
+          "question": "What does the speaker reflect on?",
+          "options": [
+            {
+              "id": "u46-listen-1-a",
+              "text": "Past decisions"
+            },
+            {
+              "id": "u46-listen-1-b",
+              "text": "A shopping list"
+            },
+            {
+              "id": "u46-listen-1-c",
+              "text": "A holiday route"
+            },
+            {
+              "id": "u46-listen-1-d",
+              "text": "A sports result"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-listen-1-a",
+            "acceptedText": [
+              "Past decisions",
+              "decisions made in the past"
+            ]
+          },
+          "evidence": "you should have acted differently",
+          "feedback": {
+            "correct": "The speaker explicitly reflects on acting differently in the past.",
+            "incorrect": "Replay the sentence about how the speaker should have acted differently; the other options are not supported."
+          }
+        },
+        {
+          "id": "u46-listening-2",
+          "question": "What does the speaker say about outcomes?",
+          "options": [
+            {
+              "id": "u46-listen-2-a",
+              "text": "They may differ from what we want"
+            },
+            {
+              "id": "u46-listen-2-b",
+              "text": "They always match our wishes"
+            },
+            {
+              "id": "u46-listen-2-c",
+              "text": "They never change"
+            },
+            {
+              "id": "u46-listen-2-d",
+              "text": "They depend only on luck"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-listen-2-a",
+            "acceptedText": [
+              "They may differ from what we want",
+              "outcomes can be different from what we want"
+            ]
+          },
+          "evidence": "turn out to be completely different",
+          "feedback": {
+            "correct": "The speaker says outcomes can turn out differently from what people want.",
+            "incorrect": "Replay the clear phrase about outcomes turning out completely different; the audio does not say they always match, never change, or depend only on luck."
+          }
+        },
+        {
+          "id": "u46-listening-3",
+          "question": "Which expression appears in the audio?",
+          "options": [
+            {
+              "id": "u46-listen-3-a",
+              "text": "Cry over spilled milk"
+            },
+            {
+              "id": "u46-listen-3-b",
+              "text": "Break the ice"
+            },
+            {
+              "id": "u46-listen-3-c",
+              "text": "Hit the road"
+            },
+            {
+              "id": "u46-listen-3-d",
+              "text": "Under the weather"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-listen-3-a",
+            "acceptedText": [
+              "Cry over spilled milk",
+              "one cannot cry over spilled milk"
+            ]
+          },
+          "evidence": "one cannot cry over spilled milk",
+          "feedback": {
+            "correct": "That expression is clearly audible in the recording.",
+            "incorrect": "Replay the final part of the sentence about not crying over spilled milk; the other expressions are not in this audio."
+          }
+        },
+        {
+          "id": "u46-listening-4",
+          "question": "What can difficult situations help us assess?",
+          "options": [
+            {
+              "id": "u46-listen-4-a",
+              "text": "Our lives and how we live"
+            },
+            {
+              "id": "u46-listen-4-b",
+              "text": "Only the weather"
+            },
+            {
+              "id": "u46-listen-4-c",
+              "text": "Only our clothing"
+            },
+            {
+              "id": "u46-listen-4-d",
+              "text": "Only travel prices"
+            }
+          ],
+          "answerKey": {
+            "optionId": "u46-listen-4-a",
+            "acceptedText": [
+              "Our lives and how we live",
+              "our lives and the way we live them"
+            ]
+          },
+          "evidence": "our lives and the way we live them",
+          "feedback": {
+            "correct": "The speaker explicitly connects difficult situations with assessing our lives and the way we live them.",
+            "incorrect": "Replay the sentence about what these situations help us assess; the other options are not supported."
+          }
+        }
+      ],
+      "uncertainSegments": [
+        {
+          "sourceText": "Sometimes, I even think that I must not have said something the way I did.",
+          "use": "listening observation only",
+          "teacherClarification": "Do not model this as the target evidence-based deduction. In the regret context, a natural target paraphrase is I should not have said it that way / I shouldn't have said it that way. Could not have said would express impossibility, while must have said would express a strong positive deduction; the source wording is not a key for either."
+        }
+      ]
+    },
+    "sourcePractice": {
+      "id": "u46-source-practice",
+      "type": "open_response",
+      "runtimeType": "essay",
+      "sourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-13-a-write-8-sentences-where-you-include-suggestions-expectations--022",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:13"
+      ],
+      "prompt": "Write 8 sentences where you include suggestions, expectations, and opinions in the past. Follow the example: Alex should've called Annie; now, he has lost her for good.",
+      "minWords": null,
+      "maxWords": null,
+      "aiGrading": false,
+      "responseMode": "open-response",
+      "autoGrade": false,
+      "teacherRubric": [
+        "The learner gives context for each sentence.",
+        "Should have, would have, and must/might have match their functions.",
+        "Every modal perfect uses have + past participle.",
+        "A contraction or a natural lexical paraphrase is acceptable when the meaning is preserved."
+      ],
+      "feedback": {
+        "beforeSubmission": "Write the situation first, then choose the function and form.",
+        "afterSubmission": "Check each sentence for function, timeline, and modal + have + past participle. Do not grade a sentence wrong only because it uses an accepted contraction or equivalent modal for the evidence strength."
+      }
+    },
+    "readingDiscussion": {
+      "id": "u46-reading-discussion",
+      "type": "teacher_discussion",
+      "sourceRef": "course-guided-cmnmm9tei0028w1qkri0q23eb-text-15-15-026",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:15"
+      ],
+      "prompt": "Read the attributed Friends article, discuss the published questions with the teacher, and notice the modal-perfect examples. Keep discussion open response; do not require agreement with the article.",
+      "articleSourceUrl": "https://edition.cnn.com/2021/06/17/entertainment/friends-james-corden/index.html",
+      "autoGrade": false,
+      "note": "The article is context for discussion. It is not the evidence source for the grammar keys."
+    },
+    "finalCommunication": {
+      "id": "u46-final-note",
+      "type": "communication_task",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:16"
+      ],
+      "sourcePromptPreserved": [
+        "D. Based on the topic presented in the reading section, what other programs should have been considered as iconic as Friends? Would have you chosen any other? Why? Use the language studied.",
+        "E. Write a 150-200 word text about someone or something you would have considered a good influence during your youth but you didn’t. How should you have seen it? What would have been different if you had done it? Be very detailed, the story does not have to be real. Remember to use the language studied."
+      ],
+      "authoredPrompt": "Write or record a five-sentence note about a fictional project decision. Give two retrospective recommendations, one alternative past result, and two evidence-based deductions or possibilities. Label the function of every sentence.",
+      "neutralScenarioCards": [
+        {
+          "id": "u46-card-deadline",
+          "facts": [
+            "The team started late.",
+            "The deadline was missed.",
+            "The checklist was not saved."
+          ],
+          "possibleAdvice": [
+            "They should have started earlier.",
+            "They should have saved a copy of the checklist."
+          ],
+          "possibleResult": "If they had started earlier, they would have finished on time.",
+          "evidenceForInference": [
+            "The office lights are off.",
+            "The door is locked.",
+            "The doorman saw the team leave."
+          ],
+          "possibleDeductions": [
+            "They must have left.",
+            "The missing checklist might have been saved on another device."
+          ]
+        },
+        {
+          "id": "u46-card-delivery",
+          "facts": [
+            "The delivery record is incomplete.",
+            "The package is not on the usual desk.",
+            "Reception has not confirmed receipt."
+          ],
+          "possibleAdvice": [
+            "The team should have recorded the delivery location.",
+            "They should have checked the record before closing the ticket."
+          ],
+          "possibleResult": "If the team had checked the record, they would have noticed the missing location.",
+          "evidenceForInference": [
+            "The tracking page shows a delivery scan.",
+            "The reception log is incomplete."
+          ],
+          "possibleDeductions": [
+            "The package may have arrived at reception.",
+            "It might have been left in another office."
+          ]
+        }
+      ],
+      "requirements": {
+        "sentenceCount": 5,
+        "adviceCount": 2,
+        "hypotheticalResultCount": 1,
+        "deductionOrPossibilityCount": 2,
+        "functionLabelsRequired": true,
+        "fictionalOrThirdPersonAllowed": true,
+        "personalDisclosureRequired": false
+      },
+      "runtimeBlocks": {
+        "teacherGuided": {
+          "type": "recording",
+          "id": "u46-final-recording-runtime",
+          "mode": "teacherGuided",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:16"
+          ],
+          "instruction": "Graba una nota ficticia de cinco oraciones sobre una decisión de proyecto. Di dos consejos retrospectivos, un resultado alternativo y dos deducciones o posibilidades basadas en evidencia; anuncia la función de cada oración.",
+          "guidance": "El docente puede mostrar una tarjeta neutral y preguntar qué evidencia hace fuerte o abierta cada deducción. Puedes preparar la tabla antes de grabar.",
+          "timeLimit": null,
+          "aiGrading": false,
+          "autoGrade": false,
+          "rubric": [
+            "Incluye dos oraciones de consejo retrospectivo con should have.",
+            "Incluye una oración de resultado alternativo con would have; la condición puede estar expresada con if o entenderse por el contexto.",
+            "Incluye dos deducciones o posibilidades con must/may/might/could have y relaciona cada una con evidencia.",
+            "Usa modal + have + past participle y etiqueta la función de cada oración.",
+            "Acepta una variante léxica natural si conserva función, línea temporal y grado de certeza."
+          ]
+        },
+        "autonomous": {
+          "type": "essay",
+          "id": "u46-final-essay-runtime",
+          "mode": "autonomous",
+          "sourceId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:16"
+          ],
+          "prompt": "Escribe una nota ficticia de cinco oraciones sobre una decisión de proyecto. Incluye dos consejos retrospectivos, un resultado alternativo y dos deducciones o posibilidades basadas en evidencia. Etiqueta la función de cada oración.",
+          "guidance": "Elige una tarjeta neutral, completa primero la tabla de hecho/evidencia, función, modal y participio, y luego escribe la nota.",
+          "minWords": null,
+          "maxWords": null,
+          "aiGrading": false,
+          "autoGrade": false,
+          "rubric": [
+            "Incluye dos oraciones de consejo retrospectivo con should have.",
+            "Incluye una oración de resultado alternativo con would have; la condición puede estar expresada con if o entenderse por el contexto.",
+            "Incluye dos deducciones o posibilidades con must/may/might/could have y relaciona cada una con evidencia.",
+            "Usa modal + have + past participle y etiqueta la función de cada oración.",
+            "Acepta una variante léxica natural si conserva función, línea temporal y grado de certeza."
+          ]
+        }
+      },
+      "modes": {
+        "teacherGuided": {
+          "sceneId": "u46-scene-final-speaking",
+          "label": "Teacher-guided conversation",
+          "steps": [
+            "The teacher chooses or displays one neutral scenario card.",
+            "The learner points to the evidence, names the intended function, and drafts or says each sentence.",
+            "The teacher asks What makes the deduction strong or open? and invites a repair when the modal does not match the evidence.",
+            "The learner submits the five-sentence note or a recording through the existing recording service."
+          ],
+          "support": [
+            "function labels",
+            "timeline strip",
+            "modal + have + participle frame",
+            "teacher may accept a natural paraphrase"
+          ],
+          "assessment": "Teacher or manual review; no automatic rejection of a semantically valid alternative."
+        },
+        "autonomous": {
+          "sceneId": "u46-scene-final-writing",
+          "label": "Self-study note",
+          "steps": [
+            "Choose one neutral scenario card or create a fictional, non-personal project event.",
+            "Complete a five-row planning grid with fact/evidence, function, modal, and past participle.",
+            "Write the five sentences, label each function, and use the self-check before submitting.",
+            "Optionally record the note after writing; recording remains open response."
+          ],
+          "support": [
+            "planning grid",
+            "accepted-variant examples",
+            "certainty check: strong evidence or open possibility?"
+          ],
+          "assessment": "Open response; the self-check gives guidance, not an invented pass gate."
+        }
+      },
+      "rubric": {
+        "mastery": "Manual review only: four of five forms may be accurate as a useful progress signal, but the open response has no automatic mastery gate.",
+        "criteria": [
+          "Incluye dos oraciones de consejo retrospectivo con should have.",
+          "Incluye una oración de resultado alternativo con would have; la condición puede estar expresada con if o entenderse por el contexto.",
+          "Incluye dos deducciones o posibilidades con must/may/might/could have y relaciona cada una con evidencia.",
+          "Usa modal + have + past participle y etiqueta la función de cada oración.",
+          "Acepta una variante léxica natural si conserva función, línea temporal y grado de certeza."
+        ]
+      },
+      "learnerInstructions": [
+        "Elige una tarjeta neutral y prepara hechos, evidencia, función, modal y participio.",
+        "Entrega cinco oraciones: dos de consejo, una de resultado alternativo y dos de deducción o posibilidad.",
+        "Etiqueta cada función; la revisión considera significado, línea temporal y evidencia."
+      ],
+      "teacherInstructions": [
+        "Presenta una tarjeta neutral y pide que el estudiante señale la evidencia antes de elegir must o may/might/could.",
+        "Acepta contracciones y variantes naturales cuando conservan función y certeza.",
+        "Usa revisión manual para una escena ficticia o una formulación coherente que no repita la frase canónica."
+      ]
+    }
+  },
+  "sourceBindings": [
+    {
+      "role": "competency",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-text-2-competencies-understand-and-express-opinions-expectations-suggest-002",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:2"
+      ],
+      "sourceSlides": [
+        2
+      ]
+    },
+    {
+      "role": "intro-prompt",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ]
+    },
+    {
+      "role": "intro-image",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ],
+      "originalAssetUrl": "/images/lessons/course/source-1573e31e84f2948e.webp"
+    },
+    {
+      "role": "audio-01",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ],
+      "audioUrl": "/audio/lessons/course/unit-46-audio-01.mp3",
+      "audioSha256": "9795a7aba993c240991d14b80c962a8672fbabd71c40ad26e784988211b598e4"
+    },
+    {
+      "role": "source-vocabulary",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "use": "Optional exposure only; no scored idiom recall."
+    },
+    {
+      "role": "grammar-table",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:8"
+      ],
+      "sourceSlides": [
+        8
+      ]
+    },
+    {
+      "role": "grammar-notes",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:9"
+      ],
+      "sourceSlides": [
+        9
+      ]
+    },
+    {
+      "role": "function-table",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:11"
+      ],
+      "sourceSlides": [
+        11
+      ]
+    },
+    {
+      "role": "source-practice-prompt",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-13-a-write-8-sentences-where-you-include-suggestions--020",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:13"
+      ],
+      "sourceSlides": [
+        13
+      ]
+    },
+    {
+      "role": "source-practice-response",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-13-a-write-8-sentences-where-you-include-suggestions-expectations--022",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:13"
+      ],
+      "sourceSlides": [
+        13
+      ]
+    },
+    {
+      "role": "audio-02",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-023",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:14"
+      ],
+      "sourceSlides": [
+        14
+      ],
+      "audioUrl": "/audio/lessons/course/unit-46-audio-02.mp3",
+      "audioSha256": "4284bca8f2ef31a8dfec4b9a74ea3bd968e25c5eb995088107a8a9bf53968908"
+    },
+    {
+      "role": "audio-02-choice",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-multiple-choice-14-b-listen-to-the-audio-and-answer-the-questions-your-t-025",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:14"
+      ],
+      "sourceSlides": [
+        14
+      ],
+      "audioUrl": "/audio/lessons/course/unit-46-audio-02.mp3"
+    },
+    {
+      "role": "reading",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-text-15-15-026",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:15"
+      ],
+      "sourceSlides": [
+        15
+      ]
+    },
+    {
+      "role": "final-recording",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:16"
+      ],
+      "sourceSlides": [
+        16
+      ]
+    },
+    {
+      "role": "final-writing",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:16"
+      ],
+      "sourceSlides": [
+        16
+      ]
+    }
+  ],
+  "nativeSceneMap": [
+    {
+      "sceneId": "u46-scene-introduction",
+      "blocks": [
+        {
+          "type": "text",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:4"
+          ],
+          "content": {
+            "html": "<p>A. Look at the picture. What is it suggesting? What is today's topic?</p><p>B. Listen to the audio. What are they talking about? Tell your teacher and answer the questions.</p>"
+          }
+        },
+        {
+          "type": "image",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:4"
+          ],
+          "url": "/images/lessons/course/source-1573e31e84f2948e.webp"
+        },
+        {
+          "type": "audio",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:4"
+          ],
+          "url": "/audio/lessons/course/unit-46-audio-01.mp3",
+          "graded": false
+        }
+      ]
+    },
+    {
+      "sceneId": "u46-scene-meaning",
+      "blocks": [
+        {
+          "type": "structured-content",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:8"
+          ],
+          "content": {
+            "headers": [
+              "STRUCTURES",
+              "STATEMENTS",
+              "QUESTIONS"
+            ],
+            "rows": [
+              [
+                "Should Have + Past Participle",
+                "Dylan should have called them before going.",
+                "What should he have done before going?"
+              ],
+              [
+                "",
+                "If it had been me, I should have brought more money.",
+                "What should you have done?"
+              ],
+              [
+                "Would have + Past Participle",
+                "My family would have wanted him to be different, but he wasn't.",
+                "How would your family have wanted him to be?"
+              ],
+              [
+                "",
+                "He would not have expected me to drop school.",
+                "Would he have expected you to drop school?"
+              ],
+              [
+                "Must have + Past Participle",
+                "We must have seen the straw in the wind, but we did not.",
+                "Would you have seen the straw in the wind?"
+              ],
+              [
+                "",
+                "If he had done things differently, the boss would have given him the chance.",
+                "What if he had done things differently?"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "structured-content",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:9"
+          ],
+          "content": {
+            "headers": [
+              "To Consider"
+            ],
+            "rows": [
+              [
+                "Modal + have + past participle is the base. The context determines whether the speaker gives advice, imagines a result, or infers a past event. These forms can appear without a third-conditional if-clause."
+              ]
+            ]
+          }
+        },
+        {
+          "type": "structured-content",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:11"
+          ],
+          "content": {
+            "headers": [
+              "",
+              "Functions",
+              "Examples"
+            ],
+            "rows": [
+              [
+                "1",
+                "State suggestions about past events",
+                "Mary should have bought that car but she didn't."
+              ],
+              [
+                "2",
+                "Express expectations about past events",
+                "We all would have wanted Lyla to win the contest; maybe next year."
+              ],
+              [
+                "3",
+                "State an opinion or deduction in the past",
+                "He must have left the house; it's 11:00 PM already."
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sceneId": "u46-scene-hypothetical",
+      "blocks": [
+        {
+          "type": "text",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:9"
+          ],
+          "content": {
+            "html": "<p>En este marco explicitamos la condición con <strong>if</strong>; puede entenderse por el contexto aunque no aparezca una cláusula con <strong>if</strong>.</p><p>Elige <strong>would have + past participle</strong> para el resultado alternativo.</p>"
+          }
+        },
+        {
+          "type": "structured-content",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:8"
+          ],
+          "content": {
+            "headers": [
+              "STRUCTURES",
+              "STATEMENTS",
+              "QUESTIONS"
+            ],
+            "rows": [
+              [
+                "Would have + Past Participle",
+                "If it had been me, I would have...",
+                "What would have been different?"
+              ],
+              [
+                "",
+                "If he had done things differently, the boss would have given him the chance.",
+                "What if he had done things differently?"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "sceneId": "u46-scene-practice",
+      "blocks": [
+        {
+          "type": "essay",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-13-a-write-8-sentences-where-you-include-suggestions-expectations--022",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:13"
+          ],
+          "prompt": "Write 8 sentences where you include suggestions, expectations, and opinions in the past. Follow the example.",
+          "minWords": null,
+          "maxWords": null,
+          "aiGrading": false
+        }
+      ]
+    },
+    {
+      "sceneId": "u46-scene-listening",
+      "blocks": [
+        {
+          "type": "audio",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-023",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:14"
+          ],
+          "url": "/audio/lessons/course/unit-46-audio-02.mp3"
+        },
+        {
+          "type": "multiple_choice",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-multiple-choice-14-b-listen-to-the-audio-and-answer-the-questions-your-t-025",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:14"
+          ],
+          "activityId": "u46-audio-02"
+        }
+      ]
+    },
+    {
+      "sceneId": "u46-scene-reading",
+      "blocks": [
+        {
+          "type": "text",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-text-15-15-026",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:15"
+          ],
+          "content": {
+            "sourceTitle": "Friends cast sings show's theme song with James Corden",
+            "htmlFromSource": true
+          }
+        }
+      ]
+    },
+    {
+      "sceneId": "u46-scene-final-speaking",
+      "blocks": [
+        {
+          "type": "recording",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:16"
+          ],
+          "instruction": "Graba una nota ficticia de cinco oraciones sobre una decisión de proyecto y etiqueta la función de cada oración.",
+          "timeLimit": null
+        }
+      ]
+    },
+    {
+      "sceneId": "u46-scene-final-writing",
+      "blocks": [
+        {
+          "type": "essay",
+          "sourceRowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:16"
+          ],
+          "prompt": "Escribe una nota ficticia de cinco oraciones sobre una decisión de proyecto y etiqueta la función de cada oración.",
+          "minWords": null,
+          "maxWords": null,
+          "aiGrading": false
+        }
+      ]
+    }
+  ],
+  "runtimeFieldMap": {
+    "multiple_choice": {
+      "type": "multiple_choice",
+      "items": "Each ready runtime block contains items with id, question, options, correctOptionId, explanation, and full feedback support. Preserve accepted labels/text from the source activity when manual review is needed."
+    },
+    "short_answer": {
+      "type": "short_answer",
+      "items": "Each ready runtime block contains question, correctAnswer, acceptedAnswers, certainty, explanation, and full feedback support."
+    },
+    "essay": {
+      "type": "essay",
+      "prompt": "Use the Spanish learner prompt in the ready final block.",
+      "minWords": null,
+      "maxWords": null,
+      "aiGrading": false
+    },
+    "recording": {
+      "type": "recording",
+      "instruction": "Use the Spanish teacher-guided instruction in the ready final block.",
+      "timeLimit": null,
+      "aiGrading": false
+    }
+  },
+  "gradingPolicy": {
+    "normalization": [
+      "Ignore case, surrounding whitespace, and punctuation that does not change meaning.",
+      "Accept contractions such as should've, would've, must've, might've, and we'd when the full form is otherwise correct.",
+      "Accept ought to have for retrospective advice.",
+      "Accept may have, might have, and could have for an open possibility when the evidence is intentionally incomplete.",
+      "Use manual review for a natural lexical paraphrase or a coherent fictional scenario that keeps the function and timeline."
+    ],
+    "neverDo": [
+      "Do not grade audio-01 on uncertain names, idioms, accusations, or garbled ASR.",
+      "Do not treat must have as an equivalent of should have.",
+      "Do not mark an open response wrong solely because it does not repeat the canonical lexical item.",
+      "Do not invent a score, attempt limit, or pass gate for open response."
+    ]
+  },
+  "scenes": [
+    {
+      "id": "u46-scene-introduction",
+      "purpose": "Global context and listening launch",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:4"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/community-bookshop.webp",
+        "coverage": "Full illustrated community-bookshop environment edge to edge: shelves of books, reading tables, warm lamps, display objects, a clear aisle, and natural depth. No isolated portrait and no abstract background.",
+        "characters": "None; keep the scene neutral.",
+        "reservedTextArea": "Keep the quiet upper wall or side aisle available for live HTML; never place text or controls over the shelves, tables, or painted objects.",
+        "sourceMedia": "Retain /images/lessons/course/source-1573e31e84f2948e.webp as the exact published source image binding; do not paint text or controls into either raster.",
+        "hierarchy": "Small Unit 46/status context, one navy Georgia task heading, concise Nunito prompt, then audio/image content.",
+        "controls": "Real audio controls and a single cobalt primary action; exercise footer may show outline Skip exercise.",
+        "responsive": "On mobile place text and prompt before the image/audio, stack content, keep the full desk/window environment visible, and preserve 44px controls."
+      }
+    },
+    {
+      "id": "u46-scene-meaning",
+      "purpose": "Contextual meaning and function check",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:8",
+        "cmnmm9tei0028w1qkri0q23eb:slide:9",
+        "cmnmm9tei0028w1qkri0q23eb:slide:11"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/workshop.webp",
+        "coverage": "Full illustrated project-workshop environment with workbench, tools, storage, project materials, warm light, and visible depth. The workshop makes the fictional project context concrete without naming a real person.",
+        "characters": "None; do not invent a named character or an accusation scene.",
+        "reservedTextArea": "Use a clear DOM panel beside the workbench for live evidence cards and function labels; never place live text over tools or painted surfaces.",
+        "hierarchy": "One navy serif heading; evidence and timeline cards use concise body text; the formula appears after the meaning comparison.",
+        "controls": "Clickable function choices are real DOM controls with visible focus; one cobalt Comprobar/Siguiente action and outline Skip exercise in the footer.",
+        "responsive": "Stack evidence cards and choices vertically at mobile width; keep the scene as a full environment and let the page scroll rather than shrinking body text."
+      }
+    },
+    {
+      "id": "u46-scene-practice",
+      "purpose": "Classification and modal-perfect practice",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-13-a-write-8-sentences-where-you-include-suggestions--020",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-13-a-write-8-sentences-where-you-include-suggestions-expectations--022"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:13"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/botanical-office.webp",
+        "coverage": "Full illustrated botanical-office environment with desk, plants, shelving, papers, work objects, and natural light. The complete office remains visible around the exercise surface.",
+        "characters": "None; the learner's fictional incident supplies the agency.",
+        "reservedTextArea": "Place live prompts and response controls in a clear DOM region beside or below the desk; do not render text inside the office illustration.",
+        "hierarchy": "Small unit context, one navy Georgia heading, one concise instruction, then one item at a time with nearby feedback.",
+        "controls": "Choice selection checks immediately per the approved guide; fill/short-answer uses Comprobar and Enter, then the same footer action becomes Siguiente. Skip exercise remains outline.",
+        "responsive": "One item per view, options at least 44px tall, mobile text before the scene, and no horizontal overflow."
+      }
+    },
+    {
+      "id": "u46-scene-hypothetical",
+      "purpose": "Hypothetical travel result practice",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-9-to-consider-1-this-structures-do-not-necessarily-wo-014"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:8",
+        "cmnmm9tei0028w1qkri0q23eb:slide:9"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/travel-station.webp",
+        "coverage": "Full illustrated travel-station environment with platform, departure board, benches, luggage, signage, windows, and visible depth; use the complete scene as the context for an alternative journey.",
+        "characters": "No named character is required; keep the travel decision fictional and neutral.",
+        "reservedTextArea": "Live condition, result, and choices occupy a clear DOM panel beside or below the station scene; do not paint text or controls into the illustration.",
+        "hierarchy": "One navy serif heading, concise condition/result teaching, one choice at a time, nearby explanation, and one cobalt primary action.",
+        "controls": "Choice checking is clickable and keyboard accessible; Comprobar/Siguiente is the single primary action and Skip exercise remains an outline action where configured.",
+        "responsive": "On mobile place the condition and choices before the scene, stack options at 44px minimum, and keep the full station environment visible with vertical scrolling."
+      }
+    },
+    {
+      "id": "u46-scene-listening",
+      "purpose": "Verified listening evidence and clarification",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-audio-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-023",
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-multiple-choice-14-b-listen-to-the-audio-and-answer-the-questions-your-t-025"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:14"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/listening-lounge.webp",
+        "coverage": "Full illustrated listening-lounge environment with comfortable seating, audio furniture, books, acoustic details, plants, and warm room depth. Keep the listening setting complete rather than reducing it to a waveform.",
+        "characters": "None; the audio player carries the source voices.",
+        "reservedTextArea": "Keep the upper wall or side seating quiet for the live heading, audio player, prompt, and evidence feedback; no text over the furniture or painted objects.",
+        "hierarchy": "One navy serif heading, audio player, one listening question at a time, nearby evidence feedback, and one primary footer action.",
+        "controls": "Use real play/pause and replay controls. Choice checking is click/keyboard accessible and moves to the next item after the brief feedback pause; Skip exercise is outline.",
+        "responsive": "Audio controls and options stack at mobile width; the speaking environment remains visible and controls retain 44px targets."
+      }
+    },
+    {
+      "id": "u46-scene-reading",
+      "purpose": "Attributed reading and discussion",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-text-15-15-026"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:15"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+        "coverage": "Full illustrated lakeside-reading-terrace environment with table, chair, books, railing, plants, open view, and landscape depth. The article remains live readable text alongside the complete setting.",
+        "characters": "None; do not invent a portrait for the article.",
+        "reservedTextArea": "Use the clear terrace wall or DOM reading panel for live article text; never overlay the article on the books, table, railing, or landscape.",
+        "hierarchy": "One navy serif reading heading, readable article body, attributed source link, then teacher-discussion prompt.",
+        "controls": "Discussion is open response; any continue action is secondary to the real reading task. No auto-grade or invented answer key.",
+        "responsive": "Readable text precedes the environment on mobile; keep body text at least 16px and allow vertical scrolling."
+      }
+    },
+    {
+      "id": "u46-scene-final-speaking",
+      "purpose": "Teacher-guided final communication",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--028"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:16"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/music-room.webp",
+        "coverage": "Full illustrated music-room environment with instrument, microphone area, music stand, furniture, warm light, and room depth. Preserve the large recording setting around the learner controls.",
+        "characters": "None; use the learner's voice or teacher dialogue.",
+        "reservedTextArea": "Keep the prompt, five-row planning aid, and recording status in a quiet DOM region; no words or controls are painted into the instrument or room.",
+        "hierarchy": "One navy serif task heading, short output requirements, scenario/evidence cards, recording control, then the single primary footer action.",
+        "controls": "Recording service and its existing states remain intact. A recording in progress prevents leaving the step; Skip exercise is available only when the configured flow allows it.",
+        "responsive": "Prompt and recording control come before the scene on mobile; microphone and desk remain visible without cropping the main object."
+      }
+    },
+    {
+      "id": "u46-scene-final-writing",
+      "purpose": "Autonomous final communication",
+      "sourceRefs": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-029"
+      ],
+      "originalIDs": [
+        "cmnmm9tei0028w1qkri0q23eb:slide:16"
+      ],
+      "environment": {
+        "asset": "public/images/lessons/backgrounds/art-studio.webp",
+        "coverage": "Full illustrated art-studio environment with worktable, paper, drawing and writing tools, storage, chair, natural light, and depth. The studio supports fictional project writing without becoming a generic form backdrop.",
+        "characters": "None; fictional or third-person response is explicitly allowed.",
+        "reservedTextArea": "Place the planning grid and writing field in a clear live HTML region around the worktable; no text is placed on the paper or painted objects.",
+        "hierarchy": "One navy Georgia heading, five-sentence requirements, planning grid, writing field, neutral feedback, and one primary footer action.",
+        "controls": "Writing evaluation keeps the existing service and state. The footer may show outline Skip exercise, and it must not invent a word-count gate beyond the authored task.",
+        "responsive": "Stack planning rows and writing field on mobile, preserve readable 16px text, maintain a 44px target, and keep the complete desk environment visible."
+      }
+    }
+  ],
+  "visualAcceptance": {
+    "approvedReferences": [
+      "C:/Users/ACER/.codex/worktrees/lesson-guided-pilot/web/docs/design/graphic-guide-v1/README.md",
+      "C:/Users/ACER/.codex/worktrees/lesson-guided-pilot/web/docs/design/graphic-guide-v1/scene-acceptance-v5.md",
+      "C:/Users/ACER/.codex/worktrees/lesson-guided-pilot/web/docs/design/graphic-guide-v1/runtime-scenes-v3.json",
+      "C:/Users/ACER/.codex/worktrees/lesson-guided-pilot/web/docs/design/content-format-mockups/v3/README.md"
+    ],
+    "style": "Adult semi-realistic painterly editorial illustration with natural proportions, soft brush texture, matte light, ivory and lilac surfaces, and full environments.",
+    "paletteAndType": {
+      "surface": "#FAF8F4",
+      "navy": "#10245C",
+      "cobalt": "#245CFF",
+      "body": "Nunito or the repository's loaded body font",
+      "heading": "Georgia or an equivalent serif fallback",
+      "bodyMinimumPx": 16,
+      "headingPx": {
+        "desktop": 32,
+        "mobile": 26
+      },
+      "controlMinimumPx": 44,
+      "spacingPx": [
+        8,
+        16,
+        24,
+        32,
+        48
+      ]
+    },
+    "nonNegotiables": [
+      "Use a complete illustrated environment in every scene; do not substitute abstract CSS shapes, gradients, isolated portraits, generic cards, or simplified layouts.",
+      "Keep all live text and controls out of the raster illustration.",
+      "Use one concise navy serif task heading and readable body copy; do not duplicate Unit 46 as a second title.",
+      "Use one cobalt primary action in the footer. Choice exercises check on click and advance after feedback; fill and short-answer exercises use Comprobar then Siguiente. Keep outline Skip exercise where the configured flow exposes it.",
+      "Compare desktop and mobile renders, including a selected answer, feedback, audio controls, and an active recording state before visual acceptance.",
+      "Check keyboard selection, Enter activation, visible focus, mobile stacking, and click target size."
+    ]
+  },
+  "acceptanceChecklist": {
+    "content": [
+      "All deterministic activities expose their complete options, answer keys, accepted variants, and feedback.",
+      "Audio-01 remains ungraded because its transcript is not reliable enough for detail keys.",
+      "Audio-02 keys use only the four clear evidence snippets and retain the source audio URL and digest.",
+      "The final communication task supports teacher-guided and autonomous modes with the same five-sentence evidence requirements.",
+      "Open responses use manual or teacher review and do not create rigid lexical keys."
+    ],
+    "provenance": [
+      "Every source binding retains the exact runtime row ID and originalIDs from Unit 46.",
+      "Audio URLs are exactly /audio/lessons/course/unit-46-audio-01.mp3 and /audio/lessons/course/unit-46-audio-02.mp3.",
+      "The original slide 4 image URL is retained as a source binding even when the neutral approved environment is used for the lesson scene."
+    ],
+    "visual": [
+      "Each scene records environment coverage, character policy, text-safe area, hierarchy, controls, and responsive behavior.",
+      "Actual desktop and mobile screenshots must be compared with the approved guide and mockups before implementation is marked visually complete."
+    ]
+  },
+  "formNotice": {
+    "formula": "modal + have + past participle",
+    "contrast": [
+      "The modal carries the speaker’s function or certainty.",
+      "Have + past participle places the event before the current point of reflection.",
+      "In this frame we make the condition explicit with if; a conditional result can also be understood from context without an if-clause."
+    ]
+  },
+  "runtimeBlocksContract": {
+    "stageOrder": "Every sequence stage owns runtimeBlocks. Text/structured-content teaching precedes any choice block.",
+    "sourceIdentity": "Audio blocks expose sourceId, sourceRowId, originalIDs, exact audioUrl, and digest.",
+    "answerPolicy": "Explanations are item-level. acceptedAnswers and accepted variants remain available for short answers and manual review."
+  }
+}

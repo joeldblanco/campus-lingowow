@@ -1,0 +1,4367 @@
+{
+  "schemaVersion": 1,
+  "unit": 27,
+  "module": {
+    "order": 7,
+    "title": "Módulo 7",
+    "id": "cmnmm9kmv0001w1qk2bzz6hhh",
+    "driveTitle": "Module 7"
+  },
+  "candidate": {
+    "id": "1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f",
+    "title": "That'll do well! - Unit 27.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "2158970",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 7"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-27-primary-01-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f.pptx",
+    "localBytes": 2158970,
+    "sha256": "522551ef2b2c203b64a52a8e6d0ec019b6027e08df1281b6a0f38579d8379c0b"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-27-primary-01-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSFHqonMxVHEDt993Rk4qm9PSCcC5mo2wFAikmt96s3qpKsJWyddaL3X6P68Dy6rQ/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSFHqonMxVHEDt993Rk4qm9PSCcC5mo2wFAikmt96s3qpKsJWyddaL3X6P68Dy6rQ/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 16,
+    "nativeSlideCount": 16,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.940217,
+    "publicTokenCoverage": 0.938375,
+    "slideDifferenceCount": 6,
+    "slideDifferences": [
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. 4",
+        "sequenceRatio": 0.988166
+      },
+      {
+        "slide": 6,
+        "nativeText": "Look at the information, listen to your teacher and discuss about the vocabulary you see.\nBE SICK\nBE HOSPITALIZED\nHEART ATTACK\nHEADACHE\nSTOMACHACHE\nTOOTHACHE\nFRACTURE\nINJURY\n*There is more vocabulary to check in pages on the OPD.",
+        "publishedText": "Look at the information, listen to your teacher and discuss about the vocabulary you see. BE SICK BE HOSPITALIZED HEART ATTACK HEADACHE STOMACHACHE TOOTHACHE FRACTURE INJURY *There is more vocabulary to check on the OPD.",
+        "sequenceRatio": 0.944321
+      },
+      {
+        "slide": 8,
+        "nativeText": "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future.\nDEFINITIONS & POSSIBLE CASE\nINDEPENDENT CLAUSE\nDEPENDENT CLAUSE\n1\nThey can exist alone.\nYou’ll get a sunburn...\nIF you get too much sun.\n2\nThey need another clause to exist.\nHe will need a MRI...\nIF he hits his head.\n3\nSwitching Clauses\nIf she cuts while cooking ,\nShe’ll probably need stitches.\nTo Consider\n\nThe use of will is necessary since it is the way consequences in the future are expressed.\nSometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.\nWhen the IF clause is the first one, it needs to be separated by a comma (,) from the other clause.",
+        "publishedText": "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future. DEFINITIONS & POSSIBLE CASE INDEPENDENT CLAUSE DEPENDENT CLAUSE 1 They can exist alone You’ll get a sunburn (IF you get too much sun.) 2 They need another clause to exist (He will need an MRI) IF he hits his head. 3 Switching Clauses If she cuts herself while cooking , She’ll probably need stitches. To Consider 1. The use of will is necessary since it is the way consequences in the future are expressed. 2. Sometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold. 3. When the IF clause is the first one, it needs to be separated by a comma (,) from the other clause.",
+        "sequenceRatio": 0.960459
+      },
+      {
+        "slide": 10,
+        "nativeText": "We can use the first conditional aiming the following functions or aspects\nFunctions\nExamples\n1\nTalking about illness and conditions people can get.\nI will have to see a doctor if the fever continues.\nIf they do not operate him, he will lose his leg.\n2\nWarning people.\nIf Shane does not pass the course, he will be grounded for months.\nThe boys will not go to the party if they do not clean their room.\nTo consider \nThis two areas are not the only ones that can be covered. Generally, talking about consequences may be include the use of the conditional.",
+        "publishedText": "We can use the first conditional aiming the following functions or aspects Functions Examples 1 Talk about illnesses and conditions people can get I will have to see a doctor if the fever continues. If they do not operate him, he will lose his leg. 2 Warn people If Shane does not pass the course, he will be grounded for months. The boys will not go to the party if they do not clean their room. To consider These two areas are not the only ones that can be covered. Generally, talking about consequences may include the use of the conditional. Should is also used sometimes to substitute IF. E.G: Should he fail, we will lose the game.",
+        "sequenceRatio": 0.788235
+      },
+      {
+        "slide": 13,
+        "nativeText": "Bullying\n\nHow many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it; If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "publishedText": "Bullying How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it. If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now. C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "sequenceRatio": 0.998536
+      },
+      {
+        "slide": 14,
+        "nativeText": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe  the consequences a determine situation can have on people. Point out the good and the bad.\nE. Write a 100 to 150 word text where you can state the impact and the consequences a good or a bad care at home can have in children. Psychological? Physical? Social? Be very thorough.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the consequences a specific situation can have on people. Point out the good and the bad. E. Write a 80 to 120 word text where you can state the impact and the consequences that good or bad care at home can have in children. Psychological? Physical? Social? Be very thorough. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.435807
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 277355,
+      "sha256": "915caac2c0a1ad328943e2907919535514dc4d0f7b299067a0fb66e875a773b7"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 176457,
+      "sha256": "8e06ad7dc32959545c081b032c770ee55ae4651ae9e8c52aecc891f1fd85ef11"
+    },
+    {
+      "path": "ppt/media/image12.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 49102,
+      "sha256": "313a0af8b92752da35b3dcae6f55ed4ee12e4db778f7748522d30a238b6ba336"
+    },
+    {
+      "path": "ppt/media/image13.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 180444,
+      "sha256": "b9372df1fdb8684bcd3a75115a90db01532f3ccd9e68ab58d29d887c766bc2b1"
+    },
+    {
+      "path": "ppt/media/image14.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 351452,
+      "sha256": "54ad678981c03934f827ce1df24ff070ee54916a017f572348422c2febc8dff4"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 19481,
+      "sha256": "01b0c3f951a518e0f8fbed1eb01425d2666466a3c09aec5b3070016d2470f2a5"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 110310,
+      "sha256": "37808533e937e82bc566eaecbcb916f4483d104147600714549f4df5a11ab7cf"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126104,
+      "sha256": "34eb49919c43c64127fa461601415e66d13dc2e80533def5b22e76037c3cbce6"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 186903,
+      "sha256": "7e7c626898017ad5c92d551407411368a24c34dcafe980c656068473d2149ebc"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 14,
+    "bytes": 1651457,
+    "byExtension": {
+      ".jpg": 9,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 14,
+    "imageBytes": 1651457
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5667725,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6683525,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "298",
+          "shapeName": "Google Shape;298;g729cfa641f_0_19",
+          "bbox": {
+            "x": 5283500,
+            "y": 3558975,
+            "cx": 963050,
+            "cy": 963050,
+            "right": 6246550,
+            "bottom": 4522025
+          },
+          "slide": 12
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 277355,
+      "sha256": "915caac2c0a1ad328943e2907919535514dc4d0f7b299067a0fb66e875a773b7",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "237",
+          "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754790,
+            "y": 1111469,
+            "cx": 1490657,
+            "cy": 854029,
+            "right": 6245447,
+            "bottom": 1965498
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 176457,
+      "sha256": "8e06ad7dc32959545c081b032c770ee55ae4651ae9e8c52aecc891f1fd85ef11",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2985577,
+            "y": 2842820,
+            "cx": 1450373,
+            "cy": 912789,
+            "right": 4435950,
+            "bottom": 3755609
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image12.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 49102,
+      "sha256": "313a0af8b92752da35b3dcae6f55ed4ee12e4db778f7748522d30a238b6ba336",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "238",
+          "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754794,
+            "y": 2846030,
+            "cx": 1490705,
+            "cy": 903884,
+            "right": 6245499,
+            "bottom": 3749914
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image13.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 180444,
+      "sha256": "b9372df1fdb8684bcd3a75115a90db01532f3ccd9e68ab58d29d887c766bc2b1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "236",
+          "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2918929,
+            "y": 1103450,
+            "cx": 1490661,
+            "cy": 862041,
+            "right": 4409590,
+            "bottom": 1965491
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image14.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image14.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 351452,
+      "sha256": "54ad678981c03934f827ce1df24ff070ee54916a017f572348422c2febc8dff4",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image14.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "235",
+          "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123492,
+            "y": 1111463,
+            "cx": 1450217,
+            "cy": 862033,
+            "right": 2573709,
+            "bottom": 1973496
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "335",
+          "shapeName": "Google Shape;335;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "336",
+          "shapeName": "Google Shape;336;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 19481,
+      "sha256": "01b0c3f951a518e0f8fbed1eb01425d2666466a3c09aec5b3070016d2470f2a5",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "slide": 4
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 110310,
+      "sha256": "37808533e937e82bc566eaecbcb916f4483d104147600714549f4df5a11ab7cf",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId9",
+          "shapeId": "241",
+          "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6551667,
+            "y": 2842820,
+            "cx": 1450194,
+            "cy": 903880,
+            "right": 8001861,
+            "bottom": 3746700
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126104,
+      "sha256": "34eb49919c43c64127fa461601415e66d13dc2e80533def5b22e76037c3cbce6",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId7",
+          "shapeId": "239",
+          "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123491,
+            "y": 2851732,
+            "cx": 1450223,
+            "cy": 903880,
+            "right": 2573714,
+            "bottom": 3755612
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-27-1ILNJoOz80-gl24eOMmOCFNo5TFMAWk-f\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 186903,
+      "sha256": "7e7c626898017ad5c92d551407411368a24c34dcafe980c656068473d2149ebc",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId10",
+          "shapeId": "245",
+          "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6530057,
+            "y": 1136204,
+            "cx": 1490605,
+            "cy": 854023,
+            "right": 8020662,
+            "bottom": 1990227
+          },
+          "slide": 6
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "27",
+          "That’ll do well!",
+          "Unit"
+        ],
+        "joinedText": "27\nThat’ll do well!\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3115250,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "27",
+                "runs": [
+                  "2",
+                  "7"
+                ]
+              }
+            ],
+            "texts": [
+              "27"
+            ],
+            "joinedText": "27"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1090675,
+              "y": 2316275,
+              "cx": 7548000,
+              "cy": 1649100,
+              "right": 8638675,
+              "bottom": 3965375
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "That’ll do well!",
+                "runs": [
+                  "That’ll do well!"
+                ]
+              }
+            ],
+            "texts": [
+              "That’ll do well!"
+            ],
+            "joinedText": "That’ll do well!"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 210350,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1299350,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "27",
+        "visibleTexts": [
+          "27",
+          "That’ll do well!",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZipgOUDtzIeMzRCbQ17YVyX-vyPw4oODGYCv3NqzUKTGmiq9hE4y0jSVeBVkZtaif7660305Cwc6vCGqXBTvDSrWPgnZDEMWjovbDi8k4FpJ8UfFaqJsKRzMBOZsk0qECGbza9zbotyq76BZnJ0mq421hd-E8TYQJqozgsFwaNGANyxhP3mXD7CcxZVmI=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Describe future consequences for actions and circumstances in the present.",
+          "Competencies",
+          "Manage the necessary vocabulary and grammatical aspects to express oneself, understand and make key points in relation to consequences in the future for actions or circumstances in the present."
+        ],
+        "joinedText": "Communicative Function\nDescribe future consequences for actions and circumstances in the present.\nCompetencies\nManage the necessary vocabulary and grammatical aspects to express oneself, understand and make key points in relation to consequences in the future for actions or circumstances in the present.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Describe future consequences for actions and circumstances in the present.",
+                "runs": [
+                  "Describe future consequences for actions and circumstances in the present",
+                  "."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Describe future consequences for actions and circumstances in the present."
+            ],
+            "joinedText": "Communicative Function\nDescribe future consequences for actions and circumstances in the present."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 6579600,
+              "cy": 2256300,
+              "right": 8031225,
+              "bottom": 4796525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Manage the necessary vocabulary and grammatical aspects to express oneself, understand and make key points in relation to consequences in the future for actions or circumstances in the present.",
+                "runs": [
+                  "Manage the necessary vocabulary and grammatical aspects to express oneself, understand and make key points in relation to consequences in the future for actions or circumstances in the present."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Manage the necessary vocabulary and grammatical aspects to express oneself, understand and make key points in relation to consequences in the future for actions or circumstances in the present."
+            ],
+            "joinedText": "Competencies\nManage the necessary vocabulary and grammatical aspects to express oneself, understand and make key points in relation to consequences in the future for actions or circumstances in the present."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Communicative Function Describe future consequences for actions and circumstances in the present.",
+        "visibleTexts": [
+          "Communicative Function Describe future consequences for actions and circumstances in the present.",
+          "Competencies Manage the necessary vocabulary and grammatical aspects to express oneself, understand and make key points in relation to consequences in the future for actions or circumstances in the present."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5667725,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6683525,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5667725,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6683525,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSak-0bjsUMcQHYmcHAsfrre1g4cNJODldS2l8dZxghbhjVh2qOXTVzlaHZIaAA8Vn0QMhGyHi20yFo-1gVyRRfskRWysfvJyLmzPtvFjoe2xmAfggAgJabvP8A1uc3q_iQD6tTrZSRyxVvOSC3uhjYXeFZhRHtk-IDccNqbIeu5AGDdVfYms9wwi583_J_0MQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYc0m3XIpRi8QoN8RSNV72MPk6nwI-LLbnal0YCkaUdmMxBZQQmxqJ-Nkm4c97hhTlOngbrpoGI4AWoeoQdhxfja3M27zoj_DHgnXB-gKbPCjga-Y2bMcrcAPq6FJfNM_-MPOqApt5o7qH_TTSbPKf2B-_YQm-V0tRFisWJdwIf6exbw6vg-qIKsN4e7VQSUw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Look at the information, listen to your teacher and discuss about the vocabulary you see. ",
+          " ",
+          "BE SICK",
+          "BE HOSPITALIZED",
+          "HEART ATTACK",
+          "HEADACHE",
+          "STOMACHACHE",
+          "TOOTHACHE",
+          "FRACTURE",
+          "INJURY",
+          "*There is more vocabulary to check in pages on the OPD."
+        ],
+        "joinedText": "Look at the information, listen to your teacher and discuss about the vocabulary you see.\nBE SICK\nBE HOSPITALIZED\nHEART ATTACK\nHEADACHE\nSTOMACHACHE\nTOOTHACHE\nFRACTURE\nINJURY\n*There is more vocabulary to check in pages on the OPD.",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the information, listen to your teacher and discuss about the vocabulary you see. ",
+                "runs": [
+                  "Look at the information, listen to your teacher and discuss about the vocabulary you see. "
+                ]
+              },
+              {
+                "text": " ",
+                "runs": [
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the information, listen to your teacher and discuss about the vocabulary you see. ",
+              " "
+            ],
+            "joinedText": "Look at the information, listen to your teacher and discuss about the vocabulary you see."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450217,
+              "cy": 862033,
+              "right": 2573709,
+              "bottom": 1973496
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2918929,
+              "y": 1103450,
+              "cx": 1490661,
+              "cy": 862041,
+              "right": 4409590,
+              "bottom": 1965491
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754794,
+              "y": 2846030,
+              "cx": 1490705,
+              "cy": 903884,
+              "right": 6245499,
+              "bottom": 3749914
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450223,
+              "cy": 903880,
+              "right": 2573714,
+              "bottom": 3755612
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2985577,
+              "y": 2842820,
+              "cx": 1450373,
+              "cy": 912789,
+              "right": 4435950,
+              "bottom": 3755609
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 1965488,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 2519288
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "BE SICK",
+                "runs": [
+                  "BE SICK"
+                ]
+              }
+            ],
+            "texts": [
+              "BE SICK"
+            ],
+            "joinedText": "BE SICK"
+          },
+          {
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2918917,
+              "y": 1946168,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 4409617,
+              "bottom": 2499968
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "BE HOSPITALIZED",
+                "runs": [
+                  "BE HOSPITALIZED"
+                ]
+              }
+            ],
+            "texts": [
+              "BE HOSPITALIZED"
+            ],
+            "joinedText": "BE HOSPITALIZED"
+          },
+          {
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 1965483,
+              "cx": 1490700,
+              "cy": 513000,
+              "right": 6245494,
+              "bottom": 2478483
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "HEART ATTACK",
+                "runs": [
+                  "HEART ATTACK"
+                ]
+              }
+            ],
+            "texts": [
+              "HEART ATTACK"
+            ],
+            "joinedText": "HEART ATTACK"
+          },
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490605,
+              "cy": 854023,
+              "right": 8020662,
+              "bottom": 1990227
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6529962,
+              "y": 1965488,
+              "cx": 1490400,
+              "cy": 513000,
+              "right": 8020362,
+              "bottom": 2478488
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "HEADACHE",
+                "runs": [
+                  "HEADACHE"
+                ]
+              }
+            ],
+            "texts": [
+              "HEADACHE"
+            ],
+            "joinedText": "HEADACHE"
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "STOMACHACHE",
+                "runs": [
+                  "STOMACHACHE"
+                ]
+              }
+            ],
+            "texts": [
+              "STOMACHACHE"
+            ],
+            "joinedText": "STOMACHACHE"
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2998280,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 4448780,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "TOOTHACHE",
+                "runs": [
+                  "TOOTHACHE"
+                ]
+              }
+            ],
+            "texts": [
+              "TOOTHACHE"
+            ],
+            "joinedText": "TOOTHACHE"
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 3746700,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 6245494,
+              "bottom": 4300500
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "FRACTURE",
+                "runs": [
+                  "FRACTURE"
+                ]
+              }
+            ],
+            "texts": [
+              "FRACTURE"
+            ],
+            "joinedText": "FRACTURE"
+          },
+          {
+            "shapeId": "250",
+            "shapeName": "Google Shape;250;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6551637,
+              "y": 3746701,
+              "cx": 1449900,
+              "cy": 553800,
+              "right": 8001537,
+              "bottom": 4300501
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "INJURY",
+                "runs": [
+                  "INJURY"
+                ]
+              }
+            ],
+            "texts": [
+              "INJURY"
+            ],
+            "joinedText": "INJURY"
+          },
+          {
+            "shapeId": "251",
+            "shapeName": "Google Shape;251;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1846700,
+              "y": 4633825,
+              "cx": 5738400,
+              "cy": 396600,
+              "right": 7585100,
+              "bottom": 5030425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "*There is more vocabulary to check in pages on the OPD.",
+                "runs": [
+                  "*There is more vocabulary to check in pages on the OPD."
+                ]
+              }
+            ],
+            "texts": [
+              "*There is more vocabulary to check in pages on the OPD."
+            ],
+            "joinedText": "*There is more vocabulary to check in pages on the OPD."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450217,
+              "cy": 862033,
+              "right": 2573709,
+              "bottom": 1973496
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2918929,
+              "y": 1103450,
+              "cx": 1490661,
+              "cy": 862041,
+              "right": 4409590,
+              "bottom": 1965491
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754794,
+              "y": 2846030,
+              "cx": 1490705,
+              "cy": 903884,
+              "right": 6245499,
+              "bottom": 3749914
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId7",
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450223,
+              "cy": 903880,
+              "right": 2573714,
+              "bottom": 3755612
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2985577,
+              "y": 2842820,
+              "cx": 1450373,
+              "cy": 912789,
+              "right": 4435950,
+              "bottom": 3755609
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId9",
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId10",
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490605,
+              "cy": 854023,
+              "right": 8020662,
+              "bottom": 1990227
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId9",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId10",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+        "visibleTexts": [
+          "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+          "BE SICK",
+          "BE HOSPITALIZED",
+          "HEART ATTACK",
+          "HEADACHE",
+          "STOMACHACHE",
+          "TOOTHACHE",
+          "FRACTURE",
+          "INJURY",
+          "*There is more vocabulary to check on the OPD."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaQzyczDTuXbuZNj-ZD9R7cNvvY1Xx2pI38kOigajLGQ3C2XAzofEABRArhWfzhEbv-3G0St0hmByS84oNmFSJIG2B9Lay47nVSgbvamplvP3xG9QlSlrPU0eLIvbIxQe8HnsB30BDiHudjE7dPri381y2UJ2Ki5Z2vmLPtiYyqozt0tyz-KPbsKAVlr4y8wQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYKUjc6ftY0aoU4wAS7P3tL-tVp6JyFlpXYLS1pi6GnX1kuUw6Z6AGHaAtxsZuwulIM9GARtwFhB0pbtECy7gfC-Sq6U0bg_5Fu9agUzijBNwhhmb9QDHc_m19d-uCjWeSuglpN5JPwGRoclPlgTpr4w8RqR2hT0gDfO1AjE1z8EGVhcuHKHnR6N4Dm4DtK-A=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZf8YL0Fhm1zxm-yjXjdkvmIu3jsNcaxmCvl5LkPMd6gKECWX3NmcKoEE5Ic54mUDabZYRzqyu3zp8QuAwJz5FdYp0c8UxsUrLn0AQOcXGrG_0odEgA0mr7JRyLcVNNnNV8soK1OsXZwgQbxjy28QextQtogFODbk5IufVSuZ3E6pgy38tOFOTzZyMljWsj0w=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZVA_3Xd-SQvPZ-F4Ol6esrx6a7FjMB2MGvVpQaQ0_zKc8e3VFm4I_MyJvzOrn7IPABtJR9rd4MhKJRiEGLC91fjEnEdG7w7u44-b13-xOW2dvyN1vCrsJhDuJ4yJDL1uEkhgEvxQHy06xi5z-iLmS6KRaEJ5uJQftl_MpCtFdaQJxLtDf42LwvR1QvZglX4A=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbFoCTufIji4tbD6VByOfS1vkLUb66xSDgp13r8oW9NxwTihghXP5YxgP80sZRbGZY5l1YzPfQAMEFt-H-LE_5B2UY0sEcLaleb2xQ7E4m99ZxroA-aBbe_GMrWLtZEfdisjh4BiLoehFID5042AmE_DCinVlN9S2k5aKYiDhp21rWim3RCjfnHjjzAzl8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa5bu5Z048eRYwimZja-b1G8qGQLmFJZFrRoubsvpUJU8I2m0AulDpvfVBp_WQalOq0E3pgeh3iRzKKGKCdqfs4-i9e531ta5LdA1WQbctRWLRyLETS6CA7dGl3FdYRYbsrE1oGshLYYZj_kR2BaOrzuxn8jqPLJ0goGkdEKJkYWgvrf2cpKOCUdBfpy2A=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbdDze_QW8O4lz17G1gTUhNUqqvHmmXgZ8TB2FSbshwTfbLBkchl378vHDGnFylHI-3Auh7-Oe15lp6XLpJtF5UUacfefyPRZhRifONU2V_2HRGKEnPTN6dKD7p19LhGPPDvZwOOILqvyIO3M2nEA_qEygZ8o7M7-JtU6thIcp70jwWvRgX-faoczkOCM6k_w=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaUAFqTfgZmTZErtTuvL2p934Gdf6kiwYRUEtOXQtS0zX7gd2zDvFV38wZFIxtKOVJL-7VWfZnZoUG0yFykbu9SWGvMAhphJv8R8QqqZ1szB7U_SmUcOmbsmxI_n48eACW6cCNSqQLUc9Dkv2pvlulX7PnW-ljWS5VumbSs1CkBjRXYCivVRIU2-o0UuTzQaw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 9,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future.",
+          "DEFINITIONS & POSSIBLE CASE",
+          "INDEPENDENT CLAUSE",
+          "DEPENDENT CLAUSE",
+          "1",
+          "They can exist alone.",
+          "You’ll get a sunburn...",
+          "IF you get too much sun.",
+          "2",
+          "They need another clause to exist.",
+          "He will need a MRI...",
+          "IF he hits his head.",
+          "3",
+          "Switching Clauses",
+          "If she cuts while cooking ,",
+          "She’ll probably need stitches.",
+          "To Consider\n\nThe use of will is necessary since it is the way consequences in the future are expressed.\nSometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.\nWhen the IF clause is the first one, it needs to be separated by a comma (,) from the other clause."
+        ],
+        "joinedText": "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future.\nDEFINITIONS & POSSIBLE CASE\nINDEPENDENT CLAUSE\nDEPENDENT CLAUSE\n1\nThey can exist alone.\nYou’ll get a sunburn...\nIF you get too much sun.\n2\nThey need another clause to exist.\nHe will need a MRI...\nIF he hits his head.\n3\nSwitching Clauses\nIf she cuts while cooking ,\nShe’ll probably need stitches.\nTo Consider\n\nThe use of will is necessary since it is the way consequences in the future are expressed.\nSometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.\nWhen the IF clause is the first one, it needs to be separated by a comma (,) from the other clause.",
+        "shapes": [
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181852,
+              "cx": 6960900,
+              "cy": 958500,
+              "right": 8052450,
+              "bottom": 1140352
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future.",
+                "runs": [
+                  "Conditionals link two different clauses as we learned in the last unit. First conditional links an ",
+                  "action",
+                  " or circumstance in the present with another one in the future."
+                ]
+              }
+            ],
+            "texts": [
+              "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future."
+            ],
+            "joinedText": "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future."
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 433400,
+              "y": 1275225,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3433400,
+              "bottom": 4275225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "DEFINITIONS & POSSIBLE CASE",
+                "runs": []
+              },
+              {
+                "text": "INDEPENDENT CLAUSE",
+                "runs": []
+              },
+              {
+                "text": "DEPENDENT CLAUSE",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "They can exist alone.",
+                "runs": []
+              },
+              {
+                "text": "You’ll get a sunburn...",
+                "runs": []
+              },
+              {
+                "text": "IF you get too much sun.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "They need another clause to exist.",
+                "runs": []
+              },
+              {
+                "text": "He will need a MRI...",
+                "runs": []
+              },
+              {
+                "text": "IF he hits his head.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Switching Clauses",
+                "runs": []
+              },
+              {
+                "text": "If she cuts while cooking ,",
+                "runs": []
+              },
+              {
+                "text": "She’ll probably need stitches.",
+                "runs": []
+              },
+              {
+                "text": "To Consider\n\nThe use of will is necessary since it is the way consequences in the future are expressed.\nSometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.\nWhen the IF clause is the first one, it needs to be separated by a comma (,) from the other clause.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "DEFINITIONS & POSSIBLE CASE",
+              "INDEPENDENT CLAUSE",
+              "DEPENDENT CLAUSE",
+              "1",
+              "They can exist alone.",
+              "You’ll get a sunburn...",
+              "IF you get too much sun.",
+              "2",
+              "They need another clause to exist.",
+              "He will need a MRI...",
+              "IF he hits his head.",
+              "3",
+              "Switching Clauses",
+              "If she cuts while cooking ,",
+              "She’ll probably need stitches.",
+              "To Consider\n\nThe use of will is necessary since it is the way consequences in the future are expressed.\nSometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.\nWhen the IF clause is the first one, it needs to be separated by a comma (,) from the other clause."
+            ],
+            "joinedText": "DEFINITIONS & POSSIBLE CASE\nINDEPENDENT CLAUSE\nDEPENDENT CLAUSE\n1\nThey can exist alone.\nYou’ll get a sunburn...\nIF you get too much sun.\n2\nThey need another clause to exist.\nHe will need a MRI...\nIF he hits his head.\n3\nSwitching Clauses\nIf she cuts while cooking ,\nShe’ll probably need stitches.\nTo Consider\n\nThe use of will is necessary since it is the way consequences in the future are expressed.\nSometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.\nWhen the IF clause is the first one, it needs to be separated by a comma (,) from the other clause.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 433400,
+              "y": 1275225,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3433400,
+              "bottom": 4275225
+            },
+            "columnWidths": [
+              464925,
+              3223300,
+              2503925,
+              2308775
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "DEFINITIONS & POSSIBLE CASE",
+                    "paragraphs": [
+                      {
+                        "text": "DEFINITIONS & POSSIBLE CASE",
+                        "runs": [
+                          "DEFINITIONS & POSSIBLE CASE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "INDEPENDENT CLAUSE",
+                    "paragraphs": [
+                      {
+                        "text": "INDEPENDENT CLAUSE",
+                        "runs": [
+                          "IN",
+                          "DEPENDENT CLAUSE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "DEPENDENT CLAUSE",
+                    "paragraphs": [
+                      {
+                        "text": "DEPENDENT CLAUSE",
+                        "runs": [
+                          "DEPENDENT CLAUSE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They can exist alone.",
+                    "paragraphs": [
+                      {
+                        "text": "They can exist alone.",
+                        "runs": [
+                          "They can exist alone."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "You’ll get a sunburn...",
+                    "paragraphs": [
+                      {
+                        "text": "You’ll get a sunburn...",
+                        "runs": [
+                          "You’ll get a ",
+                          "sunburn",
+                          "..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "IF you get too much sun.",
+                    "paragraphs": [
+                      {
+                        "text": "IF you get too much sun.",
+                        "runs": [
+                          "IF you get too much sun."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They need another clause to exist.",
+                    "paragraphs": [
+                      {
+                        "text": "They need another clause to exist.",
+                        "runs": [
+                          "They need another clause to exist."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He will need a MRI...",
+                    "paragraphs": [
+                      {
+                        "text": "He will need a MRI...",
+                        "runs": [
+                          "He will need a MRI",
+                          "..."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "IF he hits his head.",
+                    "paragraphs": [
+                      {
+                        "text": "IF he hits his head.",
+                        "runs": [
+                          "I",
+                          "F he hits his head."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 712650,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Switching Clauses",
+                    "paragraphs": [
+                      {
+                        "text": "Switching Clauses",
+                        "runs": [
+                          "Switching Clauses"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "If she cuts while cooking ,",
+                    "paragraphs": [
+                      {
+                        "text": "If she cuts while cooking ,",
+                        "runs": [
+                          "If she cuts while cooking ",
+                          ","
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She’ll probably need stitches.",
+                    "paragraphs": [
+                      {
+                        "text": "She’ll probably need stitches.",
+                        "runs": [
+                          "She’ll probably need ",
+                          "stitches",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 372700,
+                "cells": [
+                  {
+                    "text": "To Consider\n\nThe use of will is necessary since it is the way consequences in the future are expressed.\nSometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.\nWhen the IF clause is the first one, it needs to be separated by a comma (,) from the other clause.",
+                    "paragraphs": [
+                      {
+                        "text": "To Consider",
+                        "runs": [
+                          "To Consider"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "The use of will is necessary since it is the way consequences in the future are expressed.",
+                        "runs": [
+                          "The use of will is necessary since it is the way consequences in the future are ",
+                          "expressed."
+                        ]
+                      },
+                      {
+                        "text": "Sometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold.",
+                        "runs": [
+                          "Sometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold."
+                        ]
+                      },
+                      {
+                        "text": "When the IF clause is the first one, it needs to be separated by a comma (,) from the other clause.",
+                        "runs": [
+                          "When the IF clause is the first one, it needs to be separated by a comma (,) from the other clause."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future.",
+        "visibleTexts": [
+          "Conditionals link two different clauses as we learned in the last unit. First conditional links an action or circumstance in the present with another one in the future.",
+          "DEFINITIONS & POSSIBLE CASE INDEPENDENT CLAUSE DEPENDENT CLAUSE 1 They can exist alone You’ll get a sunburn (IF you get too much sun.) 2 They need another clause to exist (He will need an MRI) IF he hits his head. 3 Switching Clauses If she cuts herself while cooking , She’ll probably need stitches. To Consider 1. The use of will is necessary since it is the way consequences in the future are expressed. 2. Sometimes, ‘can’ is also used to state a consequence. E.G: If you get wet under the rain, you can get a cold. 3. When the IF clause is the first one, it needs to be separated by a comma (,) from the other clause."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "We can use the first conditional aiming the following functions or aspects ",
+          "Functions",
+          "Examples",
+          "1",
+          "Talking about illness and conditions people can get.",
+          "I will have to see a doctor if the fever continues.",
+          "If they do not operate him, he will lose his leg.",
+          "2",
+          "Warning people.",
+          "If Shane does not pass the course, he will be grounded for months.",
+          "The boys will not go to the party if they do not clean their room.",
+          "To consider ",
+          "This two areas are not the only ones that can be covered. Generally, talking about consequences may be include the use of the conditional."
+        ],
+        "joinedText": "We can use the first conditional aiming the following functions or aspects\nFunctions\nExamples\n1\nTalking about illness and conditions people can get.\nI will have to see a doctor if the fever continues.\nIf they do not operate him, he will lose his leg.\n2\nWarning people.\nIf Shane does not pass the course, he will be grounded for months.\nThe boys will not go to the party if they do not clean their room.\nTo consider \nThis two areas are not the only ones that can be covered. Generally, talking about consequences may be include the use of the conditional.",
+        "shapes": [
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1643496,
+              "y": 43426,
+              "cx": 5316300,
+              "cy": 584700,
+              "right": 6959796,
+              "bottom": 628126
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can use the first conditional aiming the following functions or aspects ",
+                "runs": [
+                  "We can use the first conditional aiming the following functions or aspects",
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "We can use the first conditional aiming the following functions or aspects "
+            ],
+            "joinedText": "We can use the first conditional aiming the following functions or aspects"
+          },
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Talking about illness and conditions people can get.",
+                "runs": []
+              },
+              {
+                "text": "I will have to see a doctor if the fever continues.",
+                "runs": []
+              },
+              {
+                "text": "If they do not operate him, he will lose his leg.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Warning people.",
+                "runs": []
+              },
+              {
+                "text": "If Shane does not pass the course, he will be grounded for months.",
+                "runs": []
+              },
+              {
+                "text": "The boys will not go to the party if they do not clean their room.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Talking about illness and conditions people can get.",
+              "I will have to see a doctor if the fever continues.",
+              "If they do not operate him, he will lose his leg.",
+              "2",
+              "Warning people.",
+              "If Shane does not pass the course, he will be grounded for months.",
+              "The boys will not go to the party if they do not clean their room."
+            ],
+            "joinedText": "Functions\nExamples\n1\nTalking about illness and conditions people can get.\nI will have to see a doctor if the fever continues.\nIf they do not operate him, he will lose his leg.\n2\nWarning people.\nIf Shane does not pass the course, he will be grounded for months.\nThe boys will not go to the party if they do not clean their room.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 978846,
+              "y": 3708406,
+              "cx": 7075918,
+              "cy": 1280995,
+              "right": 8054764,
+              "bottom": 4989401
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 904225,
+              "y": 3470422,
+              "cx": 7075918,
+              "cy": 1546183,
+              "right": 7980143,
+              "bottom": 5016605
+            },
+            "parentShapeId": "278"
+          },
+          {
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "279",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "279",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "282",
+            "shapeName": "Google Shape;282;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 967625,
+              "y": 3402245,
+              "cx": 6600000,
+              "cy": 1440600,
+              "right": 7567625,
+              "bottom": 4842845
+            },
+            "parentShapeId": "278",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "This two areas are not the only ones that can be covered. Generally, talking about consequences may be include the use of the conditional.",
+                "runs": [
+                  "This two areas are not the only ones that can be covered. Generally, talking about consequences may be include the use of the conditional."
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "This two areas are not the only ones that can be covered. Generally, talking about consequences may be include the use of the conditional."
+            ],
+            "joinedText": "To consider \nThis two areas are not the only ones that can be covered. Generally, talking about consequences may be include the use of the conditional."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_0",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "columnWidths": [
+              541675,
+              2253450,
+              3145250
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Talking about illness and conditions people can get.",
+                    "paragraphs": [
+                      {
+                        "text": "Talking about illness and conditions people can get.",
+                        "runs": [
+                          "Talking about ",
+                          "illness and conditions people can get."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I will have to see a doctor if the fever continues.",
+                    "paragraphs": [
+                      {
+                        "text": "I will have to see a doctor if the fever continues.",
+                        "runs": [
+                          "I ",
+                          "will have to see a doctor if the fever continues."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "If they do not operate him, he will lose his leg.",
+                    "paragraphs": [
+                      {
+                        "text": "If they do not operate him, he will lose his leg.",
+                        "runs": [
+                          "If they do not operate him, he will lose his leg."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Warning people.",
+                    "paragraphs": [
+                      {
+                        "text": "Warning people.",
+                        "runs": [
+                          "Warning people."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "If Shane does not pass the course, he will be grounded for months.",
+                    "paragraphs": [
+                      {
+                        "text": "If Shane does not pass the course, he will be grounded for months.",
+                        "runs": [
+                          "If Shane does not pass the course, he will be grounded for months."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "The boys will not go to the party if they do not clean their room.",
+                    "paragraphs": [
+                      {
+                        "text": "The boys will not go to the party if they do not clean their room. ",
+                        "runs": [
+                          "The boys will not go to the party if they do not clean their room. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "We can use the first conditional aiming the following functions or aspects",
+        "visibleTexts": [
+          "We can use the first conditional aiming the following functions or aspects",
+          "Functions Examples 1 Talk about illnesses and conditions people can get I will have to see a doctor if the fever continues. If they do not operate him, he will lose his leg. 2 Warn people If Shane does not pass the course, he will be grounded for months. The boys will not go to the party if they do not clean their room.",
+          "To consider These two areas are not the only ones that can be covered. Generally, talking about consequences may include the use of the conditional. Should is also used sometimes to substitute IF. E.G: Should he fail, we will lose the game."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "A. Look at the words in the box and write statements where you can express consequences. Follow the example. ",
+          "Cut  - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns",
+          "0.",
+          "If you do not press the wound, the bleeding will not stop.",
+          "B. Listen to the audio and answer the questions your teacher makes. "
+        ],
+        "joinedText": "A. Look at the words in the box and write statements where you can express consequences. Follow the example.\nCut  - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns\n0.\nIf you do not press the wound, the bleeding will not stop.\nB. Listen to the audio and answer the questions your teacher makes.",
+        "shapes": [
+          {
+            "shapeId": "294",
+            "shapeName": "Google Shape;294;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1261950,
+              "y": 403075,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7758150,
+              "bottom": 1111075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the words in the box and write statements where you can express consequences. Follow the example. ",
+                "runs": [
+                  "A. Look at the words in the box and ",
+                  "write statements where you can ",
+                  "express",
+                  " consequences",
+                  ". Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the words in the box and write statements where you can express consequences. Follow the example. "
+            ],
+            "joinedText": "A. Look at the words in the box and write statements where you can express consequences. Follow the example."
+          },
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 740125,
+              "y": 1433515,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3740125,
+              "bottom": 4433515
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Cut  - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Cut  - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns"
+            ],
+            "joinedText": "Cut  - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 992800,
+              "y": 2138825,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3992800,
+              "bottom": 5138825
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "If you do not press the wound, the bleeding will not stop.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0.",
+              "If you do not press the wound, the bleeding will not stop."
+            ],
+            "joinedText": "0.\nIf you do not press the wound, the bleeding will not stop.",
+            "tableIndex": 1
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 992800,
+              "y": 3034275,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7115500,
+              "bottom": 3635475
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;g729cfa641f_0_19",
+            "kind": "picture",
+            "bbox": {
+              "x": 5283500,
+              "y": 3558975,
+              "cx": 963050,
+              "cy": 963050,
+              "right": 6246550,
+              "bottom": 4522025
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;g729cfa641f_0_19",
+            "bbox": {
+              "x": 740125,
+              "y": 1433515,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3740125,
+              "bottom": 4433515
+            },
+            "columnWidths": [
+              7744350
+            ],
+            "rows": [
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "Cut  - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns",
+                    "paragraphs": [
+                      {
+                        "text": "Cut  - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns ",
+                        "runs": [
+                          "Cut",
+                          "  - ",
+                          "Bruise",
+                          "- ",
+                          "twist ankle",
+                          " - ",
+                          "Blisters",
+                          " - ",
+                          "Rash ",
+                          "- ",
+                          "Cough",
+                          " - ",
+                          "Chicken pox ",
+                          "- ",
+                          "Stroke",
+                          " - ",
+                          "Bleeding",
+                          " - ",
+                          "Burns",
+                          " "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_19",
+            "bbox": {
+              "x": 992800,
+              "y": 2138825,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3992800,
+              "bottom": 5138825
+            },
+            "columnWidths": [
+              483825,
+              6755175
+            ],
+            "rows": [
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "If you do not press the wound, the bleeding will not stop.",
+                    "paragraphs": [
+                      {
+                        "text": "If you do not press the wound, the bleeding will not stop.",
+                        "runs": [
+                          "If you do not press the wound, the bleeding will not stop."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;g729cfa641f_0_19",
+            "bbox": {
+              "x": 5283500,
+              "y": 3558975,
+              "cx": 963050,
+              "cy": 963050,
+              "right": 6246550,
+              "bottom": 4522025
+            },
+            "slide": 12
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 12
+          }
+        ]
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "A. Look at the words in the box and write statements where you can express consequences. Follow the example.",
+        "visibleTexts": [
+          "A. Look at the words in the box and write statements where you can express consequences. Follow the example.",
+          "Cut - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns",
+          "0. If you do not press the wound, the bleeding will not stop.",
+          "B. Listen to the audio and answer the questions your teacher makes."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaxC64DZjCp2tUob3a2SLjQpTzADJ9iZav1AAipn_36ic2vxBtEUhcz8nNN3A5rjl2Lfpm6A2wTuZQ6szt7ZRYwRtDRTa3L9IQyeI8JdZZXwwS7JuKnafeXXO3wp4-YyyaPmIfBvJg9OlPxuuw4l6NzwIt1zZtL9_PgHic7bH9iz90PF3W78TrE7hDesT0vUg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "Bullying",
+          "How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it; If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now. ",
+          "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+        ],
+        "joinedText": "Bullying\n\nHow many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it; If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "shapes": [
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 2240100,
+              "y": 1007925,
+              "cx": 4769400,
+              "cy": 3325200,
+              "right": 7009500,
+              "bottom": 4333125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 2347875,
+              "y": 1037675,
+              "cx": 4585500,
+              "cy": 3233100,
+              "right": 6933375,
+              "bottom": 4270775
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Bullying",
+                "runs": [
+                  "Bullying"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it; If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now. ",
+                "runs": [
+                  "How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not ",
+                  "controlled",
+                  ", we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it; If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now. "
+                ]
+              }
+            ],
+            "texts": [
+              "Bullying",
+              "How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it; If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now. "
+            ],
+            "joinedText": "Bullying\n\nHow many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it; If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now."
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1292175,
+              "y": 127850,
+              "cx": 6602700,
+              "cy": 642300,
+              "right": 7894875,
+              "bottom": 770150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  ",
+                "runs": [
+                  "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+            ],
+            "joinedText": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "Bullying How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it. If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now.",
+        "visibleTexts": [
+          "Bullying How many people do you know that face bullying? Bullying has become more popular these days; many students face it at school and now even in their own social media. If this is not controlled, we will get youngsters with repressed anger or depression or even suicidal tendencies. We will be facing this for a long time if we don’t do anything about it. If parents do not start working values from their homes, they will see their own children become the bullies or the bullied ones. If we want to see some change, we need to start making a difference now.",
+          "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe  the consequences a determine situation can have on people. Point out the good and the bad.",
+          "E. Write a 100 to 150 word text where you can state the impact and the consequences a good or a bad care at home can have in children. Psychological? Physical? Social? Be very thorough.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe  the consequences a determine situation can have on people. Point out the good and the bad.\nE. Write a 100 to 150 word text where you can state the impact and the consequences a good or a bad care at home can have in children. Psychological? Physical? Social? Be very thorough.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1071400,
+              "y": 222875,
+              "cx": 6655500,
+              "cy": 1175400,
+              "right": 7726900,
+              "bottom": 1398275
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe  the consequences a determine situation can have on people. Point out the good and the bad.",
+                "runs": [
+                  "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe  th",
+                  "e consequences a determine situation can have on people",
+                  ". Point out the good and the bad."
+                ]
+              }
+            ],
+            "texts": [
+              "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe  the consequences a determine situation can have on people. Point out the good and the bad."
+            ],
+            "joinedText": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe  the consequences a determine situation can have on people. Point out the good and the bad."
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 100 to 150 word text where you can state the impact and the consequences a good or a bad care at home can have in children. Psychological? Physical? Social? Be very thorough.",
+                "runs": [
+                  "E. Write a 100 to 150 word text where you can state",
+                  " the impact and the consequences a good or a bad care at home can have in children. Psychological? Physical? Social? Be very thorough."
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 100 to 150 word text where you can state the impact and the consequences a good or a bad care at home can have in children. Psychological? Physical? Social? Be very thorough."
+            ],
+            "joinedText": "E. Write a 100 to 150 word text where you can state the impact and the consequences a good or a bad care at home can have in children. Psychological? Physical? Social? Be very thorough."
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4357707,
+              "y": 1146508,
+              "cx": 1432445,
+              "cy": 1175522,
+              "right": 5790152,
+              "bottom": 2322030
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "313",
+            "shapeName": "Google Shape;313;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "312",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "314",
+            "shapeName": "Google Shape;314;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "312",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "315",
+            "shapeName": "Google Shape;315;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3759580,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4954623
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "315",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the consequences a specific situation can have on people. Point out the good and the bad.",
+        "visibleTexts": [
+          "D. Following the example from the previous activity, act out a situation with your teacher where you can express and describe the consequences a specific situation can have on people. Point out the good and the bad.",
+          "E. Write a 80 to 120 word text where you can state the impact and the consequences that good or bad care at home can have in children. Psychological? Physical? Social? Be very thorough.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "326",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "326",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "334",
+            "shapeName": "Google Shape;334;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "335",
+            "shapeName": "Google Shape;335;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "336",
+            "shapeName": "Google Shape;336;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "337",
+            "shapeName": "Google Shape;337;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "335",
+            "shapeName": "Google Shape;335;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "336",
+            "shapeName": "Google Shape;336;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 16
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 16
+          }
+        ]
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbIy1HebdQbAGJyzcCWbPEWUmWDgo4Rxbt2f4_z2OhbQ1PJmRE98bA3-7PzfDxKSbl2MlmOh1VkndEWMjBXUMLUX6rVMKoPqys0rVdJHgsSRXp3xS4y0YP-nuAyoexg9C44V6DHn2PmaEHcm2awTr-71PwghTyzl3SQSBpCFJY1BCn9__Ti8kW81j36c4k=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZrY2Wib12C3z_wgcZ6NHQujsQSLGv45hddWBXQic894F252mOm_0IPiLxWvWRftQacRbrwYJv28PaY5ZMzSm8W3cU9yqoENchkaLQ1DnVB32FOZq6ek9t7P3-XisRm6oUftnsbOn8bACpcmUW2MN6zX3t_KyQRchplHl86St9G6YqTDwHYYfOat56BeWA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbX5QzxXTr9TxJEJAsjoBhzA42ANQmSvp5pCsTysr3ck8BnEN3-6ngKdUnKWZwmuAw3K7vrPARYDNHJo0aSy8Sb4Rfo5kc08D7XgJWzE-uV_KU0Rl5cWC4kbtSgjBifKA_VAXeQNt7EZLLRf2geIy9QFNaq1LGe0_p4080AVZXl5Dn9SCqezj3aCPfNM-o=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

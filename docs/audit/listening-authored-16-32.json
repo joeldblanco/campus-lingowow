@@ -1,0 +1,2589 @@
+{
+  "schemaVersion": 1,
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "sourcePolicy": {
+    "publishedSourceManifest": "docs/audit/course-source-manifest.json",
+    "courseListeningReview": "C:/Users/ACER/.codex/worktrees/course-guided-runtime/docs/audit/course-listening-review.json",
+    "transcriptManifest": "C:/Users/ACER/.codex/worktrees/course-guided-runtime/docs/audit/course-audio-transcripts/course-audio-transcripts.json",
+    "publishedSourcesTakePriorityForPromptMetadata": true,
+    "transcriptEvidenceMustMatchLiteralClip": true,
+    "uncertainTranscriptClausesSkipped": true,
+    "manualSemanticReview": true
+  },
+  "counts": {
+    "audioClips": 17,
+    "exercises": 17,
+    "items": 68,
+    "itemsPerAudioClip": 4,
+    "units": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ]
+  },
+  "exercises": [
+    {
+      "key": {
+        "lessonId": "cmk3zsy840001l104272zs8xh",
+        "slideNumber": 12,
+        "unit": 16,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "unit": 16,
+      "lessonTitle": "When you called...",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb",
+      "sourceFilename": "Unit 16 - When you called - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-16-lesson-02-1IV8jpmX9yI6L26VoNstVXlqNJjavKRct.mp3",
+      "sourceExactTexts": [
+        "Sentences Questions 0. I was calling him when the tornado took him away. Were you calling him when the tornado took him away? 1. She was eating lunch when the wave crashed the land. 2. They were watching the volcano while it was making eruption. 3. You were driving too fast when you crashed into his car. 4. It was raining a lot while the city was flooding. 5. We were having a good time when the fire started.",
+        "A. Change the sentences to questions. Follow the example. Finally, give your teacher three more examples with their corresponding sentences.",
+        "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9873560070991516,
+        "avgLogprob": -0.20379938640528253,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u16-1",
+          "kind": "multiple-choice",
+          "prompt": "Where were Mr. Robinson and the owners when the loud noise began?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "At a ski lodge.",
+              "accepted": [
+                "At a ski lodge."
+              ],
+              "evidence": "We were at the ski lodge having lunch when suddenly we heard a loud noise.",
+              "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb"
+            }
+          ],
+          "explicitOptions": [
+            "At a ski lodge.",
+            "At a hospital.",
+            "At a train station.",
+            "At a school."
+          ],
+          "correct": "At a ski lodge.",
+          "evidence": "We were at the ski lodge having lunch when suddenly we heard a loud noise.",
+          "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb",
+          "rationale": "The transcript places the speaker and owners at the ski lodge when the noise began."
+        },
+        {
+          "id": "audio-mc-u16-2",
+          "kind": "multiple-choice",
+          "prompt": "What did Robinson and the owners hear before they saw the snow wall?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "A loud noise.",
+              "accepted": [
+                "A loud noise."
+              ],
+              "evidence": "we heard a loud noise",
+              "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb"
+            }
+          ],
+          "explicitOptions": [
+            "A loud noise.",
+            "A telephone ringing.",
+            "Music from a radio.",
+            "A car horn."
+          ],
+          "correct": "A loud noise.",
+          "evidence": "we heard a loud noise",
+          "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb",
+          "rationale": "The loud noise is described before the approaching snow wall."
+        },
+        {
+          "id": "audio-mc-u16-3",
+          "kind": "multiple-choice",
+          "prompt": "What was approaching Robinson?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "A huge white snow wall.",
+              "accepted": [
+                "A huge white snow wall."
+              ],
+              "evidence": "A huge white snow wall approaching.",
+              "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb"
+            }
+          ],
+          "explicitOptions": [
+            "A huge white snow wall.",
+            "A fast river.",
+            "A fireball.",
+            "A dust cloud."
+          ],
+          "correct": "A huge white snow wall.",
+          "evidence": "A huge white snow wall approaching.",
+          "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb",
+          "rationale": "The speaker identifies the approaching danger as a huge white snow wall."
+        },
+        {
+          "id": "audio-mc-u16-4",
+          "kind": "multiple-choice",
+          "prompt": "Why did Robinson and the owners reach the bunker?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "To save themselves.",
+              "accepted": [
+                "To save themselves."
+              ],
+              "evidence": "so we could save ourselves.",
+              "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb"
+            }
+          ],
+          "explicitOptions": [
+            "To save themselves.",
+            "To continue eating lunch.",
+            "To call the television studio.",
+            "To interview the owners."
+          ],
+          "correct": "To save themselves.",
+          "evidence": "so we could save ourselves.",
+          "sourceAudioSha256": "b9192169d19f1f7e881d4ca8bb8c9ffc4016375254361f528434fbf1d73115fb",
+          "rationale": "The transcript states that the bunker let them save themselves."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk400jyo0003ic0464j0gv1l",
+        "slideNumber": 12,
+        "unit": 17,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk400jyo0003ic0464j0gv1l",
+      "unit": 17,
+      "lessonTitle": "That’s the plan",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff",
+      "sourceFilename": "Audio 2 - Unit 17.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-17-lesson-02-1OeTyWuZsT0AU0A5_5OzVjNAmzR2QZD0z.mp3",
+      "sourceExactTexts": [
+        "Sentences Questions 0. They are going to start working as VR developers. Are they going to start working as VR developers? 1. She is going to have dinner at the NGO manager’s house. 2. I am going to attend the influencers conference on Friday. 3. He is going to scuba dive next month. 4. The YouTubers are going to air a live session this Saturday. 5. We are going to invite the web designer for dinner tonight.",
+        "A. Read the following sentences and change them into questions. Follow the example. Finally, add three more examples with their corresponding questions.",
+        "B. Listen to the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9883437156677246,
+        "avgLogprob": -0.23248520311896095,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u17-1",
+          "kind": "multiple-choice",
+          "prompt": "Where did the friends plan to hitch-hike?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Europe.",
+              "accepted": [
+                "Europe."
+              ],
+              "evidence": "I'm going to hitch-hike for a couple of months in Europe",
+              "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff"
+            }
+          ],
+          "explicitOptions": [
+            "Europe.",
+            "Asia.",
+            "Africa.",
+            "South America."
+          ],
+          "correct": "Europe.",
+          "evidence": "I'm going to hitch-hike for a couple of months in Europe",
+          "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff",
+          "rationale": "The planned hitch-hiking destination is Europe."
+        },
+        {
+          "id": "audio-mc-u17-2",
+          "kind": "multiple-choice",
+          "prompt": "How long do they plan to hitch-hike?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "A couple of months.",
+              "accepted": [
+                "A couple of months."
+              ],
+              "evidence": "I'm going to hitch-hike for a couple of months in Europe",
+              "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff"
+            }
+          ],
+          "explicitOptions": [
+            "A couple of months.",
+            "A few days.",
+            "One year.",
+            "One weekend."
+          ],
+          "correct": "A couple of months.",
+          "evidence": "I'm going to hitch-hike for a couple of months in Europe",
+          "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff",
+          "rationale": "The speaker gives the trip length as a couple of months."
+        },
+        {
+          "id": "audio-mc-u17-3",
+          "kind": "multiple-choice",
+          "prompt": "What job did one speaker plan to have?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "A VR developer.",
+              "accepted": [
+                "A VR developer."
+              ],
+              "evidence": "I'm going to become a VR developer.",
+              "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff"
+            }
+          ],
+          "explicitOptions": [
+            "A VR developer.",
+            "A doctor.",
+            "A hotel manager.",
+            "A lawyer."
+          ],
+          "correct": "A VR developer.",
+          "evidence": "I'm going to become a VR developer.",
+          "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff",
+          "rationale": "The speaker says they are going to become a VR developer."
+        },
+        {
+          "id": "audio-mc-u17-4",
+          "kind": "multiple-choice",
+          "prompt": "When did they plan to travel?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "After the following week.",
+              "accepted": [
+                "After the following week."
+              ],
+              "evidence": "we're going to travel after the following week.",
+              "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff"
+            }
+          ],
+          "explicitOptions": [
+            "After the following week.",
+            "That same evening.",
+            "Before school ended.",
+            "The next month."
+          ],
+          "correct": "After the following week.",
+          "evidence": "we're going to travel after the following week.",
+          "sourceAudioSha256": "b371b5fc255e457868a1e907e77750bcce7bf91cbe172ea33ea445df2d60e5ff",
+          "rationale": "The planned travel time is after the following week."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk4011yd0003ju0505ofufnq",
+        "slideNumber": 12,
+        "unit": 18,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk4011yd0003ju0505ofufnq",
+      "unit": 18,
+      "lessonTitle": "We are attending!",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155",
+      "sourceFilename": "Audio 2 - Unit 18.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-18-lesson-02-1VRMzXrvmWrzcu0STaGSdSFv_wb9OKj2C.mp3",
+      "sourceExactTexts": [
+        "Sentences Corrections 0. He is to attend classes on Friday. He is attending classes on Friday. 1. We are having lunch at 1:00 pm. 2. He isn’t not proposing her tonight. 3. The baby is been born in a week. 4. I am not coming to school tomorrow. 5. We are finishing this lesson in two days. 6. Jill isn’t not attending the concert tonight. 7. We are eating lunch with the Millers tomorrow. 8. She is havings classes on Saturday",
+        "A. Check the sentences and determine if they have a mistake. If they do, correct them; if they don’t, place a check mark (√) under the correction column . Follow the example.",
+        "B. Listen the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.970403254032135,
+        "avgLogprob": -0.34532343286112965,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u18-1",
+          "kind": "multiple-choice",
+          "prompt": "When is the graduation ceremony?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "On Friday.",
+              "accepted": [
+                "On Friday."
+              ],
+              "evidence": "We're having the graduation ceremony on Friday",
+              "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155"
+            }
+          ],
+          "explicitOptions": [
+            "On Friday.",
+            "On Monday.",
+            "On Sunday.",
+            "Next month."
+          ],
+          "correct": "On Friday.",
+          "evidence": "We're having the graduation ceremony on Friday",
+          "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155",
+          "rationale": "The graduation ceremony is scheduled for Friday."
+        },
+        {
+          "id": "audio-mc-u18-2",
+          "kind": "multiple-choice",
+          "prompt": "What were they going to do that weekend?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Fly to Europe with their classmate.",
+              "accepted": [
+                "Fly to Europe with their classmate."
+              ],
+              "evidence": "that weekend we are flying with our classmate to Europe",
+              "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155"
+            }
+          ],
+          "explicitOptions": [
+            "Fly to Europe with their classmate.",
+            "Attend a wedding in town.",
+            "Start their own business.",
+            "Visit a hospital."
+          ],
+          "correct": "Fly to Europe with their classmate.",
+          "evidence": "that weekend we are flying with our classmate to Europe",
+          "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155",
+          "rationale": "The plan for that weekend is a class trip by air to Europe."
+        },
+        {
+          "id": "audio-mc-u18-3",
+          "kind": "multiple-choice",
+          "prompt": "Why did they need to be there for Jenny?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Because Jenny was having her baby soon.",
+              "accepted": [
+                "Because Jenny was having her baby soon."
+              ],
+              "evidence": "Jenny's having her baby soon, so we need to be there",
+              "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155"
+            }
+          ],
+          "explicitOptions": [
+            "Because Jenny was having her baby soon.",
+            "Because Jenny was starting school.",
+            "Because Jenny was moving abroad.",
+            "Because Jenny was opening a restaurant."
+          ],
+          "correct": "Because Jenny was having her baby soon.",
+          "evidence": "Jenny's having her baby soon, so we need to be there",
+          "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155",
+          "rationale": "The speaker links the visit to Jenny having her baby soon."
+        },
+        {
+          "id": "audio-mc-u18-4",
+          "kind": "multiple-choice",
+          "prompt": "What did they plan to close after coming back?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Business with Mr. Tanaka.",
+              "accepted": [
+                "Business with Mr. Tanaka."
+              ],
+              "evidence": "We are coming back to close business with Mr. Tanaka",
+              "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155"
+            }
+          ],
+          "explicitOptions": [
+            "Business with Mr. Tanaka.",
+            "A school ceremony.",
+            "A hotel reservation.",
+            "A travel application."
+          ],
+          "correct": "Business with Mr. Tanaka.",
+          "evidence": "We are coming back to close business with Mr. Tanaka",
+          "sourceAudioSha256": "52071a3602c09223c7ce630e5abb450d0d85ef82464f8b2534a0a7da0f641155",
+          "rationale": "The return plan includes closing business with Mr. Tanaka."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk401if40005l804vf3z3k0q",
+        "slideNumber": 12,
+        "unit": 19,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk401if40005l804vf3z3k0q",
+      "unit": 19,
+      "lessonTitle": "It is this Saturday",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033",
+      "sourceFilename": "Audio 2 - Unit 19.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-19-lesson-02-1aZj185mzgQODWImvTIDDfKks0aUfRw9M.mp3",
+      "sourceExactTexts": [
+        "A. Write sentences using the words from the box stating regular events for close future. Give your teacher two more examples.",
+        "Vocabulary Sentences Go for a walk Eat Pizza Hang out with friends Go jogging Wash the car Buy groceries Cook dinner 0 Let me cook dinner tonight. 1 2 3 4 5 6",
+        "B. Listen to the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9852368235588074,
+        "avgLogprob": -0.32411370395628875,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u19-1",
+          "kind": "multiple-choice",
+          "prompt": "What meeting was scheduled for that night?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "A frat meeting.",
+              "accepted": [
+                "A frat meeting."
+              ],
+              "evidence": "we have a frat meeting tonight",
+              "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033"
+            }
+          ],
+          "explicitOptions": [
+            "A frat meeting.",
+            "A school exam.",
+            "A Friday dinner.",
+            "A performance next month."
+          ],
+          "correct": "A frat meeting.",
+          "evidence": "we have a frat meeting tonight",
+          "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033",
+          "rationale": "The speaker says there is a frat meeting that night."
+        },
+        {
+          "id": "audio-mc-u19-2",
+          "kind": "multiple-choice",
+          "prompt": "Why did Tyler consider skipping the meeting?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Because he had a test the next day.",
+              "accepted": [
+                "Because he had a test the next day."
+              ],
+              "evidence": "I have a test tomorrow",
+              "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033"
+            }
+          ],
+          "explicitOptions": [
+            "Because he had a test the next day.",
+            "Because he was cooking dinner.",
+            "Because he was leaving town.",
+            "Because he had already attended it."
+          ],
+          "correct": "Because he had a test the next day.",
+          "evidence": "I have a test tomorrow",
+          "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033",
+          "rationale": "The test scheduled for tomorrow is Tyler’s reason for considering skipping."
+        },
+        {
+          "id": "audio-mc-u19-3",
+          "kind": "multiple-choice",
+          "prompt": "What did they need to practice?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "The performance.",
+              "accepted": [
+                "The performance."
+              ],
+              "evidence": "we have to practice for the performance",
+              "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033"
+            }
+          ],
+          "explicitOptions": [
+            "The performance.",
+            "A speech for class.",
+            "A cooking lesson.",
+            "A trip itinerary."
+          ],
+          "correct": "The performance.",
+          "evidence": "we have to practice for the performance",
+          "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033",
+          "rationale": "The group needed to practice for the performance."
+        },
+        {
+          "id": "audio-mc-u19-4",
+          "kind": "multiple-choice",
+          "prompt": "What would the speaker do despite cooking on Friday?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Attend the Friday meeting.",
+              "accepted": [
+                "Attend the Friday meeting."
+              ],
+              "evidence": "I have to cook on Friday, so not to worry, I will be there.",
+              "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033"
+            }
+          ],
+          "explicitOptions": [
+            "Attend the Friday meeting.",
+            "Skip every meeting.",
+            "Leave for Europe.",
+            "Cancel the performance."
+          ],
+          "correct": "Attend the Friday meeting.",
+          "evidence": "I have to cook on Friday, so not to worry, I will be there.",
+          "sourceAudioSha256": "a8292b33cbff7518bbad90690372bb6922208e4856adb13716c6955ebc71a033",
+          "rationale": "The speaker says they will be at the Friday meeting."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk401zlh0001js04fn6f881k",
+        "slideNumber": 12,
+        "unit": 20,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk401zlh0001js04fn6f881k",
+      "unit": 20,
+      "lessonTitle": "Don’t leave your umbrella!",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969",
+      "sourceFilename": "Audio 2 - Unit 20.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-20-lesson-02-1D-YS6KKTSH0B87F2f_gpGKEZwYYp68a2.mp3",
+      "sourceExactTexts": [
+        "A. Write sentences using the words or phrases from the box stating predictions. Use the vocabulary learned. Follow the example. Give your teacher three more examples.",
+        "Words/Phrases Sentences Will probably Perhaps, will Won’t Will definitely Will not Will. 0 See the sky? It will probably rain. 1 2 3 4 5",
+        "B. Listen to the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio. Answer your teacher’s questions. Take notes if necessary."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9898561239242554,
+        "avgLogprob": -0.23832720168391053,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u20-1",
+          "kind": "multiple-choice",
+          "prompt": "Where were they planning to spend the weekend?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "At a beach resort.",
+              "accepted": [
+                "At a beach resort."
+              ],
+              "evidence": "a beach resort",
+              "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969"
+            }
+          ],
+          "explicitOptions": [
+            "At a beach resort.",
+            "At a mountain cabin.",
+            "At a city museum.",
+            "At a ski lodge."
+          ],
+          "correct": "At a beach resort.",
+          "evidence": "a beach resort",
+          "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969",
+          "rationale": "The transcript identifies a beach resort as the weekend destination."
+        },
+        {
+          "id": "audio-mc-u20-2",
+          "kind": "multiple-choice",
+          "prompt": "Who would be called to confirm the weather?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Sean.",
+              "accepted": [
+                "Sean."
+              ],
+              "evidence": "I'll call Sean to confirm how the weather is these days.",
+              "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969"
+            }
+          ],
+          "explicitOptions": [
+            "Sean.",
+            "Tom.",
+            "Mr. Tanaka.",
+            "Teddy."
+          ],
+          "correct": "Sean.",
+          "evidence": "I'll call Sean to confirm how the weather is these days.",
+          "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969",
+          "rationale": "The speaker plans to call Sean for weather confirmation."
+        },
+        {
+          "id": "audio-mc-u20-3",
+          "kind": "multiple-choice",
+          "prompt": "Why should they take repellent?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Because there will be mosquitoes.",
+              "accepted": [
+                "Because there will be mosquitoes."
+              ],
+              "evidence": "There will definitely be mosquitoes there.",
+              "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969"
+            }
+          ],
+          "explicitOptions": [
+            "Because there will be mosquitoes.",
+            "Because the resort is cold.",
+            "Because the trip includes skiing.",
+            "Because the food is spicy."
+          ],
+          "correct": "Because there will be mosquitoes.",
+          "evidence": "There will definitely be mosquitoes there.",
+          "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969",
+          "rationale": "The transcript gives mosquitoes as the reason to bring repellent."
+        },
+        {
+          "id": "audio-mc-u20-4",
+          "kind": "multiple-choice",
+          "prompt": "What would the speaker start doing after the weather call?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Packing.",
+              "accepted": [
+                "Packing."
+              ],
+              "evidence": "I will start packing then.",
+              "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969"
+            }
+          ],
+          "explicitOptions": [
+            "Packing.",
+            "Cooking dinner.",
+            "Calling the studio.",
+            "Studying for a test."
+          ],
+          "correct": "Packing.",
+          "evidence": "I will start packing then.",
+          "sourceAudioSha256": "a554856a5d02b1263d04745f28d4574cd559d676259f5f69f939c7f831cbf969",
+          "rationale": "The speaker says they will start packing after that."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmkq3xx5w0001jr04cw7bh9g7",
+        "slideNumber": 15,
+        "unit": 21,
+        "audioIndex": 2
+      },
+      "lessonId": "cmkq3xx5w0001jr04cw7bh9g7",
+      "unit": 21,
+      "lessonTitle": "So far I...",
+      "slideNumber": 15,
+      "audioIndex": 2,
+      "mappingSource": "course-listening-review",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": "u21-s15-b",
+        "courseListeningReviewSlideNumber": 15,
+        "courseListeningReviewStatus": "matched-review",
+        "mappingBasis": "comprehension-slide-context"
+      },
+      "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c",
+      "sourceFilename": "Audio 2 - Unit 21.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-21-lesson-02-1VVdRHpTotb7w5kioKMP5TJTjFFFcdika.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "Such a great life! John is 25 years old. In such a young life, he has known many places. He has been in Europe for the last two weeks; he has gone sightseeing every day and he has already visited many places. Today, he has not gone out of the hotel yet, but he has just had breakfast so he is getting ready to go out. He has been to other places in his life and he has seen and stayed in a range of inns, boarding houses, lodges etc. around the world. He’s living his life the way he has planned and so far, he has gotten and achieved all what he wanted. This trip will finish the upcoming Friday, but he is already planning what to do for the upcoming holidays.",
+        "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+      ],
+      "sourceItemIds": [
+        "u21-s15-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9873762130737305,
+        "avgLogprob": -0.17093181630218487,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u21-1",
+          "kind": "multiple-choice",
+          "prompt": "What did the exchange student gain during the program?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Professional and personal skills.",
+              "accepted": [
+                "Professional and personal skills."
+              ],
+              "evidence": "I have obtained professional and personal skills.",
+              "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c"
+            }
+          ],
+          "explicitOptions": [
+            "Professional and personal skills.",
+            "A new apartment.",
+            "A sports scholarship.",
+            "A teaching license."
+          ],
+          "correct": "Professional and personal skills.",
+          "evidence": "I have obtained professional and personal skills.",
+          "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c",
+          "rationale": "The student reports gaining professional and personal skills."
+        },
+        {
+          "id": "audio-mc-u21-2",
+          "kind": "multiple-choice",
+          "prompt": "How did meeting new people and visiting new places affect the student?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "They changed the student’s perception completely.",
+              "accepted": [
+                "They changed the student’s perception completely."
+              ],
+              "evidence": "changed my perception completely.",
+              "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c"
+            }
+          ],
+          "explicitOptions": [
+            "They changed the student’s perception completely.",
+            "They made the student leave the program.",
+            "They delayed the student’s studies.",
+            "They made the student dislike travel."
+          ],
+          "correct": "They changed the student’s perception completely.",
+          "evidence": "changed my perception completely.",
+          "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c",
+          "rationale": "The speaker says those experiences completely changed their perception."
+        },
+        {
+          "id": "audio-mc-u21-3",
+          "kind": "multiple-choice",
+          "prompt": "What kind of references did the student have?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Good references from professors and the institution.",
+              "accepted": [
+                "Good references from professors and the institution."
+              ],
+              "evidence": "I have nothing but good references from all my professors and the institution.",
+              "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c"
+            }
+          ],
+          "explicitOptions": [
+            "Good references from professors and the institution.",
+            "References only from family members.",
+            "References from a travel agency.",
+            "No references at all."
+          ],
+          "correct": "Good references from professors and the institution.",
+          "evidence": "I have nothing but good references from all my professors and the institution.",
+          "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c",
+          "rationale": "The student reports good references from professors and the institution."
+        },
+        {
+          "id": "audio-mc-u21-4",
+          "kind": "multiple-choice",
+          "prompt": "What had the student already applied for?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Another program.",
+              "accepted": [
+                "Another program."
+              ],
+              "evidence": "I have already applied for one",
+              "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c"
+            }
+          ],
+          "explicitOptions": [
+            "Another program.",
+            "A full-time job.",
+            "A new apartment.",
+            "A language exam."
+          ],
+          "correct": "Another program.",
+          "evidence": "I have already applied for one",
+          "sourceAudioSha256": "4252fbb91b0032c0181ee38c447a9fc2ee26b6c929622487b3bfc122d5e3e83c",
+          "rationale": "The student says they have already applied for another program."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmkpx0d310001gy04zr4lq99y",
+        "slideNumber": 12,
+        "unit": 22,
+        "audioIndex": 2
+      },
+      "lessonId": "cmkpx0d310001gy04zr4lq99y",
+      "unit": 22,
+      "lessonTitle": "Behaving properly",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "course-listening-review",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": "u22-s12-a",
+        "courseListeningReviewSlideNumber": 12,
+        "courseListeningReviewStatus": "matched-review",
+        "mappingBasis": "comprehension-slide-context"
+      },
+      "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916",
+      "sourceFilename": "Audio 2 - Unit 22.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-22-lesson-02-1fzcZNQWmAXsdMNLNVbxDbHSACw3LAodl.mp3",
+      "sourceExactTexts": [
+        "A. Listen to the audio and answer the questions your teacher makes.",
+        "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly."
+      ],
+      "sourceItemIds": [
+        "u22-s12-a"
+      ],
+      "sourcePrompts": [
+        "A. Listen to the audio and answer teacher questions."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9841389060020447,
+        "avgLogprob": -0.1271241580468413,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u22-1",
+          "kind": "multiple-choice",
+          "prompt": "Why was the speaker visiting Heather’s house?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "For dinner with the family.",
+              "accepted": [
+                "For dinner with the family."
+              ],
+              "evidence": "I'm finally visiting Heather's house.",
+              "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916"
+            }
+          ],
+          "explicitOptions": [
+            "For dinner with the family.",
+            "To repair the house.",
+            "To attend a school exam.",
+            "To borrow a car."
+          ],
+          "correct": "For dinner with the family.",
+          "evidence": "I'm finally visiting Heather's house.",
+          "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916",
+          "rationale": "The dialogue clarifies that the visit means having dinner with the family."
+        },
+        {
+          "id": "audio-mc-u22-2",
+          "kind": "multiple-choice",
+          "prompt": "How should the visitor act?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Normally.",
+              "accepted": [
+                "Normally."
+              ],
+              "evidence": "You should act normal",
+              "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916"
+            }
+          ],
+          "explicitOptions": [
+            "Normally.",
+            "Angrily.",
+            "Secretly.",
+            "Carelessly."
+          ],
+          "correct": "Normally.",
+          "evidence": "You should act normal",
+          "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916",
+          "rationale": "The advice is to act normal."
+        },
+        {
+          "id": "audio-mc-u22-3",
+          "kind": "multiple-choice",
+          "prompt": "What should the visitor show to the family?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Gratitude and honour.",
+              "accepted": [
+                "Gratitude and honour."
+              ],
+              "evidence": "you must look grateful and honoured.",
+              "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916"
+            }
+          ],
+          "explicitOptions": [
+            "Gratitude and honour.",
+            "Fear and impatience.",
+            "Confusion and anger.",
+            "Boredom and silence."
+          ],
+          "correct": "Gratitude and honour.",
+          "evidence": "you must look grateful and honoured.",
+          "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916",
+          "rationale": "The speaker advises the visitor to look grateful and honoured."
+        },
+        {
+          "id": "audio-mc-u22-4",
+          "kind": "multiple-choice",
+          "prompt": "What should the visitor do if hungry?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Wait for the family to tell him to eat.",
+              "accepted": [
+                "Wait for the family to tell him to eat."
+              ],
+              "evidence": "You should wait for them to tell you",
+              "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916"
+            }
+          ],
+          "explicitOptions": [
+            "Wait for the family to tell him to eat.",
+            "Ask for more food immediately.",
+            "Leave the dinner early.",
+            "Cook a second meal."
+          ],
+          "correct": "Wait for the family to tell him to eat.",
+          "evidence": "You should wait for them to tell you",
+          "sourceAudioSha256": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916",
+          "rationale": "The advice is to wait for the hosts to tell him before eating."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+        "slideNumber": 12,
+        "unit": 23,
+        "audioIndex": 2
+      },
+      "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+      "unit": 23,
+      "lessonTitle": "How dull!",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "course-listening-review",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": "u23-s12-a",
+        "courseListeningReviewSlideNumber": 12,
+        "courseListeningReviewStatus": "matched-review",
+        "mappingBasis": "comprehension-slide-context"
+      },
+      "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55",
+      "sourceFilename": "Audio 2 - Unit 23.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-23-lesson-02-1ymOLpkHg1_RSI5Pxk4FbdwUiLyJcC03y.mp3",
+      "sourceExactTexts": [
+        "A. Listen to the audio and answer the questions your teacher makes.",
+        "0. Does anyone here have an aspirin? 1. _______will ever love you. 2. I need ______ to go this weekend. 3. We did _______ but being bored to tears. 4. My parents were glad ______ was with their belts on for the trip. 5. We haven’t done _______ yet. 6. Stop letting your hair down and do ___________. 7. Oh my! He was happy - go - lucky, the cars keys could be________. 8. ________ went _______ to do ________ about the project.",
+        "B. Read the sentences. What is the correct indefinite pronoun to use? Follow the example."
+      ],
+      "sourceItemIds": [
+        "u23-s12-a"
+      ],
+      "sourcePrompts": [
+        "A. Listen to the audio and answer teacher questions."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9767866730690002,
+        "avgLogprob": -0.22944749386842586,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u23-1",
+          "kind": "multiple-choice",
+          "prompt": "Whose party is the speaker attending?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Stacey’s party.",
+              "accepted": [
+                "Stacey’s party."
+              ],
+              "evidence": "are you attending Stacey's party?",
+              "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55"
+            }
+          ],
+          "explicitOptions": [
+            "Stacey’s party.",
+            "Mandy’s party.",
+            "Elena’s party.",
+            "Chuck’s party."
+          ],
+          "correct": "Stacey’s party.",
+          "evidence": "are you attending Stacey's party?",
+          "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55",
+          "rationale": "The question and response identify Stacey’s party."
+        },
+        {
+          "id": "audio-mc-u23-2",
+          "kind": "multiple-choice",
+          "prompt": "What did Mandy decide to do?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Go with someone else.",
+              "accepted": [
+                "Go with someone else."
+              ],
+              "evidence": "with someone else",
+              "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55"
+            }
+          ],
+          "explicitOptions": [
+            "Go with someone else.",
+            "Stay home to study.",
+            "Host the party.",
+            "Move to another city."
+          ],
+          "correct": "Go with someone else.",
+          "evidence": "with someone else",
+          "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55",
+          "rationale": "The transcript says Mandy decided to go with someone else."
+        },
+        {
+          "id": "audio-mc-u23-3",
+          "kind": "multiple-choice",
+          "prompt": "Whom was the speaker picking up?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Elena.",
+              "accepted": [
+                "Elena."
+              ],
+              "evidence": "I'm picking her up at 8.",
+              "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55"
+            }
+          ],
+          "explicitOptions": [
+            "Elena.",
+            "Stacey.",
+            "Mandy.",
+            "Heather."
+          ],
+          "correct": "Elena.",
+          "evidence": "I'm picking her up at 8.",
+          "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55",
+          "rationale": "The speaker names Elena immediately before saying they are picking her up."
+        },
+        {
+          "id": "audio-mc-u23-4",
+          "kind": "multiple-choice",
+          "prompt": "What time was the speaker picking Elena up?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "At 8.",
+              "accepted": [
+                "At 8."
+              ],
+              "evidence": "I'm picking her up at 8.",
+              "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55"
+            }
+          ],
+          "explicitOptions": [
+            "At 8.",
+            "At 6.",
+            "At noon.",
+            "At midnight."
+          ],
+          "correct": "At 8.",
+          "evidence": "I'm picking her up at 8.",
+          "sourceAudioSha256": "bdb38b63d6830407a7967dca401acdd4525b0f3869abe1be01191a767b935b55",
+          "rationale": "The pickup time is stated as 8."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+        "slideNumber": 13,
+        "unit": 24,
+        "audioIndex": 2
+      },
+      "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+      "unit": 24,
+      "lessonTitle": "I don't know  why...",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "mappingSource": "course-listening-review",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": "u24-s13-b",
+        "courseListeningReviewSlideNumber": 13,
+        "courseListeningReviewStatus": "matched-review",
+        "mappingBasis": "comprehension-slide-context"
+      },
+      "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65",
+      "sourceFilename": "Audio 2 - Unit 24.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-24-lesson-02-1vxfdWzUNY9yQioqKkPeHrmYK354ahC-2.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "Not what I expected! I have been working at the same company, where my father used to work, for 5 years already. My father, who was one of the most loyal employees here, had a great career starting from the bottom. Everybody remembers him and I really don’t know why they are always comparing me to him; I guess, it may be all about what he did and how he was. Honestly, I haven’t had not even half of his experience here, it is not what I expected. I should be looking for another job where my best friend suggested, but I cannot remember exactly what he said. That is why I am calling him tomorrow.",
+        "C. Read the following paragraph and extract sentences with the functions studied. Write them in the chat."
+      ],
+      "sourceItemIds": [
+        "u24-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9963670969009399,
+        "avgLogprob": -0.19363429710742028,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u24-1",
+          "kind": "multiple-choice",
+          "prompt": "What was being sold?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "The grandparents’ ranch.",
+              "accepted": [
+                "The grandparents’ ranch."
+              ],
+              "evidence": "My grandparents ranch where I had the most amazing childhood experiences is being sold",
+              "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65"
+            }
+          ],
+          "explicitOptions": [
+            "The grandparents’ ranch.",
+            "The family’s apartment.",
+            "A city restaurant.",
+            "A school building."
+          ],
+          "correct": "The grandparents’ ranch.",
+          "evidence": "My grandparents ranch where I had the most amazing childhood experiences is being sold",
+          "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65",
+          "rationale": "The speaker says the grandparents’ ranch is being sold."
+        },
+        {
+          "id": "audio-mc-u24-2",
+          "kind": "multiple-choice",
+          "prompt": "When will the ranch be sold?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "In a couple of days.",
+              "accepted": [
+                "In a couple of days."
+              ],
+              "evidence": "is being sold in a couple of days",
+              "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65"
+            }
+          ],
+          "explicitOptions": [
+            "In a couple of days.",
+            "In two years.",
+            "Next winter.",
+            "That same evening."
+          ],
+          "correct": "In a couple of days.",
+          "evidence": "is being sold in a couple of days",
+          "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65",
+          "rationale": "The sale is scheduled in a couple of days."
+        },
+        {
+          "id": "audio-mc-u24-3",
+          "kind": "multiple-choice",
+          "prompt": "Why did John move to another city?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "He got married and found a job there.",
+              "accepted": [
+                "He got married and found a job there."
+              ],
+              "evidence": "because he got married and he found a job",
+              "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65"
+            }
+          ],
+          "explicitOptions": [
+            "He got married and found a job there.",
+            "He wanted to study abroad.",
+            "He bought the ranch.",
+            "He was visiting his grandparents."
+          ],
+          "correct": "He got married and found a job there.",
+          "evidence": "because he got married and he found a job",
+          "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65",
+          "rationale": "The transcript gives marriage and a new job as John’s reasons for moving."
+        },
+        {
+          "id": "audio-mc-u24-4",
+          "kind": "multiple-choice",
+          "prompt": "Who could stay at the ranch and keep an eye on it?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Terry and his wife.",
+              "accepted": [
+                "Terry and his wife."
+              ],
+              "evidence": "He and his wife who are well known by the family are perfect to stay and keep an eye on it",
+              "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65"
+            }
+          ],
+          "explicitOptions": [
+            "Terry and his wife.",
+            "John and his classmates.",
+            "The ranch sellers.",
+            "The town police."
+          ],
+          "correct": "Terry and his wife.",
+          "evidence": "He and his wife who are well known by the family are perfect to stay and keep an eye on it",
+          "sourceAudioSha256": "613a474edf72a787f8a35387fb1c30a8ef66f9b362b37f5679dc7e8e52a75b65",
+          "rationale": "Terry and his wife are proposed as trusted people to watch the ranch."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9m3i000hw1qklyh7h658",
+        "slideNumber": 14,
+        "unit": 25,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9m3i000hw1qklyh7h658",
+      "unit": 25,
+      "lessonTitle": "Unit 25",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "mappingSource": "course-listening-review",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": "u25-s14-b",
+        "courseListeningReviewSlideNumber": 14,
+        "courseListeningReviewStatus": "matched-review",
+        "mappingBasis": "comprehension-slide-context"
+      },
+      "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187",
+      "sourceFilename": "Audio 2 - Unit 25.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-25-lesson-02-1Juae_sfwi4d-FRQ4bhq90FfhvSjjuDAz.mp3",
+      "sourceExactTexts": [
+        "C. Read the following paragraph and extract sentences with the functions studied, and locate them in the space provided.",
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "Gone to College It has been such an exciting moment in my life. My name is Diane, and I am now a college student. I was always interested in how leaving the house and coming to college would be. I must say it is breathtaking. Of course, I have tons of responsibilities and time-consuming activities but I feel blessed that my parents were able to send me here. Don’t get me wrong, there are some boring lessons and tiring lectures, but most of it is amazing. Spending time with my friends and being surrounded by people with similar interests make me feel fortunate and grateful. Are you looking forward to living this experience?"
+      ],
+      "sourceItemIds": [
+        "u25-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9923496842384338,
+        "avgLogprob": -0.24698287553518364,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u25-1",
+          "kind": "multiple-choice",
+          "prompt": "What would not work?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "The computer.",
+              "accepted": [
+                "The computer."
+              ],
+              "evidence": "the computer just won't work.",
+              "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187"
+            }
+          ],
+          "explicitOptions": [
+            "The computer.",
+            "The telephone.",
+            "The refrigerator.",
+            "The car."
+          ],
+          "correct": "The computer.",
+          "evidence": "the computer just won't work.",
+          "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187",
+          "rationale": "The first problem described is that the computer will not work."
+        },
+        {
+          "id": "audio-mc-u25-2",
+          "kind": "multiple-choice",
+          "prompt": "What had the speaker tried?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Restarting the system.",
+              "accepted": [
+                "Restarting the system."
+              ],
+              "evidence": "Have you tried to restart the system?",
+              "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187"
+            }
+          ],
+          "explicitOptions": [
+            "Restarting the system.",
+            "Replacing the table.",
+            "Calling the professor.",
+            "Installing a game."
+          ],
+          "correct": "Restarting the system.",
+          "evidence": "Have you tried to restart the system?",
+          "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187",
+          "rationale": "The dialogue confirms that restarting the system had been tried."
+        },
+        {
+          "id": "audio-mc-u25-3",
+          "kind": "multiple-choice",
+          "prompt": "What caused the computer problem?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "The cables were jammed and the power plug was disconnected.",
+              "accepted": [
+                "The cables were jammed and the power plug was disconnected."
+              ],
+              "evidence": "The cables are jammed to the table and the power plug is disconnected",
+              "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187"
+            }
+          ],
+          "explicitOptions": [
+            "The cables were jammed and the power plug was disconnected.",
+            "The screen was too bright.",
+            "The keyboard was missing.",
+            "The assignment was deleted."
+          ],
+          "correct": "The cables were jammed and the power plug was disconnected.",
+          "evidence": "The cables are jammed to the table and the power plug is disconnected",
+          "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187",
+          "rationale": "The speaker identifies the jammed cables and disconnected power plug as the problem."
+        },
+        {
+          "id": "audio-mc-u25-4",
+          "kind": "multiple-choice",
+          "prompt": "What could the speaker do after the problem was fixed?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Finish the assignment.",
+              "accepted": [
+                "Finish the assignment."
+              ],
+              "evidence": "I can finish my assignment now",
+              "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187"
+            }
+          ],
+          "explicitOptions": [
+            "Finish the assignment.",
+            "Go skating.",
+            "Call the client.",
+            "Sell the computer."
+          ],
+          "correct": "Finish the assignment.",
+          "evidence": "I can finish my assignment now",
+          "sourceAudioSha256": "f8c64d47ae54a7ddb01e47c2559645bc8464343b5abce8542388a9e8eb977187",
+          "rationale": "The repaired computer makes it possible to finish the assignment."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9mm1000kw1qkgi2bize8",
+        "slideNumber": 14,
+        "unit": 26,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9mm1000kw1qkgi2bize8",
+      "unit": 26,
+      "lessonTitle": "Unit 26",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783",
+      "sourceFilename": "Audio 2 - Unit 26.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-26-lesson-02-1WV40L2HZIQNhlcloNqnFymx3c58bQQ5X.mp3",
+      "sourceExactTexts": [
+        "What about you? So tell me Rose, what annoys you? Well, if someone chews with their mouth open, that drives me crazy, Mandy. I know! When someone eats and talks at the same time, I feel it so gross. Don’t make me start with nail biters! Totally! When I see a kid doing it, I just can’t help it and tell his mum. Wait! How about nose pickers? I hate it when I see someone picking their nose out. I know! People need to get some good manners nowadays. Indeed! And basic things like if you go out of a room, close the door behind you.",
+        "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.",
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9963589310646057,
+        "avgLogprob": -0.2915040912472027,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u26-1",
+          "kind": "multiple-choice",
+          "prompt": "When should the pasta go into the pot?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "When the water boils.",
+              "accepted": [
+                "When the water boils."
+              ],
+              "evidence": "When the water boils you can put the pasta.",
+              "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783"
+            }
+          ],
+          "explicitOptions": [
+            "When the water boils.",
+            "Before the pot is filled.",
+            "After dinner.",
+            "When the water is cold."
+          ],
+          "correct": "When the water boils.",
+          "evidence": "When the water boils you can put the pasta.",
+          "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783",
+          "rationale": "The instruction is to add pasta once the water boils."
+        },
+        {
+          "id": "audio-mc-u26-2",
+          "kind": "multiple-choice",
+          "prompt": "Which meat does Grandma not eat?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Beef.",
+              "accepted": [
+                "Beef."
+              ],
+              "evidence": "grandma does not eat any beef.",
+              "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783"
+            }
+          ],
+          "explicitOptions": [
+            "Beef.",
+            "Chicken.",
+            "Fish.",
+            "Turkey."
+          ],
+          "correct": "Beef.",
+          "evidence": "grandma does not eat any beef.",
+          "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783",
+          "rationale": "The speaker explicitly says Grandma does not eat beef."
+        },
+        {
+          "id": "audio-mc-u26-3",
+          "kind": "multiple-choice",
+          "prompt": "What meat would the speaker cook instead?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Chicken.",
+              "accepted": [
+                "Chicken."
+              ],
+              "evidence": "I'll cook some chicken instead.",
+              "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783"
+            }
+          ],
+          "explicitOptions": [
+            "Chicken.",
+            "Beef.",
+            "Pork.",
+            "Lamb."
+          ],
+          "correct": "Chicken.",
+          "evidence": "I'll cook some chicken instead.",
+          "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783",
+          "rationale": "Chicken is the replacement for beef."
+        },
+        {
+          "id": "audio-mc-u26-4",
+          "kind": "multiple-choice",
+          "prompt": "What does Uncle Ted do?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "He bites his nails.",
+              "accepted": [
+                "He bites his nails."
+              ],
+              "evidence": "when he bites his nails.",
+              "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783"
+            }
+          ],
+          "explicitOptions": [
+            "He bites his nails.",
+            "He washes the dishes.",
+            "He plays the drums.",
+            "He cooks pasta."
+          ],
+          "correct": "He bites his nails.",
+          "evidence": "when he bites his nails.",
+          "sourceAudioSha256": "2b5805f849d1be8ff53ac801f28b9acb6760cff7e8c81c4cd99a3fbbf967e783",
+          "rationale": "The dialogue says Ted bites his nails."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9my8000nw1qkfl8lpdxz",
+        "slideNumber": 12,
+        "unit": 27,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9my8000nw1qkfl8lpdxz",
+      "unit": 27,
+      "lessonTitle": "Unit 27",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594",
+      "sourceFilename": "Audio 2 - Unit 27.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-27-lesson-02-1lJHlX39c1rFPHLUBhANe2K3v-_EQyl2n.mp3",
+      "sourceExactTexts": [
+        "A. Look at the words in the box and write statements where you can express consequences. Follow the example.",
+        "Cut - Bruise- twist ankle - Blisters - Rash - Cough - Chicken pox - Stroke - Bleeding - Burns",
+        "0. If you do not press the wound, the bleeding will not stop.",
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9915825724601746,
+        "avgLogprob": -0.12430470208285842,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u27-1",
+          "kind": "multiple-choice",
+          "prompt": "Why did Joe need to go to therapy?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "To recover from his injury.",
+              "accepted": [
+                "To recover from his injury."
+              ],
+              "evidence": "You won't recover if you do not get to therapy as a doctor said.",
+              "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594"
+            }
+          ],
+          "explicitOptions": [
+            "To recover from his injury.",
+            "To prepare for college.",
+            "To meet a friend.",
+            "To pick up a package."
+          ],
+          "correct": "To recover from his injury.",
+          "evidence": "You won't recover if you do not get to therapy as a doctor said.",
+          "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594",
+          "rationale": "The father connects therapy with Joe’s recovery."
+        },
+        {
+          "id": "audio-mc-u27-2",
+          "kind": "multiple-choice",
+          "prompt": "When would they be back home if they reached the hospital early?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "In the afternoon.",
+              "accepted": [
+                "In the afternoon."
+              ],
+              "evidence": "If we get early to the hospital we'll be back home in the afternoon.",
+              "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594"
+            }
+          ],
+          "explicitOptions": [
+            "In the afternoon.",
+            "At midnight.",
+            "The next month.",
+            "Before sunrise."
+          ],
+          "correct": "In the afternoon.",
+          "evidence": "If we get early to the hospital we'll be back home in the afternoon.",
+          "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594",
+          "rationale": "An early hospital trip would allow them to return in the afternoon."
+        },
+        {
+          "id": "audio-mc-u27-3",
+          "kind": "multiple-choice",
+          "prompt": "How did Joe break his leg?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "While skating.",
+              "accepted": [
+                "While skating."
+              ],
+              "evidence": "Breaking your leg while skating was nobody's fault but yours.",
+              "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594"
+            }
+          ],
+          "explicitOptions": [
+            "While skating.",
+            "While cooking.",
+            "While driving.",
+            "While swimming."
+          ],
+          "correct": "While skating.",
+          "evidence": "Breaking your leg while skating was nobody's fault but yours.",
+          "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594",
+          "rationale": "The father directly refers to Joe breaking his leg while skating."
+        },
+        {
+          "id": "audio-mc-u27-4",
+          "kind": "multiple-choice",
+          "prompt": "Why did Teddy need a ride to the hospital?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "To get his father's MRI results.",
+              "accepted": [
+                "To get his father's MRI results."
+              ],
+              "evidence": "He needs to get his father's MRI results.",
+              "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594"
+            }
+          ],
+          "explicitOptions": [
+            "To get his father's MRI results.",
+            "To start therapy himself.",
+            "To visit a college.",
+            "To return a library book."
+          ],
+          "correct": "To get his father's MRI results.",
+          "evidence": "He needs to get his father's MRI results.",
+          "sourceAudioSha256": "855f8b509e730853a64d4ec00fa449d674bb936942f5e200ca457ef15507a594",
+          "rationale": "The speaker gives Teddy’s father’s MRI results as the reason for the trip."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9naj000qw1qkkzistoi6",
+        "slideNumber": 12,
+        "unit": 28,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9naj000qw1qkkzistoi6",
+      "unit": 28,
+      "lessonTitle": "Unit 28",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8",
+      "sourceFilename": "Audio 2 - Unit 28.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-28-lesson-02-1Neg6ZDrU5Z3bwokqij8EFTkgsx83KfNo.mp3",
+      "sourceExactTexts": [
+        "A. Look at the words / phrases in the box and write statements where you can express situations unlikely to happen. Follow the example.",
+        "Get married - Move alone - Change jobs - Stay single - Keep studying - Practice a extreme sport - Donate organs - Save money to travel - Practice Euthanasia",
+        "0. If I were Brad, I would not practice euthanasia to my patients.",
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9866809844970703,
+        "avgLogprob": -0.10663570164296987,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u28-1",
+          "kind": "multiple-choice",
+          "prompt": "What advice was given about the missed deadline?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Tell the truth.",
+              "accepted": [
+                "Tell the truth."
+              ],
+              "evidence": "Tell her the truth.",
+              "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8"
+            }
+          ],
+          "explicitOptions": [
+            "Tell the truth.",
+            "Hide the deadline.",
+            "Blame a coworker.",
+            "Leave the office."
+          ],
+          "correct": "Tell the truth.",
+          "evidence": "Tell her the truth.",
+          "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8",
+          "rationale": "The direct advice is to tell the truth."
+        },
+        {
+          "id": "audio-mc-u28-2",
+          "kind": "multiple-choice",
+          "prompt": "What had the person not done in two days?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Stopped by the office.",
+              "accepted": [
+                "Stopped by the office."
+              ],
+              "evidence": "you have not stopped by the office in two days.",
+              "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8"
+            }
+          ],
+          "explicitOptions": [
+            "Stopped by the office.",
+            "Called the hospital.",
+            "Visited a client.",
+            "Attended a party."
+          ],
+          "correct": "Stopped by the office.",
+          "evidence": "you have not stopped by the office in two days.",
+          "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8",
+          "rationale": "The speaker points out that the person has not stopped by the office in two days."
+        },
+        {
+          "id": "audio-mc-u28-3",
+          "kind": "multiple-choice",
+          "prompt": "How was the person in the remembered case described?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Kind, helpful, and fair.",
+              "accepted": [
+                "Kind, helpful, and fair."
+              ],
+              "evidence": "she was very kind and helpful and very just too.",
+              "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8"
+            }
+          ],
+          "explicitOptions": [
+            "Kind, helpful, and fair.",
+            "Angry, secretive, and unfair.",
+            "Young, wealthy, and famous.",
+            "Busy, tired, and silent."
+          ],
+          "correct": "Kind, helpful, and fair.",
+          "evidence": "she was very kind and helpful and very just too.",
+          "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8",
+          "rationale": "The remembered person is described as kind, helpful, and fair."
+        },
+        {
+          "id": "audio-mc-u28-4",
+          "kind": "multiple-choice",
+          "prompt": "What was the speaker doing at the end?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Talking to her.",
+              "accepted": [
+                "Talking to her."
+              ],
+              "evidence": "I'm talking to her now.",
+              "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8"
+            }
+          ],
+          "explicitOptions": [
+            "Talking to her.",
+            "Leaving the country.",
+            "Starting a new job.",
+            "Writing a report."
+          ],
+          "correct": "Talking to her.",
+          "evidence": "I'm talking to her now.",
+          "sourceAudioSha256": "7214b9a2736fde56478ca78020d2e6aa02b42eb9c33ef2b604940a9e236999a8",
+          "rationale": "The final line says the speaker is talking to her now."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+        "slideNumber": 14,
+        "unit": 29,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "unit": 29,
+      "lessonTitle": "Unit 29",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "mappingSource": "course-listening-review",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": "u29-s14-review",
+        "courseListeningReviewSlideNumber": 14,
+        "courseListeningReviewStatus": "matched-review",
+        "mappingBasis": "adjacent-duplicate-source-context"
+      },
+      "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1",
+      "sourceFilename": "Module 8 - Unit 29 -Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-29-lesson-03-1NgXBX9XUSzi5KjKl6vfLD3KvmDqvdpXk.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and answer the questions your teacher makes.",
+        "How to be in life I am sure there are many conceptions on how to proceed in life regarding many issues. Fairly speaking, I believe people need to be honest to get along with others. Additionally, by respecting others, you can get to be respected as well. People have to understand that respect and honesty are fundamental to have and keep healthy relationships in life. I have decided to live by these standards and it would be a great idea for people to consider them, and have the courage to admit not having used these values in certain circumstances, in order to say they’re sorry, and mend what they did. What do you think of this? Do you agree?",
+        "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+      ],
+      "sourceItemIds": [
+        "u29-s14-review"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer the questions your teacher makes.\nHow to be in life I am sure there are many conceptions on how to proceed in life regarding many issues. Fairly speaking, I believe people need to be honest to get along with others. Additionally, by respecting others, you can get to be respected as well. People have to understand that respect and honesty are fundamental to have and keep healthy relationships in life. I have decided to live by these standards and it would be a great idea for people to consider them, and have the courage to admit not having used these values in certain circumstances, in order to say they’re sorry, and mend what they did. What do you think of this? Do you agree?\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9962555170059204,
+        "avgLogprob": -0.11985920090050925,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u29-1",
+          "kind": "multiple-choice",
+          "prompt": "Who had done the work of sending the papers to the client?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Tyler.",
+              "accepted": [
+                "Tyler."
+              ],
+              "evidence": "I was the one doing it",
+              "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1"
+            }
+          ],
+          "explicitOptions": [
+            "Tyler.",
+            "Jason.",
+            "The boss.",
+            "The client."
+          ],
+          "correct": "Tyler.",
+          "evidence": "I was the one doing it",
+          "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1",
+          "rationale": "Tyler says that he was the one doing the work."
+        },
+        {
+          "id": "audio-mc-u29-2",
+          "kind": "multiple-choice",
+          "prompt": "What was the boss telling everyone?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "That Tyler had not done what he was asked to do.",
+              "accepted": [
+                "That Tyler had not done what he was asked to do."
+              ],
+              "evidence": "the boss is going around telling everyone that I do not do what he asked me to.",
+              "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1"
+            }
+          ],
+          "explicitOptions": [
+            "That Tyler had not done what he was asked to do.",
+            "That Jason had won a promotion.",
+            "That the client had cancelled the order.",
+            "That the papers were already signed."
+          ],
+          "correct": "That Tyler had not done what he was asked to do.",
+          "evidence": "the boss is going around telling everyone that I do not do what he asked me to.",
+          "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1",
+          "rationale": "The boss’s message portrays Tyler as failing to do the requested work."
+        },
+        {
+          "id": "audio-mc-u29-3",
+          "kind": "multiple-choice",
+          "prompt": "What did Jason offer to do?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Talk to the boss.",
+              "accepted": [
+                "Talk to the boss."
+              ],
+              "evidence": "Let me talk to him",
+              "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1"
+            }
+          ],
+          "explicitOptions": [
+            "Talk to the boss.",
+            "Send the papers again.",
+            "Leave the office.",
+            "Call the client’s family."
+          ],
+          "correct": "Talk to the boss.",
+          "evidence": "Let me talk to him",
+          "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1",
+          "rationale": "Jason offers to talk to the boss."
+        },
+        {
+          "id": "audio-mc-u29-4",
+          "kind": "multiple-choice",
+          "prompt": "What did Tyler demand Jason do?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Come clean or face exposure at the office.",
+              "accepted": [
+                "Come clean or face exposure at the office."
+              ],
+              "evidence": "come clean or I'll expose you to the rest of the office.",
+              "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1"
+            }
+          ],
+          "explicitOptions": [
+            "Come clean or face exposure at the office.",
+            "Take a vacation immediately.",
+            "Hide the papers from the boss.",
+            "Invite the client to dinner."
+          ],
+          "correct": "Come clean or face exposure at the office.",
+          "evidence": "come clean or I'll expose you to the rest of the office.",
+          "sourceAudioSha256": "8ea2bd71c669da3a3769961707dc71dc3086eaadeddacc3b2b131678806f20c1",
+          "rationale": "Tyler gives Jason the choice of admitting the truth or being exposed."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+        "slideNumber": 13,
+        "unit": 30,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "unit": 30,
+      "lessonTitle": "Unit 30",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "mappingSource": "course-listening-review",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": "u30-s13-b",
+        "courseListeningReviewSlideNumber": 13,
+        "courseListeningReviewStatus": "matched-review",
+        "mappingBasis": "comprehension-slide-context"
+      },
+      "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514",
+      "sourceFilename": "Module 8 - Unit 30 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-30-lesson-03-1vlrlVF00Vq87IET2NnHpxZ4MRbav4O4L.mp3",
+      "sourceExactTexts": [
+        "A. Describe the people on the pictures. Follow the example. Try using all the areas covered in class.",
+        "0. Sean is an average height, thin man with light complexion. He has got short, wavy black hair and big blue eyes. Right now, he is wearing a comfortable pair of blue American jeans with a single white cotton shirt. He seems to be a nice guy.",
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u30-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer teacher questions."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9995577931404114,
+        "avgLogprob": -0.24880607290705403,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u30-1",
+          "kind": "multiple-choice",
+          "prompt": "What do people often fail to do?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Follow the advice they give others.",
+              "accepted": [
+                "Follow the advice they give others."
+              ],
+              "evidence": "most of the time they do not follow those things.",
+              "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514"
+            }
+          ],
+          "explicitOptions": [
+            "Follow the advice they give others.",
+            "Listen to music together.",
+            "Avoid all relationships.",
+            "Travel without plans."
+          ],
+          "correct": "Follow the advice they give others.",
+          "evidence": "most of the time they do not follow those things.",
+          "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514",
+          "rationale": "The speaker says people often do not follow the relationship advice they give."
+        },
+        {
+          "id": "audio-mc-u30-2",
+          "kind": "multiple-choice",
+          "prompt": "What does the speaker say remains widespread in society?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Stereotypes.",
+              "accepted": [
+                "Stereotypes."
+              ],
+              "evidence": "stereotypes are on the top of society",
+              "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514"
+            }
+          ],
+          "explicitOptions": [
+            "Stereotypes.",
+            "Scholarships.",
+            "Weather warnings.",
+            "Travel plans."
+          ],
+          "correct": "Stereotypes.",
+          "evidence": "stereotypes are on the top of society",
+          "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514",
+          "rationale": "The audio identifies stereotypes as remaining widespread."
+        },
+        {
+          "id": "audio-mc-u30-3",
+          "kind": "multiple-choice",
+          "prompt": "Which pair of qualities does the speaker value in a partner?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Honesty and trustworthiness.",
+              "accepted": [
+                "Honesty and trustworthiness."
+              ],
+              "evidence": "Someone who they can talk to and share someone who is kind and respectful",
+              "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514"
+            }
+          ],
+          "explicitOptions": [
+            "Honesty and trustworthiness.",
+            "Height and eye colour.",
+            "Wealth and fame.",
+            "Speed and strength."
+          ],
+          "correct": "Honesty and trustworthiness.",
+          "evidence": "Someone who they can talk to and share someone who is kind and respectful",
+          "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514",
+          "rationale": "The speaker values character over appearance, including honesty and trustworthiness."
+        },
+        {
+          "id": "audio-mc-u30-4",
+          "kind": "multiple-choice",
+          "prompt": "Which other qualities does the speaker mention?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Kindness and respect.",
+              "accepted": [
+                "Kindness and respect."
+              ],
+              "evidence": "someone who is kind and respectful",
+              "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514"
+            }
+          ],
+          "explicitOptions": [
+            "Kindness and respect.",
+            "Height and slimness.",
+            "Popularity and wealth.",
+            "Silence and strictness."
+          ],
+          "correct": "Kindness and respect.",
+          "evidence": "someone who is kind and respectful",
+          "sourceAudioSha256": "08c110e26d3d04cf9fa112559e78080d82b5fcea4855dcc8e375a7e225c58514",
+          "rationale": "The speaker explicitly names kindness and respect as important qualities."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9ob2000zw1qkel9nezp5",
+        "slideNumber": 13,
+        "unit": 31,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9ob2000zw1qkel9nezp5",
+      "unit": 31,
+      "lessonTitle": "Unit 31",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c",
+      "sourceFilename": "Module 8 - Unit 31 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-31-lesson-03-1wW9AV8ggVH3kcvwMlQxUDekPBoYQfIOL.mp3",
+      "sourceExactTexts": [
+        "A. Create eight sentences where you use the grammar points and uses we learned in class. Follow the example.",
+        "It intrigues me when someone is in a Whatsapp group and never talks.",
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer the questions your teacher makes."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9933053851127625,
+        "avgLogprob": -0.1415903595181478,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u31-1",
+          "kind": "multiple-choice",
+          "prompt": "What irritates the speaker?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Smoking in the house.",
+              "accepted": [
+                "Smoking in the house."
+              ],
+              "evidence": "it irritates me when you smoke in the house",
+              "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c"
+            }
+          ],
+          "explicitOptions": [
+            "Smoking in the house.",
+            "Playing music outside.",
+            "Cooking in the kitchen.",
+            "Studying in the morning."
+          ],
+          "correct": "Smoking in the house.",
+          "evidence": "it irritates me when you smoke in the house",
+          "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c",
+          "rationale": "The speaker says smoking in the house is irritating."
+        },
+        {
+          "id": "audio-mc-u31-2",
+          "kind": "multiple-choice",
+          "prompt": "Who hates the smoking in the house?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Mom.",
+              "accepted": [
+                "Mom."
+              ],
+              "evidence": "mom hates it",
+              "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c"
+            }
+          ],
+          "explicitOptions": [
+            "Mom.",
+            "The boss.",
+            "The teacher.",
+            "The neighbour."
+          ],
+          "correct": "Mom.",
+          "evidence": "mom hates it",
+          "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c",
+          "rationale": "The dialogue states that Mom hates the smoking."
+        },
+        {
+          "id": "audio-mc-u31-3",
+          "kind": "multiple-choice",
+          "prompt": "Where may the person smoke?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Outside the house.",
+              "accepted": [
+                "Outside the house."
+              ],
+              "evidence": "do it out of the house.",
+              "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c"
+            }
+          ],
+          "explicitOptions": [
+            "Outside the house.",
+            "In the bedroom.",
+            "At the dinner table.",
+            "Inside the school."
+          ],
+          "correct": "Outside the house.",
+          "evidence": "do it out of the house.",
+          "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c",
+          "rationale": "The compromise permits smoking outside the house."
+        },
+        {
+          "id": "audio-mc-u31-4",
+          "kind": "multiple-choice",
+          "prompt": "What promise is requested about the drums?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Not to play them at 7 a.m. every weekend.",
+              "accepted": [
+                "Not to play them at 7 a.m. every weekend."
+              ],
+              "evidence": "not to play drums at 7 a.m. every weekend.",
+              "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c"
+            }
+          ],
+          "explicitOptions": [
+            "Not to play them at 7 a.m. every weekend.",
+            "To play them all night.",
+            "To sell them before Friday.",
+            "To take them to school."
+          ],
+          "correct": "Not to play them at 7 a.m. every weekend.",
+          "evidence": "not to play drums at 7 a.m. every weekend.",
+          "sourceAudioSha256": "fa6a34fe5f30a3c6d2229b98781139c41616ed4a0c9a602aa0902236760ab56c",
+          "rationale": "The requested promise concerns avoiding drums at 7 a.m. on weekends."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmnmm9on70012w1qka03chue1",
+        "slideNumber": 12,
+        "unit": 32,
+        "audioIndex": 2
+      },
+      "lessonId": "cmnmm9on70012w1qka03chue1",
+      "unit": 32,
+      "lessonTitle": "Unit 32",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "mappingSource": "published source slide + reviewed-listening-exercises mapping",
+      "mappingEvidence": {
+        "courseListeningReviewItemId": null,
+        "courseListeningReviewSlideNumber": null,
+        "courseListeningReviewStatus": "missing-audio2-entry",
+        "mappingBasis": "published source slide and reviewed-listening-exercises transcript selection"
+      },
+      "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554",
+      "sourceFilename": "Module 8 - Unit 32 - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/B-unit-32-lesson-03-1ZOxz3xpOUw3N6XlNre8Phblr6IPEomxF.mp3",
+      "sourceExactTexts": [
+        "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example.",
+        "0. I´d prefer to eat some burgers before pizza.",
+        "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [
+        "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary."
+      ],
+      "sourceEvidence": [],
+      "originalPublishedQuestions": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9915055632591248,
+        "avgLogprob": -0.12185845991780289,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [],
+      "revisionRationale": "Four semantic multiple-choice items authored from clear Audio 2 transcript facts; uncertain ASR clauses were excluded and the published listening prompt metadata is preserved.",
+      "items": [
+        {
+          "id": "audio-mc-u32-1",
+          "kind": "multiple-choice",
+          "prompt": "What did Sean ask them to do?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Call off the meeting.",
+              "accepted": [
+                "Call off the meeting."
+              ],
+              "evidence": "Sean called and asked us to please call off the meeting.",
+              "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554"
+            }
+          ],
+          "explicitOptions": [
+            "Call off the meeting.",
+            "Move to another city.",
+            "Start a new job.",
+            "Buy new equipment."
+          ],
+          "correct": "Call off the meeting.",
+          "evidence": "Sean called and asked us to please call off the meeting.",
+          "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554",
+          "rationale": "Sean’s request was to cancel the meeting."
+        },
+        {
+          "id": "audio-mc-u32-2",
+          "kind": "multiple-choice",
+          "prompt": "When was the meeting scheduled?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "On Saturday.",
+              "accepted": [
+                "On Saturday."
+              ],
+              "evidence": "The one we have on Saturday?",
+              "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554"
+            }
+          ],
+          "explicitOptions": [
+            "On Saturday.",
+            "On Monday.",
+            "Tomorrow morning.",
+            "Next month."
+          ],
+          "correct": "On Saturday.",
+          "evidence": "The one we have on Saturday?",
+          "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554",
+          "rationale": "The dialogue identifies Saturday as the meeting day."
+        },
+        {
+          "id": "audio-mc-u32-3",
+          "kind": "multiple-choice",
+          "prompt": "What might Sean do?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "Start looking for a new job.",
+              "accepted": [
+                "Start looking for a new job."
+              ],
+              "evidence": "he might start looking for a new job.",
+              "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554"
+            }
+          ],
+          "explicitOptions": [
+            "Start looking for a new job.",
+            "Open a restaurant.",
+            "Take a vacation.",
+            "Move into the office."
+          ],
+          "correct": "Start looking for a new job.",
+          "evidence": "he might start looking for a new job.",
+          "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554",
+          "rationale": "The speaker says Sean might begin looking for a new job."
+        },
+        {
+          "id": "audio-mc-u32-4",
+          "kind": "multiple-choice",
+          "prompt": "Where would the speaker get a bite to eat?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "canonical": "In the cafeteria.",
+              "accepted": [
+                "In the cafeteria."
+              ],
+              "evidence": "I'm gonna grab a bite in the cafeteria",
+              "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554"
+            }
+          ],
+          "explicitOptions": [
+            "In the cafeteria.",
+            "At the hospital.",
+            "At the ranch.",
+            "On the train."
+          ],
+          "correct": "In the cafeteria.",
+          "evidence": "I'm gonna grab a bite in the cafeteria",
+          "sourceAudioSha256": "a606b1e74d8c4275abb65d8a2f0d0cccc878bb472ccb982eb9cb849be4aae554",
+          "rationale": "The speaker says the food stop will be in the cafeteria."
+        }
+      ]
+    }
+  ]
+}
+

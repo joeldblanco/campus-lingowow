@@ -1,0 +1,606 @@
+{
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "module": {
+    "id": "cmjnr1gc30001jl04u6n53i4r",
+    "order": 1,
+    "title": "Módulo 1"
+  },
+  "lesson": {
+    "id": "cmk0vi2e30003l404hjqaqibj",
+    "order": 3,
+    "title": "Every Day I…",
+    "videoUrl": null
+  },
+  "contentId": "block_1767602115786",
+  "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQZD_yEu7BqadWPb9vuZA3gzbu1YbGWjXxNmgLcmNerMU4LScFt1bcYPmBLHKAK0A/pub?start=false&loop=false&delayms=3000",
+  "status": "ok",
+  "deck": {
+    "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQZD_yEu7BqadWPb9vuZA3gzbu1YbGWjXxNmgLcmNerMU4LScFt1bcYPmBLHKAK0A/pub?start=false&loop=false&delayms=3000",
+    "deckTitle": "Unit 3 - Every day I.pptx",
+    "slideCount": 17,
+    "slides": [
+      {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "Every Day I…",
+        "visibleTexts": [
+          "Every Day I…",
+          "3",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY-Vxuc-BtlKwFzl9A7Jn4_cwgKUPB_w-xKNnBoZsunqwRE4e2bdhcC3IYLxU4KV4JUNdrVUxT1BbXL23meVMCUv7ODM28_5d7kG4umOPGm4YuzLCncv26IJ6SvS0MiT6T5jw2A7WLqUQAUatAswAtnR0Ak1NRjruMyEJveCkdgmASSfP0eegVUz_Xb=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 2,
+        "internalPageId": 2,
+        "title": "Communicative Function",
+        "visibleTexts": [
+          "Communicative Function",
+          "Talk about and describe daily routines about myself and others.",
+          "Competencies",
+          "Manage basic grammatical elements, vocabulary, and phrases for understanding, answering and making questions about everyday activities and the regularity of occurrence."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 3,
+        "internalPageId": 3,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 4,
+        "internalPageId": 4,
+        "title": "Week",
+        "visibleTexts": [
+          "Week",
+          "SUNDAY",
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "DINNER AT MOM’S",
+          "SCHOOL MEETING",
+          "PROJECT PRESENTATION",
+          "DAVID’S CONCERT",
+          "CHESS TOURNAMENT",
+          "BREAKFAST W/ CLIENTS",
+          "FAMILY NIGHT",
+          "A. Look at the picture. What does it talk about? What is the information on it?",
+          "B. Listen to the audio and tell your teacher the activities the man makes.",
+          "👨"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://ssl.gstatic.com/docs/drawings/images/audio.png",
+            "kind": "audio-icon",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "audio-icon-without-original-url"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 1,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 5,
+        "internalPageId": 5,
+        "title": "Vocabulary introduction",
+        "visibleTexts": [
+          "Vocabulary introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 6,
+        "internalPageId": 6,
+        "title": "GO BACK HOME",
+        "visibleTexts": [
+          "GO BACK HOME",
+          "READ A BOOK",
+          "WAKE UP",
+          "TAKE A SHOWER",
+          "GET DRESSED",
+          "HAVE/TAKE BREAKFAST",
+          "BRUSH MY TEETH",
+          "GO TO WORK",
+          "GO TO BED/FALL ASLEEP",
+          "DAILY ROUTINES"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ809ogqa-jpCRByR1Ut9_9peW1F8nZSHMGNI5yutRhJhxKrl4WvRE9TCIvLVtunSh3-I5maJOzirT5idlnIAf1b0nPFNA2FFjB3CddKDmL6Hemu19zbgNxpi_g9EdmI_gXfZB6h9af8MMrPCkBByB3ExNZEuY8yzhPuD8XT_hEwVno6N9ayY0LUsABtqQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8tV49-paA67TV2ZGet2Sjt_vH_gc5m5ACcZY4pIKU9tkqT7VGPERPpZmJoF-1QnhA1Oi_-5jKo3OqHgw_jGOAfKLpF0QAnZTvZBtiV8B1m-zUAUL7CbEchkcUB-tMv-YoG5g62WJQQSK9_Vfidh7F6_U5JqNJ0QAUybXtooX-GgEfN7OJd9MR1-5A=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYFslrizZC-wbic_U6IyoYlO9E68bLi0-ZIpZcPO-03sfAYU9CwmaYEOx2Y0jESgd_n6NcfYum91pFg8V7is2_itPYWgV0vsJ2wLYDm34f15ttbgJBGhGfoDFHb675Dfxy02uIJFqsx4xbD5yg_gn09zM290W_eU8py57hxjin1my-M3jOunnzWCCkhBIE=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYQJlx4PMNeh-mREtGiaTKH7Os2no6WcjSXFRm6mpnWyBTM2O2Xjuxtr1xHpruM69FMxPWfaDCg6gf_K3m7BH9EDVtKyenrRb8JFmhz6xxudOERxanw03hE3xW0Hb1dND-41RmicsfDr-tbOPM8QNeZfE4XqsbCiFwx8eDoP0I4YsMq3s7tMdjAx771U1M=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb8U8eIQSdZvo6K3Oda9DuY6ViZkyUAdxqdKiaTI2Y0OxPQNguEem1rVYEjkvlAmsQsbiHmH7MEVgvwpDoC6SX7RmLan-Q1wPE_bfIuS0I_s5fqq7Tk5H9AaMrR20-P82pD9qpGMSiyLkXwY6h4VN6XoTBnJWBR0p83-LQgvZpECxzmAfGWBXj1Na4sRA0=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaGl_U-hLEY5MYgsGYfSZWsQP-QTU-y4ZfXsZ7M-kGQCh4nRKvxDsAJK1lPtnndb5UOPN7Mije4zchqwIkMGdKAiZQnLSxVtRQEM6FQHgKHOxqA6fMx5hMdU-tn8xePR2zFh-frirBTmzvIRnpfyAo6Zeh6tKyXf3fIX4q-g80D8JM1Fbq1UTU0xok87AA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbfeR0hlz6g8zy0zR16aN2Cf8d7fKQtDsLSqAjg1bUwP1-_BWa-vZXHGLIXxeQ-qk8HChH7Mbrnj41kLZFjPJDqrkdB3hn6txcGYkWXS572_2z1c_39F01RElpFEoJV9A2zxDzW6EgTOJWTFy2Kp1S02hrmsffFwmaVdB9-Vpn-YsBE6NLWogrcYUnh=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYxtyFDXBuWaRI6sqtfYI8EMv3kEb7e6zlTEEOX5swZIi9zt1zLuVWKrKSaGiwJiZUAeinr54EADuS9thglORDXCMUfP9YJx8Gzx4VWZxepXgh8SnXa9IPGdyI6-mNlQiUeXLAeh9JPh7I-oW880WrYc3fCVDdNXyBYblPuLL03ZcnyLog75XcU1okBH6U=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbbVoH7J2hEwnuKRYdNYb3oRt5G8Qc85onedPnxbLQS-KHGu-Dbtsl1fDOZyL-yMSmnYW8N9mW9m0C6osVCEscYiUUjgDXjBs6gOoyDuCRW5-nvtjRatn4uqF06Wknz7eMe-B362JahNT5aHI2ROW539g0LSAzfHyI3tLgJ5owGLdkp2Yjiz8ILqmqFdpU=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 10,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 7,
+        "internalPageId": 7,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 8,
+        "internalPageId": 8,
+        "title": "It is common to use the simple present tense to talk about routines; also, the use of adverbs of frequency is common on this topic.",
+        "visibleTexts": [
+          "It is common to use the simple present tense to talk about routines; also, the use of adverbs of frequency is common on this topic.",
+          "ADVERBS OF FREQUENCY 100% Always We always work at night. 90% Usually She is usually late. 80% Normally They normally go to the beach on Saturdays 70% Often I am often at home. 50% Sometimes You sometimes laugh out loud. 30% Occasionally He occasionally cleans his room. 10% Seldom It seldom rains here. 5% Hardly ever Carol hardly ever takes a call. 0% Never John is never on time.",
+          "HINT 1. Adverbs go before verbs since they modify them, EXCEPT for To Be. She is always happy 2. NEVER has a negative connotation. (no need for don’t/doesn’t) They never visit me. 3. Adverbs can work in statements, negative sentences and questions."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 9,
+        "internalPageId": 9,
+        "title": "Another common thing in English are the interrogative words which can be used in any tense. Check out the following examples and how to identify them.",
+        "visibleTexts": [
+          "Another common thing in English are the interrogative words which can be used in any tense. Check out the following examples and how to identify them.",
+          "Word Information Sample Questions 1 Who People Who sometimes goes to the beach on weekends? 2 How Often Regularity How often does Peter go to the beach on weekends? 3 How Manner/Ways How does Peter sometimes go to the beach on weekends? 4 What Actions/Objects What does Peter do on weekends because he loves it? 5 Where Places Where does Peter sometimes go on weekends? 6 When Time When does Peter go to the beach? 7 Why Reasons/Explanations Why does Peter sometimes go to the beach on weekends?",
+          "Peter sometimes goes to the beach on weekends by car because he loves it. Who How often What Where When How Why",
+          "Every interrogative word asks for specific information; look at the chart:",
+          "Bonus: I normally go to class with Jane. Who do you normally go to class with?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "table-or-chart-mentioned-without-table-semantics"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 10,
+        "internalPageId": 10,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 11,
+        "internalPageId": 11,
+        "title": "Language Targets",
+        "visibleTexts": [
+          "Language Targets",
+          "ASPECTS EXAMPLES Talk about general actions everybody makes. She normally has breakfast early. Talk about specific actions each one does. Ruth changes Peter’s clothes twice a day. Talk about activities with specific time of occurrence. Ruth has English class at 6 pm",
+          "When we talk about daily routines there are three main aspects that we should take into account using the simple present tense.",
+          "The three aspects talk about the same function but they aim different targets in language. The second aspect, as seen in the example, uses mainly general or indefinite time expressions to differentiate itself from the third one."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 12,
+        "internalPageId": 12,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect!",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 13,
+        "internalPageId": 13,
+        "title": "Tom wakes up at 5 AM every day. He takes a shower and after that, he has breakfast. At 7:30 AM, he goes out to go to work and he arrives to his job at 8:00 AM. He is a lawyer, so he is sometimes in the office but he is usually at the supreme court. He always finishes work after 5:00 PM and he normally gets home at 8:00 PM. 1. Tom never wakes up at 6 AM. (T) (F) 2. He has breakfast first. (T) (F) 3. He starts work at 7 AM. (T) (F) 4. He is usually at court. (T) (F) 5. He is normally at home at 8 PM. (T) (F)",
+        "visibleTexts": [
+          "Tom wakes up at 5 AM every day. He takes a shower and after that, he has breakfast. At 7:30 AM, he goes out to go to work and he arrives to his job at 8:00 AM. He is a lawyer, so he is sometimes in the office but he is usually at the supreme court. He always finishes work after 5:00 PM and he normally gets home at 8:00 PM. 1. Tom never wakes up at 6 AM. (T) (F) 2. He has breakfast first. (T) (F) 3. He starts work at 7 AM. (T) (F) 4. He is usually at court. (T) (F) 5. He is normally at home at 8 PM. (T) (F)",
+          "A. Read the following paragraph and state if the sentences are true (T) or False (F). After that, read the paragraph aloud for your teacher."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 14,
+        "internalPageId": 14,
+        "title": "1. Alex and Jane normally stay at home on Friday nights because it relaxes them. 2. I never go to the stadiums during season by car because it is dangerous. 3. Nathan administrates a restaurant in the mornings because he studies at nights in the south of the city.",
+        "visibleTexts": [
+          "1. Alex and Jane normally stay at home on Friday nights because it relaxes them. 2. I never go to the stadiums during season by car because it is dangerous. 3. Nathan administrates a restaurant in the mornings because he studies at nights in the south of the city.",
+          "B. Check the following sentences and identify the possible interrogative words you can ask. After that, write the questions down."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 15,
+        "internalPageId": 15,
+        "title": "C. Improvise a conversation with your teacher. Ask and answer questions about daily routine. Do not forget to include all the aspects studied.",
+        "visibleTexts": [
+          "C. Improvise a conversation with your teacher. Ask and answer questions about daily routine. Do not forget to include all the aspects studied.",
+          "Let’s Talk",
+          "D. Write a 30 - 50 word paragraph stating the daily routine of someone you know. Include as many details as possible, do not forget to use the language studied in this lesson.",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 16,
+        "internalPageId": 16,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ18tdVlIgWLkdJoWK9BHQr89hjnPC6MOvnRloGydP-8hpNIr0S3qdFDcQA3MzcRuLuwStt3U3sbQDkTayKiQ8Ty7GwNQnJ2XsXezW_wqJrhj75UUv_9T83RXiLVZcYsjVDrE2gLTqh3tcP9xn76NVqjdrrVngJWP2pUMiD6hnM55Ynk95u8UbbYkRrXvo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      },
+      {
+        "number": 17,
+        "internalPageId": 17,
+        "title": "© 2020 The Utterers Corner. All rights reserved",
+        "visibleTexts": [
+          "© 2020 The Utterers Corner. All rights reserved",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYTBK-m4zHiEwBidqdEpzB8eVEDVcmep7Kxnm-RP-dL5Oopu2bXdq2RnHOU6bS8-M69BQZfn9H-Mnxv5rE2LUuuUMEpChHaTGy8ITFYlozW1CfsZ52ZpeLKGpCCCXIoXf73i82ciKX5My76mZLjYAp8mnPLs7ONstKlICzgqqAMDKGmx5vKOFWhlYmk=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYf4tFxcp_uacQYiKxsEVmJ9ZJ4MUpa0fXu8m5_SeJoP7Q8hraEYJNWxkufMDTdtHpNraNV9Z5sHefZ7NPnj2kCAeenDfdLp4F8Foiho_aG0hcipyFPuJetNXY2nkBQn-Mhz9jksQ1NcDzO4I6Y6WM_f-HzP1Hh54QBRn4GayqftaUwNTPPVp8vyDCf=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    ],
+    "mediaSummary": {
+      "audioUrls": [],
+      "videoUrls": [],
+      "audioIconCount": 1,
+      "missingAudioSourceCount": 1,
+      "renderedSlideImageCount": 27,
+      "tableCount": 0
+    },
+    "warnings": [
+      "audio-icon-without-original-url",
+      "table-or-chart-mentioned-without-table-semantics"
+    ],
+    "httpStatus": 200,
+    "finalUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQZD_yEu7BqadWPb9vuZA3gzbu1YbGWjXxNmgLcmNerMU4LScFt1bcYPmBLHKAK0A/pub?start=false&loop=false&delayms=3000",
+    "contentType": "text/html"
+  }
+}

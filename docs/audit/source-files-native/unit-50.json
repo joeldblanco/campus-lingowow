@@ -1,0 +1,4118 @@
+{
+  "schemaVersion": 1,
+  "unit": 50,
+  "module": {
+    "order": 13,
+    "title": "Módulo 13",
+    "id": "cmnmm9lqz000dw1qk95u3y4uc",
+    "driveTitle": "Module 13"
+  },
+  "candidate": {
+    "id": "1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ",
+    "title": "Imagine you had a car - Unit 50.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "927564",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 13"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-50-primary-01-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ.pptx",
+    "localBytes": 927564,
+    "sha256": "65690dc42552ff29b745ddab7e20f10bfa13d57ba724237a4e07bfb2c9879f73"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-50-primary-01-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRhC8eydj4UMLsNKsGAcGhFmGrAjEeNLqHPzjhK9BeQc2EnD9xBBA6RC-vbY4e2IA/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 17,
+    "nativeSlideCount": 17,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.435742,
+    "publicTokenCoverage": 0.986,
+    "slideDifferenceCount": 7,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nState situations and wishes that are not  likely to happen or to be true.\nCompetencies\nunderstand and express ideas about situations and wishes that are not  likely to happen or to be true in written and spoken English.",
+        "publishedText": "Competencies Understand and express ideas about situations and wishes that are not likely to happen or to be true in written and spoken English. Communicative Function State situations and wishes that are not likely to happen or to be true.",
+        "sequenceRatio": 0.395833
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. 4",
+        "sequenceRatio": 0.976608
+      },
+      {
+        "slide": 6,
+        "nativeText": "PHRASES\nMEANING\nEXAMPLE\nFILL THE PINCH\nTo experience hardship, especially financial.\nStaff, we’re beginning to feel the pinch as the dispute entered its third week.\nSEE THE FIT\nTo consider it correct or acceptable to do something.\nwhy did the company see fit to give you the job?\nKNOCK ON WOOD\nsaid after a confident or positive statement, to express a hope for one's good luck to continue.\nI haven't been banned yet, knock on wood.\nFIRE IN THE BELLY\nA powerful sense of ambition or determination.\nHe lacks the fire in his belly necessary to seek the presidency.\nHOPE AGAINST HOPE\nHope or wish for with little reason or justification.\nI'm hoping against hope that someone will return my wallet.\nFOOL’S PARADISE\nA state of happiness based on a person's not knowing about or denying the existence of potential trouble.\nThey were living in a fool's paradise, refusing to accept that they were in debt.\nBRASS RING\nA very desirable prize, goal, or opportunity\nHe made his first try for the brass ring when he ran for mayor a few years ago.\nGAME PLAN\nA strategy worked out in advance, especially in sports, politics, or business.\nIf he has a game plan for winning the deal, only he understands it.\nLook at the phrases and  discuss them with your teacher. Did you know them?",
+        "publishedText": "PHRASES MEANING EXAMPLE FEEL THE PINCH To experience hardship, especially financial. Staff, we’re beginning to feel the pinch as the dispute entered its third week. SEE THE FIT To consider it correct or acceptable to do something. Why did the company see fit to give you the job? KNOCK ON WOOD said after a confident or positive statement, to express a hope for one's good luck to continue. I haven't been banned yet, knock on wood. FIRE IN THE BELLY A powerful sense of ambition or determination. He lacks the fire in his belly necessary to seek the presidency. HOPE AGAINST HOPE Hope or wish for with little reason or justification. I'm hoping against hope that someone will return my wallet. FOOL’S PARADISE A state of happiness based on a person's not knowing about or denying the existence of potential trouble. They were living in a fool's paradise, refusing to accept that they were in debt. BRASS RING A very desirable prize, goal, or opportunity He made his first try for the brass ring when he ran for mayor a few years ago. GAME PLAN A strategy worked out in advance, especially in sports, politics, or business. If he has a game plan for winning the deal, only he understands it. Look at the phrases and discuss them with your teacher. Did you know them?",
+        "sequenceRatio": 0.99842
+      },
+      {
+        "slide": 8,
+        "nativeText": "We are able to express ideas about things or event not likely to happen through the use of different expressions and regular grammar.\nPHRASES\nEXAMPLES\nWhat if…\nWhat if Jane came tonight to the party? Just picture how awkward it would be.\nImagine that / if…\nImagine you fell in front of your classmates; would you laugh at yourself?\nIf only…\nIf only you could come home these days. / If only I had more time, but I am always busy.\nI wish…\nI wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.\nTo Consider\n\nWe work with these phrases using the simple past tense. \nWhen using -what if- we have to close the sentence with a question mark. \nCould and would play a major role.",
+        "publishedText": "We are able to express ideas about things or events not likely to happen through the use of different expressions and regular grammar. PHRASES EXAMPLES What if… What if Jane came tonight to the party? Just picture how awkward it would be. Imagine that / if… Imagine you fell in front of your classmates; would you laugh at yourself? If only… If only you could come home these days. / If only I had more time, but I am always busy. I wish… I wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different. To Consider 1. We work with these phrases using the simple past tense. 2. When using what if we have to close the sentence with a question mark. 3. Could and would play a major role.",
+        "sequenceRatio": 0.966387
+      },
+      {
+        "slide": 10,
+        "nativeText": "We can use the grammar presented to talk about the following function:\nFunctions\nExamples\n1\nExpress ideas or events not likely to be true or to happen.\nWhat if Jill had money? Would you guys accept her in the club?\n\nImagine they won the competition; they would never stop talking about it.\n\nIf only she  saw the fit of the project, she could be more supportive.\n\nI wish he came to me first so I could help him.\nTo consider \nThere are contexts where -could- and -would- express wishes for the future. E.G I don’t like my job; I wish I could get a new one.\n                   That sound is so annoying; I wish it would stop.",
+        "publishedText": "We can use the grammar presented to talk about the following function: Functions Examples Express ideas or events not likely to be true or to happen. What if Jill had money? Would you guys accept her in the club? Imagine they won the competition; they would never stop talking about it. If only she saw the fit of the project, she could be more supportive. I wish he came to me first, so I could help him. To consider There are contexts where could and would express wishes for the future. E.G I don’t like my job; I wish I could get a new one. That sound is so annoying; I wish it would stop.",
+        "sequenceRatio": 0.968934
+      },
+      {
+        "slide": 14,
+        "nativeText": "‹#›\nC. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below.\nAchieving Your Wishes : Will Wishing Work?\n\nDo you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more?\n\nNo, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better.\n\nDid you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want.\n                                                                                                                                                                                                                             Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+        "publishedText": "14 C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below. Achieving Your Wishes : Will Wishing Work? Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more? No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better. Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want. Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/ https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+        "sequenceRatio": 0.978552
+      },
+      {
+        "slide": 15,
+        "nativeText": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.\nE. Write a 150-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If  only you wished soemthing related to this matter, what would it be and why?\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it. E. Write an 160-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If only you wished something related to this matter, what would it be and why? Let’s Talk Let’s Write",
+        "sequenceRatio": 0.992716
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 229077,
+      "sha256": "985bd66000c086086e6a0d2ccab23b793c6f34eefb84dbe73c33f7efff576601"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 6,
+    "bytes": 402926,
+    "byExtension": {
+      ".jpg": 1,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 6,
+    "imageBytes": 402926
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-50-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 6256350,
+            "y": 3288575,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 7272150,
+            "bottom": 4304375
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "285",
+          "shapeName": "Google Shape;285;g729cfa641f_0_32",
+          "bbox": {
+            "x": 2856100,
+            "y": 941125,
+            "cx": 2780275,
+            "cy": 2780275,
+            "right": 5636375,
+            "bottom": 3721400
+          },
+          "slide": 13
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-50-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-50-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-50-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "323",
+          "shapeName": "Google Shape;323;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-50-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "324",
+          "shapeName": "Google Shape;324;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-50-1r8__nQ4Q-jtGjrTVUuPuw86dGY2oLGEZ\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 229077,
+      "sha256": "985bd66000c086086e6a0d2ccab23b793c6f34eefb84dbe73c33f7efff576601",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710727,
+            "right": 8055748,
+            "bottom": 2245202
+          },
+          "slide": 4
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "50",
+          "Imagine you had a car",
+          "Unit"
+        ],
+        "joinedText": "50\nImagine you had a car\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2977500,
+              "cy": 1649100,
+              "right": 3788450,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "50",
+                "runs": [
+                  "50"
+                ]
+              }
+            ],
+            "texts": [
+              "50"
+            ],
+            "joinedText": "50"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 530775,
+              "y": 2429913,
+              "cx": 7469700,
+              "cy": 1159800,
+              "right": 8000475,
+              "bottom": 3589713
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Imagine you had a car",
+                "runs": [
+                  "Imagine you had a car"
+                ]
+              }
+            ],
+            "texts": [
+              "Imagine you had a car"
+            ],
+            "joinedText": "Imagine you had a car"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 210350,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1299350,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "50",
+        "visibleTexts": [
+          "50",
+          "Imagine you had a car",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3vBBkXq-NwVIRZLR96pauScbN8dHEHJmxQWlIlCMsP1r9X47N7EVdNUWk1bjdbndy47BecuiE4PL4gAgOEo-bDxx_Vhh1RWqCN8bvAVogjXDk1VrphXQDaehdfyFNMpWle9z8FWqiE5NoaFjNJvBi7vS3dphBmk-lDhck9ZkzyS58f0rdSc5ykxukKAkdEQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "State situations and wishes that are not  likely to happen or to be true. ",
+          "Competencies",
+          "understand and express ideas about situations and wishes that are not  likely to happen or to be true in written and spoken English."
+        ],
+        "joinedText": "Communicative Function\nState situations and wishes that are not  likely to happen or to be true.\nCompetencies\nunderstand and express ideas about situations and wishes that are not  likely to happen or to be true in written and spoken English.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "State situations and wishes that are not  likely to happen or to be true. ",
+                "runs": [
+                  "State situations and wishes that are not  likely to happen or to be true. "
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "State situations and wishes that are not  likely to happen or to be true. "
+            ],
+            "joinedText": "Communicative Function\nState situations and wishes that are not  likely to happen or to be true."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 5275500,
+              "cy": 2053500,
+              "right": 6727125,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "understand and express ideas about situations and wishes that are not  likely to happen or to be true in written and spoken English.",
+                "runs": [
+                  "understand and express ideas about ",
+                  "situations and wishes that are not  likely to happen or to be true",
+                  " in written and spoken English."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "understand and express ideas about situations and wishes that are not  likely to happen or to be true in written and spoken English."
+            ],
+            "joinedText": "Competencies\nunderstand and express ideas about situations and wishes that are not  likely to happen or to be true in written and spoken English."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Competencies Understand and express ideas about situations and wishes that are not likely to happen or to be true in written and spoken English.",
+        "visibleTexts": [
+          "Competencies Understand and express ideas about situations and wishes that are not likely to happen or to be true in written and spoken English.",
+          "Communicative Function State situations and wishes that are not likely to happen or to be true."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710727,
+              "right": 8055748,
+              "bottom": 2245202
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 6256350,
+              "y": 3288575,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 7272150,
+              "bottom": 4304375
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710727,
+              "right": 8055748,
+              "bottom": 2245202
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 6256350,
+              "y": 3288575,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 7272150,
+              "bottom": 4304375
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSanjXjmLV4QLtTZ7B3pYKfrdqqFI9e1Eh6VkFfjAHCstQX3lIH4CABWs_JTNakrNA2aFJOdFfLxtLZfR6fbkS91w5egLm--WVirm4s4_OhN08c-H6fYtAL_MCWlqWINFZgKKgdHXdgB37BZNAKDdyDuqId93j33dbds__EtanWRLfxOl5o1oGAeETmRwl8=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbKVpWC8j2nPjQyaylCKGjISFO5LcKivhfLjLZlGL1ITtjj9nERI0zibeZq5Ul2ecHLSsordER55c9Ikzz011nSHuZZVkFfqY89WG9X8UDTdr-kQgOYWIh0siWVCrEZEr7xWlPktVxLo9UvL6BBAmMVL9AApRAABZNiJzzTNU9oKU-G8e1AglKOZy3piLQX6g=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "PHRASES",
+          "MEANING",
+          "EXAMPLE",
+          "FILL THE PINCH",
+          "To experience hardship, especially financial.",
+          "Staff, we’re beginning to feel the pinch as the dispute entered its third week.",
+          "SEE THE FIT",
+          "To consider it correct or acceptable to do something.",
+          "why did the company see fit to give you the job?",
+          "KNOCK ON WOOD",
+          "said after a confident or positive statement, to express a hope for one's good luck to continue.",
+          "I haven't been banned yet, knock on wood.",
+          "FIRE IN THE BELLY",
+          "A powerful sense of ambition or determination.",
+          "He lacks the fire in his belly necessary to seek the presidency.",
+          "HOPE AGAINST HOPE",
+          "Hope or wish for with little reason or justification.",
+          "I'm hoping against hope that someone will return my wallet.",
+          "FOOL’S PARADISE",
+          "A state of happiness based on a person's not knowing about or denying the existence of potential trouble.",
+          "They were living in a fool's paradise, refusing to accept that they were in debt.",
+          "BRASS RING",
+          "A very desirable prize, goal, or opportunity",
+          "He made his first try for the brass ring when he ran for mayor a few years ago.",
+          "GAME PLAN",
+          "A strategy worked out in advance, especially in sports, politics, or business.",
+          "If he has a game plan for winning the deal, only he understands it.",
+          "Look at the phrases and  discuss them with your teacher. Did you know them?"
+        ],
+        "joinedText": "PHRASES\nMEANING\nEXAMPLE\nFILL THE PINCH\nTo experience hardship, especially financial.\nStaff, we’re beginning to feel the pinch as the dispute entered its third week.\nSEE THE FIT\nTo consider it correct or acceptable to do something.\nwhy did the company see fit to give you the job?\nKNOCK ON WOOD\nsaid after a confident or positive statement, to express a hope for one's good luck to continue.\nI haven't been banned yet, knock on wood.\nFIRE IN THE BELLY\nA powerful sense of ambition or determination.\nHe lacks the fire in his belly necessary to seek the presidency.\nHOPE AGAINST HOPE\nHope or wish for with little reason or justification.\nI'm hoping against hope that someone will return my wallet.\nFOOL’S PARADISE\nA state of happiness based on a person's not knowing about or denying the existence of potential trouble.\nThey were living in a fool's paradise, refusing to accept that they were in debt.\nBRASS RING\nA very desirable prize, goal, or opportunity\nHe made his first try for the brass ring when he ran for mayor a few years ago.\nGAME PLAN\nA strategy worked out in advance, especially in sports, politics, or business.\nIf he has a game plan for winning the deal, only he understands it.\nLook at the phrases and  discuss them with your teacher. Did you know them?",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "kind": "table",
+            "bbox": {
+              "x": 515613,
+              "y": 409860,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3515613,
+              "bottom": 3409860
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "PHRASES",
+                "runs": []
+              },
+              {
+                "text": "MEANING",
+                "runs": []
+              },
+              {
+                "text": "EXAMPLE",
+                "runs": []
+              },
+              {
+                "text": "FILL THE PINCH",
+                "runs": []
+              },
+              {
+                "text": "To experience hardship, especially financial.",
+                "runs": []
+              },
+              {
+                "text": "Staff, we’re beginning to feel the pinch as the dispute entered its third week.",
+                "runs": []
+              },
+              {
+                "text": "SEE THE FIT",
+                "runs": []
+              },
+              {
+                "text": "To consider it correct or acceptable to do something.",
+                "runs": []
+              },
+              {
+                "text": "why did the company see fit to give you the job?",
+                "runs": []
+              },
+              {
+                "text": "KNOCK ON WOOD",
+                "runs": []
+              },
+              {
+                "text": "said after a confident or positive statement, to express a hope for one's good luck to continue.",
+                "runs": []
+              },
+              {
+                "text": "I haven't been banned yet, knock on wood.",
+                "runs": []
+              },
+              {
+                "text": "FIRE IN THE BELLY",
+                "runs": []
+              },
+              {
+                "text": "A powerful sense of ambition or determination.",
+                "runs": []
+              },
+              {
+                "text": "He lacks the fire in his belly necessary to seek the presidency.",
+                "runs": []
+              },
+              {
+                "text": "HOPE AGAINST HOPE",
+                "runs": []
+              },
+              {
+                "text": "Hope or wish for with little reason or justification.",
+                "runs": []
+              },
+              {
+                "text": "I'm hoping against hope that someone will return my wallet.",
+                "runs": []
+              },
+              {
+                "text": "FOOL’S PARADISE",
+                "runs": []
+              },
+              {
+                "text": "A state of happiness based on a person's not knowing about or denying the existence of potential trouble.",
+                "runs": []
+              },
+              {
+                "text": "They were living in a fool's paradise, refusing to accept that they were in debt.",
+                "runs": []
+              },
+              {
+                "text": "BRASS RING",
+                "runs": []
+              },
+              {
+                "text": "A very desirable prize, goal, or opportunity",
+                "runs": []
+              },
+              {
+                "text": "He made his first try for the brass ring when he ran for mayor a few years ago.",
+                "runs": []
+              },
+              {
+                "text": "GAME PLAN",
+                "runs": []
+              },
+              {
+                "text": "A strategy worked out in advance, especially in sports, politics, or business.",
+                "runs": []
+              },
+              {
+                "text": "If he has a game plan for winning the deal, only he understands it.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "PHRASES",
+              "MEANING",
+              "EXAMPLE",
+              "FILL THE PINCH",
+              "To experience hardship, especially financial.",
+              "Staff, we’re beginning to feel the pinch as the dispute entered its third week.",
+              "SEE THE FIT",
+              "To consider it correct or acceptable to do something.",
+              "why did the company see fit to give you the job?",
+              "KNOCK ON WOOD",
+              "said after a confident or positive statement, to express a hope for one's good luck to continue.",
+              "I haven't been banned yet, knock on wood.",
+              "FIRE IN THE BELLY",
+              "A powerful sense of ambition or determination.",
+              "He lacks the fire in his belly necessary to seek the presidency.",
+              "HOPE AGAINST HOPE",
+              "Hope or wish for with little reason or justification.",
+              "I'm hoping against hope that someone will return my wallet.",
+              "FOOL’S PARADISE",
+              "A state of happiness based on a person's not knowing about or denying the existence of potential trouble.",
+              "They were living in a fool's paradise, refusing to accept that they were in debt.",
+              "BRASS RING",
+              "A very desirable prize, goal, or opportunity",
+              "He made his first try for the brass ring when he ran for mayor a few years ago.",
+              "GAME PLAN",
+              "A strategy worked out in advance, especially in sports, politics, or business.",
+              "If he has a game plan for winning the deal, only he understands it."
+            ],
+            "joinedText": "PHRASES\nMEANING\nEXAMPLE\nFILL THE PINCH\nTo experience hardship, especially financial.\nStaff, we’re beginning to feel the pinch as the dispute entered its third week.\nSEE THE FIT\nTo consider it correct or acceptable to do something.\nwhy did the company see fit to give you the job?\nKNOCK ON WOOD\nsaid after a confident or positive statement, to express a hope for one's good luck to continue.\nI haven't been banned yet, knock on wood.\nFIRE IN THE BELLY\nA powerful sense of ambition or determination.\nHe lacks the fire in his belly necessary to seek the presidency.\nHOPE AGAINST HOPE\nHope or wish for with little reason or justification.\nI'm hoping against hope that someone will return my wallet.\nFOOL’S PARADISE\nA state of happiness based on a person's not knowing about or denying the existence of potential trouble.\nThey were living in a fool's paradise, refusing to accept that they were in debt.\nBRASS RING\nA very desirable prize, goal, or opportunity\nHe made his first try for the brass ring when he ran for mayor a few years ago.\nGAME PLAN\nA strategy worked out in advance, especially in sports, politics, or business.\nIf he has a game plan for winning the deal, only he understands it.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;gd6c0dc1310_0_17",
+            "kind": "text",
+            "bbox": {
+              "x": 656875,
+              "y": 29450,
+              "cx": 7835100,
+              "cy": 685200,
+              "right": 8491975,
+              "bottom": 714650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the phrases and  discuss them with your teacher. Did you know them?",
+                "runs": [
+                  "Look at the phrases and  discuss them with your teacher. Did you know them?"
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the phrases and  discuss them with your teacher. Did you know them?"
+            ],
+            "joinedText": "Look at the phrases and  discuss them with your teacher. Did you know them?"
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+            "bbox": {
+              "x": 515613,
+              "y": 409860,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3515613,
+              "bottom": 3409860
+            },
+            "columnWidths": [
+              1654575,
+              3111700,
+              3210150
+            ],
+            "rows": [
+              {
+                "height": 402650,
+                "cells": [
+                  {
+                    "text": "PHRASES",
+                    "paragraphs": [
+                      {
+                        "text": "PHRASES",
+                        "runs": [
+                          "PHRASES"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "MEANING",
+                    "paragraphs": [
+                      {
+                        "text": "MEANING",
+                        "runs": [
+                          "MEANING"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "EXAMPLE",
+                    "paragraphs": [
+                      {
+                        "text": "EXAMPLE",
+                        "runs": [
+                          "EXAMPLE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "FILL THE PINCH",
+                    "paragraphs": [
+                      {
+                        "text": "FILL THE PINCH",
+                        "runs": [
+                          "FILL THE PINCH"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To experience hardship, especially financial.",
+                    "paragraphs": [
+                      {
+                        "text": "To experience hardship, especially financial.",
+                        "runs": [
+                          "To experience hardship, especially financial."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Staff, we’re beginning to feel the pinch as the dispute entered its third week.",
+                    "paragraphs": [
+                      {
+                        "text": "Staff, we’re beginning to feel the pinch as the dispute entered its third week. ",
+                        "runs": [
+                          "Staff, we’re beginning to feel the pinch as the dispute entered its third week",
+                          ". "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "SEE THE FIT",
+                    "paragraphs": [
+                      {
+                        "text": "SEE THE FIT ",
+                        "runs": [
+                          "SEE THE FIT "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To consider it correct or acceptable to do something.",
+                    "paragraphs": [
+                      {
+                        "text": "To consider it correct or acceptable to do something.",
+                        "runs": [
+                          "To consider it correct or acceptable to do something."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "why did the company see fit to give you the job?",
+                    "paragraphs": [
+                      {
+                        "text": "why did the company see fit to give you the job?",
+                        "runs": [
+                          "why did the company see fit to give you the job?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "KNOCK ON WOOD",
+                    "paragraphs": [
+                      {
+                        "text": "KNOCK ON WOOD",
+                        "runs": [
+                          "KNOCK ON WOOD"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "said after a confident or positive statement, to express a hope for one's good luck to continue.",
+                    "paragraphs": [
+                      {
+                        "text": "said after a confident or positive statement, to express a hope for one's good luck to continue.",
+                        "runs": [
+                          "said after a confident or positive statement, to express a hope for one's good luck to continue."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I haven't been banned yet, knock on wood.",
+                    "paragraphs": [
+                      {
+                        "text": "I haven't been banned yet, knock on wood. ",
+                        "runs": [
+                          "I haven't been banned yet, knock on wood",
+                          ". "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "FIRE IN THE BELLY",
+                    "paragraphs": [
+                      {
+                        "text": "FIRE IN THE BELLY",
+                        "runs": [
+                          "FIRE IN THE BELLY"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "A powerful sense of ambition or determination.",
+                    "paragraphs": [
+                      {
+                        "text": "A powerful sense of ambition or determination.",
+                        "runs": [
+                          "A powerful sense of ambition or determination."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He lacks the fire in his belly necessary to seek the presidency.",
+                    "paragraphs": [
+                      {
+                        "text": "He lacks the fire in his belly necessary to seek the presidency.",
+                        "runs": [
+                          "He lacks the fire in his belly necessary to seek the presidency."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "HOPE AGAINST HOPE",
+                    "paragraphs": [
+                      {
+                        "text": "HOPE AGAINST HOPE",
+                        "runs": [
+                          "HOPE ",
+                          "AGAINST",
+                          " HOPE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Hope or wish for with little reason or justification.",
+                    "paragraphs": [
+                      {
+                        "text": "Hope or wish for with little reason or justification.",
+                        "runs": [
+                          "Hope or wish for with little reason or justification."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I'm hoping against hope that someone will return my wallet.",
+                    "paragraphs": [
+                      {
+                        "text": "I'm hoping against hope that someone will return my wallet. ",
+                        "runs": [
+                          "I'm hoping against hope that someone will return my wallet. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "FOOL’S PARADISE",
+                    "paragraphs": [
+                      {
+                        "text": "FOOL’S PARADISE",
+                        "runs": [
+                          "FOOL’S PARADISE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "A state of happiness based on a person's not knowing about or denying the existence of potential trouble.",
+                    "paragraphs": [
+                      {
+                        "text": "A state of happiness based on a person's not knowing about or denying the existence of potential trouble.",
+                        "runs": [
+                          "A state of happiness based on a person's not knowing about or denying the existence of potential trouble."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They were living in a fool's paradise, refusing to accept that they were in debt.",
+                    "paragraphs": [
+                      {
+                        "text": "They were living in a fool's paradise, refusing to accept that they were in debt.",
+                        "runs": [
+                          "They were living in a fool's paradise, refusing to accept that they were in debt."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "BRASS RING",
+                    "paragraphs": [
+                      {
+                        "text": "BRASS RING",
+                        "runs": [
+                          "BRASS RING"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "A very desirable prize, goal, or opportunity",
+                    "paragraphs": [
+                      {
+                        "text": "A very desirable prize, goal, or opportunity",
+                        "runs": [
+                          "A very desirable prize, goal, or opportunity"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He made his first try for the brass ring when he ran for mayor a few years ago.",
+                    "paragraphs": [
+                      {
+                        "text": "He made his first try for the brass ring when he ran for mayor a few years ago.",
+                        "runs": [
+                          "He made his first try for the brass ring when he ran for mayor a few years ago."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 450975,
+                "cells": [
+                  {
+                    "text": "GAME PLAN",
+                    "paragraphs": [
+                      {
+                        "text": "GAME PLAN",
+                        "runs": [
+                          "GAME PLAN"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "A strategy worked out in advance, especially in sports, politics, or business.",
+                    "paragraphs": [
+                      {
+                        "text": "A strategy worked out in advance, especially in sports, politics, or business.",
+                        "runs": [
+                          "A strategy worked out in advance, especially in sports, politics, or business."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "If he has a game plan for winning the deal, only he understands it.",
+                    "paragraphs": [
+                      {
+                        "text": "If he has a game plan for winning the deal, only he understands it.",
+                        "runs": [
+                          "If he has a game plan for winning the deal, only he understands it."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "PHRASES MEANING EXAMPLE FEEL THE PINCH To experience hardship, especially financial. Staff, we’re beginning to feel the pinch as the dispute entered its third week. SEE THE FIT To consider it correct or acceptable to do something. Why did the company see fit to give you the job? KNOCK ON WOOD said after a confident or positive statement, to express a hope for one's good luck to continue. I haven't been banned yet, knock on wood. FIRE IN THE BELLY A powerful sense of ambition or determination. He lacks the fire in his belly necessary to seek the presidency. HOPE AGAINST HOPE Hope or wish for with little reason or justification. I'm hoping against hope that someone will return my wallet. FOOL’S PARADISE A state of happiness based on a person's not knowing about or denying the existence of potential trouble. They were living in a fool's paradise, refusing to accept that they were in debt. BRASS RING A very desirable prize, goal, or opportunity He made his first try for the brass ring when he ran for mayor a few years ago. GAME PLAN A strategy worked out in advance, especially in sports, politics, or business. If he has a game plan for winning the deal, only he understands it.",
+        "visibleTexts": [
+          "PHRASES MEANING EXAMPLE FEEL THE PINCH To experience hardship, especially financial. Staff, we’re beginning to feel the pinch as the dispute entered its third week. SEE THE FIT To consider it correct or acceptable to do something. Why did the company see fit to give you the job? KNOCK ON WOOD said after a confident or positive statement, to express a hope for one's good luck to continue. I haven't been banned yet, knock on wood. FIRE IN THE BELLY A powerful sense of ambition or determination. He lacks the fire in his belly necessary to seek the presidency. HOPE AGAINST HOPE Hope or wish for with little reason or justification. I'm hoping against hope that someone will return my wallet. FOOL’S PARADISE A state of happiness based on a person's not knowing about or denying the existence of potential trouble. They were living in a fool's paradise, refusing to accept that they were in debt. BRASS RING A very desirable prize, goal, or opportunity He made his first try for the brass ring when he ran for mayor a few years ago. GAME PLAN A strategy worked out in advance, especially in sports, politics, or business. If he has a game plan for winning the deal, only he understands it.",
+          "Look at the phrases and discuss them with your teacher. Did you know them?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "We are able to express ideas about things or event not likely to happen through the use of different expressions and regular grammar.",
+          "PHRASES",
+          "EXAMPLES",
+          "What if…",
+          "What if Jane came tonight to the party? Just picture how awkward it would be.",
+          "Imagine that / if…",
+          "Imagine you fell in front of your classmates; would you laugh at yourself?",
+          "If only…",
+          "If only you could come home these days. / If only I had more time, but I am always busy.",
+          "I wish…",
+          "I wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.",
+          "To Consider\n\nWe work with these phrases using the simple past tense. \nWhen using -what if- we have to close the sentence with a question mark. \nCould and would play a major role."
+        ],
+        "joinedText": "We are able to express ideas about things or event not likely to happen through the use of different expressions and regular grammar.\nPHRASES\nEXAMPLES\nWhat if…\nWhat if Jane came tonight to the party? Just picture how awkward it would be.\nImagine that / if…\nImagine you fell in front of your classmates; would you laugh at yourself?\nIf only…\nIf only you could come home these days. / If only I had more time, but I am always busy.\nI wish…\nI wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.\nTo Consider\n\nWe work with these phrases using the simple past tense. \nWhen using -what if- we have to close the sentence with a question mark. \nCould and would play a major role.",
+        "shapes": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 793225,
+              "y": 105650,
+              "cx": 8065800,
+              "cy": 699900,
+              "right": 8859025,
+              "bottom": 805550
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We are able to express ideas about things or event not likely to happen through the use of different expressions and regular grammar.",
+                "runs": [
+                  "We are able to express ideas about things or event not likely to happen through the use of different expressions and regular grammar."
+                ]
+              }
+            ],
+            "texts": [
+              "We are able to express ideas about things or event not likely to happen through the use of different expressions and regular grammar."
+            ],
+            "joinedText": "We are able to express ideas about things or event not likely to happen through the use of different expressions and regular grammar."
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 219738,
+              "y": 908425,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3219738,
+              "bottom": 3908425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "PHRASES",
+                "runs": []
+              },
+              {
+                "text": "EXAMPLES",
+                "runs": []
+              },
+              {
+                "text": "What if…",
+                "runs": []
+              },
+              {
+                "text": "What if Jane came tonight to the party? Just picture how awkward it would be.",
+                "runs": []
+              },
+              {
+                "text": "Imagine that / if…",
+                "runs": []
+              },
+              {
+                "text": "Imagine you fell in front of your classmates; would you laugh at yourself?",
+                "runs": []
+              },
+              {
+                "text": "If only…",
+                "runs": []
+              },
+              {
+                "text": "If only you could come home these days. / If only I had more time, but I am always busy.",
+                "runs": []
+              },
+              {
+                "text": "I wish…",
+                "runs": []
+              },
+              {
+                "text": "I wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.",
+                "runs": []
+              },
+              {
+                "text": "To Consider\n\nWe work with these phrases using the simple past tense. \nWhen using -what if- we have to close the sentence with a question mark. \nCould and would play a major role.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "PHRASES",
+              "EXAMPLES",
+              "What if…",
+              "What if Jane came tonight to the party? Just picture how awkward it would be.",
+              "Imagine that / if…",
+              "Imagine you fell in front of your classmates; would you laugh at yourself?",
+              "If only…",
+              "If only you could come home these days. / If only I had more time, but I am always busy.",
+              "I wish…",
+              "I wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.",
+              "To Consider\n\nWe work with these phrases using the simple past tense. \nWhen using -what if- we have to close the sentence with a question mark. \nCould and would play a major role."
+            ],
+            "joinedText": "PHRASES\nEXAMPLES\nWhat if…\nWhat if Jane came tonight to the party? Just picture how awkward it would be.\nImagine that / if…\nImagine you fell in front of your classmates; would you laugh at yourself?\nIf only…\nIf only you could come home these days. / If only I had more time, but I am always busy.\nI wish…\nI wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.\nTo Consider\n\nWe work with these phrases using the simple past tense. \nWhen using -what if- we have to close the sentence with a question mark. \nCould and would play a major role.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 219738,
+              "y": 908425,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3219738,
+              "bottom": 3908425
+            },
+            "columnWidths": [
+              1899975,
+              6865700
+            ],
+            "rows": [
+              {
+                "height": 547450,
+                "cells": [
+                  {
+                    "text": "PHRASES",
+                    "paragraphs": [
+                      {
+                        "text": "PHRASES",
+                        "runs": [
+                          "PHRASES"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "EXAMPLES",
+                    "paragraphs": [
+                      {
+                        "text": "EXAMPLES",
+                        "runs": [
+                          "EXAMPLES"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "What if…",
+                    "paragraphs": [
+                      {
+                        "text": "What if…",
+                        "runs": [
+                          "What if…"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "What if Jane came tonight to the party? Just picture how awkward it would be.",
+                    "paragraphs": [
+                      {
+                        "text": "What if Jane came tonight to the party? Just picture how awkward it would be.",
+                        "runs": [
+                          "What",
+                          " if Jane came tonight",
+                          " to the party? Just picture how ",
+                          "awkward",
+                          " it ",
+                          "would",
+                          " be."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 433050,
+                "cells": [
+                  {
+                    "text": "Imagine that / if…",
+                    "paragraphs": [
+                      {
+                        "text": "Imagine that / if…",
+                        "runs": [
+                          "Imagine that / if…"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Imagine you fell in front of your classmates; would you laugh at yourself?",
+                    "paragraphs": [
+                      {
+                        "text": "Imagine you fell in front of your classmates; would you laugh at yourself?",
+                        "runs": [
+                          "Imagine ",
+                          "you fell ",
+                          "in front of your classmates; ",
+                          "would ",
+                          "you ",
+                          "laugh",
+                          " at yourself?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "If only…",
+                    "paragraphs": [
+                      {
+                        "text": "If only…",
+                        "runs": [
+                          "I",
+                          "f only…"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "If only you could come home these days. / If only I had more time, but I am always busy.",
+                    "paragraphs": [
+                      {
+                        "text": "If only you could come home these days. / If only I had more time, but I am always busy.",
+                        "runs": [
+                          "If only you ",
+                          "could",
+                          " come home these days. / ",
+                          "If only I had ",
+                          "more time, but I am always busy."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "I wish…",
+                    "paragraphs": [
+                      {
+                        "text": "I wish…",
+                        "runs": [
+                          "I wish…"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.",
+                    "paragraphs": [
+                      {
+                        "text": "I wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different.",
+                        "runs": [
+                          "I wish we didn’t",
+                          " feel the pinch but there’s nothing we could do. / ",
+                          "I wish it could",
+                          " be different."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 463225,
+                "cells": [
+                  {
+                    "text": "To Consider\n\nWe work with these phrases using the simple past tense. \nWhen using -what if- we have to close the sentence with a question mark. \nCould and would play a major role.",
+                    "paragraphs": [
+                      {
+                        "text": "To Consider",
+                        "runs": [
+                          "To Consider"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "We work with these phrases using the simple past tense. ",
+                        "runs": [
+                          "We work with these phrases using the simple p",
+                          "as",
+                          "t tense. "
+                        ]
+                      },
+                      {
+                        "text": "When using -what if- we have to close the sentence with a question mark. ",
+                        "runs": [
+                          "When using -",
+                          "what if",
+                          "- we have to close the sentence with a question mark. "
+                        ]
+                      },
+                      {
+                        "text": "Could and would play a major role. ",
+                        "runs": [
+                          "Could and would play a major role. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "We are able to express ideas about things or events not likely to happen through the use of different expressions and regular grammar.",
+        "visibleTexts": [
+          "We are able to express ideas about things or events not likely to happen through the use of different expressions and regular grammar.",
+          "PHRASES EXAMPLES What if… What if Jane came tonight to the party? Just picture how awkward it would be. Imagine that / if… Imagine you fell in front of your classmates; would you laugh at yourself? If only… If only you could come home these days. / If only I had more time, but I am always busy. I wish… I wish we didn’t feel the pinch but there’s nothing we could do. / I wish it could be different. To Consider 1. We work with these phrases using the simple past tense. 2. When using what if we have to close the sentence with a question mark. 3. Could and would play a major role."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "254",
+            "shapeName": "Google Shape;254;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "255",
+            "shapeName": "Google Shape;255;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "We can use the grammar presented to talk about the following function:",
+          "Functions",
+          "Examples",
+          "1",
+          "Express ideas or events not likely to be true or to happen.",
+          "What if Jill had money? Would you guys accept her in the club?\n\nImagine they won the competition; they would never stop talking about it.\n\nIf only she  saw the fit of the project, she could be more supportive.\n\nI wish he came to me first so I could help him.",
+          "To consider ",
+          "There are contexts where -could- and -would- express wishes for the future. E.G I don’t like my job; I wish I could get a new one.",
+          "                   That sound is so annoying; I wish it would stop. "
+        ],
+        "joinedText": "We can use the grammar presented to talk about the following function:\nFunctions\nExamples\n1\nExpress ideas or events not likely to be true or to happen.\nWhat if Jill had money? Would you guys accept her in the club?\n\nImagine they won the competition; they would never stop talking about it.\n\nIf only she  saw the fit of the project, she could be more supportive.\n\nI wish he came to me first so I could help him.\nTo consider \nThere are contexts where -could- and -would- express wishes for the future. E.G I don’t like my job; I wish I could get a new one.\n                   That sound is so annoying; I wish it would stop.",
+        "shapes": [
+          {
+            "shapeId": "260",
+            "shapeName": "Google Shape;260;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1049401,
+              "y": 328500,
+              "cx": 7230600,
+              "cy": 584700,
+              "right": 8280001,
+              "bottom": 913200
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can use the grammar presented to talk about the following function:",
+                "runs": [
+                  "We can use the grammar presented to talk about the following function:"
+                ]
+              }
+            ],
+            "texts": [
+              "We can use the grammar presented to talk about the following function:"
+            ],
+            "joinedText": "We can use the grammar presented to talk about the following function:"
+          },
+          {
+            "shapeId": "261",
+            "shapeName": "Google Shape;261;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 711450,
+              "y": 1044025,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3711450,
+              "bottom": 4044025
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Express ideas or events not likely to be true or to happen.",
+                "runs": []
+              },
+              {
+                "text": "What if Jill had money? Would you guys accept her in the club?\n\nImagine they won the competition; they would never stop talking about it.\n\nIf only she  saw the fit of the project, she could be more supportive.\n\nI wish he came to me first so I could help him.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Express ideas or events not likely to be true or to happen.",
+              "What if Jill had money? Would you guys accept her in the club?\n\nImagine they won the competition; they would never stop talking about it.\n\nIf only she  saw the fit of the project, she could be more supportive.\n\nI wish he came to me first so I could help him."
+            ],
+            "joinedText": "Functions\nExamples\n1\nExpress ideas or events not likely to be true or to happen.\nWhat if Jill had money? Would you guys accept her in the club?\n\nImagine they won the competition; they would never stop talking about it.\n\nIf only she  saw the fit of the project, she could be more supportive.\n\nI wish he came to me first so I could help him.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 1041099,
+              "y": 3020039,
+              "cx": 7373094,
+              "cy": 1352450,
+              "right": 8414193,
+              "bottom": 4372489
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 693801,
+              "y": 3470422,
+              "cx": 7286343,
+              "cy": 2034677,
+              "right": 7980144,
+              "bottom": 5505099
+            },
+            "parentShapeId": "262"
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "263",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 776754,
+              "y": 3927483,
+              "cx": 7273200,
+              "cy": 1330800,
+              "right": 8049954,
+              "bottom": 5258283
+            },
+            "parentShapeId": "263",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 607050,
+              "y": 3505150,
+              "cx": 6758400,
+              "cy": 1761300,
+              "right": 7365450,
+              "bottom": 5266450
+            },
+            "parentShapeId": "262",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "There are contexts where -could- and -would- express wishes for the future. E.G I don’t like my job; I wish I could get a new one.",
+                "runs": [
+                  "Th",
+                  "ere are contexts where ",
+                  "-could- and -would- express wishes for the future",
+                  ". ",
+                  "E.G ",
+                  "I don’t like my job; ",
+                  "I wish I could",
+                  " get a new one."
+                ]
+              },
+              {
+                "text": "                   That sound is so annoying; I wish it would stop. ",
+                "runs": [
+                  "                   That sound is so annoying; ",
+                  "I wish it would",
+                  " stop. "
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "There are contexts where -could- and -would- express wishes for the future. E.G I don’t like my job; I wish I could get a new one.",
+              "                   That sound is so annoying; I wish it would stop. "
+            ],
+            "joinedText": "To consider \nThere are contexts where -could- and -would- express wishes for the future. E.G I don’t like my job; I wish I could get a new one.\n                   That sound is so annoying; I wish it would stop."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "261",
+            "shapeName": "Google Shape;261;g729cfa641f_0_0",
+            "bbox": {
+              "x": 711450,
+              "y": 1044025,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3711450,
+              "bottom": 4044025
+            },
+            "columnWidths": [
+              417750,
+              2280125,
+              5549850
+            ],
+            "rows": [
+              {
+                "height": 174625,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Express ideas or events not likely to be true or to happen.",
+                    "paragraphs": [
+                      {
+                        "text": "Express ideas or events not likely to be true or to happen. ",
+                        "runs": [
+                          "Express ideas or events ",
+                          "not ",
+                          "likely to be true or to happen. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "What if Jill had money? Would you guys accept her in the club?\n\nImagine they won the competition; they would never stop talking about it.\n\nIf only she  saw the fit of the project, she could be more supportive.\n\nI wish he came to me first so I could help him.",
+                    "paragraphs": [
+                      {
+                        "text": "What if Jill had money? Would you guys accept her in the club?",
+                        "runs": [
+                          "What if Jill had",
+                          " money? ",
+                          "Would",
+                          " you guys accept her in the club?"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Imagine they won the competition; they would never stop talking about it.",
+                        "runs": [
+                          "Imagine they won",
+                          " the ",
+                          "competition; they ",
+                          "would",
+                          " never stop talking about it."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "If only she  saw the fit of the project, she could be more supportive.",
+                        "runs": [
+                          "If only she  saw",
+                          " the fit of the project, she ",
+                          "could",
+                          " be more supportive."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I wish he came to me first so I could help him. ",
+                        "runs": [
+                          "I wish he came",
+                          " to me first so I ",
+                          "could",
+                          " help him. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 278750,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "We can use the grammar presented to talk about the following function:",
+        "visibleTexts": [
+          "We can use the grammar presented to talk about the following function:",
+          "Functions Examples Express ideas or events not likely to be true or to happen. What if Jill had money? Would you guys accept her in the club? Imagine they won the competition; they would never stop talking about it. If only she saw the fit of the project, she could be more supportive. I wish he came to me first, so I could help him.",
+          "To consider There are contexts where could and would express wishes for the future. E.G I don’t like my job; I wish I could get a new one. That sound is so annoying; I wish it would stop."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "272",
+            "shapeName": "Google Shape;272;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "273",
+            "shapeName": "Google Shape;273;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example. ",
+          "What if…\n\nImagine that / if…\n\nIf only…\n\nI wish…",
+          "I wish they called, that would be awesome."
+        ],
+        "joinedText": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example.\nWhat if…\n\nImagine that / if…\n\nIf only…\n\nI wish…\nI wish they called, that would be awesome.",
+        "shapes": [
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1017450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example. ",
+                "runs": [
+                  "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example. "
+            ],
+            "joinedText": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example."
+          },
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 978725,
+              "y": 1352847,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3978725,
+              "bottom": 4352847
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "What if…\n\nImagine that / if…\n\nIf only…\n\nI wish…",
+                "runs": []
+              },
+              {
+                "text": "I wish they called, that would be awesome.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "What if…\n\nImagine that / if…\n\nIf only…\n\nI wish…",
+              "I wish they called, that would be awesome."
+            ],
+            "joinedText": "What if…\n\nImagine that / if…\n\nIf only…\n\nI wish…\nI wish they called, that would be awesome.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;g729cfa641f_0_19",
+            "bbox": {
+              "x": 978725,
+              "y": 1352847,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3978725,
+              "bottom": 4352847
+            },
+            "columnWidths": [
+              4132425,
+              3054100
+            ],
+            "rows": [
+              {
+                "height": 204225,
+                "cells": [
+                  {
+                    "text": "What if…\n\nImagine that / if…\n\nIf only…\n\nI wish…",
+                    "paragraphs": [
+                      {
+                        "text": "What if…",
+                        "runs": [
+                          "What if…"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Imagine that / if…",
+                        "runs": [
+                          "Imagine that / if…"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "If only…",
+                        "runs": [
+                          "If only…"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I wish…",
+                        "runs": [
+                          "I wish…"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I wish they called, that would be awesome.",
+                    "paragraphs": [
+                      {
+                        "text": "I wish they called, that would be awesome. ",
+                        "runs": [
+                          "I ",
+                          "wish they called",
+                          ", that ",
+                          "would ",
+                          "be ",
+                          "awesome",
+                          ". "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 100000,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example.",
+        "visibleTexts": [
+          "A. Using the phrases learned in the lesson, write 8 sentences expressing situations not likely to happen and wishes for the future. Follow the example.",
+          "What if… Imagine that / if… If only… I wish… I wish they called, that would be awesome."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "B. Listen to the audio and answer the questions your teacher makes. "
+        ],
+        "joinedText": "B. Listen to the audio and answer the questions your teacher makes.",
+        "shapes": [
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1213325,
+              "y": 288325,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7336025,
+              "bottom": 889525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;g729cfa641f_0_32",
+            "kind": "picture",
+            "bbox": {
+              "x": 2856100,
+              "y": 941125,
+              "cx": 2780275,
+              "cy": 2780275,
+              "right": 5636375,
+              "bottom": 3721400
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;g729cfa641f_0_32",
+            "bbox": {
+              "x": 2856100,
+              "y": 941125,
+              "cx": 2780275,
+              "cy": 2780275,
+              "right": 5636375,
+              "bottom": 3721400
+            },
+            "slide": 13
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 13
+          }
+        ]
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "B. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "B. Listen to the audio and answer the questions your teacher makes."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa1UgmAl9d0VyDFs5MMpgcKZUs82gSJ-J9f3YwJdeX-Rgm0JPRAsUeqYqJwxeV8MxBLzxo1BMIHR7NuSRAgVPLe8fTE1mijfxBdqka-6Z37YdZ8DzOcb0DnYkQd0uiTDmslROHseT3exgcTE2LhxUbzKnx4yv1GvnCJTBMEOJ1jvxQkyVSne9y_NLGP3xWHqQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "‹#›",
+          "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below.",
+          "Achieving Your Wishes : Will Wishing Work?",
+          "Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more?",
+          "No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better.",
+          "Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want.",
+          "                                                                                                                                                                                                                             Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/"
+        ],
+        "joinedText": "‹#›\nC. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below.\nAchieving Your Wishes : Will Wishing Work?\n\nDo you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more?\n\nNo, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better.\n\nDid you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want.\n                                                                                                                                                                                                                             Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+        "shapes": [
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "291",
+            "shapeName": "Google Shape;291;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 786950,
+              "y": 83050,
+              "cx": 7944600,
+              "cy": 658500,
+              "right": 8731550,
+              "bottom": 741550
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below.",
+                "runs": [
+                  "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below."
+            ],
+            "joinedText": "C. Read the following paragraph and have a discussion with the teacher. After that, read aloud the text to your teacher. Check the full article in the link below."
+          },
+          {
+            "shapeId": "292",
+            "shapeName": "Google Shape;292;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 699600,
+              "y": 669275,
+              "cx": 7944600,
+              "cy": 4158600,
+              "right": 8644200,
+              "bottom": 4827875
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "293",
+            "shapeName": "Google Shape;293;gd98a7c2d09_1_1",
+            "kind": "text",
+            "bbox": {
+              "x": 836400,
+              "y": 476175,
+              "cx": 7671000,
+              "cy": 5214000,
+              "right": 8507400,
+              "bottom": 5690175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Achieving Your Wishes : Will Wishing Work?",
+                "runs": [
+                  "Achieving Your Wishes : Will Wishing Work?"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more?",
+                "runs": [
+                  "Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more?"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better.",
+                "runs": [
+                  "No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want.",
+                "runs": [
+                  "Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want."
+                ]
+              },
+              {
+                "text": "                                                                                                                                                                                                                             Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+                "runs": [
+                  "                                                                                                                                                                                                                             Adapted from: ",
+                  "https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Achieving Your Wishes : Will Wishing Work?",
+              "Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more?",
+              "No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better.",
+              "Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want.",
+              "                                                                                                                                                                                                                             Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/"
+            ],
+            "joinedText": "Achieving Your Wishes : Will Wishing Work?\n\nDo you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more?\n\nNo, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better.\n\nDid you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want.\n                                                                                                                                                                                                                             Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "14",
+        "visibleTexts": [
+          "14",
+          "C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.",
+          "Achieving Your Wishes : Will Wishing Work? Do you wish you had a better job, bigger house, more friends, better health, less worries, and greater happiness? We all engage in wishing, but should we? Should we wish for more or be satisfied with what we have? Why can't we do both? Just because we are satisfied with what we have doesn't mean we can't or shouldn't wish for more. After all, isn't self-improvement or personal-development about wishing for more? No, there isn't anything wrong with wishing. A wish is merely the voice of our Higher Self reminding us that we have boundless potential and urging us to take advantage of it. If anything, we should wish to have, be, and do more because that's how we help to create a better world; if only we always thought that way.. It is only when we have more than we need that we can share what we have with those who have less than they need. It is only when we are healthy that we can help the sick. And it is only when we are strong that we can help the weak. As you can see, wishing plays an important role, for we either allow ourselves to become what others will make of us, or we wish to become something better. Did you ever toss a coin into a wishing well and make a wish? What if you had your own wishing well? Aware of it or not, that's precisely what we have. We have a personal genie within us. It is our subconscious. Its sole purpose is to serve us. It serves us by regulating our heart and breathing rate, body temperature, and the flow of hormones, just to name a few of its many functions. But another major function of the subconscious is to grant our every wish! And it works tirelessly, 24/7, granting us what it believes we want. Adapted from: https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+          "https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/"
+        ],
+        "links": [
+          {
+            "url": "https://www.rotaryeclubone.org/makeups/articles/achievingyourwishe/",
+            "kind": "link",
+            "source": "anchor"
+          }
+        ],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it. ",
+          "E. Write a 150-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If  only you wished soemthing related to this matter, what would it be and why? ",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.\nE. Write a 150-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If  only you wished soemthing related to this matter, what would it be and why?\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 897275,
+              "y": 146675,
+              "cx": 7443900,
+              "cy": 1027500,
+              "right": 8341175,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it. ",
+                "runs": [
+                  "D. Based on the topic presented in the reading section, ",
+                  "tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do ",
+                  "something",
+                  " about it. "
+                ]
+              }
+            ],
+            "texts": [
+              "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it. "
+            ],
+            "joinedText": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it."
+          },
+          {
+            "shapeId": "299",
+            "shapeName": "Google Shape;299;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 446175,
+              "y": 2414150,
+              "cx": 8613900,
+              "cy": 1163700,
+              "right": 9060075,
+              "bottom": 3577850
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 150-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If  only you wished soemthing related to this matter, what would it be and why? ",
+                "runs": [
+                  "E. Write a 150-200 word text ",
+                  "addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If  only you wished soemthing related to this matter, what would it be and why? "
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 150-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If  only you wished soemthing related to this matter, what would it be and why? "
+            ],
+            "joinedText": "E. Write a 150-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If  only you wished soemthing related to this matter, what would it be and why?"
+          },
+          {
+            "shapeId": "300",
+            "shapeName": "Google Shape;300;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 1070307,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2245829
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "300",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "302",
+            "shapeName": "Google Shape;302;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "300",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "303",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "303",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "306",
+            "shapeName": "Google Shape;306;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "303",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "303",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.",
+        "visibleTexts": [
+          "D. Based on the topic presented in the reading section, tell your teacher about the wishes you have that you feel like they may not come true. Explain why you think that, the reasons and if you plan to do something about it.",
+          "E. Write an 160-200 word text addressing: what if COVID never went away? Imagine it stayed as part of daily life, would it still be fearful and dangerous? If only you wished something related to this matter, what would it be and why?",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "313",
+            "shapeName": "Google Shape;313;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "314",
+            "shapeName": "Google Shape;314;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "315",
+            "shapeName": "Google Shape;315;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "314",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "314",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 17
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 17
+          }
+        ]
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYmJKBRts945_Bi5S0c4q69tGhMm2wi8WX2ZDAb6iGHa1zEIwbQg2cWD0wYPdPTDa-5iopOhsSZr3qhQVg4yVWQa6Zo0_8s9fdS_NmY3PbLs30XkjaT_wS7A5jW7P36LFWT3ybr5HuhXRk1pnpfiZ1IFYL665h7tENoctGKYn_LlK_InceGGNSlfKeeZiT5JA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaIsJbp07HcD5DDtOQq-lbvYa5vbV5z7-K0dkMW9Wwd9SJzBxo72StYbQFkTa8Ajc1___-GsydzLiS6gM3bpdIhr9D84VzUdZkZx6MWOeBtq8RKSnQ6jS5R-iClvKKT_Ot3KmFmTQLhs4Df92SjEpYm7UYHtA02PUU3bLArRcrRd9FuhN8NRFBCrAsoUQ4dWA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZ-42WxkqYsbZbxSSjnUg88cQxZwIYyzHVZe3_KZi2saUdyO8yXO-J94O_POjM8vSbkqMGiRoy5VgRTNL4iC_Z8Bnzj6AqLD7XyXoLL4iGyNgFQe2j6-90Xj_kqUdt6p20kIZgOcR4xSbCvGvO8bGGbCoglWAozR_fkpUPr68IzuH9fq5PjSTQ-tFD35veK7g=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

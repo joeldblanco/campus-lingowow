@@ -169,6 +169,89 @@
   background: #94a3b8;
 }
 
+/* Course completion reveal: the status change remains visible after motion ends. */
+.course-completion-glow {
+  animation: course-completion-glow 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Success check follows the transitions.dev success-check timing and reduced-motion guard. */
+.t-success-check {
+  display: inline-block;
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.t-success-check[data-state='in'] {
+  animation:
+    course-completion-check-fade 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    course-completion-check-rotate 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    course-completion-check-blur 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    course-completion-check-bob 500ms cubic-bezier(0.34, 1.35, 0.64, 1) forwards;
+}
+
+@keyframes course-completion-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(8 119 94 / 0%);
+  }
+
+  45% {
+    box-shadow: 0 0 0 4px rgb(8 119 94 / 20%);
+  }
+}
+
+@keyframes course-completion-check-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes course-completion-check-rotate {
+  from {
+    transform: rotate(80deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes course-completion-check-blur {
+  from {
+    filter: blur(8px);
+  }
+
+  to {
+    filter: blur(0);
+  }
+}
+
+@keyframes course-completion-check-bob {
+  from {
+    translate: 0 30px;
+  }
+
+  to {
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-completion-glow {
+    animation: none !important;
+  }
+
+  .t-success-check {
+    animation: none !important;
+    opacity: 1;
+  }
+}
+
 /* Rich text content styles for lists and links */
 .prose ul,
 .rich-text-content ul {
@@ -288,4 +371,34 @@
 
 .animate-shake {
   animation: shake 0.6s ease-in-out;
+}
+
+/* Unit 1 scenes keep the complete illustration visible while reserving a clear
+   white fade for live reading content. The mobile scene remains below content. */
+.unit1-scene-fade {
+  pointer-events: none;
+}
+
+.guided-lesson-viewer[data-unit1-authored]
+  .guided-lesson-main[data-guided-kind='reading']
+  .guided-lesson-content {
+  max-width: min(42rem, 38vw);
+}
+
+.guided-lesson-viewer[data-unit1-authored]
+  .guided-lesson-main[data-guided-kind='reading']
+  [data-guided-reading] {
+  max-width: min(42rem, 38vw);
+  background: transparent;
+}
+
+@media (max-width: 1023px) {
+  .guided-lesson-viewer[data-unit1-authored]
+    .guided-lesson-main[data-guided-kind='reading']
+    .guided-lesson-content,
+  .guided-lesson-viewer[data-unit1-authored]
+    .guided-lesson-main[data-guided-kind='reading']
+    [data-guided-reading] {
+    max-width: none;
+  }
 }

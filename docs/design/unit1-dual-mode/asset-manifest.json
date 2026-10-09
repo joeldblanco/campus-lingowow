@@ -1,0 +1,123 @@
+[
+  {
+    "name": "intro-dialogue",
+    "reference": "01-peter",
+    "prompt": "Adapt scenery to two teenage classmates Jake and Pete (both17), Pete youthful clean shaven dark tousled hair rustshirt matching referencePeter; Jake distinct straight lighterbrown hair clean shaven pale navycasual shirt. Bothlarge LEFT60% of image standing together schoolclassroom right35% calm lighter wall. Not middleagedLucas. No teacheridentity.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-55a69f38-f3ed-45b7-892f-a2641fdfd9a9.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 155208,
+    "sha256": "9a4e95570dd350aefd7a7fb9158016ed8c1f168d8fc03369fd03375e25a64f6e",
+    "asset": "/images/lessons/this-is-me/dual-mode/intro-dialogue.webp"
+  },
+  {
+    "name": "transform",
+    "reference": "02-transforma",
+    "prompt": "Preserve Lucas largeRIGHThalf exact curlyhairbeardblueovershirt caf\u00e9 scene. LEFT40% quiet lightwall real painted room.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-1f617ef6-264e-45f4-9558-c9c534d44ec3.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 171414,
+    "sha256": "1320429f2990bccfa46c665da2259b3b9549d4a10e8af05bae3bb5dc529e0325",
+    "asset": "/images/lessons/this-is-me/dual-mode/transform.webp"
+  },
+  {
+    "name": "possessives",
+    "reference": "03-posesivos",
+    "prompt": "Preserve Ana largeRIGHThalf stripedcreamnavysweater hairbun warm botanicallibrary. LEFT40% calm light painted wall.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-0a0ca44f-1840-4de9-afbc-8b0d61304b90.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 174620,
+    "sha256": "ef761cd4f08e2dd09b52d3d67f87cc32a88d6a09f03988e4ab80e8670618b1b7",
+    "asset": "/images/lessons/this-is-me/dual-mode/possessives.webp"
+  },
+  {
+    "name": "reading-practice",
+    "reference": "04-carl",
+    "prompt": "Preserve Carl darkskinshortcroppedhairglasses oliveshirt RIGHThalf environmentmapdeskplants. LEFT40% quiet light paintedwall.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-15daf46b-2c76-4ff0-8750-8d7a5eae2c88.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 137920,
+    "sha256": "3866ee89e41a5437e3f391c84ba2305fe5c58d24869b1ec5db993d15b8e04a20",
+    "asset": "/images/lessons/this-is-me/dual-mode/reading-practice.webp"
+  },
+  {
+    "name": "profile",
+    "reference": "05-perfil",
+    "prompt": "Preserve womanRIGHThalf warmdesk writingnotebook fountainpenwindow, LEFT40% lightercalm real paintedscene.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-1d54e1f9-af0c-48f3-91a6-484f5d135c31.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 170564,
+    "sha256": "319f4b050b044584ab3e29d1dc2355faa7e6fe6149bd4581cf9160db8ac9ede3",
+    "asset": "/images/lessons/this-is-me/dual-mode/profile.webp"
+  },
+  {
+    "name": "presentation",
+    "reference": "06-presentacion",
+    "prompt": "Preserve youthfulPeterRIGHThalf rustshirtcleanface sittinghomeworkspace microphoneheadphoneslaptop warm light. LEFT40% calm lightwall.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-499b7a51-63a8-431f-9c62-3edb68d7bdff.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 172142,
+    "sha256": "0133a542572816314f153a3ada750fc48d73b7d27b464e7330b4c03de96ee4c4",
+    "asset": "/images/lessons/this-is-me/dual-mode/presentation.webp"
+  },
+  {
+    "name": "introductions",
+    "reference": "07-presentarse",
+    "prompt": "Preserve PeterandAnaRIGHT60% sunlitcampuspark completeenvironment, left35% opencalm light scenery.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-6d9ef3b2-22fb-4f7d-9f7b-735a03d503d4.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 238148,
+    "sha256": "055956a1a7b8fc0f27c7e544720dcd20432949129d7c656b5cc4ac812bc2463f",
+    "asset": "/images/lessons/this-is-me/dual-mode/introductions.webp"
+  },
+  {
+    "name": "contact",
+    "reference": "08-contacto",
+    "prompt": "Preserve PeterRIGHThalf neighborhoodstreetcafemailbox completewarmenvironment. LEFT40% open lightwall.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-e793a85b-4fa6-4c57-a88a-128f6bc965f4.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 250830,
+    "sha256": "1ae015ca28f222a4e8d9064b6048d93cbe8609f3980070953caca9b8c40237e0",
+    "asset": "/images/lessons/this-is-me/dual-mode/contact.webp"
+  },
+  {
+    "name": "questions",
+    "reference": "09-preguntas",
+    "prompt": "Preserve PeterandAnaRIGHT60% sunlittransitplaza leafy completeenvironment. LEFT35% quiet lighterview.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-b808189e-b85d-434b-ad7b-df4367cb4b11.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 270956,
+    "sha256": "fe136b73e2fe454ea3cf400d141234201800024a984a212b83368771a83f82c1",
+    "asset": "/images/lessons/this-is-me/dual-mode/questions.webp"
+  },
+  {
+    "name": "sentences",
+    "reference": "10-frases",
+    "prompt": "Preserve PeterRIGHThalf warmlypaintedbotanicallibrary desk writingpaper, left40% calm lightwall.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-4adfb802-b998-48c1-bcf4-8e9bee25bd37.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 162190,
+    "sha256": "e0502b11759c95045644a987c9c641282dfe7d087ef0afac5d7c66bbb92a2a0c",
+    "asset": "/images/lessons/this-is-me/dual-mode/sentences.webp"
+  },
+  {
+    "name": "conversation",
+    "reference": "11-conversa",
+    "prompt": "Preserve LucasRIGHThalf exactcurlyhairshortbeardblueshirt caf\u00e9table livelyplantwindowenvironment, left40% quietlighterwall. No speechbubbles.",
+    "source": "C:\\Users\\ACER\\.codex\\generated_images\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\exec-ee2d4393-902c-4a6e-8b06-ab6b2a7a09bf.png",
+    "width": 1600,
+    "height": 900,
+    "bytes": 184968,
+    "sha256": "ae5523452e169269590acb18127683d030055033f40b19cc7fa6172bf25f2e9b",
+    "asset": "/images/lessons/this-is-me/dual-mode/conversation.webp"
+  }
+]

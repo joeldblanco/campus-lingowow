@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -24,6 +24,12 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import type { ModuleWithProgress } from '@/lib/course-progression'
+import {
+  clearCompletedLessonMarker,
+  findCourseLesson,
+  getCompletedLessonMarker,
+  isLessonCompletedFromProgress,
+} from '@/lib/course-completion'
 
 interface CourseExam {
   id: string
@@ -219,6 +225,7 @@ function getLessonProgress(lesson: CourseLesson, completedContentIds: Set<string
 
 export function CourseView({ course, progress, moduleProgress }: CourseViewProps) {
   const [showAllModules, setShowAllModules] = useState(false)
+  const [completionMarker, setCompletionMarker] = useState<string | null>(null)
   const moduleLockById = new Map((moduleProgress ?? []).map((module) => [module.moduleId, module]))
   const completedContentIds = new Set(progress?.completedContentIds ?? [])
   const orderedModules = [...course.modules].sort((left, right) => left.order - right.order)
@@ -257,6 +264,20 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
       exams: publishedExams.filter((exam) => exam.moduleId === module.id),
     }
   })
+
+  const completionTarget = completionMarker
+    ? findCourseLesson(orderedModules, completionMarker)
+    : null
+  const completionTargetModuleView = completionTarget
+    ? moduleViews.find((moduleView) => moduleView.module.id === completionTarget.module.id)
+    : null
+  const completionIsAuthoritative = Boolean(
+    progress &&
+      completionTarget &&
+      completionTargetModuleView &&
+      !completionTargetModuleView.isLocked &&
+      isLessonCompletedFromProgress(completionTarget.lesson, progress.completedContentIds)
+  )
 
   const fallbackTotalContents = moduleViews.reduce((total, module) => total + module.totalContents, 0)
   const fallbackCompletedContents = moduleViews.reduce(
@@ -321,14 +342,133 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
 
   const activeModuleId = nextStep?.moduleId ?? null
   const activeModuleIndex = moduleViews.findIndex((module) => module.module.id === activeModuleId)
+  const completionModuleId = completionIsAuthoritative ? completionTarget?.module.id ?? null : null
+  const completionModuleIndex = moduleViews.findIndex(
+    (moduleView) => moduleView.module.id === completionModuleId
+  )
   const visibleModuleCount = showAllModules
     ? moduleViews.length
-    : Math.max(8, activeModuleIndex >= 0 ? activeModuleIndex + 1 : 0)
+    : Math.max(
+        8,
+        activeModuleIndex >= 0 ? activeModuleIndex + 1 : 0,
+        completionModuleIndex >= 0 ? completionModuleIndex + 1 : 0
+      )
   const visibleModules = moduleViews.slice(0, visibleModuleCount)
   const hasExtraModules = moduleViews.length > 8
   const standaloneExams = sortExamsNaturally(publishedExams.filter((exam) => !exam.moduleId))
   const hasLockedModule = moduleViews.some((module) => module.isLocked)
   const firstLockedModuleId = moduleViews.find((module) => module.isLocked)?.module.id ?? null
+  const [openModuleIds, setOpenModuleIds] = useState<string[]>(() => {
+    const initialModuleId = completionModuleId ?? activeModuleId
+    return initialModuleId ? [initialModuleId] : []
+  })
+  const [completionTargetLessonId, setCompletionTargetLessonId] = useState<string | null>(null)
+  const [completionAnimationLessonId, setCompletionAnimationLessonId] = useState<string | null>(null)
+  const [completionAnnouncement, setCompletionAnnouncement] = useState<string | null>(null)
+  const completionHandledRef = useRef(false)
+  const completionRevealHandledRef = useRef(false)
+
+  useEffect(() => {
+    if (completionMarker !== null || typeof window === 'undefined') return
+    setCompletionMarker(getCompletedLessonMarker(window.location.search))
+  }, [completionMarker])
+
+  useEffect(() => {
+    if (!completionMarker || completionHandledRef.current) return
+
+    completionHandledRef.current = true
+    clearCompletedLessonMarker(completionMarker)
+
+    if (!completionIsAuthoritative || !completionModuleId) return
+
+    setOpenModuleIds((current) =>
+      current.includes(completionModuleId) ? current : [...current, completionModuleId]
+    )
+    setCompletionTargetLessonId(completionMarker)
+    setCompletionAnnouncement('Lección completada')
+  }, [completionIsAuthoritative, completionMarker, completionModuleId])
+
+  useEffect(() => {
+    if (!activeModuleId) return
+
+    setOpenModuleIds((current) =>
+      current.includes(activeModuleId) ? current : [...current, activeModuleId]
+    )
+  }, [activeModuleId])
+
+  useEffect(() => {
+    if (!completionTargetLessonId || completionRevealHandledRef.current) return
+
+    const target = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-lesson-id]')
+    ).find((element) => element.dataset.lessonId === completionTargetLessonId)
+    if (!target) return
+
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+    target.scrollIntoView?.({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' })
+    target.focus({ preventScroll: true })
+    completionRevealHandledRef.current = true
+
+    if (reducedMotion) {
+      setCompletionAnimationLessonId(completionTargetLessonId)
+      return
+    }
+
+    let settled = false
+    let observer: IntersectionObserver | null = null
+    let pollId: number | undefined
+    const startedAt = Date.now()
+    const maxWaitMs = 1200
+
+    const isVisible = () => {
+      const rect = target.getBoundingClientRect()
+      // jsdom and some embedded webviews report no layout box; the scroll call
+      // is still the best available settlement signal in those environments.
+      if (rect.width === 0 && rect.height === 0) return true
+      const viewportWidth = window.innerWidth || document.documentElement.clientWidth
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+      return rect.top < viewportHeight && rect.bottom > 0 && rect.left < viewportWidth && rect.right > 0
+    }
+
+    const settle = () => {
+      if (settled) return
+      settled = true
+      if (pollId !== undefined) window.clearTimeout(pollId)
+      observer?.disconnect()
+      window.removeEventListener('scrollend', settle)
+      setCompletionAnimationLessonId(completionTargetLessonId)
+    }
+
+    const pollForSettlement = () => {
+      if (settled) return
+      if (isVisible() || Date.now() - startedAt >= maxWaitMs) {
+        settle()
+        return
+      }
+      pollId = window.setTimeout(pollForSettlement, 50)
+    }
+
+    if (typeof window.IntersectionObserver === 'function') {
+      observer = new window.IntersectionObserver(
+        (entries) => {
+          const entry = entries[0]
+          if (entry?.isIntersecting && entry.intersectionRatio >= 0.65) settle()
+        },
+        { threshold: [0.65] }
+      )
+      observer.observe(target)
+    }
+
+    window.addEventListener('scrollend', settle, { once: true })
+    pollId = window.setTimeout(pollForSettlement, 50)
+
+    return () => {
+      settled = true
+      if (pollId !== undefined) window.clearTimeout(pollId)
+      observer?.disconnect()
+      window.removeEventListener('scrollend', settle)
+    }
+  }, [completionTargetLessonId])
 
   const renderExamMeta = (exam: CourseExam) => (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
@@ -384,6 +524,12 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
             <Progress value={progressPercentage} className="h-2" aria-label="Progreso del curso" />
           </div>
         </div>
+
+        {completionAnnouncement && (
+          <p role="status" aria-live="polite" className="text-sm font-semibold text-green-700">
+            {completionAnnouncement}
+          </p>
+        )}
 
         {nextStep ? (
           <Card className="border-indigo-200 bg-indigo-50">
@@ -484,7 +630,8 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
           <>
             <Accordion
               type="multiple"
-              defaultValue={activeModuleId ? [activeModuleId] : undefined}
+              value={openModuleIds}
+              onValueChange={setOpenModuleIds}
               id="course-module-list"
               className="space-y-2"
             >
@@ -569,15 +716,31 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
                               const isLessonCompleted =
                                 lesson.contents.length > 0 && lessonProgress === lesson.contents.length
                               const isLessonInProgress = lessonProgress > 0 && !isLessonCompleted
+                              const isCompletionTarget =
+                                completionTargetLessonId === lesson.id && isLessonCompleted
+                              const isCelebrating =
+                                completionAnimationLessonId === lesson.id && isLessonCompleted
 
                               return (
                                 <div
                                   key={lesson.id}
-                                  className="flex items-center justify-between gap-3 rounded-md px-2 py-2 hover:bg-gray-50"
+                                  data-lesson-id={lesson.id}
+                                  data-completion-target={isCompletionTarget ? 'true' : undefined}
+                                  tabIndex={-1}
+                                  aria-label={isLessonCompleted ? `${lesson.title}, completada` : lesson.title}
+                                  className={`scroll-mt-24 flex items-center justify-between gap-3 rounded-md px-2 py-2 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] ${
+                                    isCelebrating ? 'course-completion-glow' : ''
+                                  }`}
                                 >
                                   <div className="flex min-w-0 items-center gap-2">
                                     {isLessonCompleted ? (
-                                      <CheckCircle className="h-4 w-4 shrink-0 text-green-600" />
+                                      isCelebrating ? (
+                                        <span className="t-success-check" data-state="in" aria-hidden="true">
+                                          <CheckCircle className="h-4 w-4 shrink-0 text-green-600" />
+                                        </span>
+                                      ) : (
+                                        <CheckCircle className="h-4 w-4 shrink-0 text-green-600" />
+                                      )
                                     ) : (
                                       <BookOpen className="h-4 w-4 shrink-0 text-gray-400" />
                                     )}
@@ -587,7 +750,9 @@ export function CourseView({ course, progress, moduleProgress }: CourseViewProps
                                       </h3>
                                       <p className="text-xs text-gray-500">
                                         {lessonProgress} de {lesson.contents.length} contenidos
-                                        {isLessonInProgress && ' · En progreso'}
+                                        {isCompletionTarget
+                                          ? ' · Completada'
+                                          : isLessonInProgress && ' · En progreso'}
                                       </p>
                                     </div>
                                   </div>

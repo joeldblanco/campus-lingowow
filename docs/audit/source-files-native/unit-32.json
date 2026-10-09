@@ -1,0 +1,4413 @@
+{
+  "schemaVersion": 1,
+  "unit": 32,
+  "module": {
+    "order": 8,
+    "title": "Módulo 8",
+    "id": "cmnmm9kwb0003w1qks40rabax",
+    "driveTitle": "Module 8"
+  },
+  "candidate": {
+    "id": "10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp",
+    "title": "May I, Please? - Unit 32.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "1926811",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 8"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-32-primary-01-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp.pptx",
+    "localBytes": 1926811,
+    "sha256": "0ac2d917581a1e551566206364920a2fc96b976a1b0a580f7f41f8ed70a4b7b0"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-32-primary-01-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS6oq8u56rowczxpTMuIiYpc3xLQX4TJZNA_1qmWLsF-KXGW0scNdRCNXVmBRGLeg/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vS6oq8u56rowczxpTMuIiYpc3xLQX4TJZNA_1qmWLsF-KXGW0scNdRCNXVmBRGLeg/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 16,
+    "nativeSlideCount": 16,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.90176,
+    "publicTokenCoverage": 0.915361,
+    "slideDifferenceCount": 6,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nMake formal and informal request.\nCompetencies\nManage the necessary vocabulary and grammatical aspects to express formal and informal request in written and spoken language.",
+        "publishedText": "Communicative Function Make formal and informal request. Competencies Manage the necessary vocabulary and grammatical aspects to express formal and informal requests in written and spoken language.",
+        "sequenceRatio": 0.997455
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. 4",
+        "sequenceRatio": 0.976608
+      },
+      {
+        "slide": 8,
+        "nativeText": "Most common modal to work with requests is would. However, there are other uses and modals that we can include here.\nMODALS TO USE\nSTATEMENTS\nNOTES\n1\nWOULD\nI would like a cheese cake.\nUsed to express wishes.\n2\nWOULD in questions.\nWould you pass me the salt? Please.\nUsed to express requests.\n3\nWOULD + Prefer\nShe’d prefer to have a cold drink\nUsed to express preferences.\nTo Consider\n\nWould can also be used for offers. E.G.Would you like a cup of tea?\nCan is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?\nUsing will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?\nMay is also used for formal request. E.G. May I say something?",
+        "publishedText": "The most common modal to work with requests is would. However, there are other uses and modals that we can include here. MODALS TO USE STATEMENTS NOTES 1 WOULD I would like a cheese cake. Used to express wishes 2 WOULD in questions Would you pass me the salt? Please. Used to express requests 3 WOULD + Prefer She’d prefer to have a cold drink Used to express preferences To Consider 1. Would can also be used for offers. E.G. Would you like a cup of tea? 2. Can is also a modal that may be used for informal requests. E.G. Can I go to the bathroom? 3. Using will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you? 4. May is also used for formal requests. E.G. May I say something?",
+        "sequenceRatio": 0.967832
+      },
+      {
+        "slide": 10,
+        "nativeText": "We can use would to express different ideas.\nFunctions\nExamples\n1\nExpressing requests\nWould you call Annie and tell her about the meeting?\n2\nMaking offers\nWould you like ice tea or hot coffee?\n3\nEstablishing preferences\nThey’d prefer to stay home tonight.\n4\nWishing\nI’d love to get that scholarship.\nTo consider \nWOULD RATHER: It is used to state a choice. E.G:  I’d rather get a burger.\nThere are other uses of would but we will deal with them later on the program.",
+        "publishedText": "We can use would to express different ideas. Functions Examples 1 Expressing requests Would you call Annie and tell her about the meeting? 2 Making offers Would you like ice tea or hot coffee? 3 Establishing preferences They’d prefer to stay home tonight. 4 Wishing I’d love to get that scholarship. To consider Would also works with the adverbial particle rather. Generally, it is used to state you choose something / someone over another one. E.G: I’d rather take the red one, thanks. What would you rather do?",
+        "sequenceRatio": 0.678279
+      },
+      {
+        "slide": 13,
+        "nativeText": "Giving it a thought!\n\nJim: So, have you made your mind yet?\nCraig: I haven’t. I’d wish this to be easier man.\nJim: Come on! You just need to focus on what you would like for real and make your decision.\nCraig: Can you please tell me your opinion?\nJim: I told you. Both are great universities but I would choose Stanford over Yales. \nCraig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. \nJim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy.\nCraig: For sure!\nC. Read the following dialog and extract sentences with the functions studied and locate them in the space provided.",
+        "publishedText": "Giving it a thought! Jim: So, have you made your mind yet? Craig: I haven’t. I’d wish this to be easier man. Jim: Come on! You just need to focus on what you would like for real, and make your decision. Craig: Can you please tell me your opinion? Jim: I told you. Both are great universities but I would rather choose Stanford over Yale. Craig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy them. Craig: For sure! C. Read the following dialog and extract sentences with the functions studied. Locate them in the space provided.",
+        "sequenceRatio": 0.946636
+      },
+      {
+        "slide": 14,
+        "nativeText": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class\nE. Write a 100 to 150 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Do not omit any detail and used all language studied.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class E. Write an 80 to 120 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Is there something you’d rather leave out of it? Do not omit any detail and used all language studied. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.480565
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 70010,
+      "sha256": "2403a2a84148128c89e4d56f36fdff6c973721f425dd8143ba00ebf3db5edd15"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 158521,
+      "sha256": "6be5b747bb0f703dfed5caa465f441f5c39de926bd70fbcbd75b7e0d44ccb43c"
+    },
+    {
+      "path": "ppt/media/image12.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 118324,
+      "sha256": "adb37ea95fd5a410721b6f333958bf07feb9c231f478093c4cc3306a9d9f9fa9"
+    },
+    {
+      "path": "ppt/media/image13.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 200216,
+      "sha256": "9cc76c8681eedc72dc779817b417ec7ae1c5144e6e308ff8f7d3a7492a27a4af"
+    },
+    {
+      "path": "ppt/media/image14.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 143277,
+      "sha256": "ec5eb67b82cef6193df4e28212e0140c462fc1b4a1dcb2c1d8d9dcdd86fa0973"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 27822,
+      "sha256": "fb4bb8e4eb21969e31732513ec9c1e6dc68d697c6de346d63ab3f845d0838a06"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 135106,
+      "sha256": "6fc28b61eabdfe6fbdf278b03611c1b103767f5501256aae42cb9aa49ab4be17"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 170558,
+      "sha256": "fd0fb0aded0256c3f3418aef5aafd732ccb2446b4b3bb3e0b54bba8bc30c67a2"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 229656,
+      "sha256": "7d16f141957b26819717c6252af7172e1d19009306776ee955b4296fbc42ac4e"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 14,
+    "bytes": 1427339,
+    "byExtension": {
+      ".jpg": 9,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 14,
+    "imageBytes": 1427339
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5870900,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6886700,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "296",
+          "shapeName": "Google Shape;296;g729cfa641f_0_19",
+          "bbox": {
+            "x": 3786350,
+            "y": 3735175,
+            "cx": 1145200,
+            "cy": 1145200,
+            "right": 4931550,
+            "bottom": 4880375
+          },
+          "slide": 12
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 70010,
+      "sha256": "2403a2a84148128c89e4d56f36fdff6c973721f425dd8143ba00ebf3db5edd15",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId7",
+          "shapeId": "239",
+          "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123491,
+            "y": 2851732,
+            "cx": 1450223,
+            "cy": 903880,
+            "right": 2573714,
+            "bottom": 3755612
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 158521,
+      "sha256": "6be5b747bb0f703dfed5caa465f441f5c39de926bd70fbcbd75b7e0d44ccb43c",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId9",
+          "shapeId": "241",
+          "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6551667,
+            "y": 2842820,
+            "cx": 1450194,
+            "cy": 903880,
+            "right": 8001861,
+            "bottom": 3746700
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image12.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 118324,
+      "sha256": "adb37ea95fd5a410721b6f333958bf07feb9c231f478093c4cc3306a9d9f9fa9",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "235",
+          "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123492,
+            "y": 1111463,
+            "cx": 1450218,
+            "cy": 862033,
+            "right": 2573710,
+            "bottom": 1973496
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image13.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 200216,
+      "sha256": "9cc76c8681eedc72dc779817b417ec7ae1c5144e6e308ff8f7d3a7492a27a4af",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2985577,
+            "y": 2842820,
+            "cx": 1450373,
+            "cy": 912789,
+            "right": 4435950,
+            "bottom": 3755609
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image14.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image14.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 143277,
+      "sha256": "ec5eb67b82cef6193df4e28212e0140c462fc1b4a1dcb2c1d8d9dcdd86fa0973",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image14.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8055748,
+            "bottom": 2245199
+          },
+          "slide": 4
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image2.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId3",
+          "shapeId": "333",
+          "shapeName": "Google Shape;333;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId4",
+          "shapeId": "334",
+          "shapeName": "Google Shape;334;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 27822,
+      "sha256": "fb4bb8e4eb21969e31732513ec9c1e6dc68d697c6de346d63ab3f845d0838a06",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "236",
+          "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2918929,
+            "y": 1103450,
+            "cx": 1490661,
+            "cy": 862041,
+            "right": 4409590,
+            "bottom": 1965491
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 135106,
+      "sha256": "6fc28b61eabdfe6fbdf278b03611c1b103767f5501256aae42cb9aa49ab4be17",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "238",
+          "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754800,
+            "y": 2824104,
+            "cx": 1490700,
+            "cy": 1230626,
+            "right": 6245500,
+            "bottom": 4054730
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 170558,
+      "sha256": "fd0fb0aded0256c3f3418aef5aafd732ccb2446b4b3bb3e0b54bba8bc30c67a2",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId10",
+          "shapeId": "245",
+          "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6530057,
+            "y": 1136204,
+            "cx": 1490605,
+            "cy": 854024,
+            "right": 8020662,
+            "bottom": 1990228
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-32-10TPjD888kiw7AZH9nVwjqaMrKgt6CPUp\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 229656,
+      "sha256": "7d16f141957b26819717c6252af7172e1d19009306776ee955b4296fbc42ac4e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "237",
+          "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754790,
+            "y": 1111469,
+            "cx": 1490657,
+            "cy": 854029,
+            "right": 6245447,
+            "bottom": 1965498
+          },
+          "slide": 6
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "32",
+          "May I, please?",
+          "Unit"
+        ],
+        "joinedText": "32\nMay I, please?\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3115250,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "32",
+                "runs": [
+                  "32"
+                ]
+              }
+            ],
+            "texts": [
+              "32"
+            ],
+            "joinedText": "32"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1090675,
+              "y": 2316275,
+              "cx": 7548000,
+              "cy": 1649100,
+              "right": 8638675,
+              "bottom": 3965375
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "May I, please?",
+                "runs": [
+                  "May I, please?"
+                ]
+              }
+            ],
+            "texts": [
+              "May I, please?"
+            ],
+            "joinedText": "May I, please?"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 210350,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1299350,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "32",
+        "visibleTexts": [
+          "32",
+          "May I, please?",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaR35VbzhMqQOfmLbK1dfOpnVfgSGIL-Syzr1zqpekQDWq7rBu1gfclC5l7j-wu43sEHmRmBAEon4y9eFivaMkYq4wJI8SA1ZhQMnilpCt_MX_MVRD3zy2Ck3XbOD7QVKp6ApCAZTT78yN688s1UvD1w_5gJfZPdoXdGAbE5Chi8bxVUz8M2wGuj4-CLJyjFg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Make formal and informal request.",
+          "Competencies",
+          "Manage the necessary vocabulary and grammatical aspects to express formal and informal request in written and spoken language."
+        ],
+        "joinedText": "Communicative Function\nMake formal and informal request.\nCompetencies\nManage the necessary vocabulary and grammatical aspects to express formal and informal request in written and spoken language.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Make formal and informal request.",
+                "runs": [
+                  "Make formal and informal request",
+                  "."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Make formal and informal request."
+            ],
+            "joinedText": "Communicative Function\nMake formal and informal request."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 6579600,
+              "cy": 2256300,
+              "right": 8031225,
+              "bottom": 4796525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Manage the necessary vocabulary and grammatical aspects to express formal and informal request in written and spoken language.",
+                "runs": [
+                  "Manage the necessary vocabulary and grammatical aspects to express formal and informal request in written and spoken language."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Manage the necessary vocabulary and grammatical aspects to express formal and informal request in written and spoken language."
+            ],
+            "joinedText": "Competencies\nManage the necessary vocabulary and grammatical aspects to express formal and informal request in written and spoken language."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Communicative Function Make formal and informal request.",
+        "visibleTexts": [
+          "Communicative Function Make formal and informal request.",
+          "Competencies Manage the necessary vocabulary and grammatical aspects to express formal and informal requests in written and spoken language."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8055748,
+              "bottom": 2245199
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY-fyD2G09gDiWRqmXnCsnwQOtgTxsn9UAgw4WWGmNx8uzSnWrvyJIEubmgfdQz_wqyyGwqg3v4WuGKOTvCMxWNRePg7m0NQhNnlcePPcP0YgYtiJj2ugVFYmOtb6Rn_SlJFeqwGHM4QK28IoUKRUdYJzGtyGkZLBwa8TW41jR8MLjUcQs-slYF7LMBsUlEnQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaaj2W8DY3JDpc6U3zy8KMAfGTa1e1UyNPovla5vxcrgMKf9-g26l5v4xi9VsUoSKqE0SXEqrFNeJK2q65wcTHgyxIEm3nqQDgeQdhUdvqm-B7azv7WknnQVF3L80L8F51ZnQGFZkG5V5Mq3AqDGMMAl4r4teNCAcX8tY8BAPri0VqterWi0mBHlr_4_d7xgQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Look at the information, listen to your teacher and discuss about the vocabulary you see. ",
+          " ",
+          "GIVE A LIFT",
+          "PICK SOMEONE UP",
+          "ADVISE TO DO SOMETHING",
+          "CARE FOR SOMETHING",
+          "GRAB A BITE",
+          "LOOK AFTER",
+          "MAKE A MOVE",
+          "CALL OFF"
+        ],
+        "joinedText": "Look at the information, listen to your teacher and discuss about the vocabulary you see.\nGIVE A LIFT\nPICK SOMEONE UP\nADVISE TO DO SOMETHING\nCARE FOR SOMETHING\nGRAB A BITE\nLOOK AFTER\nMAKE A MOVE\nCALL OFF",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the information, listen to your teacher and discuss about the vocabulary you see. ",
+                "runs": [
+                  "Look at the information, listen to your teacher and discuss about the vocabulary you see. "
+                ]
+              },
+              {
+                "text": " ",
+                "runs": [
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the information, listen to your teacher and discuss about the vocabulary you see. ",
+              " "
+            ],
+            "joinedText": "Look at the information, listen to your teacher and discuss about the vocabulary you see."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450218,
+              "cy": 862033,
+              "right": 2573710,
+              "bottom": 1973496
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2918929,
+              "y": 1103450,
+              "cx": 1490661,
+              "cy": 862041,
+              "right": 4409590,
+              "bottom": 1965491
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754800,
+              "y": 2824104,
+              "cx": 1490700,
+              "cy": 1230626,
+              "right": 6245500,
+              "bottom": 4054730
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450223,
+              "cy": 903880,
+              "right": 2573714,
+              "bottom": 3755612
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2985577,
+              "y": 2842820,
+              "cx": 1450373,
+              "cy": 912789,
+              "right": 4435950,
+              "bottom": 3755609
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 1965488,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 2519288
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "GIVE A LIFT",
+                "runs": [
+                  "GIVE A LIFT"
+                ]
+              }
+            ],
+            "texts": [
+              "GIVE A LIFT"
+            ],
+            "joinedText": "GIVE A LIFT"
+          },
+          {
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2918917,
+              "y": 1946168,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 4409617,
+              "bottom": 2499968
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "PICK SOMEONE UP",
+                "runs": [
+                  "PICK SOMEONE UP"
+                ]
+              }
+            ],
+            "texts": [
+              "PICK SOMEONE UP"
+            ],
+            "joinedText": "PICK SOMEONE UP"
+          },
+          {
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 1965483,
+              "cx": 1490700,
+              "cy": 513000,
+              "right": 6245494,
+              "bottom": 2478483
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "ADVISE TO DO SOMETHING",
+                "runs": [
+                  "ADVISE TO DO SOMETHING"
+                ]
+              }
+            ],
+            "texts": [
+              "ADVISE TO DO SOMETHING"
+            ],
+            "joinedText": "ADVISE TO DO SOMETHING"
+          },
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490605,
+              "cy": 854024,
+              "right": 8020662,
+              "bottom": 1990228
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6529962,
+              "y": 1965488,
+              "cx": 1490400,
+              "cy": 513000,
+              "right": 8020362,
+              "bottom": 2478488
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CARE FOR SOMETHING",
+                "runs": [
+                  "CARE FOR SOMETHING"
+                ]
+              }
+            ],
+            "texts": [
+              "CARE FOR SOMETHING"
+            ],
+            "joinedText": "CARE FOR SOMETHING"
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "GRAB A BITE",
+                "runs": [
+                  "GRAB A BITE"
+                ]
+              }
+            ],
+            "texts": [
+              "GRAB A BITE"
+            ],
+            "joinedText": "GRAB A BITE"
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2998280,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 4448780,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "LOOK AFTER",
+                "runs": [
+                  "LOOK AFTER"
+                ]
+              }
+            ],
+            "texts": [
+              "LOOK AFTER"
+            ],
+            "joinedText": "LOOK AFTER"
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 3746700,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 6245494,
+              "bottom": 4300500
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "MAKE A MOVE",
+                "runs": [
+                  "MAKE A MOVE"
+                ]
+              }
+            ],
+            "texts": [
+              "MAKE A MOVE"
+            ],
+            "joinedText": "MAKE A MOVE"
+          },
+          {
+            "shapeId": "250",
+            "shapeName": "Google Shape;250;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6551637,
+              "y": 3746701,
+              "cx": 1449900,
+              "cy": 553800,
+              "right": 8001537,
+              "bottom": 4300501
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CALL OFF",
+                "runs": [
+                  "CALL OFF"
+                ]
+              }
+            ],
+            "texts": [
+              "CALL OFF"
+            ],
+            "joinedText": "CALL OFF"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450218,
+              "cy": 862033,
+              "right": 2573710,
+              "bottom": 1973496
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2918929,
+              "y": 1103450,
+              "cx": 1490661,
+              "cy": 862041,
+              "right": 4409590,
+              "bottom": 1965491
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754800,
+              "y": 2824104,
+              "cx": 1490700,
+              "cy": 1230626,
+              "right": 6245500,
+              "bottom": 4054730
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId7",
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450223,
+              "cy": 903880,
+              "right": 2573714,
+              "bottom": 3755612
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2985577,
+              "y": 2842820,
+              "cx": 1450373,
+              "cy": 912789,
+              "right": 4435950,
+              "bottom": 3755609
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId9",
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId10",
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490605,
+              "cy": 854024,
+              "right": 8020662,
+              "bottom": 1990228
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId9",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId10",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+        "visibleTexts": [
+          "Look at the information, listen to your teacher and discuss about the vocabulary you see.",
+          "GIVE A LIFT",
+          "PICK SOMEONE UP",
+          "ADVISE TO DO SOMETHING",
+          "CARE FOR SOMETHING",
+          "GRAB A BITE",
+          "LOOK AFTER",
+          "MAKE A MOVE",
+          "CALL OFF"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbAG8du_wKgrHdpTaymWGoylTyXaClx19pBhLKAZnkg7IyrCyinyc0HkeT1-sm8L9AecAA9QHgOcHiAVgK59CunOS1vtD83khXIv-J37FZFqYBaCKvaFy3vxYEGc9ALK0d_4Rpg4g4-zgtkXF0HIgF6IlFPcoVn4p0PawgF1sIM6KodVcbU0MT5I4lk-1YLFQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb__Hb-5tWk--JbgL9RmfVFiOkWf0nvUyxdWoUiI_Y_eIqKKerRnCV050yDM0QimRndOgw-G5z_Nh4AAmZc8kqdxpsOPf5tAHVHdXBNUPjmIfJCm9KuW6unKfMaU01Ct4qf5bv2BRxjx3MeMXI20O2MOwBzIgOF9OcLZnLf9eFYLPE1HZ8jmqIAdyxIQXw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY7f8Yz-gbPkWMqTOyubedUV2vOZGulFgz7tr-qY4WqQfS3bCLHZrfWuDRF2iAq2W8ordnMpGXplfwx2YPw2wbFOofj6OB2wAq9486tqGnbu-G635MI843eNMCP8dC_Gdq-hHzVW1fMu31qW3RXoKSq2SRLrGbzZo6po4g1369iwhau1SoxrH8Yj8PJ6yHxSQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaOcLROiHCNXfv3Gg3__45Ss4cmYvoWt_DSFqxPhxeFqfttO2-cOm2W7csol8rFMsac5KiXw8bu6hyaaxEiSkJNJUwsnnuholkURl8Ip-aGdEIOR0RGpop9yn8LfLjdIxyHUgnFBMLfwPQfsH75-lIxE0Nr05GzJCHzYZHTzZcR-NDAFkHidPtjSWNhAGykBA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSb8QiHCnJ-dSF9NeB4TrOxsqKl6X-4xu64qZZYAA_XNSnEnouRFR48lBkQJi4gQ89pGg2YvhcBM8YaTwfmY-1ssJUG5Ekek2dPf8CctRRoqOlj87r9w6DqoEwPz-kB8r9x87o-iauym89xdVGvI9nnIl39EEhfY5DE8d5Ce-QmoZk6oTAjlrsdGInp3iOBeHg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbVFEIND5WRrRDN17l3FfX2kNPI1W3IwXyEEAigzctL4uJvQ7l2-FayyXdi4AH111gaqJEq_8msyluzOXEm99g3NInCTf3ZU0w8hP2k9fX-rY7RBDGQGoHFsfmKOTww9xuXyDd85JIwMej2X1nyCOsJcA_di3cvW5sTjHq6Zk-jiaVy52ovz8uFCDWidILbMQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZn4YJoCOjVcyh7CnpARO9CzEbkote2mmAYKp9qCS620viMCpNGATbo7uizY0PwQNE1DLzaA2vzlkwXnp0nVRCWLgE5PW7WfwUZbptRvKQ5Y1TFG1lld4qp0qxeqoqMIgoWw6YTrTNI9fm4-mBnnpWkVL42JW7144T8FlvHmzRpyYheQdqHL3tH-0i4VuIuKg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZjEm0yMeWi0dlebGuUM-XWElPVjIBj8EucEMkkmvNywvonbclJfHqGvkrP-H2ak3Ys0DQJzk6Jb_OWWmQQIC8i6zwt-NWieWmmytoVkOy58KlIFTo7q_Vy_C1FlD9517_YWFx8lmRHgolNFPFYN5K4EIe2vkHxg1hZm5KNs0cbbX5QLpwTHtWvsDXv63M=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 9,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "255",
+            "shapeName": "Google Shape;255;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Most common modal to work with requests is would. However, there are other uses and modals that we can include here.",
+          "MODALS TO USE",
+          "STATEMENTS",
+          "NOTES",
+          "1",
+          "WOULD",
+          "I would like a cheese cake.",
+          "Used to express wishes.",
+          "2",
+          "WOULD in questions.",
+          "Would you pass me the salt? Please.",
+          "Used to express requests.",
+          "3",
+          "WOULD + Prefer",
+          "She’d prefer to have a cold drink",
+          "Used to express preferences.",
+          "To Consider\n\nWould can also be used for offers. E.G.Would you like a cup of tea?\nCan is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?\nUsing will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?\nMay is also used for formal request. E.G. May I say something?"
+        ],
+        "joinedText": "Most common modal to work with requests is would. However, there are other uses and modals that we can include here.\nMODALS TO USE\nSTATEMENTS\nNOTES\n1\nWOULD\nI would like a cheese cake.\nUsed to express wishes.\n2\nWOULD in questions.\nWould you pass me the salt? Please.\nUsed to express requests.\n3\nWOULD + Prefer\nShe’d prefer to have a cold drink\nUsed to express preferences.\nTo Consider\n\nWould can also be used for offers. E.G.Would you like a cup of tea?\nCan is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?\nUsing will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?\nMay is also used for formal request. E.G. May I say something?",
+        "shapes": [
+          {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181852,
+              "cx": 6960900,
+              "cy": 958500,
+              "right": 8052450,
+              "bottom": 1140352
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Most common modal to work with requests is would. However, there are other uses and modals that we can include here.",
+                "runs": [
+                  "Most common modal to work with requests is ",
+                  "would",
+                  ". However, there are other uses and modals that we can include here."
+                ]
+              }
+            ],
+            "texts": [
+              "Most common modal to work with requests is would. However, there are other uses and modals that we can include here."
+            ],
+            "joinedText": "Most common modal to work with requests is would. However, there are other uses and modals that we can include here."
+          },
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 433400,
+              "y": 1275225,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3433400,
+              "bottom": 4275225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "MODALS TO USE",
+                "runs": []
+              },
+              {
+                "text": "STATEMENTS",
+                "runs": []
+              },
+              {
+                "text": "NOTES",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "WOULD",
+                "runs": []
+              },
+              {
+                "text": "I would like a cheese cake.",
+                "runs": []
+              },
+              {
+                "text": "Used to express wishes.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "WOULD in questions.",
+                "runs": []
+              },
+              {
+                "text": "Would you pass me the salt? Please.",
+                "runs": []
+              },
+              {
+                "text": "Used to express requests.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "WOULD + Prefer",
+                "runs": []
+              },
+              {
+                "text": "She’d prefer to have a cold drink",
+                "runs": []
+              },
+              {
+                "text": "Used to express preferences.",
+                "runs": []
+              },
+              {
+                "text": "To Consider\n\nWould can also be used for offers. E.G.Would you like a cup of tea?\nCan is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?\nUsing will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?\nMay is also used for formal request. E.G. May I say something?",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "MODALS TO USE",
+              "STATEMENTS",
+              "NOTES",
+              "1",
+              "WOULD",
+              "I would like a cheese cake.",
+              "Used to express wishes.",
+              "2",
+              "WOULD in questions.",
+              "Would you pass me the salt? Please.",
+              "Used to express requests.",
+              "3",
+              "WOULD + Prefer",
+              "She’d prefer to have a cold drink",
+              "Used to express preferences.",
+              "To Consider\n\nWould can also be used for offers. E.G.Would you like a cup of tea?\nCan is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?\nUsing will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?\nMay is also used for formal request. E.G. May I say something?"
+            ],
+            "joinedText": "MODALS TO USE\nSTATEMENTS\nNOTES\n1\nWOULD\nI would like a cheese cake.\nUsed to express wishes.\n2\nWOULD in questions.\nWould you pass me the salt? Please.\nUsed to express requests.\n3\nWOULD + Prefer\nShe’d prefer to have a cold drink\nUsed to express preferences.\nTo Consider\n\nWould can also be used for offers. E.G.Would you like a cup of tea?\nCan is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?\nUsing will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?\nMay is also used for formal request. E.G. May I say something?",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 433400,
+              "y": 1275225,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3433400,
+              "bottom": 4275225
+            },
+            "columnWidths": [
+              464925,
+              2219350,
+              3371550,
+              2445100
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "MODALS TO USE",
+                    "paragraphs": [
+                      {
+                        "text": "MODALS TO USE",
+                        "runs": [
+                          "MODALS TO USE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "STATEMENTS",
+                    "paragraphs": [
+                      {
+                        "text": "STATEMENTS",
+                        "runs": [
+                          "STATEMENTS"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "NOTES",
+                    "paragraphs": [
+                      {
+                        "text": "NOTES",
+                        "runs": [
+                          "NOTES"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "WOULD",
+                    "paragraphs": [
+                      {
+                        "text": "WOULD",
+                        "runs": [
+                          "WOULD"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I would like a cheese cake.",
+                    "paragraphs": [
+                      {
+                        "text": "I would like a cheese cake.",
+                        "runs": [
+                          "I would like a cheese cake."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Used to express wishes.",
+                    "paragraphs": [
+                      {
+                        "text": "Used to express wishes.",
+                        "runs": [
+                          "Used to ",
+                          "express",
+                          " wishes."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "WOULD in questions.",
+                    "paragraphs": [
+                      {
+                        "text": "WOULD in questions.",
+                        "runs": [
+                          "WOULD in questions."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Would you pass me the salt? Please.",
+                    "paragraphs": [
+                      {
+                        "text": "Would you pass me the salt? Please.",
+                        "runs": [
+                          "Would you pass me the salt? Please."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Used to express requests.",
+                    "paragraphs": [
+                      {
+                        "text": "Used to express requests.",
+                        "runs": [
+                          "Used to express requests."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 712650,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "WOULD + Prefer",
+                    "paragraphs": [
+                      {
+                        "text": "WOULD + Prefer",
+                        "runs": [
+                          "WOULD + Prefer"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "She’d prefer to have a cold drink",
+                    "paragraphs": [
+                      {
+                        "text": "She’d prefer to have a cold drink",
+                        "runs": [
+                          "She’d prefer to have a cold drink"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Used to express preferences.",
+                    "paragraphs": [
+                      {
+                        "text": "Used to express preferences.",
+                        "runs": [
+                          "Used to express preferences."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 372700,
+                "cells": [
+                  {
+                    "text": "To Consider\n\nWould can also be used for offers. E.G.Would you like a cup of tea?\nCan is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?\nUsing will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?\nMay is also used for formal request. E.G. May I say something?",
+                    "paragraphs": [
+                      {
+                        "text": "To Consider",
+                        "runs": [
+                          "To Consider"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Would can also be used for offers. E.G.Would you like a cup of tea?",
+                        "runs": [
+                          "Would ",
+                          "can also be used for offers. ",
+                          "E.G",
+                          ".Would you like a cup of tea?"
+                        ]
+                      },
+                      {
+                        "text": "Can is also a modal that may be used for informal requests. E.G. Can I go to the bathroom?",
+                        "runs": [
+                          "Can",
+                          " is also a modal that may be used for informal requests. ",
+                          "E.G",
+                          ". Can I go to the bathroom?"
+                        ]
+                      },
+                      {
+                        "text": "Using will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you?",
+                        "runs": [
+                          "Using ",
+                          "will ",
+                          "at the end of a sentence also implies a request.",
+                          " E.G.",
+                          " Stop bothering your sister, will you?"
+                        ]
+                      },
+                      {
+                        "text": "May is also used for formal request. E.G. May I say something?",
+                        "runs": [
+                          "May",
+                          " is also used for formal request. ",
+                          "E.G",
+                          ". May I say something?"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "The most common modal to work with requests is would. However, there are other uses and modals that we can include here.",
+        "visibleTexts": [
+          "The most common modal to work with requests is would. However, there are other uses and modals that we can include here.",
+          "MODALS TO USE STATEMENTS NOTES 1 WOULD I would like a cheese cake. Used to express wishes 2 WOULD in questions Would you pass me the salt? Please. Used to express requests 3 WOULD + Prefer She’d prefer to have a cold drink Used to express preferences To Consider 1. Would can also be used for offers. E.G. Would you like a cup of tea? 2. Can is also a modal that may be used for informal requests. E.G. Can I go to the bathroom? 3. Using will at the end of a sentence also implies a request. E.G. Stop bothering your sister, will you? 4. May is also used for formal requests. E.G. May I say something?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "268",
+            "shapeName": "Google Shape;268;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "We can use would to express different ideas.",
+          "Functions",
+          "Examples",
+          "1",
+          "Expressing requests",
+          "Would you call Annie and tell her about the meeting?",
+          "2",
+          "Making offers",
+          "Would you like ice tea or hot coffee?",
+          "3",
+          "Establishing preferences",
+          "They’d prefer to stay home tonight.",
+          "4",
+          "Wishing",
+          "I’d love to get that scholarship.",
+          "To consider ",
+          "WOULD RATHER: It is used to state a choice. E.G:  I’d rather get a burger.",
+          "There are other uses of would but we will deal with them later on the program."
+        ],
+        "joinedText": "We can use would to express different ideas.\nFunctions\nExamples\n1\nExpressing requests\nWould you call Annie and tell her about the meeting?\n2\nMaking offers\nWould you like ice tea or hot coffee?\n3\nEstablishing preferences\nThey’d prefer to stay home tonight.\n4\nWishing\nI’d love to get that scholarship.\nTo consider \nWOULD RATHER: It is used to state a choice. E.G:  I’d rather get a burger.\nThere are other uses of would but we will deal with them later on the program.",
+        "shapes": [
+          {
+            "shapeId": "275",
+            "shapeName": "Google Shape;275;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1643496,
+              "y": 43426,
+              "cx": 5316300,
+              "cy": 584700,
+              "right": 6959796,
+              "bottom": 628126
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We can use would to express different ideas.",
+                "runs": [
+                  "We can use ",
+                  "would ",
+                  "to ",
+                  "express",
+                  " different ideas."
+                ]
+              }
+            ],
+            "texts": [
+              "We can use would to express different ideas."
+            ],
+            "joinedText": "We can use would to express different ideas."
+          },
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Expressing requests",
+                "runs": []
+              },
+              {
+                "text": "Would you call Annie and tell her about the meeting?",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Making offers",
+                "runs": []
+              },
+              {
+                "text": "Would you like ice tea or hot coffee?",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Establishing preferences",
+                "runs": []
+              },
+              {
+                "text": "They’d prefer to stay home tonight.",
+                "runs": []
+              },
+              {
+                "text": "4",
+                "runs": []
+              },
+              {
+                "text": "Wishing",
+                "runs": []
+              },
+              {
+                "text": "I’d love to get that scholarship.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "Expressing requests",
+              "Would you call Annie and tell her about the meeting?",
+              "2",
+              "Making offers",
+              "Would you like ice tea or hot coffee?",
+              "3",
+              "Establishing preferences",
+              "They’d prefer to stay home tonight.",
+              "4",
+              "Wishing",
+              "I’d love to get that scholarship."
+            ],
+            "joinedText": "Functions\nExamples\n1\nExpressing requests\nWould you call Annie and tell her about the meeting?\n2\nMaking offers\nWould you like ice tea or hot coffee?\n3\nEstablishing preferences\nThey’d prefer to stay home tonight.\n4\nWishing\nI’d love to get that scholarship.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 978846,
+              "y": 3708406,
+              "cx": 7075918,
+              "cy": 1280995,
+              "right": 8054764,
+              "bottom": 4989401
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 904225,
+              "y": 3470422,
+              "cx": 7075918,
+              "cy": 1546183,
+              "right": 7980143,
+              "bottom": 5016605
+            },
+            "parentShapeId": "277"
+          },
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "278",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "278",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 967625,
+              "y": 3402245,
+              "cx": 6600000,
+              "cy": 1440600,
+              "right": 7567625,
+              "bottom": 4842845
+            },
+            "parentShapeId": "277",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "WOULD RATHER: It is used to state a choice. E.G:  I’d rather get a burger.",
+                "runs": [
+                  "WOULD RATHER",
+                  ": It is used to state a choice. E.G:  I",
+                  "’d rather ",
+                  "get a burger."
+                ]
+              },
+              {
+                "text": "There are other uses of would but we will deal with them later on the program.",
+                "runs": [
+                  "Th",
+                  "ere are other uses of would but we will deal with them later on the program."
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "WOULD RATHER: It is used to state a choice. E.G:  I’d rather get a burger.",
+              "There are other uses of would but we will deal with them later on the program."
+            ],
+            "joinedText": "To consider \nWOULD RATHER: It is used to state a choice. E.G:  I’d rather get a burger.\nThere are other uses of would but we will deal with them later on the program."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "276",
+            "shapeName": "Google Shape;276;g729cfa641f_0_0",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "columnWidths": [
+              541675,
+              2253450,
+              3145250
+            ],
+            "rows": [
+              {
+                "height": 503150,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 503150,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Expressing requests",
+                    "paragraphs": [
+                      {
+                        "text": "Expressing requests",
+                        "runs": [
+                          "Expressing",
+                          " requests"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Would you call Annie and tell her about the meeting?",
+                    "paragraphs": [
+                      {
+                        "text": "Would you call Annie and tell her about the meeting?",
+                        "runs": [
+                          "Would you call Annie and tell her about the meeting?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 503150,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Making offers",
+                    "paragraphs": [
+                      {
+                        "text": "Making offers",
+                        "runs": [
+                          "Making offers"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Would you like ice tea or hot coffee?",
+                    "paragraphs": [
+                      {
+                        "text": "Would you like ice tea or hot coffee?",
+                        "runs": [
+                          "Would you like ice tea or hot coffee?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 503150,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Establishing preferences",
+                    "paragraphs": [
+                      {
+                        "text": "Establishing preferences",
+                        "runs": [
+                          "Establishing",
+                          " ",
+                          "preferences"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They’d prefer to stay home tonight.",
+                    "paragraphs": [
+                      {
+                        "text": "They’d prefer to stay home tonight.",
+                        "runs": [
+                          "They’d prefer to stay home tonight."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 503150,
+                "cells": [
+                  {
+                    "text": "4",
+                    "paragraphs": [
+                      {
+                        "text": "4",
+                        "runs": [
+                          "4"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Wishing",
+                    "paragraphs": [
+                      {
+                        "text": "Wishing",
+                        "runs": [
+                          "Wishing"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I’d love to get that scholarship.",
+                    "paragraphs": [
+                      {
+                        "text": "I’d love to get that scholarship.",
+                        "runs": [
+                          "I’d love to get that scholarship."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "We can use would to express different ideas.",
+        "visibleTexts": [
+          "We can use would to express different ideas.",
+          "Functions Examples 1 Expressing requests Would you call Annie and tell her about the meeting? 2 Making offers Would you like ice tea or hot coffee? 3 Establishing preferences They’d prefer to stay home tonight. 4 Wishing I’d love to get that scholarship.",
+          "To consider Would also works with the adverbial particle rather. Generally, it is used to state you choose something / someone over another one. E.G: I’d rather take the red one, thanks. What would you rather do?"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example. ",
+          "0.",
+          "I´d  prefer to eat some burgers before pizza.",
+          "B. Listen to the audio and answer the questions your teacher makes.  Take notes if necessary."
+        ],
+        "joinedText": "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example.\n0.\nI´d  prefer to eat some burgers before pizza.\nB. Listen to the audio and answer the questions your teacher makes.  Take notes if necessary.",
+        "shapes": [
+          {
+            "shapeId": "293",
+            "shapeName": "Google Shape;293;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1261950,
+              "y": 403075,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7758150,
+              "bottom": 1111075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example. ",
+                "runs": [
+                  "A. ",
+                  "Write 8 different sentences ",
+                  "where",
+                  " you state the use of would and ",
+                  "some",
+                  " of the other modals mentioned in class.",
+                  " Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example. "
+            ],
+            "joinedText": "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example."
+          },
+          {
+            "shapeId": "294",
+            "shapeName": "Google Shape;294;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 992800,
+              "y": 1506725,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3992800,
+              "bottom": 4506725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "I´d  prefer to eat some burgers before pizza.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0.",
+              "I´d  prefer to eat some burgers before pizza."
+            ],
+            "joinedText": "0.\nI´d  prefer to eat some burgers before pizza.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1297600,
+              "y": 2881875,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7420300,
+              "bottom": 3483075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes.  Take notes if necessary.",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes.  Take notes if necessary."
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes.  Take notes if necessary."
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes.  Take notes if necessary."
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_19",
+            "kind": "picture",
+            "bbox": {
+              "x": 3786350,
+              "y": 3735175,
+              "cx": 1145200,
+              "cy": 1145200,
+              "right": 4931550,
+              "bottom": 4880375
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "294",
+            "shapeName": "Google Shape;294;g729cfa641f_0_19",
+            "bbox": {
+              "x": 992800,
+              "y": 1506725,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3992800,
+              "bottom": 4506725
+            },
+            "columnWidths": [
+              483825,
+              6755175
+            ],
+            "rows": [
+              {
+                "height": 381000,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I´d  prefer to eat some burgers before pizza.",
+                    "paragraphs": [
+                      {
+                        "text": "I´d  prefer to eat some burgers before pizza.",
+                        "runs": [
+                          "I´d  prefer to eat some burgers before pizza",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_19",
+            "bbox": {
+              "x": 3786350,
+              "y": 3735175,
+              "cx": 1145200,
+              "cy": 1145200,
+              "right": 4931550,
+              "bottom": 4880375
+            },
+            "slide": 12
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 12
+          }
+        ]
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example.",
+        "visibleTexts": [
+          "A. Write 8 different sentences where you state the use of would and some of the other modals mentioned in class. Follow the example.",
+          "0. I´d prefer to eat some burgers before pizza.",
+          "B. Listen to the audio and answer the questions your teacher makes. Take notes if necessary."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYXaz_KqPtKdUWBDifqJKiutf9yoh_u-mAs32fzh0JGfyLxSjJNbT9iOnx2IhIm0W7cV677DlBXZLY3wI93fz5MALk6ygMR-Wju4lfphwGzW5dzN5pzbJEPklncTdh61DCY1Gw6ZRiooF7CYDSYzZB1qpp2PoxaFscvH5Wz1rVRLJF-DjyCZDvvAuL9SD9ggg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "Giving it a thought!",
+          "Jim: So, have you made your mind yet?",
+          "Craig: I haven’t. I’d wish this to be easier man.",
+          "Jim: Come on! You just need to focus on what you would like for real and make your decision.",
+          "Craig: Can you please tell me your opinion?",
+          "Jim: I told you. Both are great universities but I would choose Stanford over Yales. ",
+          "Craig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. ",
+          "Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy.",
+          "Craig: For sure! ",
+          "C. Read the following dialog and extract sentences with the functions studied and locate them in the space provided.  "
+        ],
+        "joinedText": "Giving it a thought!\n\nJim: So, have you made your mind yet?\nCraig: I haven’t. I’d wish this to be easier man.\nJim: Come on! You just need to focus on what you would like for real and make your decision.\nCraig: Can you please tell me your opinion?\nJim: I told you. Both are great universities but I would choose Stanford over Yales. \nCraig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. \nJim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy.\nCraig: For sure!\nC. Read the following dialog and extract sentences with the functions studied and locate them in the space provided.",
+        "shapes": [
+          {
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1016300,
+              "y": 1007925,
+              "cx": 5993100,
+              "cy": 3325200,
+              "right": 7009400,
+              "bottom": 4333125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "302",
+            "shapeName": "Google Shape;302;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1078275,
+              "y": 1037675,
+              "cx": 5855100,
+              "cy": 3233100,
+              "right": 6933375,
+              "bottom": 4270775
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Giving it a thought!",
+                "runs": [
+                  "Giving it a thought!"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Jim: So, have you made your mind yet?",
+                "runs": [
+                  "Jim: So, have you made your mind yet?"
+                ]
+              },
+              {
+                "text": "Craig: I haven’t. I’d wish this to be easier man.",
+                "runs": [
+                  "Craig: I haven’t. I’d wish this to be easier man."
+                ]
+              },
+              {
+                "text": "Jim: Come on! You just need to focus on what you would like for real and make your decision.",
+                "runs": [
+                  "Jim: Come on! You just need to focus on what you would like for real and make your decision."
+                ]
+              },
+              {
+                "text": "Craig: Can you please tell me your opinion?",
+                "runs": [
+                  "Craig: Can you please tell me your opinion?"
+                ]
+              },
+              {
+                "text": "Jim: I told you. Both are great universities but I would choose Stanford over Yales. ",
+                "runs": [
+                  "Jim: I told you. Both are great universities but I would choose S",
+                  "tanford",
+                  " over Yales. "
+                ]
+              },
+              {
+                "text": "Craig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. ",
+                "runs": [
+                  "Craig: I have been giving it deep thinking and I’d prefer to go to ",
+                  "Stanford",
+                  " as well. "
+                ]
+              },
+              {
+                "text": "Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy.",
+                "runs": [
+                  "Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy."
+                ]
+              },
+              {
+                "text": "Craig: For sure! ",
+                "runs": [
+                  "Craig: For sure! "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Giving it a thought!",
+              "Jim: So, have you made your mind yet?",
+              "Craig: I haven’t. I’d wish this to be easier man.",
+              "Jim: Come on! You just need to focus on what you would like for real and make your decision.",
+              "Craig: Can you please tell me your opinion?",
+              "Jim: I told you. Both are great universities but I would choose Stanford over Yales. ",
+              "Craig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. ",
+              "Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy.",
+              "Craig: For sure! "
+            ],
+            "joinedText": "Giving it a thought!\n\nJim: So, have you made your mind yet?\nCraig: I haven’t. I’d wish this to be easier man.\nJim: Come on! You just need to focus on what you would like for real and make your decision.\nCraig: Can you please tell me your opinion?\nJim: I told you. Both are great universities but I would choose Stanford over Yales. \nCraig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. \nJim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy.\nCraig: For sure!"
+          },
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 1292175,
+              "y": 127850,
+              "cx": 6602700,
+              "cy": 642300,
+              "right": 7894875,
+              "bottom": 770150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following dialog and extract sentences with the functions studied and locate them in the space provided.  ",
+                "runs": [
+                  "C. Read the following ",
+                  "dialog ",
+                  "and extract sentences with the functions studied and locate them in the space provided.  "
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following dialog and extract sentences with the functions studied and locate them in the space provided.  "
+            ],
+            "joinedText": "C. Read the following dialog and extract sentences with the functions studied and locate them in the space provided."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "Giving it a thought! Jim: So, have you made your mind yet? Craig: I haven’t. I’d wish this to be easier man. Jim: Come on! You just need to focus on what you would like for real, and make your decision. Craig: Can you please tell me your opinion? Jim: I told you. Both are great universities but I would rather choose Stanford over Yale. Craig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy them. Craig: For sure!",
+        "visibleTexts": [
+          "Giving it a thought! Jim: So, have you made your mind yet? Craig: I haven’t. I’d wish this to be easier man. Jim: Come on! You just need to focus on what you would like for real, and make your decision. Craig: Can you please tell me your opinion? Jim: I told you. Both are great universities but I would rather choose Stanford over Yale. Craig: I have been giving it deep thinking and I’d prefer to go to Stanford as well. Jim: There you go! You have your answer. Now, would you like to have some burgers? I’ll buy them. Craig: For sure!",
+          "C. Read the following dialog and extract sentences with the functions studied. Locate them in the space provided."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class",
+          "E. Write a 100 to 150 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Do not omit any detail and used all language studied. ",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class\nE. Write a 100 to 150 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Do not omit any detail and used all language studied.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1071400,
+              "y": 222875,
+              "cx": 6655500,
+              "cy": 1175400,
+              "right": 7726900,
+              "bottom": 1398275
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class",
+                "runs": [
+                  "D. Following the example from the previous activity, act out a situation with your teacher where you have",
+                  " to make an important decision. Use",
+                  " ",
+                  "the different functions studied in class"
+                ]
+              }
+            ],
+            "texts": [
+              "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class"
+            ],
+            "joinedText": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class"
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 100 to 150 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Do not omit any detail and used all language studied. ",
+                "runs": [
+                  "E. Write a 100 to 150 word text where you can ",
+                  "show your ",
+                  "view",
+                  " on how you would conduct your life in 10 years, what you would like to be or do. Do not omit any detail and used all language studied. "
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 100 to 150 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Do not omit any detail and used all language studied. "
+            ],
+            "joinedText": "E. Write a 100 to 150 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Do not omit any detail and used all language studied."
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4357707,
+              "y": 1146508,
+              "cx": 1432445,
+              "cy": 1175522,
+              "right": 5790152,
+              "bottom": 2322030
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "310",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "310",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "313",
+            "shapeName": "Google Shape;313;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3759580,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4954623
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "314",
+            "shapeName": "Google Shape;314;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "313",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "315",
+            "shapeName": "Google Shape;315;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "313",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "313",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "313",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class",
+        "visibleTexts": [
+          "D. Following the example from the previous activity, act out a situation with your teacher where you have to make an important decision. Use the different functions studied in class",
+          "E. Write an 80 to 120 word text where you can show your view on how you would conduct your life in 10 years, what you would like to be or do. Is there something you’d rather leave out of it? Do not omit any detail and used all language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "324",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "324",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "333",
+            "shapeName": "Google Shape;333;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "334",
+            "shapeName": "Google Shape;334;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "335",
+            "shapeName": "Google Shape;335;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "shapeId": "333",
+            "shapeName": "Google Shape;333;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "shapeId": "334",
+            "shapeName": "Google Shape;334;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 16
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId3",
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId4",
+            "slide": 16
+          }
+        ]
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSamYCtzbX2C1oNubsd2tT2HwpbSb5MwoEemQ3fTQz48HWHfaAzG2-qTYWMblAAddGrgnfAhjmvYxbRuwjbjebOcu-VVbjI2HuTqrmd31GzPhAq4AS0Ua13a_O0vek6LWGCzPFy2XynTdKZJ-NJ19ZjAh3EUD2Kj-Db-lAzkgzAM7hBdqzRps9VKzlKwgGEASA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbr_hbLS539LVsbwXwnsf6rs0zhUGrzDB-xIRc3nu5yf4Iz4PeJxC3DlvGYmIOHl3UflCyVm-WJgGclL6sWPLCdyWgaNZPlWGcDAKNtcYJM1JX7h2CSpk4oqtQmVFGcsbJucI20yizmhk6vuupLdXmLCHmaoVdQJmYRIke_qFqnbjboak7M-5x988na0JLQ9A=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbHCE6T8ooaXaOuPAKKA-hzGDwxoR2uOkhixLXj96ThRRt-Y9kOXjPqijig86sm0piS_eRjltiELCqj_dSgF2Dv3zzj5XttAQ6mElCLrS3fmgtp8bslGIW7GugCSpK98ixZywcgxIebHB2di54umqkimZxpURWHziVW2iN3rm8Ox7zsXpp91z6hSK3BsOJa8g=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

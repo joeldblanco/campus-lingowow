@@ -1,0 +1,117 @@
+.viewer {
+  --guided-motion-duration: 250ms;
+  --guided-motion-distance: 8px;
+  --guided-motion-blur: 3px;
+  --guided-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stepEnterForward,
+.stepEnterBackward {
+  will-change: opacity, transform, filter;
+}
+
+.stepEnterForward {
+  animation: guided-step-enter-forward var(--guided-motion-duration) var(--guided-motion-ease) both;
+}
+
+.stepEnterBackward {
+  animation: guided-step-enter-backward var(--guided-motion-duration) var(--guided-motion-ease) both;
+}
+
+/* The slot is flattened so the existing scene remains in the viewer's grid. */
+.sceneSlot {
+  display: contents;
+}
+
+.sceneForward :global(.guided-lesson-art),
+.sceneForward :global(.guided-lesson-scene-backdrop),
+.sceneForward :global(.unit1-scene-canvas),
+.sceneForward :global(.unit1-scene-mobile),
+.sceneForward :global([data-mobile-illustrated-setting]) {
+  animation: guided-scene-enter-forward var(--guided-motion-duration) var(--guided-motion-ease) both;
+  will-change: opacity, transform, filter;
+}
+
+.sceneBackward :global(.guided-lesson-art),
+.sceneBackward :global(.guided-lesson-scene-backdrop),
+.sceneBackward :global(.unit1-scene-canvas),
+.sceneBackward :global(.unit1-scene-mobile),
+.sceneBackward :global([data-mobile-illustrated-setting]) {
+  animation: guided-scene-enter-backward var(--guided-motion-duration) var(--guided-motion-ease) both;
+  will-change: opacity, transform, filter;
+}
+
+@keyframes guided-step-enter-forward {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--guided-motion-distance), 0, 0);
+    filter: blur(var(--guided-motion-blur));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes guided-step-enter-backward {
+  from {
+    opacity: 0;
+    transform: translate3d(calc(var(--guided-motion-distance) * -1), 0, 0);
+    filter: blur(var(--guided-motion-blur));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes guided-scene-enter-forward {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--guided-motion-distance), 0, 0);
+    filter: blur(var(--guided-motion-blur));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes guided-scene-enter-backward {
+  from {
+    opacity: 0;
+    transform: translate3d(calc(var(--guided-motion-distance) * -1), 0, 0);
+    filter: blur(var(--guided-motion-blur));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stepEnterForward,
+  .stepEnterBackward,
+  .sceneForward :global(.guided-lesson-art),
+  .sceneForward :global(.guided-lesson-scene-backdrop),
+  .sceneForward :global(.unit1-scene-canvas),
+  .sceneForward :global(.unit1-scene-mobile),
+  .sceneForward :global([data-mobile-illustrated-setting]),
+  .sceneBackward :global(.guided-lesson-art),
+  .sceneBackward :global(.guided-lesson-scene-backdrop),
+  .sceneBackward :global(.unit1-scene-canvas),
+  .sceneBackward :global(.unit1-scene-mobile),
+  .sceneBackward :global([data-mobile-illustrated-setting]) {
+    animation: none !important;
+    filter: none;
+    transform: none;
+  }
+}

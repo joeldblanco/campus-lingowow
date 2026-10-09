@@ -90,8 +90,13 @@ export function useProctoring({
 
   const enterFullscreen = useCallback(async () => {
     try {
+      if (document.fullscreenElement) {
+        setState(prev => ({ ...prev, isFullscreen: true }))
+        return
+      }
       if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen()
+        setState(prev => ({ ...prev, isFullscreen: Boolean(document.fullscreenElement) }))
       }
     } catch (error) {
       // Silenciar errores de permisos - el navegador puede bloquear fullscreen

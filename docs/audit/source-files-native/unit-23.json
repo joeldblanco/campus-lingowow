@@ -1,0 +1,5057 @@
+{
+  "schemaVersion": 1,
+  "unit": 23,
+  "module": {
+    "order": 6,
+    "title": "Módulo 6",
+    "id": "cmkpwx52f0001w1awwjku5com",
+    "driveTitle": "Module 6"
+  },
+  "candidate": {
+    "id": "12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs",
+    "title": "How dull! - Unit 23.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "3748297",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 6"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-23-primary-02-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs.pptx",
+    "localBytes": 3748297,
+    "sha256": "bde106154c9afc3019f0ac19961a3f32b48d8b7348bad5d07c4343b0ff075705"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-23-primary-02-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQI7zg35VOPtJWlCBM5G_PtIusM9XyhD4Ozm5Qa_H-7NZNDiNrn5nYaM36Hu0C5Hw/pub?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQI7zg35VOPtJWlCBM5G_PtIusM9XyhD4Ozm5Qa_H-7NZNDiNrn5nYaM36Hu0C5Hw/pub?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 16,
+    "nativeSlideCount": 16,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.561315,
+    "publicTokenCoverage": 0.96,
+    "slideDifferenceCount": 7,
+    "slideDifferences": [
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What can you tell about the girl?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What can you tell about the girl? B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. 4",
+        "sequenceRatio": 0.978022
+      },
+      {
+        "slide": 6,
+        "nativeText": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nFOOTLOOSE AND FANCY FREE\nIN FULL SWING\nTO BE BUZZING\nFEAST YOUR EYES ON SOMETHING\nHAPPY - GO - LUCKY\nLET ONE’S HAIR DOWN\nWITH BELLS ON\nA WHALE OF A TIME",
+        "publishedText": "Look at the information, listen to your teacher and repeat the phrases. Talk about them. FOOTLOOSE AND FANCY FREE IN FULL SWING TO BE BUZZING FEAST YOUR EYES ON SOMETHING HAPPY-GO- LUCKY LET ONE’S HAIR DOWN WITH BELLS ON A WHALE OF A TIME",
+        "sequenceRatio": 0.941667
+      },
+      {
+        "slide": 8,
+        "nativeText": "People\nPlaces\nThings\nAll\nEverybody\nEveryone\nEverywhere\nEverything\nPositive ones\nSomebody\nSomeone\nSomewhere\nSomething\nNegative ones\nAnybody\nAnyone\nAnywhere\nAnything\nNone\nNobody\nNo one\nNowhere\nNothing\nWe use indefinite pronouns to make generalizations about people, places and things.\nTo Consider\n\n1. All indefinite pronouns have a define connotation when using them. \n\n2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. \n\n3. The ones using the particle “No” have already a full negative connotation like “never”.",
+        "publishedText": "People Places Things All Everybody Everyone Everywhere Everything Positive Somebody Someone Somewhere Something Negative Anybody Anyone Anywhere Anything None Nobody No one Nowhere Nothing We use indefinite pronouns to make generalizations about people, places and things. To Consider 1. All indefinite pronouns have a definite connotation when using them. 2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. 3. The ones using the particle “No” have already a full negative connotation like “never”. 4. They are used with verbs in singular (i.e. the verb for the 3rd person singular)",
+        "sequenceRatio": 0.850962
+      },
+      {
+        "slide": 10,
+        "nativeText": "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts.\nScenarios\nExamples\n1\nGeneralization\nEverybody failed the test.\n2\nBeing Indefinite\nDo you want to go somewhere?\n3\nBeing Secretive\n- Who called?\n- Someone did (laughs)\nTo consider \n1. Indefinite pronouns can be used in any tense.",
+        "publishedText": "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts. Scenarios Examples 1 Generalization Everybody failed the test. 2 Being Indefinite Do you want to go somewhere? 3 Being Secretive - Who called? - Someone did (laughs). To consider Indefinite pronouns can be used in any tense.",
+        "sequenceRatio": 0.96496
+      },
+      {
+        "slide": 12,
+        "nativeText": "A. Listen to the audio and answer the questions your teacher makes.\n0.\nIs there anyone here with an aspirin?\n1.\n_______will ever love you.\n2.\nI need ______ to go this weekend.\n3.\nWe did _______ but being bored to tears.\n4.\nMy parents were glad ______ was with their belts on for the trip.\n5.\nWe haven’t done _______ yet.\n6.\nStop letting your hair down and do ___________.\n7.\nOh my! He was happy - go - lucky, the cars keys could be________.\n8.\n________ went _______ to do ________ about the project.\nB. Read the sentences. What is the correct indefinite pronoun to use? Follow the example.",
+        "publishedText": "A. Listen to the audio and answer the questions your teacher makes. 0. Does anyone here have an aspirin? 1. _______will ever love you. 2. I need ______ to go this weekend. 3. We did _______ but being bored to tears. 4. My parents were glad ______ was with their belts on for the trip. 5. We haven’t done _______ yet. 6. Stop letting your hair down and do ___________. 7. Oh my! He was happy - go - lucky, the cars keys could be________. 8. ________ went _______ to do ________ about the project. B. Read the sentences. What is the correct indefinite pronoun to use? Follow the example.",
+        "sequenceRatio": 0.960818
+      },
+      {
+        "slide": 13,
+        "nativeText": "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.\nAbout the party\n\nTanya (T) / Mia (M)\n\n- T: So, how was the party?\n- M: It was marvelous and I had a blast.\n- T: Did everyone go with their bells on?\n- M: Most people; though, SOMEONE was just wandering out of boredom. \n- T: SOMEONE? WAIT! Mike was there?\n- M: Yeap! He was asking everybody about you... if they had seen you anywhere.   \n- T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything?\n- M: Yeah, right? I guess someone is realizing he lost his chance. \n- T:  Indeed! I will go nowhere with that dude again.\nGeneralization\nBeing indefinite\nBeing secretive",
+        "publishedText": "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided. About the party Tanya (T) / Mia (M) - T: So, how was the party? - M: It was marvelous, and I had a blast. - T: Did everyone go with their bells on? - M: Most people; though, SOMEONE was just wandering out of boredom. - T: SOMEONE? WAIT! Mike was there? - M: Yeap! He was asking everybody about you... If they had seen you anywhere. - T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything? - M: Yeah, right? I guess someone is realizing he lost his chance. - T: Indeed! I will go nowhere with that dude again. Generalization Being Indefinite Being Secretive",
+        "sequenceRatio": 0.999294
+      },
+      {
+        "slide": 14,
+        "nativeText": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.\nE. Write a 100 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied. E. Write an 80 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.993407
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 122232,
+      "sha256": "f4e9001cb060d34ffb16a79f1f4f1675d5d5867f0eb0ac692e9bc97c87fef14e"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 99259,
+      "sha256": "239a188065d848bee6e79f1c595c7ccf2372c0204cf4f350aed3ed9dd782d910"
+    },
+    {
+      "path": "ppt/media/image12.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 399836,
+      "sha256": "96633baa911a3cc65f6b13aa1f3a16653b67ce9a235a173d07833e03ee5ca743"
+    },
+    {
+      "path": "ppt/media/image13.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 133778,
+      "sha256": "9502a1a356c3f99d178e530c4cd289d90b30f2082c5831bd371cb2af86d6b8e4"
+    },
+    {
+      "path": "ppt/media/image14.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 251464,
+      "sha256": "c714945ab2dd6e87e54611cafe033ddd3c2d7e951c57309c8dfe1489a3004b28"
+    },
+    {
+      "path": "ppt/media/image15.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 287480,
+      "sha256": "a5dea0cc9ebab7ff9d3e5bd4b72a675945c17c6ae78eb9416c565a6e8958fb0f"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image6.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 601201,
+      "sha256": "9d942bd0be5eeba36ba22409ec2ec8a5efb74c7020a47377da57a96bf9b4841a"
+    },
+    {
+      "path": "ppt/media/image7.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 877730,
+      "sha256": "2042644a27d08bbef354b08e2dc780c3771c98297064a8a583d2e90533103620"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 171868,
+      "sha256": "1981f500be63b71d3f3845ffe8f98b49728f2f27af4cc62fd7682331f813c59e"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 120321,
+      "sha256": "6dcedcb6a37e5927e0940401ccadd30b1949bf0b182a80eb7f0fe52abf3f355e"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 15,
+    "bytes": 3239018,
+    "byExtension": {
+      ".jpg": 9,
+      ".png": 6
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 15,
+    "imageBytes": 3239018
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5870900,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6886700,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "301",
+          "shapeName": "Google Shape;301;g729cfa641f_0_19",
+          "bbox": {
+            "x": 7635206,
+            "y": 205550,
+            "cx": 708000,
+            "cy": 708000,
+            "right": 8343206,
+            "bottom": 913550
+          },
+          "slide": 12
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 122232,
+      "sha256": "f4e9001cb060d34ffb16a79f1f4f1675d5d5867f0eb0ac692e9bc97c87fef14e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId11",
+          "shapeId": "246",
+          "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6510725,
+            "y": 2782250,
+            "cx": 1490699,
+            "cy": 1496073,
+            "right": 8001424,
+            "bottom": 4278323
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 99259,
+      "sha256": "239a188065d848bee6e79f1c595c7ccf2372c0204cf4f350aed3ed9dd782d910",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "239",
+          "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123551,
+            "y": 1006050,
+            "cx": 1450199,
+            "cy": 946899,
+            "right": 2573750,
+            "bottom": 1952949
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image12.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 399836,
+      "sha256": "96633baa911a3cc65f6b13aa1f3a16653b67ce9a235a173d07833e03ee5ca743",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2939600,
+            "y": 1106375,
+            "cx": 1450198,
+            "cy": 843950,
+            "right": 4389798,
+            "bottom": 1950325
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image13.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 133778,
+      "sha256": "9502a1a356c3f99d178e530c4cd289d90b30f2082c5831bd371cb2af86d6b8e4",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "243",
+          "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123325,
+            "y": 2745075,
+            "cx": 1450500,
+            "cy": 1193089,
+            "right": 2573825,
+            "bottom": 3938164
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image14.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image14.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 251464,
+      "sha256": "c714945ab2dd6e87e54611cafe033ddd3c2d7e951c57309c8dfe1489a3004b28",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image14.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "241",
+          "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754800,
+            "y": 1111475,
+            "cx": 1499648,
+            "cy": 843956,
+            "right": 6254448,
+            "bottom": 1955431
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image15.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image15.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 287480,
+      "sha256": "a5dea0cc9ebab7ff9d3e5bd4b72a675945c17c6ae78eb9416c565a6e8958fb0f",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image15.jpg",
+          "relationshipId": "rId10",
+          "shapeId": "245",
+          "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754801,
+            "y": 2788149,
+            "cx": 1499639,
+            "cy": 967450,
+            "right": 6254440,
+            "bottom": 3755599
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId4",
+          "shapeId": "340",
+          "shapeName": "Google Shape;340;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId3",
+          "shapeId": "339",
+          "shapeName": "Google Shape;339;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 16
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image6.png",
+      "mimeType": "image/png",
+      "bytes": 601201,
+      "sha256": "9d942bd0be5eeba36ba22409ec2ec8a5efb74c7020a47377da57a96bf9b4841a",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId7",
+          "shapeId": "242",
+          "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6529950,
+            "y": 1129550,
+            "cx": 1490402,
+            "cy": 843950,
+            "right": 8020352,
+            "bottom": 1973500
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image7.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 877730,
+      "sha256": "2042644a27d08bbef354b08e2dc780c3771c98297064a8a583d2e90533103620",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "235",
+          "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2985577,
+            "y": 2842820,
+            "cx": 1450372,
+            "cy": 912790,
+            "right": 4435949,
+            "bottom": 3755610
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 171868,
+      "sha256": "1981f500be63b71d3f3845ffe8f98b49728f2f27af4cc62fd7682331f813c59e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId9",
+          "shapeId": "244",
+          "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 3009975,
+            "y": 2759425,
+            "cx": 1450201,
+            "cy": 1156392,
+            "right": 4460176,
+            "bottom": 3915817
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-23-12BIdEJgsXYqOd-9vf0kK4cMf7_hndkLs\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 120321,
+      "sha256": "6dcedcb6a37e5927e0940401ccadd30b1949bf0b182a80eb7f0fe52abf3f355e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "218",
+          "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5465950,
+            "y": 506875,
+            "cx": 2565848,
+            "cy": 1710724,
+            "right": 8031798,
+            "bottom": 2217599
+          },
+          "slide": 4
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "23",
+          "How dull!",
+          "Unit"
+        ],
+        "joinedText": "23\nHow dull!\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1039550,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3343850,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "23",
+                "runs": [
+                  "2",
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "23"
+            ],
+            "joinedText": "23"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 2036625,
+              "y": 2296625,
+              "cx": 5475900,
+              "cy": 1159800,
+              "right": 7512525,
+              "bottom": 3456425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "How dull!",
+                "runs": [
+                  "How dull!"
+                ]
+              }
+            ],
+            "texts": [
+              "How dull!"
+            ],
+            "joinedText": "How dull!"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 438950,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1527950,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "23",
+        "visibleTexts": [
+          "23",
+          "How dull!",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaEHsYW1D31KEtSI8yabsks_eM5KIWgIdS7tKF5Tq4wSscVaNEB1UwdWXb2djZNq7MdggZe6LLFKo96AiyOrT4Za7RFYXct2hC1KjGe9gi4Ttswo6Uv9MnM0ZlpJTSu4dlwMxs8zJCXXkaW6mIvYHeCLBrhoO_OWsHXUoNrC1OHxV7VxoYxJxVedyj-xgM=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "State indefinite subjects to generalize actions.",
+          "Competencies",
+          "Understand, ask and answer questions, spot and state general actions using indefinite subjects and places appropriately."
+        ],
+        "joinedText": "Communicative Function\nState indefinite subjects to generalize actions.\nCompetencies\nUnderstand, ask and answer questions, spot and state general actions using indefinite subjects and places appropriately.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "State indefinite subjects to generalize actions.",
+                "runs": [
+                  "State indefinite subjects to generalize actions."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "State indefinite subjects to generalize actions."
+            ],
+            "joinedText": "Communicative Function\nState indefinite subjects to generalize actions."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2540225,
+              "cx": 5275500,
+              "cy": 2053500,
+              "right": 6727125,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Understand, ask and answer questions, spot and state general actions using indefinite subjects and places appropriately.",
+                "runs": [
+                  "Understand, ask and answer questions, spot and state general actions using indefinite subjects and places appropriately."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Understand, ask and answer questions, spot and state general actions using indefinite subjects and places appropriately."
+            ],
+            "joinedText": "Competencies\nUnderstand, ask and answer questions, spot and state general actions using indefinite subjects and places appropriately."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Communicative Function State indefinite subjects to generalize actions.",
+        "visibleTexts": [
+          "Communicative Function State indefinite subjects to generalize actions.",
+          "Competencies Understand, ask and answer questions, spot and state general actions using indefinite subjects and places appropriately."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What can you tell about the girl? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What can you tell about the girl?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5465950,
+              "y": 506875,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8031798,
+              "bottom": 2217599
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What can you tell about the girl? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What ",
+                  "can you tell about the girl",
+                  "? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What can you tell about the girl? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What can you tell about the girl?"
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5465950,
+              "y": 506875,
+              "cx": 2565848,
+              "cy": 1710724,
+              "right": 8031798,
+              "bottom": 2217599
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What can you tell about the girl?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What can you tell about the girl?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZriwCnvrb-jvbt3Ruq4bdCcYn0Fyl2TiAJ9orq8oRphD4go0IFiIE8ZjePz8uEb_zQia0qcpZQFiJbWNAZqoWVxh_ns3iZCd4RYSNnmRfPL369K1rQQe5n08StI_VTPqCOVhhyqZzOjZgtp_uiLcCUftmOfGebV7uAu5DJR67ys-k5fr8x9B-haDcxePW8Tw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa7FA452nA0XpYXTWfG6C6rcreDxsMd914zaaiWBbytmQfr2XLc7B4dEmPiD_STtFL98yo0Xc8Fh6Rh_BpCvX1X2jCx_L9hlbjNVLS1RuSRqpHUgdzypv9G_t3oNmKSt2zww-hWGIdpi3ev2_ThCt5HfaAu8XHEWBPBfrLAmc0n6ZysIimg7yAD5FNgXxk=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+          "FOOTLOOSE AND FANCY FREE",
+          "IN FULL SWING",
+          "TO BE BUZZING",
+          "FEAST YOUR EYES ON SOMETHING",
+          "HAPPY - GO - LUCKY",
+          "LET ONE’S HAIR DOWN",
+          "WITH BELLS ON",
+          "A WHALE OF A TIME"
+        ],
+        "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nFOOTLOOSE AND FANCY FREE\nIN FULL SWING\nTO BE BUZZING\nFEAST YOUR EYES ON SOMETHING\nHAPPY - GO - LUCKY\nLET ONE’S HAIR DOWN\nWITH BELLS ON\nA WHALE OF A TIME",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+                "runs": [
+                  "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+            ],
+            "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2985577,
+              "y": 2842820,
+              "cx": 1450372,
+              "cy": 912790,
+              "right": 4435949,
+              "bottom": 3755610
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 1965488,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 2519288
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "FOOTLOOSE AND FANCY FREE",
+                "runs": [
+                  "FOOTLOOSE AND FANCY FREE"
+                ]
+              }
+            ],
+            "texts": [
+              "FOOTLOOSE AND FANCY FREE"
+            ],
+            "joinedText": "FOOTLOOSE AND FANCY FREE"
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6529962,
+              "y": 1965488,
+              "cx": 1490400,
+              "cy": 513000,
+              "right": 8020362,
+              "bottom": 2478488
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "IN FULL SWING",
+                "runs": [
+                  "IN FULL SWING"
+                ]
+              }
+            ],
+            "texts": [
+              "IN FULL SWING"
+            ],
+            "joinedText": "IN FULL SWING"
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 3746700,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 6245494,
+              "bottom": 4300500
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "TO BE BUZZING",
+                "runs": [
+                  "TO BE BUZZING"
+                ]
+              }
+            ],
+            "texts": [
+              "TO BE BUZZING"
+            ],
+            "joinedText": "TO BE BUZZING"
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123551,
+              "y": 1006050,
+              "cx": 1450199,
+              "cy": 946899,
+              "right": 2573750,
+              "bottom": 1952949
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2939600,
+              "y": 1106375,
+              "cx": 1450198,
+              "cy": 843950,
+              "right": 4389798,
+              "bottom": 1950325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754800,
+              "y": 1111475,
+              "cx": 1499648,
+              "cy": 843956,
+              "right": 6254448,
+              "bottom": 1955431
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6529950,
+              "y": 1129550,
+              "cx": 1490402,
+              "cy": 843950,
+              "right": 8020352,
+              "bottom": 1973500
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123325,
+              "y": 2745075,
+              "cx": 1450500,
+              "cy": 1193089,
+              "right": 2573825,
+              "bottom": 3938164
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 3009975,
+              "y": 2759425,
+              "cx": 1450201,
+              "cy": 1156392,
+              "right": 4460176,
+              "bottom": 3915817
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754801,
+              "y": 2788149,
+              "cx": 1499639,
+              "cy": 967450,
+              "right": 6254440,
+              "bottom": 3755599
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6510725,
+              "y": 2782250,
+              "cx": 1490699,
+              "cy": 1496073,
+              "right": 8001424,
+              "bottom": 4278323
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6511125,
+              "y": 3746700,
+              "cx": 1490400,
+              "cy": 553800,
+              "right": 8001525,
+              "bottom": 4300500
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "FEAST YOUR EYES ON SOMETHING",
+                "runs": [
+                  "FEAST YOUR EYES ON SOMETHING"
+                ]
+              }
+            ],
+            "texts": [
+              "FEAST YOUR EYES ON SOMETHING"
+            ],
+            "joinedText": "FEAST YOUR EYES ON SOMETHING"
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2998280,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 4448780,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "HAPPY - GO - LUCKY",
+                "runs": [
+                  "HAPPY - GO - LUCKY"
+                ]
+              }
+            ],
+            "texts": [
+              "HAPPY - GO - LUCKY"
+            ],
+            "joinedText": "HAPPY - GO - LUCKY"
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "LET ONE’S HAIR DOWN",
+                "runs": [
+                  "LET ONE’S HAIR DOWN"
+                ]
+              }
+            ],
+            "texts": [
+              "LET ONE’S HAIR DOWN"
+            ],
+            "joinedText": "LET ONE’S HAIR DOWN"
+          },
+          {
+            "shapeId": "250",
+            "shapeName": "Google Shape;250;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 1965483,
+              "cx": 1490700,
+              "cy": 513000,
+              "right": 6245494,
+              "bottom": 2478483
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "WITH BELLS ON",
+                "runs": [
+                  "WITH BELLS ON"
+                ]
+              }
+            ],
+            "texts": [
+              "WITH BELLS ON"
+            ],
+            "joinedText": "WITH BELLS ON"
+          },
+          {
+            "shapeId": "251",
+            "shapeName": "Google Shape;251;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2918917,
+              "y": 1946168,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 4409617,
+              "bottom": 2499968
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A WHALE OF A TIME",
+                "runs": [
+                  "A WHALE OF A TIME"
+                ]
+              }
+            ],
+            "texts": [
+              "A WHALE OF A TIME"
+            ],
+            "joinedText": "A WHALE OF A TIME"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2985577,
+              "y": 2842820,
+              "cx": 1450372,
+              "cy": 912790,
+              "right": 4435949,
+              "bottom": 3755610
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123551,
+              "y": 1006050,
+              "cx": 1450199,
+              "cy": 946899,
+              "right": 2573750,
+              "bottom": 1952949
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2939600,
+              "y": 1106375,
+              "cx": 1450198,
+              "cy": 843950,
+              "right": 4389798,
+              "bottom": 1950325
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754800,
+              "y": 1111475,
+              "cx": 1499648,
+              "cy": 843956,
+              "right": 6254448,
+              "bottom": 1955431
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId7",
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6529950,
+              "y": 1129550,
+              "cx": 1490402,
+              "cy": 843950,
+              "right": 8020352,
+              "bottom": 1973500
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123325,
+              "y": 2745075,
+              "cx": 1450500,
+              "cy": 1193089,
+              "right": 2573825,
+              "bottom": 3938164
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId9",
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 3009975,
+              "y": 2759425,
+              "cx": 1450201,
+              "cy": 1156392,
+              "right": 4460176,
+              "bottom": 3915817
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image15.jpg",
+            "relationshipId": "rId10",
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754801,
+              "y": 2788149,
+              "cx": 1499639,
+              "cy": 967450,
+              "right": 6254440,
+              "bottom": 3755599
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId11",
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6510725,
+              "y": 2782250,
+              "cx": 1490699,
+              "cy": 1496073,
+              "right": 8001424,
+              "bottom": 4278323
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image7.jpg",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId9",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image15.jpg",
+            "relationshipId": "rId10",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId11",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the information, listen to your teacher and repeat the phrases. Talk about them.",
+        "visibleTexts": [
+          "Look at the information, listen to your teacher and repeat the phrases. Talk about them.",
+          "FOOTLOOSE AND FANCY FREE",
+          "IN FULL SWING",
+          "TO BE BUZZING",
+          "FEAST YOUR EYES ON SOMETHING",
+          "HAPPY-GO- LUCKY",
+          "LET ONE’S HAIR DOWN",
+          "WITH BELLS ON",
+          "A WHALE OF A TIME"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY-NLeC_XCVzFCAp9kj3COGqs4bTJEWCts8h6JYgP94DsXOAxBpetF3hvUB64Mywc33k5aiJ9QZxb2TKDmYsjRsbVo2h3sIE6HIQ5OGbeevwfQLe_VP5EiLF3VJo4BRyQAAGLDEfuPqxwH1AaTb-3_UOixmEiVFa03u0e0EJVjGt_IhBZXn4-H9_EtA0VTVZA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZEUoHNMQg-Mwsygz26lNzJV56T7wRHln8Ex415B_JODFC2RuIuClTisZhwsFC0hGjoliZKdCoCh1BRjG0JahnJHC3oXMslvH4bqWb4pJL0814coicxgoQTemGwlbAFGqk0CG6wAFCh39QBebeplQGwqvRgV51nEfeYDPn-lvSRaVW0TIYcnlIdxFjzZ6IEMw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZT1hBalaOfol3VR1j1diXENUqfDHKiKuvwdlJt6Y0L_e9eKVuS-LucWCyzf2lIVEiY6vGGM9WC8cqjRTmybttL8tHu86HmPpSBSIhnYt5R4Oq9vl_P462lSBA5WHCXtgFPPzGpLJMDRB0aKN2GQ4oc8e8cZKwiDbepsyMSNnw1Ex-d4QAUaLJfMFE_9IVseg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaYN_xx35gWlCdGjT4lO_Gg5yAmUn5jEof5MPwdmY5TLwKooQGoR4HXNqgLSFZDMM1wqVUV5DPZhRY4W-XtMviikxPa-uTOh617JYSzfVXb4NSfOnZ1czt81n9f0Bhf3EA3ANsbmCdTLzYiuy3EJoe_qhBAHw-wXWSzxgYHyF7H9EvaKUs6Se_QVsUKQMw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYOsgSIeY-fipxc5jGbVk079UJ4__HXeDzPKEsflwtUt1j6vz7HZJKkuDWnm-UzUUasInhGagKzTkAgcv7nVGqVM6_4qJXm7ntzheNengN_uSeIKCe4KKd0-sAeFnX6yPgD2BpaYV7_zi8dwZrNVoDe0G219FHKdtZ1paCs3qQ6_nQN--eml2DAM9wAmR_9tw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSatCgGdN1uX8QZjwSMAu-ar9jjJAbXLuZrHGiDmwFnFNQboRn6lBVPzaiWjvk8uQinPg2C_WvSIzgKiFCyUQP1ibHER29aTqxoFaVsy0LPiJpg5Mcabyy5ZFVLkxaPLpXbVixEhdgKo98F4xKFsldh9PptZyCTYFU9oWIshx47POTUFMMekfBN4-TcQXSL9CQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYjx3jV_Nb4ofJNoubZxlb9m2Emjxu27upSX5uHhUD7gA4XAV1Zt5a_6Qe_vQXp6hdwQ02nuOav4gIKfl8fpzYPLDEvN5t4UmgQS2X6K50Ph8FvuMcNuU4I793uGosA1o6dKSnaBxEqIEW727aQLGZYXW6kcUVq7ZsmZUnCKCNVg92cekMuDc0zAX544D58MA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYlLrW7ylTWKq6PsLGqg5-oqOk-_utnNsiR1qpQaq16oFQAZCKPQYViAVraySkzenHMMRS8bZFL_0bsXymBslHUiecDdxayDDNBB47BcBJ5Mb11lD_TqhTpl_fyftzjaWxyO7xkuPRdqiI1zYYYsy2QK6aQ_34rX_2VwIwFYmhGdA3S7jpMs79zHZydgEvR3g=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa0Di-BDCLSxlJm_t3N8CSPET9eHjnlK8VzqUJtHV9JCC6RXSVkG7kZOTWkN9WoQCahMJn7kmBfq5L-EjSskyS81TvDUG9SMKXxH5fBr9JxBKyp_7AmfhXKfkkCVSvNk1lLS3M29O3WD7Hl2VigVznuDT04yH8-ZcwEE5Nwz4giyEFJvAA1NKAINwSuz4E=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 10,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "258",
+            "shapeName": "Google Shape;258;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "People",
+          "Places",
+          "Things",
+          "All",
+          "Everybody\nEveryone",
+          "Everywhere",
+          "Everything",
+          "Positive ones",
+          "Somebody\nSomeone",
+          "Somewhere",
+          "Something",
+          "Negative ones",
+          "Anybody\nAnyone",
+          "Anywhere",
+          "Anything",
+          "None",
+          "Nobody\nNo one",
+          "Nowhere",
+          "Nothing",
+          "We use indefinite pronouns to make generalizations about people, places and things.",
+          "To Consider",
+          "1. All indefinite pronouns have a define connotation when using them. ",
+          "2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. ",
+          "3. The ones using the particle “No” have already a full negative connotation like “never”."
+        ],
+        "joinedText": "People\nPlaces\nThings\nAll\nEverybody\nEveryone\nEverywhere\nEverything\nPositive ones\nSomebody\nSomeone\nSomewhere\nSomething\nNegative ones\nAnybody\nAnyone\nAnywhere\nAnything\nNone\nNobody\nNo one\nNowhere\nNothing\nWe use indefinite pronouns to make generalizations about people, places and things.\nTo Consider\n\n1. All indefinite pronouns have a define connotation when using them. \n\n2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. \n\n3. The ones using the particle “No” have already a full negative connotation like “never”.",
+        "shapes": [
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 605750,
+              "y": 1427625,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3605750,
+              "bottom": 4427625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "People",
+                "runs": []
+              },
+              {
+                "text": "Places",
+                "runs": []
+              },
+              {
+                "text": "Things",
+                "runs": []
+              },
+              {
+                "text": "All",
+                "runs": []
+              },
+              {
+                "text": "Everybody\nEveryone",
+                "runs": []
+              },
+              {
+                "text": "Everywhere",
+                "runs": []
+              },
+              {
+                "text": "Everything",
+                "runs": []
+              },
+              {
+                "text": "Positive ones",
+                "runs": []
+              },
+              {
+                "text": "Somebody\nSomeone",
+                "runs": []
+              },
+              {
+                "text": "Somewhere",
+                "runs": []
+              },
+              {
+                "text": "Something",
+                "runs": []
+              },
+              {
+                "text": "Negative ones",
+                "runs": []
+              },
+              {
+                "text": "Anybody\nAnyone",
+                "runs": []
+              },
+              {
+                "text": "Anywhere",
+                "runs": []
+              },
+              {
+                "text": "Anything",
+                "runs": []
+              },
+              {
+                "text": "None",
+                "runs": []
+              },
+              {
+                "text": "Nobody\nNo one",
+                "runs": []
+              },
+              {
+                "text": "Nowhere",
+                "runs": []
+              },
+              {
+                "text": "Nothing",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "People",
+              "Places",
+              "Things",
+              "All",
+              "Everybody\nEveryone",
+              "Everywhere",
+              "Everything",
+              "Positive ones",
+              "Somebody\nSomeone",
+              "Somewhere",
+              "Something",
+              "Negative ones",
+              "Anybody\nAnyone",
+              "Anywhere",
+              "Anything",
+              "None",
+              "Nobody\nNo one",
+              "Nowhere",
+              "Nothing"
+            ],
+            "joinedText": "People\nPlaces\nThings\nAll\nEverybody\nEveryone\nEverywhere\nEverything\nPositive ones\nSomebody\nSomeone\nSomewhere\nSomething\nNegative ones\nAnybody\nAnyone\nAnywhere\nAnything\nNone\nNobody\nNo one\nNowhere\nNothing",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 410438,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 1095638
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We use indefinite pronouns to make generalizations about people, places and things.",
+                "runs": [
+                  "We use indefinite pronouns to make generalizations about people, places and things."
+                ]
+              }
+            ],
+            "texts": [
+              "We use indefinite pronouns to make generalizations about people, places and things."
+            ],
+            "joinedText": "We use indefinite pronouns to make generalizations about people, places and things."
+          },
+          {
+            "shapeId": "265",
+            "shapeName": "Google Shape;265;g72967b2bcc_0_86",
+            "kind": "group",
+            "bbox": {
+              "x": 4967001,
+              "y": 1403350,
+              "cx": 3522749,
+              "cy": 2918975,
+              "right": 8489750,
+              "bottom": 4322325
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "266",
+            "shapeName": "Google Shape;266;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 4967001,
+              "y": 1419850,
+              "cx": 3522600,
+              "cy": 2858700,
+              "right": 8489601,
+              "bottom": 4278550
+            },
+            "parentShapeId": "265",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "267",
+            "shapeName": "Google Shape;267;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 7824350,
+              "y": 1403350,
+              "cx": 665400,
+              "cy": 685200,
+              "right": 8489750,
+              "bottom": 2088550
+            },
+            "parentShapeId": "265",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "268",
+            "shapeName": "Google Shape;268;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 4967044,
+              "y": 1579425,
+              "cx": 3522600,
+              "cy": 2742900,
+              "right": 8489644,
+              "bottom": 4322325
+            },
+            "parentShapeId": "265",
+            "paragraphs": [
+              {
+                "text": "To Consider",
+                "runs": [
+                  "To Consider"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "1. All indefinite pronouns have a define connotation when using them. ",
+                "runs": [
+                  "1. ",
+                  "All indefinite pronouns have a define connotation when using them. "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. ",
+                "runs": [
+                  "2",
+                  ". The ones using “",
+                  "Any",
+                  "” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. "
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "3. The ones using the particle “No” have already a full negative connotation like “never”.",
+                "runs": [
+                  "3.",
+                  " The ones using the particle “",
+                  "No",
+                  "” have already a full negative connotation like “",
+                  "neve",
+                  "r”."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "To Consider",
+              "1. All indefinite pronouns have a define connotation when using them. ",
+              "2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. ",
+              "3. The ones using the particle “No” have already a full negative connotation like “never”."
+            ],
+            "joinedText": "To Consider\n\n1. All indefinite pronouns have a define connotation when using them. \n\n2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. \n\n3. The ones using the particle “No” have already a full negative connotation like “never”."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 605750,
+              "y": 1427625,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3605750,
+              "bottom": 4427625
+            },
+            "columnWidths": [
+              957800,
+              1042200,
+              1126250,
+              1089950
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "People",
+                    "paragraphs": [
+                      {
+                        "text": "People",
+                        "runs": [
+                          "People"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Places",
+                    "paragraphs": [
+                      {
+                        "text": "Places",
+                        "runs": [
+                          "Places"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Things",
+                    "paragraphs": [
+                      {
+                        "text": "Things",
+                        "runs": [
+                          "Things"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "All",
+                    "paragraphs": [
+                      {
+                        "text": "All",
+                        "runs": [
+                          "All"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Everybody\nEveryone",
+                    "paragraphs": [
+                      {
+                        "text": "Everybody",
+                        "runs": [
+                          "Everybody"
+                        ]
+                      },
+                      {
+                        "text": "Everyone",
+                        "runs": [
+                          "Everyone"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Everywhere",
+                    "paragraphs": [
+                      {
+                        "text": "Everywhere",
+                        "runs": [
+                          "Everywhere"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Everything",
+                    "paragraphs": [
+                      {
+                        "text": "Everything",
+                        "runs": [
+                          "Everything"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "Positive ones",
+                    "paragraphs": [
+                      {
+                        "text": "Positive ones",
+                        "runs": [
+                          "Positive ones"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Somebody\nSomeone",
+                    "paragraphs": [
+                      {
+                        "text": "Somebody",
+                        "runs": [
+                          "Somebody"
+                        ]
+                      },
+                      {
+                        "text": "Someone",
+                        "runs": [
+                          "Someone"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Somewhere",
+                    "paragraphs": [
+                      {
+                        "text": "Somewhere",
+                        "runs": [
+                          "Somewhere"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Something",
+                    "paragraphs": [
+                      {
+                        "text": "Something",
+                        "runs": [
+                          "Something"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 712650,
+                "cells": [
+                  {
+                    "text": "Negative ones",
+                    "paragraphs": [
+                      {
+                        "text": "Negative ones",
+                        "runs": [
+                          "Negative ones"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Anybody\nAnyone",
+                    "paragraphs": [
+                      {
+                        "text": "Anybody",
+                        "runs": [
+                          "Anybody"
+                        ]
+                      },
+                      {
+                        "text": "Anyone",
+                        "runs": [
+                          "Anyone"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Anywhere",
+                    "paragraphs": [
+                      {
+                        "text": "Anywhere",
+                        "runs": [
+                          "Anywhere"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Anything",
+                    "paragraphs": [
+                      {
+                        "text": "Anything",
+                        "runs": [
+                          "Anything"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "None",
+                    "paragraphs": [
+                      {
+                        "text": "None",
+                        "runs": [
+                          "None"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Nobody\nNo one",
+                    "paragraphs": [
+                      {
+                        "text": "Nobody",
+                        "runs": [
+                          "Nobody"
+                        ]
+                      },
+                      {
+                        "text": "No one",
+                        "runs": [
+                          "No one"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Nowhere",
+                    "paragraphs": [
+                      {
+                        "text": "Nowhere",
+                        "runs": [
+                          "Nowhere"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Nothing",
+                    "paragraphs": [
+                      {
+                        "text": "Nothing",
+                        "runs": [
+                          "Nothing"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "People Places Things All Everybody Everyone Everywhere Everything Positive Somebody Someone Somewhere Something Negative Anybody Anyone Anywhere Anything None Nobody No one Nowhere Nothing",
+        "visibleTexts": [
+          "People Places Things All Everybody Everyone Everywhere Everything Positive Somebody Someone Somewhere Something Negative Anybody Anyone Anywhere Anything None Nobody No one Nowhere Nothing",
+          "We use indefinite pronouns to make generalizations about people, places and things.",
+          "To Consider 1. All indefinite pronouns have a definite connotation when using them. 2. The ones using “Any” mainly work in questions or negative sentences. However, it is possible to see them in positive sentences. 3. The ones using the particle “No” have already a full negative connotation like “never”. 4. They are used with verbs in singular (i.e. the verb for the 3rd person singular)"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "273",
+            "shapeName": "Google Shape;273;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "274",
+            "shapeName": "Google Shape;274;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "275",
+            "shapeName": "Google Shape;275;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts. ",
+          "Scenarios",
+          "Examples",
+          "1",
+          "Generalization",
+          "Everybody failed the test.",
+          "2",
+          "Being Indefinite",
+          "Do you want to go somewhere?",
+          "3",
+          "Being Secretive",
+          "- Who called?\n- Someone did (laughs)",
+          "To consider ",
+          "1. Indefinite pronouns can be used in any tense."
+        ],
+        "joinedText": "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts.\nScenarios\nExamples\n1\nGeneralization\nEverybody failed the test.\n2\nBeing Indefinite\nDo you want to go somewhere?\n3\nBeing Secretive\n- Who called?\n- Someone did (laughs)\nTo consider \n1. Indefinite pronouns can be used in any tense.",
+        "shapes": [
+          {
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1091050,
+              "y": 334375,
+              "cx": 6878700,
+              "cy": 860700,
+              "right": 7969750,
+              "bottom": 1195075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts. ",
+                "runs": [
+                  "We ",
+                  "may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts.",
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts. "
+            ],
+            "joinedText": "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts."
+          },
+          {
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 807400,
+              "y": 1988513,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3807400,
+              "bottom": 4988513
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Scenarios",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Generalization",
+                "runs": []
+              },
+              {
+                "text": "Everybody failed the test.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Being Indefinite",
+                "runs": []
+              },
+              {
+                "text": "Do you want to go somewhere?",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Being Secretive",
+                "runs": []
+              },
+              {
+                "text": "- Who called?\n- Someone did (laughs)",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Scenarios",
+              "Examples",
+              "1",
+              "Generalization",
+              "Everybody failed the test.",
+              "2",
+              "Being Indefinite",
+              "Do you want to go somewhere?",
+              "3",
+              "Being Secretive",
+              "- Who called?\n- Someone did (laughs)"
+            ],
+            "joinedText": "Scenarios\nExamples\n1\nGeneralization\nEverybody failed the test.\n2\nBeing Indefinite\nDo you want to go somewhere?\n3\nBeing Secretive\n- Who called?\n- Someone did (laughs)",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "282",
+            "shapeName": "Google Shape;282;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 5825824,
+              "y": 1195072,
+              "cx": 2724244,
+              "cy": 1546181,
+              "right": 8550068,
+              "bottom": 2741253
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "283",
+            "shapeName": "Google Shape;283;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 5255899,
+              "y": 3470422,
+              "cx": 2724244,
+              "cy": 1546181,
+              "right": 7980143,
+              "bottom": 5016603
+            },
+            "parentShapeId": "282"
+          },
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "283",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 5330655,
+              "y": 3927474,
+              "cx": 2719200,
+              "cy": 1011300,
+              "right": 8049855,
+              "bottom": 4938774
+            },
+            "parentShapeId": "283",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 5318250,
+              "y": 3498275,
+              "cx": 2249400,
+              "cy": 1440600,
+              "right": 7567650,
+              "bottom": 4938875
+            },
+            "parentShapeId": "282",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "1. Indefinite pronouns can be used in any tense.",
+                "runs": [
+                  "1. ",
+                  "Indefinite pronouns can be used in any tense."
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "1. Indefinite pronouns can be used in any tense."
+            ],
+            "joinedText": "To consider \n1. Indefinite pronouns can be used in any tense."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;g729cfa641f_0_0",
+            "bbox": {
+              "x": 807400,
+              "y": 1988513,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3807400,
+              "bottom": 4988513
+            },
+            "columnWidths": [
+              382850,
+              1473800,
+              2483525
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Scenarios",
+                    "paragraphs": [
+                      {
+                        "text": "Scenarios",
+                        "runs": [
+                          "Scenarios"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Generalization",
+                    "paragraphs": [
+                      {
+                        "text": "Generalization",
+                        "runs": [
+                          "Generalization"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Everybody failed the test.",
+                    "paragraphs": [
+                      {
+                        "text": "Everybody failed the test.",
+                        "runs": [
+                          "Everybody failed the test."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Being Indefinite",
+                    "paragraphs": [
+                      {
+                        "text": "Being Indefinite",
+                        "runs": [
+                          "Being Indefinite"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Do you want to go somewhere?",
+                    "paragraphs": [
+                      {
+                        "text": "Do you want to go somewhere?",
+                        "runs": [
+                          "Do you want to go somewhere?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Being Secretive",
+                    "paragraphs": [
+                      {
+                        "text": "Being Secretive",
+                        "runs": [
+                          "Being Secretive"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "- Who called?\n- Someone did (laughs)",
+                    "paragraphs": [
+                      {
+                        "text": "- Who called?",
+                        "runs": [
+                          "- ",
+                          "Who called?"
+                        ]
+                      },
+                      {
+                        "text": "- Someone did (laughs)",
+                        "runs": [
+                          "- Someone did (laughs)"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts.",
+        "visibleTexts": [
+          "We may consider use the indefinite pronouns for the following scenarios; though, it does not mean they cannot appear in other different contexts.",
+          "Scenarios Examples 1 Generalization Everybody failed the test. 2 Being Indefinite Do you want to go somewhere? 3 Being Secretive - Who called? - Someone did (laughs).",
+          "To consider Indefinite pronouns can be used in any tense."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "291",
+            "shapeName": "Google Shape;291;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "292",
+            "shapeName": "Google Shape;292;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "293",
+            "shapeName": "Google Shape;293;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "A. Listen to the audio and answer the questions your teacher makes. ",
+          "0.",
+          "Is there anyone here with an aspirin?",
+          "1.",
+          "_______will ever love you.",
+          "2.",
+          "I need ______ to go this weekend.",
+          "3.",
+          "We did _______ but being bored to tears.",
+          "4.",
+          "My parents were glad ______ was with their belts on for the trip.",
+          "5.",
+          "We haven’t done _______ yet.",
+          "6.",
+          "Stop letting your hair down and do ___________.",
+          "7.",
+          "Oh my! He was happy - go - lucky, the cars keys could be________.",
+          "8.",
+          "________ went _______ to do ________ about the project.",
+          "B. Read the sentences. What is the correct indefinite pronoun to use? Follow the example."
+        ],
+        "joinedText": "A. Listen to the audio and answer the questions your teacher makes.\n0.\nIs there anyone here with an aspirin?\n1.\n_______will ever love you.\n2.\nI need ______ to go this weekend.\n3.\nWe did _______ but being bored to tears.\n4.\nMy parents were glad ______ was with their belts on for the trip.\n5.\nWe haven’t done _______ yet.\n6.\nStop letting your hair down and do ___________.\n7.\nOh my! He was happy - go - lucky, the cars keys could be________.\n8.\n________ went _______ to do ________ about the project.\nB. Read the sentences. What is the correct indefinite pronoun to use? Follow the example.",
+        "shapes": [
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 205550,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 913550
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "A. ",
+                  "Listen to the audio and answer the questions your teacher makes",
+                  ". "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "A. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "299",
+            "shapeName": "Google Shape;299;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 1160238,
+              "y": 1972610,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4160238,
+              "bottom": 4972610
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "Is there anyone here with an aspirin?",
+                "runs": []
+              },
+              {
+                "text": "1.",
+                "runs": []
+              },
+              {
+                "text": "_______will ever love you.",
+                "runs": []
+              },
+              {
+                "text": "2.",
+                "runs": []
+              },
+              {
+                "text": "I need ______ to go this weekend.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "We did _______ but being bored to tears.",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "My parents were glad ______ was with their belts on for the trip.",
+                "runs": []
+              },
+              {
+                "text": "5.",
+                "runs": []
+              },
+              {
+                "text": "We haven’t done _______ yet.",
+                "runs": []
+              },
+              {
+                "text": "6.",
+                "runs": []
+              },
+              {
+                "text": "Stop letting your hair down and do ___________.",
+                "runs": []
+              },
+              {
+                "text": "7.",
+                "runs": []
+              },
+              {
+                "text": "Oh my! He was happy - go - lucky, the cars keys could be________.",
+                "runs": []
+              },
+              {
+                "text": "8.",
+                "runs": []
+              },
+              {
+                "text": "________ went _______ to do ________ about the project.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0.",
+              "Is there anyone here with an aspirin?",
+              "1.",
+              "_______will ever love you.",
+              "2.",
+              "I need ______ to go this weekend.",
+              "3.",
+              "We did _______ but being bored to tears.",
+              "4.",
+              "My parents were glad ______ was with their belts on for the trip.",
+              "5.",
+              "We haven’t done _______ yet.",
+              "6.",
+              "Stop letting your hair down and do ___________.",
+              "7.",
+              "Oh my! He was happy - go - lucky, the cars keys could be________.",
+              "8.",
+              "________ went _______ to do ________ about the project."
+            ],
+            "joinedText": "0.\nIs there anyone here with an aspirin?\n1.\n_______will ever love you.\n2.\nI need ______ to go this weekend.\n3.\nWe did _______ but being bored to tears.\n4.\nMy parents were glad ______ was with their belts on for the trip.\n5.\nWe haven’t done _______ yet.\n6.\nStop letting your hair down and do ___________.\n7.\nOh my! He was happy - go - lucky, the cars keys could be________.\n8.\n________ went _______ to do ________ about the project.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "300",
+            "shapeName": "Google Shape;300;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 1173300,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1881300
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Read the sentences. What is the correct indefinite pronoun to use? Follow the example.",
+                "runs": [
+                  "B",
+                  ". ",
+                  "Read the sentences. What is the correct indefinite pronoun to use? Follow the example."
+                ]
+              }
+            ],
+            "texts": [
+              "B. Read the sentences. What is the correct indefinite pronoun to use? Follow the example."
+            ],
+            "joinedText": "B. Read the sentences. What is the correct indefinite pronoun to use? Follow the example."
+          },
+          {
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;g729cfa641f_0_19",
+            "kind": "picture",
+            "bbox": {
+              "x": 7635206,
+              "y": 205550,
+              "cx": 708000,
+              "cy": 708000,
+              "right": 8343206,
+              "bottom": 913550
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "299",
+            "shapeName": "Google Shape;299;g729cfa641f_0_19",
+            "bbox": {
+              "x": 1160238,
+              "y": 1972610,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4160238,
+              "bottom": 4972610
+            },
+            "columnWidths": [
+              597800,
+              6225725
+            ],
+            "rows": [
+              {
+                "height": 204225,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Is there anyone here with an aspirin?",
+                    "paragraphs": [
+                      {
+                        "text": "Is there anyone here with an aspirin?",
+                        "runs": [
+                          "Is there ",
+                          "anyone",
+                          " here with an ",
+                          "aspirin",
+                          "?"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "1.",
+                    "paragraphs": [
+                      {
+                        "text": "1.",
+                        "runs": [
+                          "1."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "_______will ever love you.",
+                    "paragraphs": [
+                      {
+                        "text": "_______will ever love you.",
+                        "runs": [
+                          "_______will ever love you."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "2.",
+                    "paragraphs": [
+                      {
+                        "text": "2.",
+                        "runs": [
+                          "2."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I need ______ to go this weekend.",
+                    "paragraphs": [
+                      {
+                        "text": "I need ______ to go this weekend.",
+                        "runs": [
+                          "I need ______ to go this weekend."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We did _______ but being bored to tears.",
+                    "paragraphs": [
+                      {
+                        "text": "We did _______ but being bored to tears.",
+                        "runs": [
+                          "We did _______ but being bored to tears."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "My parents were glad ______ was with their belts on for the trip.",
+                    "paragraphs": [
+                      {
+                        "text": "My parents were glad ______ was with their belts on for the trip.",
+                        "runs": [
+                          "My parents were glad ______ was with their belts on for the trip."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "5.",
+                    "paragraphs": [
+                      {
+                        "text": "5.",
+                        "runs": [
+                          "5."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We haven’t done _______ yet.",
+                    "paragraphs": [
+                      {
+                        "text": "We haven’t done _______ yet.",
+                        "runs": [
+                          "We haven’t done _______ yet."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "6.",
+                    "paragraphs": [
+                      {
+                        "text": "6.",
+                        "runs": [
+                          "6."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Stop letting your hair down and do ___________.",
+                    "paragraphs": [
+                      {
+                        "text": "Stop letting your hair down and do ___________.",
+                        "runs": [
+                          "Stop letting your hair down and do ___________."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "7.",
+                    "paragraphs": [
+                      {
+                        "text": "7.",
+                        "runs": [
+                          "7."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Oh my! He was happy - go - lucky, the cars keys could be________.",
+                    "paragraphs": [
+                      {
+                        "text": "Oh my! He was happy - go - lucky, the cars keys could be________.",
+                        "runs": [
+                          "Oh my! He was happy - go - lucky, the cars keys could be________."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "8.",
+                    "paragraphs": [
+                      {
+                        "text": "8.",
+                        "runs": [
+                          "8."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "________ went _______ to do ________ about the project.",
+                    "paragraphs": [
+                      {
+                        "text": "________ went _______ to do ________ about the project.",
+                        "runs": [
+                          "________ went _______ to do ________ about the project."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "301",
+            "shapeName": "Google Shape;301;g729cfa641f_0_19",
+            "bbox": {
+              "x": 7635206,
+              "y": 205550,
+              "cx": 708000,
+              "cy": 708000,
+              "right": 8343206,
+              "bottom": 913550
+            },
+            "slide": 12
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 12
+          }
+        ]
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "A. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "A. Listen to the audio and answer the questions your teacher makes.",
+          "0. Does anyone here have an aspirin? 1. _______will ever love you. 2. I need ______ to go this weekend. 3. We did _______ but being bored to tears. 4. My parents were glad ______ was with their belts on for the trip. 5. We haven’t done _______ yet. 6. Stop letting your hair down and do ___________. 7. Oh my! He was happy - go - lucky, the cars keys could be________. 8. ________ went _______ to do ________ about the project.",
+          "B. Read the sentences. What is the correct indefinite pronoun to use? Follow the example."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYeM64x4Kz0SdGVMYHwzyDleBQfpCw9FUWYqNdmRaN1zjj_aDCZaaWOLl97BnJKHf75Pygd1EU27OxlFybCaI_IABcLVl0AwftkFx7TYNT_CH4f7fs6kcYn55PIH4oqNyE3kUATPss6JlMpwhD3kptOW9kKvHyeTRbxkB55KcT930jPiOFWnwdsTenLYW43ZQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.",
+          "About the party",
+          "Tanya (T) / Mia (M)",
+          "- T: So, how was the party?",
+          "- M: It was marvelous and I had a blast.",
+          "- T: Did everyone go with their bells on?",
+          "- M: Most people; though, SOMEONE was just wandering out of boredom. ",
+          "- T: SOMEONE? WAIT! Mike was there?",
+          "- M: Yeap! He was asking everybody about you... if they had seen you anywhere.   ",
+          "- T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything?",
+          "- M: Yeah, right? I guess someone is realizing he lost his chance. ",
+          "- T:  Indeed! I will go nowhere with that dude again.",
+          "Generalization",
+          "Being indefinite",
+          "Being secretive"
+        ],
+        "joinedText": "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.\nAbout the party\n\nTanya (T) / Mia (M)\n\n- T: So, how was the party?\n- M: It was marvelous and I had a blast.\n- T: Did everyone go with their bells on?\n- M: Most people; though, SOMEONE was just wandering out of boredom. \n- T: SOMEONE? WAIT! Mike was there?\n- M: Yeap! He was asking everybody about you... if they had seen you anywhere.   \n- T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything?\n- M: Yeah, right? I guess someone is realizing he lost his chance. \n- T:  Indeed! I will go nowhere with that dude again.\nGeneralization\nBeing indefinite\nBeing secretive",
+        "shapes": [
+          {
+            "shapeId": "306",
+            "shapeName": "Google Shape;306;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 563700,
+              "y": 1007925,
+              "cx": 4769400,
+              "cy": 3948600,
+              "right": 5333100,
+              "bottom": 4956525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 984725,
+              "y": 233250,
+              "cx": 6891600,
+              "cy": 601200,
+              "right": 7876325,
+              "bottom": 834450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.",
+                "runs": [
+                  "C",
+                  ". ",
+                  "Read the following dialogue and extract sentences with the functions studied and locate them in the space provided."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided."
+            ],
+            "joinedText": "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided."
+          },
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 671475,
+              "y": 1215725,
+              "cx": 4585500,
+              "cy": 3636900,
+              "right": 5256975,
+              "bottom": 4852625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "About the party",
+                "runs": [
+                  "About the party"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Tanya (T) / Mia (M)",
+                "runs": [
+                  "Tanya (T) / Mia (M)"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "- T: So, how was the party?",
+                "runs": [
+                  "- ",
+                  "T",
+                  ": So, how was the party?"
+                ]
+              },
+              {
+                "text": "- M: It was marvelous and I had a blast.",
+                "runs": [
+                  "- M",
+                  ": It was marvelous and I had a blast."
+                ]
+              },
+              {
+                "text": "- T: Did everyone go with their bells on?",
+                "runs": [
+                  "- T",
+                  ": Did everyone go with their bells on?"
+                ]
+              },
+              {
+                "text": "- M: Most people; though, SOMEONE was just wandering out of boredom. ",
+                "runs": [
+                  "- M",
+                  ": Most people; though, SOMEONE was just wandering out of boredom. "
+                ]
+              },
+              {
+                "text": "- T: SOMEONE? WAIT! Mike was there?",
+                "runs": [
+                  "- T",
+                  ": SOMEONE? WAIT! Mike was there?"
+                ]
+              },
+              {
+                "text": "- M: Yeap! He was asking everybody about you... if they had seen you anywhere.   ",
+                "runs": [
+                  "- M",
+                  ": Yeap! He was asking everybody about you... if they ",
+                  "ha",
+                  "d seen you anywhere.   "
+                ]
+              },
+              {
+                "text": "- T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything?",
+                "runs": [
+                  "- T",
+                  ": No way! No one would believe that! The guy who feasts his eyes on anyone or anything?"
+                ]
+              },
+              {
+                "text": "- M: Yeah, right? I guess someone is realizing he lost his chance. ",
+                "runs": [
+                  "- M:",
+                  " Yeah, right? I guess someone is realizing he lost his chance. "
+                ]
+              },
+              {
+                "text": "- T:  Indeed! I will go nowhere with that dude again.",
+                "runs": [
+                  "- T",
+                  ":  Indeed! I will go nowhere with that dude again."
+                ]
+              }
+            ],
+            "texts": [
+              "About the party",
+              "Tanya (T) / Mia (M)",
+              "- T: So, how was the party?",
+              "- M: It was marvelous and I had a blast.",
+              "- T: Did everyone go with their bells on?",
+              "- M: Most people; though, SOMEONE was just wandering out of boredom. ",
+              "- T: SOMEONE? WAIT! Mike was there?",
+              "- M: Yeap! He was asking everybody about you... if they had seen you anywhere.   ",
+              "- T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything?",
+              "- M: Yeah, right? I guess someone is realizing he lost his chance. ",
+              "- T:  Indeed! I will go nowhere with that dude again."
+            ],
+            "joinedText": "About the party\n\nTanya (T) / Mia (M)\n\n- T: So, how was the party?\n- M: It was marvelous and I had a blast.\n- T: Did everyone go with their bells on?\n- M: Most people; though, SOMEONE was just wandering out of boredom. \n- T: SOMEONE? WAIT! Mike was there?\n- M: Yeap! He was asking everybody about you... if they had seen you anywhere.   \n- T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything?\n- M: Yeah, right? I guess someone is realizing he lost his chance. \n- T:  Indeed! I will go nowhere with that dude again."
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_32",
+            "kind": "table",
+            "bbox": {
+              "x": 5514125,
+              "y": 1838325,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 8514125,
+              "bottom": 4838325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Generalization",
+                "runs": []
+              },
+              {
+                "text": "Being indefinite",
+                "runs": []
+              },
+              {
+                "text": "Being secretive",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Generalization",
+              "Being indefinite",
+              "Being secretive"
+            ],
+            "joinedText": "Generalization\nBeing indefinite\nBeing secretive",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_32",
+            "bbox": {
+              "x": 5514125,
+              "y": 1838325,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 8514125,
+              "bottom": 4838325
+            },
+            "columnWidths": [
+              1253425,
+              1912375
+            ],
+            "rows": [
+              {
+                "height": 559400,
+                "cells": [
+                  {
+                    "text": "Generalization",
+                    "paragraphs": [
+                      {
+                        "text": "Generalization",
+                        "runs": [
+                          "Generalization"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559400,
+                "cells": [
+                  {
+                    "text": "Being indefinite",
+                    "paragraphs": [
+                      {
+                        "text": "Being indefinite",
+                        "runs": [
+                          "Being indefinite"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559400,
+                "cells": [
+                  {
+                    "text": "Being secretive",
+                    "paragraphs": [
+                      {
+                        "text": "Being secretive",
+                        "runs": [
+                          "Being secretive"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.",
+        "visibleTexts": [
+          "C. Read the following dialogue and extract sentences with the functions studied and locate them in the space provided.",
+          "About the party Tanya (T) / Mia (M) - T: So, how was the party? - M: It was marvelous, and I had a blast. - T: Did everyone go with their bells on? - M: Most people; though, SOMEONE was just wandering out of boredom. - T: SOMEONE? WAIT! Mike was there? - M: Yeap! He was asking everybody about you... If they had seen you anywhere. - T: No way! No one would believe that! The guy who feasts his eyes on anyone or anything? - M: Yeah, right? I guess someone is realizing he lost his chance. - T: Indeed! I will go nowhere with that dude again.",
+          "Generalization Being Indefinite Being Secretive"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.",
+          "E. Write a 100 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.\nE. Write a 100 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "314",
+            "shapeName": "Google Shape;314;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1123275,
+              "y": 146675,
+              "cx": 6763500,
+              "cy": 1027500,
+              "right": 7886775,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.",
+                "runs": [
+                  "D. ",
+                  "Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied."
+                ]
+              }
+            ],
+            "texts": [
+              "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied."
+            ],
+            "joinedText": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied."
+          },
+          {
+            "shapeId": "315",
+            "shapeName": "Google Shape;315;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 737750,
+              "y": 2566550,
+              "cx": 7564500,
+              "cy": 1163700,
+              "right": 8302250,
+              "bottom": 3730250
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a 100 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied.",
+                "runs": [
+                  "E. ",
+                  "Write a 100 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied."
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a 100 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied."
+            ],
+            "joinedText": "E. Write a 100 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied."
+          },
+          {
+            "shapeId": "316",
+            "shapeName": "Google Shape;316;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 5975381,
+              "y": 852107,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 7293177,
+              "bottom": 2027629
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "316",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "316",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3835780,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 5030823
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.",
+        "visibleTexts": [
+          "D. Tell your teacher about an anecdote from your family or friends that you can describe with lots of details. Ask him about an anecdote too. Include the language studied.",
+          "E. Write an 80 -120 word text describing the most boring experience you have ever had in your life. Who was there? Where were you? What were you doing there? What would you recommend or suggest people to do in a similar situation? Include the language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "330",
+            "shapeName": "Google Shape;330;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "331",
+            "shapeName": "Google Shape;331;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "330",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "330",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "333",
+            "shapeName": "Google Shape;333;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "338",
+            "shapeName": "Google Shape;338;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "339",
+            "shapeName": "Google Shape;339;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "340",
+            "shapeName": "Google Shape;340;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "341",
+            "shapeName": "Google Shape;341;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "shapeId": "339",
+            "shapeName": "Google Shape;339;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "shapeId": "340",
+            "shapeName": "Google Shape;340;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 16
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "slide": 16
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "slide": 16
+          }
+        ]
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa3Tf3r7awYfHasC1-mhKSKA1pi2sHc8ybLUp229YLYiFh91krxht54mmEpQDdqftU7LmGEdl-szHxT27EMnv3rOVEE0t6Ap82N89ddt0lA0Iqo3WLNxcRgkf_v0WMvePqIYXhitlFHJ8U7mvm-2f48FpSBflJQlyYWiYqR63U3AOQ4mS_nd_AqKcI9FlDpKw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZSiWxmZrAyT2FQ6P-GEiK8iZfpH8VYXo-NgsOFVS59h6uW0uKER3hbL-RnpUMMim1_oa4YL2QygAHFDw0WgfYt9zHa5ev3zkNgB1dsQ9znNHFJt6Gu41PDOG_fmtJP5ZjJx99Cgj0f5zDtwTStsq0o0NyncmgDXLFOaQsV4QkMiJxwKqY-G8JeXy9R2N2lmQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaowz_zFKntDWwpXt7V_sfZRiboBgWiw611boKK4pWPF9JAgdCisgoglt0tsHsilOfFzdFgUSJjsLVQX1XSl_MUvuSl67txevNthEOeAmeDXL0OEoa9d-yUqM4-vL6AxMw4_Hx4xeF2nc7SY7dFH_13vbk8OFR_qE4vqNq2mQV0utbIRkhevhWx2p_-7rTuAw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Read-only evidence for original Unit 53 audio source access",
+  "observedAt": "2026-10-08",
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "scope": {
+    "unit": 53,
+    "audioIndex": 1,
+    "slideNumber": 4,
+    "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+    "contentId": "cmnmm9vxn002uw1qkj2y4mtcl"
+  },
+  "sourcePolicy": {
+    "publishedDeckReadOnly": true,
+    "originalMediaOnly": true,
+    "noTextToSpeechReplacement": true,
+    "noDatabaseWrites": true,
+    "noSourceArchiveOverwrite": true,
+    "noDirectAssetNavigation": true
+  },
+  "publishedDeck": {
+    "title": "NEW Never say die- Unit 53.pptx",
+    "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+    "slideCount": 17,
+    "slideUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000&slide=id.g72967b2bcc_0_37",
+    "visibleAudioControl": "Audio. Press enter to focus on player. Alt text title: Audio 1 - Unit 53.mp3",
+    "visiblePrompt": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+    "playback": {
+      "controlActivated": true,
+      "paused": false,
+      "readyState": 4,
+      "durationSeconds": 56.633469,
+      "audioSourceObserved": true,
+      "audioSourceTemplate": "https://drive.usercontent.google.com/download?id=1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L&playback&authuser=3"
+    },
+    "publishedHtml": {
+      "httpStatus": 200,
+      "bytes": 3831895,
+      "sha256": "826f8934ebaf87a4f4850154f2bb2c242c0aa162681fdb3dd06b0870e4af58cc"
+    }
+  },
+  "sourceIdentity": {
+    "pageObjectId": "g72967b2bcc_0_37",
+    "elementObjectId": "g1c92af930e1_0_0",
+    "publishedMediaObjectId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+    "label": "Audio 1 - Unit 53.mp3",
+    "idKind": "published-media-object",
+    "driveFileIdVerified": false,
+    "sourceFile": "docs/audit/source-files/cmnmm9vul002tw1qkq6vmdn9t.json",
+    "sourceFileSha256": "fc9709bcf3de1372ef184ca60630df138cb37ed45f2723675ccd95bb6e4083e8"
+  },
+  "pageAssets": {
+    "inventoryId": "4c50b60f-be52-448d-ace2-ce2f39520f84",
+    "assetId": "83ab084a756f0155",
+    "assetKind": "other",
+    "assetSource": "resource audio",
+    "publishedMediaObjectId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+    "bundleAttempt": {
+      "requestedAssetIds": [
+        "83ab084a756f0155"
+      ],
+      "result": "blocked",
+      "error": "Asset bundle request included unsupported asset kinds"
+    },
+    "locatorDownloadAttempt": {
+      "element": "audio",
+      "result": "timed-out-without-local-file",
+      "timeoutSeconds": 120
+    },
+    "playbackPageDownloadAttempt": {
+      "element": "video",
+      "result": "blocked",
+      "error": "Matched element does not expose a downloadable URL"
+    }
+  },
+  "normalUiInspection": {
+    "playerOpened": true,
+    "moreControlsOpened": true,
+    "moreControlsItems": [
+      "Playback speed"
+    ],
+    "downloadOrSaveItemPresent": false,
+    "audioFileTitleOrOpenOriginalLinkPresent": false,
+    "nativeContextMenuAttempted": true,
+    "nativeContextMenuExposedDownloadOrSave": false,
+    "result": "no-public-download-ui"
+  },
+  "retrieval": {
+    "status": "played-original-but-bytes-unretrievable",
+    "originalBytesRetrieved": false,
+    "sha256": null,
+    "bytes": null,
+    "exactPublicSourceGet": {
+      "method": "GET",
+      "sourceId": "1aUFmqvXvMo4LiQ7V9tz2L695QYoY_J_L",
+      "queryPolicy": "exact observed source without cookies or signed query tokens",
+      "httpStatus": 200,
+      "contentType": "text/html",
+      "responseBytes": 946272,
+      "audioBytes": false
+    },
+    "blocker": "The documented pageAssets bundle rejected the observed audio asset because Chrome classified it as kind 'other'. The documented media locator timed out on the audio element and the loaded playback video exposed no downloadable URL. The exact public source GET returned HTML rather than audio bytes. No alternate URL probing, hidden browser state, cookies, signed query tokens, or account authorization was used."
+  },
+  "nextAction": "Keep Unit 53 Audio 1 source identity and published playback available for later documented source-connector retrieval. Do not substitute generated audio or mark original bytes recovered from this evidence."
+}

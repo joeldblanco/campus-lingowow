@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "composer": "scripts/content/compose-course-builder-inputs.py",
+  "draftInputs": "docs\\audit\\course-builder-inputs-draft.json",
+  "materializedInputs": {
+    "sourceDir": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course-builder-materialized\\sources",
+    "nativeAudit": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course-builder-materialized\\native-audit.json",
+    "audioManifest": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course-builder-materialized\\audio-manifest.json",
+    "exerciseReview": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course-builder-materialized\\exercise-review.json",
+    "listeningReview": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course-builder-materialized\\listening-review.json"
+  },
+  "builder": {
+    "status": "ready",
+    "path": "docs\\audit\\course-builder-learning-draft.json",
+    "sourceCount": 51,
+    "planCount": 51,
+    "publishableCount": 51,
+    "blockedCount": 0,
+    "blockerCount": 0,
+    "blockersByCode": {},
+    "blockedLessons": [],
+    "unsupportedSlideCount": 0,
+    "returnCode": 0,
+    "stdoutTail": "",
+    "stderrTail": ""
+  },
+  "counts": {
+    "publishedSources": 51,
+    "expectedPublishedSources": 51,
+    "stageAudioRecords": 103,
+    "stageImageRecords": 303,
+    "stageAudioReady": 103,
+    "stageImageReady": 301,
+    "stageImageDuplicates": 2,
+    "audio": {
+      "reviewedRecords": 103,
+      "stagedRecords": 103,
+      "normalizedRecords": 103,
+      "unitsWithAudio": 51,
+      "expectedUnits": 51
+    },
+    "figures": {
+      "candidateReferences": 304,
+      "readyReferences": 303,
+      "uniqueSourceSha256": 301,
+      "unitsWithFigures": 51,
+      "mappingCounts": {
+        "reviewed-figures": 286,
+        "reviewed-figures+visual-proof": 1,
+        "units-33-36-visual-proof": 16,
+        "visual-proof": 1
+      }
+    },
+    "exerciseReviewLessons": 51,
+    "exerciseSemanticPatch": {
+      "status": "applied",
+      "applied": 20,
+      "rejected": 0,
+      "remainingHardBlocks": 1,
+      "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch.json"
+    },
+    "exerciseTeacherNotesReview": {
+      "status": "applied",
+      "applied": 16,
+      "rejected": 0,
+      "appliedItemIds": [
+        "u04-s15-d",
+        "u21-s06-review",
+        "u22-s06-review",
+        "u23-s06-review",
+        "u24-s06-review",
+        "u25-s06-review",
+        "u26-s06-review",
+        "u27-s06-review",
+        "u28-s06-review",
+        "u29-s06-review",
+        "u31-s06-review",
+        "u32-s06-review",
+        "u37-s06-review",
+        "u38-s06-review",
+        "u39-s06-review",
+        "u40-s06-review"
+      ],
+      "rejectedItemIds": [],
+      "baseReviewPath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course-exercise-review.json",
+      "sourceReviewRef": "docs\\audit\\course-exercise-review-teacher-notes.json"
+    },
+    "exerciseErrataReview": {
+      "status": "applied",
+      "applied": 1,
+      "rejected": 0,
+      "appliedItemIds": [
+        "u38-s13-a"
+      ],
+      "rejectedItemIds": [],
+      "baseReviewPath": "C:\\Users\\ACER\\.codex\\worktrees\\lesson-guided-pilot\\web\\docs\\audit\\course-exercise-review.json",
+      "sourceReviewRef": "docs\\audit\\course-exercise-review-unit38-s13-errata.json"
+    },
+    "unit6Recovery": {
+      "status": "applied",
+      "applied": 1,
+      "rejected": 0,
+      "itemId": "unit6-slide6-teacher-notes",
+      "sourceReviewRef": "docs\\audit\\unit6-slide6-recovery.json"
+    },
+    "tableReview": {
+      "status": "applied",
+      "entries": 11,
+      "applied": 11,
+      "structured": 10,
+      "textOnly": 1,
+      "publishedProjections": 4,
+      "nativeProjections": 6,
+      "excludedNativeTables": 8,
+      "rejected": 0
+    },
+    "vectorReview": {
+      "status": "supplied",
+      "entries": [
+        {
+          "unit": 3,
+          "publishedSlide": 4
+        }
+      ]
+    },
+    "listeningReviewEntries": 53,
+    "listeningReviewRejectedEntries": 0,
+    "listeningReviewItems": 210
+  },
+  "composerBlockers": {
+    "total": 0,
+    "byCode": {},
+    "units": []
+  },
+  "composerBlockerDetails": [],
+  "readyForApply": true,
+  "policy": {
+    "publishedSlidesAuthoritative": true,
+    "genericNativeImageRefsExcluded": true,
+    "unit33To36FiguresRequireVisualProof": true,
+    "oldFigureCorrespondenceIgnoredWhenProofProvided": true,
+    "exerciseSemanticPatchExplicitOnly": true,
+    "teacherNotesReviewExplicitOnly": true,
+    "exerciseErrataReviewExplicitOnly": true,
+    "unit6RecoveryExplicitOnly": true,
+    "tableReviewPublishedPriority": true,
+    "tableReviewNativeMismatchesExcluded": true,
+    "vectorReviewExplicitOnly": true,
+    "unit3VectorReviewSupplied": true,
+    "exerciseSemanticPatchSummary": {
+      "status": "applied",
+      "applied": 20,
+      "rejected": 0,
+      "remainingHardBlocks": 1,
+      "sourcePatchRef": "docs\\audit\\course-exercise-review-semantic-patch.json"
+    },
+    "unresolvedUnit33To36FiguresStayBlocked": true,
+    "unit3DoesNotInventAudio1": true,
+    "databaseOrPublicWrites": false
+  }
+}

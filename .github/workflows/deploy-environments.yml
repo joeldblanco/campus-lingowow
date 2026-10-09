@@ -20,6 +20,7 @@ jobs:
     timeout-minutes: 20
     env:
       TZ: America/Lima
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
       DATABASE_URL: postgresql://test:test@localhost:5432/test
       RESEND_API_KEY: re_ci_disabled
       PAYPAL_CLIENT_ID: ci_disabled

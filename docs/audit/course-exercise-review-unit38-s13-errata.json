@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Source-preserving review patch for the unresolved Unit 38 slide 13 correction item.",
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "baseReview": {
+    "path": "docs/audit/course-exercise-review.json",
+    "sha256": "d8c6966d26c3601eb2f499169a8f69ef90a94dfae74f098ee66426c9a4d21dc8"
+  },
+  "publishedSource": {
+    "path": "docs/audit/source-files/cmnmm9qog001kw1qkht1v6i81.json",
+    "sha256": "c5dd9c7999b9adc9cfbae82ac497f7cc2efd42dbd6a8c3e683f60c301d88320d",
+    "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+    "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTRpvGytWJK57nUqkzdpf9JCTBi5ZA9GWqK1BeQ7v2VRQWW-Ae17Vo6j2Iumgqz6g/embed?start=false&loop=false&delayms=3000"
+  },
+  "patches": [
+    {
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "slideNumber": 13,
+      "itemId": "u38-s13-a",
+      "kind": "grammar-correction",
+      "reviewStatus": "reviewed-with-open-completions",
+      "sourcePrompt": "I have chance my arm so long for this company.",
+      "openResponse": {
+        "prompt": "Prop\u00f3n una correcci\u00f3n clara.",
+        "sourcePrompt": "I have chance my arm so long for this company.",
+        "feedbackContext": "La redacci\u00f3n publicada admite m\u00faltiples significados y reparaciones v\u00e1lidas; no hay una correcci\u00f3n can\u00f3nica \u00fanica."
+      },
+      "answerPolicy": {
+        "canonicalAnswer": null,
+        "acceptedAnswers": [],
+        "preserveOriginalItem": true,
+        "preserveSevenDeterministicAnswerItems": true
+      },
+      "deterministicItems": [
+        "item-1",
+        "item-2",
+        "item-4",
+        "item-5",
+        "item-6",
+        "item-7",
+        "item-8"
+      ],
+      "rationale": "The published sentence is corrupted and does not establish whether a lexical repair or a causative construction was intended. Keep it available as an open response so formative feedback can accept multiple source-grounded repairs without inventing a key.",
+      "mergeContract": {
+        "replaceReviewStatus": true,
+        "setOpenResponse": true,
+        "setAmbiguousAnswerCanonicalToNull": true,
+        "setAmbiguousAnswerAcceptedToEmpty": true,
+        "nativeOpenType": "essay",
+        "aiGrading": true,
+        "responseMode": "formative-open-response",
+        "archiveOriginalPromptInMetadata": true
+      }
+    }
+  ]
+}

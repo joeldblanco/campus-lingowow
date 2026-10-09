@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "scope": "Published media evidence for Unit 12 and Units 53-56; source extraction only.",
+  "sources": {
+    "publishedManifest": "docs/audit/course-source-manifest.json",
+    "driveManifest": "docs/audit/drive-source-manifest.json",
+    "audioMaterialization": "docs/audit/drive-audio-materialization.json"
+  },
+  "unit12": {
+    "unit": 12,
+    "module": {
+      "id": "cmk3z6ldu0001jp04momqx6e5",
+      "order": 3,
+      "title": "Módulo 3"
+    },
+    "lesson": {
+      "id": "cmk3zidzg0001ic04ffiveeqx",
+      "order": 5,
+      "title": "The greatest!",
+      "videoUrl": null
+    },
+    "deckTitle": "Unit 12 - The greatest!.pptx",
+    "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQ3_fFgVukkxmSiS3DfpQwcFRCo2giTSdoJ_8lN1rolDGgIteZ4ntydudqQmaY1WQ/pub?start=false&loop=false&delayms=3000",
+    "slideCount": 17,
+    "audioIconSlides": [
+      4,
+      14
+    ],
+    "publishedOriginalAudioUrls": [],
+    "publishedOriginalVideoUrls": [],
+    "externalLinks": [],
+    "publishedMediaSummary": {
+      "audioUrls": [],
+      "videoUrls": [],
+      "audioIconCount": 2,
+      "missingAudioSourceCount": 2,
+      "renderedSlideImageCount": 25,
+      "tableCount": 0
+    },
+    "publishedWarnings": [],
+    "authoritativeDriveAudioCandidates": [
+      {
+        "id": "1Qsy2yrpGDsN3gDvb9qJDvEnQAGecl_gi",
+        "title": "Unit 12 - The greatest - Audio 1.mp3",
+        "mimeType": "audio/mpeg",
+        "url": "https://drive.google.com/file/d/1Qsy2yrpGDsN3gDvb9qJDvEnQAGecl_gi/view?usp=drivesdk",
+        "size": "476751",
+        "level": "A",
+        "path": [
+          "A levels",
+          "Audios",
+          "Module 3"
+        ],
+        "role": "lesson-audio-candidate",
+        "mappingReason": "explicit-unit-in-title",
+        "localPath": "docs\\audit\\source-originals\\audio\\A-unit-12-lesson-01-1Qsy2yrpGDsN3gDvb9qJDvEnQAGecl_gi.mp3"
+      },
+      {
+        "id": "1N4MoeyiqNTyMI55nIIRLTg_j7CjYSnbY",
+        "title": "Unit 12 - The greatest - Audio 2.mp3",
+        "mimeType": "audio/mpeg",
+        "url": "https://drive.google.com/file/d/1N4MoeyiqNTyMI55nIIRLTg_j7CjYSnbY/view?usp=drivesdk",
+        "size": "774338",
+        "level": "A",
+        "path": [
+          "A levels",
+          "Audios",
+          "Module 3"
+        ],
+        "role": "lesson-audio-candidate",
+        "mappingReason": "explicit-unit-in-title",
+        "localPath": "docs\\audit\\source-originals\\audio\\A-unit-12-lesson-02-1N4MoeyiqNTyMI55nIIRLTg_j7CjYSnbY.mp3"
+      },
+      {
+        "id": "1cX6iYouOB-x2lNXti2SUpsX3Nv8UtIDl",
+        "title": "Unit 12 - The Greatest.mp3",
+        "mimeType": "audio/mpeg",
+        "url": "https://drive.google.com/file/d/1cX6iYouOB-x2lNXti2SUpsX3Nv8UtIDl/view?usp=drivesdk",
+        "size": "455853",
+        "level": "A",
+        "path": [
+          "A levels",
+          "Audios",
+          "Module 3",
+          "Audio self - study material 3 "
+        ],
+        "role": "self-study",
+        "mappingReason": "explicit-unit-in-title",
+        "localPath": "docs\\audit\\source-originals\\audio\\A-unit-12-self-study-03-1cX6iYouOB-x2lNXti2SUpsX3Nv8UtIDl.mp3"
+      }
+    ],
+    "authoritativeDrivePresentationCandidates": [
+      {
+        "id": "1CdyEXVMB8XNFGjp_HZnG9vvc7UCETW4E",
+        "title": "The greatest.pptx",
+        "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "url": "https://docs.google.com/presentation/d/1CdyEXVMB8XNFGjp_HZnG9vvc7UCETW4E/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+        "size": "518254",
+        "level": "A",
+        "path": [
+          "A levels",
+          "Module 3"
+        ],
+        "role": "legacy-alternate",
+        "mappingReason": "legacy-title-within-module",
+        "localPath": "docs\\audit\\source-originals\\A-unit-12-legacy-01-1CdyEXVMB8XNFGjp_HZnG9vvc7UCETW4E.pptx",
+        "localBytes": 518254,
+        "sha256": "8ea6259e3b99ee2c11d1e0f582642db46bee8727bce60ff3f9cddf003ff8e2f1"
+      },
+      {
+        "id": "1XZ-Xo2t6oRT3eG8bHILeVfUgHoD-nUOM",
+        "title": "Unit 12 - The greatest!.pptx",
+        "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "url": "https://docs.google.com/presentation/d/1XZ-Xo2t6oRT3eG8bHILeVfUgHoD-nUOM/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+        "size": "1468403",
+        "level": "A",
+        "path": [
+          "A levels",
+          "Module 3"
+        ],
+        "role": "primary-candidate",
+        "mappingReason": "explicit-unit-in-title",
+        "localPath": "docs\\audit\\source-originals\\A-unit-12-primary-02-1XZ-Xo2t6oRT3eG8bHILeVfUgHoD-nUOM.pptx",
+        "localBytes": 1468403,
+        "sha256": "78ce5553134be61c3355171a1f12aa20ffb4fb6846d8db5cef9158db0b3c4b79"
+      }
+    ],
+    "driveNotes": [],
+    "conclusion": "Published deck contains audio icon(s) but no original audio/video URL. Preserve the audio icon as source evidence; attach only an exact labeled Drive candidate after independent alignment."
+  },
+  "unit12DriveAudioCandidates": [
+    {
+      "unit": 12,
+      "id": "1Qsy2yrpGDsN3gDvb9qJDvEnQAGecl_gi",
+      "title": "Unit 12 - The greatest - Audio 1.mp3",
+      "mimeType": "audio/mpeg",
+      "url": "https://drive.google.com/file/d/1Qsy2yrpGDsN3gDvb9qJDvEnQAGecl_gi/view?usp=drivesdk",
+      "role": "lesson-audio-candidate",
+      "path": "docs\\audit\\source-originals\\audio\\A-unit-12-lesson-01-1Qsy2yrpGDsN3gDvb9qJDvEnQAGecl_gi.mp3",
+      "exists": true,
+      "bytes": 476751,
+      "sha256": "102e82d7464ec0212cedfcd7923bf426dbc8b5bcbc4d608514a64b9114b17251"
+    },
+    {
+      "unit": 12,
+      "id": "1N4MoeyiqNTyMI55nIIRLTg_j7CjYSnbY",
+      "title": "Unit 12 - The greatest - Audio 2.mp3",
+      "mimeType": "audio/mpeg",
+      "url": "https://drive.google.com/file/d/1N4MoeyiqNTyMI55nIIRLTg_j7CjYSnbY/view?usp=drivesdk",
+      "role": "lesson-audio-candidate",
+      "path": "docs\\audit\\source-originals\\audio\\A-unit-12-lesson-02-1N4MoeyiqNTyMI55nIIRLTg_j7CjYSnbY.mp3",
+      "exists": true,
+      "bytes": 774338,
+      "sha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
+    },
+    {
+      "unit": 12,
+      "id": "1cX6iYouOB-x2lNXti2SUpsX3Nv8UtIDl",
+      "title": "Unit 12 - The Greatest.mp3",
+      "mimeType": "audio/mpeg",
+      "url": "https://drive.google.com/file/d/1cX6iYouOB-x2lNXti2SUpsX3Nv8UtIDl/view?usp=drivesdk",
+      "role": "self-study",
+      "path": "docs\\audit\\source-originals\\audio\\A-unit-12-self-study-03-1cX6iYouOB-x2lNXti2SUpsX3Nv8UtIDl.mp3",
+      "exists": true,
+      "bytes": 455853,
+      "sha256": "b74572a79469b6a1bf49fe0552bd63b3b974759323bad7300376d26016abf513"
+    }
+  ],
+  "unit12UnassignedClipReview": {
+    "id": "1mUXQL69mQaJX1kgkWEjjlTd6msdLiv8C",
+    "title": "We are the world!.mp3",
+    "url": "https://drive.google.com/file/d/1mUXQL69mQaJX1kgkWEjjlTd6msdLiv8C/view?usp=drivesdk",
+    "level": "A",
+    "path": [
+      "A levels",
+      "Audios"
+    ],
+    "localPath": "docs\\audit\\source-originals\\audio\\A-unassigned-we-are-the-world-1mUXQL69mQaJX1kgkWEjjlTd6msdLiv8C.mp3",
+    "mimeType": "audio/mpeg",
+    "bytes": 38312,
+    "durationSeconds": 2.320544,
+    "reason": "no-unit-in-audio-title; no link from Unit 12 published slides; too short to treat as a lesson recording",
+    "useAsUnit12Source": false
+  },
+  "units53to56": [
+    {
+      "unit": 53,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lesson": {
+        "id": "cmnmm9vul002tw1qkq6vmdn9t",
+        "order": 1,
+        "title": "Unit 53",
+        "videoUrl": null
+      },
+      "deckTitle": "NEW Never say die- Unit 53.pptx",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vT59Ou8w4N2auwMDKSrQlTTuouQ-koYqWX7tEZFvMD-QDHC_sDusGOreOXhh9jiWg/embed?start=false&loop=false&delayms=3000",
+      "slideCount": 17,
+      "audioIconSlides": [
+        4,
+        12
+      ],
+      "publishedOriginalAudioUrls": [],
+      "publishedOriginalVideoUrls": [],
+      "externalLinks": [
+        "https://news.stanford.edu/2020/05/04/world-war-iis-contradictory-lessons/"
+      ],
+      "publishedMediaSummary": {
+        "audioUrls": [],
+        "videoUrls": [],
+        "audioIconCount": 2,
+        "missingAudioSourceCount": 2,
+        "renderedSlideImageCount": 16,
+        "tableCount": 0
+      },
+      "publishedWarnings": [],
+      "authoritativeDriveAudioCandidates": [],
+      "authoritativeDrivePresentationCandidates": [],
+      "driveNotes": [
+        "no-native-presentation-candidate-in-authoritative-folder",
+        "no-native-audio-candidate-in-authoritative-folder"
+      ],
+      "conclusion": "Published deck contains audio icon(s) but no original audio/video URL. Preserve the audio icon as source evidence; attach only an exact labeled Drive candidate after independent alignment."
+    },
+    {
+      "unit": 54,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lesson": {
+        "id": "cmnmm9w6q002ww1qkmhschbtj",
+        "order": 2,
+        "title": "Unit 54",
+        "videoUrl": null
+      },
+      "deckTitle": "NEW This is our shot in the arm - Unit 54.pptx",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQSe5443Q89NpWNmd80mpQ3GX942hzqMI-P1c7cbZb4goXDDDfF_i95-I8EtvFgvQ/embed?start=false&loop=false&delayms=3000",
+      "slideCount": 17,
+      "audioIconSlides": [
+        4,
+        13
+      ],
+      "publishedOriginalAudioUrls": [],
+      "publishedOriginalVideoUrls": [],
+      "externalLinks": [
+        "https://www.reuters.com/article/us-britain-titanic-book-idUSTRE68L1HG20100922"
+      ],
+      "publishedMediaSummary": {
+        "audioUrls": [],
+        "videoUrls": [],
+        "audioIconCount": 2,
+        "missingAudioSourceCount": 2,
+        "renderedSlideImageCount": 16,
+        "tableCount": 0
+      },
+      "publishedWarnings": [],
+      "authoritativeDriveAudioCandidates": [],
+      "authoritativeDrivePresentationCandidates": [],
+      "driveNotes": [
+        "no-native-presentation-candidate-in-authoritative-folder",
+        "no-native-audio-candidate-in-authoritative-folder"
+      ],
+      "conclusion": "Published deck contains audio icon(s) but no original audio/video URL. Preserve the audio icon as source evidence; attach only an exact labeled Drive candidate after independent alignment."
+    },
+    {
+      "unit": 55,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lesson": {
+        "id": "cmnmm9wiv002zw1qkz23p6kdp",
+        "order": 3,
+        "title": "Unit 55",
+        "videoUrl": null
+      },
+      "deckTitle": "NEW That's anyone's call - Unit 55.pptx",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vQwygT74B4YFgRltVz73gLIMEvyLZr_IP8S6yf_rvQ3Qn6l2EbeYydkL3knPUNA_Q/embed?start=false&loop=false&delayms=3000",
+      "slideCount": 17,
+      "audioIconSlides": [
+        4,
+        13
+      ],
+      "publishedOriginalAudioUrls": [],
+      "publishedOriginalVideoUrls": [],
+      "externalLinks": [
+        "https://www.washingtonpost.com/national-security/2022/08/16/zelensky-interview-transcript/"
+      ],
+      "publishedMediaSummary": {
+        "audioUrls": [],
+        "videoUrls": [],
+        "audioIconCount": 2,
+        "missingAudioSourceCount": 2,
+        "renderedSlideImageCount": 16,
+        "tableCount": 0
+      },
+      "publishedWarnings": [],
+      "authoritativeDriveAudioCandidates": [],
+      "authoritativeDrivePresentationCandidates": [],
+      "driveNotes": [
+        "no-native-presentation-candidate-in-authoritative-folder",
+        "no-native-audio-candidate-in-authoritative-folder"
+      ],
+      "conclusion": "Published deck contains audio icon(s) but no original audio/video URL. Preserve the audio icon as source evidence; attach only an exact labeled Drive candidate after independent alignment."
+    },
+    {
+      "unit": 56,
+      "module": {
+        "id": "cmnmm9lx3000fw1qkh6ijo1px",
+        "order": 14,
+        "title": "Módulo 14"
+      },
+      "lesson": {
+        "id": "cmnmm9wv00032w1qkxr02azgp",
+        "order": 4,
+        "title": "Unit 56",
+        "videoUrl": null
+      },
+      "deckTitle": "NEW Blood, Sweat and Tears- Unit 56.pptx",
+      "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTeRpvarj3bbdc9H6Fb4ZN9IYRDOsyQD_zGgZGqjKQ6Wr5fCgO0Ik7pHhOBoEFWDg/embed?start=false&loop=false&delayms=3000",
+      "slideCount": 17,
+      "audioIconSlides": [
+        4,
+        13
+      ],
+      "publishedOriginalAudioUrls": [],
+      "publishedOriginalVideoUrls": [],
+      "externalLinks": [
+        "https://www.lifehack.org/articles/communication/12-things-you-should-remember-when-feeling-lost-and-lonely.html"
+      ],
+      "publishedMediaSummary": {
+        "audioUrls": [],
+        "videoUrls": [],
+        "audioIconCount": 2,
+        "missingAudioSourceCount": 2,
+        "renderedSlideImageCount": 16,
+        "tableCount": 0
+      },
+      "publishedWarnings": [],
+      "authoritativeDriveAudioCandidates": [],
+      "authoritativeDrivePresentationCandidates": [],
+      "driveNotes": [
+        "no-native-presentation-candidate-in-authoritative-folder",
+        "no-native-audio-candidate-in-authoritative-folder"
+      ],
+      "conclusion": "Published deck contains audio icon(s) but no original audio/video URL. Preserve the audio icon as source evidence; attach only an exact labeled Drive candidate after independent alignment."
+    }
+  ],
+  "blockers": [
+    {
+      "units": [
+        12,
+        53,
+        54,
+        55,
+        56
+      ],
+      "kind": "missing-published-original-audio-url",
+      "evidence": "Each published record has audioIconCount=2 and audioUrls=[]; no slide media entry resolves to a source audio/video URL.",
+      "action": "Do not invent or substitute audio. Resolve against exact Drive audio candidates/transcripts before native lesson import."
+    },
+    {
+      "units": [
+        53,
+        54,
+        55,
+        56
+      ],
+      "kind": "no-authoritative-native-drive-source",
+      "evidence": "The authoritative source folder has no native presentation candidate and no audio candidate for these units.",
+      "action": "Use published slide text/media evidence and request the original native/audio files if fidelity requires them."
+    },
+    {
+      "units": [
+        12
+      ],
+      "kind": "unassigned-audio-not-a-match",
+      "evidence": "We are the world!.mp3 is a root-level 2.320544-second clip with no unit label or published slide link.",
+      "action": "Keep it unassigned; do not use it for Unit 12."
+    }
+  ]
+}

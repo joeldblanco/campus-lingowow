@@ -1,0 +1,2247 @@
+{
+  "schemaVersion": 1,
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "sourcePolicy": {
+    "sourceArchive": "course-exercise-review.json remains read-only; published source metadata is copied into each set",
+    "audioEvidence": "Every answer item carries the exact sourceAudioSha256 and a literal transcript evidence string",
+    "authoring": "Units 3–15 Audio 2 use four manually authored semantic multiple-choice questions per clip",
+    "fallbackPolicy": "Raw ASR-fragment fallback records remain blocked in reviewed-listening-exercises.json and are never accepted",
+    "uncertainty": "Aggregate ASR flags remain visible; only clear clauses were selected as answer evidence",
+    "audio3": "Audio 3 pronunciation remains outside this artifact and blocked pending source word-list review",
+    "unit7Replacement": "Use Audio 1 at published slide 15 only; preserve superseded Audio 2 review as rejected provenance."
+  },
+  "counts": {
+    "exerciseSets": 13,
+    "reviewedSets": 13,
+    "blockedSets": 0,
+    "reviewedItems": 52,
+    "blockedItems": 0,
+    "correctedUnit7Audio1": 4
+  },
+  "exercises": [
+    {
+      "key": {
+        "lessonId": "cmk0vi2e30003l404hjqaqibj",
+        "slideNumber": null,
+        "unit": 3,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "unit": 3,
+      "lessonTitle": "Every Day I…",
+      "slideNumber": null,
+      "audioIndex": 2,
+      "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
+      "sourceFilename": "Unit 3 - Everyday I... - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-03-lesson-03-1fADJNm59R_W7HK2zQkoxv4HCY5XUJ6uv.mp3",
+      "sourceExactTexts": [],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9779325723648071,
+        "avgLogprob": -0.2625007266468472,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What does the speaker do after breakfast?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Take a shower",
+              "accepted": [
+                "Take a shower"
+              ],
+              "evidence": "I wake up very early in the morning, have breakfast and I take a shower.",
+              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
+            }
+          ],
+          "explicitOptions": [
+            "Take a shower",
+            "Go to the gym",
+            "Go to bed",
+            "Start work"
+          ],
+          "correct": "Take a shower",
+          "evidence": "I wake up very early in the morning, have breakfast and I take a shower.",
+          "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How does the speaker travel to work?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "By bus",
+              "accepted": [
+                "By bus"
+              ],
+              "evidence": "After that, I go out to take the bus and go to work.",
+              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
+            }
+          ],
+          "explicitOptions": [
+            "By bus",
+            "By train",
+            "By bicycle",
+            "By taxi"
+          ],
+          "correct": "By bus",
+          "evidence": "After that, I go out to take the bus and go to work.",
+          "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What time does the speaker usually finish work?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "5 p.m.",
+              "accepted": [
+                "5 p.m."
+              ],
+              "evidence": "I arrive at 8 o'clock and I usually finish at 5 p.m.",
+              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
+            }
+          ],
+          "explicitOptions": [
+            "5 p.m.",
+            "8 a.m.",
+            "Noon",
+            "8 p.m."
+          ],
+          "correct": "5 p.m.",
+          "evidence": "I arrive at 8 o'clock and I usually finish at 5 p.m.",
+          "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What does the speaker do on Thursdays?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Go to the gym",
+              "accepted": [
+                "Go to the gym"
+              ],
+              "evidence": "On Thursdays, I always go to the gym.",
+              "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408"
+            }
+          ],
+          "explicitOptions": [
+            "Go to the gym",
+            "Visit family",
+            "Cook dinner",
+            "Study at home"
+          ],
+          "correct": "Go to the gym",
+          "evidence": "On Thursdays, I always go to the gym.",
+          "sourceAudioSha256": "8aaf47e29440b086abe0de0b6f4c2a4a1d33aeba0e796688e8fe5506846be408",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk0vijvj0001i904j8k1di8d",
+        "slideNumber": 13,
+        "unit": 4,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "unit": 4,
+      "lessonTitle": "I love it!",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
+      "sourceFilename": "Unit 4 - I love it! - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-04-lesson-02-1AR32kBLWOHZCdvCgrpWteJIMI900Uk3_.mp3",
+      "sourceExactTexts": [
+        "A. Listen to the audio and extract the information about likes and preferences. Write them in the chat box.",
+        "B. Check the following sentences and identify the degree of likeness or preference they have. Locate the examples under their corresponding category.",
+        "I am fond of soccer. I love taking pictures. I like eating ice cream. I am a fan of hiking mountains. I like playing chess. I am crazy about her.",
+        "LIKENESS DEGREES EXAMPLES HIGH LEVEL MEDIUM LEVEL LOW LEVEL"
+      ],
+      "sourceItemIds": [
+        "u04-s13-a"
+      ],
+      "sourcePrompts": [
+        "A. Listen to the audio and extract information about likes and preferences."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9756883978843689,
+        "avgLogprob": -0.22110325714637494,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How old is the speaker?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "28 years old",
+              "accepted": [
+                "28 years old"
+              ],
+              "evidence": "My name is Dylan and I'm 28 years old.",
+              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
+            }
+          ],
+          "explicitOptions": [
+            "28 years old",
+            "18 years old",
+            "38 years old",
+            "48 years old"
+          ],
+          "correct": "28 years old",
+          "evidence": "My name is Dylan and I'm 28 years old.",
+          "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What does the speaker love doing?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Cooking",
+              "accepted": [
+                "Cooking"
+              ],
+              "evidence": "That is why I love cooking",
+              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
+            }
+          ],
+          "explicitOptions": [
+            "Cooking",
+            "Dancing",
+            "Running",
+            "Painting"
+          ],
+          "correct": "Cooking",
+          "evidence": "That is why I love cooking",
+          "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which food is the speaker a big fan of?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Pasta",
+              "accepted": [
+                "Pasta"
+              ],
+              "evidence": "I'm a big fan of pasta, but I'm not fond of rice",
+              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
+            }
+          ],
+          "explicitOptions": [
+            "Pasta",
+            "Rice",
+            "Soup",
+            "Salad"
+          ],
+          "correct": "Pasta",
+          "evidence": "I'm a big fan of pasta, but I'm not fond of rice",
+          "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which food is the speaker not fond of?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Rice",
+              "accepted": [
+                "Rice"
+              ],
+              "evidence": "I'm a big fan of pasta, but I'm not fond of rice",
+              "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010"
+            }
+          ],
+          "explicitOptions": [
+            "Rice",
+            "Pasta",
+            "Desserts",
+            "Bread"
+          ],
+          "correct": "Rice",
+          "evidence": "I'm a big fan of pasta, but I'm not fond of rice",
+          "sourceAudioSha256": "d259e69f4bab862de276c401e31a7466814a0827e925c849697d1f993b0df010",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+        "slideNumber": 14,
+        "unit": 5,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "unit": 5,
+      "lessonTitle": "About us and Relatives",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
+      "sourceFilename": "Unit 5 - About us and relatives - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-05-lesson-03-1pLfPQyoJfg35OF0PTRg5p4KwD0WLMbp1.mp3",
+      "sourceExactTexts": [
+        "B. Listen to David talking about his family. What information he says that suits the different aspects? Copy the information under each category.",
+        "General Facts about family State Relationships Talk about Family Members"
+      ],
+      "sourceItemIds": [
+        "u05-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to David talking about his family and classify details."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9706135392189026,
+        "avgLogprob": -0.1566562287718336,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How many brothers does the speaker have?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Three",
+              "accepted": [
+                "Three"
+              ],
+              "evidence": "I have three brothers and two sisters.",
+              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
+            }
+          ],
+          "explicitOptions": [
+            "Three",
+            "Two",
+            "Four",
+            "Five"
+          ],
+          "correct": "Three",
+          "evidence": "I have three brothers and two sisters.",
+          "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Where do the speaker's parents work?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "At the family restaurant",
+              "accepted": [
+                "At the family restaurant"
+              ],
+              "evidence": "They work in our family's restaurant.",
+              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
+            }
+          ],
+          "explicitOptions": [
+            "At the family restaurant",
+            "At a school",
+            "At a hospital",
+            "At a bank"
+          ],
+          "correct": "At the family restaurant",
+          "evidence": "They work in our family's restaurant.",
+          "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Who lives with the speaker's family?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Their grandfather",
+              "accepted": [
+                "Their grandfather"
+              ],
+              "evidence": "Our grandfather lives with us.",
+              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
+            }
+          ],
+          "explicitOptions": [
+            "Their grandfather",
+            "Their uncle",
+            "Their teacher",
+            "Their neighbor"
+          ],
+          "correct": "Their grandfather",
+          "evidence": "Our grandfather lives with us.",
+          "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How old is the speaker's grandfather?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "70 years old",
+              "accepted": [
+                "70 years old"
+              ],
+              "evidence": "His name is Jared and he is 70 years old.",
+              "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43"
+            }
+          ],
+          "explicitOptions": [
+            "70 years old",
+            "60 years old",
+            "50 years old",
+            "80 years old"
+          ],
+          "correct": "70 years old",
+          "evidence": "His name is Jared and he is 70 years old.",
+          "sourceAudioSha256": "ace167b91ccdfc1914e6ae77738974dae1814098a64019936b83113ac74eec43",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+        "slideNumber": 14,
+        "unit": 6,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "unit": 6,
+      "lessonTitle": "What do you do?",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
+      "sourceFilename": "Unit 6 - What do you do - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-06-lesson-02-1S48Ofl-fhJpckSErvAbgmVznvJTg3711.mp3",
+      "sourceExactTexts": [
+        "B. Listen to the audio and complete the text below. After that read the text aloud with your teacher. Finally, answer comprehension questions made by your teacher.",
+        "Julio an . He is 26 years old and he for a fast food chain. Also, he a hotel and a bar. He is a very organized person because he more than one business."
+      ],
+      "sourceItemIds": [
+        "u06-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio and complete Julio’s profile."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9890208840370178,
+        "avgLogprob": -0.22640949596058238,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How old is Julio?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "26 years old",
+              "accepted": [
+                "26 years old"
+              ],
+              "evidence": "He is 26 years old, and he works for the fast-food restaurant chain.",
+              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
+            }
+          ],
+          "explicitOptions": [
+            "26 years old",
+            "16 years old",
+            "36 years old",
+            "46 years old"
+          ],
+          "correct": "26 years old",
+          "evidence": "He is 26 years old, and he works for the fast-food restaurant chain.",
+          "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What kind of business does Julio work for?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "A fast-food restaurant chain",
+              "accepted": [
+                "A fast-food restaurant chain"
+              ],
+              "evidence": "He is 26 years old, and he works for the fast-food restaurant chain.",
+              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
+            }
+          ],
+          "explicitOptions": [
+            "A fast-food restaurant chain",
+            "A travel agency",
+            "A clothing store",
+            "A school"
+          ],
+          "correct": "A fast-food restaurant chain",
+          "evidence": "He is 26 years old, and he works for the fast-food restaurant chain.",
+          "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which places does Julio administer?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "A hotel and a bar",
+              "accepted": [
+                "A hotel and a bar"
+              ],
+              "evidence": "Also, he administrates the hotel and a bar.",
+              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
+            }
+          ],
+          "explicitOptions": [
+            "A hotel and a bar",
+            "A school and a bank",
+            "A shop and a theater",
+            "A clinic and a library"
+          ],
+          "correct": "A hotel and a bar",
+          "evidence": "Also, he administrates the hotel and a bar.",
+          "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Why is Julio described as organized?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "He manages more than one business",
+              "accepted": [
+                "He manages more than one business"
+              ],
+              "evidence": "He's a very organized person because he manages more than one business.",
+              "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7"
+            }
+          ],
+          "explicitOptions": [
+            "He manages more than one business",
+            "He arrives early",
+            "He studies every night",
+            "He travels for work"
+          ],
+          "correct": "He manages more than one business",
+          "evidence": "He's a very organized person because he manages more than one business.",
+          "sourceAudioSha256": "c673cb4e8e656ebf5ed01e385480ac17c8ba74dba03fa0edc87a7728b18d6ac7",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk0wwx210003kz04s3qt526e",
+        "slideNumber": 15,
+        "unit": 7,
+        "audioIndex": 1
+      },
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "unit": 7,
+      "lessonTitle": "There’s nothing left!",
+      "slideNumber": 15,
+      "audioIndex": 1,
+      "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f",
+      "sourceFilename": "Unit 7 - There's nothing left - Audio 1.mp3",
+      "sourcePath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\audio\\A-unit-07-lesson-02-1YGlDwRif5cfkwp8peXdpKvB3xbi95pb2.mp3",
+      "sourceExactTexts": [
+        "B. Listen to Nathan and Dave talk about their food at home. Answer the questions your teacher will make."
+      ],
+      "sourceItemIds": [
+        "u07-s15-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to Nathan and Dave and answer teacher questions."
+      ],
+      "publishedSourceSlide": 15,
+      "publishedAudioIdentity": {
+        "audioNumber": 1,
+        "sourceSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f",
+        "stagedSourceId": "1YGlDwRif5cfkwp8peXdpKvB3xbi95pb2",
+        "publishedSlideNumber": 15,
+        "identityEvidence": "inner Slides media tuple: media token + type marker 1 + audio filename extension"
+      },
+      "transcriptConfidence": {
+        "languageProbability": 0.9844761490821838,
+        "avgLogprob": -0.16164692295225044,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice-audio1-corrected",
+      "items": [
+        {
+          "id": "unit7-audio1-mc-1",
+          "kind": "multiple-choice",
+          "format": "multiple-choice",
+          "prompt": "Which products did Nathan and Dave forget to buy?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Sugar and milk",
+              "accepted": [
+                "Sugar and milk"
+              ],
+              "evidence": "Nathan, we forgot to buy sugar and milk.",
+              "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f"
+            }
+          ],
+          "explicitOptions": [
+            "Sugar and milk",
+            "Apples and bananas",
+            "Crackers and cheese",
+            "Chicken and oranges"
+          ],
+          "correct": "Sugar and milk",
+          "evidence": "Nathan, we forgot to buy sugar and milk.",
+          "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f",
+          "sourceAudioIndex": 1,
+          "sourceSlideNumber": 15,
+          "manualAuthoring": true,
+          "rationale": "Semantic question authored from a clear fact in the original Audio 1 transcript; the superseded Audio 2 review is retained only as rejected provenance."
+        },
+        {
+          "id": "unit7-audio1-mc-2",
+          "kind": "multiple-choice",
+          "format": "multiple-choice",
+          "prompt": "Which fruits do they have at home?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Apples and bananas",
+              "accepted": [
+                "Apples and bananas"
+              ],
+              "evidence": "There are apples, bananas and two packs of crackers.",
+              "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f"
+            }
+          ],
+          "explicitOptions": [
+            "Apples and bananas",
+            "Sugar and milk",
+            "Crackers and oranges",
+            "Cheese and chicken"
+          ],
+          "correct": "Apples and bananas",
+          "evidence": "There are apples, bananas and two packs of crackers.",
+          "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f",
+          "sourceAudioIndex": 1,
+          "sourceSlideNumber": 15,
+          "manualAuthoring": true,
+          "rationale": "Semantic question authored from a clear fact in the original Audio 1 transcript; the superseded Audio 2 review is retained only as rejected provenance."
+        },
+        {
+          "id": "unit7-audio1-mc-3",
+          "kind": "multiple-choice",
+          "format": "multiple-choice",
+          "prompt": "How many cereal boxes are there?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Two",
+              "accepted": [
+                "Two"
+              ],
+              "evidence": "There are two boxes and no milk.",
+              "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f"
+            }
+          ],
+          "explicitOptions": [
+            "One",
+            "Two",
+            "Three",
+            "Four"
+          ],
+          "correct": "Two",
+          "evidence": "There are two boxes and no milk.",
+          "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f",
+          "sourceAudioIndex": 1,
+          "sourceSlideNumber": 15,
+          "manualAuthoring": true,
+          "rationale": "Semantic question authored from a clear fact in the original Audio 1 transcript; the superseded Audio 2 review is retained only as rejected provenance."
+        },
+        {
+          "id": "unit7-audio1-mc-4",
+          "kind": "multiple-choice",
+          "format": "multiple-choice",
+          "prompt": "What food do they also need to get?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Chicken",
+              "accepted": [
+                "Chicken"
+              ],
+              "evidence": "get some chicken too, there's none left.",
+              "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f"
+            }
+          ],
+          "explicitOptions": [
+            "Chicken",
+            "Cereal",
+            "Crackers",
+            "Milk"
+          ],
+          "correct": "Chicken",
+          "evidence": "get some chicken too, there's none left.",
+          "sourceAudioSha256": "0a4e47bc853f59c6e39e000dad0cfed7ba533670b2172512dd6865348aed739f",
+          "sourceAudioIndex": 1,
+          "sourceSlideNumber": 15,
+          "manualAuthoring": true,
+          "rationale": "Semantic question authored from a clear fact in the original Audio 1 transcript; the superseded Audio 2 review is retained only as rejected provenance."
+        }
+      ],
+      "replacementProvenance": {
+        "replacesPath": "docs/audit/listening-authored-03-15.json",
+        "replacesSha256": "f33de99a6bcf98760613e9ed5e2f810acdf8f85d05a349b352f676ca07bd6bd3",
+        "rejectedOriginalSourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
+        "rejectedOriginalAudioIndex": 2,
+        "rejectedOriginalSlideNumber": 15,
+        "reason": "Published slide 15 is scoped to Audio 1; the prior Audio 2 coordinates are retained but not reused."
+      }
+    },
+    {
+      "key": {
+        "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+        "slideNumber": 13,
+        "unit": 8,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "unit": 8,
+      "lessonTitle": "This is not yours!",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
+      "sourceFilename": "Unit 8 - This is not yours - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-08-lesson-02-14L5OQRYUA_LIMx_HuMRVYr9GJ-Hpi1p4.mp3",
+      "sourceExactTexts": [
+        "B. Listen to Jake and Jim talking. Answer the questions your teacher makes."
+      ],
+      "sourceItemIds": [
+        "u08-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to Jake and Jim talking and answer the teacher’s questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9477893710136414,
+        "avgLogprob": -0.30942287224954024,
+        "uncertaintyFlags": [
+          "low-transcript-confidence"
+        ]
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": true,
+      "manualReviewNote": "Selected evidence clauses were manually checked; aggregate transcript confidence flags remain visible.",
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Whose car is discussed first?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "It is his father's car",
+              "accepted": [
+                "It is his father's car"
+              ],
+              "evidence": "That is his father's car.",
+              "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37"
+            }
+          ],
+          "explicitOptions": [
+            "It is his father's car",
+            "It belongs to his brother",
+            "It is at the shop",
+            "It is a rental car"
+          ],
+          "correct": "It is his father's car",
+          "evidence": "That is his father's car.",
+          "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How often does the speaker drive the mother's car?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Sometimes",
+              "accepted": [
+                "Sometimes"
+              ],
+              "evidence": "So I only drive it sometimes not always",
+              "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37"
+            }
+          ],
+          "explicitOptions": [
+            "Sometimes",
+            "Every day",
+            "Only on Sundays",
+            "Never"
+          ],
+          "correct": "Sometimes",
+          "evidence": "So I only drive it sometimes not always",
+          "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "When does the brother lend his car?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "On Fridays only",
+              "accepted": [
+                "On Fridays only"
+              ],
+              "evidence": "But he lent it to me on Fridays only",
+              "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37"
+            }
+          ],
+          "explicitOptions": [
+            "On Fridays only",
+            "Every morning",
+            "On weekends",
+            "Once a month"
+          ],
+          "correct": "On Fridays only",
+          "evidence": "But he lent it to me on Fridays only",
+          "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Where do they plan to take the car?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "To a party",
+              "accepted": [
+                "To a party"
+              ],
+              "evidence": "so can we take that car to Marsha's party on Friday?",
+              "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37"
+            }
+          ],
+          "explicitOptions": [
+            "To a party",
+            "To school",
+            "To the supermarket",
+            "To the beach"
+          ],
+          "correct": "To a party",
+          "evidence": "so can we take that car to Marsha's party on Friday?",
+          "sourceAudioSha256": "2529c70cce4d22bfb30319b25dd52bca0a25d5e95349ee6a0b85746920652b37",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+        "slideNumber": 13,
+        "unit": 9,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "unit": 9,
+      "lessonTitle": "How do I get there?",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
+      "sourceFilename": "Unit 9 - How do I get there - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-09-lesson-03-1MYre1bLz1LG10lv4Vqy1npRYcw7GlAGC.mp3",
+      "sourceExactTexts": [
+        "B. Listen to James and Joe talking over the phone. What is happening with Joe? Answer your teacher’s questions."
+      ],
+      "sourceItemIds": [
+        "u09-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to James and Joe and answer the teacher’s questions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9463881850242615,
+        "avgLogprob": -0.12949340055790784,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Where is the speaker when asking for directions?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Downtown",
+              "accepted": [
+                "Downtown"
+              ],
+              "evidence": "I'm downtown and I need to get to the Science Museum.",
+              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
+            }
+          ],
+          "explicitOptions": [
+            "Downtown",
+            "At the airport",
+            "At home",
+            "At the museum"
+          ],
+          "correct": "Downtown",
+          "evidence": "I'm downtown and I need to get to the Science Museum.",
+          "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What landmark is across from the speaker?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "The public library",
+              "accepted": [
+                "The public library"
+              ],
+              "evidence": "I'm on the corner of the main avenue, just across the public library.",
+              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
+            }
+          ],
+          "explicitOptions": [
+            "The public library",
+            "The Science Museum",
+            "Green Park",
+            "The train station"
+          ],
+          "correct": "The public library",
+          "evidence": "I'm on the corner of the main avenue, just across the public library.",
+          "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How many blocks should the traveler walk before turning left?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Two blocks",
+              "accepted": [
+                "Two blocks"
+              ],
+              "evidence": "Go to the library and walk two blocks to your right, and then turn left.",
+              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
+            }
+          ],
+          "explicitOptions": [
+            "Two blocks",
+            "One block",
+            "Three blocks",
+            "Four blocks"
+          ],
+          "correct": "Two blocks",
+          "evidence": "Go to the library and walk two blocks to your right, and then turn left.",
+          "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What will the traveler see before reaching the Science Museum?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Green Park",
+              "accepted": [
+                "Green Park"
+              ],
+              "evidence": "You will see the great Green Park.",
+              "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a"
+            }
+          ],
+          "explicitOptions": [
+            "Green Park",
+            "The public library",
+            "A theater",
+            "A train station"
+          ],
+          "correct": "Green Park",
+          "evidence": "You will see the great Green Park.",
+          "sourceAudioSha256": "7bfdc2910f3fa677505de92c35645b6813987331f234a545af8759c1b116109a",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zca590009jp04suhvg28s",
+        "slideNumber": 12,
+        "unit": 10,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "unit": 10,
+      "lessonTitle": "Such a wonderful place!",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
+      "sourceFilename": "Unit 10 - Such a wonderful place! - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-10-lesson-02-1OucjgOctER51OUgHD5Sk_1t3ksQlPj7K.mp3",
+      "sourceExactTexts": [
+        "A. Fill in the blanks with the corresponding adjectives from the box. After that, describe your town too. Use other adjectives you know or one from your list.",
+        "Peaceful – High – Cold - Big - Ancient – Tropical – Clear - Small",
+        "Peter lives in a _________ city, it doesn’t have a lot of buildings or houses but it is a ____________ town because it has beautiful beaches. His house is _______ and he lives in a ________ place because the house is in a _________ mountain. It is also an ___________ town in the south and it always has __________ blue sky.",
+        "B. Listen to Andrew talking about his hometown. What is he saying? Tell your teacher about his description."
+      ],
+      "sourceItemIds": [
+        "u10-s12-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to Andrew talking about his hometown."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9925870299339294,
+        "avgLogprob": -0.18015592158595217,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Where is Andrew from?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Galway, Ireland",
+              "accepted": [
+                "Galway, Ireland"
+              ],
+              "evidence": "I'm from Galway, Ireland.",
+              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
+            }
+          ],
+          "explicitOptions": [
+            "Galway, Ireland",
+            "Dublin, Ireland",
+            "London, England",
+            "Paris, France"
+          ],
+          "correct": "Galway, Ireland",
+          "evidence": "I'm from Galway, Ireland.",
+          "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How is Galway described?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "A beautiful city",
+              "accepted": [
+                "A beautiful city"
+              ],
+              "evidence": "Galway is a beautiful city.",
+              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
+            }
+          ],
+          "explicitOptions": [
+            "A beautiful city",
+            "A noisy village",
+            "A modern capital",
+            "A small island"
+          ],
+          "correct": "A beautiful city",
+          "evidence": "Galway is a beautiful city.",
+          "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What kind of square does Galway have?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "An ancient square",
+              "accepted": [
+                "An ancient square"
+              ],
+              "evidence": "It has an ancient square named Er",
+              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
+            }
+          ],
+          "explicitOptions": [
+            "An ancient square",
+            "A modern square",
+            "A sports square",
+            "A shopping square"
+          ],
+          "correct": "An ancient square",
+          "evidence": "It has an ancient square named Er",
+          "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What forms part of Galway's history?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Medieval walls",
+              "accepted": [
+                "Medieval walls"
+              ],
+              "evidence": "there are some medieval walls as part of our history.",
+              "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8"
+            }
+          ],
+          "explicitOptions": [
+            "Medieval walls",
+            "A modern tower",
+            "A large airport",
+            "A shopping center"
+          ],
+          "correct": "Medieval walls",
+          "evidence": "there are some medieval walls as part of our history.",
+          "sourceAudioSha256": "98f89fef3f8b014666e8d2be9760f048b97086b64df672204b0eb83040a9baf8",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zfe8a0003jo047u04yua4",
+        "slideNumber": 14,
+        "unit": 11,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "unit": 11,
+      "lessonTitle": "Similar but not the same.",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
+      "sourceFilename": "Unit 11 - Similar but not the same - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-11-lesson-03-1PEOCcQiMePGLEouILhAzgAcZezM5a3Iz.mp3",
+      "sourceExactTexts": [
+        "B. Listen to two tourist talking about some places they have visited. Which are these places? What are they saying? Tell your teacher.",
+        "C. Read the following paragraph and identify where the comparisons are. After that, Answer the questions next to it. Finally, read it aloud with your teacher.",
+        "Brothers Frank is taller than his brother Jake, but Jake is older than Frank. Both are good students, but Jake is a better runner. Frank is more interested in chess and reading; However, Jake is a better fan of sports and technology. Both speak two languages, though Frank has better French than Jake. Both of them love cars, but Jake is more into F1 races than Frank. They both are in the same school.",
+        "1. Who is taller? 2. Is Frank older than Jake? 3. Which brother is a better runner? 4. Is Jake more interested in chess and reading? 5. Is Frank more interested in sports and technology? 6. Who speaks two languages?. 7. Who has better French?. 8. What do they love?"
+      ],
+      "sourceItemIds": [
+        "u11-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to two tourists and report the places and descriptions."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9456534385681152,
+        "avgLogprob": -0.28441974176810336,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How is Rome described?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "A beautiful city",
+              "accepted": [
+                "A beautiful city"
+              ],
+              "evidence": "Rome is a beautiful city",
+              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
+            }
+          ],
+          "explicitOptions": [
+            "A beautiful city",
+            "A quiet village",
+            "A small island",
+            "A modern suburb"
+          ],
+          "correct": "A beautiful city",
+          "evidence": "Rome is a beautiful city",
+          "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which city is bigger and has more places to visit?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Rome",
+              "accepted": [
+                "Rome"
+              ],
+              "evidence": "Rome is bigger and it has more places to visit",
+              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
+            }
+          ],
+          "explicitOptions": [
+            "Rome",
+            "Vienna",
+            "Santorini",
+            "None of them"
+          ],
+          "correct": "Rome",
+          "evidence": "Rome is bigger and it has more places to visit",
+          "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which city is more picturesque and colorful?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Vienna",
+              "accepted": [
+                "Vienna"
+              ],
+              "evidence": "Vienna is more picturesque and colorful",
+              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
+            }
+          ],
+          "explicitOptions": [
+            "Vienna",
+            "Rome",
+            "Santorini",
+            "None of them"
+          ],
+          "correct": "Vienna",
+          "evidence": "Vienna is more picturesque and colorful",
+          "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Which place is said to be more beautiful than Rome and Vienna?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Santorini",
+              "accepted": [
+                "Santorini"
+              ],
+              "evidence": "Santorini is way more beautiful than these two cities",
+              "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933"
+            }
+          ],
+          "explicitOptions": [
+            "Santorini",
+            "Vienna",
+            "Rome",
+            "The countryside"
+          ],
+          "correct": "Santorini",
+          "evidence": "Santorini is way more beautiful than these two cities",
+          "sourceAudioSha256": "7261346741e249b40f4d1fa454219d5d87b4eb27e0578850b46da1174e11e933",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+        "slideNumber": 14,
+        "unit": 12,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+      "unit": 12,
+      "lessonTitle": "The greatest!",
+      "slideNumber": 14,
+      "audioIndex": 2,
+      "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
+      "sourceFilename": "Unit 12 - The greatest - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-12-lesson-02-1N4MoeyiqNTyMI55nIIRLTg_j7CjYSnbY.mp3",
+      "sourceExactTexts": [
+        "B. Listen to Carter and Richie talking about their visit to Tokyo. What are they saying",
+        "C. Read the following paragraph and identify where the superlatives are. After that, Answer the questions next to it. Finally, read it aloud with your teacher.",
+        "My Best Friend My best friend, Cloe, lives in the most wonderful city of all times. She lives in Seoul where the greatest technological advances occur every day. She studies in one of the biggest designing institute of the city and it has the best reputation of the local people. I want to visit her, but right now I have the worst economic situation ever. However, she has the most amazing job too, so she wants to pay for my plane ticket, I am so excited!",
+        "1. Who is her best friend? 2. Where does she live? 3. Which is the most wonderful city of all times? 4. When do the greatest technological advances occur there? 5. Where does her best friend study? 6. Does it have a good reputation? 7. Why doesn’t she visit her best friend? 8. Does her best friend have a good job?"
+      ],
+      "sourceItemIds": [
+        "u12-s14-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to Carter and Richie talking about Tokyo."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9396418929100037,
+        "avgLogprob": -0.20067042092076065,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How is Tokyo described in terms of size?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "One of the biggest cities in the world",
+              "accepted": [
+                "One of the biggest cities in the world"
+              ],
+              "evidence": "Tokyo is one of the biggest city in the world",
+              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
+            }
+          ],
+          "explicitOptions": [
+            "One of the biggest cities in the world",
+            "The smallest city in Japan",
+            "A small village",
+            "A new suburb"
+          ],
+          "correct": "One of the biggest cities in the world",
+          "evidence": "Tokyo is one of the biggest city in the world",
+          "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How is Tokyo described in terms of cost?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "One of the most expensive",
+              "accepted": [
+                "One of the most expensive"
+              ],
+              "evidence": "Indeed but one of the most expensive too.",
+              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
+            }
+          ],
+          "explicitOptions": [
+            "One of the most expensive",
+            "The cheapest",
+            "Free to visit",
+            "Inexpensive for everyone"
+          ],
+          "correct": "One of the most expensive",
+          "evidence": "Indeed but one of the most expensive too.",
+          "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What can visitors see from Tokyo Tower?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "The entire city",
+              "accepted": [
+                "The entire city"
+              ],
+              "evidence": "You can see the entire city from there.",
+              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
+            }
+          ],
+          "explicitOptions": [
+            "The entire city",
+            "Only the airport",
+            "A single street",
+            "The inside of a castle"
+          ],
+          "correct": "The entire city",
+          "evidence": "You can see the entire city from there.",
+          "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What does the speaker say about the castle?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "It has a lot of history",
+              "accepted": [
+                "It has a lot of history"
+              ],
+              "evidence": "No way how about the Shugun Castle? It is the most amazing place to go. It has a lot of history in it.",
+              "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582"
+            }
+          ],
+          "explicitOptions": [
+            "It has a lot of history",
+            "It has no history",
+            "It is a restaurant",
+            "It is outside Tokyo"
+          ],
+          "correct": "It has a lot of history",
+          "evidence": "No way how about the Shugun Castle? It is the most amazing place to go. It has a lot of history in it.",
+          "sourceAudioSha256": "2eed45d29002738e1499a201d6ab69f419f53ed42a08c9a7fac2f3d44c1ed582",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zq5rb0001ju05muzrd2c4",
+        "slideNumber": 13,
+        "unit": 13,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zq5rb0001ju05muzrd2c4",
+      "unit": 13,
+      "lessonTitle": "I am working on it!",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
+      "sourceFilename": "Unit 13 - I'm working on it! - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-13-lesson-02-1fM3-rET8R72KkBL6hphF2T6DxWq4oMpv.mp3",
+      "sourceExactTexts": [
+        "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary.",
+        "C. Read the following paragraph and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.",
+        "Vacations Dear Annie, how are you? I am writing these lines from the hotel room. I am having a good time these days because Cancun is so beautiful. We are getting ready now because we are going on a tour in some minutes. My brother is enjoying every moment and my dad is making all he can to make us happy. Right now, we are also having breakfast. How are your vacations going? Please write. Love, Laurie.",
+        "1. Annie is writing the email. (T) (F) 2. She is writing from the hotel restaurant. (T) (F) 3. She is having a good time. (T) (F) 4. They are getting ready now. (T) (F) 5. They are not going on a tour. (T) (F) 6. Her brother is enjoying every moment. (T) (F) 7. Her father is making all he can to make them happy. (T) (F) 8. They are having breakfast now. (T) (F)"
+      ],
+      "sourceItemIds": [
+        "u13-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to two people talking and report what they are saying."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9862502813339233,
+        "avgLogprob": -0.1516978504702589,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Is it raining right now?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "No, it is not raining",
+              "accepted": [
+                "No, it is not raining"
+              ],
+              "evidence": "No, it looks like, but it's not raining right now.",
+              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
+            }
+          ],
+          "explicitOptions": [
+            "No, it is not raining",
+            "Yes, it is raining heavily",
+            "Only at night",
+            "The speakers do not know"
+          ],
+          "correct": "No, it is not raining",
+          "evidence": "No, it looks like, but it's not raining right now.",
+          "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What is the weather like now?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Cloudy",
+              "accepted": [
+                "Cloudy"
+              ],
+              "evidence": "Okay, so it's cloudy now.",
+              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
+            }
+          ],
+          "explicitOptions": [
+            "Cloudy",
+            "Snowy",
+            "Sunny",
+            "Windy"
+          ],
+          "correct": "Cloudy",
+          "evidence": "Okay, so it's cloudy now.",
+          "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What is the speaker correcting?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Some exams",
+              "accepted": [
+                "Some exams"
+              ],
+              "evidence": "Well, I'm correcting some exams.",
+              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
+            }
+          ],
+          "explicitOptions": [
+            "Some exams",
+            "A recipe",
+            "A map",
+            "A report"
+          ],
+          "correct": "Some exams",
+          "evidence": "Well, I'm correcting some exams.",
+          "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What does the speaker like doing in the rain?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Running",
+              "accepted": [
+                "Running"
+              ],
+              "evidence": "Oh, I like running under the rain.",
+              "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425"
+            }
+          ],
+          "explicitOptions": [
+            "Running",
+            "Cooking",
+            "Reading",
+            "Driving"
+          ],
+          "correct": "Running",
+          "evidence": "Oh, I like running under the rain.",
+          "sourceAudioSha256": "dabbe15990369db86f68a67dc31f40792808640cf36ff2b07f07dda28548d425",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zr60x0001l804vyj6hctk",
+        "slideNumber": 12,
+        "unit": 14,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "unit": 14,
+      "lessonTitle": "Back then…!",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
+      "sourceFilename": "Unit 14 - Back then - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-14-lesson-02-1fNklp-etP0alB59cJxsu__KJlh_WXZoj.mp3",
+      "sourceExactTexts": [
+        "Sentences Questions 0. John acted in the school play last winter. Did John act in the school play last winter? 1. You were at Mary’s house last night. 2. He was with us this morning. 3. They traveled to Spain a year ago. 4. I made dinner for us some minutes ago. 5. She came to school sick yesterday. 6. 7. 8.",
+        "A. Change the sentences to questions. Pay attention if they are with To Be or not. Finally, create your own sentences and questions in the space provided. Follow the example.",
+        "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9762282371520996,
+        "avgLogprob": -0.25911708976681513,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "When did the speakers go to Montreal?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Last week",
+              "accepted": [
+                "Last week"
+              ],
+              "evidence": "Yes! We went to Montreal last week.",
+              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
+            }
+          ],
+          "explicitOptions": [
+            "Last week",
+            "Yesterday",
+            "Last month",
+            "Last year"
+          ],
+          "correct": "Last week",
+          "evidence": "Yes! We went to Montreal last week.",
+          "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "Where did they stay the night they arrived?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "At home",
+              "accepted": [
+                "At home"
+              ],
+              "evidence": "Well, we stayed all night at home the day we arrived.",
+              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
+            }
+          ],
+          "explicitOptions": [
+            "At home",
+            "At a restaurant",
+            "At a hotel",
+            "At a festival"
+          ],
+          "correct": "At home",
+          "evidence": "Well, we stayed all night at home the day we arrived.",
+          "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What did they have during their visit?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Delicious meals",
+              "accepted": [
+                "Delicious meals"
+              ],
+              "evidence": "Anyhow, we had a great time and had delicious meals.",
+              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
+            }
+          ],
+          "explicitOptions": [
+            "Delicious meals",
+            "A long meeting",
+            "A train ride",
+            "A cooking class"
+          ],
+          "correct": "Delicious meals",
+          "evidence": "Anyhow, we had a great time and had delicious meals.",
+          "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What do they plan to visit?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "The festival",
+              "accepted": [
+                "The festival"
+              ],
+              "evidence": "Fantastic! When are we visiting it? The restaurant or the festival? The festival.",
+              "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044"
+            }
+          ],
+          "explicitOptions": [
+            "The festival",
+            "The restaurant",
+            "The museum",
+            "The hotel"
+          ],
+          "correct": "The festival",
+          "evidence": "Fantastic! When are we visiting it? The restaurant or the festival? The festival.",
+          "sourceAudioSha256": "13d237184b3afae36b2afc87c18b346f1a2043ee312813624899c0d96eae1044",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    },
+    {
+      "key": {
+        "lessonId": "cmk3zs4250003l8047krvt8qc",
+        "slideNumber": 12,
+        "unit": 15,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk3zs4250003l8047krvt8qc",
+      "unit": 15,
+      "lessonTitle": "I remember I...",
+      "slideNumber": 12,
+      "audioIndex": 2,
+      "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
+      "sourceFilename": "Unit 15 - I remember... - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-15-lesson-02-1K1EBQKSdaZi9cJcHp0NQ0sJB9H-wN3dl.mp3",
+      "sourceExactTexts": [
+        "Sentences Questions 0. John used to be smaller a couple of years ago. Did John use to be smaller a couple of years ago? 1. Pete used to burp a lot in school. It was gross. 2. Sarah used to wear long hair but not any more. 3. He used to be part of the soccer team back in college. 4. I used to talk loud but I stopped that. 5. They used to talk during movies when they were younger.",
+        "A. Change the sentences to questions.Follow the example. Finally, give your teacher three more examples with their corresponding questions.",
+        "B. Listen to two people talking. What are they saying? Tell your teacher. Take some notes if necessary."
+      ],
+      "sourceItemIds": [],
+      "sourcePrompts": [],
+      "transcriptConfidence": {
+        "languageProbability": 0.9835489392280579,
+        "avgLogprob": -0.2585634273805905,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "manualReviewNote": null,
+      "authoringStatus": "manual-semantic-multiple-choice",
+      "items": [
+        {
+          "id": "manual-mc-1",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What did they use to play in?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "A big tractor wheel",
+              "accepted": [
+                "A big tractor wheel"
+              ],
+              "evidence": "we used to play in the big tractor wheel",
+              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
+            }
+          ],
+          "explicitOptions": [
+            "A big tractor wheel",
+            "A swimming pool",
+            "A tree house",
+            "A school yard"
+          ],
+          "correct": "A big tractor wheel",
+          "evidence": "we used to play in the big tractor wheel",
+          "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-2",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What did they use to do before running away?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Ring doorbells",
+              "accepted": [
+                "Ring doorbells"
+              ],
+              "evidence": "we used to ring doorbells and run away.",
+              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
+            }
+          ],
+          "explicitOptions": [
+            "Ring doorbells",
+            "Hide in a store",
+            "Ride bicycles",
+            "Play music"
+          ],
+          "correct": "Ring doorbells",
+          "evidence": "we used to ring doorbells and run away.",
+          "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-3",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "How does the speaker describe those moments?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "Nice",
+              "accepted": [
+                "Nice"
+              ],
+              "evidence": "Those were nice moments, weren't they?",
+              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
+            }
+          ],
+          "explicitOptions": [
+            "Nice",
+            "Difficult",
+            "Boring",
+            "Dangerous"
+          ],
+          "correct": "Nice",
+          "evidence": "Those were nice moments, weren't they?",
+          "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        },
+        {
+          "id": "manual-mc-4",
+          "kind": "prompt",
+          "format": "multiple-choice",
+          "prompt": "What does the speaker wish?",
+          "reviewStatus": "reviewed",
+          "answerItems": [
+            {
+              "id": "correct",
+              "canonical": "For those days to come back",
+              "accepted": [
+                "For those days to come back"
+              ],
+              "evidence": "I wish those days to come back",
+              "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa"
+            }
+          ],
+          "explicitOptions": [
+            "For those days to come back",
+            "For a new car",
+            "For more homework",
+            "For a different job"
+          ],
+          "correct": "For those days to come back",
+          "evidence": "I wish those days to come back",
+          "sourceAudioSha256": "8c7f0d910ed67cbf3d064a4fe2a3f206dd8a8f0a1060bc4d69a422bcd57fdaaa",
+          "originalQuestion": null,
+          "manualAuthoring": true,
+          "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+        }
+      ]
+    }
+  ],
+  "purpose": " Unit 7 slide 15 is replaced only after proving the published tuple to original Audio 1.",
+  "replacementFor": {
+    "path": "docs/audit/listening-authored-03-15.json",
+    "sha256": "f33de99a6bcf98760613e9ed5e2f810acdf8f85d05a349b352f676ca07bd6bd3",
+    "supersededUnit": 7,
+    "supersededLessonId": "cmk0wwx210003kz04s3qt526e",
+    "supersededSlideNumber": 15,
+    "supersededAudioIndex": 2,
+    "supersededSourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
+    "rejectionReason": "The prior authored questions claimed Audio 2 at published slide 15; published media identity places Audio 1 at slide 15 and Audio 2 at slide 4."
+  },
+  "supersededReview": {
+    "key": {
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "slideNumber": 15,
+      "unit": 7,
+      "audioIndex": 2
+    },
+    "lessonId": "cmk0wwx210003kz04s3qt526e",
+    "unit": 7,
+    "lessonTitle": "There’s nothing left!",
+    "slideNumber": 15,
+    "audioIndex": 2,
+    "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
+    "sourceFilename": "Unit 7 - There’s nothing left - Audio 2.mp3",
+    "sourcePath": "docs/audit/source-originals/audio/A-unit-07-lesson-03-1iPYYG1pZe-visAB2ogN5mMXIsMSFJ12D.mp3",
+    "sourceExactTexts": [
+      "B. Listen to Nathan and Dave talk about their food at home. Answer the questions your teacher will make."
+    ],
+    "sourceItemIds": [
+      "u07-s15-b"
+    ],
+    "sourcePrompts": [
+      "B. Listen to Nathan and Dave and answer teacher questions."
+    ],
+    "transcriptConfidence": {
+      "languageProbability": 0.9844761490821838,
+      "avgLogprob": -0.16164692295225044,
+      "uncertaintyFlags": []
+    },
+    "reviewStatus": "reviewed",
+    "manualReviewRequired": false,
+    "manualReviewNote": null,
+    "authoringStatus": "manual-semantic-multiple-choice",
+    "items": [
+      {
+        "id": "manual-mc-1",
+        "kind": "prompt",
+        "format": "multiple-choice",
+        "prompt": "What is no longer available at home?",
+        "reviewStatus": "reviewed",
+        "answerItems": [
+          {
+            "id": "correct",
+            "canonical": "Milk",
+            "accepted": [
+              "Milk"
+            ],
+            "evidence": "Hey man, there's no milk left.",
+            "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
+          }
+        ],
+        "explicitOptions": [
+          "Milk",
+          "Sugar",
+          "Cheese",
+          "Apples"
+        ],
+        "correct": "Milk",
+        "evidence": "Hey man, there's no milk left.",
+        "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
+        "originalQuestion": null,
+        "manualAuthoring": true,
+        "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+      },
+      {
+        "id": "manual-mc-2",
+        "kind": "prompt",
+        "format": "multiple-choice",
+        "prompt": "What do they have only a small amount of?",
+        "reviewStatus": "reviewed",
+        "answerItems": [
+          {
+            "id": "correct",
+            "canonical": "Sugar",
+            "accepted": [
+              "Sugar"
+            ],
+            "evidence": "We don't have much sugar.",
+            "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
+          }
+        ],
+        "explicitOptions": [
+          "Sugar",
+          "Milk",
+          "Cheese",
+          "Oranges"
+        ],
+        "correct": "Sugar",
+        "evidence": "We don't have much sugar.",
+        "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
+        "originalQuestion": null,
+        "manualAuthoring": true,
+        "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+      },
+      {
+        "id": "manual-mc-3",
+        "kind": "prompt",
+        "format": "multiple-choice",
+        "prompt": "What food do they also need?",
+        "reviewStatus": "reviewed",
+        "answerItems": [
+          {
+            "id": "correct",
+            "canonical": "Cheese",
+            "accepted": [
+              "Cheese"
+            ],
+            "evidence": "And we need some cheese too.",
+            "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
+          }
+        ],
+        "explicitOptions": [
+          "Cheese",
+          "Rice",
+          "Bread",
+          "Chicken"
+        ],
+        "correct": "Cheese",
+        "evidence": "And we need some cheese too.",
+        "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
+        "originalQuestion": null,
+        "manualAuthoring": true,
+        "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+      },
+      {
+        "id": "manual-mc-4",
+        "kind": "prompt",
+        "format": "multiple-choice",
+        "prompt": "What fruit do they need to buy?",
+        "reviewStatus": "reviewed",
+        "answerItems": [
+          {
+            "id": "correct",
+            "canonical": "Oranges",
+            "accepted": [
+              "Oranges"
+            ],
+            "evidence": "But we need oranges.",
+            "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace"
+          }
+        ],
+        "explicitOptions": [
+          "Oranges",
+          "Apples",
+          "Bananas",
+          "Grapes"
+        ],
+        "correct": "Oranges",
+        "evidence": "But we need oranges.",
+        "sourceAudioSha256": "f6e90ceb5a496d915b068f4086ebf4753ddd381d114f2f2938564148da40cace",
+        "originalQuestion": null,
+        "manualAuthoring": true,
+        "rationale": "Semantic multiple-choice question authored from a clear transcript fact; raw ASR fallback is not reused."
+      }
+    ]
+  }
+}

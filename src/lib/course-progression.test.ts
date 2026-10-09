@@ -80,6 +80,137 @@ describe('summarizeCourseProgress', () => {
       completedContentIds: ['c1'],
     })
   })
+
+  it('virtually completes converted learner contents from a completed original embed', () => {
+    const migratedLesson: ProgressModule['lessons'][number] = {
+      id: 'lesson-1',
+      contents: [
+        {
+          id: 'archive-embed',
+          data: {
+            type: 'teacher_notes',
+            learningRevision: 'course-guided-v1',
+            courseId: 'course-1',
+            lessonId: 'lesson-1',
+            originalSource: { type: 'embed', contentId: 'archive-embed' },
+          },
+        },
+        { id: 'new-1', data: { type: 'text' } },
+        { id: 'new-2', data: { type: 'text' } },
+        { id: 'new-3', data: { type: 'text' } },
+        { id: 'teacher-note', data: { type: 'teacher_notes' } },
+        { id: 'hidden', data: { type: 'text', hiddenFromLearners: true } },
+      ],
+    }
+
+    expect(
+      summarizeCourseProgress(
+        [{ lessons: [migratedLesson] }],
+        [
+          { contentId: 'archive-embed', completed: true },
+          { contentId: 'unrelated-content', completed: true },
+        ],
+        { courseId: 'course-1' }
+      )
+    ).toEqual({
+      totalContents: 3,
+      completedContents: 3,
+      progressPercentage: 100,
+      completedContentIds: ['new-1', 'new-2', 'new-3'],
+    })
+  })
+
+  it('does not grant virtual completion for an incomplete or out-of-scope archive', () => {
+    const lesson: ProgressModule['lessons'][number] = {
+      id: 'lesson-1',
+      contents: [
+        {
+          id: 'archive-embed',
+          data: {
+            type: 'teacher_notes',
+            learningRevision: 'course-guided-v1',
+            courseId: 'other-course',
+            lessonId: 'lesson-1',
+            originalSource: { type: 'embed', contentId: 'archive-embed' },
+          },
+        },
+        { id: 'new-1', data: { type: 'text' } },
+      ],
+    }
+
+    expect(
+      summarizeCourseProgress(
+        [{ lessons: [lesson] }],
+        [{ contentId: 'archive-embed', completed: true }],
+        { courseId: 'course-1' }
+      )
+    ).toMatchObject({
+      totalContents: 1,
+      completedContents: 0,
+      progressPercentage: 0,
+      completedContentIds: [],
+    })
+  })
+
+  it('does not grant a scoped archive bridge when the original embed is incomplete', () => {
+    const lesson: ProgressModule['lessons'][number] = {
+      id: 'lesson-1',
+      contents: [
+        {
+          id: 'archive-embed',
+          data: {
+            type: 'teacher_notes',
+            learningRevision: 'course-guided-v1',
+            lessonId: 'lesson-1',
+            originalSource: { type: 'embed', contentId: 'archive-embed' },
+          },
+        },
+        { id: 'new-1', data: { type: 'text' } },
+      ],
+    }
+
+    expect(
+      summarizeCourseProgress(
+        [{ lessons: [lesson] }],
+        [{ contentId: 'archive-embed', completed: false }],
+        { courseId: 'course-1' }
+      )
+    ).toMatchObject({
+      totalContents: 1,
+      completedContents: 0,
+      progressPercentage: 0,
+      completedContentIds: [],
+    })
+  })
+})
+
+describe('real converted archive identity', () => {
+  const convertedLesson = (originalIDs: string[]) => ({
+    id: 'lesson-2',
+    contents: [
+      { id: 'original-embed', data: { type: 'teacher_notes', data: {
+        learningRevision: 'course-guided-v1', lessonId: 'lesson-2', originalIDs,
+        originalSource: { type: 'embed', url: 'https://docs.google.com/presentation/source' },
+      } } },
+      { id: 'native-reading', data: { type: 'text' } },
+    ],
+  })
+
+  it('preserves completion with the exact builder archive shape and no synthetic source ID', () => {
+    expect(summarizeCourseProgress(
+      [{ lessons: [convertedLesson(['original-embed'])] }],
+      [{ contentId: 'original-embed', completed: true }],
+      { courseId: 'course-1' },
+    )).toMatchObject({ totalContents: 1, completedContents: 1, completedContentIds: ['native-reading'] })
+  })
+
+  it('rejects an originalIDs list that does not identify the archived row itself', () => {
+    expect(summarizeCourseProgress(
+      [{ lessons: [convertedLesson(['other-content'])] }],
+      [{ contentId: 'other-content', completed: true }],
+      { courseId: 'course-1' },
+    )).toMatchObject({ totalContents: 1, completedContents: 0, completedContentIds: [] })
+  })
 })
 
 describe('hasPassedExam (#92)', () => {

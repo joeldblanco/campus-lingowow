@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "courseId": "cmjnr0g5x0001jp04fsw2fejs",
+  "exercises": [
+    {
+      "key": {
+        "lessonId": "cmk0vhjh80001jm04epgai2ay",
+        "slideNumber": 13,
+        "unit": 2,
+        "audioIndex": 2
+      },
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "unit": 2,
+      "lessonTitle": "I come from...",
+      "slideNumber": 13,
+      "audioIndex": 2,
+      "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+      "sourceFilename": "Unit 2 - I come from... - Audio 2.mp3",
+      "sourcePath": "docs/audit/source-originals/audio/A-unit-02-lesson-02-1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF.mp3",
+      "sourceExactTexts": [
+        "13",
+        "B. Listen to the audio. After that state if the sentences are true or false.",
+        "1. The man is in a train station. (T) (F) 2. He is from Venezuela. (T) (F) 3. He is American too. (T) (F) 4. His mother lives in the USA. (T) (F) 5. His father is American. (T) (F) 6. He is in The USA to work. (T) (F) 7. He speaks great English. (T) (F) 8. He is a language teacher. (T) (F)"
+      ],
+      "sourceItemIds": [
+        "u02-s13-b"
+      ],
+      "sourcePrompts": [
+        "B. Listen to the audio. After that state if the sentences are true or false."
+      ],
+      "transcriptConfidence": {
+        "languageProbability": 0.9250234961509705,
+        "avgLogprob": -0.2338689272365873,
+        "uncertaintyFlags": []
+      },
+      "reviewStatus": "reviewed",
+      "manualReviewRequired": false,
+      "originalQuestionsOmitted": [
+        {
+          "question": "The man is in a train station",
+          "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+          "reason": "The transcript does not directly support or contradict the source claim; omitted rather than auto-marked false."
+        },
+        {
+          "question": "He is American too",
+          "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+          "reason": "The transcript does not directly support or contradict the source claim; omitted rather than auto-marked false."
+        },
+        {
+          "question": "His mother lives in the USA",
+          "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+          "reason": "The transcript does not directly support or contradict the source claim; omitted rather than auto-marked false."
+        }
+      ],
+      "revisionRationale": "Four concise comprehension choices replace the original true/false activity; questions unsupported by the unchanged audio remain archived.",
+      "items": [
+        {
+          "id": "u02-listening-1",
+          "kind": "multiple-choice",
+          "prompt": "Where does the man come from?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "Venezuela",
+            "Australia",
+            "France",
+            "The Netherlands"
+          ],
+          "correct": "Venezuela",
+          "evidence": "oh you're from Venezuela yes they come from Venezuela",
+          "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "Venezuela",
+              "accepted": [
+                "Venezuela"
+              ],
+              "evidence": "oh you're from Venezuela yes they come from Venezuela",
+              "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284"
+            }
+          ],
+          "rationale": "Explicit conversation fact; unsupported station, mother and dual-nationality claims are not graded."
+        },
+        {
+          "id": "u02-listening-2",
+          "kind": "multiple-choice",
+          "prompt": "What is his father’s nationality?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "American",
+            "Australian",
+            "Dutch",
+            "German"
+          ],
+          "correct": "American",
+          "evidence": "but my dad is American",
+          "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "American",
+              "accepted": [
+                "American"
+              ],
+              "evidence": "but my dad is American",
+              "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284"
+            }
+          ],
+          "rationale": "Explicit conversation fact; unsupported station, mother and dual-nationality claims are not graded."
+        },
+        {
+          "id": "u02-listening-3",
+          "kind": "multiple-choice",
+          "prompt": "Why is the man visiting the USA?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "To visit his father",
+            "To start a new job",
+            "To study at university",
+            "To teach a new course"
+          ],
+          "correct": "To visit his father",
+          "evidence": "you are here to visit him",
+          "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "To visit his father",
+              "accepted": [
+                "To visit his father"
+              ],
+              "evidence": "you are here to visit him",
+              "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284"
+            }
+          ],
+          "rationale": "Explicit conversation fact; unsupported station, mother and dual-nationality claims are not graded."
+        },
+        {
+          "id": "u02-listening-4",
+          "kind": "multiple-choice",
+          "prompt": "Which language is complimented?",
+          "reviewStatus": "reviewed",
+          "explicitOptions": [
+            "English",
+            "Spanish",
+            "French",
+            "German"
+          ],
+          "correct": "English",
+          "evidence": "very great English",
+          "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+          "answerItems": [
+            {
+              "id": "answer",
+              "canonical": "English",
+              "accepted": [
+                "English"
+              ],
+              "evidence": "very great English",
+              "sourceAudioSha256": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284"
+            }
+          ],
+          "rationale": "Explicit conversation fact; unsupported station, mother and dual-nationality claims are not graded."
+        }
+      ]
+    }
+  ]
+}

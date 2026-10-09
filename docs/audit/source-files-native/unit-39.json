@@ -1,0 +1,4480 @@
+{
+  "schemaVersion": 1,
+  "unit": 39,
+  "module": {
+    "order": 10,
+    "title": "Módulo 10",
+    "id": "cmnmm9l8k0007w1qkkkfxljmb",
+    "driveTitle": "Module 10"
+  },
+  "candidate": {
+    "id": "1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX",
+    "title": "Get along with it! - Unit 39.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "770512",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 10"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-39-primary-01-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX.pptx",
+    "localBytes": 770512,
+    "sha256": "abd8c404aa01721f4d5762f83a02661904980b6dfd217ff1ed7ae506d9b42e28"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-39-primary-01-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTA6lJbKMjKZ_EFQvfoiPPoisBPCueYfN3WPc8B2hRQvOwdcX4L0G36zEm-6hxSqw/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vTA6lJbKMjKZ_EFQvfoiPPoisBPCueYfN3WPc8B2hRQvOwdcX4L0G36zEm-6hxSqw/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 17,
+    "nativeSlideCount": 17,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.15859,
+    "publicTokenCoverage": 0.990244,
+    "slideDifferenceCount": 7,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nIndicate actions in everyday contexts to work communication out.\nCompetencies\nManage to use and understand language accurately in written texts and conversations to indicate actions everyday contexts to work communication out.",
+        "publishedText": "Competencies Manage to use and understand language accurately in written texts and conversations to indicate actions in everyday contexts to work communication out. Communicative Function Indicate actions in everyday contexts to work communication out.",
+        "sequenceRatio": 0.347305
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. 4",
+        "sequenceRatio": 0.988166
+      },
+      {
+        "slide": 6,
+        "nativeText": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them.\nIDIOM\nMEANING\nEXAMPLE\nGET ON THE BANDWAGON\nTo join an activity that has become very popular.\nThe success of the product led many firms to try to get on the bandwagon.\nKEEP THE CHIN UP\nTo be stalwart and courageous in a tough situation.\nDon't let the difficulties intimidate you; keep your chin up.\nWALK OUT ON\nTo suddenly leave a job, a relationship or other situation.\nEveryone was shocked when he walked out on his wife of fourteen year.\nCOME OUT SWINGING\nTo be confrontational.\nHe came out swinging at his critics, accusing them of having their own agenda.\nBEEF UP\nTo become big and muscular.\nWe need to find some new players to beef up the team.\nTURN ASIDE\nTo refuse entry to somewhere.\nHis job application was turned aside when they saw his criminal record.\nTIDE OVER\nTemporary help (often financial)\nHave another piece of cake. It'll tide you over till supper.\nCRACK UP\nGo through an emotional breakdown.\nThe entire group cracked up at the joke of their teacher.",
+        "publishedText": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them. IDIOM MEANING EXAMPLE GET ON THE BANDWAGON To join an activity that has become very popular. The success of the product led many firms to try to get on the bandwagon. KEEP THE CHIN UP To be stalwart and courageous in a tough situation. Don't let the difficulties intimidate you; keep your chin up. WALK OUT ON To suddenly leave a job, a relationship or other situation. Everyone was shocked when he walked out on his wife of fourteen years. COME OUT SWINGING To be confrontational. He came out swinging at his critics, accusing them of having their own agenda. BEEF UP To become big and muscular. We need to find some new players to beef up the team. TURN ASIDE To refuse entry to somewhere. His job application was turned aside when they saw his criminal record. TIDE OVER Temporary help (often financial) Have another piece of cake. It'll tide you over till supper. CRACK UP Go through an emotional breakdown. The entire group cracked up at the joke of their teacher. success product led firms try",
+        "sequenceRatio": 0.985642
+      },
+      {
+        "slide": 8,
+        "nativeText": "Phrasal Verb Formation\nExamples\nMore Examples\n1\nVerb + Preposition\nWe need to look after the babies. \n\nJohn stood by them all the time.\nClick on the link and pursuit a 200 phrasal verbs list. \n\nhttps://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/\n2\nVerb + Adverb\nThe thieves just ran away.\n\nThey turned up badly.\n3\nVerb + Adverb + Preposition\nI was taken with the presentation they did. \n\nThe family is bearing up under the trials.\nEveryday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like.",
+        "publishedText": "Phrasal Verb Formation Examples More Examples 1 Verb + Preposition We need to look after the babies. John stood by them all the time. Click on the link and pursuit a 200 phrasal verbs list. https://ww3.animeonline.ninja/episodio/rurouni-kenshin-meiji-kenkaku-romantan-cap-12/ 2 Verb + Adverb The thieves just ran away. They turned up badly. 3 Verb + Adverb + Preposition I was taken with the presentation they did. The family is bearing up under the trials. https://ww3.animeonline.ninja/episodio/rurouni-kenshin-meiji-kenkaku-romantan-cap-12/ Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like.",
+        "sequenceRatio": 0.336792
+      },
+      {
+        "slide": 9,
+        "nativeText": "To Consider \n1. Verb + Preposition combination receive the stress on the verb particle. \n2. Verb + Adverb combination receives the stress on the adverb particle. \n3. Verb + Adverb + Preposition combination receives the stress on the adverb particle\n4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off.\n5. Separable phrasal verbs work also together. E.G. We called off the meeting.",
+        "publishedText": "To Consider 1. Verb + Preposition combination receive the stress on the verb particle. E.G. We need to look after the babies. 2. Verb + Adverb combination receives the stress on the adverb particle. E.G. The thieves just ran away. 3. Verb + Adverb + Preposition combination receives the stress on the adverb particle. E.G. The family is bearing up under the trials. 4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off. 5. Separable phrasal verbs work also together. E.G. We called off the meeting.",
+        "sequenceRatio": 0.89418
+      },
+      {
+        "slide": 11,
+        "nativeText": "We use phrasal verbs to sound more natural and shorten phrases when communicating.\nFunction\nExamples\n1\nExpress actions in a more natural way.\nI need to look for a new nanny.\nYou have turned down the offer they made us.\nWe needed to catch up with the girls.\nTo consider \nPhrasal verbs may be used in any context, that’s what makes them common and a natural way of communication.",
+        "publishedText": "We use phrasal verbs to sound more natural and shorten phrases when communicating. Function Examples Express actions in a more natural way. I need to look for a new nanny. You have turned down the offer they made us. We needed to catch up with the girls. To consider Phrasal verbs may be used in any context, that’s what makes them common and a natural way of communication.",
+        "sequenceRatio": 0.997333
+      },
+      {
+        "slide": 15,
+        "nativeText": "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.\nE. Write a piece of text where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied. E. Write a piece of text between 120-160 words where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.973995
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image4.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image5.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image6.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 82129,
+      "sha256": "2a1f389412f88004d6c7bb05df63b89eecc654a715ee91c33e90f8b5ec3f269d"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 6,
+    "bytes": 255978,
+    "byExtension": {
+      ".jpg": 1,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 6,
+    "imageBytes": 255978
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-39-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5870900,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6886700,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "298",
+          "shapeName": "Google Shape;298;g729cfa641f_0_32",
+          "bbox": {
+            "x": 1301375,
+            "y": 1007925,
+            "cx": 880000,
+            "cy": 880000,
+            "right": 2181375,
+            "bottom": 1887925
+          },
+          "slide": 14
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-39-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image2.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-39-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image4.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-39-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX\\image4.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.png",
+          "relationshipId": "rId4",
+          "shapeId": "329",
+          "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-39-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX\\image5.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.png",
+          "relationshipId": "rId3",
+          "shapeId": "328",
+          "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-39-1Q-y2czSYocLIdw20S-zxUWbRuJnYRdpX\\image6.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 82129,
+      "sha256": "2a1f389412f88004d6c7bb05df63b89eecc654a715ee91c33e90f8b5ec3f269d",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710725,
+            "right": 8055748,
+            "bottom": 2245200
+          },
+          "slide": 4
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "39",
+          "Get along with it!",
+          "Unit"
+        ],
+        "joinedText": "39\nGet along with it!\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 810950,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3115250,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "39",
+                "runs": [
+                  "39"
+                ]
+              }
+            ],
+            "texts": [
+              "39"
+            ],
+            "joinedText": "39"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": -211300,
+              "y": 2296625,
+              "cx": 8814300,
+              "cy": 1159800,
+              "right": 8603000,
+              "bottom": 3456425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Get along with it!",
+                "runs": [
+                  "Get along with it!"
+                ]
+              }
+            ],
+            "texts": [
+              "Get along with it!"
+            ],
+            "joinedText": "Get along with it!"
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 286550,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1375550,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image2.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "39",
+        "visibleTexts": [
+          "39",
+          "Get along with it!",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYoDF-7gcgB5SDajMR22GhQ2fvlS0OqV5e0ptf6ojyCq5uuQAAenoiGdu-vvoieA220R5h057TI0btpLcjKHK-GyBJrLAt8QOkoC6bprJEUhZPfOgyOlyUQ4mhVmf_i78rZ013AYbU7jeyb_vIoRe8FMNMTQtY1MMoxCG_uEo950nO7UECubnSeRGw-EaidXg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Indicate actions in everyday contexts to work communication out. ",
+          "Competencies",
+          "Manage to use and understand language accurately in written texts and conversations to indicate actions everyday contexts to work communication out. "
+        ],
+        "joinedText": "Communicative Function\nIndicate actions in everyday contexts to work communication out.\nCompetencies\nManage to use and understand language accurately in written texts and conversations to indicate actions everyday contexts to work communication out.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Indicate actions in everyday contexts to work communication out. ",
+                "runs": [
+                  "Indicate actions in everyday contexts to work communication out. "
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Indicate actions in everyday contexts to work communication out. "
+            ],
+            "joinedText": "Communicative Function\nIndicate actions in everyday contexts to work communication out."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 882600,
+              "y": 2540225,
+              "cx": 5844600,
+              "cy": 2053500,
+              "right": 6727200,
+              "bottom": 4593725
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Manage to use and understand language accurately in written texts and conversations to indicate actions everyday contexts to work communication out. ",
+                "runs": [
+                  "Manage to use and understand language accurately in written texts and conversations to indicate actions everyday contexts to work communication out. "
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Manage to use and understand language accurately in written texts and conversations to indicate actions everyday contexts to work communication out. "
+            ],
+            "joinedText": "Competencies\nManage to use and understand language accurately in written texts and conversations to indicate actions everyday contexts to work communication out."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Competencies Manage to use and understand language accurately in written texts and conversations to indicate actions in everyday contexts to work communication out.",
+        "visibleTexts": [
+          "Competencies Manage to use and understand language accurately in written texts and conversations to indicate actions in everyday contexts to work communication out.",
+          "Communicative Function Indicate actions in everyday contexts to work communication out."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710725,
+              "right": 8055748,
+              "bottom": 2245200
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710725,
+              "right": 8055748,
+              "bottom": 2245200
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYxhB8mAol-uGX-hIOu_gUsQY1VvvThFXIGQ7Qgvi42KbM2Mvdvouo2uE63OPVCr2TB_Oh34-CVsYZwTehZmnu8YDajfCzhhLfSBOv4-K_PiEV4-8qJ5-v17ZqCm9is7DTVRBeTa35r9KVTX8nibH9Eob0NHE5tpLbtDZRK-YFhoW_ltY6kFBWEWX04UdxVTQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbozRecda1tRkuXTwuBwkNLK8yxzpokW7pq24Eq5uCPNh8-k2jH_6VNDuL-fMBkW8YKZmRHiplTn11YUXK_tbhOLkiSp-OvHyHeRd4PPt-3w_yt_jxDELRYryLhYg39SXJDMi25k4_t0SEyKb9oYzJ7vAf_853GhXUNjCdb83l_xT_WY0TMw3xVMNvcfIITjw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Look at the information, listen to your teacher and repeat the expressions. Discuss about them. ",
+          "IDIOM",
+          "MEANING",
+          "EXAMPLE",
+          "GET ON THE BANDWAGON",
+          "To join an activity that has become very popular.",
+          "The success of the product led many firms to try to get on the bandwagon.",
+          "KEEP THE CHIN UP",
+          "To be stalwart and courageous in a tough situation.",
+          "Don't let the difficulties intimidate you; keep your chin up.",
+          "WALK OUT ON",
+          "To suddenly leave a job, a relationship or other situation.",
+          "Everyone was shocked when he walked out on his wife of fourteen year.",
+          "COME OUT SWINGING",
+          "To be confrontational.",
+          "He came out swinging at his critics, accusing them of having their own agenda.",
+          "BEEF UP",
+          "To become big and muscular.",
+          "We need to find some new players to beef up the team.",
+          "TURN ASIDE",
+          "To refuse entry to somewhere.",
+          "His job application was turned aside when they saw his criminal record.",
+          "TIDE OVER",
+          "Temporary help (often financial)",
+          "Have another piece of cake. It'll tide you over till supper.",
+          "CRACK UP",
+          "Go through an emotional breakdown.",
+          "The entire group cracked up at the joke of their teacher."
+        ],
+        "joinedText": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them.\nIDIOM\nMEANING\nEXAMPLE\nGET ON THE BANDWAGON\nTo join an activity that has become very popular.\nThe success of the product led many firms to try to get on the bandwagon.\nKEEP THE CHIN UP\nTo be stalwart and courageous in a tough situation.\nDon't let the difficulties intimidate you; keep your chin up.\nWALK OUT ON\nTo suddenly leave a job, a relationship or other situation.\nEveryone was shocked when he walked out on his wife of fourteen year.\nCOME OUT SWINGING\nTo be confrontational.\nHe came out swinging at his critics, accusing them of having their own agenda.\nBEEF UP\nTo become big and muscular.\nWe need to find some new players to beef up the team.\nTURN ASIDE\nTo refuse entry to somewhere.\nHis job application was turned aside when they saw his criminal record.\nTIDE OVER\nTemporary help (often financial)\nHave another piece of cake. It'll tide you over till supper.\nCRACK UP\nGo through an emotional breakdown.\nThe entire group cracked up at the joke of their teacher.",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them. ",
+                "runs": [
+                  "Look at the information, listen to your teacher and repeat the ",
+                  "expressions",
+                  ". Discuss about them. "
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the information, listen to your teacher and repeat the expressions. Discuss about them. "
+            ],
+            "joinedText": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "table",
+            "bbox": {
+              "x": 887438,
+              "y": 943260,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3887438,
+              "bottom": 3943260
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "IDIOM",
+                "runs": []
+              },
+              {
+                "text": "MEANING",
+                "runs": []
+              },
+              {
+                "text": "EXAMPLE",
+                "runs": []
+              },
+              {
+                "text": "GET ON THE BANDWAGON",
+                "runs": []
+              },
+              {
+                "text": "To join an activity that has become very popular.",
+                "runs": []
+              },
+              {
+                "text": "The success of the product led many firms to try to get on the bandwagon.",
+                "runs": []
+              },
+              {
+                "text": "KEEP THE CHIN UP",
+                "runs": []
+              },
+              {
+                "text": "To be stalwart and courageous in a tough situation.",
+                "runs": []
+              },
+              {
+                "text": "Don't let the difficulties intimidate you; keep your chin up.",
+                "runs": []
+              },
+              {
+                "text": "WALK OUT ON",
+                "runs": []
+              },
+              {
+                "text": "To suddenly leave a job, a relationship or other situation.",
+                "runs": []
+              },
+              {
+                "text": "Everyone was shocked when he walked out on his wife of fourteen year.",
+                "runs": []
+              },
+              {
+                "text": "COME OUT SWINGING",
+                "runs": []
+              },
+              {
+                "text": "To be confrontational.",
+                "runs": []
+              },
+              {
+                "text": "He came out swinging at his critics, accusing them of having their own agenda.",
+                "runs": []
+              },
+              {
+                "text": "BEEF UP",
+                "runs": []
+              },
+              {
+                "text": "To become big and muscular.",
+                "runs": []
+              },
+              {
+                "text": "We need to find some new players to beef up the team.",
+                "runs": []
+              },
+              {
+                "text": "TURN ASIDE",
+                "runs": []
+              },
+              {
+                "text": "To refuse entry to somewhere.",
+                "runs": []
+              },
+              {
+                "text": "His job application was turned aside when they saw his criminal record.",
+                "runs": []
+              },
+              {
+                "text": "TIDE OVER",
+                "runs": []
+              },
+              {
+                "text": "Temporary help (often financial)",
+                "runs": []
+              },
+              {
+                "text": "Have another piece of cake. It'll tide you over till supper.",
+                "runs": []
+              },
+              {
+                "text": "CRACK UP",
+                "runs": []
+              },
+              {
+                "text": "Go through an emotional breakdown.",
+                "runs": []
+              },
+              {
+                "text": "The entire group cracked up at the joke of their teacher.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "IDIOM",
+              "MEANING",
+              "EXAMPLE",
+              "GET ON THE BANDWAGON",
+              "To join an activity that has become very popular.",
+              "The success of the product led many firms to try to get on the bandwagon.",
+              "KEEP THE CHIN UP",
+              "To be stalwart and courageous in a tough situation.",
+              "Don't let the difficulties intimidate you; keep your chin up.",
+              "WALK OUT ON",
+              "To suddenly leave a job, a relationship or other situation.",
+              "Everyone was shocked when he walked out on his wife of fourteen year.",
+              "COME OUT SWINGING",
+              "To be confrontational.",
+              "He came out swinging at his critics, accusing them of having their own agenda.",
+              "BEEF UP",
+              "To become big and muscular.",
+              "We need to find some new players to beef up the team.",
+              "TURN ASIDE",
+              "To refuse entry to somewhere.",
+              "His job application was turned aside when they saw his criminal record.",
+              "TIDE OVER",
+              "Temporary help (often financial)",
+              "Have another piece of cake. It'll tide you over till supper.",
+              "CRACK UP",
+              "Go through an emotional breakdown.",
+              "The entire group cracked up at the joke of their teacher."
+            ],
+            "joinedText": "IDIOM\nMEANING\nEXAMPLE\nGET ON THE BANDWAGON\nTo join an activity that has become very popular.\nThe success of the product led many firms to try to get on the bandwagon.\nKEEP THE CHIN UP\nTo be stalwart and courageous in a tough situation.\nDon't let the difficulties intimidate you; keep your chin up.\nWALK OUT ON\nTo suddenly leave a job, a relationship or other situation.\nEveryone was shocked when he walked out on his wife of fourteen year.\nCOME OUT SWINGING\nTo be confrontational.\nHe came out swinging at his critics, accusing them of having their own agenda.\nBEEF UP\nTo become big and muscular.\nWe need to find some new players to beef up the team.\nTURN ASIDE\nTo refuse entry to somewhere.\nHis job application was turned aside when they saw his criminal record.\nTIDE OVER\nTemporary help (often financial)\nHave another piece of cake. It'll tide you over till supper.\nCRACK UP\nGo through an emotional breakdown.\nThe entire group cracked up at the joke of their teacher.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 887438,
+              "y": 943260,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3887438,
+              "bottom": 3943260
+            },
+            "columnWidths": [
+              1648700,
+              2680075,
+              3040350
+            ],
+            "rows": [
+              {
+                "height": 377925,
+                "cells": [
+                  {
+                    "text": "IDIOM",
+                    "paragraphs": [
+                      {
+                        "text": "IDIOM",
+                        "runs": [
+                          "IDIOM"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "MEANING",
+                    "paragraphs": [
+                      {
+                        "text": "MEANING",
+                        "runs": [
+                          "MEANING"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "EXAMPLE",
+                    "paragraphs": [
+                      {
+                        "text": "EXAMPLE",
+                        "runs": [
+                          "EXAMPLE"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 535400,
+                "cells": [
+                  {
+                    "text": "GET ON THE BANDWAGON",
+                    "paragraphs": [
+                      {
+                        "text": "GET ON THE BANDWAGON",
+                        "runs": [
+                          "GET ON THE BANDWAGON"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To join an activity that has become very popular.",
+                    "paragraphs": [
+                      {
+                        "text": "To join an activity that has become very popular.",
+                        "runs": [
+                          "To join an activity that has become very popular."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The success of the product led many firms to try to get on the bandwagon.",
+                    "paragraphs": [
+                      {
+                        "text": "The success of the product led many firms to try to get on the bandwagon.",
+                        "runs": [
+                          "The ",
+                          "success",
+                          " of the ",
+                          "product",
+                          " ",
+                          "led",
+                          " many ",
+                          "firms",
+                          " to ",
+                          "try",
+                          " to ",
+                          "get on the bandwagon",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 440950,
+                "cells": [
+                  {
+                    "text": "KEEP THE CHIN UP",
+                    "paragraphs": [
+                      {
+                        "text": "KEEP THE CHIN UP",
+                        "runs": [
+                          "KEEP THE CHIN UP"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To be stalwart and courageous in a tough situation.",
+                    "paragraphs": [
+                      {
+                        "text": "To be stalwart and courageous in a tough situation.",
+                        "runs": [
+                          "To be stalwart and courageous in a tough situation."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Don't let the difficulties intimidate you; keep your chin up.",
+                    "paragraphs": [
+                      {
+                        "text": "Don't let the difficulties intimidate you; keep your chin up.",
+                        "runs": [
+                          "Don't let the difficulties intimidate you; ",
+                          "keep your chin up",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 440950,
+                "cells": [
+                  {
+                    "text": "WALK OUT ON",
+                    "paragraphs": [
+                      {
+                        "text": "WALK OUT ON",
+                        "runs": [
+                          "WALK OUT ON"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To suddenly leave a job, a relationship or other situation.",
+                    "paragraphs": [
+                      {
+                        "text": "To suddenly leave a job, a relationship or other situation.",
+                        "runs": [
+                          "To suddenly leave a job, a relationship or other situation."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Everyone was shocked when he walked out on his wife of fourteen year.",
+                    "paragraphs": [
+                      {
+                        "text": "Everyone was shocked when he walked out on his wife of fourteen year.",
+                        "runs": [
+                          "Everyone was shocked when he ",
+                          "walked out on",
+                          " his wife of fourteen year."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 472425,
+                "cells": [
+                  {
+                    "text": "COME OUT SWINGING",
+                    "paragraphs": [
+                      {
+                        "text": "COME OUT SWINGING",
+                        "runs": [
+                          "COME OUT SWINGING"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To be confrontational.",
+                    "paragraphs": [
+                      {
+                        "text": "To be confrontational.",
+                        "runs": [
+                          "To be confrontational."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "He came out swinging at his critics, accusing them of having their own agenda.",
+                    "paragraphs": [
+                      {
+                        "text": "He came out swinging at his critics, accusing them of having their own agenda.",
+                        "runs": [
+                          "He ",
+                          "came out swinging",
+                          " at his critics, accusing them of having their own agenda."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 440950,
+                "cells": [
+                  {
+                    "text": "BEEF UP",
+                    "paragraphs": [
+                      {
+                        "text": "BEEF UP",
+                        "runs": [
+                          "BEEF UP"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To become big and muscular.",
+                    "paragraphs": [
+                      {
+                        "text": "To become big and muscular.",
+                        "runs": [
+                          "To become big and muscular."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We need to find some new players to beef up the team.",
+                    "paragraphs": [
+                      {
+                        "text": "We need to find some new players to beef up the team.",
+                        "runs": [
+                          "We need to find some new players to",
+                          " beef up",
+                          " the team."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 440950,
+                "cells": [
+                  {
+                    "text": "TURN ASIDE",
+                    "paragraphs": [
+                      {
+                        "text": "TURN ASIDE",
+                        "runs": [
+                          "TURN ASIDE"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "To refuse entry to somewhere.",
+                    "paragraphs": [
+                      {
+                        "text": "To refuse entry to somewhere.",
+                        "runs": [
+                          "To refuse entry to somewhere."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "His job application was turned aside when they saw his criminal record.",
+                    "paragraphs": [
+                      {
+                        "text": "His job application was turned aside when they saw his criminal record.",
+                        "runs": [
+                          "His job application was ",
+                          "turned aside",
+                          " when they saw his criminal record."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 440950,
+                "cells": [
+                  {
+                    "text": "TIDE OVER",
+                    "paragraphs": [
+                      {
+                        "text": "TIDE OVER",
+                        "runs": [
+                          "TIDE OVER"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Temporary help (often financial)",
+                    "paragraphs": [
+                      {
+                        "text": "Temporary help (often financial)",
+                        "runs": [
+                          "Temporary help (often financial)"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Have another piece of cake. It'll tide you over till supper.",
+                    "paragraphs": [
+                      {
+                        "text": "Have another piece of cake. It'll tide you over till supper.",
+                        "runs": [
+                          "Have another piece of cake. It'll ",
+                          "tide",
+                          " you ",
+                          "over",
+                          " till supper."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 440950,
+                "cells": [
+                  {
+                    "text": "CRACK UP",
+                    "paragraphs": [
+                      {
+                        "text": "CRACK UP",
+                        "runs": [
+                          "CRACK UP"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Go through an emotional breakdown.",
+                    "paragraphs": [
+                      {
+                        "text": "Go through an emotional breakdown.",
+                        "runs": [
+                          "Go through an emotional breakdown."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The entire group cracked up at the joke of their teacher.",
+                    "paragraphs": [
+                      {
+                        "text": "The entire group cracked up at the joke of their teacher.",
+                        "runs": [
+                          "The entire group ",
+                          "cracked up",
+                          " at the joke of their teacher."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the information, listen to your teacher and repeat the expressions. Discuss about them.",
+        "visibleTexts": [
+          "Look at the information, listen to your teacher and repeat the expressions. Discuss about them.",
+          "IDIOM MEANING EXAMPLE GET ON THE BANDWAGON To join an activity that has become very popular. The success of the product led many firms to try to get on the bandwagon. KEEP THE CHIN UP To be stalwart and courageous in a tough situation. Don't let the difficulties intimidate you; keep your chin up. WALK OUT ON To suddenly leave a job, a relationship or other situation. Everyone was shocked when he walked out on his wife of fourteen years. COME OUT SWINGING To be confrontational. He came out swinging at his critics, accusing them of having their own agenda. BEEF UP To become big and muscular. We need to find some new players to beef up the team. TURN ASIDE To refuse entry to somewhere. His job application was turned aside when they saw his criminal record. TIDE OVER Temporary help (often financial) Have another piece of cake. It'll tide you over till supper. CRACK UP Go through an emotional breakdown. The entire group cracked up at the joke of their teacher.",
+          "success",
+          "product",
+          "led",
+          "firms",
+          "try"
+        ],
+        "links": [
+          {
+            "url": "https://dictionary.cambridge.org/es/diccionario/ingles/success",
+            "kind": "link",
+            "source": "anchor"
+          },
+          {
+            "url": "https://dictionary.cambridge.org/es/diccionario/ingles/product",
+            "kind": "link",
+            "source": "anchor"
+          },
+          {
+            "url": "https://dictionary.cambridge.org/es/diccionario/ingles/led",
+            "kind": "link",
+            "source": "anchor"
+          },
+          {
+            "url": "https://dictionary.cambridge.org/es/diccionario/ingles/firm",
+            "kind": "link",
+            "source": "anchor"
+          },
+          {
+            "url": "https://dictionary.cambridge.org/es/diccionario/ingles/try",
+            "kind": "link",
+            "source": "anchor"
+          }
+        ],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Phrasal Verb Formation",
+          "Examples",
+          "More Examples",
+          "1",
+          "Verb + Preposition",
+          "We need to look after the babies. \n\nJohn stood by them all the time.",
+          "Click on the link and pursuit a 200 phrasal verbs list. \n\nhttps://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/",
+          "2",
+          "Verb + Adverb",
+          "The thieves just ran away.\n\nThey turned up badly.",
+          "3",
+          "Verb + Adverb + Preposition",
+          "I was taken with the presentation they did. \n\nThe family is bearing up under the trials.",
+          "Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like. "
+        ],
+        "joinedText": "Phrasal Verb Formation\nExamples\nMore Examples\n1\nVerb + Preposition\nWe need to look after the babies. \n\nJohn stood by them all the time.\nClick on the link and pursuit a 200 phrasal verbs list. \n\nhttps://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/\n2\nVerb + Adverb\nThe thieves just ran away.\n\nThey turned up badly.\n3\nVerb + Adverb + Preposition\nI was taken with the presentation they did. \n\nThe family is bearing up under the trials.\nEveryday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like.",
+        "shapes": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 910550,
+              "y": 1154150,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3910550,
+              "bottom": 4154150
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Phrasal Verb Formation",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "More Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Verb + Preposition",
+                "runs": []
+              },
+              {
+                "text": "We need to look after the babies. \n\nJohn stood by them all the time.",
+                "runs": []
+              },
+              {
+                "text": "Click on the link and pursuit a 200 phrasal verbs list. \n\nhttps://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Verb + Adverb",
+                "runs": []
+              },
+              {
+                "text": "The thieves just ran away.\n\nThey turned up badly.",
+                "runs": []
+              },
+              {
+                "text": "3",
+                "runs": []
+              },
+              {
+                "text": "Verb + Adverb + Preposition",
+                "runs": []
+              },
+              {
+                "text": "I was taken with the presentation they did. \n\nThe family is bearing up under the trials.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Phrasal Verb Formation",
+              "Examples",
+              "More Examples",
+              "1",
+              "Verb + Preposition",
+              "We need to look after the babies. \n\nJohn stood by them all the time.",
+              "Click on the link and pursuit a 200 phrasal verbs list. \n\nhttps://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/",
+              "2",
+              "Verb + Adverb",
+              "The thieves just ran away.\n\nThey turned up badly.",
+              "3",
+              "Verb + Adverb + Preposition",
+              "I was taken with the presentation they did. \n\nThe family is bearing up under the trials."
+            ],
+            "joinedText": "Phrasal Verb Formation\nExamples\nMore Examples\n1\nVerb + Preposition\nWe need to look after the babies. \n\nJohn stood by them all the time.\nClick on the link and pursuit a 200 phrasal verbs list. \n\nhttps://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/\n2\nVerb + Adverb\nThe thieves just ran away.\n\nThey turned up badly.\n3\nVerb + Adverb + Preposition\nI was taken with the presentation they did. \n\nThe family is bearing up under the trials.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 29457,
+              "cx": 6960900,
+              "cy": 1069800,
+              "right": 8052450,
+              "bottom": 1099257
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like. ",
+                "runs": [
+                  "Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like. "
+                ]
+              }
+            ],
+            "texts": [
+              "Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like. "
+            ],
+            "joinedText": "Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 910550,
+              "y": 1154150,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3910550,
+              "bottom": 4154150
+            },
+            "columnWidths": [
+              386300,
+              2299500,
+              2269275,
+              2108225
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Phrasal Verb Formation",
+                    "paragraphs": [
+                      {
+                        "text": "Phrasal Verb Formation ",
+                        "runs": [
+                          "Phrasal Verb ",
+                          "Formation",
+                          " "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "More Examples",
+                    "paragraphs": [
+                      {
+                        "text": "More Examples",
+                        "runs": [
+                          "More Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Verb + Preposition",
+                    "paragraphs": [
+                      {
+                        "text": "Verb + Preposition",
+                        "runs": [
+                          "Verb + Preposition"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "We need to look after the babies. \n\nJohn stood by them all the time.",
+                    "paragraphs": [
+                      {
+                        "text": "We need to look after the babies. ",
+                        "runs": [
+                          "We need to ",
+                          "look after",
+                          " the babies. "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "John stood by them all the time. ",
+                        "runs": [
+                          "John ",
+                          "stood by",
+                          " them all the time. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Click on the link and pursuit a 200 phrasal verbs list. \n\nhttps://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/",
+                    "paragraphs": [
+                      {
+                        "text": "Click on the link and pursuit a 200 phrasal verbs list. ",
+                        "runs": [
+                          "Click on the link and ",
+                          "pursuit",
+                          " a 200 phrasal verbs list. "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "https://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/ ",
+                        "runs": [
+                          "https://www.inlingua-edinburgh.co.uk/200-common-phrasal-verbs-with-meanings-and-example-sentences/",
+                          " "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Verb + Adverb",
+                    "paragraphs": [
+                      {
+                        "text": "Verb + Adverb",
+                        "runs": [
+                          "Verb + Adverb"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The thieves just ran away.\n\nThey turned up badly.",
+                    "paragraphs": [
+                      {
+                        "text": "The thieves just ran away.",
+                        "runs": [
+                          "The thieves just ",
+                          "ran away",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "They turned up badly.",
+                        "runs": [
+                          "They ",
+                          "turned up ",
+                          "badly."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              },
+              {
+                "height": 712650,
+                "cells": [
+                  {
+                    "text": "3",
+                    "paragraphs": [
+                      {
+                        "text": "3",
+                        "runs": [
+                          "3"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Verb + Adverb + Preposition",
+                    "paragraphs": [
+                      {
+                        "text": "Verb + Adverb + Preposition",
+                        "runs": [
+                          "Verb + Adverb + Preposition"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I was taken with the presentation they did. \n\nThe family is bearing up under the trials.",
+                    "paragraphs": [
+                      {
+                        "text": "I was taken with the presentation they did. ",
+                        "runs": [
+                          "I ",
+                          "was taken with",
+                          " the presentation they did. "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "The family is bearing up under the trials. ",
+                        "runs": [
+                          "The family is ",
+                          "bearing up under",
+                          " the trials. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "Phrasal Verb Formation Examples More Examples 1 Verb + Preposition We need to look after the babies. John stood by them all the time. Click on the link and pursuit a 200 phrasal verbs list. https://ww3.animeonline.ninja/episodio/rurouni-kenshin-meiji-kenkaku-romantan-cap-12/ 2 Verb + Adverb The thieves just ran away. They turned up badly. 3 Verb + Adverb + Preposition I was taken with the presentation they did. The family is bearing up under the trials.",
+        "visibleTexts": [
+          "Phrasal Verb Formation Examples More Examples 1 Verb + Preposition We need to look after the babies. John stood by them all the time. Click on the link and pursuit a 200 phrasal verbs list. https://ww3.animeonline.ninja/episodio/rurouni-kenshin-meiji-kenkaku-romantan-cap-12/ 2 Verb + Adverb The thieves just ran away. They turned up badly. 3 Verb + Adverb + Preposition I was taken with the presentation they did. The family is bearing up under the trials.",
+          "https://ww3.animeonline.ninja/episodio/rurouni-kenshin-meiji-kenkaku-romantan-cap-12/",
+          "Everyday communication uses what we know as phrasal verbs to express ideas easily and make them sound more native-like."
+        ],
+        "links": [
+          {
+            "url": "https://ww3.animeonline.ninja/episodio/rurouni-kenshin-meiji-kenkaku-romantan-cap-12/",
+            "kind": "link",
+            "source": "anchor"
+          }
+        ],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "To Consider ",
+          "1. Verb + Preposition combination receive the stress on the verb particle. ",
+          "2. Verb + Adverb combination receives the stress on the adverb particle. ",
+          "3. Verb + Adverb + Preposition combination receives the stress on the adverb particle",
+          "4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off.",
+          "5. Separable phrasal verbs work also together. E.G. We called off the meeting."
+        ],
+        "joinedText": "To Consider \n1. Verb + Preposition combination receive the stress on the verb particle. \n2. Verb + Adverb combination receives the stress on the adverb particle. \n3. Verb + Adverb + Preposition combination receives the stress on the adverb particle\n4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off.\n5. Separable phrasal verbs work also together. E.G. We called off the meeting.",
+        "shapes": [
+          {
+            "shapeId": "253",
+            "shapeName": "Google Shape;253;g89bded71de_0_1",
+            "kind": "group",
+            "bbox": {
+              "x": 904224,
+              "y": 727234,
+              "cx": 7075942,
+              "cy": 3075380,
+              "right": 7980166,
+              "bottom": 3802614
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "254",
+            "shapeName": "Google Shape;254;g89bded71de_0_1",
+            "kind": "group",
+            "bbox": {
+              "x": 904224,
+              "y": 727225,
+              "cx": 7075942,
+              "cy": 1995186,
+              "right": 7980166,
+              "bottom": 2722411
+            },
+            "parentShapeId": "253"
+          },
+          {
+            "shapeId": "255",
+            "shapeName": "Google Shape;255;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 7251427,
+              "y": 3927475,
+              "cx": 798600,
+              "cy": 391500,
+              "right": 8050027,
+              "bottom": 4318975
+            },
+            "parentShapeId": "254",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "254",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 967636,
+              "y": 763155,
+              "cx": 7012500,
+              "cy": 1859100,
+              "right": 7980136,
+              "bottom": 2622255
+            },
+            "parentShapeId": "253",
+            "paragraphs": [
+              {
+                "text": "To Consider ",
+                "runs": [
+                  "To Consider "
+                ]
+              },
+              {
+                "text": "1. Verb + Preposition combination receive the stress on the verb particle. ",
+                "runs": [
+                  "1. ",
+                  "Verb + Preposition ",
+                  "combination receive the stress on the verb particle. "
+                ]
+              },
+              {
+                "text": "2. Verb + Adverb combination receives the stress on the adverb particle. ",
+                "runs": [
+                  "2. Verb + Adverb ",
+                  "combination receives the stress on the adverb particle. "
+                ]
+              },
+              {
+                "text": "3. Verb + Adverb + Preposition combination receives the stress on the adverb particle",
+                "runs": [
+                  "3. Verb + Adverb + Preposition",
+                  " combination receives the stress on the adverb particle"
+                ]
+              },
+              {
+                "text": "4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off.",
+                "runs": [
+                  "4. ",
+                  "Some ",
+                  "phrasal verbs ",
+                  "may be ",
+                  "separable",
+                  ". That is to say, the object goes in the ",
+                  "middle",
+                  " of the particles. ",
+                  "This mainly happens when the object is a pronoun. E.G.",
+                  " We need to ",
+                  "call",
+                  " it ",
+                  "off",
+                  "."
+                ]
+              },
+              {
+                "text": "5. Separable phrasal verbs work also together. E.G. We called off the meeting.",
+                "runs": [
+                  "5. Separable phrasal verbs ",
+                  "work also together. E.G. We called off the meeting."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "To Consider ",
+              "1. Verb + Preposition combination receive the stress on the verb particle. ",
+              "2. Verb + Adverb combination receives the stress on the adverb particle. ",
+              "3. Verb + Adverb + Preposition combination receives the stress on the adverb particle",
+              "4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off.",
+              "5. Separable phrasal verbs work also together. E.G. We called off the meeting."
+            ],
+            "joinedText": "To Consider \n1. Verb + Preposition combination receive the stress on the verb particle. \n2. Verb + Adverb combination receives the stress on the adverb particle. \n3. Verb + Adverb + Preposition combination receives the stress on the adverb particle\n4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off.\n5. Separable phrasal verbs work also together. E.G. We called off the meeting."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "To Consider 1. Verb + Preposition combination receive the stress on the verb particle. E.G. We need to look after the babies. 2. Verb + Adverb combination receives the stress on the adverb particle. E.G. The thieves just ran away. 3. Verb + Adverb + Preposition combination receives the stress on the adverb particle. E.G. The family is bearing up under the trials. 4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off. 5. Separable phrasal verbs work also together. E.G. We called off the meeting.",
+        "visibleTexts": [
+          "To Consider 1. Verb + Preposition combination receive the stress on the verb particle. E.G. We need to look after the babies. 2. Verb + Adverb combination receives the stress on the adverb particle. E.G. The thieves just ran away. 3. Verb + Adverb + Preposition combination receives the stress on the adverb particle. E.G. The family is bearing up under the trials. 4. Some phrasal verbs may be separable. That is to say, the object goes in the middle of the particles. This mainly happens when the object is a pronoun. E.G. We need to call it off. 5. Separable phrasal verbs work also together. E.G. We called off the meeting."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "264",
+            "shapeName": "Google Shape;264;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "We use phrasal verbs to sound more natural and shorten phrases when communicating. ",
+          "Function",
+          "Examples",
+          "1",
+          "Express actions in a more natural way.",
+          "I need to look for a new nanny.",
+          "You have turned down the offer they made us.",
+          "We needed to catch up with the girls.",
+          "To consider ",
+          "Phrasal verbs may be used in any context, that’s what makes them common and a natural way of communication. "
+        ],
+        "joinedText": "We use phrasal verbs to sound more natural and shorten phrases when communicating.\nFunction\nExamples\n1\nExpress actions in a more natural way.\nI need to look for a new nanny.\nYou have turned down the offer they made us.\nWe needed to catch up with the girls.\nTo consider \nPhrasal verbs may be used in any context, that’s what makes them common and a natural way of communication.",
+        "shapes": [
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1643496,
+              "y": 43426,
+              "cx": 5316300,
+              "cy": 584700,
+              "right": 6959796,
+              "bottom": 628126
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "We use phrasal verbs to sound more natural and shorten phrases when communicating. ",
+                "runs": [
+                  "We",
+                  " use phrasal verbs to sound more natural and shorten phrases when communicating. "
+                ]
+              }
+            ],
+            "texts": [
+              "We use phrasal verbs to sound more natural and shorten phrases when communicating. "
+            ],
+            "joinedText": "We use phrasal verbs to sound more natural and shorten phrases when communicating."
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Function",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Express actions in a more natural way.",
+                "runs": []
+              },
+              {
+                "text": "I need to look for a new nanny.",
+                "runs": []
+              },
+              {
+                "text": "You have turned down the offer they made us.",
+                "runs": []
+              },
+              {
+                "text": "We needed to catch up with the girls.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Function",
+              "Examples",
+              "1",
+              "Express actions in a more natural way.",
+              "I need to look for a new nanny.",
+              "You have turned down the offer they made us.",
+              "We needed to catch up with the girls."
+            ],
+            "joinedText": "Function\nExamples\n1\nExpress actions in a more natural way.\nI need to look for a new nanny.\nYou have turned down the offer they made us.\nWe needed to catch up with the girls.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 978863,
+              "y": 3074890,
+              "cx": 7075914,
+              "cy": 1546177,
+              "right": 8054777,
+              "bottom": 4621067
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "272",
+            "shapeName": "Google Shape;272;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 904238,
+              "y": 3119415,
+              "cx": 7075914,
+              "cy": 1546177,
+              "right": 7980152,
+              "bottom": 4665592
+            },
+            "parentShapeId": "271"
+          },
+          {
+            "shapeId": "273",
+            "shapeName": "Google Shape;273;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "272",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "274",
+            "shapeName": "Google Shape;274;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 986812,
+              "y": 3697890,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050012,
+              "bottom": 4709190
+            },
+            "parentShapeId": "272",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "275",
+            "shapeName": "Google Shape;275;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1142199,
+              "y": 3172200,
+              "cx": 6223200,
+              "cy": 1440600,
+              "right": 7365399,
+              "bottom": 4612800
+            },
+            "parentShapeId": "271",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "Phrasal verbs may be used in any context, that’s what makes them common and a natural way of communication. ",
+                "runs": [
+                  "Phrasal verbs",
+                  " may be used in any context, that’s what makes them common and a natural way of communication. "
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "Phrasal verbs may be used in any context, that’s what makes them common and a natural way of communication. "
+            ],
+            "joinedText": "To consider \nPhrasal verbs may be used in any context, that’s what makes them common and a natural way of communication."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g729cfa641f_0_0",
+            "bbox": {
+              "x": 1455100,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4455100,
+              "bottom": 3780525
+            },
+            "columnWidths": [
+              541675,
+              3133400,
+              2265300
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Function",
+                    "paragraphs": [
+                      {
+                        "text": "Function",
+                        "runs": [
+                          "Function"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Express actions in a more natural way.",
+                    "paragraphs": [
+                      {
+                        "text": "Express actions in a more natural way. ",
+                        "runs": [
+                          "Express actions in a more natural way. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I need to look for a new nanny.",
+                    "paragraphs": [
+                      {
+                        "text": "I need to look for a new nanny.",
+                        "runs": [
+                          "I need to",
+                          " look fo",
+                          "r a new ",
+                          "nanny",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "You have turned down the offer they made us.",
+                    "paragraphs": [
+                      {
+                        "text": "You have turned down the offer they made us.",
+                        "runs": [
+                          "You",
+                          " ",
+                          "have turned down",
+                          " the offer they made us."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "We needed to catch up with the girls.",
+                    "paragraphs": [
+                      {
+                        "text": "We needed to catch up with the girls. ",
+                        "runs": [
+                          "We needed to",
+                          " ",
+                          "catch up with",
+                          " the girls. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "We use phrasal verbs to sound more natural and shorten phrases when communicating.",
+        "visibleTexts": [
+          "We use phrasal verbs to sound more natural and shorten phrases when communicating.",
+          "Function Examples Express actions in a more natural way. I need to look for a new nanny. You have turned down the offer they made us. We needed to catch up with the girls.",
+          "To consider Phrasal verbs may be used in any context, that’s what makes them common and a natural way of communication."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "280",
+            "shapeName": "Google Shape;280;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "281",
+            "shapeName": "Google Shape;281;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "282",
+            "shapeName": "Google Shape;282;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "A. Look at the phrasal verbs in the chart and make sentences in different tenses. Follow the example. ",
+          "Come across – Run along – Face up – Deal with– Wash away\nCome up with–  – Look at-  Bear down on",
+          "0.",
+          "I have looked at the same mountains for ages.",
+          "1.",
+          "2.",
+          "3.",
+          "4.",
+          "5.",
+          "6.",
+          "7.",
+          "8."
+        ],
+        "joinedText": "A. Look at the phrasal verbs in the chart and make sentences in different tenses. Follow the example.\nCome across – Run along – Face up – Deal with– Wash away\nCome up with–  – Look at-  Bear down on\n0.\nI have looked at the same mountains for ages.\n1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.",
+        "shapes": [
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6496200,
+              "cy": 708000,
+              "right": 7820100,
+              "bottom": 1017450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the phrasal verbs in the chart and make sentences in different tenses. Follow the example. ",
+                "runs": [
+                  "A. Look at the ",
+                  "phrasal verbs in the chart and m",
+                  "ake sentences in different tenses. Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the phrasal verbs in the chart and make sentences in different tenses. Follow the example. "
+            ],
+            "joinedText": "A. Look at the phrasal verbs in the chart and make sentences in different tenses. Follow the example."
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 2041450,
+              "y": 1232015,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 5041450,
+              "bottom": 4232015
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Come across – Run along – Face up – Deal with– Wash away\nCome up with–  – Look at-  Bear down on",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Come across – Run along – Face up – Deal with– Wash away\nCome up with–  – Look at-  Bear down on"
+            ],
+            "joinedText": "Come across – Run along – Face up – Deal with– Wash away\nCome up with–  – Look at-  Bear down on",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 1773875,
+              "y": 1972610,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4773875,
+              "bottom": 4972610
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "I have looked at the same mountains for ages.",
+                "runs": []
+              },
+              {
+                "text": "1.",
+                "runs": []
+              },
+              {
+                "text": "2.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "5.",
+                "runs": []
+              },
+              {
+                "text": "6.",
+                "runs": []
+              },
+              {
+                "text": "7.",
+                "runs": []
+              },
+              {
+                "text": "8.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0.",
+              "I have looked at the same mountains for ages.",
+              "1.",
+              "2.",
+              "3.",
+              "4.",
+              "5.",
+              "6.",
+              "7.",
+              "8."
+            ],
+            "joinedText": "0.\nI have looked at the same mountains for ages.\n1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.",
+            "tableIndex": 1
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;g729cfa641f_0_19",
+            "bbox": {
+              "x": 2041450,
+              "y": 1232015,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 5041450,
+              "bottom": 4232015
+            },
+            "columnWidths": [
+              5061100
+            ],
+            "rows": [
+              {
+                "height": 278950,
+                "cells": [
+                  {
+                    "text": "Come across – Run along – Face up – Deal with– Wash away\nCome up with–  – Look at-  Bear down on",
+                    "paragraphs": [
+                      {
+                        "text": "Come across – Run along – Face up – Deal with– Wash away",
+                        "runs": [
+                          "Come across",
+                          " – ",
+                          "Run along ",
+                          "– ",
+                          "Face up",
+                          " – ",
+                          "Deal with",
+                          "– ",
+                          "Wash away"
+                        ]
+                      },
+                      {
+                        "text": "Come up with–  – Look at-  Bear down on",
+                        "runs": [
+                          "Come up with",
+                          "–  – ",
+                          "Look at",
+                          "-  ",
+                          "Bear down on"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_19",
+            "bbox": {
+              "x": 1773875,
+              "y": 1972610,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4773875,
+              "bottom": 4972610
+            },
+            "columnWidths": [
+              490275,
+              5105975
+            ],
+            "rows": [
+              {
+                "height": 204225,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I have looked at the same mountains for ages.",
+                    "paragraphs": [
+                      {
+                        "text": "I have looked at the same mountains for ages.",
+                        "runs": [
+                          "I have looked at the same mountains for ages",
+                          "."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "1.",
+                    "paragraphs": [
+                      {
+                        "text": "1.",
+                        "runs": [
+                          "1."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "2.",
+                    "paragraphs": [
+                      {
+                        "text": "2.",
+                        "runs": [
+                          "2."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "5.",
+                    "paragraphs": [
+                      {
+                        "text": "5.",
+                        "runs": [
+                          "5."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "6.",
+                    "paragraphs": [
+                      {
+                        "text": "6.",
+                        "runs": [
+                          "6."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "7.",
+                    "paragraphs": [
+                      {
+                        "text": "7.",
+                        "runs": [
+                          "7."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "8.",
+                    "paragraphs": [
+                      {
+                        "text": "8.",
+                        "runs": [
+                          "8."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "A. Look at the phrasal verbs in the chart and make sentences in different tenses. Follow the example.",
+        "visibleTexts": [
+          "A. Look at the phrasal verbs in the chart and make sentences in different tenses. Follow the example.",
+          "come across – run along – face up – deal with– wash away come up with– – look at- bear down on",
+          "0. I have looked at the same mountains for ages. 1. 2. 3. 4. 5. 6. 7. 8."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [
+          "table-or-chart-mentioned-without-table-semantics"
+        ],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "B. Listen to the audio and answer the questions your teacher makes. ",
+          "Knock it off!",
+          "Have you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries.",
+          "C. Read the following paragraph and extract the phrasal verbs.  What do they mean in the context. After that, Practice reading aloud."
+        ],
+        "joinedText": "B. Listen to the audio and answer the questions your teacher makes.\nKnock it off!\n\nHave you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries.\nC. Read the following paragraph and extract the phrasal verbs.  What do they mean in the context. After that, Practice reading aloud.",
+        "shapes": [
+          {
+            "shapeId": "294",
+            "shapeName": "Google Shape;294;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 3611700,
+              "y": 1007925,
+              "cx": 4769400,
+              "cy": 3325200,
+              "right": 8381100,
+              "bottom": 4333125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 984725,
+              "y": 233250,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7107425,
+              "bottom": 834450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 3719475,
+              "y": 1037675,
+              "cx": 4585500,
+              "cy": 3233100,
+              "right": 8304975,
+              "bottom": 4270775
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Knock it off!",
+                "runs": [
+                  "Knock it off!"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "Have you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries.",
+                "runs": [
+                  "Have you ever met someone who is so ",
+                  "annoying",
+                  " that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some ",
+                  "point",
+                  " ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and ",
+                  "boundaries."
+                ]
+              }
+            ],
+            "texts": [
+              "Knock it off!",
+              "Have you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries."
+            ],
+            "joinedText": "Knock it off!\n\nHave you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries."
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 723900,
+              "y": 2607575,
+              "cx": 2819400,
+              "cy": 1789500,
+              "right": 3543300,
+              "bottom": 4397075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and extract the phrasal verbs.  What do they mean in the context. After that, Practice reading aloud.",
+                "runs": [
+                  "C. Read the following paragraph and extract",
+                  " the phrasal verbs",
+                  ".  What do they mean",
+                  " in the context. After that, Practice reading aloud."
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and extract the phrasal verbs.  What do they mean in the context. After that, Practice reading aloud."
+            ],
+            "joinedText": "C. Read the following paragraph and extract the phrasal verbs.  What do they mean in the context. After that, Practice reading aloud."
+          },
+          {
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;g729cfa641f_0_32",
+            "kind": "picture",
+            "bbox": {
+              "x": 1301375,
+              "y": 1007925,
+              "cx": 880000,
+              "cy": 880000,
+              "right": 2181375,
+              "bottom": 1887925
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "298",
+            "shapeName": "Google Shape;298;g729cfa641f_0_32",
+            "bbox": {
+              "x": 1301375,
+              "y": 1007925,
+              "cx": 880000,
+              "cy": 880000,
+              "right": 2181375,
+              "bottom": 1887925
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "B. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "B. Listen to the audio and answer the questions your teacher makes.",
+          "Knock it off! Have you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries.",
+          "C. Read the following paragraph and extract the phrasal verbs. What do they mean in the context. After that, Practice reading aloud."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbYuRYjFSlsSI3VwyutQxy_8W-JspEUU72mn3DXLDkjUyo_JHx_pJT9CTWsp6yKINuImpbmWGI_qDp-qhTpTHrOr2wIbBX7umHIZPQCAmNT5-TeVmX1dyDaw7xeO0Fj6aRvyOvgpupNijQKGA_V-71dw_HlMPvBKdRB5LbQEpDC5GXZrk8IaN8BKnOa8fXVxQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.",
+          "E. Write a piece of text where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied. ",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.\nE. Write a piece of text where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1123275,
+              "y": 146675,
+              "cx": 6122700,
+              "cy": 1027500,
+              "right": 7245975,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.",
+                "runs": [
+                  "D. ",
+                  "Talk about a situation you lived or you have been living recently",
+                  ". What is it about? How have yo",
+                  "u coped with it? Remember to use the language studied."
+                ]
+              }
+            ],
+            "texts": [
+              "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied."
+            ],
+            "joinedText": "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied."
+          },
+          {
+            "shapeId": "304",
+            "shapeName": "Google Shape;304;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a piece of text where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied. ",
+                "runs": [
+                  "E. Write a ",
+                  "piece of text where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied. "
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a piece of text where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied. "
+            ],
+            "joinedText": "E. Write a piece of text where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied."
+          },
+          {
+            "shapeId": "305",
+            "shapeName": "Google Shape;305;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 1070307,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2245829
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "306",
+            "shapeName": "Google Shape;306;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "305",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "307",
+            "shapeName": "Google Shape;307;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "305",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "308",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.",
+        "visibleTexts": [
+          "D. Talk about a situation you lived or you have been living recently. What is it about? How have you coped with it? Remember to use the language studied.",
+          "E. Write a piece of text between 120-160 words where you express the things we need to bear in mind to have a good work environment. What do we need to have / do? How are we supposed to act? What does the company need to implement? Use the language studied.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "327",
+            "shapeName": "Google Shape;327;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "330",
+            "shapeName": "Google Shape;330;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "shapeId": "328",
+            "shapeName": "Google Shape;328;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "shapeId": "329",
+            "shapeName": "Google Shape;329;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 17
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image5.png",
+            "relationshipId": "rId3",
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image4.png",
+            "relationshipId": "rId4",
+            "slide": 17
+          }
+        ]
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbEDPSA1CqwtaJmVViu98kG1nV-l4r3gEXxxao8FDWRmIJ6GYIXLk6fJBvMErNtMLTdmFlxPPg11cyd7h0sujE5wVINMKGYwMue5GBcAeDoGaaCDq7yVoetHBlLzAyMH4quJpUD2uuP1vOUMbaZ_NHuHVr7Aah-iBDupzLsvehArMxJKFPRnawRrCQ2M1bpzw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa_lITroC8oja5ePsjd8Uc9JeUzcK2cw3uyhbGNRpHELa1O8plDgxwcuCVMClO4R4WilRXu5Cr7uKAWQXiJ1pfwR4NCXcUFCEEqxNftoUKqlCvzZAzODuUq4K4saibBhGehNTOaQhyzsHNlfNgfCSCsRGYy1VZY8hPIPofiSOG25ujxmE9gF6iMY8T1rgI=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY9dRuynOkn7ZcMjIaX7QCjkY--Yr_5Q5B77eUmg7ulxPJsoCBj-NkyItAzzGUYZTDzEywop3LgXI8ephtSSbjRKgojT44nq1TD7kZBWWJtmpfXqCIRy1BosOGdm5Ho-FL_wWmn0As5zxUP-jjPVBLQoXFT7WeROU4QeLA5Px149PVDRjUBLy3gl7rl9Wo=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

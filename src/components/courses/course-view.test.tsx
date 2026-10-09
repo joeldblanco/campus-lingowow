@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('next/link', () => ({
   default: ({ children, href, ...props }: { children: ReactNode; href: string }) => (
@@ -11,6 +11,19 @@ vi.mock('next/link', () => ({
 }))
 
 import { CourseView } from './course-view'
+
+const originalMatchMedia = window.matchMedia
+
+beforeEach(() => {
+  window.history.replaceState({}, '', '/')
+  window.matchMedia = vi.fn().mockReturnValue({ matches: false }) as typeof window.matchMedia
+})
+
+afterEach(() => {
+  cleanup()
+  window.history.replaceState({}, '', '/')
+  window.matchMedia = originalMatchMedia
+})
 
 type CourseModule = {
   id: string
@@ -301,5 +314,240 @@ describe('CourseView compact content', () => {
     fireEvent.click(showAll)
     expect(showAll).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByText('Módulo 10')).toBeInTheDocument()
+  })
+
+  it('opens a newly active module when refreshed server progress changes the next step', () => {
+    const first = makeModule('m1', 'Foundations', 1, 'c1')
+    const second = makeModule('m2', 'Conversation', 2, 'c2')
+    const course = makeCourse([first, second]) as never
+    const progressBefore = makeProgress([], 2)
+    const progressAfter = makeProgress(['c1'], 2)
+    const moduleProgressBefore = [
+      {
+        moduleId: 'm1',
+        totalContents: 1,
+        completedContents: 0,
+        percentage: 0,
+        isCompleted: false,
+        isLocked: false,
+        blockedByModuleId: null,
+        order: 1,
+      },
+      {
+        moduleId: 'm2',
+        totalContents: 1,
+        completedContents: 0,
+        percentage: 0,
+        isCompleted: false,
+        isLocked: false,
+        blockedByModuleId: null,
+        order: 2,
+      },
+    ]
+    const moduleProgressAfter = moduleProgressBefore.map((module) =>
+      module.moduleId === 'm1'
+        ? { ...module, completedContents: 1, percentage: 100, isCompleted: true }
+        : module
+    )
+    const { rerender } = render(
+      <CourseView
+        course={course}
+        progress={progressBefore}
+        moduleProgress={moduleProgressBefore}
+      />
+    )
+
+    expect(screen.getByText('1. Foundations lesson')).toBeInTheDocument()
+    expect(screen.queryByText('1. Conversation lesson')).not.toBeInTheDocument()
+
+    rerender(
+      <CourseView course={course} progress={progressAfter} moduleProgress={moduleProgressAfter} />
+    )
+
+    expect(screen.getByText('1. Conversation lesson')).toBeInTheDocument()
+  })
+
+  it('returns to and celebrates the server-confirmed lesson, including a final module beyond eight', async () => {
+    const modules = Array.from({ length: 10 }, (_, index) =>
+      makeModule(`m${index + 1}`, `Módulo ${index + 1}`, index + 1, `c${index + 1}`)
+    )
+    const moduleProgress = modules.map((module) => ({
+      moduleId: module.id,
+      totalContents: 1,
+      completedContents: 1,
+      percentage: 100,
+      isCompleted: true,
+      isLocked: false,
+      blockedByModuleId: null,
+      order: Number(module.id.slice(1)),
+    }))
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m10-lesson')
+    const scrollIntoView = vi.fn()
+    const focus = vi.spyOn(HTMLElement.prototype, 'focus')
+    HTMLElement.prototype.scrollIntoView = scrollIntoView
+
+    render(
+      <CourseView
+        course={makeCourse(modules) as never}
+        progress={makeProgress(modules.map((module) => `${module.id.replace('m', 'c')}`), 10)}
+        moduleProgress={moduleProgress}
+      />
+    )
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    expect(screen.getByText('Módulo 10')).toBeInTheDocument()
+    expect(screen.getByText('1. Módulo 10 lesson').closest('[data-completion-target]')).toHaveAttribute(
+      'data-completion-target',
+      'true'
+    )
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' })
+    expect(focus).toHaveBeenCalled()
+    expect(window.location.search).toBe('')
+  })
+
+  it('clears invalid or unconfirmed markers without faking completion', async () => {
+    const modules = Array.from({ length: 10 }, (_, index) =>
+      makeModule(`m${index + 1}`, `Módulo ${index + 1}`, index + 1, `c${index + 1}`)
+    )
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=missing')
+
+    render(
+      <CourseView
+        course={makeCourse(modules) as never}
+        progress={makeProgress(['c1'], 10)}
+        moduleProgress={modules.map((module, index) => ({
+          moduleId: module.id,
+          totalContents: 1,
+          completedContents: index === 0 ? 1 : 0,
+          percentage: index === 0 ? 100 : 0,
+          isCompleted: index === 0,
+          isLocked: false,
+          blockedByModuleId: null,
+          order: index + 1,
+        }))}
+      />
+    )
+
+    await waitFor(() => expect(window.location.search).toBe(''))
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.queryByText('Módulo 10')).not.toBeInTheDocument()
+  })
+
+  it('uses automatic scrolling and keeps the completion message with reduced motion', async () => {
+    const moduleItem = makeModule('m1', 'Foundations', 1, 'c1')
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m1-lesson')
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true }) as typeof window.matchMedia
+    const scrollIntoView = vi.fn()
+    HTMLElement.prototype.scrollIntoView = scrollIntoView
+
+    render(
+      <CourseView
+        course={makeCourse([moduleItem]) as never}
+        progress={makeProgress(['c1'], 1)}
+        moduleProgress={[
+          {
+            moduleId: 'm1',
+            totalContents: 1,
+            completedContents: 1,
+            percentage: 100,
+            isCompleted: true,
+            isLocked: false,
+            blockedByModuleId: null,
+            order: 1,
+          },
+        ]}
+      />
+    )
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'center' })
+    expect(screen.getByRole('status')).toBeVisible()
+  })
+
+  it('does not replay a consumed marker after the course view remounts', async () => {
+    const moduleItem = makeModule('m1', 'Foundations', 1, 'c1')
+    const props = {
+      course: makeCourse([moduleItem]) as never,
+      progress: makeProgress(['c1'], 1),
+      moduleProgress: [
+        {
+          moduleId: 'm1',
+          totalContents: 1,
+          completedContents: 1,
+          percentage: 100,
+          isCompleted: true,
+          isLocked: false,
+          blockedByModuleId: null,
+          order: 1,
+        },
+      ],
+    }
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m1-lesson')
+
+    render(<CourseView {...props} />)
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    cleanup()
+
+    render(<CourseView {...props} />)
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+  })
+
+  it('waits for the target to settle in view before starting the success glow', async () => {
+    const moduleItem = makeModule('m1', 'Foundations', 1, 'c1')
+    window.history.replaceState({}, '', '/my-courses/course-1?completedLesson=m1-lesson')
+    const scrollIntoView = vi.fn()
+    HTMLElement.prototype.scrollIntoView = scrollIntoView
+    let observeTarget: Element | undefined
+    let intersectionCallback: IntersectionObserverCallback | undefined
+    const originalIntersectionObserver = window.IntersectionObserver
+    class FakeIntersectionObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        intersectionCallback = callback
+      }
+
+      observe(target: Element) {
+        observeTarget = target
+      }
+
+      disconnect() {}
+      unobserve() {}
+      takeRecords(): IntersectionObserverEntry[] {
+        return []
+      }
+    }
+    window.IntersectionObserver = FakeIntersectionObserver as unknown as typeof IntersectionObserver
+
+    render(
+      <CourseView
+        course={makeCourse([moduleItem]) as never}
+        progress={makeProgress(['c1'], 1)}
+        moduleProgress={[
+          {
+            moduleId: 'm1',
+            totalContents: 1,
+            completedContents: 1,
+            percentage: 100,
+            isCompleted: true,
+            isLocked: false,
+            blockedByModuleId: null,
+            order: 1,
+          },
+        ]}
+      />
+    )
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Lección completada'))
+    const target = screen.getByText('1. Foundations lesson').closest('[data-completion-target]')
+    expect(target).toBe(observeTarget)
+    expect(target).not.toHaveClass('course-completion-glow')
+
+    await act(async () => {
+      intersectionCallback?.(
+        [{ isIntersecting: true, intersectionRatio: 1 } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      )
+    })
+    expect(target).toHaveClass('course-completion-glow')
+    window.IntersectionObserver = originalIntersectionObserver
   })
 })

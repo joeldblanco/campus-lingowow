@@ -1,0 +1,4662 @@
+{
+  "schemaVersion": 1,
+  "unit": 37,
+  "module": {
+    "order": 10,
+    "title": "Módulo 10",
+    "id": "cmnmm9l8k0007w1qkkkfxljmb",
+    "driveTitle": "Module 10"
+  },
+  "candidate": {
+    "id": "1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO",
+    "title": "I need someone to...- Unit 37.pptx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "url": "https://docs.google.com/presentation/d/1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO/edit?usp=drivesdk&ouid=115308531497296638824&rtpof=true&sd=true",
+    "size": "1784201",
+    "level": "B",
+    "path": [
+      "B levels",
+      "Module 10"
+    ],
+    "role": "primary-candidate",
+    "mappingReason": "explicit-unit-in-title",
+    "localPath": "docs\\audit\\source-originals\\B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+    "localBytes": 1784201,
+    "sha256": "26f7059232086b1335d54d69e6acf58e7fdd185c3aee70c34e2434855a86980d"
+  },
+  "source": {
+    "nativePptx": "docs\\audit\\source-originals\\B-unit-37-primary-01-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO.pptx",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRMRjGZ4IHFTwwqFhYK_35jQTGU7rjsOO4ijsEN_SHWbluWO899yBYtNrPglv8ohg/embed?start=false&loop=false&delayms=3000",
+    "mergeRule": "published slide numbers are present only for exact-count text-set-aligned records"
+  },
+  "mergeStatus": "merged-published-slide-numbers",
+  "publishedComparison": {
+    "status": "text-set-aligned",
+    "publicSourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRMRjGZ4IHFTwwqFhYK_35jQTGU7rjsOO4ijsEN_SHWbluWO899yBYtNrPglv8ohg/embed?start=false&loop=false&delayms=3000",
+    "publicSlideCount": 17,
+    "nativeSlideCount": 17,
+    "exactSlideCount": true,
+    "sequenceRatio": 0.111756,
+    "publicTokenCoverage": 0.943152,
+    "slideDifferenceCount": 8,
+    "slideDifferences": [
+      {
+        "slide": 2,
+        "nativeText": "Communicative Function\nTalk about what oneself and others look for in people or things.\nCompetencies\nManage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language.",
+        "publishedText": "Competencies Manage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language. Communicative Function Talk about what oneself and others look for in people or things.",
+        "sequenceRatio": 0.353659
+      },
+      {
+        "slide": 4,
+        "nativeText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "publishedText": "A. Look at the picture. What is it suggesting? What is today’s topic? B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. 4",
+        "sequenceRatio": 0.976608
+      },
+      {
+        "slide": 8,
+        "nativeText": "Grammar\nExamples\nObservation\n1\nPreferences + Non finite clauses.\nI need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.\nNon Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses\n2\nPreferences + Relative clauses.\nJosh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.\nRelative clauses need to respect their principles even here.\nPreference can have an extended meaning if we use the more complex grammar points to regular ones.",
+        "publishedText": "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here. Preference can have an extended meaning if we use the more complex grammar points to regular ones.",
+        "sequenceRatio": 0.914493
+      },
+      {
+        "slide": 9,
+        "nativeText": "To Consider \n1. Rather than is also another particle we use to build a non finite clause. E.G. Rather than leave the child alone, I brought him to work with me. \n2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. \n3. We can also use It clauses. E.G. I love it when people are polite. \n*Verb must be in simple form.",
+        "publishedText": "To Consider 1. Rather than is also another particle we use to build a non-finite clause. E.G. Rather than leave the child alone, I brought him to work with me. 2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. 3. We can also use It clauses. E.G. I love it when people are polite. *Normally, the verb goes in simple form. The -ing form can be also used.",
+        "sequenceRatio": 0.890646
+      },
+      {
+        "slide": 11,
+        "nativeText": "Preferences can be expressed in any tense and we the use of the correct clauses we can advocate the following functions.\nFunctions\nExamples\n1\nState what people look for and want from others.\nThey’d love us to dance by their music during the training.\nI expect committed classmates who make big efforts.\n2\nExpress what you look for and want from things / situations\nStriving through problems, the company desires the employees to stick by it.\nAshamed and disgusted, Jake wanted the problem to be over so he came clean.\nTo consider \n1. Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent.",
+        "publishedText": "Preferences can be expressed in any tense, and with the use of the correct clauses, we can advocate the following functions. Functions Examples 1 State what people look for and want from others They’d love us to dance by their music during the training. I expect committed classmates who make big efforts. 2 Express what you look for and want from things / situations Striving through problems, the company desires the employees to stick by it. Ashamed and disgusted, Jake wanted the problem to be over so he came clean. To consider Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent.",
+        "sequenceRatio": 0.246914
+      },
+      {
+        "slide": 13,
+        "nativeText": "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example.\n0.\nThe orphanages is looking for someone filled with humbleness and love to help the children.\n1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.",
+        "publishedText": "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example. 0. The orphanage is looking for someone filled with humbleness, and love to help children. 1. 2. 3. 4. 5. 6. 7. 8.",
+        "sequenceRatio": 0.987903
+      },
+      {
+        "slide": 14,
+        "nativeText": "B. Listen to the audio and answer the questions your teacher makes.\nHave you gotten it yet?\n\nOne of the most difficult decisions in life is deciding who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and  respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "publishedText": "B. Listen to the audio and answer the questions your teacher makes. Have you gotten it yet? One of the most difficult decisions in life is choosing who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own. C. Read the following paragraph and extract sentences with the functions studied. Locate them in the space provided.",
+        "sequenceRatio": 0.949615
+      },
+      {
+        "slide": 15,
+        "nativeText": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter in 3 years from now.\nE. Write a piece of text where you state your desires, expectations, wishes etc for the world to be 10 years from now and how you think humanity would be after all we have gone through.\nLet’s Talk\nLet’s Write",
+        "publishedText": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter 3 years from now. E. Write a piece of text between 120 - 160 words where you state your desires, expectations, wishes, etc. for the world to be 10 years from now and how you think humanity would be after all we have gone through. Let’s Talk Let’s Write",
+        "sequenceRatio": 0.962289
+      }
+    ]
+  },
+  "nativeMedia": [
+    {
+      "path": "ppt/media/image1.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a"
+    },
+    {
+      "path": "ppt/media/image10.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 87073,
+      "sha256": "43f655fd7c969bcf92d2ed1dadd0118797f338459aa70848bfea2228f7a1f480"
+    },
+    {
+      "path": "ppt/media/image11.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 130680,
+      "sha256": "7e28b03851977a808d3b956a4d0f1da05ba28b8f0a5dd262e0afa5e59d0d1b20"
+    },
+    {
+      "path": "ppt/media/image12.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 191940,
+      "sha256": "e26823e5746bdce60fcf74970c3523828567bc3d9a619b641c8068b1713740d2"
+    },
+    {
+      "path": "ppt/media/image13.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 177706,
+      "sha256": "683572df1cf3ad334b0b1aebdc42c16a29d8f586b8cc1ae480653bea74e09a6c"
+    },
+    {
+      "path": "ppt/media/image14.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 132508,
+      "sha256": "3b1142ff15ece850fff008abc8ade761ec64941dbdbb7a38da9d8cc5442050a9"
+    },
+    {
+      "path": "ppt/media/image2.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064"
+    },
+    {
+      "path": "ppt/media/image3.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38"
+    },
+    {
+      "path": "ppt/media/image4.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 11752,
+      "sha256": "39bd3d7611c0e4a5d84925e7531c99a221e0306cb0a2d12ab0a444fa7cc506ee"
+    },
+    {
+      "path": "ppt/media/image5.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 29715,
+      "sha256": "004b50f5a0e93a2d70475ffcbbbb0d5f05a3f5959bc47a01a32a9d5516ae0cb4"
+    },
+    {
+      "path": "ppt/media/image6.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e"
+    },
+    {
+      "path": "ppt/media/image7.png",
+      "extension": ".png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1"
+    },
+    {
+      "path": "ppt/media/image8.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 225304,
+      "sha256": "3865a494f8184149e42d092e9b8786b84b73eba8fe3efe825bb34d1eac2148d3"
+    },
+    {
+      "path": "ppt/media/image9.jpg",
+      "extension": ".jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126323,
+      "sha256": "5222f3120e2ebb7e59df172267a260d12d399bdf83e22b0c77a49b96daf73284"
+    }
+  ],
+  "nativeMediaSummary": {
+    "count": 14,
+    "bytes": 1286850,
+    "byExtension": {
+      ".jpg": 9,
+      ".png": 5
+    },
+    "audioCount": 0,
+    "audioBytes": 0,
+    "audioPaths": [],
+    "imageCount": 14,
+    "imageBytes": 1286850
+  },
+  "nativeImageAssets": [
+    {
+      "mediaPath": "ppt/media/image1.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image1.png",
+      "mimeType": "image/png",
+      "bytes": 2127,
+      "sha256": "b15efd82d219b2c9635243082af313003f4d463176d1ac3ea9cb285f12f6fc5a",
+      "referenceCount": 2,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId5",
+          "shapeId": "222",
+          "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5870900,
+            "y": 3231425,
+            "cx": 1015800,
+            "cy": 1015800,
+            "right": 6886700,
+            "bottom": 4247225
+          },
+          "slide": 4
+        },
+        {
+          "mediaPath": "ppt/media/image1.png",
+          "relationshipId": "rId4",
+          "shapeId": "312",
+          "shapeName": "Google Shape;312;g729cfa641f_0_32",
+          "bbox": {
+            "x": 1406125,
+            "y": 834450,
+            "cx": 998300,
+            "cy": 998300,
+            "right": 2404425,
+            "bottom": 1832750
+          },
+          "slide": 14
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image10.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image10.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 87073,
+      "sha256": "43f655fd7c969bcf92d2ed1dadd0118797f338459aa70848bfea2228f7a1f480",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image10.jpg",
+          "relationshipId": "rId9",
+          "shapeId": "241",
+          "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6551667,
+            "y": 2842820,
+            "cx": 1450194,
+            "cy": 903880,
+            "right": 8001861,
+            "bottom": 3746700
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image11.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image11.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 130680,
+      "sha256": "7e28b03851977a808d3b956a4d0f1da05ba28b8f0a5dd262e0afa5e59d0d1b20",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image11.jpg",
+          "relationshipId": "rId5",
+          "shapeId": "237",
+          "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754790,
+            "y": 1111469,
+            "cx": 1490657,
+            "cy": 854029,
+            "right": 6245447,
+            "bottom": 1965498
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image12.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image12.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 191940,
+      "sha256": "e26823e5746bdce60fcf74970c3523828567bc3d9a619b641c8068b1713740d2",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image12.jpg",
+          "relationshipId": "rId6",
+          "shapeId": "238",
+          "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 4754794,
+            "y": 2846030,
+            "cx": 1490704,
+            "cy": 903883,
+            "right": 6245498,
+            "bottom": 3749913
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image13.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image13.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 177706,
+      "sha256": "683572df1cf3ad334b0b1aebdc42c16a29d8f586b8cc1ae480653bea74e09a6c",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image13.jpg",
+          "relationshipId": "rId4",
+          "shapeId": "236",
+          "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2918929,
+            "y": 1103450,
+            "cx": 1490661,
+            "cy": 862042,
+            "right": 4409590,
+            "bottom": 1965492
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image14.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image14.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 132508,
+      "sha256": "3b1142ff15ece850fff008abc8ade761ec64941dbdbb7a38da9d8cc5442050a9",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image14.jpg",
+          "relationshipId": "rId10",
+          "shapeId": "245",
+          "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 6530057,
+            "y": 1136204,
+            "cx": 1490605,
+            "cy": 854023,
+            "right": 8020662,
+            "bottom": 1990227
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image2.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image2.png",
+      "mimeType": "image/png",
+      "bytes": 45076,
+      "sha256": "2e46d2d020a11fb341d578a922995a529939aa245dfb8af03ac7e676d7fee064",
+      "referenceCount": 0,
+      "sameDigestCountInDeck": 1,
+      "classification": "unreferenced-media",
+      "classificationReason": "package image has no slide image relationship",
+      "references": []
+    },
+    {
+      "mediaPath": "ppt/media/image3.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image3.png",
+      "mimeType": "image/png",
+      "bytes": 39524,
+      "sha256": "5bd18f07c366ae91ac8a070df4537f57120e53656339a572427adf1589150f38",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image3.png",
+          "relationshipId": "rId3",
+          "shapeId": "198",
+          "shapeName": "Google Shape;198;p1",
+          "bbox": {
+            "x": 6543492,
+            "y": 4402966,
+            "cx": 2495138,
+            "cy": 571369,
+            "right": 9038630,
+            "bottom": 4974335
+          },
+          "slide": 1
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image4.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image4.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 11752,
+      "sha256": "39bd3d7611c0e4a5d84925e7531c99a221e0306cb0a2d12ab0a444fa7cc506ee",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image4.jpg",
+          "relationshipId": "rId7",
+          "shapeId": "239",
+          "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123491,
+            "y": 2851732,
+            "cx": 1450221,
+            "cy": 903879,
+            "right": 2573712,
+            "bottom": 3755611
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image5.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image5.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 29715,
+      "sha256": "004b50f5a0e93a2d70475ffcbbbb0d5f05a3f5959bc47a01a32a9d5516ae0cb4",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image5.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "220",
+          "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+          "bbox": {
+            "x": 5489900,
+            "y": 534475,
+            "cx": 2565848,
+            "cy": 1710725,
+            "right": 8055748,
+            "bottom": 2245200
+          },
+          "slide": 4
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image6.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image6.png",
+      "mimeType": "image/png",
+      "bytes": 54394,
+      "sha256": "4a86d45eec89fcc550e9d11430b2a5ad62e373d744c314055b492735d0a06f3e",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image6.png",
+          "relationshipId": "rId3",
+          "shapeId": "342",
+          "shapeName": "Google Shape;342;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 3613060,
+            "y": 728450,
+            "cx": 1917850,
+            "cy": 1917824,
+            "right": 5530910,
+            "bottom": 2646274
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image7.png",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image7.png",
+      "mimeType": "image/png",
+      "bytes": 32728,
+      "sha256": "ce7ad2a5f9eaaf5bb72c2767c86511982c60096abdd6d172eba3ec9c0f1f15d1",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image7.png",
+          "relationshipId": "rId4",
+          "shapeId": "343",
+          "shapeName": "Google Shape;343;g72bb22e13b_1_37",
+          "bbox": {
+            "x": 2463888,
+            "y": 2798675,
+            "cx": 4216174,
+            "cy": 573650,
+            "right": 6680062,
+            "bottom": 3372325
+          },
+          "slide": 17
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image8.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image8.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 225304,
+      "sha256": "3865a494f8184149e42d092e9b8786b84b73eba8fe3efe825bb34d1eac2148d3",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image8.jpg",
+          "relationshipId": "rId3",
+          "shapeId": "235",
+          "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 1123492,
+            "y": 1111463,
+            "cx": 1450220,
+            "cy": 862033,
+            "right": 2573712,
+            "bottom": 1973496
+          },
+          "slide": 6
+        }
+      ]
+    },
+    {
+      "mediaPath": "ppt/media/image9.jpg",
+      "localPath": "docs\\audit\\source-originals\\images\\B-unit-37-1DLvj8HCHVH9-qMlsGyVm_rEiFdvkpNaO\\image9.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 126323,
+      "sha256": "5222f3120e2ebb7e59df172267a260d12d399bdf83e22b0c77a49b96daf73284",
+      "referenceCount": 1,
+      "sameDigestCountInDeck": 1,
+      "classification": "instructional-candidate",
+      "classificationReason": "referenced by one or two slide picture shapes",
+      "references": [
+        {
+          "mediaPath": "ppt/media/image9.jpg",
+          "relationshipId": "rId8",
+          "shapeId": "240",
+          "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+          "bbox": {
+            "x": 2998275,
+            "y": 2842825,
+            "cx": 1450500,
+            "cy": 912775,
+            "right": 4448775,
+            "bottom": 3755600
+          },
+          "slide": 6
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "number": 1,
+      "native": {
+        "number": 1,
+        "texts": [
+          "37",
+          "I need someone to...",
+          "Unit"
+        ],
+        "joinedText": "37\nI need someone to...\nUnit",
+        "shapes": [
+          {
+            "shapeId": "195",
+            "shapeName": "Google Shape;195;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 1039550,
+              "y": 468250,
+              "cx": 2304300,
+              "cy": 1649100,
+              "right": 3343850,
+              "bottom": 2117350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "37",
+                "runs": [
+                  "37"
+                ]
+              }
+            ],
+            "texts": [
+              "37"
+            ],
+            "joinedText": "37"
+          },
+          {
+            "shapeId": "196",
+            "shapeName": "Google Shape;196;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 230475,
+              "y": 2223000,
+              "cx": 8351700,
+              "cy": 1159800,
+              "right": 8582175,
+              "bottom": 3382800
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "I need someone to...",
+                "runs": [
+                  "I need someone to..."
+                ]
+              }
+            ],
+            "texts": [
+              "I need someone to..."
+            ],
+            "joinedText": "I need someone to..."
+          },
+          {
+            "shapeId": "197",
+            "shapeName": "Google Shape;197;p1",
+            "kind": "text",
+            "bbox": {
+              "x": 438950,
+              "y": 683200,
+              "cx": 1089000,
+              "cy": 777900,
+              "right": 1527950,
+              "bottom": 1461100
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Unit",
+                "runs": [
+                  "Unit"
+                ]
+              }
+            ],
+            "texts": [
+              "Unit"
+            ],
+            "joinedText": "Unit"
+          },
+          {
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "kind": "picture",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "shapeId": "198",
+            "shapeName": "Google Shape;198;p1",
+            "bbox": {
+              "x": 6543492,
+              "y": 4402966,
+              "cx": 2495138,
+              "cy": 571369,
+              "right": 9038630,
+              "bottom": 4974335
+            },
+            "slide": 1
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image3.png",
+            "relationshipId": "rId3",
+            "slide": 1
+          }
+        ]
+      },
+      "publishedSlideNumber": 1,
+      "published": {
+        "number": 1,
+        "internalPageId": 1,
+        "title": "37",
+        "visibleTexts": [
+          "37",
+          "I need someone to...",
+          "Unit"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbvA3TpKVE-u5KKoaY22CNLGxi1wt6z_sTqriot2vQMVgWp_5SE41xfM77mfmb2JT1Xhw-nvE0c2JO9ocHucNzonnp6wlTYoS__WCY2_J3R4iqFoid2MXQ8cmqI4y3rYuu8wjO72PHnhUFM349ai0kKyKkmW7gVoTSi9LPU-eZ_82uYFZ0PEMISRa7MLu0=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "native": {
+        "number": 2,
+        "texts": [
+          "Communicative Function",
+          "Talk about what oneself and others look for in people or things.",
+          "Competencies",
+          "Manage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language."
+        ],
+        "joinedText": "Communicative Function\nTalk about what oneself and others look for in people or things.\nCompetencies\nManage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language.",
+        "shapes": [
+          {
+            "shapeId": "203",
+            "shapeName": "Google Shape;203;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 482825,
+              "cx": 5275500,
+              "cy": 1667400,
+              "right": 6727125,
+              "bottom": 2150225
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Communicative Function",
+                "runs": [
+                  "Communicative Function"
+                ]
+              },
+              {
+                "text": "Talk about what oneself and others look for in people or things.",
+                "runs": [
+                  "Talk about what ",
+                  "oneself",
+                  " and others look for in people or things."
+                ]
+              }
+            ],
+            "texts": [
+              "Communicative Function",
+              "Talk about what oneself and others look for in people or things."
+            ],
+            "joinedText": "Communicative Function\nTalk about what oneself and others look for in people or things."
+          },
+          {
+            "shapeId": "204",
+            "shapeName": "Google Shape;204;g72967b2bcc_0_11",
+            "kind": "text",
+            "bbox": {
+              "x": 1451625,
+              "y": 2464025,
+              "cx": 5724600,
+              "cy": 2053500,
+              "right": 7176225,
+              "bottom": 4517525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Competencies",
+                "runs": [
+                  "Competencies"
+                ]
+              },
+              {
+                "text": "Manage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language.",
+                "runs": [
+                  "Manage to use and understand language accurately to express what ",
+                  "oneself",
+                  " and others look for in people and things in written and spoken language."
+                ]
+              }
+            ],
+            "texts": [
+              "Competencies",
+              "Manage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language."
+            ],
+            "joinedText": "Competencies\nManage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 2,
+      "published": {
+        "number": 2,
+        "internalPageId": null,
+        "title": "Competencies Manage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language.",
+        "visibleTexts": [
+          "Competencies Manage to use and understand language accurately to express what oneself and others look for in people and things in written and spoken language.",
+          "Communicative Function Talk about what oneself and others look for in people or things."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "native": {
+        "number": 3,
+        "texts": [
+          "Introduction"
+        ],
+        "joinedText": "Introduction",
+        "shapes": [
+          {
+            "shapeId": "209",
+            "shapeName": "Google Shape;209;g72967b2bcc_0_24",
+            "kind": "group",
+            "bbox": {
+              "x": 3234588,
+              "y": 689593,
+              "cx": 2674807,
+              "cy": 2308956,
+              "right": 5909395,
+              "bottom": 2998549
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "210",
+            "shapeName": "Google Shape;210;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 5302227,
+              "y": 1065586,
+              "cx": 869028,
+              "cy": 1042890,
+              "right": 6171255,
+              "bottom": 2108476
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "211",
+            "shapeName": "Google Shape;211;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 3698950,
+              "y": 1642725,
+              "cx": 1746087,
+              "cy": 1584424,
+              "right": 5445037,
+              "bottom": 3227149
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "212",
+            "shapeName": "Google Shape;212;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 4589125,
+              "y": 1540950,
+              "cx": 1147500,
+              "cy": 1030800,
+              "right": 5736625,
+              "bottom": 2571750
+            },
+            "parentShapeId": "209",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "213",
+            "shapeName": "Google Shape;213;g72967b2bcc_0_24",
+            "kind": "text",
+            "bbox": {
+              "x": 2286000,
+              "y": 3227145,
+              "cx": 4572000,
+              "cy": 923400,
+              "right": 6858000,
+              "bottom": 4150545
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Introduction",
+                "runs": [
+                  "Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Introduction"
+            ],
+            "joinedText": "Introduction"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 3,
+      "published": {
+        "number": 3,
+        "internalPageId": null,
+        "title": "Introduction",
+        "visibleTexts": [
+          "Introduction"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "native": {
+        "number": 4,
+        "texts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+          "‹#›"
+        ],
+        "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n‹#›",
+        "shapes": [
+          {
+            "shapeId": "218",
+            "shapeName": "Google Shape;218;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1036675,
+              "y": 583075,
+              "cx": 4197600,
+              "cy": 708000,
+              "right": 5234275,
+              "bottom": 1291075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. Look at the picture. What is it suggesting? What is today’s topic? ",
+                "runs": [
+                  "A. Look at the picture. What is it suggesting? What is today’s topic? "
+                ]
+              }
+            ],
+            "texts": [
+              "A. Look at the picture. What is it suggesting? What is today’s topic? "
+            ],
+            "joinedText": "A. Look at the picture. What is it suggesting? What is today’s topic?"
+          },
+          {
+            "shapeId": "219",
+            "shapeName": "Google Shape;219;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 1298910,
+              "y": 3231427,
+              "cx": 4572000,
+              "cy": 1015800,
+              "right": 5870910,
+              "bottom": 4247227
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  ",
+                "runs": [
+                  "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.  "
+            ],
+            "joinedText": "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+          },
+          {
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710725,
+              "right": 8055748,
+              "bottom": 2245200
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "221",
+            "shapeName": "Google Shape;221;g72967b2bcc_0_37",
+            "kind": "text",
+            "bbox": {
+              "x": 4337100,
+              "y": 4751625,
+              "cx": 469800,
+              "cy": 391500,
+              "right": 4806900,
+              "bottom": 5143125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "‹#›",
+                "runs": [
+                  "‹#›"
+                ]
+              }
+            ],
+            "texts": [
+              "‹#›"
+            ],
+            "joinedText": "‹#›"
+          },
+          {
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image5.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "220",
+            "shapeName": "Google Shape;220;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5489900,
+              "y": 534475,
+              "cx": 2565848,
+              "cy": 1710725,
+              "right": 8055748,
+              "bottom": 2245200
+            },
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "shapeId": "222",
+            "shapeName": "Google Shape;222;g72967b2bcc_0_37",
+            "bbox": {
+              "x": 5870900,
+              "y": 3231425,
+              "cx": 1015800,
+              "cy": 1015800,
+              "right": 6886700,
+              "bottom": 4247225
+            },
+            "slide": 4
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image5.jpg",
+            "relationshipId": "rId3",
+            "slide": 4
+          },
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId5",
+            "slide": 4
+          }
+        ]
+      },
+      "publishedSlideNumber": 4,
+      "published": {
+        "number": 4,
+        "internalPageId": null,
+        "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "visibleTexts": [
+          "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+          "4"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZxBNevO4UVJWd_vRYpedCGF8LYP8NOvDlWIyxSEwr_iMuPSgVOJlUUQux308gNz5fiQLOGpqaKpzj7WICWAB05fxfYsUeNzb829sOSJXbF5KC8P5mR_axBKz5EatlqwrX8ae54gqWnJ4k-TI7bKD735J55k8wMGV4Eu69msHIbwYQmHbwONjHRpLo_vyh-Ew=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbWELcZf_RvnFY2_4vsuH0dRgX-SMFd7bd4kMOQOvGzsl5wB4KFC4PiuZIp03z2ird-_SJHnDlnJxOas2k3xwW0OHxPQq0V7vsAlcxTOJT5QktVZui3YFsQOUe3fa5DD0G5yRaqj65JXFk_AkI9cXwbJeR5Ab5fRqwWIc_AzLwMevK3lfHqdphzQE_PDWtYmA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "native": {
+        "number": 5,
+        "texts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "joinedText": "Vocabulary Introduction\nA glimpse to new words\n1",
+        "shapes": [
+          {
+            "shapeId": "227",
+            "shapeName": "Google Shape;227;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Vocabulary Introduction",
+                "runs": [
+                  "Vocabulary Introduction"
+                ]
+              }
+            ],
+            "texts": [
+              "Vocabulary Introduction"
+            ],
+            "joinedText": "Vocabulary Introduction"
+          },
+          {
+            "shapeId": "228",
+            "shapeName": "Google Shape;228;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A glimpse to new words",
+                "runs": [
+                  "A glimpse to new words"
+                ]
+              }
+            ],
+            "texts": [
+              "A glimpse to new words"
+            ],
+            "joinedText": "A glimpse to new words"
+          },
+          {
+            "shapeId": "229",
+            "shapeName": "Google Shape;229;g72967b2bcc_0_44",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "1",
+                "runs": [
+                  "1"
+                ]
+              }
+            ],
+            "texts": [
+              "1"
+            ],
+            "joinedText": "1"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 5,
+      "published": {
+        "number": 5,
+        "internalPageId": null,
+        "title": "Vocabulary Introduction",
+        "visibleTexts": [
+          "Vocabulary Introduction",
+          "A glimpse to new words",
+          "1"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "native": {
+        "number": 6,
+        "texts": [
+          "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+          "RIGHT UP MY ALLEY (STREET)",
+          "DIG IT",
+          "DOESN’T FLOAT MY BOAT",
+          "NOT MY CUP OF TEA",
+          "FANCY",
+          "FEEL LIKE",
+          "CAN’T BEAR",
+          "CAN’T STAND"
+        ],
+        "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them.\nRIGHT UP MY ALLEY (STREET)\nDIG IT\nDOESN’T FLOAT MY BOAT\nNOT MY CUP OF TEA\nFANCY\nFEEL LIKE\nCAN’T BEAR\nCAN’T STAND",
+        "shapes": [
+          {
+            "shapeId": "234",
+            "shapeName": "Google Shape;234;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 181838,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 867038
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Look at the information, listen to your teacher and repeat the words. Discuss about them. ",
+                "runs": [
+                  "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+                ]
+              }
+            ],
+            "texts": [
+              "Look at the information, listen to your teacher and repeat the words. Discuss about them. "
+            ],
+            "joinedText": "Look at the information, listen to your teacher and repeat the words. Discuss about them."
+          },
+          {
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450220,
+              "cy": 862033,
+              "right": 2573712,
+              "bottom": 1973496
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2918929,
+              "y": 1103450,
+              "cx": 1490661,
+              "cy": 862042,
+              "right": 4409590,
+              "bottom": 1965492
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 4754794,
+              "y": 2846030,
+              "cx": 1490704,
+              "cy": 903883,
+              "right": 6245498,
+              "bottom": 3749913
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450221,
+              "cy": 903879,
+              "right": 2573712,
+              "bottom": 3755611
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 2998275,
+              "y": 2842825,
+              "cx": 1450500,
+              "cy": 912775,
+              "right": 4448775,
+              "bottom": 3755600
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "242",
+            "shapeName": "Google Shape;242;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 1965488,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 2519288
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "RIGHT UP MY ALLEY (STREET)",
+                "runs": [
+                  "RIGHT UP MY ALLEY (STREET)"
+                ]
+              }
+            ],
+            "texts": [
+              "RIGHT UP MY ALLEY (STREET)"
+            ],
+            "joinedText": "RIGHT UP MY ALLEY (STREET)"
+          },
+          {
+            "shapeId": "243",
+            "shapeName": "Google Shape;243;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2918917,
+              "y": 1946168,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 4409617,
+              "bottom": 2499968
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "DIG IT",
+                "runs": [
+                  "DIG IT"
+                ]
+              }
+            ],
+            "texts": [
+              "DIG IT"
+            ],
+            "joinedText": "DIG IT"
+          },
+          {
+            "shapeId": "244",
+            "shapeName": "Google Shape;244;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 1965483,
+              "cx": 1490700,
+              "cy": 513000,
+              "right": 6245494,
+              "bottom": 2478483
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "DOESN’T FLOAT MY BOAT",
+                "runs": [
+                  "DOESN’T FLOAT MY BOAT"
+                ]
+              }
+            ],
+            "texts": [
+              "DOESN’T FLOAT MY BOAT"
+            ],
+            "joinedText": "DOESN’T FLOAT MY BOAT"
+          },
+          {
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "kind": "picture",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490605,
+              "cy": 854023,
+              "right": 8020662,
+              "bottom": 1990227
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "246",
+            "shapeName": "Google Shape;246;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6529962,
+              "y": 1965488,
+              "cx": 1490400,
+              "cy": 513000,
+              "right": 8020362,
+              "bottom": 2478488
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "NOT MY CUP OF TEA",
+                "runs": [
+                  "NOT MY CUP OF TEA"
+                ]
+              }
+            ],
+            "texts": [
+              "NOT MY CUP OF TEA"
+            ],
+            "joinedText": "NOT MY CUP OF TEA"
+          },
+          {
+            "shapeId": "247",
+            "shapeName": "Google Shape;247;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 1123337,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 2573837,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "FANCY",
+                "runs": [
+                  "FANCY"
+                ]
+              }
+            ],
+            "texts": [
+              "FANCY"
+            ],
+            "joinedText": "FANCY"
+          },
+          {
+            "shapeId": "248",
+            "shapeName": "Google Shape;248;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 2998280,
+              "y": 3746705,
+              "cx": 1450500,
+              "cy": 553800,
+              "right": 4448780,
+              "bottom": 4300505
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "FEEL LIKE",
+                "runs": [
+                  "FEEL LIKE"
+                ]
+              }
+            ],
+            "texts": [
+              "FEEL LIKE"
+            ],
+            "joinedText": "FEEL LIKE"
+          },
+          {
+            "shapeId": "249",
+            "shapeName": "Google Shape;249;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 4754794,
+              "y": 3746700,
+              "cx": 1490700,
+              "cy": 553800,
+              "right": 6245494,
+              "bottom": 4300500
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CAN’T BEAR",
+                "runs": [
+                  "CAN’T BEAR"
+                ]
+              }
+            ],
+            "texts": [
+              "CAN’T BEAR"
+            ],
+            "joinedText": "CAN’T BEAR"
+          },
+          {
+            "shapeId": "250",
+            "shapeName": "Google Shape;250;g72967b2bcc_0_57",
+            "kind": "text",
+            "bbox": {
+              "x": 6551637,
+              "y": 3746701,
+              "cx": 1449900,
+              "cy": 553800,
+              "right": 8001537,
+              "bottom": 4300501
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "CAN’T STAND",
+                "runs": [
+                  "CAN’T STAND"
+                ]
+              }
+            ],
+            "texts": [
+              "CAN’T STAND"
+            ],
+            "joinedText": "CAN’T STAND"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId3",
+            "shapeId": "235",
+            "shapeName": "Google Shape;235;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123492,
+              "y": 1111463,
+              "cx": 1450220,
+              "cy": 862033,
+              "right": 2573712,
+              "bottom": 1973496
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId4",
+            "shapeId": "236",
+            "shapeName": "Google Shape;236;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2918929,
+              "y": 1103450,
+              "cx": 1490661,
+              "cy": 862042,
+              "right": 4409590,
+              "bottom": 1965492
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId5",
+            "shapeId": "237",
+            "shapeName": "Google Shape;237;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754790,
+              "y": 1111469,
+              "cx": 1490657,
+              "cy": 854029,
+              "right": 6245447,
+              "bottom": 1965498
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId6",
+            "shapeId": "238",
+            "shapeName": "Google Shape;238;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 4754794,
+              "y": 2846030,
+              "cx": 1490704,
+              "cy": 903883,
+              "right": 6245498,
+              "bottom": 3749913
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image4.jpg",
+            "relationshipId": "rId7",
+            "shapeId": "239",
+            "shapeName": "Google Shape;239;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 1123491,
+              "y": 2851732,
+              "cx": 1450221,
+              "cy": 903879,
+              "right": 2573712,
+              "bottom": 3755611
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId8",
+            "shapeId": "240",
+            "shapeName": "Google Shape;240;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 2998275,
+              "y": 2842825,
+              "cx": 1450500,
+              "cy": 912775,
+              "right": 4448775,
+              "bottom": 3755600
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId9",
+            "shapeId": "241",
+            "shapeName": "Google Shape;241;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6551667,
+              "y": 2842820,
+              "cx": 1450194,
+              "cy": 903880,
+              "right": 8001861,
+              "bottom": 3746700
+            },
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId10",
+            "shapeId": "245",
+            "shapeName": "Google Shape;245;g72967b2bcc_0_57",
+            "bbox": {
+              "x": 6530057,
+              "y": 1136204,
+              "cx": 1490605,
+              "cy": 854023,
+              "right": 8020662,
+              "bottom": 1990227
+            },
+            "slide": 6
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image8.jpg",
+            "relationshipId": "rId3",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image13.jpg",
+            "relationshipId": "rId4",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image11.jpg",
+            "relationshipId": "rId5",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image12.jpg",
+            "relationshipId": "rId6",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image4.jpg",
+            "relationshipId": "rId7",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image9.jpg",
+            "relationshipId": "rId8",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image10.jpg",
+            "relationshipId": "rId9",
+            "slide": 6
+          },
+          {
+            "mediaPath": "ppt/media/image14.jpg",
+            "relationshipId": "rId10",
+            "slide": 6
+          }
+        ]
+      },
+      "publishedSlideNumber": 6,
+      "published": {
+        "number": 6,
+        "internalPageId": null,
+        "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+        "visibleTexts": [
+          "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+          "RIGHT UP MY ALLEY (STREET)",
+          "DIG IT",
+          "DOESN’T FLOAT MY BOAT",
+          "NOT MY CUP OF TEA",
+          "FANCY",
+          "FEEL LIKE",
+          "CAN’T BEAR",
+          "CAN’T STAND"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaE4Q21uPNiarFhf9EBvZz5l7akcRkoO949VEoddU3kumX77v8A2ZNjxwVdWw3ou0zPs7sc1tf2evDmedTVB4pUQfijZyIiOoeQ4bapLJ8nBXyQxC5D5AVbwGFHBRhpbtjhVnbQ1BL9Pilc8OeBpoHVji1qdlCjIdOpIrq2oxHNcXAOwKe5MPqOvgZIKF_cag=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa1sm3BNkADoyYch6WQ9mNXa1LAC9dILKArJayR-4wZBv3fSnUEq043RMEFW8LpkYOJPANSihJ228HTKg3ictWWAeC3YOVlkdFnFIlXOu2d2RCq-ry9BPW04aMmFTPWJHPuEv1oIwrQ2_XLPZZon1xfSwF59QngvUvB2pDWIn79pCjYu6-Oavu52Sr4SUAX8A=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaKF-WNgJdLKLv6I-17Ra01dPWG2lwAmjhUeY9QT1b3yysW01sXChiTI7KsLnAJStTzOFj8NmyQqPRj2sT5Li2c_kPUIsbzN7vT_X02cpy3Es2qwASlpW1mMkjvdLfJ9IjCehY2ONNz5pVtcON07LjQE8SqjUSpYRs98530Zi7Ucmd9JWqkvEqaG8Im6DFMoQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSbAJsop0y0myK7fn5y_GsJlqLUqeZpzpejfROARUUdJr7Zej8ewolKH4fc-I3tnxudZML2nu36OJ8xsxrU-_MKXl3tjW53-9Osw5NDIpwdf8Z9cc-VFu3FpN7R58ptqke4tcRhRynkbzQV3X8M7MMCV_o2kRIiwWl1FP1qDc7dfptJ4pou4Nr-xa-qxN5otOA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSY-81PgqNHqZr9ujfMvDlYnvuLSukKq7QwMvMw-3NMmtLva2MDUFr9XwW5xV02GivlA2vi4kKL7wZ21sIHQEoeq46z0udgck0xM7oOUGkA_0XeyG__xff2iLnPAXEZcqbugj5al8ThmXRWTHthbIyOwMxvhMfHwFWyBLbOe_wcxrsSUEgtvaXtdKe44dJ6dUw=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYlOMQBUdEN2YAjF8etI0R75ZYWDVwQXtUQ8ZdgkuiBQg0E8hST5QpibcIvTuQ-KXuGgNelehAtBIK8xcQH5ZdlIX_3Sv-Ll81jMavpOnQ157YDxVWW41RcF9rHsmPxhjr739CTUMNBQslb0wb0p7bsVd7zHZVEaprViApp7emXiOCC7iE10ZtF1x2-cFLlbg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaKPKvvKHnAAsjO-1GYXXXbDR4BFuf6WqHpt-qfUus86hGOWJGqDzcWz0EuqmdPVNXZTz1WySWADk5yHlt2pAdzz9dltf1LRr9Z0luYSxq0YIRitwkYNhk18_RYmKh35w_L4K4ucrB569C5LYFwvQ5IEts6h9hPgmyAGs4XASZHdP53qDT81ZxvThjPZWltNQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSZZTm-ZFHClFKgNdBkNBn-rSdPUX_8fC9VunbuavcIjkTF4_l5QToDDcIyxFjXqW4x-ngvuFwl2dwYM7p39mhdHdUWtjcAlRZ-D-ObnigZXWUjT72xFgm6nx7hVM63nB3fVIpdTue1W1PNhlsblGu94MMMAoY9w4o1g4nrkMpyb-P6w-DkWsCHIlut3RBbFrg=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 9,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "native": {
+        "number": 7,
+        "texts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "joinedText": "Grammar Analysis\nLanguage bricks\n2",
+        "shapes": [
+          {
+            "shapeId": "255",
+            "shapeName": "Google Shape;255;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar Analysis",
+                "runs": [
+                  "Grammar Analysis"
+                ]
+              }
+            ],
+            "texts": [
+              "Grammar Analysis"
+            ],
+            "joinedText": "Grammar Analysis"
+          },
+          {
+            "shapeId": "256",
+            "shapeName": "Google Shape;256;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language bricks",
+                "runs": [
+                  "Language bricks"
+                ]
+              }
+            ],
+            "texts": [
+              "Language bricks"
+            ],
+            "joinedText": "Language bricks"
+          },
+          {
+            "shapeId": "257",
+            "shapeName": "Google Shape;257;g72967b2bcc_0_80",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "2",
+                "runs": [
+                  "2"
+                ]
+              }
+            ],
+            "texts": [
+              "2"
+            ],
+            "joinedText": "2"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 7,
+      "published": {
+        "number": 7,
+        "internalPageId": null,
+        "title": "Grammar Analysis",
+        "visibleTexts": [
+          "Grammar Analysis",
+          "Language bricks",
+          "2"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "native": {
+        "number": 8,
+        "texts": [
+          "Grammar",
+          "Examples",
+          "Observation",
+          "1",
+          "Preferences + Non finite clauses.",
+          "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+          "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+          "2",
+          "Preferences + Relative clauses.",
+          "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+          "Relative clauses need to respect their principles even here.",
+          "Preference can have an extended meaning if we use the more complex grammar points to regular ones. "
+        ],
+        "joinedText": "Grammar\nExamples\nObservation\n1\nPreferences + Non finite clauses.\nI need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.\nNon Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses\n2\nPreferences + Relative clauses.\nJosh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.\nRelative clauses need to respect their principles even here.\nPreference can have an extended meaning if we use the more complex grammar points to regular ones.",
+        "shapes": [
+          {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+            "kind": "table",
+            "bbox": {
+              "x": 582800,
+              "y": 1167700,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3582800,
+              "bottom": 4167700
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Grammar",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "Observation",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "Preferences + Non finite clauses.",
+                "runs": []
+              },
+              {
+                "text": "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                "runs": []
+              },
+              {
+                "text": "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Preferences + Relative clauses.",
+                "runs": []
+              },
+              {
+                "text": "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+                "runs": []
+              },
+              {
+                "text": "Relative clauses need to respect their principles even here.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Grammar",
+              "Examples",
+              "Observation",
+              "1",
+              "Preferences + Non finite clauses.",
+              "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+              "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+              "2",
+              "Preferences + Relative clauses.",
+              "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+              "Relative clauses need to respect their principles even here."
+            ],
+            "joinedText": "Grammar\nExamples\nObservation\n1\nPreferences + Non finite clauses.\nI need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.\nNon Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses\n2\nPreferences + Relative clauses.\nJosh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.\nRelative clauses need to respect their principles even here.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "263",
+            "shapeName": "Google Shape;263;g72967b2bcc_0_86",
+            "kind": "text",
+            "bbox": {
+              "x": 1091550,
+              "y": 105638,
+              "cx": 6960900,
+              "cy": 685200,
+              "right": 8052450,
+              "bottom": 790838
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Preference can have an extended meaning if we use the more complex grammar points to regular ones. ",
+                "runs": [
+                  "Preference can have an extended meaning if we use the more complex grammar points to regular ones. "
+                ]
+              }
+            ],
+            "texts": [
+              "Preference can have an extended meaning if we use the more complex grammar points to regular ones. "
+            ],
+            "joinedText": "Preference can have an extended meaning if we use the more complex grammar points to regular ones."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "262",
+            "shapeName": "Google Shape;262;g72967b2bcc_0_86",
+            "bbox": {
+              "x": 582800,
+              "y": 1167700,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3582800,
+              "bottom": 4167700
+            },
+            "columnWidths": [
+              396800,
+              1563225,
+              4078425,
+              1939950
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Grammar",
+                    "paragraphs": [
+                      {
+                        "text": "Grammar",
+                        "runs": [
+                          "Grammar"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Observation",
+                    "paragraphs": [
+                      {
+                        "text": "Observation",
+                        "runs": [
+                          "Observation"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Preferences + Non finite clauses.",
+                    "paragraphs": [
+                      {
+                        "text": "Preferences + Non finite clauses.",
+                        "runs": [
+                          "Preferences + ",
+                          "Non finite clauses",
+                          "."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "I need someone to build a life with. \n\nAny woman needs a good guy devoted to share her life.\n\nBeing ethical and committed, Paul wishes to get the same from his employees.",
+                    "paragraphs": [
+                      {
+                        "text": "I need someone to build a life with. ",
+                        "runs": [
+                          "I need someone ",
+                          "to build a life with",
+                          ". "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Any woman needs a good guy devoted to share her life.",
+                        "runs": [
+                          "Any woman needs a good guy ",
+                          "devoted",
+                          " to share her life",
+                          "."
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Being ethical and committed, Paul wishes to get the same from his employees. ",
+                        "runs": [
+                          "Being ethical and committed",
+                          ", Paul wishes to get the same from his employees. "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Non Finite clause are built from:\n\n-Infinitive Clauses\n-Ed Clauses.\n-Ing Clauses",
+                    "paragraphs": [
+                      {
+                        "text": "Non Finite clause are built from:",
+                        "runs": [
+                          "Non Finite clause ",
+                          "are built from:"
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "-Infinitive Clauses",
+                        "runs": [
+                          "-Infinitive Clauses"
+                        ]
+                      },
+                      {
+                        "text": "-Ed Clauses.",
+                        "runs": [
+                          "-Ed Clauses."
+                        ]
+                      },
+                      {
+                        "text": "-Ing Clauses",
+                        "runs": [
+                          "-Ing Clauses"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Preferences + Relative clauses.",
+                    "paragraphs": [
+                      {
+                        "text": "Preferences + Relative clauses.",
+                        "runs": [
+                          "Preferences + ",
+                          "Relative clauses",
+                          "."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Josh would love a company that can value his talent. \n\nMary fancies a car where she can fit all her friends. \n\nI’m desperate for a partner who can meet my professional standards.",
+                    "paragraphs": [
+                      {
+                        "text": "Josh would love a company that can value his talent. ",
+                        "runs": [
+                          "Josh would love a company ",
+                          "that can value his talent",
+                          ". "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "Mary fancies a car where she can fit all her friends. ",
+                        "runs": [
+                          "Mary fancies a car ",
+                          "where she can fit all her friends",
+                          ". "
+                        ]
+                      },
+                      {
+                        "text": "",
+                        "runs": []
+                      },
+                      {
+                        "text": "I’m desperate for a partner who can meet my professional standards. ",
+                        "runs": [
+                          "I’m desperate for a partner",
+                          " who can meet my professional standards",
+                          ". "
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Relative clauses need to respect their principles even here.",
+                    "paragraphs": [
+                      {
+                        "text": "Relative clauses need to respect their principles even here. ",
+                        "runs": [
+                          "Relative clauses need to respect their principles even here. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 8,
+      "published": {
+        "number": 8,
+        "internalPageId": null,
+        "title": "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here.",
+        "visibleTexts": [
+          "Grammar Examples Observation 1 Preferences + Non-finite clause I need someone to build a life with. Any woman needs a good guy devoted to share his life with her. Being ethical and committed, Paul wishes to get the same from his employees. Non-finite clauses are built from: -Infinitive Clauses -Past participle Clauses -ing Clauses 2 Preferences + Relative clause Josh would love a company that can value his talent. Mary fancies a car where she can fit all her friends. I’m desperate for a partner who can meet my professional standards. Relative clauses need to respect their principles even here.",
+          "Preference can have an extended meaning if we use the more complex grammar points to regular ones."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "native": {
+        "number": 9,
+        "texts": [
+          "To Consider ",
+          "1. Rather than is also another particle we use to build a non finite clause. E.G. Rather than leave the child alone, I brought him to work with me. ",
+          "2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. ",
+          "3. We can also use It clauses. E.G. I love it when people are polite. ",
+          "*Verb must be in simple form."
+        ],
+        "joinedText": "To Consider \n1. Rather than is also another particle we use to build a non finite clause. E.G. Rather than leave the child alone, I brought him to work with me. \n2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. \n3. We can also use It clauses. E.G. I love it when people are polite. \n*Verb must be in simple form.",
+        "shapes": [
+          {
+            "shapeId": "268",
+            "shapeName": "Google Shape;268;g89bded71de_0_1",
+            "kind": "group",
+            "bbox": {
+              "x": 904276,
+              "y": 727198,
+              "cx": 6590532,
+              "cy": 2864888,
+              "right": 7494808,
+              "bottom": 3592086
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "269",
+            "shapeName": "Google Shape;269;g89bded71de_0_1",
+            "kind": "group",
+            "bbox": {
+              "x": 904224,
+              "y": 727225,
+              "cx": 7075942,
+              "cy": 1995186,
+              "right": 7980166,
+              "bottom": 2722411
+            },
+            "parentShapeId": "268"
+          },
+          {
+            "shapeId": "270",
+            "shapeName": "Google Shape;270;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 7251427,
+              "y": 3927475,
+              "cx": 798600,
+              "cy": 391500,
+              "right": 8050027,
+              "bottom": 4318975
+            },
+            "parentShapeId": "269",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "271",
+            "shapeName": "Google Shape;271;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "269",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "272",
+            "shapeName": "Google Shape;272;g89bded71de_0_1",
+            "kind": "text",
+            "bbox": {
+              "x": 967616,
+              "y": 763158,
+              "cx": 5886000,
+              "cy": 1859100,
+              "right": 6853616,
+              "bottom": 2622258
+            },
+            "parentShapeId": "268",
+            "paragraphs": [
+              {
+                "text": "To Consider ",
+                "runs": [
+                  "To Consider "
+                ]
+              },
+              {
+                "text": "1. Rather than is also another particle we use to build a non finite clause. E.G. Rather than leave the child alone, I brought him to work with me. ",
+                "runs": [
+                  "1. ",
+                  "Rather than ",
+                  "is also another particle we use to build a non finite clause. ",
+                  "E.G. Rather than ",
+                  "leave",
+                  " the child alone, I brought him to work with me. "
+                ]
+              },
+              {
+                "text": "2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. ",
+                "runs": [
+                  "2. ",
+                  "We can also use ",
+                  "small clauses",
+                  ". ",
+                  "E.G. Her face all red with shame",
+                  ", she expressed what she wanted. "
+                ]
+              },
+              {
+                "text": "3. We can also use It clauses. E.G. I love it when people are polite. ",
+                "runs": [
+                  "3. We can also use ",
+                  "It clauses",
+                  ". ",
+                  "E.G",
+                  ". I love ",
+                  "it when people are polite",
+                  ". "
+                ]
+              },
+              {
+                "text": "*Verb must be in simple form.",
+                "runs": [
+                  "*Verb must be in simple form",
+                  "."
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "To Consider ",
+              "1. Rather than is also another particle we use to build a non finite clause. E.G. Rather than leave the child alone, I brought him to work with me. ",
+              "2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. ",
+              "3. We can also use It clauses. E.G. I love it when people are polite. ",
+              "*Verb must be in simple form."
+            ],
+            "joinedText": "To Consider \n1. Rather than is also another particle we use to build a non finite clause. E.G. Rather than leave the child alone, I brought him to work with me. \n2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. \n3. We can also use It clauses. E.G. I love it when people are polite. \n*Verb must be in simple form."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 9,
+      "published": {
+        "number": 9,
+        "internalPageId": null,
+        "title": "To Consider 1. Rather than is also another particle we use to build a non-finite clause. E.G. Rather than leave the child alone, I brought him to work with me. 2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. 3. We can also use It clauses. E.G. I love it when people are polite. *Normally, the verb goes in simple form. The -ing form can be also used.",
+        "visibleTexts": [
+          "To Consider 1. Rather than is also another particle we use to build a non-finite clause. E.G. Rather than leave the child alone, I brought him to work with me. 2. We can also use small clauses. E.G. Her face all red with shame, she expressed what she wanted. 3. We can also use It clauses. E.G. I love it when people are polite. *Normally, the verb goes in simple form. The -ing form can be also used."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "native": {
+        "number": 10,
+        "texts": [
+          "Language Use ",
+          "Functional English",
+          "3"
+        ],
+        "joinedText": "Language Use\nFunctional English\n3",
+        "shapes": [
+          {
+            "shapeId": "277",
+            "shapeName": "Google Shape;277;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Language Use ",
+                "runs": [
+                  "Language Use "
+                ]
+              }
+            ],
+            "texts": [
+              "Language Use "
+            ],
+            "joinedText": "Language Use"
+          },
+          {
+            "shapeId": "278",
+            "shapeName": "Google Shape;278;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functional English",
+                "runs": [
+                  "Functional English"
+                ]
+              }
+            ],
+            "texts": [
+              "Functional English"
+            ],
+            "joinedText": "Functional English"
+          },
+          {
+            "shapeId": "279",
+            "shapeName": "Google Shape;279;g729cfa641f_0_7",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "3",
+                "runs": [
+                  "3"
+                ]
+              }
+            ],
+            "texts": [
+              "3"
+            ],
+            "joinedText": "3"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 10,
+      "published": {
+        "number": 10,
+        "internalPageId": null,
+        "title": "Language Use",
+        "visibleTexts": [
+          "Language Use",
+          "Functional English",
+          "3"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "native": {
+        "number": 11,
+        "texts": [
+          "Preferences can be expressed in any tense and we the use of the correct clauses we can advocate the following functions. ",
+          "Functions",
+          "Examples",
+          "1",
+          "State what people look for and want from others.",
+          "They’d love us to dance by their music during the training.",
+          "I expect committed classmates who make big efforts.",
+          "2",
+          "Express what you look for and want from things / situations",
+          "Striving through problems, the company desires the employees to stick by it.",
+          "Ashamed and disgusted, Jake wanted the problem to be over so he came clean.",
+          "To consider ",
+          "1. Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent. "
+        ],
+        "joinedText": "Preferences can be expressed in any tense and we the use of the correct clauses we can advocate the following functions.\nFunctions\nExamples\n1\nState what people look for and want from others.\nThey’d love us to dance by their music during the training.\nI expect committed classmates who make big efforts.\n2\nExpress what you look for and want from things / situations\nStriving through problems, the company desires the employees to stick by it.\nAshamed and disgusted, Jake wanted the problem to be over so he came clean.\nTo consider \n1. Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent.",
+        "shapes": [
+          {
+            "shapeId": "284",
+            "shapeName": "Google Shape;284;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 1431651,
+              "y": 43425,
+              "cx": 6213900,
+              "cy": 584700,
+              "right": 7645551,
+              "bottom": 628125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Preferences can be expressed in any tense and we the use of the correct clauses we can advocate the following functions. ",
+                "runs": [
+                  "Preferences can be expressed in any tense and we the use of the correct clauses we can advocate the following functions",
+                  ".",
+                  " "
+                ]
+              }
+            ],
+            "texts": [
+              "Preferences can be expressed in any tense and we the use of the correct clauses we can advocate the following functions. "
+            ],
+            "joinedText": "Preferences can be expressed in any tense and we the use of the correct clauses we can advocate the following functions."
+          },
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;g729cfa641f_0_0",
+            "kind": "table",
+            "bbox": {
+              "x": 1034125,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4034125,
+              "bottom": 3780525
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Functions",
+                "runs": []
+              },
+              {
+                "text": "Examples",
+                "runs": []
+              },
+              {
+                "text": "1",
+                "runs": []
+              },
+              {
+                "text": "State what people look for and want from others.",
+                "runs": []
+              },
+              {
+                "text": "They’d love us to dance by their music during the training.",
+                "runs": []
+              },
+              {
+                "text": "I expect committed classmates who make big efforts.",
+                "runs": []
+              },
+              {
+                "text": "2",
+                "runs": []
+              },
+              {
+                "text": "Express what you look for and want from things / situations",
+                "runs": []
+              },
+              {
+                "text": "Striving through problems, the company desires the employees to stick by it.",
+                "runs": []
+              },
+              {
+                "text": "Ashamed and disgusted, Jake wanted the problem to be over so he came clean.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "Functions",
+              "Examples",
+              "1",
+              "State what people look for and want from others.",
+              "They’d love us to dance by their music during the training.",
+              "I expect committed classmates who make big efforts.",
+              "2",
+              "Express what you look for and want from things / situations",
+              "Striving through problems, the company desires the employees to stick by it.",
+              "Ashamed and disgusted, Jake wanted the problem to be over so he came clean."
+            ],
+            "joinedText": "Functions\nExamples\n1\nState what people look for and want from others.\nThey’d love us to dance by their music during the training.\nI expect committed classmates who make big efforts.\n2\nExpress what you look for and want from things / situations\nStriving through problems, the company desires the employees to stick by it.\nAshamed and disgusted, Jake wanted the problem to be over so he came clean.",
+            "tableIndex": 0
+          },
+          {
+            "shapeId": "286",
+            "shapeName": "Google Shape;286;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 978852,
+              "y": 3425952,
+              "cx": 7224512,
+              "cy": 1165513,
+              "right": 8203364,
+              "bottom": 4591465
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "287",
+            "shapeName": "Google Shape;287;g729cfa641f_0_0",
+            "kind": "group",
+            "bbox": {
+              "x": 904225,
+              "y": 3470422,
+              "cx": 7075918,
+              "cy": 1546183,
+              "right": 7980143,
+              "bottom": 5016605
+            },
+            "parentShapeId": "286"
+          },
+          {
+            "shapeId": "288",
+            "shapeName": "Google Shape;288;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 7436504,
+              "y": 3927471,
+              "cx": 613500,
+              "cy": 391500,
+              "right": 8050004,
+              "bottom": 4318971
+            },
+            "parentShapeId": "287",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "289",
+            "shapeName": "Google Shape;289;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 986800,
+              "y": 3927475,
+              "cx": 7063200,
+              "cy": 1011300,
+              "right": 8050000,
+              "bottom": 4938775
+            },
+            "parentShapeId": "287",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "290",
+            "shapeName": "Google Shape;290;g729cfa641f_0_0",
+            "kind": "text",
+            "bbox": {
+              "x": 967624,
+              "y": 3498279,
+              "cx": 6291300,
+              "cy": 1440600,
+              "right": 7258924,
+              "bottom": 4938879
+            },
+            "parentShapeId": "286",
+            "paragraphs": [
+              {
+                "text": "To consider ",
+                "runs": [
+                  "To consider "
+                ]
+              },
+              {
+                "text": "1. Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent. ",
+                "runs": [
+                  "1. ",
+                  "Clauses",
+                  " are not only used for this. We can use clauses in any other context as long as we are logical and coherent. "
+                ]
+              }
+            ],
+            "texts": [
+              "To consider ",
+              "1. Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent. "
+            ],
+            "joinedText": "To consider \n1. Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent."
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "285",
+            "shapeName": "Google Shape;285;g729cfa641f_0_0",
+            "bbox": {
+              "x": 1034125,
+              "y": 780525,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 4034125,
+              "bottom": 3780525
+            },
+            "columnWidths": [
+              436500,
+              2754725,
+              3474925
+            ],
+            "rows": [
+              {
+                "height": 350500,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Functions",
+                    "paragraphs": [
+                      {
+                        "text": "Functions",
+                        "runs": [
+                          "Functions"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Examples",
+                    "paragraphs": [
+                      {
+                        "text": "Examples",
+                        "runs": [
+                          "Examples"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "1",
+                    "paragraphs": [
+                      {
+                        "text": "1",
+                        "runs": [
+                          "1"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "State what people look for and want from others.",
+                    "paragraphs": [
+                      {
+                        "text": "State what people look for and want from others.",
+                        "runs": [
+                          "State what people look for and want from others."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "They’d love us to dance by their music during the training.",
+                    "paragraphs": [
+                      {
+                        "text": "They’d love us to dance by their music during the training.",
+                        "runs": [
+                          "They",
+                          "’d love us ",
+                          "to dance by their music ",
+                          "during the training."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 559525,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "I expect committed classmates who make big efforts.",
+                    "paragraphs": [
+                      {
+                        "text": "I expect committed classmates who make big efforts. ",
+                        "runs": [
+                          "I expect committed classmates ",
+                          "who make big efforts",
+                          ". "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "2",
+                    "paragraphs": [
+                      {
+                        "text": "2",
+                        "runs": [
+                          "2"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Express what you look for and want from things / situations",
+                    "paragraphs": [
+                      {
+                        "text": "Express what you look for and want from things / situations",
+                        "runs": [
+                          "Express what you look for and want from things / situations"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "Striving through problems, the company desires the employees to stick by it.",
+                    "paragraphs": [
+                      {
+                        "text": "Striving through problems, the company desires the employees to stick by it. ",
+                        "runs": [
+                          "Striving through ",
+                          "problems",
+                          ", the company desires the employees to stick by it. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 523100,
+                "cells": [
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": []
+                  },
+                  {
+                    "text": "Ashamed and disgusted, Jake wanted the problem to be over so he came clean.",
+                    "paragraphs": [
+                      {
+                        "text": "Ashamed and disgusted, Jake wanted the problem to be over so he came clean. ",
+                        "runs": [
+                          "Ashamed and disgusted",
+                          ", Jake wanted the problem to be over so he came clean. "
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 11,
+      "published": {
+        "number": 11,
+        "internalPageId": null,
+        "title": "Preferences can be expressed in any tense, and with the use of the correct clauses, we can advocate the following functions.",
+        "visibleTexts": [
+          "Preferences can be expressed in any tense, and with the use of the correct clauses, we can advocate the following functions.",
+          "Functions Examples 1 State what people look for and want from others They’d love us to dance by their music during the training. I expect committed classmates who make big efforts. 2 Express what you look for and want from things / situations Striving through problems, the company desires the employees to stick by it. Ashamed and disgusted, Jake wanted the problem to be over so he came clean.",
+          "To consider Clauses are not only used for this. We can use clauses in any other context as long as we are logical and coherent."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "native": {
+        "number": 12,
+        "texts": [
+          "Let’s Practice ",
+          "Practice makes perfect",
+          "4"
+        ],
+        "joinedText": "Let’s Practice\nPractice makes perfect\n4",
+        "shapes": [
+          {
+            "shapeId": "295",
+            "shapeName": "Google Shape;295;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 2314100,
+              "y": 2421550,
+              "cx": 4515600,
+              "cy": 1159800,
+              "right": 6829700,
+              "bottom": 3581350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Let’s Practice ",
+                "runs": [
+                  "Let’s Practice "
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Practice "
+            ],
+            "joinedText": "Let’s Practice"
+          },
+          {
+            "shapeId": "296",
+            "shapeName": "Google Shape;296;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 1773750,
+              "y": 3449654,
+              "cx": 5596500,
+              "cy": 784800,
+              "right": 7370250,
+              "bottom": 4234454
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Practice makes perfect",
+                "runs": [
+                  "Practice makes perfect"
+                ]
+              }
+            ],
+            "texts": [
+              "Practice makes perfect"
+            ],
+            "joinedText": "Practice makes perfect"
+          },
+          {
+            "shapeId": "297",
+            "shapeName": "Google Shape;297;g729cfa641f_0_13",
+            "kind": "text",
+            "bbox": {
+              "x": 3050275,
+              "y": 47550,
+              "cx": 2975400,
+              "cy": 1990500,
+              "right": 6025675,
+              "bottom": 2038050
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "4",
+                "runs": [
+                  "4"
+                ]
+              }
+            ],
+            "texts": [
+              "4"
+            ],
+            "joinedText": "4"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 12,
+      "published": {
+        "number": 12,
+        "internalPageId": null,
+        "title": "Let’s Practice",
+        "visibleTexts": [
+          "Let’s Practice",
+          "Practice makes perfect",
+          "4"
+        ],
+        "links": [],
+        "media": [],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 0,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "native": {
+        "number": 13,
+        "texts": [
+          "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example. ",
+          "0.",
+          "The orphanages is looking for someone filled with humbleness and love to help the children.",
+          "1.",
+          "2.",
+          "3.",
+          "4.",
+          "5.",
+          "6.",
+          "7.",
+          "8."
+        ],
+        "joinedText": "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example.\n0.\nThe orphanages is looking for someone filled with humbleness and love to help the children.\n1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.",
+        "shapes": [
+          {
+            "shapeId": "302",
+            "shapeName": "Google Shape;302;g729cfa641f_0_19",
+            "kind": "text",
+            "bbox": {
+              "x": 1323900,
+              "y": 309450,
+              "cx": 6543000,
+              "cy": 873900,
+              "right": 7866900,
+              "bottom": 1183350
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example. ",
+                "runs": [
+                  "A. ",
+                  "State 8 different sentences where you state what you want / desire / expect / look for in people and things",
+                  ". Follow the example. "
+                ]
+              }
+            ],
+            "texts": [
+              "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example. "
+            ],
+            "joinedText": "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example."
+          },
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_19",
+            "kind": "table",
+            "bbox": {
+              "x": 732550,
+              "y": 1299410,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3732550,
+              "bottom": 4299410
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "0.",
+                "runs": []
+              },
+              {
+                "text": "The orphanages is looking for someone filled with humbleness and love to help the children.",
+                "runs": []
+              },
+              {
+                "text": "1.",
+                "runs": []
+              },
+              {
+                "text": "2.",
+                "runs": []
+              },
+              {
+                "text": "3.",
+                "runs": []
+              },
+              {
+                "text": "4.",
+                "runs": []
+              },
+              {
+                "text": "5.",
+                "runs": []
+              },
+              {
+                "text": "6.",
+                "runs": []
+              },
+              {
+                "text": "7.",
+                "runs": []
+              },
+              {
+                "text": "8.",
+                "runs": []
+              }
+            ],
+            "texts": [
+              "0.",
+              "The orphanages is looking for someone filled with humbleness and love to help the children.",
+              "1.",
+              "2.",
+              "3.",
+              "4.",
+              "5.",
+              "6.",
+              "7.",
+              "8."
+            ],
+            "joinedText": "0.\nThe orphanages is looking for someone filled with humbleness and love to help the children.\n1.\n2.\n3.\n4.\n5.\n6.\n7.\n8.",
+            "tableIndex": 0
+          }
+        ],
+        "tables": [
+          {
+            "shapeId": "303",
+            "shapeName": "Google Shape;303;g729cfa641f_0_19",
+            "bbox": {
+              "x": 732550,
+              "y": 1299410,
+              "cx": 3000000,
+              "cy": 3000000,
+              "right": 3732550,
+              "bottom": 4299410
+            },
+            "columnWidths": [
+              382900,
+              7117175
+            ],
+            "rows": [
+              {
+                "height": 204225,
+                "cells": [
+                  {
+                    "text": "0.",
+                    "paragraphs": [
+                      {
+                        "text": "0.",
+                        "runs": [
+                          "0."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "The orphanages is looking for someone filled with humbleness and love to help the children.",
+                    "paragraphs": [
+                      {
+                        "text": "The orphanages is looking for someone filled with humbleness and love to help the children.",
+                        "runs": [
+                          "The orphanages is looking for someone ",
+                          "filled with humbleness and love",
+                          " to help the children."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "1.",
+                    "paragraphs": [
+                      {
+                        "text": "1.",
+                        "runs": [
+                          "1."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "2.",
+                    "paragraphs": [
+                      {
+                        "text": "2.",
+                        "runs": [
+                          "2."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "3.",
+                    "paragraphs": [
+                      {
+                        "text": "3.",
+                        "runs": [
+                          "3."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "4.",
+                    "paragraphs": [
+                      {
+                        "text": "4.",
+                        "runs": [
+                          "4."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "5.",
+                    "paragraphs": [
+                      {
+                        "text": "5.",
+                        "runs": [
+                          "5."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "6.",
+                    "paragraphs": [
+                      {
+                        "text": "6.",
+                        "runs": [
+                          "6."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "7.",
+                    "paragraphs": [
+                      {
+                        "text": "7.",
+                        "runs": [
+                          "7."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "height": 304800,
+                "cells": [
+                  {
+                    "text": "8.",
+                    "paragraphs": [
+                      {
+                        "text": "8.",
+                        "runs": [
+                          "8."
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "text": "",
+                    "paragraphs": [
+                      {
+                        "text": "",
+                        "runs": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 13,
+      "published": {
+        "number": 13,
+        "internalPageId": null,
+        "title": "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example.",
+        "visibleTexts": [
+          "A. State 8 different sentences where you state what you want / desire / expect / look for in people and things. Follow the example.",
+          "0. The orphanage is looking for someone filled with humbleness, and love to help children. 1. 2. 3. 4. 5. 6. 7. 8."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "native": {
+        "number": 14,
+        "texts": [
+          "B. Listen to the audio and answer the questions your teacher makes. ",
+          "Have you gotten it yet?",
+          "One of the most difficult decisions in life is deciding who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and  respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own. ",
+          "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+        ],
+        "joinedText": "B. Listen to the audio and answer the questions your teacher makes.\nHave you gotten it yet?\n\nOne of the most difficult decisions in life is deciding who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and  respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own.\nC. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.",
+        "shapes": [
+          {
+            "shapeId": "308",
+            "shapeName": "Google Shape;308;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 3611700,
+              "y": 1007925,
+              "cx": 4769400,
+              "cy": 3325200,
+              "right": 8381100,
+              "bottom": 4333125
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "309",
+            "shapeName": "Google Shape;309;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 984725,
+              "y": 233250,
+              "cx": 6122700,
+              "cy": 601200,
+              "right": 7107425,
+              "bottom": 834450
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "B. Listen to the audio and answer the questions your teacher makes. ",
+                "runs": [
+                  "B. Listen to the audio and answer the questions your teacher makes. "
+                ]
+              }
+            ],
+            "texts": [
+              "B. Listen to the audio and answer the questions your teacher makes. "
+            ],
+            "joinedText": "B. Listen to the audio and answer the questions your teacher makes."
+          },
+          {
+            "shapeId": "310",
+            "shapeName": "Google Shape;310;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 3719475,
+              "y": 1037675,
+              "cx": 4585500,
+              "cy": 3233100,
+              "right": 8304975,
+              "bottom": 4270775
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Have you gotten it yet?",
+                "runs": [
+                  "Have you gotten it yet?"
+                ]
+              },
+              {
+                "text": "",
+                "runs": []
+              },
+              {
+                "text": "One of the most difficult decisions in life is deciding who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and  respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own. ",
+                "runs": [
+                  "One of the most difficult decisions in life is deciding who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and  respectful, being these some of the good qualities we can mention. Getting very ugly, ",
+                  "situations",
+                  " can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own. "
+                ]
+              }
+            ],
+            "texts": [
+              "Have you gotten it yet?",
+              "One of the most difficult decisions in life is deciding who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and  respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own. "
+            ],
+            "joinedText": "Have you gotten it yet?\n\nOne of the most difficult decisions in life is deciding who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and  respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own."
+          },
+          {
+            "shapeId": "311",
+            "shapeName": "Google Shape;311;g729cfa641f_0_32",
+            "kind": "text",
+            "bbox": {
+              "x": 723900,
+              "y": 2607575,
+              "cx": 2819400,
+              "cy": 1789500,
+              "right": 3543300,
+              "bottom": 4397075
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  ",
+                "runs": [
+                  "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+                ]
+              }
+            ],
+            "texts": [
+              "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided.  "
+            ],
+            "joinedText": "C. Read the following paragraph and extract sentences with the functions studied and locate them in the space provided."
+          },
+          {
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_32",
+            "kind": "picture",
+            "bbox": {
+              "x": 1406125,
+              "y": 834450,
+              "cx": 998300,
+              "cy": 998300,
+              "right": 2404425,
+              "bottom": 1832750
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "shapeId": "312",
+            "shapeName": "Google Shape;312;g729cfa641f_0_32",
+            "bbox": {
+              "x": 1406125,
+              "y": 834450,
+              "cx": 998300,
+              "cy": 998300,
+              "right": 2404425,
+              "bottom": 1832750
+            },
+            "slide": 14
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image1.png",
+            "relationshipId": "rId4",
+            "slide": 14
+          }
+        ]
+      },
+      "publishedSlideNumber": 14,
+      "published": {
+        "number": 14,
+        "internalPageId": null,
+        "title": "B. Listen to the audio and answer the questions your teacher makes.",
+        "visibleTexts": [
+          "B. Listen to the audio and answer the questions your teacher makes.",
+          "Have you gotten it yet? One of the most difficult decisions in life is choosing who will accompany you for the rest of it. A lot of people dream of having the ideal match for life and striving through many experiences, they may get it. Most of us would love to share our life with someone kind, honest and respectful, being these some of the good qualities we can mention. Getting very ugly, situations can get the worst from us, so it is natural that we expect to have a person who makes us come to our senses when necessary. However, happiness does not depend on having someone and we have to be clear on that. A happy life, you can create it on your own.",
+          "C. Read the following paragraph and extract sentences with the functions studied. Locate them in the space provided."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYJT03rTs3SszVeaKq3iqfFYt8HgtyYhxFnhiEzPaaX3DQoay4JJNC9M8uzwMPiBUbW3y7JeNN6WKKAvE5-sLL7MOX9G1ak_UeQlDvQ_S9Eo8uVeGX2IYgM-OU6HQ577whb2tFyWEYjumkShUYZgcXLajjxq3mhXD4F06HaRGVXxX2I4l5X6bnNxycw211fHA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 2,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 15,
+      "native": {
+        "number": 15,
+        "texts": [
+          "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter in 3 years from now.",
+          "E. Write a piece of text where you state your desires, expectations, wishes etc for the world to be 10 years from now and how you think humanity would be after all we have gone through. ",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "joinedText": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter in 3 years from now.\nE. Write a piece of text where you state your desires, expectations, wishes etc for the world to be 10 years from now and how you think humanity would be after all we have gone through.\nLet’s Talk\nLet’s Write",
+        "shapes": [
+          {
+            "shapeId": "317",
+            "shapeName": "Google Shape;317;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 1123275,
+              "y": 146675,
+              "cx": 6122700,
+              "cy": 1027500,
+              "right": 7245975,
+              "bottom": 1174175
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter in 3 years from now.",
+                "runs": [
+                  "D. ",
+                  "Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter in 3 years from now."
+                ]
+              }
+            ],
+            "texts": [
+              "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter in 3 years from now."
+            ],
+            "joinedText": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter in 3 years from now."
+          },
+          {
+            "shapeId": "318",
+            "shapeName": "Google Shape;318;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 987100,
+              "y": 2414159,
+              "cx": 7065900,
+              "cy": 1163700,
+              "right": 8053000,
+              "bottom": 3577859
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "E. Write a piece of text where you state your desires, expectations, wishes etc for the world to be 10 years from now and how you think humanity would be after all we have gone through. ",
+                "runs": [
+                  "E. Write a",
+                  " piece of text where you state your desires, expectations, wishes etc for the world to be 10 years from now and how you think humanity would be after all we have gone through. "
+                ]
+              }
+            ],
+            "texts": [
+              "E. Write a piece of text where you state your desires, expectations, wishes etc for the world to be 10 years from now and how you think humanity would be after all we have gone through. "
+            ],
+            "joinedText": "E. Write a piece of text where you state your desires, expectations, wishes etc for the world to be 10 years from now and how you think humanity would be after all we have gone through."
+          },
+          {
+            "shapeId": "319",
+            "shapeName": "Google Shape;319;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 4146581,
+              "y": 1070307,
+              "cx": 1317796,
+              "cy": 1175522,
+              "right": 5464377,
+              "bottom": 2245829
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "320",
+            "shapeName": "Google Shape;320;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4146600,
+              "y": 1070328,
+              "cx": 1317759,
+              "cy": 1175480,
+              "right": 5464359,
+              "bottom": 2245808
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "321",
+            "shapeName": "Google Shape;321;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4222800,
+              "y": 1226050,
+              "cx": 1031100,
+              "cy": 849000,
+              "right": 5253900,
+              "bottom": 2075050
+            },
+            "parentShapeId": "319",
+            "paragraphs": [
+              {
+                "text": "Let’s Talk",
+                "runs": [
+                  "Let’s Talk"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Talk"
+            ],
+            "joinedText": "Let’s Talk"
+          },
+          {
+            "shapeId": "322",
+            "shapeName": "Google Shape;322;g729cfa641f_0_41",
+            "kind": "group",
+            "bbox": {
+              "x": 3851750,
+              "y": 3683380,
+              "cx": 2041998,
+              "cy": 1195043,
+              "right": 5893748,
+              "bottom": 4878423
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "323",
+            "shapeName": "Google Shape;323;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4046116,
+              "y": 3489013,
+              "cx": 1051745,
+              "cy": 1440478,
+              "right": 5097861,
+              "bottom": 4929491
+            },
+            "parentShapeId": "322",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "324",
+            "shapeName": "Google Shape;324;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 3851750,
+              "y": 3755650,
+              "cx": 1194300,
+              "cy": 849000,
+              "right": 5046050,
+              "bottom": 4604650
+            },
+            "parentShapeId": "322",
+            "paragraphs": [
+              {
+                "text": "Let’s Write",
+                "runs": [
+                  "Let’s Write"
+                ]
+              }
+            ],
+            "texts": [
+              "Let’s Write"
+            ],
+            "joinedText": "Let’s Write"
+          },
+          {
+            "shapeId": "325",
+            "shapeName": "Google Shape;325;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 5018800,
+              "y": 4225625,
+              "cx": 273300,
+              "cy": 267900,
+              "right": 5292100,
+              "bottom": 4493525
+            },
+            "parentShapeId": "322",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "326",
+            "shapeName": "Google Shape;326;g729cfa641f_0_41",
+            "kind": "text",
+            "bbox": {
+              "x": 4997193,
+              "y": 4001323,
+              "cx": 753448,
+              "cy": 716509,
+              "right": 5750641,
+              "bottom": 4717832
+            },
+            "parentShapeId": "322",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 15,
+      "published": {
+        "number": 15,
+        "internalPageId": null,
+        "title": "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter 3 years from now.",
+        "visibleTexts": [
+          "D. Talk to your teacher. What is it that you have always wanted from a life partner? Do you have it now? How do you see yourself in this matter 3 years from now.",
+          "E. Write a piece of text between 120 - 160 words where you state your desires, expectations, wishes, etc. for the world to be 10 years from now and how you think humanity would be after all we have gone through.",
+          "Let’s Talk",
+          "Let’s Write"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "native": {
+        "number": 16,
+        "texts": [
+          "Congrats!",
+          "This is the end of your lesson.",
+          "Remember to:",
+          "Rate your teacher after every lesson.",
+          "Revise the self-study material."
+        ],
+        "joinedText": "Congrats!\nThis is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material.",
+        "shapes": [
+          {
+            "shapeId": "331",
+            "shapeName": "Google Shape;331;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 1331900,
+              "y": 860725,
+              "cx": 1923600,
+              "cy": 1923600,
+              "right": 3255500,
+              "bottom": 2784325
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "332",
+            "shapeName": "Google Shape;332;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527625,
+              "y": 1242625,
+              "cx": 4331400,
+              "cy": 1159800,
+              "right": 7859025,
+              "bottom": 2402425
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Congrats!",
+                "runs": [
+                  "Congrats!"
+                ]
+              }
+            ],
+            "texts": [
+              "Congrats!"
+            ],
+            "joinedText": "Congrats!"
+          },
+          {
+            "shapeId": "333",
+            "shapeName": "Google Shape;333;p3",
+            "kind": "group",
+            "bbox": {
+              "x": 1810313,
+              "y": 1299475,
+              "cx": 966776,
+              "cy": 893710,
+              "right": 2777089,
+              "bottom": 2193185
+            },
+            "parentShapeId": null
+          },
+          {
+            "shapeId": "334",
+            "shapeName": "Google Shape;334;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 5975075,
+              "y": 2474650,
+              "cx": 98325,
+              "cy": 220450,
+              "right": 6073400,
+              "bottom": 2695100
+            },
+            "parentShapeId": "333",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "335",
+            "shapeName": "Google Shape;335;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 6088025,
+              "y": 2327500,
+              "cx": 307150,
+              "cy": 388350,
+              "right": 6395175,
+              "bottom": 2715850
+            },
+            "parentShapeId": "333",
+            "paragraphs": [
+              {
+                "text": "",
+                "runs": []
+              }
+            ],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "336",
+            "shapeName": "Google Shape;336;p3",
+            "kind": "text",
+            "bbox": {
+              "x": 3527750,
+              "y": 2575950,
+              "cx": 4331400,
+              "cy": 1655700,
+              "right": 7859150,
+              "bottom": 4231650
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "This is the end of your lesson.",
+                "runs": [
+                  "This is the end of your lesson."
+                ]
+              },
+              {
+                "text": "Remember to:",
+                "runs": [
+                  "Remember to:"
+                ]
+              },
+              {
+                "text": "Rate your teacher after every lesson.",
+                "runs": [
+                  "Rate your teacher after every lesson."
+                ]
+              },
+              {
+                "text": "Revise the self-study material.",
+                "runs": [
+                  "Revise the self-study material."
+                ]
+              }
+            ],
+            "texts": [
+              "This is the end of your lesson.",
+              "Remember to:",
+              "Rate your teacher after every lesson.",
+              "Revise the self-study material."
+            ],
+            "joinedText": "This is the end of your lesson.\nRemember to:\nRate your teacher after every lesson.\nRevise the self-study material."
+          }
+        ],
+        "tables": [],
+        "imageRefs": [],
+        "mediaRefs": []
+      },
+      "publishedSlideNumber": 16,
+      "published": {
+        "number": 16,
+        "internalPageId": 3,
+        "title": "Congrats!",
+        "visibleTexts": [
+          "Congrats!",
+          "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 1,
+          "tableCount": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "native": {
+        "number": 17,
+        "texts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "joinedText": "©2020 The Utterers’ Corner. All rights reserved.\nWorldwide Language Community",
+        "shapes": [
+          {
+            "shapeId": "341",
+            "shapeName": "Google Shape;341;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463925,
+              "y": 4438650,
+              "cx": 4216200,
+              "cy": 534300,
+              "right": 6680125,
+              "bottom": 4972950
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "©2020 The Utterers’ Corner. All rights reserved.",
+                "runs": [
+                  "©2020 The Utterers’ Corner. All rights reserved."
+                ]
+              }
+            ],
+            "texts": [
+              "©2020 The Utterers’ Corner. All rights reserved."
+            ],
+            "joinedText": "©2020 The Utterers’ Corner. All rights reserved."
+          },
+          {
+            "shapeId": "342",
+            "shapeName": "Google Shape;342;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "343",
+            "shapeName": "Google Shape;343;g72bb22e13b_1_37",
+            "kind": "picture",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "parentShapeId": null,
+            "paragraphs": [],
+            "texts": [],
+            "joinedText": ""
+          },
+          {
+            "shapeId": "344",
+            "shapeName": "Google Shape;344;g72bb22e13b_1_37",
+            "kind": "text",
+            "bbox": {
+              "x": 2463900,
+              "y": 3372325,
+              "cx": 4216200,
+              "cy": 447300,
+              "right": 6680100,
+              "bottom": 3819625
+            },
+            "parentShapeId": null,
+            "paragraphs": [
+              {
+                "text": "Worldwide Language Community",
+                "runs": [
+                  "Worldwide Language Community"
+                ]
+              }
+            ],
+            "texts": [
+              "Worldwide Language Community"
+            ],
+            "joinedText": "Worldwide Language Community"
+          }
+        ],
+        "tables": [],
+        "imageRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "shapeId": "342",
+            "shapeName": "Google Shape;342;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 3613060,
+              "y": 728450,
+              "cx": 1917850,
+              "cy": 1917824,
+              "right": 5530910,
+              "bottom": 2646274
+            },
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image7.png",
+            "relationshipId": "rId4",
+            "shapeId": "343",
+            "shapeName": "Google Shape;343;g72bb22e13b_1_37",
+            "bbox": {
+              "x": 2463888,
+              "y": 2798675,
+              "cx": 4216174,
+              "cy": 573650,
+              "right": 6680062,
+              "bottom": 3372325
+            },
+            "slide": 17
+          }
+        ],
+        "mediaRefs": [
+          {
+            "mediaPath": "ppt/media/image6.png",
+            "relationshipId": "rId3",
+            "slide": 17
+          },
+          {
+            "mediaPath": "ppt/media/image7.png",
+            "relationshipId": "rId4",
+            "slide": 17
+          }
+        ]
+      },
+      "publishedSlideNumber": 17,
+      "published": {
+        "number": 17,
+        "internalPageId": null,
+        "title": "©2020 The Utterers’ Corner. All rights reserved.",
+        "visibleTexts": [
+          "©2020 The Utterers’ Corner. All rights reserved.",
+          "Worldwide Language Community"
+        ],
+        "links": [],
+        "media": [
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSa8MavZydkB-lrslYs0rmNd79_DBIN5Q13g5fosjsPX2jIdwK36r-t8pcENhptkJaxy7tnaLNvNs8_i59kcHGjDynC-PdQQ929zIfv5BSkKIDBcECphwL4ZQV445bn2HCgr0AsBj7Dl4aM6iD50lz8wwGfgvRpzRxkGPFPmaoo2qdoWzr1xitd_pM77xPJ7RQ=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSaw2aUZLwJ_x31FhUrhUMd3vbQBQdrx1qGGWIB4jLxm_mRQNlnE_-EYuQ2HfRPyyg5JifT2iShW80Hoo75zfmjFj3zp0Ju-dXxBpqLXZU0r4AIszXTATL390JGGs9ny9WVwDyp3CXY73VrlmdWuWByY3IoTLLyLT52NcfD0j7fJ9UJpK9S_e5_EjaQHm3uUdA=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          },
+          {
+            "url": "https://docs.google.com/slides-images-rt/AE1YXSYU_Dlx1QZlSQgznA7dY6Lqbm8QF3zfsi249-vKmJKSz-uRT58g4U1aUlu183yTcAql3fMO0Ee9KaFZOXYEFi6XOSevxxUkszleBNkcWIDYItXHV45rHYFdvmi6P5WCBUSC77fr7xdYdu7TIg-kBEA-gTG9AcK8_d0fAKjxDYfrhRRxt-ZzApoYzeOtPP4=s2048",
+            "kind": "rendered-slide-image",
+            "original": false,
+            "source": "image"
+          }
+        ],
+        "tables": [],
+        "warnings": [],
+        "mediaSummary": {
+          "audioUrls": [],
+          "videoUrls": [],
+          "audioIconCount": 0,
+          "renderedSlideImageCount": 3,
+          "tableCount": 0
+        }
+      }
+    }
+  ]
+}

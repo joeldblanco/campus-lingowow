@@ -1,5 +1,47 @@
 # CLAUDE.md
 
+## Approved design fidelity — required delivery gate
+
+The user's approved graphic guide and mockups are acceptance requirements, not
+optional inspiration. For illustrated units, inspect
+`docs/design/graphic-guide-v1/` and
+`docs/design/content-format-mockups/v3/`, together with the user's latest
+approved references. Later explicit user instructions take precedence.
+
+Before implementation, record the approved reference for each screen and its
+essential composition: illustration scale and coverage, complete environments,
+character identity/style, objects, text hierarchy, control shape/placement,
+spacing, and responsive behavior. Include these requirements and references in
+every delegated visual task.
+
+Do not replace illustrated environments with abstract CSS shapes, gradients,
+isolated portraits, generic cards, or simplified layouts without explicit user
+approval. Reuse and implementation convenience do not authorize a design change.
+Prepare a concrete comparison before requesting approval for any deviation.
+
+Before calling a visual implementation complete:
+
+- Compare actual rendered screens with the approved references side by side,
+  at comparable viewport sizes, including representative interaction states and
+  mobile layouts. Technical tests do not establish visual fidelity.
+- Check each recorded composition requirement. A missing or materially reduced
+  illustration/environment is a failed requirement even when colors and fonts
+  match.
+- Save and show actual implementation screenshots as evidence; do not substitute
+  mockups or assert fidelity based on source code, DOM checks, or passing tests.
+- Before merging or publishing a visual change as complete, include a visual
+  acceptance report with the approved reference, actual screenshot, per-screen
+  requirement results, and unresolved deviations. A screenshot without the
+  reference comparison does not establish compliance.
+- Re-dispatch delegated work that fails these requirements instead of combining
+  it as finished work.
+- Resolve material discrepancies before treating a deployment as the approved
+  design. If the user disallows visual checks, honor that instruction and report
+  visual fidelity as unverified; never claim it was verified.
+
+A release may be technically healthy while failing the approved design.
+Report these outcomes separately and describe incomplete work honestly.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project
