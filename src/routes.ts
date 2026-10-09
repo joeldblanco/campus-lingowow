@@ -4,6 +4,7 @@ export const publicRoutes = [
   '/shop',
   '/shop/*',
   '/library',
+  '/blog',
   '/library/*',
   '/demo',
   '/courses',

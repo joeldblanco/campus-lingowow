@@ -47,11 +47,7 @@ import { toast } from 'sonner'
 import { LibraryResourceType, LibraryResourceAccess } from '@prisma/client'
 import type { LibraryResource, LibraryResourceDetailResponse } from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS, ACCESS_LEVEL_DESCRIPTIONS } from '@/lib/types/library'
-import { ArticleBlockRenderer } from '@/components/library/article-editor'
-import { parseArticleContent } from '@/lib/types/article-blocks'
-import { BlockPreview } from '@/components/admin/course-builder/lesson-builder/block-preview'
-import type { Block } from '@/types/course-builder'
-import { processHtmlLinks } from '@/lib/utils'
+import { PublicResourceContent } from '@/components/library/public-resource-content'
 import { sanitizeHtml } from '@/lib/sanitize-html'
 
 interface ExtendedLibraryResourceDetailResponse extends LibraryResourceDetailResponse {
@@ -240,8 +236,8 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
   if (loading) {
     return (
       <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Header compactOnMobile />
+        <main className="flex-1 min-w-0 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Skeleton className="h-6 w-64 mb-6" />
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             <div className="lg:col-span-8 space-y-6">
@@ -264,8 +260,8 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
   if (error || !resource) {
     return (
       <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Header compactOnMobile />
+        <main className="flex-1 min-w-0 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center py-20">
             <FileText className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h1 className="text-2xl font-bold mb-2">{error || 'Recurso no encontrado'}</h1>
@@ -373,12 +369,13 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
       default:
         if (resource.thumbnailUrl) {
           return (
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg">
+            <div className="relative w-full aspect-[3/2] rounded-xl overflow-hidden">
               <Image
                 src={resource.thumbnailUrl}
-                alt={resource.title}
+                alt=""
                 fill
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-contain"
               />
             </div>
           )
@@ -389,12 +386,12 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header compactOnMobile />
 
-      <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 min-w-0 w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb" className="flex mb-6">
-          <ol className="inline-flex items-center space-x-1 md:space-x-3 text-sm">
+          <ol className="inline-flex flex-wrap items-center gap-2 text-sm">
             <li className="inline-flex items-center">
               <Link
                 href="/"
@@ -439,7 +436,13 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
           </ol>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        <div
+          className={
+            resource.type === 'ARTICLE'
+              ? 'max-w-3xl mx-auto'
+              : 'grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12'
+          }
+        >
           {/* Main Content Area */}
           <article className="lg:col-span-8 flex flex-col gap-6">
             {/* Header Section */}
@@ -463,18 +466,20 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                 {resource.category && <Badge variant="outline">{resource.category.name}</Badge>}
               </div>
 
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              <h1 className="text-3xl md:text-4xl font-bold leading-tight tracking-tight">
                 {resource.title}
               </h1>
 
               {resource.description && (
-                <div 
+                <div
                   className="text-xl text-muted-foreground leading-relaxed prose prose-lg max-w-none prose-p:my-2 prose-strong:text-foreground"
-                  dangerouslySetInnerHTML={{ 
-                    __html: sanitizeHtml(resource.description
-                      .replace(/\n/g, '<br />')
-                      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-                      .replace(/\*([^*]+)\*/g, '<em>$1</em>'))
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(
+                      resource.description
+                        .replace(/\n/g, '<br />')
+                        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+                    ),
                   }}
                 />
               )}
@@ -602,83 +607,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
             )}
 
             {/* Content Area - Only show if not restricted */}
-            {!accessRestricted && resource.content && (
-              <>
-                {(() => {
-                  try {
-                    const parsed = JSON.parse(resource.content)
-                    
-                    // Check if it has blocks array
-                    if (parsed.blocks && Array.isArray(parsed.blocks) && parsed.blocks.length > 0) {
-                      // First check if it's Article format by looking for article-exclusive types
-                      const articleExclusiveTypes = ['heading', 'key-rule', 'grammar-table', 'examples-in-context', 'callout', 'divider']
-                      const hasArticleExclusiveType = parsed.blocks.some((block: { type?: string }) => 
-                        block.type && articleExclusiveTypes.includes(block.type)
-                      )
-                      
-                      if (hasArticleExclusiveType) {
-                        // It's an Article format
-                        const articleContent = parseArticleContent(resource.content)
-                        return <ArticleBlockRenderer content={articleContent} />
-                      }
-                      
-                      // Check if it's Course Builder format by looking for course-builder-exclusive types
-                      const courseBuilderExclusiveTypes = ['title', 'audio', 'quiz', 'assignment', 'file', 'embed', 'grammar', 'vocabulary', 'fill_blanks', 'match', 'true_false', 'essay', 'short_answer', 'multi_select', 'multiple_choice', 'ordering', 'drag_drop', 'recording', 'structured-content', 'grammar-visualizer', 'teacher_notes', 'tab_group', 'layout', 'block_group']
-                      const hasCourseBuilderExclusiveType = parsed.blocks.some((block: { type?: string }) => 
-                        block.type && courseBuilderExclusiveTypes.includes(block.type)
-                      )
-                      
-                      if (hasCourseBuilderExclusiveType) {
-                        // Render using BlockPreview from Course Builder
-                        return (
-                          <div className="space-y-6">
-                            {(parsed.blocks as Block[]).map((block: Block) => (
-                              <BlockPreview key={block.id} block={block} hideBlockHeader={true} />
-                            ))}
-                          </div>
-                        )
-                      }
-                      
-                      // If we can't determine the format by exclusive types, check for format-specific properties
-                      // Course Builder text blocks have 'format' property, video/audio have 'duration'
-                      // Article text blocks don't have 'format', and use simpler structure
-                      const hasCourseBuilderProperties = parsed.blocks.some((block: { type?: string; format?: string; duration?: number }) => 
-                        block.format !== undefined || block.duration !== undefined
-                      )
-                      
-                      if (hasCourseBuilderProperties) {
-                        return (
-                          <div className="space-y-6">
-                            {(parsed.blocks as Block[]).map((block: Block) => (
-                              <BlockPreview key={block.id} block={block} hideBlockHeader={true} />
-                            ))}
-                          </div>
-                        )
-                      }
-                      
-                      // Default to Course Builder format since BlockPreview handles more block types gracefully
-                      return (
-                        <div className="space-y-6">
-                          {(parsed.blocks as Block[]).map((block: Block) => (
-                            <BlockPreview key={block.id} block={block} hideBlockHeader={true} />
-                          ))}
-                        </div>
-                      )
-                    }
-                  } catch {
-                    // Not JSON, fall through to HTML rendering
-                  }
-                  
-                  // Fallback to HTML rendering for legacy content
-                  return (
-                    <div
-                      className="prose prose-lg max-w-none"
-                      dangerouslySetInnerHTML={{ __html: processHtmlLinks(resource.content || '') }}
-                    />
-                  )
-                })()}
-              </>
-            )}
+            {!accessRestricted && <PublicResourceContent content={resource.content} />}
 
             {/* Tags */}
             {resource.tags.length > 0 && (
@@ -698,7 +627,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
               <h4 className="text-sm font-semibold text-muted-foreground mb-3">
                 Compartir este recurso
               </h4>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -826,7 +755,7 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
                     <Link key={related.id} href={`/library/${related.slug}`} className="group">
                       <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
                         <div
-                          className="h-40 bg-cover bg-center relative"
+                          className="aspect-[3/2] bg-contain bg-no-repeat bg-center relative"
                           style={{
                             backgroundImage: related.thumbnailUrl
                               ? `url('${related.thumbnailUrl}')`
@@ -863,105 +792,107 @@ export default function ResourceDetailPage({ params }: { params: Promise<{ id: s
           </article>
 
           {/* Sidebar */}
-          <aside className="lg:col-span-4 space-y-8">
-            {/* About Author Card */}
-            <Card>
-              <CardContent className="pt-6">
-                <h3 className="text-lg font-bold mb-4">Sobre el Autor</h3>
-                <div className="flex items-start gap-4 mb-4">
-                  {resource.author.image ? (
-                    <Image
-                      src={resource.author.image}
-                      alt={resource.author.name}
-                      width={64}
-                      height={64}
-                      className="rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="size-16 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
-                      {resource.author.name.charAt(0)}
-                      {resource.author.lastName?.charAt(0) || ''}
-                    </div>
-                  )}
-                  <div>
-                    <h4 className="font-bold">
-                      {formatUserName(resource.author) || 'Sin autor'}
-                    </h4>
-                    {resource.author.bio && (
-                      <p className="text-sm text-muted-foreground mt-1">{resource.author.bio}</p>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Related Resources */}
-            {relatedResources.length > 0 && (
+          {resource.type !== 'ARTICLE' && (
+            <aside className="lg:col-span-4 space-y-8">
+              {/* About Author Card */}
               <Card>
                 <CardContent className="pt-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-bold">Recursos Relacionados</h3>
-                    <Link
-                      href="/library"
-                      className="text-primary text-sm font-medium hover:underline"
-                    >
-                      Ver todos
-                    </Link>
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    {relatedResources.map((related) => (
-                      <Link
-                        key={related.id}
-                        href={`/library/${related.slug}`}
-                        className="group flex gap-3 items-start p-2 -mx-2 hover:bg-muted rounded-lg transition-colors"
-                      >
-                        <div
-                          className="rounded-md w-24 h-16 shrink-0 shadow-sm bg-cover bg-center group-hover:opacity-90 transition-opacity relative"
-                          style={{
-                            backgroundImage: related.thumbnailUrl
-                              ? `url('${related.thumbnailUrl}')`
-                              : `url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200')`,
-                          }}
-                        >
-                          {related.type === 'VIDEO' && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                              <Play className="h-5 w-5 text-white fill-white" />
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold group-hover:text-primary transition-colors line-clamp-2">
-                            {related.title}
-                          </h4>
-                          <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                            {getTypeIcon(related.type, 'h-3 w-3')}
-                            {RESOURCE_TYPE_LABELS[related.type]}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
+                  <h3 className="text-lg font-bold mb-4">Sobre el Autor</h3>
+                  <div className="flex items-start gap-4 mb-4">
+                    {resource.author.image ? (
+                      <Image
+                        src={resource.author.image}
+                        alt={resource.author.name}
+                        width={64}
+                        height={64}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="size-16 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xl">
+                        {resource.author.name.charAt(0)}
+                        {resource.author.lastName?.charAt(0) || ''}
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="font-bold">
+                        {formatUserName(resource.author) || 'Sin autor'}
+                      </h4>
+                      {resource.author.bio && (
+                        <p className="text-sm text-muted-foreground mt-1">{resource.author.bio}</p>
+                      )}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
-            )}
 
-            {/* Promo Card */}
-            <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-none overflow-hidden relative">
-              <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
-              <CardContent className="pt-6 relative z-10">
-                <h3 className="text-lg font-bold mb-2">¿Quieres practicar en vivo?</h3>
-                <p className="text-blue-100 text-sm mb-4">
-                  Reserva una sesión 1 a 1 con un tutor para practicar tus habilidades de
-                  conversación.
-                </p>
-                <Link href="/demo">
-                  <Button variant="secondary" className="w-full">
-                    Encontrar un Tutor
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </aside>
+              {/* Related Resources */}
+              {relatedResources.length > 0 && (
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-bold">Recursos Relacionados</h3>
+                      <Link
+                        href="/library"
+                        className="text-primary text-sm font-medium hover:underline"
+                      >
+                        Ver todos
+                      </Link>
+                    </div>
+                    <div className="flex flex-col gap-4">
+                      {relatedResources.map((related) => (
+                        <Link
+                          key={related.id}
+                          href={`/library/${related.slug}`}
+                          className="group flex gap-3 items-start p-2 -mx-2 hover:bg-muted rounded-lg transition-colors"
+                        >
+                          <div
+                            className="rounded-md w-24 h-16 shrink-0 shadow-sm bg-cover bg-center group-hover:opacity-90 transition-opacity relative"
+                            style={{
+                              backgroundImage: related.thumbnailUrl
+                                ? `url('${related.thumbnailUrl}')`
+                                : `url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200')`,
+                            }}
+                          >
+                            {related.type === 'VIDEO' && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                <Play className="h-5 w-5 text-white fill-white" />
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold group-hover:text-primary transition-colors line-clamp-2">
+                              {related.title}
+                            </h4>
+                            <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                              {getTypeIcon(related.type, 'h-3 w-3')}
+                              {RESOURCE_TYPE_LABELS[related.type]}
+                            </p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Promo Card */}
+              <Card className="bg-gradient-to-br from-primary to-blue-600 text-white border-none overflow-hidden relative">
+                <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
+                <CardContent className="pt-6 relative z-10">
+                  <h3 className="text-lg font-bold mb-2">¿Quieres practicar en vivo?</h3>
+                  <p className="text-blue-100 text-sm mb-4">
+                    Reserva una sesión 1 a 1 con un tutor para practicar tus habilidades de
+                    conversación.
+                  </p>
+                  <Link href="/demo">
+                    <Button variant="secondary" className="w-full">
+                      Encontrar un Tutor
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </aside>
+          )}
         </div>
       </main>
 

@@ -297,6 +297,26 @@
   opacity: 0.8;
 }
 
+/* Public articles: a quiet reading column with compact, predictable rhythm. */
+.article-reading { font-size: 1.0625rem; line-height: 1.8; overflow-wrap: anywhere; }
+.article-reading p { margin: 0 0 1rem; }
+.article-reading h2 { font-size: 1.5rem; font-weight: 700; line-height: 1.3; margin: 2rem 0 0.75rem; }
+.article-reading h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.4; margin: 1.5rem 0 0.5rem; }
+.article-reading figure { margin: 1.5rem 0; }
+.article-reading img { max-width: 100%; height: auto; border-radius: 1rem; }
+.article-reading figcaption { margin-top: 0.5rem; font-size: 0.875rem; color: var(--muted-foreground); }
+.article-reading blockquote { border-left: 3px solid var(--primary); padding: 0.75rem 1rem; margin: 1.25rem 0; background: var(--muted); border-radius: 0 0.75rem 0.75rem 0; }
+.article-reading blockquote p:last-child { margin-bottom: 0; }
+.article-reading .table-scroll { overflow-x: auto; margin: 1.25rem 0; }
+.article-reading table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.article-reading th, .article-reading td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+.article-reading th { font-weight: 600; background: var(--muted); }
+.article-reading th, .article-reading td:first-child { overflow-wrap: normal; white-space: nowrap; }
+.article-reading details { margin: 1rem 0; padding: 1rem; border: 1px solid var(--border); border-radius: 0.75rem; }
+.article-reading summary { cursor: pointer; font-weight: 600; }
+.article-reading details[open] summary { margin-bottom: 0.75rem; }
+.article-reading summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+
 /* Ensure contentEditable elements also show lists properly */
 [contenteditable] ul {
   list-style-type: disc;

@@ -27,6 +27,8 @@ const OPTIONS: sanitize.IOptions = {
     'mark',
     'sub',
     'sup',
+    'details',
+    'summary',
   ],
   allowedAttributes: {
     ...sanitize.defaults.allowedAttributes,
