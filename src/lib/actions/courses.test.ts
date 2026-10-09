@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { db } from '@/lib/db'
 import { getCourseModuleProgress, getCourseProgress } from './courses'
 
@@ -12,6 +12,7 @@ vi.mock('@/lib/db', () => ({
     exam: { findMany: vi.fn() },
     examAttempt: { findMany: vi.fn() },
     userContent: { findMany: vi.fn() },
+    user: { findUnique: vi.fn() },
   },
 }))
 
@@ -46,10 +47,33 @@ const migratedModules = [
 ]
 
 describe('course progress actions', () => {
+  afterEach(() => vi.unstubAllEnvs())
   beforeEach(() => {
     vi.clearAllMocks()
     vi.mocked(db.exam.findMany).mockResolvedValue([] as never)
     vi.mocked(db.examAttempt.findMany).mockResolvedValue([] as never)
+    vi.mocked(db.user.findUnique).mockResolvedValue(null)
+  })
+
+  it.each([
+    ['lingowow_dev', ['dev:preview-all-course-units'], 'ACTIVE', false],
+    ['lingowow_dev', [], 'ACTIVE', true],
+    ['lingowow', ['dev:preview-all-course-units'], 'ACTIVE', true],
+    ['lingowow_dev', ['dev:preview-all-course-units'], 'INACTIVE', true],
+  ])('limits the unit-preview exception to an explicitly enabled active DEV student (%s, %j, %s)', async (database, permissions, status, locked) => {
+    vi.stubEnv('DATABASE_URL', `postgresql://test:test@localhost:5432/${database}`)
+    vi.mocked(db.user.findUnique).mockResolvedValue({ permissions, status, roles: ['STUDENT'] } as never)
+    vi.mocked(db.module.findMany).mockResolvedValue([
+      { id: 'm1', title: 'First', order: 1, lessons: [] },
+      { id: 'm2', title: 'Second', order: 2, lessons: [] },
+    ] as never)
+    vi.mocked(db.exam.findMany).mockResolvedValue([{ id: 'exam', moduleId: 'm1', isBlocking: true, passingScore: 70 }] as never)
+    vi.mocked(db.userContent.findMany).mockResolvedValue([])
+    const result = await getCourseModuleProgress('course', 'student')
+    expect(result[1].isLocked).toBe(locked)
+    expect(result[1].completedContents).toBe(0)
+    expect(db.examAttempt.findMany).toHaveBeenCalledWith({ where: { userId: 'student', examId: { in: ['exam'] } }, select: { examId: true, score: true } })
+    if (database === 'lingowow') expect(db.user.findUnique).not.toHaveBeenCalled()
   })
 
   it('keeps converted lessons completed in the course summary', async () => {

@@ -1064,7 +1064,11 @@ export async function getCourseModuleProgress(
   userId: string
 ): Promise<ModuleWithProgress[]> {
   try {
-    const [modules, exams, completed] = await Promise.all([
+    let isDevDatabase = false
+    try {
+      isDevDatabase = new URL(process.env.DATABASE_URL ?? '').pathname === '/lingowow_dev'
+    } catch { /* Invalid or absent configuration never enables preview access. */ }
+    const [modules, exams, completed, previewUser] = await Promise.all([
       db.module.findMany({
         where: { courseId, isPublished: true },
         orderBy: { order: 'asc' },
@@ -1086,6 +1090,10 @@ export async function getCourseModuleProgress(
         where: { userId, completed: true },
         select: { contentId: true },
       }),
+      isDevDatabase ? db.user.findUnique({
+        where: { id: userId },
+        select: { permissions: true, roles: true, status: true },
+      }) : Promise.resolve(null),
     ])
 
     const examIds = exams.map((e) => e.id)
@@ -1099,7 +1107,8 @@ export async function getCourseModuleProgress(
     return buildModuleProgressView(
       modules,
       completed.map((c) => c.contentId),
-      exams,
+      previewUser?.status === 'ACTIVE' && previewUser.roles.includes('STUDENT') &&
+        previewUser.permissions.includes('dev:preview-all-course-units') ? [] : exams,
       attempts,
       { courseId }
     )
