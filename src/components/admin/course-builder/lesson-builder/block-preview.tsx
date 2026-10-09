@@ -4917,6 +4917,7 @@ function ShortAnswerBlockPreview(props: ShortAnswerBlockPreviewProps) {
       items={props.block.items || []}
       caseSensitive={props.block.caseSensitive}
       context={props.block.context}
+      inlineBlanks={props.block.data?.answerLayout === 'inlineBlank'}
       guidedActionTarget={props.guidedActionTarget}
       onGuidedActionPresence={props.onGuidedActionPresence}
       onCompletionChange={props.onGuidedCompletionChange}

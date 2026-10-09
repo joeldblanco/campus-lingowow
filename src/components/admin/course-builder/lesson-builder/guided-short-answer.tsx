@@ -10,6 +10,7 @@ export interface GuidedShortAnswerActivityProps {
   items: ShortAnswerItem[]
   caseSensitive?: boolean
   context?: string
+  inlineBlanks?: boolean
   guidedActionTarget?: HTMLElement | null
   onGuidedActionPresence?: (present: boolean) => void
   onCompletionChange?: (completed: boolean) => void
@@ -51,6 +52,7 @@ export function GuidedShortAnswerActivity({
   items,
   caseSensitive = false,
   context,
+  inlineBlanks = false,
   guidedActionTarget,
   onGuidedActionPresence,
   onCompletionChange,
@@ -277,6 +279,25 @@ export function GuidedShortAnswerActivity({
   }
 
   const isCorrect = feedback?.itemId === currentItem.id ? feedback.isCorrect : undefined
+  const blankParts = currentItem.question.split(/_{3,}/u)
+  const inlineBlank = inlineBlanks && blankParts.length === 2
+  const answerInput = <input
+    ref={inputRef}
+    id={`guided-short-answer-${currentItem.id}`}
+    type="text"
+    value={currentAnswer}
+    onChange={(event) => updateAnswer(event.target.value)}
+    onKeyDown={handleKeyDown}
+    disabled={Boolean(feedback) || completed}
+    aria-describedby={feedbackId}
+    aria-invalid={isCorrect === false || undefined}
+    autoComplete="off"
+    className={
+      (inlineBlank ? 'mx-1 inline-block w-40 max-w-full align-baseline ' : 'w-full ') +
+      'min-h-12 appearance-none rounded-none border-x-0 border-t-0 border-b-2 bg-transparent px-1 py-2 text-base leading-6 text-[#10245C] outline-none transition-colors focus:border-[#245CFF] focus:shadow-[0_2px_0_#245CFF] focus:outline-none focus:ring-0 focus-visible:border-[#245CFF] focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-[0_2px_0_#245CFF] ' +
+      (isCorrect === true ? 'border-[#08775E] text-[#08775E]' : isCorrect === false ? 'border-[#C13E50] text-[#C13E50]' : 'border-[#506187]')
+    }
+  />
 
   return (
     <div ref={rootRef} className="space-y-5 text-[#10245C]" data-guided-short-answer>
@@ -291,29 +312,12 @@ export function GuidedShortAnswerActivity({
       )}
 
       <section aria-label="Actividad de respuesta corta" className="space-y-4">
-        <label htmlFor={`guided-short-answer-${currentItem.id}`} className="block text-base font-semibold leading-6">
+        <label htmlFor={`guided-short-answer-${currentItem.id}`} className={inlineBlank ? 'sr-only' : 'block text-base font-semibold leading-6'}>
           {currentItem.question}
         </label>
-        <input
-          ref={inputRef}
-          id={`guided-short-answer-${currentItem.id}`}
-          type="text"
-          value={currentAnswer}
-          onChange={(event) => updateAnswer(event.target.value)}
-          onKeyDown={handleKeyDown}
-          disabled={Boolean(feedback) || completed}
-          aria-describedby={feedbackId}
-          aria-invalid={isCorrect === false || undefined}
-          autoComplete="off"
-          className={
-            'min-h-12 w-full appearance-none rounded-none border-x-0 border-t-0 border-b-2 bg-transparent px-1 py-2 text-base leading-6 text-[#10245C] outline-none transition-colors focus:border-[#245CFF] focus:shadow-[0_2px_0_#245CFF] focus:outline-none focus:ring-0 focus-visible:border-[#245CFF] focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-[0_2px_0_#245CFF] ' +
-            (isCorrect === true
-              ? 'border-[#08775E] text-[#08775E]'
-              : isCorrect === false
-                ? 'border-[#C13E50] text-[#C13E50]'
-                : 'border-[#506187]')
-          }
-        />
+        {inlineBlank ? <div data-guided-inline-blank className="text-base font-semibold leading-[3rem]">
+          {blankParts[0]}{answerInput}{blankParts[1]}
+        </div> : answerInput}
 
         {renderedCheckAction}
 

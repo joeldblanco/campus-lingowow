@@ -29,6 +29,27 @@ const answerItems = [
 ]
 
 describe('GuidedShortAnswerActivity', () => {
+  it('places the answer inside a single authored blank and keeps valid alternatives', () => {
+    render(<BlockPreview guidedAppearance block={{ id: 'inline', type: 'short_answer', order: 0, data: { answerLayout: 'inlineBlank' }, items: [{
+      id: 'possibility', question: 'The package ___ arrived at reception.',
+      correctAnswer: 'might have', acceptedAnswers: ['may have', 'could have'],
+    }] }} />)
+    const input = screen.getByRole('textbox', { name: 'The package ___ arrived at reception.' })
+    expect(input.parentElement).toHaveAttribute('data-guided-inline-blank')
+    expect(input.previousSibling?.textContent).toBe('The package ')
+    expect(input.nextSibling?.textContent).toBe(' arrived at reception.')
+    fireEvent.change(input, { target: { value: 'may have' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+    expect(screen.getByRole('status')).toHaveTextContent('¡Correcto!')
+  })
+
+  it('keeps the existing full-answer layout unless the author explicitly enables cloze answers', () => {
+    render(<GuidedShortAnswerActivity blockId="full-answer" items={[{
+      id: 'full', question: 'Rewrite: She ___ from France.', correctAnswer: 'She comes from France.',
+    }]} />)
+    expect(screen.getByRole('textbox').parentElement).not.toHaveAttribute('data-guided-inline-blank')
+  })
+
   it('accepts a reviewed contraction with typographic punctuation without losing negation', () => {
     render(
       <GuidedShortAnswerActivity

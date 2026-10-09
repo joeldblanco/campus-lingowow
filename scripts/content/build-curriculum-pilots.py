@@ -66,6 +66,10 @@ def build(snapshot, specifications):
                     interactive_seen = False
                 interactive_seen |= block['type'] in INTERACTIVE
                 native_id = block.pop('id')
+                if number == 46 and native_id == 'u46-stage-8-teaching':
+                    block['content'] = '<p>Imagina que un proyecto salió mal. Escribe cinco frases en inglés:</p><ul><li><strong>2 consejos</strong> sobre qué habría sido mejor.</li><li><strong>1 resultado hipotético</strong> de una decisión diferente.</li><li><strong>2 deducciones o posibilidades</strong> basadas en pistas.</li></ul><details><summary class="min-h-11 cursor-pointer py-2 font-semibold underline underline-offset-4">Ver un ejemplo</summary><div class="mt-3"><p><strong>Consejo:</strong> They should have saved a copy.</p><p><strong>Resultado hipotético:</strong> If they had saved a copy, they would have recovered the file.</p><p><strong>Deducción:</strong> The backup folder is empty. They might have saved it elsewhere.</p></div></details>'
+                if number == 46 and block['type'] == 'essay':
+                    block['prompt'] = 'Tu respuesta'
                 if number == 2 and 'map-activation-teaching' in native_id:
                     block['content'] = '<p>Un <strong>país</strong> nombra un lugar; una <strong>nacionalidad</strong> describe a una persona.</p><p><strong>Japan → Japanese.</strong> Observa la diferencia y elige la pareja que funciona.</p>'
                 if number == 22 and native_id == 'u22-s07-dialogue-html':
@@ -132,15 +136,16 @@ def build(snapshot, specifications):
                         if not item['explanation']:
                             raise ValueError('Each choice needs contextual feedback')
                 if number == 46 and block['type'] == 'short_answer':
+                    metadata['answerLayout'] = 'inlineBlank'
+                    block['context'] = 'Completa el hueco: must expresa una conclusión firme; may, might y could, una posibilidad.'
                     for item in block['items']:
-                        item['question'] = 'Completa solo el hueco. ' + item['question']
                         if item['id'] == 'u46-infer-1':
-                            item['question'] = 'Expresa la conclusión más firme de estas pistas. It is 10 p.m.; the lights are off, the door is locked, and the doorman saw them leave at 9. They ___ left.'
+                            item['question'] = 'It is 10 p.m. The lights are off, the door is locked, and the doorman saw them leave at 9. They ___ left.'
                             item.update(correctAnswer='must have', acceptedAnswers=['must have', "must’ve", "must've"])
                         elif item['id'] == 'u46-infer-2':
                             item.update(correctAnswer='might have', acceptedAnswers=['might have', 'may have', 'could have', "might've", "might’ve", "could've", "could’ve"])
                         else:
-                            item['question'] = 'Expresa una deducción firme con must. The lights are off, their bags and coats are gone, and the receptionist saw them leave for home. They ___ gone home.'
+                            item['question'] = 'The lights are off, their bags and coats are gone, and the receptionist saw them leave for home. They ___ gone home.'
                             item.update(correctAnswer='must have', acceptedAnswers=['must have', "must've", "must’ve"])
                 if block['type'] in {'essay', 'recording'}:
                     block['aiGrading'] = False
@@ -151,8 +156,8 @@ def build(snapshot, specifications):
                     individual = instruction(native_modes.get('individual')) or instruction(modes.get('individual')) or 'Realiza la tarea, revisa tu respuesta con los criterios y vuelve a intentarlo si hace falta.'
                     teacher = instruction(native_modes.get('teacher')) or instruction(modes.get('teacher')) or 'Intercambia las respuestas con tu profesora. Pídele una repregunta y feedback sobre el significado y la claridad.'
                     if number == 46:
-                        individual = 'Inventa una decisión de proyecto y anota hechos y pistas. Prepara cinco frases, identifica su función y revisa si cada deducción expresa la certeza adecuada. Si grabas, escucha tu respuesta y corrígela antes de continuar.'
-                        teacher = 'Explica la decisión a tu profesora. Ella te preguntará qué pistas justifican cada deducción y qué cambiaría en un pasado alternativo. Reformula las frases que no expresen tu intención.'
+                        individual = 'Etiqueta la función de cada frase y revisa los criterios al terminar.' if block['type'] == 'essay' else 'Inventa una decisión de proyecto y anota hechos y pistas. Prepara cinco frases, identifica su función y revisa si cada deducción expresa la certeza adecuada. Si grabas, escucha tu respuesta y corrígela antes de continuar.'
+                        teacher = 'Tu profesora te pedirá justificar las pistas y reformular una frase.' if block['type'] == 'essay' else 'Explica la decisión a tu profesora. Ella te preguntará qué pistas justifican cada deducción y qué cambiaría en un pasado alternativo. Reformula las frases que no expresen tu intención.'
                     if number == 22:
                         individual = 'Redacta las normas y piensa qué significa cada modal. Relee tu texto con los criterios y corrige lo que no exprese tu intención.' if block['type'] == 'essay' else 'Interpreta las dos voces o explica las normas a un visitante imaginario. Escucha la respuesta y revisa qué significa cada modal.'
                         teacher = 'Redacta las normas con tu profesora y explica por qué cada acción es obligatoria, prohibida u opcional.' if block['type'] == 'essay' else 'Intercambia los papeles con tu profesora. Ella hará una repregunta y te pedirá distinguir una prohibición de una acción opcional.'
@@ -165,6 +170,11 @@ def build(snapshot, specifications):
                         46: ['Incluí dos consejos retrospectivos y un resultado hipotético.', 'Añadí dos deducciones o posibilidades y las relacioné con las pistas.', 'Identifiqué la función de cada frase y usé modal + have + participio.'],
                     }
                     metadata['reviewChecklist'] = (['Escuché mi grabación.'] if block['type'] == 'recording' else ['Leí mi texto de nuevo.']) + checklists[number]
+                    if number == 46 and block['type'] == 'essay':
+                        metadata['reviewChecklist'] = [
+                            'Revisé mi respuesta y etiqueté la función de cada frase.',
+                            'Incluí dos consejos, un resultado hipotético y dos deducciones o posibilidades.',
+                            'Relacioné las deducciones con pistas y usé modal + have + participio.']
                     if number == 22 and 's08-' in native_id:
                         metadata['reviewChecklist'].append('Incluí la pregunta de permiso y respondí al caso de la zona reservada.')
                 if block['type'] == 'audio':
