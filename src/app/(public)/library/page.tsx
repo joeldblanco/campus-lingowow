@@ -48,12 +48,14 @@ import Link from 'next/link'
 import NextImage from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { LibraryResourceType, LibraryResourceAccess } from '@prisma/client'
-import type { LibraryResource, LibraryCategory, LibraryResourcesResponse } from '@/lib/types/library'
+import type {
+  LibraryResource,
+  LibraryCategory,
+  LibraryResourcesResponse,
+} from '@/lib/types/library'
 import { RESOURCE_TYPE_LABELS, ACCESS_LEVEL_LABELS } from '@/lib/types/library'
 
-const defaultCategories = [
-  { id: 'all', slug: 'all', name: 'Todos los Recursos', icon: 'BookOpen' },
-]
+const defaultCategories = [{ id: 'all', slug: 'all', name: 'Todos los Recursos', icon: 'BookOpen' }]
 
 const resourceFormats: { id: LibraryResourceType; label: string; icon: string }[] = [
   { id: 'ARTICLE', label: 'Artículo', icon: 'FileText' },
@@ -162,7 +164,7 @@ export default function LibraryPage() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
   const [selectedFormats, setSelectedFormats] = useState<LibraryResourceType[]>([])
   const [selectedLevels, setSelectedLevels] = useState<string[]>([])
-const [language, setLanguage] = useState(() => {
+  const [language, setLanguage] = useState(() => {
     const urlLanguage = searchParams.get('language')
     // Only 'en' is currently enabled - validate URL parameter
     return urlLanguage === 'en' ? 'en' : 'en'
@@ -223,7 +225,17 @@ const [language, setLanguage] = useState(() => {
     } finally {
       setLoading(false)
     }
-  }, [pagination.page, pagination.limit, sortBy, selectedCategory, searchQuery, selectedFormats, selectedLevels, language, savedOnly])
+  }, [
+    pagination.page,
+    pagination.limit,
+    sortBy,
+    selectedCategory,
+    searchQuery,
+    selectedFormats,
+    selectedLevels,
+    language,
+    savedOnly,
+  ])
 
   useEffect(() => {
     fetchCategories()
@@ -247,18 +259,17 @@ const [language, setLanguage] = useState(() => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    setPagination(prev => ({ ...prev, page: 1 }))
+    setPagination((prev) => ({ ...prev, page: 1 }))
     fetchResources()
   }
 
   const handlePageChange = (newPage: number) => {
-    setPagination(prev => ({ ...prev, page: newPage }))
+    setPagination((prev) => ({ ...prev, page: newPage }))
   }
-
 
   const allCategories = [
     ...defaultCategories,
-    ...categories.map(cat => ({
+    ...categories.map((cat) => ({
       id: cat.slug,
       slug: cat.slug,
       name: cat.name,
@@ -266,11 +277,9 @@ const [language, setLanguage] = useState(() => {
     })),
   ]
 
-
-
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header compactOnMobile />
 
       <div className="flex flex-1">
         {/* Sidebar Navigation & Filters */}
@@ -290,12 +299,13 @@ const [language, setLanguage] = useState(() => {
                     key={cat.id}
                     onClick={() => {
                       setSelectedCategory(cat.id)
-                      setPagination(prev => ({ ...prev, page: 1 }))
+                      setPagination((prev) => ({ ...prev, page: 1 }))
                     }}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${isSelected
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
+                      isSelected
                         ? 'bg-primary/10 text-primary font-medium'
                         : 'hover:bg-muted text-muted-foreground'
-                      }`}
+                    }`}
                   >
                     <Icon className="h-5 w-5" />
                     <span className="text-sm">{cat.name}</span>
@@ -342,10 +352,11 @@ const [language, setLanguage] = useState(() => {
                   <button
                     key={format.id}
                     onClick={() => toggleFormat(format.id)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${isSelected
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                      isSelected
                         ? 'bg-primary/10 text-primary border-primary/20'
                         : 'bg-muted border-transparent hover:border-primary/50'
-                      }`}
+                    }`}
                   >
                     <Icon className="h-4 w-4" />
                     {format.label}
@@ -401,7 +412,9 @@ const [language, setLanguage] = useState(() => {
                 className="w-full pl-12 pr-24 py-6 text-lg rounded-xl"
                 placeholder="Buscar guías de gramática, listas de vocabulario o consejos culturales..."
               />
-              <Button type="submit" className="absolute inset-y-2 right-2 px-6">Buscar</Button>
+              <Button type="submit" className="absolute inset-y-2 right-2 px-6">
+                Buscar
+              </Button>
             </form>
           </section>
 
@@ -413,29 +426,28 @@ const [language, setLanguage] = useState(() => {
           ) : featuredResource ? (
             <section className="mb-12">
               <Link href={`/library/${featuredResource.slug}`}>
-                <div className="relative rounded-2xl overflow-hidden bg-slate-900 text-white min-h-[360px] flex items-end group cursor-pointer shadow-lg">
+                <div className="rounded-2xl overflow-hidden bg-muted grid md:grid-cols-2 items-center group border">
                   <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                    className="aspect-[3/2] bg-contain bg-no-repeat bg-center"
                     style={{
                       backgroundImage: featuredResource.thumbnailUrl
                         ? `url('${featuredResource.thumbnailUrl}')`
                         : "url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200')",
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
 
-                  <div className="relative z-10 p-8 md:p-10 w-full max-w-3xl">
-                    <Badge className="mb-4 bg-blue-900/60 text-blue-200 border-blue-500/30">
+                  <div className="p-6 md:p-8 w-full">
+                    <Badge variant="secondary" className="mb-4">
                       <Sparkles className="h-3 w-3 mr-1" />
                       Destacado
                     </Badge>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-3 leading-tight group-hover:text-blue-200 transition-colors">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-3 leading-tight group-hover:text-primary transition-colors">
                       {featuredResource.title}
                     </h2>
-                    <p className="text-slate-200 text-lg mb-6 line-clamp-2">
+                    <p className="text-muted-foreground text-base mb-6">
                       {featuredResource.description || featuredResource.excerpt}
                     </p>
-                    <div className="flex items-center gap-4 text-sm text-slate-300">
+                    <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         {featuredResource.author.image ? (
                           <NextImage
@@ -505,7 +517,7 @@ const [language, setLanguage] = useState(() => {
                       <Card className="group overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300 h-full">
                         <div className="relative aspect-video overflow-hidden">
                           <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                            className="absolute inset-0 bg-contain bg-no-repeat bg-center"
                             style={{
                               backgroundImage: resource.thumbnailUrl
                                 ? `url('${resource.thumbnailUrl}')`
@@ -513,7 +525,10 @@ const [language, setLanguage] = useState(() => {
                             }}
                           />
                           <div className="absolute top-3 left-3 flex gap-2">
-                            <Badge variant="secondary" className="gap-1 bg-white/90 text-foreground">
+                            <Badge
+                              variant="secondary"
+                              className="gap-1 bg-white/90 text-foreground"
+                            >
                               {getTypeIcon(resource.type)}
                               {RESOURCE_TYPE_LABELS[resource.type]}
                             </Badge>
@@ -603,7 +618,9 @@ const [language, setLanguage] = useState(() => {
                   Guardados
                 </Button>
                 <div className="flex items-center gap-2 bg-background rounded-lg p-1 border shadow-sm">
-                  <span className="text-xs font-medium text-muted-foreground pl-2">Ordenar por:</span>
+                  <span className="text-xs font-medium text-muted-foreground pl-2">
+                    Ordenar por:
+                  </span>
                   <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger className="border-none shadow-none w-auto">
                       <SelectValue />
@@ -639,7 +656,7 @@ const [language, setLanguage] = useState(() => {
                   <Link key={resource.id} href={`/library/${resource.slug}`}>
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full group">
                       <div
-                        className="h-40 bg-cover bg-center transition-transform duration-500 group-hover:scale-105 relative"
+                        className="aspect-[3/2] bg-contain bg-no-repeat bg-center relative"
                         style={{
                           backgroundImage: resource.thumbnailUrl
                             ? `url('${resource.thumbnailUrl}')`
@@ -758,8 +775,8 @@ const [language, setLanguage] = useState(() => {
                 ¿Listo para aprender con un profesor?
               </h2>
               <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-                Estos recursos son un gran complemento. Para avanzar más rápido,
-                combínalos con clases personalizadas en vivo.
+                Estos recursos son un gran complemento. Para avanzar más rápido, combínalos con
+                clases personalizadas en vivo.
               </p>
               <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
                 <Button asChild size="lg">

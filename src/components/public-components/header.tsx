@@ -10,8 +10,9 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
-const Header = () => {
+const Header = ({ compactOnMobile = false }: { compactOnMobile?: boolean }) => {
   const { data: session } = useSession()
   const pathname = usePathname()
   const isShopRoute = pathname.startsWith('/shop')
@@ -29,7 +30,9 @@ const Header = () => {
               height={32}
               className="h-8 w-8 rounded-lg"
             />
-            <span className="text-xl font-bold">Lingowow</span>
+            <span className={cn('text-xl font-bold', compactOnMobile && 'hidden sm:inline')}>
+              Lingowow
+            </span>
           </Link>
         </div>
         <nav className="hidden md:flex items-center gap-6">
@@ -52,7 +55,7 @@ const Header = () => {
             Contacto
           </Link>
         </nav>
-        <div className="flex items-center gap-4">
+        <div className={cn('flex items-center gap-4', compactOnMobile && 'gap-2 sm:gap-4')}>
           {!session ? (
             <>
               <Link href="/auth/signin" className="text-sm font-medium hover:underline">
@@ -70,9 +73,9 @@ const Header = () => {
             </Link>
           )}
           <>
-            <Button 
-              variant="outline" 
-              size="icon" 
+            <Button
+              variant="outline"
+              size="icon"
               className="relative"
               onClick={() => setCartDrawerOpen(true)}
             >
@@ -83,8 +86,8 @@ const Header = () => {
                 </Badge>
               )}
             </Button>
-            <CartDrawer 
-              open={isCartDrawerOpen} 
+            <CartDrawer
+              open={isCartDrawerOpen}
               onOpenChange={setCartDrawerOpen}
               suggestedProducts={[]}
             />
