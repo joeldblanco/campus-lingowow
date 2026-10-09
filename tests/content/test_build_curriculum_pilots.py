@@ -27,6 +27,28 @@ def fixture():
 
 
 class CurriculumPilotTests(unittest.TestCase):
+    def test_unit46_keeps_the_task_once_and_the_example_optional_with_answer_variants(self):
+        snapshot, specifications = fixture()
+        runtime = specifications[2]['sequence'][0]['runtimeBlocks']
+        runtime[0]['id'] = 'u46-stage-8-teaching'
+        runtime.append({'id': 'deduction', 'type': 'short_answer', 'items': [
+            {'id': 'u46-infer-2', 'question': 'The delivery record is incomplete. The package ___ arrived at reception.', 'correctAnswer': 'might have'}]})
+        plan = module.build(snapshot, specifications)['plans'][2]
+        live = [row['data'] for row in plan['nextRows'] if not row['data'].get('data', {}).get('archivedPilotSource')]
+        task = next(block for block in live if block['type'] == 'text' and '<ul>' in block.get('content', ''))
+        self.assertEqual(task['content'].count('<li>'), 3)
+        self.assertIn('<details><summary', task['content'])
+        self.assertIn('Ver un ejemplo</summary>', task['content'])
+        self.assertNotIn(' open', task['content'])
+        essay = next(block for block in live if block['type'] == 'essay')
+        self.assertEqual(essay['prompt'], 'Tu respuesta')
+        self.assertLess(len(essay['data']['learningModes']['individual'].split()), 20)
+        self.assertEqual(len(essay['data']['reviewChecklist']), 3)
+        short = next(block for block in live if block['type'] == 'short_answer')
+        self.assertEqual(short['data']['answerLayout'], 'inlineBlank')
+        self.assertTrue({'may have', 'might have', 'could have'} <= set(short['items'][0]['acceptedAnswers']))
+        self.assertNotIn('Completa solo el hueco.', short['items'][0]['question'])
+
     def test_archives_originals_intact_and_reuses_audio_identity_without_mutating_input(self):
         snapshot, specifications = fixture()
         untouched = copy.deepcopy((snapshot, specifications))

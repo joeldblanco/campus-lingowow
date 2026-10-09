@@ -49,7 +49,8 @@ def validate_plans(plans: list[dict]) -> list[dict]:
                 original = before[key].get('data') or {}
                 if original.get('type') == 'audio' and row['data'].get('url') != original.get('url'):
                     raise ValueError('Original audio URL changed')
-                if original.get('type') == 'embed' and row['data'].get('data', {}).get('originalSource') != original:
+                archived_unchanged = original.get('data', {}).get('archivedPilotSource') is True and row['data'] == original
+                if original.get('type') == 'embed' and not archived_unchanged and row['data'].get('data', {}).get('originalSource') != original:
                     raise ValueError('Original presentation must be archived intact')
             elif not key.startswith(f'course-guided-{lesson}-') or row.get('contentType') != 'RICH_TEXT' or row.get('parentId') is not None:
                 raise ValueError('Unapproved new record')

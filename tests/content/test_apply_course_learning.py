@@ -19,6 +19,17 @@ def plan():
 
 
 class CourseApplyTests(unittest.TestCase):
+    def test_an_already_archived_presentation_can_be_preserved_exactly_on_followup(self):
+        candidate = plan()
+        original = candidate['previousRows'][0]['data']
+        archived = {**original, 'data': {'archivedPilotSource': True, 'originalSource': copy.deepcopy(original)}}
+        candidate['previousRows'][0]['data'] = copy.deepcopy(archived)
+        candidate['nextRows'][0]['data'] = copy.deepcopy(archived)
+        module.validate_plans([candidate])
+        candidate['nextRows'][0]['data']['url'] = 'substitute'
+        with self.assertRaises(ValueError):
+            module.validate_plans([candidate])
+
     def test_defaults_to_rollback_and_contains_exact_source_cas(self):
         sql = module.build_sql([plan()])
         self.assertTrue(sql.rstrip().endswith('ROLLBACK;'))
