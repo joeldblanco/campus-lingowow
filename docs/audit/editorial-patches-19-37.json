@@ -321,15 +321,70 @@
       "changes": [
         {
           "path": [
-            "content",
-            "headers",
-            3
+            "content"
           ],
-          "before": "The modals are organized from the highest level of probability to the lowest.",
+          "before": {
+            "rows": [
+              [
+                "2",
+                "May + Verb simple form",
+                "They may attend to the concert, but I would not bet on it.",
+                ""
+              ],
+              [
+                "3",
+                "Could + Verb simple form",
+                "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+                ""
+              ]
+            ],
+            "headers": [
+              "1",
+              "Might + Verb simple form",
+              "David might not answer as usual.",
+              "The modals are organized from the highest level of probability to the lowest."
+            ]
+          },
+          "after": {
+            "rows": [
+              [
+                "Might + base verb",
+                "David might not answer as usual."
+              ],
+              [
+                "May + base verb",
+                "They may attend the concert, but I would not bet on it."
+              ],
+              [
+                "Could + base verb",
+                "The Jenkins could visit us this weekend; just in case, let’s get some groceries."
+              ]
+            ],
+            "headers": [
+              "Structure",
+              "Example"
+            ]
+          }
+        },
+        {
+          "path": [
+            "subtitle"
+          ],
+          "before": "There are many ways in which we can express probability in English. Check the following chart.",
           "after": "Might, may, and could express possibility; context determines likelihood."
+        },
+        {
+          "path": [
+            "data",
+            "guidedTitle"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "Expresa posibilidad."
         }
       ],
-      "reason": "Reviewed finding E062: Fixed ranking contradicts the unit’s context-dependent explanation."
+      "reason": "Reviewed finding E062: Fixed ranking contradicts the unit’s context-dependent explanation. Restore real column headers and all three examples, place the explanation outside the table, and use a specific task title."
     },
     {
       "lessonId": "cmnmm9q04001ew1qke5tfufyk",

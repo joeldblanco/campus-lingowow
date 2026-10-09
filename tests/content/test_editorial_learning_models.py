@@ -35,9 +35,11 @@ class EditorialLearningModelsTests(unittest.TestCase):
         self.assertEqual(self.corrected('E010')['items'][5]['correctOptionId'], 'false')
 
     def test_modal_chart_does_not_teach_a_fixed_probability_ranking(self):
-        heading = self.corrected('E062')['content']['headers'][3]
-        self.assertIn('context', heading.casefold())
-        self.assertNotIn('high to low', heading.casefold())
+        model = self.corrected('E062')
+        self.assertIn('context', model['subtitle'].casefold())
+        self.assertNotIn('high to low', model['subtitle'].casefold())
+        self.assertEqual(model['content']['headers'], ['Structure', 'Example'])
+        self.assertEqual([row[0].split()[0] for row in model['content']['rows']], ['Might', 'May', 'Could'])
 
     def test_shot_in_the_dark_model_expresses_an_unsupported_guess(self):
         row = self.corrected('E096')['content']['rows'][2]
