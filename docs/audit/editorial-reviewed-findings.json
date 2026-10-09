@@ -1,0 +1,3012 @@
+{
+  "environment": "dev",
+  "snapshotSha256": "ad32ef843401f4c5ba70dac74d427a32751b45b1e0af521288959d3fdd244121",
+  "applicationCommit": "0c401e9ade354a0ba97c86014d93adf3d83ab0b1",
+  "coveredUnits": 56,
+  "courseRows": 1935,
+  "findings": [
+    {
+      "unit": 2,
+      "rowId": "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+      "field": "items[6].question / items[6].correctAnswer / items[6].acceptedAnswers",
+      "quote": "Where does Takaishi come from? -> Japan",
+      "sourceQuote": "Jenny’s boyfriend is Takaishi, he is American too but his parents are from Japan.",
+      "replacement": "Preguntar “Where do Takaishi’s parents come from?” y conservar Japan, o preguntar por su nacionalidad y aceptar American.",
+      "rationale": "La lectura establece que es estadounidense y que sus padres son de Japón; no establece inequívocamente su lugar de nacimiento. La pregunta de procedencia y la clave Japan son ambiguas.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E001"
+    },
+    {
+      "unit": 4,
+      "rowId": "course-guided-cmk0vijvj0001i904j8k1di8d-essay-5-010",
+      "field": "prompt",
+      "quote": "B. Listen to the audio and answer the questions your teacher makes.",
+      "sourceQuote": "B. Listen to the audio and answer the questions your teacher makes.",
+      "replacement": "Remove this duplicate or consolidate it with row ...-essay-5-011.",
+      "rationale": "Rows -010 and -011 are duplicate live essay activities; -010 only adds an emoji prefix.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E002"
+    },
+    {
+      "unit": 4,
+      "rowId": "course-guided-cmk0vijvj0001i904j8k1di8d-text-13-a-listen-to-the-audio-and-extract-the-information-about-likes-an-032",
+      "field": "content",
+      "quote": "I am fond of soccer. I love taking pictures. I like eating ice cream. I am a fan of hiking mountains. I like playing chess. I am crazy about her. [then repeated]",
+      "sourceQuote": "I am fond of soccer. I love taking pictures. I like eating ice cream. I am a fan of hiking mountains. I like playing chess. I am crazy about her.",
+      "replacement": "Keep one copy of the six statements.",
+      "rationale": "The learner-visible list is duplicated verbatim.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E003"
+    },
+    {
+      "unit": 5,
+      "rowId": "course-guided-cmk0wu7xk0001lb04z0pauq4e-vocabulary-9-9-020",
+      "field": "items[1].term",
+      "quote": "s children -> Two owners and two possessions",
+      "sourceQuote": "These are Jake’s and Jill’s children - Two owners and two possessions.",
+      "replacement": "Jake’s and Jill’s children -> Two owners and two possessions",
+      "rationale": "The source example contains Jake’s and Jill’s; the learner term lost the names.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E004"
+    },
+    {
+      "unit": 5,
+      "rowId": "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-13-questions-answers-0-do-you-have-a-big-family-yes-i-025",
+      "field": "content.rows[1][1]",
+      "quote": "How many siblings are you?",
+      "sourceQuote": "How many siblings do you have?",
+      "replacement": "How many siblings do you have?",
+      "rationale": "The current question is ungrammatical and conflicts with the corrected duplicate text row.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E005"
+    },
+    {
+      "unit": 6,
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-vocabulary-9-1-most-of-the-verbs-take-s-when-using-the-third-person-rule-026",
+      "field": "items",
+      "quote": "take -> takes cook; work -> works stop; wash -> washes teach; study -> studies copy; fix -> fixes go",
+      "sourceQuote": "Most of the verbs take -s when using the third person rule.",
+      "replacement": "Use complete pairs such as take -> takes, cook -> cooks, work -> works, stop -> stops, wash -> washes, teach -> teaches, study -> studies, copy -> copies, fix -> fixes, go -> goes.",
+      "rationale": "Source cells were merged into learner-visible definitions.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E006"
+    },
+    {
+      "unit": 6,
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-recording-4-a-look-at-the-picture-what-does-he-do-where-does-he-work-008",
+      "field": "instruction",
+      "quote": "B. Listen to the conversation",
+      "sourceQuote": "B. Listen to the conversation and write phrases related to jobs and occupations.",
+      "replacement": "B. Listen to the conversation and write phrases related to jobs and occupations.",
+      "rationale": "The instruction is completed only by the next essay row’s fragment: and write phrases related to jobs and occupations.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E007"
+    },
+    {
+      "unit": 7,
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-vocabulary-10-we-normally-use-simple-present-tense-to-talk-about-food-ch-020",
+      "field": "items",
+      "quote": "Some -> Any; a lot of -> Few; A few -> None; lots of -> Much",
+      "sourceQuote": "Some – Any – a lot of – Few / A few - None – lots of – Much - Many.",
+      "replacement": "Author valid definitions/examples, or label and structure this explicitly as an opposites/quantifier exercise.",
+      "rationale": "The vocabulary renderer presents unrelated or opposite quantifiers as definitions.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E008"
+    },
+    {
+      "unit": 8,
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-audio-4-b-listen-to-the-audio-and-discuss-with-your-teacher-what-are-the-006",
+      "field": "instruction",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "sourceQuote": "B. Listen to the audio and discuss with your teacher: What are they talking about? Can you get some details?",
+      "replacement": "B. Listen to the audio and discuss the topic with your teacher.",
+      "rationale": "The audio row repeats the preceding A prompt instead of giving the B listening instruction.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E009"
+    },
+    {
+      "unit": 8,
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-multiple-choice-14-c-read-the-following-dialogue-and-state-if-the-senten-034",
+      "field": "items[5].correctOptionId",
+      "quote": "The iPad is David’s. -> true",
+      "sourceQuote": "WOW! That is my iPad.",
+      "replacement": "Set the correct option to false.",
+      "rationale": "The dialogue identifies the iPad as Tom’s, not David’s.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E010"
+    },
+    {
+      "unit": 10,
+      "rowId": "course-guided-cmk3zca590009jp04suhvg28s-vocabulary-12-a-fill-in-the-blanks-with-the-corresponding-adjectives-fro-032",
+      "field": "items",
+      "quote": "Peaceful -> High; Cold -> Big; Ancient -> Tropical; Clear -> Small",
+      "sourceQuote": "Peaceful – High – Cold - Big - Ancient – Tropical – Clear - Small",
+      "replacement": "Use a real fill-in-the-blank exercise with the eight adjectives, or provide valid definitions/examples.",
+      "rationale": "The word-bank sequence is exposed as unrelated vocabulary definitions.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E011"
+    },
+    {
+      "unit": 11,
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-essay-15-d-compare-two-different-places-you-have-already-visited-how-are-036",
+      "field": "prompt",
+      "quote": "Write a 80 - 100 word text, talking about two useful objects / devices people need to have today.",
+      "sourceQuote": "D. Compare two different places you have already visited. How are these places? How are the people? How is the food?",
+      "replacement": "Write about two places you have visited, comparing the places, people, and food.",
+      "rationale": "The essay topic conflicts with the unit’s comparison-of-places recording and progression.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E012"
+    },
+    {
+      "unit": 11,
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-recording-15-d-compare-two-different-places-you-have-already-visited-how-035",
+      "field": "instruction",
+      "quote": "How are theses places?",
+      "sourceQuote": "How are these places?",
+      "replacement": "How are these places?",
+      "rationale": "Learner-visible spelling error.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E013"
+    },
+    {
+      "unit": 11,
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-vocabulary-13-sentences-0-jake-seems-to-be-more-interested-in-class-than-028",
+      "field": "items",
+      "quote": "Tall -> Nice; Big -> Amazing; Intelligent -> Easy; Popular -> Terrible",
+      "sourceQuote": "Adjectives used for comparisons in the surrounding lesson.",
+      "replacement": "Provide valid definitions/examples or rebuild this as a labeled adjective word bank.",
+      "rationale": "Unrelated word-bank values are presented as definitions.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E014"
+    },
+    {
+      "unit": 12,
+      "rowId": "course-guided-cmk3zidzg0001ic04ffiveeqx-vocabulary-13-sentences-0-jake-seems-to-be-the-most-apprehensive-in-clas-028",
+      "field": "items",
+      "quote": "Loud -> Crowded; Quiet -> Marvelous; Awful -> Ugly; Famous -> Lovely",
+      "sourceQuote": "Adjectives used for superlatives in the surrounding lesson.",
+      "replacement": "Provide valid definitions/examples or rebuild this as a labeled adjective word bank.",
+      "rationale": "Unrelated word-bank values are presented as definitions.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E015"
+    },
+    {
+      "unit": 14,
+      "rowId": "course-guided-cmk3zr60x0001l804vyj6hctk-vocabulary-8-talking-about-the-past-can-also-have-two-main-grammatical-a-020",
+      "field": "items",
+      "quote": "Other verbs -> Auxiliary Introduction John made a cake last night; Zf -> CUUp",
+      "sourceQuote": "Talking about the past can also have two main grammatical aspects.",
+      "replacement": "Remove and rebuild the vocabulary block from the actual past-tense examples.",
+      "rationale": "The learner-visible entries contain merged source text and URL-fragment corruption.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E016"
+    },
+    {
+      "unit": 16,
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-short-answer-12-sentences-questions-0-i-was-calling-him-when-the-tornado-027",
+      "field": "items[1].question / items[1].correctAnswer / items[1].acceptedAnswers",
+      "quote": "They were watching the volcano while it was making eruption.",
+      "sourceQuote": "They were watching the volcano while it was erupting.",
+      "replacement": "Use “They were watching the volcano while it was erupting.” and “Were they watching the volcano while it was erupting?”",
+      "rationale": "The current sentence is ungrammatical and the accepted answer preserves the error.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E017"
+    },
+    {
+      "unit": 16,
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-structured-content-13-survivors-2-years-ago-my-family-and-i-went-to-thai-029",
+      "field": "content.headers / content.rows",
+      "quote": "Two headers are present, the only row is empty, but the following task asks for the three past-action functions.",
+      "sourceQuote": "Extract the sentences under the three past-action functions.",
+      "replacement": "Provide three labeled functions with content, or change the essay instruction to match the two functions.",
+      "rationale": "The reference table and extraction task have incompatible scope.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E018"
+    },
+    {
+      "unit": 18,
+      "rowId": "course-guided-cmk4011yd0003ju0505ofufnq-recording-14-d-tell-your-teacher-about-some-of-the-arrangements-you-have-034",
+      "field": "instruction",
+      "quote": "arrangements ... for the upcoming month",
+      "sourceQuote": "Write ... about the arrangements made for next year.",
+      "replacement": "Use one horizon consistently: upcoming month or next year.",
+      "rationale": "The recording and following essay specify different planning horizons.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E019"
+    },
+    {
+      "unit": 2,
+      "rowId": "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+      "field": "content",
+      "quote": "What is today’s topic?.",
+      "sourceQuote": "What is today’s topic?",
+      "replacement": "What is today’s topic?",
+      "rationale": "Extra terminal period.",
+      "severity": "low",
+      "classification": "preference",
+      "id": "E020"
+    },
+    {
+      "unit": 7,
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+      "field": "content",
+      "quote": "What is today’s topic? .",
+      "sourceQuote": "What is today’s topic?",
+      "replacement": "What is today’s topic?",
+      "rationale": "Stray space before the terminal period.",
+      "severity": "low",
+      "classification": "preference",
+      "id": "E021"
+    },
+    {
+      "unit": 7,
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+      "field": "instruction",
+      "quote": "Can you get some details?.",
+      "sourceQuote": "Can you get some details?",
+      "replacement": "Can you get some details?",
+      "rationale": "Extra terminal period.",
+      "severity": "low",
+      "classification": "preference",
+      "id": "E022"
+    },
+    {
+      "unit": 7,
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-text-6-melon-009",
+      "field": "content",
+      "quote": "The fruit list is repeated, beginning with WATERMELON and ending with LEMONS.",
+      "sourceQuote": "MELON ... LEMONS",
+      "replacement": "Keep one fruit list.",
+      "rationale": "The learner-visible text duplicates the list.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E023"
+    },
+    {
+      "unit": 9,
+      "rowId": "course-guided-cmk3zalwi0001jo04hy9a1qi7-text-14-we-are-lost-right-so-we-are-lost-annie-no-we-are-not-nathan-see--031",
+      "field": "content",
+      "quote": "See¡ we are on Maple Street.",
+      "sourceQuote": "See, we are on Maple Street.",
+      "replacement": "See, we are on Maple Street.",
+      "rationale": "Incorrect punctuation character.",
+      "severity": "low",
+      "classification": "preference",
+      "id": "E024"
+    },
+    {
+      "unit": 13,
+      "rowId": "course-guided-cmk3zq5rb0001ju05muzrd2c4-text-8-ongoing-actions-are-stated-through-the-present-progressive-check--019",
+      "field": "content",
+      "quote": "Verb To Be acts as an auxiliary. Do/Does are not used here. [repeated after the TO CONSIDER block]",
+      "sourceQuote": "Verb To Be acts as an auxiliary. Do/Does are not used here.",
+      "replacement": "Keep the note once.",
+      "rationale": "The learner-visible explanatory note is duplicated.",
+      "severity": "low",
+      "classification": "preference",
+      "id": "E025"
+    },
+    {
+      "unit": 14,
+      "rowId": "course-guided-cmk3zr60x0001l804vyj6hctk-text-6-when-we-talk-about-past-we-normally-need-to-consider-certain-time-016",
+      "field": "content",
+      "quote": "time phrases that are are key",
+      "sourceQuote": "time phrases that are key",
+      "replacement": "time phrases that are key",
+      "rationale": "Repeated word.",
+      "severity": "low",
+      "classification": "preference",
+      "id": "E026"
+    },
+    {
+      "unit": 15,
+      "rowId": "course-guided-cmk3zs4250003l8047krvt8qc-short-answer-12-sentences-questions-0-john-used-to-be-smaller-a-couple-o-030",
+      "field": "items[3].question / items[3].correctAnswer",
+      "quote": "Did I use to talk loud but I stopped that?",
+      "sourceQuote": "I used to talk loud but I stopped that.",
+      "replacement": "Test one clean transformation, for example: “I used to talk loudly.” -> “Did I use to talk loudly?”",
+      "rationale": "The current prompt combines two clauses awkwardly and uses talk loud instead of talk loudly.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E027"
+    },
+    {
+      "unit": 15,
+      "rowId": "course-guided-cmk3zs4250003l8047krvt8qc-text-13-memories-i-always-remember-my-childhood-i-used-to-spend-hours-wi-032",
+      "field": "content",
+      "quote": "nearby the river; ring doorbells to our neighbors; I’d wish those times to be back",
+      "sourceQuote": "I used to spend hours with my friends nearby the river ... we used to ring doorbells to our neighbors ... I’d wish those times to be back",
+      "replacement": "near the river; ring our neighbors’ doorbells; I wish those times would return",
+      "rationale": "The passage contains several awkward learner-facing phrases.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E028"
+    },
+    {
+      "unit": 16,
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-recording-14-d-tell-your-teacher-about-a-experience-you-had-with-a-natur-032",
+      "field": "instruction",
+      "quote": "a experience",
+      "sourceQuote": "an experience",
+      "replacement": "an experience",
+      "rationale": "Article error before a vowel sound.",
+      "severity": "low",
+      "classification": "preference",
+      "id": "E029"
+    },
+    {
+      "unit": 16,
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-text-13-survivors-2-years-ago-my-family-and-i-went-to-thailand-for-spend-030",
+      "field": "content",
+      "quote": "went to Thailand for spending our holidays; problems to find the hotel; got to high hill and survived",
+      "sourceQuote": "2 years ago, my family and I went to Thailand for spending our holidays ... we were having problems to find the hotel ... we could get to high hill and survived.",
+      "replacement": "went to Thailand to spend our holidays; had problems finding the hotel; got to a high hill and survived",
+      "rationale": "The learner-facing reading contains multiple grammar and article errors.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E030"
+    },
+    {
+      "unit": 21,
+      "rowId": "course-guided-cmkq3xx5w0001jr04cw7bh9g7-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E031"
+    },
+    {
+      "unit": 22,
+      "rowId": "course-guided-cmkpx0d310001gy04zr4lq99y-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E032"
+    },
+    {
+      "unit": 23,
+      "rowId": "course-guided-cmn7vbcg20005l804sg2hxgf4-text-4-a-look-at-the-picture-what-is-it-suggesting-what-can-you-tell-abo-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E033"
+    },
+    {
+      "unit": 24,
+      "rowId": "course-guided-cmn7vc7pm0001le04qfcuwa27-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E034"
+    },
+    {
+      "unit": 25,
+      "rowId": "course-guided-cmnmm9m3i000hw1qklyh7h658-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E035"
+    },
+    {
+      "unit": 26,
+      "rowId": "course-guided-cmnmm9mm1000kw1qkgi2bize8-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E036"
+    },
+    {
+      "unit": 27,
+      "rowId": "course-guided-cmnmm9my8000nw1qkfl8lpdxz-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E037"
+    },
+    {
+      "unit": 28,
+      "rowId": "course-guided-cmnmm9naj000qw1qkkzistoi6-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E038"
+    },
+    {
+      "unit": 29,
+      "rowId": "course-guided-cmnmm9nmo000tw1qkxzhh3pwc-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E039"
+    },
+    {
+      "unit": 30,
+      "rowId": "course-guided-cmnmm9nyt000ww1qkoxsumpck-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E040"
+    },
+    {
+      "unit": 31,
+      "rowId": "course-guided-cmnmm9ob2000zw1qkel9nezp5-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>‹#›</p>",
+      "replacement": "",
+      "rationale": "Literal placeholder is learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E041"
+    },
+    {
+      "unit": 32,
+      "rowId": "course-guided-cmnmm9on70012w1qka03chue1-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E042"
+    },
+    {
+      "unit": 33,
+      "rowId": "course-guided-cmnmm9ozb0015w1qkj7gth0wy-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E043"
+    },
+    {
+      "unit": 34,
+      "rowId": "course-guided-cmnmm9pbg0018w1qkdkv1gbma-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. Take notes if necessary.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. Take notes if necessary.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E044"
+    },
+    {
+      "unit": 35,
+      "rowId": "course-guided-cmnmm9pns001bw1qki5fh6r0j-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. Take notes if necessary.</p><p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. Take notes if necessary.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. Take notes if necessary.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E045"
+    },
+    {
+      "unit": 36,
+      "rowId": "course-guided-cmnmm9q04001ew1qke5tfufyk-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. Take notes if necessary.</p><p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions. Take notes if necessary.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions. Take notes if necessary.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E046"
+    },
+    {
+      "unit": 37,
+      "rowId": "course-guided-cmnmm9qca001hw1qkpe089f8f-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "field": "content",
+      "quote": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p><p>‹#›</p>",
+      "replacement": "<p>B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.</p>",
+      "rationale": "Duplicate instruction and literal placeholder are learner-visible.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E047"
+    },
+    {
+      "unit": 21,
+      "rowId": "course-guided-cmkq3xx5w0001jr04cw7bh9g7-vocabulary-14-a-look-at-the-words-on-the-list-make-sentences-in-the-perf-030",
+      "field": "items",
+      "quote": "Cell phones→Computers; Transportation→Cars; Education Mass media→Social networks; Schools→Buildings",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E048"
+    },
+    {
+      "unit": 25,
+      "rowId": "course-guided-cmnmm9m3i000hw1qklyh7h658-vocabulary-13-a-look-at-the-words-in-the-box-and-complete-the-paragraph--030",
+      "field": "items",
+      "quote": "Encrypted→Never; ending→Terrifying; Interesting→Missing; Befuddled→Captivating; Connected→Fascinating",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E049"
+    },
+    {
+      "unit": 27,
+      "rowId": "course-guided-cmnmm9my8000nw1qkfl8lpdxz-vocabulary-12-a-look-at-the-words-in-the-box-and-write-statements-where--031",
+      "field": "items",
+      "quote": "Cut→Bruise; twist ankle→Blisters; Rash→Cough; Chicken pox→Stroke; Bleeding→Burns",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E050"
+    },
+    {
+      "unit": 28,
+      "rowId": "course-guided-cmnmm9naj000qw1qkkzistoi6-vocabulary-12-a-look-at-the-words-phrases-in-the-box-and-write-statement-031",
+      "field": "items",
+      "quote": "Get married→Move alone; Change jobs→Stay single; Keep studying→Practice a extreme sport; Donate organs→Save money to travel",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E051"
+    },
+    {
+      "unit": 29,
+      "rowId": "course-guided-cmnmm9nmo000tw1qkxzhh3pwc-vocabulary-8-1-verbs-using-infinitives-i-want-to-say-i-m-sorry-they-deci-021",
+      "field": "items",
+      "quote": "english→resource; verbs→followed; by→gerunds; and→infinitives",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E052"
+    },
+    {
+      "unit": 29,
+      "rowId": "course-guided-cmnmm9nmo000tw1qkxzhh3pwc-vocabulary-13-a-look-at-the-words-in-the-box-and-complete-the-paragraph--030",
+      "field": "items",
+      "quote": "come clean→do; think→find; say→ignore; consider→be",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E053"
+    },
+    {
+      "unit": 31,
+      "rowId": "course-guided-cmnmm9ob2000zw1qkel9nezp5-vocabulary-8-structures-it-clause-adverbial-clause-1-subject-verb-it-adv-021",
+      "field": "items",
+      "quote": "Only if→You; Anywhere→Wherever I go",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E054"
+    },
+    {
+      "unit": 33,
+      "rowId": "course-guided-cmnmm9ozb0015w1qkj7gth0wy-vocabulary-13-i-wasn-t-prepared-for-the-culture-shock-of-being-an-intern-032",
+      "field": "items",
+      "quote": "wasnt→prepared; for→the; culture→shock; of→being; an→international",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E055"
+    },
+    {
+      "unit": 36,
+      "rowId": "course-guided-cmnmm9q04001ew1qke5tfufyk-vocabulary-13-successful-managers-know-that-luck-goes-with-effort-experi-024",
+      "field": "items",
+      "quote": "leading→and; successful→managers; know→that; luck→goes; with→effort",
+      "replacement": "Render the source words as a plain word bank, or provide actual definitions.",
+      "rationale": "The guided vocabulary renderer displays these source fragments as term-definition pairs.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E056"
+    },
+    {
+      "unit": 19,
+      "rowId": "course-guided-cmk401if40005l804vf3z3k0q-text-13-at-home-don-t-you-have-a-test-tomorrow-yes-mum-i-start-studying--031",
+      "field": "content",
+      "quote": "I start studying in some minutes. Tommy it is 8 o’clock, very late! I am going to pass mum not to worry. Tomorrow, it is your grandma's birthday.",
+      "replacement": "I’ll start studying in a few minutes. Tommy, it’s 8 o’clock—very late! I’m going to pass, Mum; don’t worry. Tomorrow is your grandma’s birthday.",
+      "rationale": "Revisión de naturalidad, registro o referencia pronominal. Sin contexto adicional, estas variantes no se deben presentar como errores gramaticales inequívocos.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E057"
+    },
+    {
+      "unit": 20,
+      "rowId": "course-guided-cmk401zlh0001js04fn6f881k-text-8-when-we-talk-about-weather-we-do-not-only-use-simple-present-we-c-020",
+      "field": "content",
+      "quote": "Go fresh, it will be sunny at the beach.",
+      "replacement": "Look, it will be sunny at the beach.",
+      "rationale": "Malformed learner-facing example.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E058"
+    },
+    {
+      "unit": 22,
+      "rowId": "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-10-we-can-use-the-modals-to-indicate-different-meanin-023",
+      "field": "content.rows",
+      "quote": "They should not talk loud. She has to finish his homework.",
+      "replacement": "They should not talk loudly. She has to finish her homework.",
+      "rationale": "Revisión de naturalidad, registro o referencia pronominal. Sin contexto adicional, estas variantes no se deben presentar como errores gramaticales inequívocos.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E059"
+    },
+    {
+      "unit": 28,
+      "rowId": "course-guided-cmnmm9naj000qw1qkkzistoi6-text-12-a-look-at-the-words-phrases-in-the-box-and-write-statements-wher-028",
+      "field": "content",
+      "quote": "A. Look at the words / phrases in the box and write statements where you can express situations likely to happen.",
+      "replacement": "Remove the second instruction; retain the instruction for situations unlikely to happen.",
+      "rationale": "The activity contains a contradictory likely-situations instruction.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E060"
+    },
+    {
+      "unit": 33,
+      "rowId": "course-guided-cmnmm9ozb0015w1qkj7gth0wy-text-6-look-at-the-information-where-do-you-think-these-customs-are-from-018",
+      "field": "content",
+      "quote": "Look at the information, Where do you think these customs are from? Discuss about them.; Look at the information, Where do you think this customs are from? Discuss about them.",
+      "replacement": "Look at the information. Where do you think these customs are from? Discuss them.",
+      "rationale": "The prompt is duplicated and contains grammar errors.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E061"
+    },
+    {
+      "unit": 35,
+      "rowId": "course-guided-cmnmm9pns001bw1qki5fh6r0j-structured-content-8-1-might-verb-simple-form-david-might-not-answer-as--012",
+      "field": "content.headers[3]",
+      "quote": "The modals are organized from the highest level of probability to the lowest.",
+      "replacement": "Might, may, and could express possibility; context determines likelihood.",
+      "rationale": "Fixed ranking contradicts the unit’s context-dependent explanation.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E062"
+    },
+    {
+      "unit": 36,
+      "rowId": "course-guided-cmnmm9q04001ew1qke5tfufyk-text-8-1-had-better-they-d-better-extend-the-laurel-leaf-or-this-will-ta-013",
+      "field": "content",
+      "quote": "They’d better extend the laurel leaf or this will take longer.; Thanks, Mark for hitting the ball rolling.",
+      "replacement": "They’d better extend an olive branch or this will take longer.; Thanks, Mark, for getting the ball rolling.",
+      "rationale": "Both learner-facing idiom examples are incorrect.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E063"
+    },
+    {
+      "unit": 37,
+      "rowId": "course-guided-cmnmm9qca001hw1qkpe089f8f-text-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-make-030",
+      "field": "content",
+      "quote": "A lot of people dream of having the ideal match for life and striving through many experiences, they may get it.; being these some of the good qualities we can mention.; Getting very ugly, situations can get the worst from us; A happy life, you can create it on your own.",
+      "replacement": "A lot of people dream of finding an ideal life partner; after many experiences, they may find one.; These are some of the good qualities we can mention.; When situations become very difficult, they can bring out the worst in us.; You can create a happy life on your own.",
+      "rationale": "The reading contains malformed participial clauses, word order, and idiomatic errors.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E064"
+    },
+    {
+      "unit": 38,
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-structured-content-8-structures-examples-observations-1-have-someone-do--021",
+      "field": "content.rows[1]",
+      "quote": [
+        "2",
+        "Have something done",
+        "She *got her eyes operated last week. They will have the car fixed by noon.",
+        "Have + N + V (Past participle) -This may vary depending on the tenses.-"
+      ],
+      "replacement": [
+        "2",
+        "Have something done",
+        "She got her eyes operated on last week. They will have the car fixed by noon.",
+        "Have + N + V (Past participle) -This may vary depending on the tenses.-"
+      ],
+      "rationale": "The passive causative construction requires the preposition on.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E065"
+    },
+    {
+      "unit": 38,
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-text-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-make-032",
+      "field": "content",
+      "quote": "Do it yourself It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for or to you does not always end well. Get people to work or do things the way you want has always been kind of a challenge.",
+      "replacement": "Having others do chores or favors for you does not always end well. Getting people to work or do things the way you want has always been a challenge.",
+      "rationale": "The visible text has incorrect gerund subjects and the wrong preposition.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E066"
+    },
+    {
+      "unit": 39,
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-structured-content-6-look-at-the-information-listen-to-your-teacher-and--010",
+      "field": "content.rows[1]",
+      "quote": [
+        "KEEP THE CHIN UP",
+        "To be stalwart and courageous in a tough situation.",
+        "Don't let the difficulties intimidate you; keep your chin up."
+      ],
+      "replacement": [
+        "KEEP YOUR CHIN UP",
+        "To be stalwart and courageous in a tough situation.",
+        "Don't let the difficulties intimidate you; keep your chin up."
+      ],
+      "rationale": "The learner-visible idiom is missing the possessive determiner.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E067"
+    },
+    {
+      "unit": 39,
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-structured-content-6-look-at-the-information-listen-to-your-teacher-and--010",
+      "field": "content.rows[7]",
+      "quote": [
+        "CRACK UP",
+        "Go through an emotional breakdown.",
+        "The entire group cracked up at the joke of their teacher."
+      ],
+      "replacement": [
+        "CRACK UP",
+        "Laugh uncontrollably.",
+        "The entire group cracked up at the joke of their teacher."
+      ],
+      "rationale": "The definition describes one sense while the visible example uses the laughter sense.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E068"
+    },
+    {
+      "unit": 39,
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-vocabulary-8-phrasal-verb-formation-examples-more-examples-1-verb-prepos-014",
+      "field": "items",
+      "quote": [
+        {
+          "id": "course-vocabulary-8-001",
+          "term": "rurouni",
+          "definition": "kenshin"
+        },
+        {
+          "id": "course-vocabulary-8-002",
+          "term": "meiji",
+          "definition": "kenkaku"
+        },
+        {
+          "id": "course-vocabulary-8-003",
+          "term": "romantan",
+          "definition": "cap"
+        }
+      ],
+      "replacement": "Replace with the intended phrasal-verb terms and definitions.",
+      "rationale": "The visible vocabulary items are unrelated fragments from a source link.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E069"
+    },
+    {
+      "unit": 39,
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-text-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-make-025",
+      "field": "content",
+      "quote": "Knock it off! Have you ever met someone who is so annoying that you can not stand him? Coming across with such a character... being in peace with everyone... neither disrespect nor abuse should be born from anyone",
+      "replacement": "Coming across such a character... being at peace with everyone... neither disrespect nor abuse should come from anyone",
+      "rationale": "The visible text contains incorrect collocations and an incorrect use of born.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E070"
+    },
+    {
+      "unit": 40,
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-vocabulary-6-idiom-meaning-example-give-something-a-shot-to-have-a-try-a-011",
+      "field": "items",
+      "quote": [
+        {
+          "id": "course-vocabulary-6-001",
+          "term": "GO",
+          "definition": "TO GUY"
+        },
+        {
+          "id": "course-vocabulary-6-002",
+          "term": "s our go",
+          "definition": "to gal for computer issues"
+        }
+      ],
+      "replacement": "Restore the intended GO-TO GUY/GAL vocabulary entry.",
+      "rationale": "The visible entries are corrupted and unusable.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E071"
+    },
+    {
+      "unit": 40,
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-structured-content-6-idiom-meaning-example-give-something-a-shot-to-have-010",
+      "field": "content.rows[1]",
+      "quote": [
+        "HAVE A BONE TO PICK",
+        "An unpleasant issue or grievance that need discussion.",
+        "I have a bone to pick with you about that email."
+      ],
+      "replacement": [
+        "HAVE A BONE TO PICK",
+        "An unpleasant issue or grievance that needs discussion.",
+        "I have a bone to pick with you about that email."
+      ],
+      "rationale": "The visible definition has an agreement error.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E072"
+    },
+    {
+      "unit": 40,
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-structured-content-6-idiom-meaning-example-give-something-a-shot-to-have-010",
+      "field": "content.rows[6]",
+      "quote": [
+        "GO-TO GUY/GAL",
+        "The person is frequently asked for help in that topic.",
+        "Amanda’s our go-to gal for computer issues."
+      ],
+      "replacement": [
+        "GO-TO GUY/GAL",
+        "A person frequently asked for help in that area.",
+        "Amanda’s our go-to gal for computer issues."
+      ],
+      "rationale": "The visible definition has an incorrect collocation and awkward syntax.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E073"
+    },
+    {
+      "unit": 40,
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-recording-15-d-what-are-the-things-you-are-grateful-for-name-simple-thin-030",
+      "field": "instruction",
+      "quote": "D. What are the things you are grateful for? Name simple things or actions that make you feel great and talk to your teacher about his.",
+      "replacement": "talk to your teacher about them.",
+      "rationale": "The pronoun does not refer to the plural things or actions in the prompt.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E074"
+    },
+    {
+      "unit": 40,
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-essay-15-d-what-are-the-things-you-are-grateful-for-name-simple-things-o-031",
+      "field": "prompt",
+      "quote": "E. Write a text between 120-150 words about your parents and the main values and principles they raised you up with. Which are they? How have they helped you in life? Which one do you implement.",
+      "replacement": "E. Write a text between 120–150 words about your parents and the values and principles they raised you with. Which are they? How have they helped you? Which ones do you put into practice?",
+      "rationale": "Revisión de naturalidad, registro o referencia pronominal. Sin contexto adicional, estas variantes no se deben presentar como errores gramaticales inequívocos.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E075"
+    },
+    {
+      "unit": 41,
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-structured-content-6-idiom-meaning-example-go-ballistic-to-lose-one-s-te-010",
+      "field": "content.rows[0]",
+      "quote": [
+        "GO BALLISTIC",
+        "To lose one’s temper by shooting words.",
+        "My dad went ballistic when he found out we had a party in the house."
+      ],
+      "replacement": [
+        "GO BALLISTIC",
+        "To become extremely angry.",
+        "My dad went ballistic when he found out we had a party in the house."
+      ],
+      "rationale": "The visible definition does not define the idiom.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E076"
+    },
+    {
+      "unit": 41,
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-structured-content-6-idiom-meaning-example-go-ballistic-to-lose-one-s-te-010",
+      "field": "content.rows[2]",
+      "quote": [
+        "BLOW SOMEONE’S TOP",
+        "To become very angry about something.",
+        "My dad just blew my mum’s top when she knew he had not paid the hall for the party."
+      ],
+      "replacement": [
+        "BLOW SOMEONE’S TOP",
+        "To become very angry about something.",
+        "My dad just blew his top when he found out he had not paid the hall for the party."
+      ],
+      "rationale": "The visible example uses the idiom with the wrong possessive structure.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E077"
+    },
+    {
+      "unit": 41,
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-structured-content-6-idiom-meaning-example-go-ballistic-to-lose-one-s-te-010",
+      "field": "content.rows[4]",
+      "quote": [
+        "TO BITE SOMEONE’S HEAD OFF",
+        "To reply sharply and brusquely to someone.",
+        "The teacher just bit all students’ heads for the problem they caused."
+      ],
+      "replacement": [
+        "TO BITE SOMEONE’S HEAD OFF",
+        "To reply sharply and brusquely to someone.",
+        "The teacher just bit all students’ heads off for the problem they caused."
+      ],
+      "rationale": "The visible example omits off from the idiom.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E078"
+    },
+    {
+      "unit": 41,
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-text-8-structures-examples-switching-clauses-had-past-participle-by-jake-012",
+      "field": "content",
+      "quote": "The boss had bitten everyone’s head off before I got with the answer.",
+      "replacement": "The boss had bitten everyone’s head off before I came up with the answer.",
+      "rationale": "The visible phrasal verb is incorrect.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E079"
+    },
+    {
+      "unit": 41,
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-vocabulary-15-15-025",
+      "field": "items",
+      "quote": [
+        {
+          "id": "course-vocabulary-15-001",
+          "term": "grammar",
+          "definition": "and"
+        },
+        {
+          "id": "course-vocabulary-15-002",
+          "term": "grammar",
+          "definition": "lessons"
+        },
+        {
+          "id": "course-vocabulary-15-003",
+          "term": "one",
+          "definition": "those"
+        },
+        {
+          "id": "course-vocabulary-15-004",
+          "term": "days",
+          "definition": "past"
+        }
+      ],
+      "replacement": "Replace with the intended vocabulary or remove the corrupted items.",
+      "rationale": "The visible vocabulary is unrelated fragment text.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E080"
+    },
+    {
+      "unit": 42,
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-text-13-a-write-the-correct-reported-speech-for-each-sentence-follow-the-020",
+      "field": "content",
+      "quote": "A. Write the correct reported speech for each sentence. Follow the example. A. Write the correct report speech for each sentence. Follow the example.",
+      "replacement": "A. Write the correct reported speech for each sentence. Follow the example.",
+      "rationale": "The learner sees a duplicated instruction and incorrect terminology in the second copy.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E081"
+    },
+    {
+      "unit": 42,
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-text-15-15-024",
+      "field": "content",
+      "quote": "Frederick Thwan... Mr. Smith... Mr. Thawn... Mr. Thwn",
+      "replacement": "Unificar únicamente Thwan/Thawn/Thwn como Frederick Thwan; conservar a Mr. Smith y su papel en la historia.",
+      "rationale": "El esposo Frederick Thwan aparece después como Thawn y Thwn. Mr. Smith es otra persona (el amante) y debe conservarse distinto.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E082"
+    },
+    {
+      "unit": 42,
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-recording-16-d-tell-your-teacher-a-story-gossip-you-remember-from-your-y-027",
+      "field": "instruction",
+      "quote": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened?",
+      "replacement": "Where did it happen?",
+      "rationale": "After did, the verb must be in the base form.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E083"
+    },
+    {
+      "unit": 43,
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-6-phrases-meaning-example-a-fuss-a-display-of-unneces-010",
+      "field": "content.rows[1]",
+      "quote": [
+        "A SCAM",
+        "A deceptive scheme or trick used to cheat someone out of something, especially money.",
+        "The buy of the cars turned out to be just a scam."
+      ],
+      "replacement": [
+        "A SCAM",
+        "A deceptive scheme or trick used to cheat someone out of something, especially money.",
+        "The purchase of the cars turned out to be just a scam."
+      ],
+      "rationale": "The visible example uses an incorrect noun.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E084"
+    },
+    {
+      "unit": 43,
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-6-phrases-meaning-example-a-fuss-a-display-of-unneces-010",
+      "field": "content.rows[2]",
+      "quote": [
+        "A STORM IN A TEACUP",
+        "A small event that has been exaggerated out of proportion.",
+        "It was not that serious. Stom making a storm in a teacup."
+      ],
+      "replacement": [
+        "A STORM IN A TEACUP",
+        "A small event that has been exaggerated out of proportion.",
+        "It was not that serious. Stop making a storm in a teacup."
+      ],
+      "rationale": "The visible example contains a spelling error.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E085"
+    },
+    {
+      "unit": 43,
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-6-phrases-meaning-example-a-fuss-a-display-of-unneces-010",
+      "field": "content.rows[3]",
+      "quote": [
+        "A CHARADE",
+        "An absurd pretense intended to create a pleasant or respectable appearance.",
+        "I will ask Tina to cut the charade off."
+      ],
+      "replacement": [
+        "A CHARADE",
+        "An absurd pretense intended to create a pleasant or respectable appearance.",
+        "I will ask Tina to call off the charade."
+      ],
+      "rationale": "The visible example uses an incorrect phrasal-verb construction.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E086"
+    },
+    {
+      "unit": 43,
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-8-structures-questions-tag-questions-simple-present-a-012",
+      "field": "content.rows[1] and content.rows[2]",
+      "quote": [
+        [
+          "Present Progressive",
+          "Is he calling his mother?.",
+          "He is not calling his mother, is he?."
+        ],
+        [
+          "Past simple",
+          "Was she at Jakes last night?.",
+          "She was at Jake’s last night, wasn’t she?"
+        ]
+      ],
+      "replacement": "Quitar los puntos después de “?” y escribir Jake’s. Conservar la pregunta de coletilla negativa, o explicar la variación de polaridad.",
+      "rationale": "Errores de puntuación y ausencia del apóstrofo en Jake’s. “He is not calling his mother, is he?” es correcto; cambiar su polaridad sería una preferencia de alineación de ejemplos, no una corrección obligatoria.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E087"
+    },
+    {
+      "unit": 44,
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-text-6-look-at-the-phrases-and-discuss-them-with-your-teacher-did-you-kn-010",
+      "field": "content",
+      "quote": "LIVE / BE CLOUD CUCKOO",
+      "replacement": "LIVE/BE IN CLOUD-CUCKOO LAND",
+      "rationale": "The visible idiom is incomplete.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E088"
+    },
+    {
+      "unit": 44,
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-text-13-a-write-the-corresponding-passive-voice-for-each-of-the-sentence-020",
+      "field": "content",
+      "quote": "The have worked in the report for days.",
+      "replacement": "They have worked on the report for days.",
+      "rationale": "The learner-visible exercise contains a subject typo and wrong preposition.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E089"
+    },
+    {
+      "unit": 44,
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--027",
+      "field": "instruction",
+      "quote": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by?",
+      "replacement": "what other crises do you think are being faced globally? What are they? Who caused them?",
+      "rationale": "The visible instruction has number/agreement errors and an unnecessarily passive question.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E090"
+    },
+    {
+      "unit": 44,
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-028",
+      "field": "prompt",
+      "quote": "E. Write an 120-160 word text about a human invention",
+      "replacement": "E. Write a 120–160-word text about a human invention",
+      "rationale": "The article and compound modifier are incorrect.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E091"
+    },
+    {
+      "unit": 45,
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-6-phrases-meaning-example-once-in-a-blue-moon-somethi-010",
+      "field": "content.rows[2]",
+      "quote": [
+        "FEW AND FAR BETWEEN",
+        "Events that are odd or rarely seen.",
+        "John calling? That is quite a few and far between."
+      ],
+      "replacement": [
+        "FEW AND FAR BETWEEN",
+        "Events that are odd or rarely seen.",
+        "John calling? That is quite rare; it is few and far between."
+      ],
+      "rationale": "The visible example is malformed.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E092"
+    },
+    {
+      "unit": 45,
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-6-phrases-meaning-example-once-in-a-blue-moon-somethi-010",
+      "field": "content.rows[3]",
+      "quote": [
+        "A COLD DAY IN HELL",
+        "It means that something can’t be possible as hell going cold.",
+        "Hell would have gone on a cold day if Dinah had arrived on time."
+      ],
+      "replacement": [
+        "A COLD DAY IN HELL",
+        "It means that something is extremely unlikely or impossible.",
+        "It would be a cold day in hell if Dinah arrived on time."
+      ],
+      "rationale": "The visible definition and example are malformed.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E093"
+    },
+    {
+      "unit": 45,
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-8-we-are-able-to-express-ideas-about-things-that-neve-012",
+      "field": "content.rows[3]",
+      "quote": [
+        "",
+        "If Jake had sought carefully, the investigation would have not turned out a failure.",
+        "How would have the investigation turned out if Jake had sought carefully?"
+      ],
+      "replacement": [
+        "",
+        "If Jake had investigated carefully, the investigation would not have ended in failure.",
+        "How would the investigation have turned out if Jake had investigated carefully?"
+      ],
+      "rationale": "The direct question has incorrect auxiliary order, and sought is incomplete in this context.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E094"
+    },
+    {
+      "unit": 45,
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-027",
+      "field": "prompt",
+      "quote": "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real.",
+      "replacement": "E. Write a 160–200-word text about a bad choice you made and what would have happened if you had not made it. How would your life have turned out if you had chosen something differently? Be very detailed; the story does not have to be real.",
+      "rationale": "The direct question embedded in the essay prompt has incorrect auxiliary order; the prompt also has the article error.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E095"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010",
+      "field": "content.rows[2]",
+      "quote": [
+        "A SHOT IN THE DARK",
+        "To have an ide or suspicion about someone or something.",
+        "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that."
+      ],
+      "replacement": [
+        "A SHOT IN THE DARK",
+        "To have an idea or suspicion about someone or something.",
+        "Thank God I had already gotten a shot in the dark about Tim; he almost got away with that."
+      ],
+      "rationale": "The visible definition contains a typo and the example needs sentence punctuation.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E096"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010",
+      "field": "content.rows[3]",
+      "quote": [
+        "NUTS AND BOLTS",
+        "The detailed information about someone or something and how it works.",
+        "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!"
+      ],
+      "replacement": [
+        "NUTS AND BOLTS",
+        "The detailed information about someone or something and how it works.",
+        "If it had been me, I would have gone over the nuts and bolts with Jenny; now she’s gone!"
+      ],
+      "rationale": "The visible example omits the idiom’s required preposition and article.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E097"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010",
+      "field": "content.rows[4]",
+      "quote": [
+        "AN INSIDE STORY",
+        "Considered as an advice or a hot tip.",
+        "What an inside story John has just dropped us."
+      ],
+      "replacement": [
+        "AN INSIDE STORY",
+        "Information from an insider or a private source.",
+        "John has just given us an inside story."
+      ],
+      "rationale": "The visible definition and example do not use the expression naturally.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E098"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010",
+      "field": "content.rows[6]",
+      "quote": [
+        "UPPER HAND",
+        "It means someone or something has a position of advantage and control.",
+        "Fortunately, I had already upper-handed the rest of the contestants."
+      ],
+      "replacement": [
+        "UPPER HAND",
+        "It means someone or something has a position of advantage and control.",
+        "Fortunately, I had already gained the upper hand over the rest of the contestants."
+      ],
+      "rationale": "Upper-handed is not the standard verb form of the idiom.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E099"
+    },
+    {
+      "unit": 47,
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-8-we-are-able-to-express-regrets-in-different-ways-ch-012",
+      "field": "content.rows[3]",
+      "quote": [
+        "",
+        "If only I had expected nothing from them. I certainly look like an idiot now.",
+        "would you really have expected nothing from them?"
+      ],
+      "replacement": [
+        "",
+        "If only I had expected nothing from them. I certainly look like an idiot now.",
+        "Would you really have expected nothing from them?"
+      ],
+      "rationale": "The visible direct question begins with a lower-case letter.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E100"
+    },
+    {
+      "unit": 47,
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-8-we-are-able-to-express-regrets-in-different-ways-ch-012",
+      "field": "content.rows[5]",
+      "quote": [
+        "",
+        "They did not regret making a scandal in front of everyone.",
+        "Where they even sorry about that?"
+      ],
+      "replacement": [
+        "",
+        "They did not regret making a scandal in front of everyone.",
+        "Were they even sorry about that?"
+      ],
+      "rationale": "The visible direct question uses the wrong auxiliary.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E101"
+    },
+    {
+      "unit": 47,
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-text-8-we-are-able-to-express-regrets-in-different-ways-check-the-chart-013",
+      "field": "content",
+      "quote": "We are able to express regrets in different ways. Check the chart. We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.",
+      "replacement": "We are able to express regrets in different ways. Check the chart.",
+      "rationale": "The learner-visible block repeats Unit 46’s objective instead of the Unit 47 regrets objective.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E102"
+    },
+    {
+      "unit": 47,
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+      "field": "content.rows[0]",
+      "quote": [
+        "1",
+        "Express regrets life regrets.",
+        "I should have bought the car; now, I’m stock here.."
+      ],
+      "replacement": [
+        "1",
+        "Express life regrets.",
+        "I should have bought the car; now, I’m stuck here."
+      ],
+      "rationale": "The visible function label and example contain grammar and spelling errors.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E103"
+    },
+    {
+      "unit": 47,
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+      "field": "content.rows[2]",
+      "quote": [
+        "2",
+        "Lament on something.",
+        "If only they had listened to their parents, but they didn’t."
+      ],
+      "replacement": [
+        "2",
+        "Lament over/about something.",
+        "If only they had listened to their parents, but they didn’t."
+      ],
+      "rationale": "The visible function label uses the wrong preposition.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E104"
+    },
+    {
+      "unit": 47,
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-essay-17-d-based-on-the-topic-presented-in-the-reading-section-how-would-031",
+      "field": "prompt",
+      "quote": "someone or something that have caused you the greatest regrets in your life",
+      "replacement": "someone or something that has caused you the greatest regrets in your life",
+      "rationale": "The relative-clause subject is singular.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E105"
+    },
+    {
+      "unit": 48,
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-structured-content-8-structures-statements-questions-could-have-past-par-012",
+      "field": "subtitle",
+      "quote": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.",
+      "replacement": "We are able to express probabilities in the past when guessing or talking about common events.",
+      "rationale": "The visible table subtitle is copied from Unit 46 and contradicts Unit 48’s probability objective.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E106"
+    },
+    {
+      "unit": 48,
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-text-8-structures-statements-questions-could-have-past-participle-i-coul-013",
+      "field": "content",
+      "quote": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.",
+      "replacement": "We are able to express probabilities in the past by using these structures.",
+      "rationale": "The learner-visible explanatory text is copied from Unit 46.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E107"
+    },
+    {
+      "unit": 49,
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-recording-15-d-based-on-the-topic-presented-in-the-reading-section-what--024",
+      "field": "instruction",
+      "quote": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of?",
+      "replacement": "what other issues do you think people should be aware of?",
+      "rationale": "The visible direct question is missing do.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E108"
+    },
+    {
+      "unit": 49,
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-essay-15-d-based-on-the-topic-presented-in-the-reading-section-what-othe-025",
+      "field": "prompt",
+      "quote": "hot it may turn out",
+      "replacement": "how it may turn out",
+      "rationale": "The visible prompt contains a typo.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E109"
+    },
+    {
+      "unit": 51,
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-structured-content-6-phrases-meaning-example-castles-in-the-air-to-have--010",
+      "field": "content.rows[7]",
+      "quote": [
+        "OFF THE WALL",
+        "To be eccentric or unconventional. Some other times to be really angry.",
+        "The president was off the wall about the article."
+      ],
+      "replacement": [
+        "OFF THE WALL",
+        "To be eccentric or unconventional.",
+        "The president was off the wall about the article."
+      ],
+      "rationale": "The visible definition conflates unrelated senses and the example does not match the shown source row.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E110"
+    },
+    {
+      "unit": 51,
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-structured-content-10-we-can-use-the-grammar-presented-to-talk-about-the-014",
+      "field": "content.rows[0]",
+      "quote": [
+        "1",
+        "Express ideas or events that did not happen.",
+        "What if Jill had gotten his new car? Now, he lost the chance. Imagine Julius and Meg had gotten married, they would not have lasted two months. Suppose that we had not arrived on time, he could have lost his flight. I wish he hadn’t said that to the principal."
+      ],
+      "replacement": [
+        "1",
+        "Express ideas or events that did not happen.",
+        "What if Jill had gotten her new car? Now, she has lost the chance. Imagine Julius and Meg had gotten married; they would not have lasted two months. Suppose that we had not arrived on time, he could have lost his flight. I wish he hadn’t said that to the principal."
+      ],
+      "rationale": "Revisión de naturalidad, registro o referencia pronominal. Sin contexto adicional, estas variantes no se deben presentar como errores gramaticales inequívocos.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E111"
+    },
+    {
+      "unit": 51,
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-text-14-14-021",
+      "field": "content",
+      "quote": "We would not probable have written this article. Bad Astronomy explains why you don’t need invest in parkas quite yet... more eager for facts than farandula.",
+      "replacement": "We would probably not have written this article. Bad Astronomy explains why you don’t need to invest in parkas quite yet... more eager for facts than celebrity gossip.",
+      "rationale": "The visible reading contains an adverb error, missing infinitive marker, and a Spanish target-language word.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E112"
+    },
+    {
+      "unit": 52,
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-structured-content-6-phrases-meaning-example-third-time-s-a-charm-the-th-010",
+      "field": "content.rows[5]",
+      "quote": [
+        "IN THE LONG RUN",
+        "In the long term, over a long period of time.",
+        "I hate having so much after school activities now, but I know in the long run this will be beneficial for me."
+      ],
+      "replacement": [
+        "IN THE LONG RUN",
+        "In the long term, over a long period of time.",
+        "I hate having so many after-school activities now, but I know in the long run this will be beneficial for me."
+      ],
+      "rationale": "The visible example has a count/non-count agreement error.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E113"
+    },
+    {
+      "unit": 52,
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-text-8-we-are-able-to-express-ideas-about-things-or-events-yet-to-happen-012",
+      "field": "content",
+      "quote": "Come on July, I won’t be working then. Future continuous works with To be + V(ing).",
+      "replacement": "Come July, I won’t be working then. Future continuous works with will be + V-ing.",
+      "rationale": "The visible text has an incorrect expression and an incomplete rule.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E114"
+    },
+    {
+      "unit": 52,
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-recording-15-d-make-a-small-presentation-discussion-about-where-will-we--024",
+      "field": "instruction",
+      "quote": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time?",
+      "replacement": "D. Make a small presentation/discussion about where we will have gotten as a society in 40 years’ time.",
+      "rationale": "The visible direct question has incorrect word order for its intended embedded-question context.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E115"
+    },
+    {
+      "unit": 52,
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-essay-15-d-make-a-small-presentation-discussion-about-where-will-we-have-025",
+      "field": "prompt",
+      "quote": "E. Write an 160-200 word text addressing where will technology have reached in 30 or 50 years’ time?",
+      "replacement": "E. Write a 160–200-word text addressing where technology will have reached in 30 or 50 years’ time.",
+      "rationale": "The visible prompt has the article error and incorrect word order in the embedded question context.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E116"
+    },
+    {
+      "unit": 53,
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-structured-content-6-phrases-meaning-example-a-matter-of-life-and-death--009",
+      "field": "content.rows[4]",
+      "quote": [
+        "ONE’S NUMBER IS UP",
+        "Someone is appointed to die.",
+        "I truly think Jake’s number is up."
+      ],
+      "replacement": [
+        "ONE’S NUMBER IS UP",
+        "Someone’s time has come; they are in imminent danger of death.",
+        "I truly think Jake’s number is up."
+      ],
+      "rationale": "The visible definition does not express the meaning of the idiom.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E117"
+    },
+    {
+      "unit": 53,
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-text-14-14-019",
+      "field": "content",
+      "quote": "World War II showed that war must be avoided at all costs and democracies must resist aggression, says Stanford historian WitWorld War II provided two contradictory lessons",
+      "replacement": "World War II provided two contradictory lessons: war must be avoided at all costs and democracies must resist aggression, says Stanford historian James J. Sheehan.",
+      "rationale": "The learner-visible reading contains a duplicated/corrupted opening fragment.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E118"
+    },
+    {
+      "unit": 53,
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-vocabulary-14-14-021",
+      "field": "items",
+      "quote": [
+        {
+          "id": "course-vocabulary-14-001",
+          "term": "th",
+          "definition": "century Europe"
+        },
+        {
+          "id": "course-vocabulary-14-002",
+          "term": "world",
+          "definition": "war"
+        },
+        {
+          "id": "course-vocabulary-14-003",
+          "term": "iis",
+          "definition": "contradictory"
+        }
+      ],
+      "replacement": "Replace with the intended Unit 53 vocabulary or remove the corrupted items.",
+      "rationale": "The visible entries are fragments rather than usable vocabulary.",
+      "severity": "high",
+      "classification": "confirmed",
+      "id": "E119"
+    },
+    {
+      "unit": 54,
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-text-2-communicative-function-talk-about-hypothetical-present-situations-002",
+      "field": "content",
+      "quote": "Competencies understand and express ideas about Talk about hypothetical present situations with a result in the past. in written and spoken English.",
+      "replacement": "Competencies: Understand and express hypothetical present situations with past results in written and spoken English.",
+      "rationale": "The visible competency statement contains a duplicated/malformed objective.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E120"
+    },
+    {
+      "unit": 54,
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-structured-content-6-phrases-meaning-example-a-boost-of-confidence-somet-009",
+      "field": "content.rows[2]",
+      "quote": [
+        "AN ACT OF FAITH",
+        "Something you do believing in someone else; giving someone ot something a chance.",
+        "Staying with Dean was an act of faith."
+      ],
+      "replacement": [
+        "AN ACT OF FAITH",
+        "Something you do believing in someone else; giving someone or something a chance.",
+        "Staying with Dean was an act of faith."
+      ],
+      "rationale": "The visible definition contains a typo.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E121"
+    },
+    {
+      "unit": 54,
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-structured-content-6-phrases-meaning-example-a-boost-of-confidence-somet-009",
+      "field": "content.rows[6]",
+      "quote": [
+        "TO HAVE SENSE OF WORTH",
+        "To have self-esteem, to know one’s worth and value",
+        "She would not accept that if she had sense of worth."
+      ],
+      "replacement": [
+        "TO HAVE A SENSE OF WORTH",
+        "To have self-esteem, to know one’s worth and value",
+        "She would not accept that if she had a sense of worth."
+      ],
+      "rationale": "The visible headword and example omit required articles.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E122"
+    },
+    {
+      "unit": 54,
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-text-14-14-020",
+      "field": "content",
+      "quote": "Id they did not cover this, the facts would have turned out differently.",
+      "replacement": "If they did not cover this, the facts would have turned out differently.",
+      "rationale": "The visible reading contains a clear typo.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E123"
+    },
+    {
+      "unit": 55,
+      "rowId": "course-guided-cmnmm9wiv002zw1qkz23p6kdp-text-2-communicative-function-talk-about-hypothetical-future-situation-w-002",
+      "field": "content",
+      "quote": "Competencies understand and express ideas about hypothetical future situation with a past result. in written and spoken English.",
+      "replacement": "Competencies: Understand and express hypothetical future situations with past results in written and spoken English.",
+      "rationale": "The visible competency statement is missing articles, plural marking, and punctuation.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E124"
+    },
+    {
+      "unit": 55,
+      "rowId": "course-guided-cmnmm9wiv002zw1qkz23p6kdp-text-14-14-020",
+      "field": "content",
+      "quote": "if they weren’t going on war... thye would have not played that card",
+      "replacement": "if they weren’t waging war... they would not have played that card",
+      "rationale": "The visible reading contains an incorrect collocation and a typo/word-order error.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E125"
+    },
+    {
+      "unit": 56,
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-text-2-communicative-function-use-right-phrase-to-introduce-simple-or-co-002",
+      "field": "content",
+      "quote": "Communicative Function Use right phrase to introduce simple or complex topics. Competencies understand and express ideas about using right phrases to introduce simple or complex topics in written and spoken English.",
+      "replacement": "Communicative Function: Use the right phrases to introduce simple or complex topics. Competencies: Understand and express ideas about using the right phrases to introduce simple or complex topics in written and spoken English.",
+      "rationale": "The visible competency statement is missing required articles and punctuation.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E126"
+    },
+    {
+      "unit": 56,
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-structured-content-6-phrases-meaning-example-blood-sweat-and-tears-if-so-009",
+      "field": "content.rows[5]",
+      "quote": [
+        "RAISE THE BAR",
+        "Raise the standards which need to be met in order to qualify for something.s.",
+        "Apple has really raised the bar with their latest iPhone."
+      ],
+      "replacement": [
+        "RAISE THE BAR",
+        "Raise the standards which need to be met in order to qualify for something.",
+        "Apple has really raised the bar with their latest iPhone."
+      ],
+      "rationale": "The visible definition has an extra character.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E127"
+    },
+    {
+      "unit": 56,
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-text-8-we-consider-right-phrases-to-introduce-simple-or-complex-topics-n-012",
+      "field": "content",
+      "quote": "We consider right phrases, to introduce simple or complex topics, NOMINAL phrases. These can be presented differently, Check the chart.",
+      "replacement": "We use the right phrases to introduce simple or complex topics. These nominal phrases can be structured in different ways; check the chart.",
+      "rationale": "The visible explanation has missing articles, faulty punctuation, and unclear syntax.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E128"
+    },
+    {
+      "unit": 56,
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-essay-15-d-make-a-small-presentation-discussion-about-a-couple-of-the-mo-023",
+      "field": "prompt",
+      "quote": "E. Write an 160-200 word text addressing the different scenarios people live if they are immigrants. What to expect? Which are the reasons that move them to make such a decision?",
+      "replacement": "E. Write a 160–200-word text addressing the different scenarios immigrants may face. What can they expect? What reasons lead people to make such a decision?",
+      "rationale": "The visible prompt has an article error and unclear question structures.",
+      "severity": "medium",
+      "classification": "confirmed",
+      "id": "E129"
+    },
+    {
+      "unit": 38,
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E130"
+    },
+    {
+      "unit": 39,
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E131"
+    },
+    {
+      "unit": 40,
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E132"
+    },
+    {
+      "unit": 41,
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E133"
+    },
+    {
+      "unit": 42,
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E134"
+    },
+    {
+      "unit": 43,
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E135"
+    },
+    {
+      "unit": 44,
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his /her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his /her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E136"
+    },
+    {
+      "unit": 45,
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E137"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E138"
+    },
+    {
+      "unit": 47,
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E139"
+    },
+    {
+      "unit": 48,
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E140"
+    },
+    {
+      "unit": 49,
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E141"
+    },
+    {
+      "unit": 50,
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E142"
+    },
+    {
+      "unit": 51,
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E143"
+    },
+    {
+      "unit": 52,
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "field": "prompt",
+      "quote": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+      "replacement": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.",
+      "rationale": "The learner-visible prompt ends with an orphan slide number.",
+      "severity": "low",
+      "classification": "confirmed",
+      "id": "E144"
+    },
+    {
+      "unit": 38,
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-essay-13-a-look-at-the-sentences-and-identify-where-the-mistakes-are-if--030",
+      "field": "prompt",
+      "quote": "Propón una corrección clara.",
+      "replacement": "Propose a clear correction.",
+      "rationale": "The learner prompt is Spanish while the target exercise is English; this may be intentional course-language policy.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E145"
+    },
+    {
+      "unit": 39,
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-text-8-phrasal-verb-formation-examples-more-examples-1-verb-preposition--013",
+      "field": "content",
+      "quote": "Phrasal Verb Formation Examples... They turned up badly. I was taken with the presentation they did.",
+      "replacement": "Review examples against the chosen multiword-verb taxonomy.",
+      "rationale": "Taken with is grammatical and may be taught as a multiword/prepositional verb; no confirmed error. Turned up badly is contextually weak but not definitively ungrammatical.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E146"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "field": "content.rows[1]",
+      "quote": [
+        "",
+        "If it had been me, I should have brought more money.",
+        "What should you have done?"
+      ],
+      "replacement": "Keep as written, or explain that should have can express criticism or recommendation in a past hypothetical.",
+      "rationale": "Should have can coexist with a past conditional; this is not a confirmed grammar error.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E147"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "field": "content.rows[5]",
+      "quote": [
+        "",
+        "If he had not done things that way, the boss must have given him the chance.",
+        "What if he had not done things that way?"
+      ],
+      "replacement": "Keep with explicit context for must have as deduction or necessity; use would have only if a hypothetical result is intended.",
+      "rationale": "Must have can coexist with a conditional, so the modal choice should not be silently classified as an error.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E148"
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+      "field": "content.rows[3]",
+      "quote": [
+        "3.",
+        "State an opinion in the past",
+        "We must have called the boss; now, we are in trouble. He must have left the house; It’s 11:00 PM already. *"
+      ],
+      "replacement": "Optionally label the function Make deductions or inferences about past events.",
+      "rationale": "The examples use must have for deduction; the terminology is an editorial clarity issue rather than a confirmed grammar error.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E149"
+    },
+    {
+      "unit": 48,
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-structured-content-6-phrases-meaning-example-when-pigs-fly-to-be-sure-so-010",
+      "field": "content.rows[3] and content.rows[4]",
+      "quote": [
+        [
+          "FEW AND FAR BETWEEN",
+          "To indicate rarely seen events.",
+          "Just in a few and far between, he might have obtained the score."
+        ],
+        [
+          "NOT TO HOLD SOMEONE’S BREATH",
+          "Expresses something people hope for will likely never happen.",
+          "He should not have held his breath on that."
+        ]
+      ],
+      "replacement": "Review the malformed few-and-far-between example and optionally standardize the headword to NOT TO HOLD ONE’S BREATH.",
+      "rationale": "The first example is unclear; someone’s breath is understandable but one’s breath is the standard generalized idiom form.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E150"
+    },
+    {
+      "unit": 48,
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-text-11-we-can-use-these-structures-to-state-the-following-functions-017",
+      "field": "content",
+      "quote": "If Kyle was at work, he could have not committed the murder",
+      "replacement": "If Kyle had been at work, he could not have committed the murder.",
+      "rationale": "This is a clarity/standardization preference because past simple and modal-perfect combinations can be interpreted contextually.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E151"
+    },
+    {
+      "unit": 49,
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-structured-content-8-we-are-able-to-express-ideas-about-things-or-event--013",
+      "field": "content.rows[3]",
+      "quote": [
+        "Suppose / Supposing that",
+        "Delia is talking to Jim in advance, supposing that he wants to come and make a scene"
+      ],
+      "replacement": [
+        "Suppose / Supposing that",
+        "Suppose Jim wants to make a scene; Delia is talking to him in advance."
+      ],
+      "rationale": "The current example is awkward and under-punctuated, but the construction is interpretable.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E152"
+    },
+    {
+      "unit": 50,
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-text-10-we-can-use-the-grammar-presented-to-talk-about-the-following-fun-016",
+      "field": "content",
+      "quote": "To consider There are contexts where could and would express wishes for the future. E.G I don’t like my job; I wish I could get a new one. That sound is so annoying; I wish it would stop. To consider There are contexts where -could- and -would- express wishes for the future.",
+      "replacement": "Remove the duplicated To consider heading and repeated explanation.",
+      "rationale": "The sentence about the sound is grammatical; only the duplicated instructional text is editorial cleanup.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E153"
+    },
+    {
+      "unit": 50,
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-structured-content-10-we-can-use-the-grammar-presented-to-talk-about-the-015",
+      "field": "content.rows[0]",
+      "quote": [
+        "1",
+        "Express ideas or events not likely to be true or to happen.",
+        "What if Jill had money? Would you guys accept her in the club? Imagine they won the competition; they would never stop talking about it. If only she saw the fit of the project, she could be more supportive. I wish he came to me first so I could help him."
+      ],
+      "replacement": "Consider clarifying fit as potential or suitability if that is the intended meaning.",
+      "rationale": "Fit can mean suitability, but the intended meaning is unclear in this context.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E154"
+    },
+    {
+      "unit": 56,
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-essay-15-d-make-a-small-presentation-discussion-about-a-couple-of-the-mo-023",
+      "field": "prompt",
+      "quote": "Write an 160-200 word text",
+      "replacement": "Write a 160–200-word text",
+      "rationale": "Article and compound-modifier standardization.",
+      "severity": "medium",
+      "classification": "preference",
+      "id": "E155"
+    }
+  ],
+  "severityCounts": {
+    "high": 35,
+    "medium": 59,
+    "low": 35
+  },
+  "matrix": [
+    {
+      "unit": 1,
+      "lessonId": "cmk4otvgp0001w1p4ijdkv6i2",
+      "title": "This is me!",
+      "rows": 22,
+      "confirmed": 0,
+      "preferences": 0,
+      "teacherDependentPrompts": 0,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "title": "I come from...",
+      "rows": 31,
+      "confirmed": 1,
+      "preferences": 1,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 3,
+      "lessonId": "cmk0vi2e30003l404hjqaqibj",
+      "title": "Every Day I…",
+      "rows": 37,
+      "confirmed": 0,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "title": "I love it!",
+      "rows": 42,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 4,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "title": "About us and Relatives",
+      "rows": 40,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "title": "What do you do?",
+      "rows": 46,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "title": "There’s nothing left!",
+      "rows": 38,
+      "confirmed": 1,
+      "preferences": 3,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "title": "This is not yours!",
+      "rows": 40,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 9,
+      "lessonId": "cmk3zalwi0001jo04hy9a1qi7",
+      "title": "How do I get there?",
+      "rows": 37,
+      "confirmed": 0,
+      "preferences": 1,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "title": "Such a wonderful place!",
+      "rows": 39,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 11,
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "title": "Similar but not the same.",
+      "rows": 39,
+      "confirmed": 3,
+      "preferences": 0,
+      "teacherDependentPrompts": 0,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 12,
+      "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+      "title": "The greatest!",
+      "rows": 39,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 13,
+      "lessonId": "cmk3zq5rb0001ju05muzrd2c4",
+      "title": "I am working on it!",
+      "rows": 35,
+      "confirmed": 0,
+      "preferences": 1,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 14,
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "title": "Back then…!",
+      "rows": 41,
+      "confirmed": 1,
+      "preferences": 1,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 15,
+      "lessonId": "cmk3zs4250003l8047krvt8qc",
+      "title": "I remember I...",
+      "rows": 39,
+      "confirmed": 0,
+      "preferences": 2,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 16,
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "title": "When you called...",
+      "rows": 36,
+      "confirmed": 2,
+      "preferences": 2,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 17,
+      "lessonId": "cmk400jyo0003ic0464j0gv1l",
+      "title": "That’s the plan",
+      "rows": 32,
+      "confirmed": 0,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 18,
+      "lessonId": "cmk4011yd0003ju0505ofufnq",
+      "title": "We are attending!",
+      "rows": 38,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 19,
+      "lessonId": "cmk401if40005l804vf3z3k0q",
+      "title": "It is this Saturday",
+      "rows": 37,
+      "confirmed": 0,
+      "preferences": 1,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 20,
+      "lessonId": "cmk401zlh0001js04fn6f881k",
+      "title": "Don’t leave your umbrella!",
+      "rows": 37,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 21,
+      "lessonId": "cmkq3xx5w0001jr04cw7bh9g7",
+      "title": "So far I...",
+      "rows": 39,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 22,
+      "lessonId": "cmkpx0d310001gy04zr4lq99y",
+      "title": "Behaving properly",
+      "rows": 37,
+      "confirmed": 1,
+      "preferences": 1,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 23,
+      "lessonId": "cmn7vbcg20005l804sg2hxgf4",
+      "title": "How dull!",
+      "rows": 38,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 24,
+      "lessonId": "cmn7vc7pm0001le04qfcuwa27",
+      "title": "I don't know  why...",
+      "rows": 38,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 25,
+      "lessonId": "cmnmm9m3i000hw1qklyh7h658",
+      "title": "Unit 25",
+      "rows": 39,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 26,
+      "lessonId": "cmnmm9mm1000kw1qkgi2bize8",
+      "title": "Unit 26",
+      "rows": 39,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 27,
+      "lessonId": "cmnmm9my8000nw1qkfl8lpdxz",
+      "title": "Unit 27",
+      "rows": 38,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 28,
+      "lessonId": "cmnmm9naj000qw1qkkzistoi6",
+      "title": "Unit 28",
+      "rows": 38,
+      "confirmed": 3,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 29,
+      "lessonId": "cmnmm9nmo000tw1qkxzhh3pwc",
+      "title": "Unit 29",
+      "rows": 39,
+      "confirmed": 3,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 30,
+      "lessonId": "cmnmm9nyt000ww1qkoxsumpck",
+      "title": "Unit 30",
+      "rows": 34,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 31,
+      "lessonId": "cmnmm9ob2000zw1qkel9nezp5",
+      "title": "Unit 31",
+      "rows": 38,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 32,
+      "lessonId": "cmnmm9on70012w1qka03chue1",
+      "title": "Unit 32",
+      "rows": 36,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 33,
+      "lessonId": "cmnmm9ozb0015w1qkj7gth0wy",
+      "title": "Unit 33",
+      "rows": 37,
+      "confirmed": 3,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 34,
+      "lessonId": "cmnmm9pbg0018w1qkdkv1gbma",
+      "title": "Unit 34",
+      "rows": 32,
+      "confirmed": 1,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 35,
+      "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+      "title": "Unit 35",
+      "rows": 27,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 36,
+      "lessonId": "cmnmm9q04001ew1qke5tfufyk",
+      "title": "Unit 36",
+      "rows": 29,
+      "confirmed": 3,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 37,
+      "lessonId": "cmnmm9qca001hw1qkpe089f8f",
+      "title": "Unit 37",
+      "rows": 37,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 38,
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "title": "Unit 38",
+      "rows": 39,
+      "confirmed": 3,
+      "preferences": 1,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 39,
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "title": "Unit 39",
+      "rows": 32,
+      "confirmed": 5,
+      "preferences": 1,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 40,
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "title": "Unit 40",
+      "rows": 34,
+      "confirmed": 5,
+      "preferences": 1,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 41,
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "title": "Unit 41",
+      "rows": 30,
+      "confirmed": 6,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 42,
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "title": "Unit 42",
+      "rows": 31,
+      "confirmed": 4,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 43,
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "title": "Unit 43",
+      "rows": 30,
+      "confirmed": 5,
+      "preferences": 0,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 44,
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "title": "Unit 44",
+      "rows": 31,
+      "confirmed": 5,
+      "preferences": 0,
+      "teacherDependentPrompts": 2,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 45,
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "title": "Unit 45",
+      "rows": 30,
+      "confirmed": 5,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 46,
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "title": "Unit 46",
+      "rows": 32,
+      "confirmed": 5,
+      "preferences": 3,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 47,
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "title": "Unit 47",
+      "rows": 34,
+      "confirmed": 7,
+      "preferences": 0,
+      "teacherDependentPrompts": 4,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 48,
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "title": "Unit 48",
+      "rows": 32,
+      "confirmed": 3,
+      "preferences": 2,
+      "teacherDependentPrompts": 5,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 49,
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "title": "Unit 49",
+      "rows": 28,
+      "confirmed": 3,
+      "preferences": 1,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 50,
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "title": "Unit 50",
+      "rows": 29,
+      "confirmed": 1,
+      "preferences": 2,
+      "teacherDependentPrompts": 4,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 51,
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "title": "Unit 51",
+      "rows": 29,
+      "confirmed": 3,
+      "preferences": 1,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 52,
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "title": "Unit 52",
+      "rows": 28,
+      "confirmed": 5,
+      "preferences": 0,
+      "teacherDependentPrompts": 3,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 53,
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "title": "Unit 53",
+      "rows": 27,
+      "confirmed": 3,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 54,
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "title": "Unit 54",
+      "rows": 27,
+      "confirmed": 4,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 55,
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "title": "Unit 55",
+      "rows": 26,
+      "confirmed": 2,
+      "preferences": 0,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    },
+    {
+      "unit": 56,
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "title": "Unit 56",
+      "rows": 26,
+      "confirmed": 4,
+      "preferences": 1,
+      "teacherDependentPrompts": 1,
+      "duplicateParagraphRows": 0
+    }
+  ],
+  "progression": [
+    {
+      "summary": "U1 identity and personal information -> U2 origins -> U3 routines -> U4 preferences -> U5 family -> U6 jobs -> U7 food and quantifiers -> U8 possessions -> U9 directions -> U10 places -> U11 comparisons -> U12 superlatives -> U13 present progressive -> U14 past simple -> U15 used to -> U16 past progressive -> U17 going to -> U18 future arrangements.",
+      "assessment": "The grammar progression is broadly coherent. Malformed vocabulary blocks in U5, U6, U7, U10, U11, U12, and U14, plus the U6 fragmented instruction, U11 topic carryover, U16 table/task mismatch, and U18 time-horizon mismatch weaken scaffolding and learner clarity."
+    },
+    "U19–20 move from close-future simple present to will predictions; U21–24 progress through present perfect, modals, indefinite pronouns, and relative clauses; U25–28 move from adjective meanings through zero/first/second conditionals; U29–32 move from gerunds and infinitives through description, adverbial clauses, and requests; U33–37 move through customs, time, probability, advice, and preferences. Progression is broadly coherent, but malformed vocabulary blocks and local instruction contradictions interrupt scaffolding.",
+    "The sequence is coherent overall: causatives (38), phrasal and delexical verbs (39–40), past perfect, reported speech, tag questions, and passive voice (41–44), third conditional and past modals (45–46), regrets and past probability (47–48), present/future likelihood and counterfactuals (49–51), future perfect/continuous (52), mixed conditionals (53–55), and nominal phrases (56). Units 53–55 provide a clear mixed-conditional time-axis progression. Topic continuity is weaker in several reading-to-writing transitions, but that is an editorial preference rather than a confirmed language defect."
+  ],
+  "retracted": [
+    {
+      "unit": 1,
+      "rowId": "dev-unit1-interleaved-vocabulary",
+      "reason": "Raw Peter/Smith pairs are not the guided learner display. GuidedMatchInteraction calls prepareGuidedMatchPairs with this block ID and replaces them with category examples such as My first name is Ana -> Name."
+    },
+    {
+      "unit": 11,
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-multiple-choice-14-b-listen-to-two-tourist-talking-about-some-places-the-032",
+      "reason": "items is absent, but MultipleChoiceBlockPreview falls back to the top-level question, options, and correctOptionId; the block renders Is Frank older than Jake? with T/F and false keyed."
+    },
+    {
+      "unit": 12,
+      "rowId": "course-guided-cmk3zidzg0001ic04ffiveeqx-multiple-choice-14-b-listen-to-carter-and-richie-talking-about-their-vis-032",
+      "reason": "items is absent, but top-level question, T/F options, and correctOptionId are present and rendered."
+    },
+    {
+      "unit": 12,
+      "rowId": "course-guided-cmk3zidzg0001ic04ffiveeqx-multiple-choice-14-b-listen-to-carter-and-richie-talking-about-their-vis-033",
+      "reason": "items is absent, but top-level question, T/F options, and correctOptionId are present and rendered."
+    },
+    {
+      "issue": "Repeated image-card data.title values.",
+      "reason": "The guided image renderer uses url, alt, and caption; data.title is not rendered."
+    },
+    {
+      "issue": "U24/U29 essay data.title “Habla.” treated as visible mode errors.",
+      "reason": "Current blocks are type essay and guided task headings use getWritingTitle."
+    },
+    {
+      "issue": "U21 old “I’ve been getting ready...” grammar row.",
+      "reason": "It exists only in preserved data.tables/source metadata; live data.content is corrected."
+    },
+    {
+      "issue": "U22 old modal examples involving mustn’t/can’t.",
+      "reason": "They exist only in preserved stale metadata; live data.content uses corrected forms."
+    },
+    {
+      "unit": 39,
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-text-8-phrasal-verb-formation-examples-more-examples-1-verb-preposition--013",
+      "reason": "Taken with is grammatical and may be a valid multiword-verb example; the item is not a confirmed error."
+    },
+    {
+      "unit": 45,
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-text-12-a-write-the-missing-phrase-to-complete-the-sentences-follow-the--018",
+      "reason": "The learner-visible text uses Susan; the Susa variant was only in non-rendered provenance/table metadata."
+    },
+    {
+      "unit": 46,
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-8-we-are-able-to-express-opinions-suggestions-and-exp-012",
+      "reason": "Should have and must have can coexist with conditionals; the modal claims were moved to preferences with exact rows."
+    },
+    {
+      "unit": 48,
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-text-11-we-can-use-these-structures-to-state-the-following-functions-017",
+      "reason": "The Kyle sentence was moved to preferences because the form is contextually interpretable."
+    },
+    {
+      "unit": 50,
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-text-10-we-can-use-the-grammar-presented-to-talk-about-the-following-fun-016",
+      "reason": "That sound is so annoying is grammatical; only the duplicate instructional text remains as a preference."
+    },
+    {
+      "unit": 52,
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-structured-content-6-phrases-meaning-example-third-time-s-a-charm-the-th-010",
+      "reason": "Third time’s a charm is an accepted variant; only the separate after-school activities agreement issue remains confirmed."
+    }
+  ],
+  "limitations": [
+    "Auditoría de contenido completo, no prueba de aprendizaje con estudiantes.",
+    "Audios contrastados mediante transcripciones existentes, sin volver a escuchar las 113 referencias de audio.",
+    "Capturas locales con los datos actuales de dev y el renderer existente; no equivalen a comprobar cada paso del sitio público.",
+    "No se modificó contenido, código de producto ni producción."
+  ],
+  "visualEvidence": {
+    "validCaptures": 22,
+    "sampledUnits": [
+      3,
+      4,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      24,
+      28,
+      35,
+      39,
+      42,
+      48,
+      53,
+      56
+    ],
+    "fullVisualCoverage": false,
+    "captures": [
+      {
+        "unit": 3,
+        "file": "unit-03-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 4,
+        "file": "unit-04-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 10,
+        "file": "unit-10-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 11,
+        "file": "unit-11-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 12,
+        "file": "unit-12-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 13,
+        "file": "unit-13-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 14,
+        "file": "unit-14-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 15,
+        "file": "unit-15-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 16,
+        "file": "unit-16-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 17,
+        "file": "unit-17-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 18,
+        "file": "unit-18-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 24,
+        "file": "unit-24-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 28,
+        "file": "unit-28-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 35,
+        "file": "unit-35-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 39,
+        "file": "unit-39-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 42,
+        "file": "unit-42-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 48,
+        "file": "unit-48-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 53,
+        "file": "unit-53-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 56,
+        "file": "unit-56-desktop.jpg",
+        "label": "Escritorio, composición representativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 3,
+        "file": "unit-03-mobile.jpg",
+        "label": "Móvil 390 x 844 CSS px",
+        "pixels": [
+          375,
+          811
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 11,
+        "file": "unit-11-mobile.jpg",
+        "label": "Móvil 390 x 844 CSS px",
+        "pixels": [
+          375,
+          811
+        ],
+        "format": "JPEG",
+        "verified": true
+      },
+      {
+        "unit": 11,
+        "file": "unit11-legacy-choice.jpg",
+        "label": "Ejercicio con configuración alternativa",
+        "pixels": [
+          1521,
+          667
+        ],
+        "format": "JPEG",
+        "verified": true
+      }
+    ]
+  },
+  "technicalChecks": {
+    "unitTests": 1236,
+    "testFiles": 169,
+    "lint": "passed",
+    "typescript": "passed",
+    "newTests": 0,
+    "reason": "Auditoría y documentos; no se modificó comportamiento de producto."
+  }
+}

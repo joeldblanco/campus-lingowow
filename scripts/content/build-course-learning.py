@@ -2156,9 +2156,17 @@ def _dedupe_picture_instruction_specs(
 
 def _extract_pairs(texts: Sequence[str]) -> list[dict[str, str]]:
     pairs: list[dict[str, str]] = []
-    pattern = re.compile(r"([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' ]{1,38}?)\s*[-–—]\s*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' ]{1,58})")
+    # Only complete, explicitly separated source lines are candidate pairs.
+    # Substring matching turns URL slugs and hyphenated prose into definitions
+    # and loses everything before a typographic apostrophe.
+    pattern = re.compile(r"^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’ ]{1,58}?)\s+[-–—]\s+([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’ ]{1,78})[.]?$")
     for text in texts:
-        for match in pattern.finditer(text):
+        if re.search(r"https?://|www\.", text, re.IGNORECASE):
+            continue
+        for line in text.splitlines():
+            match = pattern.fullmatch(line.strip())
+            if match is None:
+                continue
             term = _normalise(match.group(1)).strip(" .,:;()")
             definition = _normalise(match.group(2)).strip(" .,:;()")
             if term and definition and len(term.split()) <= 6 and len(definition.split()) <= 10:

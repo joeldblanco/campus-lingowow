@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "coveredUnits": [2, 4, 5, 6, 7, 8, 10, 11, 12, 14, 16, 18],
+  "patches": [
+    {
+      "unit": 2,
+      "lessonId": "cmk0vhjh80001jm04epgai2ay",
+      "rowId": "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+      "reason": "Disambiguate the reading question so Japan refers to Takaishi’s parents, as stated by the source.",
+      "changes": [
+        {
+          "path": ["items", 6, "question"],
+          "before": "Where does Takaishi come from?",
+          "after": "Where do Takaishi’s parents come from?"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "rowId": "course-guided-cmk0vijvj0001i904j8k1di8d-essay-5-010",
+      "reason": "Remove the duplicate learner essay while preserving the authored row, order, and source archive for teacher review.",
+      "changes": [
+        {
+          "path": ["type"],
+          "before": "essay",
+          "after": "teacher_notes"
+        },
+        {
+          "path": ["hiddenFromLearners"],
+          "before": {"$missing": true},
+          "after": true
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "lessonId": "cmk0vijvj0001i904j8k1di8d",
+      "rowId": "course-guided-cmk0vijvj0001i904j8k1di8d-text-13-a-listen-to-the-audio-and-extract-the-information-about-likes-an-032",
+      "reason": "Keep one learner-visible copy of the six source statements in separate readable paragraphs.",
+      "changes": [
+        {
+          "path": ["content"],
+          "before": "<p>B. Check the following sentences and identify the degree of likeness or preference they have. Locate the examples under their corresponding category.</p><p>I am fond of soccer. I love taking pictures. I like eating ice cream. I am a fan of hiking mountains. I like playing chess. I am crazy about her.</p><p>I am fond of soccer.</p><p>I love taking pictures.</p><p>I like eating ice cream.</p><p>I am a fan of hiking mountains.</p><p>I like playing chess.</p><p>I am crazy about her.</p>",
+          "after": "<p>B. Check the following sentences and identify the degree of likeness or preference they have. Locate the examples under their corresponding category.</p><p>I am fond of soccer.</p><p>I love taking pictures.</p><p>I like eating ice cream.</p><p>I am a fan of hiking mountains.</p><p>I like playing chess.</p><p>I am crazy about her.</p>"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "rowId": "course-guided-cmk0wu7xk0001lb04z0pauq4e-vocabulary-9-9-020",
+      "reason": "Restore the two-owner possessive example exactly as it appears in the source.",
+      "changes": [
+        {
+          "path": ["items", 1, "term"],
+          "before": "s children",
+          "after": "Jake’s and Jill’s children"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "lessonId": "cmk0wu7xk0001lb04z0pauq4e",
+      "rowId": "course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-13-questions-answers-0-do-you-have-a-big-family-yes-i-025",
+      "reason": "Correct the learner-facing family question to the source-grounded form.",
+      "changes": [
+        {
+          "path": ["content", "rows", 1, 1],
+          "before": "How many siblings are you?",
+          "after": "How many siblings do you have?"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-vocabulary-9-1-most-of-the-verbs-take-s-when-using-the-third-person-rule-026",
+      "reason": "Split the merged source cells into complete verb/third-person pairs, retaining every authored example.",
+      "changes": [
+        {
+          "path": ["items"],
+          "before": [
+            {"id": "course-vocabulary-9-001", "term": "take", "definition": "takes cook"},
+            {"id": "course-vocabulary-9-002", "term": "play", "definition": "plays"},
+            {"id": "course-vocabulary-9-003", "term": "stay", "definition": "stays"},
+            {"id": "course-vocabulary-9-004", "term": "work", "definition": "works stop"},
+            {"id": "course-vocabulary-9-005", "term": "wash", "definition": "washes teach"},
+            {"id": "course-vocabulary-9-006", "term": "study", "definition": "studies copy"},
+            {"id": "course-vocabulary-9-007", "term": "fix", "definition": "fixes go"}
+          ],
+          "after": [
+            {"id": "course-vocabulary-9-001", "term": "take", "definition": "takes"},
+            {"id": "course-vocabulary-9-002", "term": "play", "definition": "plays"},
+            {"id": "course-vocabulary-9-003", "term": "stay", "definition": "stays"},
+            {"id": "course-vocabulary-9-004", "term": "work", "definition": "works"},
+            {"id": "course-vocabulary-9-005", "term": "wash", "definition": "washes"},
+            {"id": "course-vocabulary-9-006", "term": "study", "definition": "studies"},
+            {"id": "course-vocabulary-9-007", "term": "fix", "definition": "fixes"},
+            {"id": "course-vocabulary-9-008", "term": "cook", "definition": "cooks"},
+            {"id": "course-vocabulary-9-009", "term": "stop", "definition": "stops"},
+            {"id": "course-vocabulary-9-010", "term": "teach", "definition": "teaches"},
+            {"id": "course-vocabulary-9-011", "term": "copy", "definition": "copies"},
+            {"id": "course-vocabulary-9-012", "term": "go", "definition": "goes"}
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "lessonId": "cmk0wvpbg0001jp04c8e0dhjt",
+      "rowId": "course-guided-cmk0wvpbg0001jp04c8e0dhjt-recording-4-a-look-at-the-picture-what-does-he-do-where-does-he-work-008",
+      "reason": "Restore the complete authored listening instruction about jobs and occupations.",
+      "changes": [
+        {
+          "path": ["instruction"],
+          "before": "B. Listen to the conversation",
+          "after": "B. Listen to the conversation and write phrases related to jobs and occupations."
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "lessonId": "cmk0wwx210003kz04s3qt526e",
+      "rowId": "course-guided-cmk0wwx210003kz04s3qt526e-vocabulary-10-we-normally-use-simple-present-tense-to-talk-about-food-ch-020",
+      "reason": "Present the source quantifiers as a labeled exercise with source-grounded examples and valid definitions instead of unrelated word pairs.",
+      "changes": [
+        {
+          "path": ["items"],
+          "before": [
+            {"id": "course-vocabulary-10-001", "term": "Some", "definition": "Any"},
+            {"id": "course-vocabulary-10-002", "term": "a lot of", "definition": "Few"},
+            {"id": "course-vocabulary-10-003", "term": "A few", "definition": "None"},
+            {"id": "course-vocabulary-10-004", "term": "lots of", "definition": "Much"},
+            {"id": "course-vocabulary-10-005", "term": "How much", "definition": "Used for uncountable nouns"},
+            {"id": "course-vocabulary-10-006", "term": "How many", "definition": "Used for countable nouns"}
+          ],
+          "after": [
+            {"id": "course-vocabulary-10-001", "term": "Some", "definition": "Used in affirmative statements. Example: I have some water in the bottle."},
+            {"id": "course-vocabulary-10-002", "term": "a lot of", "definition": "Expresses a large quantity. Example: There are a lot of eggs in the basket."},
+            {"id": "course-vocabulary-10-003", "term": "A few", "definition": "Expresses a small number of countable items."},
+            {"id": "course-vocabulary-10-004", "term": "lots of", "definition": "Expresses a large quantity."},
+            {"id": "course-vocabulary-10-005", "term": "How much", "definition": "Used for uncountable nouns. Example: How much milk is there left?"},
+            {"id": "course-vocabulary-10-006", "term": "How many", "definition": "Used for countable nouns. Example: How many do you have?"},
+            {"id": "course-vocabulary-10-007", "term": "Any", "definition": "Used in questions and negative statements. Example: Do you have any water?"},
+            {"id": "course-vocabulary-10-008", "term": "Few", "definition": "Expresses a small number of countable items."},
+            {"id": "course-vocabulary-10-009", "term": "None", "definition": "Means zero."},
+            {"id": "course-vocabulary-10-010", "term": "Much", "definition": "Used with uncountable nouns."},
+            {"id": "course-vocabulary-10-011", "term": "Many", "definition": "Used with countable nouns."}
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-audio-4-b-listen-to-the-audio-and-discuss-with-your-teacher-what-are-the-006",
+      "reason": "Restore the B listening instruction rather than repeating the preceding A picture prompt.",
+      "changes": [
+        {
+          "path": ["instruction"],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+          "after": "B. Listen to the audio and discuss the topic with your teacher."
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+      "rowId": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-multiple-choice-14-c-read-the-following-dialogue-and-state-if-the-senten-034",
+      "reason": "Align the true/false key with the dialogue, which identifies the iPad as Tom’s rather than David’s.",
+      "changes": [
+        {
+          "path": ["items", 5, "correctOptionId"],
+          "before": "true",
+          "after": "false"
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "lessonId": "cmk3zca590009jp04suhvg28s",
+      "rowId": "course-guided-cmk3zca590009jp04suhvg28s-vocabulary-12-a-fill-in-the-blanks-with-the-corresponding-adjectives-fro-032",
+      "reason": "Keep all eight source adjectives while giving each a valid learner-facing definition.",
+      "changes": [
+        {
+          "path": ["items"],
+          "before": [
+            {"id": "course-vocabulary-12-001", "term": "Peaceful", "definition": "High"},
+            {"id": "course-vocabulary-12-002", "term": "Cold", "definition": "Big"},
+            {"id": "course-vocabulary-12-003", "term": "Ancient", "definition": "Tropical"},
+            {"id": "course-vocabulary-12-004", "term": "Clear", "definition": "Small"}
+          ],
+          "after": [
+            {"id": "course-vocabulary-12-001", "term": "Peaceful", "definition": "Calm and quiet."},
+            {"id": "course-vocabulary-12-002", "term": "Cold", "definition": "Having a low temperature."},
+            {"id": "course-vocabulary-12-003", "term": "Ancient", "definition": "Very old."},
+            {"id": "course-vocabulary-12-004", "term": "Clear", "definition": "Easy to see through or without clouds."},
+            {"id": "course-vocabulary-12-005", "term": "High", "definition": "Far above the ground."},
+            {"id": "course-vocabulary-12-006", "term": "Big", "definition": "Large in size."},
+            {"id": "course-vocabulary-12-007", "term": "Tropical", "definition": "Related to a hot, humid region."},
+            {"id": "course-vocabulary-12-008", "term": "Small", "definition": "Little in size."}
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-essay-15-d-compare-two-different-places-you-have-already-visited-how-are-036",
+      "reason": "Align the written task with the unit’s source-grounded comparison of places, people, and food.",
+      "changes": [
+        {
+          "path": ["prompt"],
+          "before": "E. Write a 80 - 100 word text, talking about two useful objects / devices people need to have today. Which are they? What are they useful for? State similarities and differences.",
+          "after": "E. Write an 80 - 100 word text comparing two places you have visited. Describe the places, people, and food, and state similarities and differences."
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-recording-15-d-compare-two-different-places-you-have-already-visited-how-035",
+      "reason": "Correct the learner-facing spelling error in the comparison prompt.",
+      "changes": [
+        {
+          "path": ["instruction"],
+          "before": "D. Compare two different places you have already visited. How are theses places? How are the people? How is the food? Similar? Different? Remember to use comparisons.",
+          "after": "D. Compare two different places you have already visited. How are these places? How are the people? How is the food? Similar? Different? Remember to use comparisons."
+        }
+      ]
+    },
+    {
+      "unit": 11,
+      "lessonId": "cmk3zfe8a0003jo047u04yua4",
+      "rowId": "course-guided-cmk3zfe8a0003jo047u04yua4-vocabulary-13-sentences-0-jake-seems-to-be-more-interested-in-class-than-028",
+      "reason": "Present the source comparative adjectives with valid definitions rather than unrelated adjective pairs.",
+      "changes": [
+        {
+          "path": ["items"],
+          "before": [
+            {"id": "course-vocabulary-13-001", "term": "Tall", "definition": "Nice"},
+            {"id": "course-vocabulary-13-002", "term": "Big", "definition": "Amazing"},
+            {"id": "course-vocabulary-13-003", "term": "Intelligent", "definition": "Easy"},
+            {"id": "course-vocabulary-13-004", "term": "Popular", "definition": "Terrible"}
+          ],
+          "after": [
+            {"id": "course-vocabulary-13-001", "term": "Tall", "definition": "Having greater height."},
+            {"id": "course-vocabulary-13-002", "term": "Big", "definition": "Large in size."},
+            {"id": "course-vocabulary-13-003", "term": "Intelligent", "definition": "Able to learn and understand quickly."},
+            {"id": "course-vocabulary-13-004", "term": "Popular", "definition": "Liked or admired by many people."},
+            {"id": "course-vocabulary-13-005", "term": "Nice", "definition": "Pleasant or kind."},
+            {"id": "course-vocabulary-13-006", "term": "Amazing", "definition": "Very surprising or impressive."},
+            {"id": "course-vocabulary-13-007", "term": "Easy", "definition": "Not difficult."},
+            {"id": "course-vocabulary-13-008", "term": "Terrible", "definition": "Very bad or unpleasant."}
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 12,
+      "lessonId": "cmk3zidzg0001ic04ffiveeqx",
+      "rowId": "course-guided-cmk3zidzg0001ic04ffiveeqx-vocabulary-13-sentences-0-jake-seems-to-be-the-most-apprehensive-in-clas-028",
+      "reason": "Present the source superlative adjectives with valid definitions rather than unrelated adjective pairs.",
+      "changes": [
+        {
+          "path": ["items"],
+          "before": [
+            {"id": "course-vocabulary-13-001", "term": "Loud", "definition": "Crowded"},
+            {"id": "course-vocabulary-13-002", "term": "Quiet", "definition": "Marvelous"},
+            {"id": "course-vocabulary-13-003", "term": "Awful", "definition": "Ugly"},
+            {"id": "course-vocabulary-13-004", "term": "Famous", "definition": "Lovely"}
+          ],
+          "after": [
+            {"id": "course-vocabulary-13-001", "term": "Loud", "definition": "Making a lot of noise."},
+            {"id": "course-vocabulary-13-002", "term": "Quiet", "definition": "Making little or no noise."},
+            {"id": "course-vocabulary-13-003", "term": "Awful", "definition": "Very bad or unpleasant."},
+            {"id": "course-vocabulary-13-004", "term": "Famous", "definition": "Known by many people."},
+            {"id": "course-vocabulary-13-005", "term": "Crowded", "definition": "Containing many people or things."},
+            {"id": "course-vocabulary-13-006", "term": "Marvelous", "definition": "Wonderful or excellent."},
+            {"id": "course-vocabulary-13-007", "term": "Ugly", "definition": "Unpleasant to look at."},
+            {"id": "course-vocabulary-13-008", "term": "Lovely", "definition": "Very pleasant or attractive."}
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 14,
+      "lessonId": "cmk3zr60x0001l804vyj6hctk",
+      "rowId": "course-guided-cmk3zr60x0001l804vyj6hctk-vocabulary-8-talking-about-the-past-can-also-have-two-main-grammatical-a-020",
+      "reason": "Rebuild the vocabulary block from the source past-tense To Be and other-verb examples.",
+      "changes": [
+        {
+          "path": ["items"],
+          "before": [
+            {"id": "course-vocabulary-8-001", "term": "Other verbs", "definition": "Auxiliary Introduction John made a cake last night"},
+            {"id": "course-vocabulary-8-002", "term": "Zf", "definition": "CUUp"}
+          ],
+          "after": [
+            {"id": "course-vocabulary-8-001", "term": "To Be verb", "definition": "He was at home yesterday. Was he at home yesterday? They were at school this morning. Were they at school this morning?"},
+            {"id": "course-vocabulary-8-002", "term": "Other verbs", "definition": "John made a cake last night. Did he make a cake last night? I visited my family at Christmas. Did you visit your family? / What did you do at Christmas?"}
+          ]
+        }
+      ]
+    },
+    {
+      "unit": 16,
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-short-answer-12-sentences-questions-0-i-was-calling-him-when-the-tornado-027",
+      "reason": "Repair the volcano sentence and its transformation key while retaining the source-grounded exercise.",
+      "changes": [
+        {
+          "path": ["items", 1, "question"],
+          "before": "Convierte en pregunta: They were watching the volcano while it was making eruption.",
+          "after": "Convierte en pregunta: They were watching the volcano while it was erupting."
+        },
+        {
+          "path": ["items", 1, "correctAnswer"],
+          "before": "Were they watching the volcano while it was making eruption?",
+          "after": "Were they watching the volcano while it was erupting?"
+        },
+        {
+          "path": ["items", 1, "acceptedAnswers"],
+          "before": ["Were they watching the volcano while it was making eruption?", "Were they watching the volcano while it was erupting?"],
+          "after": ["Were they watching the volcano while it was erupting?"]
+        }
+      ]
+    },
+    {
+      "unit": 16,
+      "lessonId": "cmk3zsy840001l104272zs8xh",
+      "rowId": "course-guided-cmk3zsy840001l104272zs8xh-structured-content-13-survivors-2-years-ago-my-family-and-i-went-to-thai-029",
+      "reason": "Make all three source-grounded past-action functions explicit in the extraction table.",
+      "changes": [
+        {
+          "path": ["content", "headers"],
+          "before": ["Actions happening in the past. / Actions happening in the past interrupted by another one.", "Actions happening simultaneously in the past."],
+          "after": ["Context: completed events in the simple past.", "Actions happening in the past interrupted by another one.", "Actions happening simultaneously in the past."]
+        },
+        {
+          "path": ["content", "rows"],
+          "before": [["", ""]],
+          "after": [["My family and I went to Thailand. A woman helped us. An alarm sounded. A big wave crashed over the land.", "We were having a great time at the beach when suddenly an alarm sounded.", "Everybody was running while we were trying to stay together in the middle of the terrible moment."]]
+        }
+      ]
+    },
+    {
+      "unit": 18,
+      "lessonId": "cmk4011yd0003ju0505ofufnq",
+      "rowId": "course-guided-cmk4011yd0003ju0505ofufnq-recording-14-d-tell-your-teacher-about-some-of-the-arrangements-you-have-034",
+      "reason": "Use the next-year planning horizon so the oral arrangement task matches the following authored writing task.",
+      "changes": [
+        {
+          "path": ["instruction"],
+          "before": "D. Tell your teacher about some of the arrangements you have made for the upcoming month. What important events do you have? What simple events do you have? Ask him about his events too.",
+          "after": "D. Tell your teacher about some of the arrangements you have made for next year. What important events do you have? What simple events do you have? Ask him about his events too."
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {"findingId": "E001", "status": "patched", "rowIds": ["course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025"], "reason": "Question now asks for Takaishi’s parents’ origin, matching the Japan evidence."},
+    {"findingId": "E002", "status": "patched", "rowIds": ["course-guided-cmk0vijvj0001i904j8k1di8d-essay-5-010"], "reason": "Duplicate row is hidden from learners as teacher notes while its source and row identity remain preserved."},
+    {"findingId": "E003", "status": "patched", "rowIds": ["course-guided-cmk0vijvj0001i904j8k1di8d-text-13-a-listen-to-the-audio-and-extract-the-information-about-likes-an-032"], "reason": "The six source statements appear once."},
+    {"findingId": "E004", "status": "patched", "rowIds": ["course-guided-cmk0wu7xk0001lb04z0pauq4e-vocabulary-9-9-020"], "reason": "The lost possessive names are restored."},
+    {"findingId": "E005", "status": "patched", "rowIds": ["course-guided-cmk0wu7xk0001lb04z0pauq4e-structured-content-13-questions-answers-0-do-you-have-a-big-family-yes-i-025"], "reason": "The question is grammatical and source-aligned."},
+    {"findingId": "E006", "status": "patched", "rowIds": ["course-guided-cmk0wvpbg0001jp04c8e0dhjt-vocabulary-9-1-most-of-the-verbs-take-s-when-using-the-third-person-rule-026"], "reason": "All authored verb pairs are split into complete entries."},
+    {"findingId": "E007", "status": "patched", "rowIds": ["course-guided-cmk0wvpbg0001jp04c8e0dhjt-recording-4-a-look-at-the-picture-what-does-he-do-where-does-he-work-008"], "reason": "The complete listening instruction is restored."},
+    {"findingId": "E008", "status": "patched", "rowIds": ["course-guided-cmk0wwx210003kz04s3qt526e-vocabulary-10-we-normally-use-simple-present-tense-to-talk-about-food-ch-020"], "reason": "Quantifiers are labeled with valid definitions and source examples."},
+    {"findingId": "E009", "status": "patched", "rowIds": ["course-guided-cmk3z9vfj0007jp04aiu6wqaq-audio-4-b-listen-to-the-audio-and-discuss-with-your-teacher-what-are-the-006"], "reason": "The audio row now carries the B listening prompt."},
+    {"findingId": "E010", "status": "patched", "rowIds": ["course-guided-cmk3z9vfj0007jp04aiu6wqaq-multiple-choice-14-c-read-the-following-dialogue-and-state-if-the-senten-034"], "reason": "The iPad statement is keyed false."},
+    {"findingId": "E011", "status": "patched", "rowIds": ["course-guided-cmk3zca590009jp04suhvg28s-vocabulary-12-a-fill-in-the-blanks-with-the-corresponding-adjectives-fro-032"], "reason": "All eight source adjectives have valid definitions."},
+    {"findingId": "E012", "status": "patched", "rowIds": ["course-guided-cmk3zfe8a0003jo047u04yua4-essay-15-d-compare-two-different-places-you-have-already-visited-how-are-036"], "reason": "The essay now asks for the unit’s places, people, and food comparison."},
+    {"findingId": "E013", "status": "patched", "rowIds": ["course-guided-cmk3zfe8a0003jo047u04yua4-recording-15-d-compare-two-different-places-you-have-already-visited-how-035"], "reason": "The spelling error is corrected."},
+    {"findingId": "E014", "status": "patched", "rowIds": ["course-guided-cmk3zfe8a0003jo047u04yua4-vocabulary-13-sentences-0-jake-seems-to-be-more-interested-in-class-than-028"], "reason": "Comparative adjectives are presented with valid definitions."},
+    {"findingId": "E015", "status": "patched", "rowIds": ["course-guided-cmk3zidzg0001ic04ffiveeqx-vocabulary-13-sentences-0-jake-seems-to-be-the-most-apprehensive-in-clas-028"], "reason": "Superlative adjectives are presented with valid definitions."},
+    {"findingId": "E016", "status": "patched", "rowIds": ["course-guided-cmk3zr60x0001l804vyj6hctk-vocabulary-8-talking-about-the-past-can-also-have-two-main-grammatical-a-020"], "reason": "The malformed entries are rebuilt from actual past-tense examples."},
+    {"findingId": "E017", "status": "patched", "rowIds": ["course-guided-cmk3zsy840001l104272zs8xh-short-answer-12-sentences-questions-0-i-was-calling-him-when-the-tornado-027"], "reason": "The volcano sentence and accepted transformation are grammatical."},
+    {"findingId": "E018", "status": "patched", "rowIds": ["course-guided-cmk3zsy840001l104272zs8xh-structured-content-13-survivors-2-years-ago-my-family-and-i-went-to-thai-029"], "reason": "The table now names three functions and contains source-grounded examples."},
+    {"findingId": "E019", "status": "patched", "rowIds": ["course-guided-cmk4011yd0003ju0505ofufnq-recording-14-d-tell-your-teacher-about-some-of-the-arrangements-you-have-034"], "reason": "The oral horizon now matches the following next-year writing task."}
+  ]
+}

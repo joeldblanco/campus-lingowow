@@ -1,0 +1,2191 @@
+{
+  "schemaVersion": 1,
+  "units": [
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56
+  ],
+  "patches": [
+    {
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-structured-content-8-structures-examples-observations-1-have-someone-do--021",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            1
+          ],
+          "before": [
+            "2",
+            "Have something done",
+            "She *got her eyes operated last week. They will have the car fixed by noon.",
+            "Have + N + V (Past participle) -This may vary depending on the tenses.-"
+          ],
+          "after": [
+            "2",
+            "Have something done",
+            "She got her eyes operated on last week. They will have the car fixed by noon.",
+            "Have + N + V (Past participle) -This may vary depending on the tenses.-"
+          ]
+        }
+      ],
+      "reason": "E065: The passive causative construction requires the preposition on."
+    },
+    {
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-text-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-make-032",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Do it yourself It is very common to listen to people say: If you want to do something, do it yourself. Have others make chores or favors for or to you does not always end well. Get people to work or do things the way you want has always been kind of a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, getting others to know you, and getting to know them will make things easier in dealing with different situations that may occur. Whatever it is, professional or personal, having others do things for us, or getting things done by others is something challenging.</p>",
+          "after": "<p>Do it yourself It is very common to listen to people say: If you want to do something, do it yourself. Having others do chores or favors for you does not always end well. Getting people to work or do things the way you want has always been a challenge. If we refer to a professional area, you need to have people trained so they know what you want and expect. On a more personal level, getting others to know you, and getting to know them will make things easier in dealing with different situations that may occur. Whatever it is, professional or personal, having others do things for us, or getting things done by others is something challenging.</p>"
+        }
+      ],
+      "reason": "E066: The visible text has incorrect gerund subjects and the wrong preposition."
+    },
+    {
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-structured-content-6-look-at-the-information-listen-to-your-teacher-and--010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            1
+          ],
+          "before": [
+            "KEEP THE CHIN UP",
+            "To be stalwart and courageous in a tough situation.",
+            "Don't let the difficulties intimidate you; keep your chin up."
+          ],
+          "after": [
+            "KEEP YOUR CHIN UP",
+            "To be stalwart and courageous in a tough situation.",
+            "Don't let the difficulties intimidate you; keep your chin up."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            7
+          ],
+          "before": [
+            "CRACK UP",
+            "Go through an emotional breakdown.",
+            "The entire group cracked up at the joke of their teacher."
+          ],
+          "after": [
+            "CRACK UP",
+            "Laugh uncontrollably.",
+            "The entire group cracked up at the joke of their teacher."
+          ]
+        }
+      ],
+      "reason": "E067: The learner-visible idiom is missing the possessive determiner. E068: The definition describes one sense while the visible example uses the laughter sense."
+    },
+    {
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-text-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-make-025",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Knock it off! Have you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across with such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being in peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should be born from anyone, so we need to set limits and boundaries.</p>",
+          "after": "<p>Knock it off! Have you ever met someone who is so annoying that you can not stand him? I think we all have. Coming across such a character and having him around may make us shout at some point ‘hey man, knock it off! However, being at peace with everyone is something we all must go for. We need to bear in mind that each person is different so that brings up different situations to deal with. Nevertheless, neither disrespect nor abuse should come from anyone, so we need to set limits and boundaries.</p>"
+        }
+      ],
+      "reason": "E070: The visible text contains incorrect collocations and an incorrect use of born."
+    },
+    {
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-vocabulary-6-idiom-meaning-example-give-something-a-shot-to-have-a-try-a-011",
+      "changes": [
+        {
+          "path": [
+            "items"
+          ],
+          "before": [
+            {
+              "id": "course-vocabulary-6-001",
+              "term": "GO",
+              "definition": "TO GUY"
+            },
+            {
+              "id": "course-vocabulary-6-002",
+              "term": "s our go",
+              "definition": "to gal for computer issues"
+            }
+          ],
+          "after": [
+            {
+              "id": "course-vocabulary-6-001",
+              "term": "GO-TO GUY/GAL",
+              "definition": "A person frequently asked for help in a particular area. Example: Amanda’s our go-to gal for computer issues."
+            }
+          ],
+          "reason": "E071: Restore one source-grounded GO-TO GUY/GAL card, with the authored example retained in the definition and the corrupt second fragment discarded."
+        }
+      ],
+      "reason": "E071: Restore one source-grounded GO-TO GUY/GAL card, with the authored example retained in the definition and the row order preserved."
+    },
+    {
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-structured-content-6-idiom-meaning-example-give-something-a-shot-to-have-010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            1
+          ],
+          "before": [
+            "HAVE A BONE TO PICK",
+            "An unpleasant issue or grievance that need discussion.",
+            "I have a bone to pick with you about that email."
+          ],
+          "after": [
+            "HAVE A BONE TO PICK",
+            "An unpleasant issue or grievance that needs discussion.",
+            "I have a bone to pick with you about that email."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            6
+          ],
+          "before": [
+            "GO-TO GUY/GAL",
+            "The person is frequently asked for help in that topic.",
+            "Amanda’s our go-to gal for computer issues."
+          ],
+          "after": [
+            "GO-TO GUY/GAL",
+            "A person frequently asked for help in that area.",
+            "Amanda’s our go-to gal for computer issues."
+          ]
+        }
+      ],
+      "reason": "E072: The visible definition has an agreement error. E073: The visible definition has an incorrect collocation and awkward syntax."
+    },
+    {
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-recording-15-d-what-are-the-things-you-are-grateful-for-name-simple-thin-030",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. What are the things you are grateful for? Name simple things or actions that make you feel great and talk to your teacher about his.",
+          "after": "D. What are the things you are grateful for? Name simple things or actions that make you feel great and talk to your teacher about them."
+        }
+      ],
+      "reason": "E074: The pronoun does not refer to the plural things or actions in the prompt."
+    },
+    {
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-structured-content-6-idiom-meaning-example-go-ballistic-to-lose-one-s-te-010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            0
+          ],
+          "before": [
+            "GO BALLISTIC",
+            "To lose one’s temper by shooting words.",
+            "My dad went ballistic when he found out we had a party in the house."
+          ],
+          "after": [
+            "GO BALLISTIC",
+            "To become extremely angry.",
+            "My dad went ballistic when he found out we had a party in the house."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            2
+          ],
+          "before": [
+            "BLOW SOMEONE’S TOP",
+            "To become very angry about something.",
+            "My dad just blew my mum’s top when she knew he had not paid the hall for the party."
+          ],
+          "after": [
+            "BLOW SOMEONE’S TOP",
+            "To become very angry about something.",
+            "My dad just blew his top when he found out he had not paid the hall for the party."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            4
+          ],
+          "before": [
+            "TO BITE SOMEONE’S HEAD OFF",
+            "To reply sharply and brusquely to someone.",
+            "The teacher just bit all students’ heads for the problem they caused."
+          ],
+          "after": [
+            "TO BITE SOMEONE’S HEAD OFF",
+            "To reply sharply and brusquely to someone.",
+            "The teacher just bit all students’ heads off for the problem they caused."
+          ]
+        }
+      ],
+      "reason": "E076: The visible definition does not define the idiom. E077: The visible example uses the idiom with the wrong possessive structure. E078: The visible example omits off from the idiom."
+    },
+    {
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-text-8-structures-examples-switching-clauses-had-past-participle-by-jake-012",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Structures EXAMPLES SWITCHING CLAUSES Had + Past participle + by Jake had already published his first book by the age of 20. By the age of 20, Jake had already published his first book. Had + Past participle + before The boss had bitten everyone’s head off before I got with the answer. Before I got with the answer, the boss had bitten everyone’s head off. Had + Past participle + when Jazmin had already had a fit when HR solved the problem. When HR solved the problem, Jazmin had already had a fit. .There is another way to use past perfect using If clauses to talk about unreal situations in the past: If I had known, I would have told you. (Unit 45 will explain all about that). Past perfect can also be used in questions and negative sentences.</p><p>When we work with past tense, we can also talk about things that had already happened or taken place before others. We use past perfect for that.</p>",
+          "after": "<p>Structures EXAMPLES SWITCHING CLAUSES Had + Past participle + by Jake had already published his first book by the age of 20. By the age of 20, Jake had already published his first book. Had + Past participle + before The boss had bitten everyone’s head off before I came up with the answer. Before I came up with the answer, the boss had bitten everyone’s head off. Had + Past participle + when Jazmin had already had a fit when HR solved the problem. When HR solved the problem, Jazmin had already had a fit. There is another way to use past perfect using If clauses to talk about unreal situations in the past: If I had known, I would have told you. (Unit 45 will explain all about that). Past perfect can also be used in questions and negative sentences.</p><p>When we work with past tense, we can also talk about things that had already happened or taken place before others. We use past perfect for that.</p>",
+          "reason": "E079: Correct both matching past-perfect clauses to “came up with the answer” and repair the missing space after the period without changing the lesson explanation."
+        }
+      ],
+      "reason": "E079: The visible phrasal verb is incorrect."
+    },
+    {
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-text-13-a-write-the-correct-reported-speech-for-each-sentence-follow-the-020",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>A. Write the correct reported speech for each sentence. Follow the example.</p><p>A. Write the correct report speech for each sentence. Follow the example.</p>",
+          "after": "<p>A. Write the correct reported speech for each sentence. Follow the example.</p>"
+        }
+      ],
+      "reason": "E081: The learner sees a duplicated instruction and incorrect terminology in the second copy."
+    },
+    {
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-text-15-15-024",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>She said she loved me: A Case of a Crime of Passion. May 27th, 2021. After 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Mr. Thawn who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Mr. Thwn would never see the sun again. Roberts, J.</p>",
+          "after": "<p>She said she loved me: A Case of a Crime of Passion. May 27th, 2021. After 35 years, the police department in our city has finally solved the mysterious death of the famous business woman Regina Mills. The chief of the department said that they had discovered a piece of evidence that had been overlooked years ago. That evidence directed them to Mrs. Mills’ husband, Frederick Thwan. Apparently, there was a note from the deceased that was not found until two weeks ago after her death anniversary where Mr. Smith, from the international bank, publicly told the press they had sustained an affair and claimed he had found a note from his lover saying, and we quote, He knows. Mr. Smith asked the police to reopen the case and he said that he would not stop until getting the responsible one. After 3 weeks or so of the reopening, the police linked the evidence to Frederick Thwan who confessed doing it and told the police he had done it because she said she loved him but it was not true. The case was finally closed and the police told the citizenry Frederick Thwan would never see the sun again. Roberts, J.</p>"
+        }
+      ],
+      "reason": "E082: Normalize only the Frederick Thwan spelling variants; preserve Mr. Smith as the distinct lover in the authored story."
+    },
+    {
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-recording-16-d-tell-your-teacher-a-story-gossip-you-remember-from-your-y-027",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happened? Who was involved? What happened? Use the language studied.",
+          "after": "D. Tell your teacher a story / gossip you remember from your youth. Where did it happen? Who was involved? What happened? Use the language studied."
+        }
+      ],
+      "reason": "E083: After did, the verb must be in the base form."
+    },
+    {
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-6-phrases-meaning-example-a-fuss-a-display-of-unneces-010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            1
+          ],
+          "before": [
+            "A SCAM",
+            "A deceptive scheme or trick used to cheat someone out of something, especially money.",
+            "The buy of the cars turned out to be just a scam."
+          ],
+          "after": [
+            "A SCAM",
+            "A deceptive scheme or trick used to cheat someone out of something, especially money.",
+            "The purchase of the cars turned out to be just a scam."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            2
+          ],
+          "before": [
+            "A STORM IN A TEACUP",
+            "A small event that has been exaggerated out of proportion.",
+            "It was not that serious. Stom making a storm in a teacup."
+          ],
+          "after": [
+            "A STORM IN A TEACUP",
+            "A small event that has been exaggerated out of proportion.",
+            "It was not that serious. Stop making a storm in a teacup."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            3
+          ],
+          "before": [
+            "A CHARADE",
+            "An absurd pretense intended to create a pleasant or respectable appearance.",
+            "I will ask Tina to cut the charade off."
+          ],
+          "after": [
+            "A CHARADE",
+            "An absurd pretense intended to create a pleasant or respectable appearance.",
+            "I will ask Tina to call off the charade."
+          ]
+        }
+      ],
+      "reason": "E084: The visible example uses an incorrect noun. E085: The visible example contains a spelling error. E086: The visible example uses an incorrect phrasal-verb construction."
+    },
+    {
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-8-structures-questions-tag-questions-simple-present-a-012",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            1
+          ],
+          "before": [
+            "Present Progressive",
+            "Is he calling his mother?.",
+            "He is not calling his mother, is he?."
+          ],
+          "after": [
+            "Present Progressive",
+            "Is he calling his mother?",
+            "He is not calling his mother, is he?"
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            2
+          ],
+          "before": [
+            "Past simple",
+            "Was she at Jakes last night?.",
+            "She was at Jake’s last night, wasn’t she?"
+          ],
+          "after": [
+            "Past simple",
+            "Was she at Jake’s last night?",
+            "She was at Jake’s last night, wasn’t she?"
+          ]
+        }
+      ],
+      "reason": "E087: Correct punctuation and apostrophe typography while preserving the source rows’ matched statement/tag polarity."
+    },
+    {
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-text-6-look-at-the-phrases-and-discuss-them-with-your-teacher-did-you-kn-010",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Look at the phrases and discuss them with your teacher. Did you know them?</p><p>PHRASES MEANING EXAMPLE AT THE BACK OF YOUR MIND Something that you are not thinking about right now but is in your thoughts At the back of my mind is the fear of failing the exam. A BEE IN ONE’S BONNET An idea which constantly occupies your thoughts Eva&#x27;s got a bee in her bonnet about moving to New York. LIVE / BE CLOUD CUCKOO It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen I was living in cloud-cuckoo land about my marriage. A FLIGHT OF FANCY It means that something is very imaginative but not at all practical or sensible Jimmy often has good ideas but his latest proposal is just a flight of fancy! A LIGHT BULB MOMENT A sudden moment of inspiration, comprehension or realisation Harry had a light-bulb moment when he finally realised what was blocking the mechanism. BEAR/KEEP IN MIND To remember something Bear in mind that no food will be served on board. TOY WITH THE IDEA It means not to seriously think about something Sally has often toyed with the idea of moving abroad, but she&#x27;s still here! BE ALL IN YOUR HEAD When something is just product of your imagination. It is not real. Don&#x27;t be silly. Nobody is trying to harm you. It&#x27;s all in your head!</p>",
+          "after": "<p>Look at the phrases and discuss them with your teacher. Did you know them?</p><p>PHRASES MEANING EXAMPLE AT THE BACK OF YOUR MIND Something that you are not thinking about right now but is in your thoughts At the back of my mind is the fear of failing the exam. A BEE IN ONE’S BONNET An idea which constantly occupies your thoughts Eva&#x27;s got a bee in her bonnet about moving to New York. LIVE/BE IN CLOUD-CUCKOO LAND It refers to an imaginary unrealistic place where everything is perfect and impossible things can happen I was living in cloud-cuckoo land about my marriage. A FLIGHT OF FANCY It means that something is very imaginative but not at all practical or sensible Jimmy often has good ideas but his latest proposal is just a flight of fancy! A LIGHT BULB MOMENT A sudden moment of inspiration, comprehension or realisation Harry had a light-bulb moment when he finally realised what was blocking the mechanism. BEAR/KEEP IN MIND To remember something Bear in mind that no food will be served on board. TOY WITH THE IDEA It means not to seriously think about something Sally has often toyed with the idea of moving abroad, but she&#x27;s still here! BE ALL IN YOUR HEAD When something is just product of your imagination. It is not real. Don&#x27;t be silly. Nobody is trying to harm you. It&#x27;s all in your head!</p>"
+        }
+      ],
+      "reason": "E088: The visible idiom is incomplete."
+    },
+    {
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-text-13-a-write-the-corresponding-passive-voice-for-each-of-the-sentence-020",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>A. Write the corresponding passive voice for each of the sentences listed. Follow the example.</p><p>You will buy all the ingredients for the cake. I am preparing lunch for my family. The have worked in the report for days. Jake and Jill were buying a house in Miami. I normally clean my house twice a week. Josh usually calls his family on Saturdays. The factory made the fabric elastic. We had bought the yacht before Christmas. They finally finished the paper last night. My house is normally cleaned twice a week (by me).</p>",
+          "after": "<p>A. Write the corresponding passive voice for each of the sentences listed. Follow the example.</p><p>You will buy all the ingredients for the cake. I am preparing lunch for my family. They have worked on the report for days. Jake and Jill were buying a house in Miami. I normally clean my house twice a week. Josh usually calls his family on Saturdays. The factory made the fabric elastic. We had bought the yacht before Christmas. They finally finished the paper last night. My house is normally cleaned twice a week (by me).</p>"
+        }
+      ],
+      "reason": "E089: The learner-visible exercise contains a subject typo and wrong preposition."
+    },
+    {
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--027",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Based on the topic presented in the reading section, what other crisis do you think are being faced globally? What are they? Who were they caused by? Use the language studied.",
+          "after": "D. Based on the topic presented in the reading section, what other crises do you think are being faced globally? What are they? Who caused them? Use the language studied."
+        }
+      ],
+      "reason": "E090: The visible instruction has number/agreement errors and an unnecessarily passive question."
+    },
+    {
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-028",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write an 120-160 word text about a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied.",
+          "after": "E. Write a 120–160-word text about a human invention that brought terrible things to humanity itself, that has been implemented for years and what other issues will be brought to us through means of this. Remember to be very detailed and use the language studied."
+        }
+      ],
+      "reason": "E091: The article and compound modifier are incorrect."
+    },
+    {
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-6-phrases-meaning-example-once-in-a-blue-moon-somethi-010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            2
+          ],
+          "before": [
+            "FEW AND FAR BETWEEN",
+            "Events that are odd or rarely seen.",
+            "John calling? That is quite a few and far between."
+          ],
+          "after": [
+            "FEW AND FAR BETWEEN",
+            "Events that are odd or rarely seen.",
+            "Calls from John are few and far between."
+          ],
+          "reason": "E092: Use a grammatical example that demonstrates the idiom directly."
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            3
+          ],
+          "before": [
+            "A COLD DAY IN HELL",
+            "It means that something can’t be possible as hell going cold.",
+            "Hell would have gone on a cold day if Dinah had arrived on time."
+          ],
+          "after": [
+            "A COLD DAY IN HELL",
+            "It means that something is extremely unlikely or impossible.",
+            "It would be a cold day in hell if Dinah arrived on time."
+          ]
+        }
+      ],
+      "reason": "E092: The visible example is malformed. E093: The visible definition and example are malformed."
+    },
+    {
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-8-we-are-able-to-express-ideas-about-things-that-neve-012",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            3
+          ],
+          "before": [
+            "",
+            "If Jake had sought carefully, the investigation would have not turned out a failure.",
+            "How would have the investigation turned out if Jake had sought carefully?"
+          ],
+          "after": [
+            "",
+            "If Jake had investigated carefully, the investigation would not have ended in failure.",
+            "How would the investigation have turned out if Jake had investigated carefully?"
+          ]
+        }
+      ],
+      "reason": "E094: The direct question has incorrect auxiliary order, and sought is incomplete in this context."
+    },
+    {
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-027",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write an 160-200 word text about a bad choice you made and what would have happened if you had not done it. How would have your life turned out if you had chosen something differently? Be very detailed, the story does not have to be real. Remember to use the language studied.",
+          "after": "E. Write a 160–200-word text about a bad choice you made and what would have happened if you had not made it. How would your life have turned out if you had chosen something differently? Be very detailed; the story does not have to be real. Remember to use the language studied."
+        }
+      ],
+      "reason": "E095: The direct question embedded in the essay prompt has incorrect auxiliary order; the prompt also has the article error."
+    },
+    {
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            2
+          ],
+          "before": [
+            "A SHOT IN THE DARK",
+            "To have an ide or suspicion about someone or something.",
+            "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that."
+          ],
+          "after": [
+            "A SHOT IN THE DARK",
+            "A guess made without enough information.",
+            "I didn’t know who sent the email, so I took a shot in the dark and guessed it was Tim."
+          ],
+          "reason": "E096: Define A SHOT IN THE DARK as an information-limited guess and use an example that demonstrates guessing."
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            3
+          ],
+          "before": [
+            "NUTS AND BOLTS",
+            "The detailed information about someone or something and how it works.",
+            "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!"
+          ],
+          "after": [
+            "NUTS AND BOLTS",
+            "The detailed information about someone or something and how it works.",
+            "If it had been me, I would have gone over the nuts and bolts with Jenny; now she’s gone!"
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            4
+          ],
+          "before": [
+            "AN INSIDE STORY",
+            "Considered as an advice or a hot tip.",
+            "What an inside story John has just dropped us."
+          ],
+          "after": [
+            "AN INSIDE STORY",
+            "Information from an insider or a private source.",
+            "John has just given us an inside story."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            6
+          ],
+          "before": [
+            "UPPER HAND",
+            "It means someone or something has a position of advantage and control.",
+            "Fortunately, I had already upper-handed the rest of the contestants."
+          ],
+          "after": [
+            "UPPER HAND",
+            "It means someone or something has a position of advantage and control.",
+            "Fortunately, I had already gained the upper hand over the rest of the contestants."
+          ]
+        }
+      ],
+      "reason": "E096: The visible definition contains a typo and the example needs sentence punctuation. E097: The visible example omits the idiom’s required preposition and article. E098: The visible definition and example do not use the expression naturally. E099: Upper-handed is not the standard verb form of the idiom."
+    },
+    {
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-8-we-are-able-to-express-regrets-in-different-ways-ch-012",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            3
+          ],
+          "before": [
+            "",
+            "If only I had expected nothing from them. I certainly look like an idiot now.",
+            "would you really have expected nothing from them?"
+          ],
+          "after": [
+            "",
+            "If only I had expected nothing from them. I certainly look like an idiot now.",
+            "Would you really have expected nothing from them?"
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            5
+          ],
+          "before": [
+            "",
+            "They did not regret making a scandal in front of everyone.",
+            "Where they even sorry about that?"
+          ],
+          "after": [
+            "",
+            "They did not regret making a scandal in front of everyone.",
+            "Were they even sorry about that?"
+          ]
+        }
+      ],
+      "reason": "E100: The visible direct question begins with a lower-case letter. E101: The visible direct question uses the wrong auxiliary."
+    },
+    {
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-text-8-we-are-able-to-express-regrets-in-different-ways-check-the-chart-013",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We are able to express regrets in different ways. Check the chart.</p><p>We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.</p>",
+          "after": "<p>We are able to express regrets in different ways. Check the chart.</p>",
+          "reason": "E102: Keep one concise regrets objective paragraph and remove the duplicated, unrelated paragraph."
+        }
+      ],
+      "reason": "E102: The learner-visible block repeats Unit 46’s objective instead of the Unit 47 regrets objective."
+    },
+    {
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-11-we-can-use-these-structures-to-state-the-following-017",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            0
+          ],
+          "before": [
+            "1",
+            "Express regrets life regrets.",
+            "I should have bought the car; now, I’m stock here.."
+          ],
+          "after": [
+            "1",
+            "Express life regrets.",
+            "I should have bought the car; now, I’m stuck here."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            2
+          ],
+          "before": [
+            "2",
+            "Lament on something.",
+            "If only they had listened to their parents, but they didn’t."
+          ],
+          "after": [
+            "2",
+            "Lament over/about something.",
+            "If only they had listened to their parents, but they didn’t."
+          ]
+        }
+      ],
+      "reason": "E103: The visible function label and example contain grammar and spelling errors. E104: The visible function label uses the wrong preposition."
+    },
+    {
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-essay-17-d-based-on-the-topic-presented-in-the-reading-section-how-would-031",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write an 160-200 word text about someone or something that have caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied",
+          "after": "E. Write a 160–200-word text about someone or something that has caused you the greatest regrets in your life. What happened? How did you feel? Is it still something you regret? How have you coped with it? What were your thoughts at that moment? Use the language studied.",
+          "reason": "E105: Correct the article, word-range typography, singular relative-clause agreement, and final punctuation while preserving the full essay prompt."
+        }
+      ],
+      "reason": "E105: The relative-clause subject is singular."
+    },
+    {
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-structured-content-8-structures-statements-questions-could-have-past-par-012",
+      "changes": [
+        {
+          "path": [
+            "subtitle"
+          ],
+          "before": "We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.",
+          "after": "We are able to express probabilities in the past when guessing or talking about common events."
+        }
+      ],
+      "reason": "E106: The visible table subtitle is copied from Unit 46 and contradicts Unit 48’s probability objective."
+    },
+    {
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-text-8-structures-statements-questions-could-have-past-participle-i-coul-013",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We are able to express opinions, suggestions and expectations in the past by using the following structures. Check the chart.</p>",
+          "after": "<p>We are able to express probabilities in the past by using these structures.</p>"
+        }
+      ],
+      "reason": "E107: The learner-visible explanatory text is copied from Unit 46."
+    },
+    {
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-recording-15-d-based-on-the-topic-presented-in-the-reading-section-what--024",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Based on the topic presented in the reading section, what other issues you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?",
+          "after": "D. Based on the topic presented in the reading section, what other issues do you think people should be aware of? Having answered that, what are the circumstances likely to happen depending on people’s response to them?",
+          "reason": "E108: Insert do into the original direct question and preserve the complete teacher instruction and follow-up question with corrected punctuation."
+        }
+      ],
+      "reason": "E108: The visible direct question is missing do."
+    },
+    {
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-essay-15-d-based-on-the-topic-presented-in-the-reading-section-what-othe-025",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write a 170-200 word text about the impact socialism is having in the world and hot it may turn out in case it keeps spreading and gaining power. What if the world receives it? Support your ideas and remember to use the language studied.",
+          "after": "E. Write a 170-200 word text about the impact socialism is having in the world and how it may turn out in case it keeps spreading and gaining power. What if the world receives it? Support your ideas and remember to use the language studied."
+        }
+      ],
+      "reason": "E109: The visible prompt contains a typo."
+    },
+    {
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-structured-content-6-phrases-meaning-example-castles-in-the-air-to-have--010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            7
+          ],
+          "before": [
+            "OFF THE WALL",
+            "To be eccentric or unconventional. Some other times to be really angry.",
+            "The president was off the wall about the article."
+          ],
+          "after": [
+            "OFF THE WALL",
+            "To be eccentric or unconventional.",
+            "That was an off-the-wall idea."
+          ],
+          "reason": "E110: Keep the eccentric sense and replace the mismatched president example with a clear idiomatic example."
+        }
+      ],
+      "reason": "E110: The visible definition conflates unrelated senses and the example does not match the shown source row."
+    },
+    {
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-text-14-14-021",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Global Disasters that never Came to happen: The Impending Ice Age An April 28, 1975 article in Newsweek Magazine titled &quot;The Cooling World&quot; warned that the world could freeze over before we knew it. A year earlier, Time ran an article titled, &quot;A New Ice Age?&quot; The media of the mid-70&#x27;s latched onto the idea of impending icy death, imagine if it had become true. But where did this come from? Between 1945 and the 1970&#x27;s global temperatures had decreased. Scientists have since figured out that sulphate aerosols caused cooling, by blocking and reflecting sunlight as well as serving as seeds for cloud coverage. At the same time scientific papers explaining about how the earth&#x27;s orbital patterns affect global weather and the creation of ice ages were being published. The media seemed to pick up geologist saying an ice age could be soon — but not really understanding that thousands of years is &quot;soon&quot; to a geologist; but what if that had happened? We would not probable have written this article. Despite the media hype, the scientific journals were either unsure about how humans were affecting the climate, or already predicting the possibility of global warming due to CO2. Current research shows the high level of CO2 in the atmosphere is preventing any growth of the ice sheets. The Ice Age fear has come back recently, most likely because of the 2012 hysteria, but this time in conjunction with the sun&#x27;s solar cycles. Bad Astronomy explains why you don&#x27;t need invest in parkas quite yet. Incidentally, Newsweek issued a correction to the 1975 article in 2006, since by then it was clear an Ice Age hadn&#x27;t wiped us all out. If only people had been more cautious in the information they linked, we (new generations) may have turned more eager for facts than farandula. Adapted from: https://gizmodo.com/9-global-disasters-that-never-came-to-pass-5943220</p>",
+          "after": "<p>Global Disasters that never Came to happen: The Impending Ice Age An April 28, 1975 article in Newsweek Magazine titled &quot;The Cooling World&quot; warned that the world could freeze over before we knew it. A year earlier, Time ran an article titled, &quot;A New Ice Age?&quot; The media of the mid-70&#x27;s latched onto the idea of impending icy death, imagine if it had become true. But where did this come from? Between 1945 and the 1970&#x27;s global temperatures had decreased. Scientists have since figured out that sulphate aerosols caused cooling, by blocking and reflecting sunlight as well as serving as seeds for cloud coverage. At the same time scientific papers explaining about how the earth&#x27;s orbital patterns affect global weather and the creation of ice ages were being published. The media seemed to pick up geologist saying an ice age could be soon — but not really understanding that thousands of years is &quot;soon&quot; to a geologist; but what if that had happened? We would probably not have written this article. Despite the media hype, the scientific journals were either unsure about how humans were affecting the climate, or already predicting the possibility of global warming due to CO2. Current research shows the high level of CO2 in the atmosphere is preventing any growth of the ice sheets. The Ice Age fear has come back recently, most likely because of the 2012 hysteria, but this time in conjunction with the sun&#x27;s solar cycles. Bad Astronomy explains why you don&#x27;t need to invest in parkas quite yet. Incidentally, Newsweek issued a correction to the 1975 article in 2006, since by then it was clear an Ice Age hadn&#x27;t wiped us all out. If only people had been more cautious in the information they linked, we (new generations) may have turned more eager for facts than celebrity gossip. Adapted from: https://gizmodo.com/9-global-disasters-that-never-came-to-pass-5943220</p>"
+        }
+      ],
+      "reason": "E112: The visible reading contains an adverb error, missing infinitive marker, and a Spanish target-language word."
+    },
+    {
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-structured-content-6-phrases-meaning-example-third-time-s-a-charm-the-th-010",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            5
+          ],
+          "before": [
+            "IN THE LONG RUN",
+            "In the long term, over a long period of time.",
+            "I hate having so much after school activities now, but I know in the long run this will be beneficial for me."
+          ],
+          "after": [
+            "IN THE LONG RUN",
+            "In the long term, over a long period of time.",
+            "I hate having so many after-school activities now, but I know in the long run this will be beneficial for me."
+          ]
+        }
+      ],
+      "reason": "E113: The visible example has a count/non-count agreement error."
+    },
+    {
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-text-8-we-are-able-to-express-ideas-about-things-or-events-yet-to-happen-012",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We are able to express ideas about things or events yet to happen through two main grammar structures.</p><p>FUTURE PERFECT FUTURE CONTINUOUS The guests are coming at 8PM. I’ll have finished cooking by then. In two years’ time, I’ll have had my kids, so I’ll be a parent. Will the kids have gone to bed when I get back? When you get out of the office tomorrow, I’ll be boarding a plane. Come on July, I won’t be working then. Will you be starting work earlier with your new job? To Consider 1. Future perfect works with Will + Have + Past participle. 2. It uses time phrases like: By then, In some years’ time, when clauses, by the time, etc. 3. Future continuous works with To be + V(ing). 4. The time phrases for future continuous may be shared with future perfect; though, the ones used here are more specific as seen in the examples. 5. Both can add Wh words to make questions.</p>",
+          "after": "<p>We are able to express ideas about things or events yet to happen through two main grammar structures.</p><p>FUTURE PERFECT FUTURE CONTINUOUS The guests are coming at 8PM. I’ll have finished cooking by then. In two years’ time, I’ll have had my kids, so I’ll be a parent. Will the kids have gone to bed when I get back? When you get out of the office tomorrow, I’ll be boarding a plane. Come July, I won’t be working then. Will you be starting work earlier with your new job? To Consider 1. Future perfect works with Will + Have + Past participle. 2. It uses time phrases like: By then, In some years’ time, when clauses, by the time, etc. 3. Future continuous works with will be + V-ing. 4. The time phrases for future continuous may be shared with future perfect; though, the ones used here are more specific as seen in the examples. 5. Both can add Wh words to make questions.</p>"
+        }
+      ],
+      "reason": "E114: The visible text has an incorrect expression and an incomplete rule."
+    },
+    {
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-recording-15-d-make-a-small-presentation-discussion-about-where-will-we--024",
+      "changes": [
+        {
+          "path": [
+            "instruction"
+          ],
+          "before": "D. Make a small presentation / discussion about where will we have gotten as a society in 40 years’ time? Will we be doing better? Worse? Why? Talk about the different important areas and how you see it.",
+          "after": "D. Make a small presentation/discussion about where we will have gotten as a society in 40 years’ time. Will we be doing better? Worse? Why? Talk about the different important areas and how you see it."
+        }
+      ],
+      "reason": "E115: The visible direct question has incorrect word order for its intended embedded-question context."
+    },
+    {
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-essay-15-d-make-a-small-presentation-discussion-about-where-will-we-have-025",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write an 160-200 word text addressing where will technology have reached in 30 or 50 years’ time? Will we be doing things that seem too impossible now? What about regular tech like PCs and phones? Be very detailed and use the language studied in the lesson.",
+          "after": "E. Write a 160–200-word text addressing where technology will have reached in 30 or 50 years’ time. Will we be doing things that seem too impossible now? What about regular tech like PCs and phones? Be very detailed and use the language studied in the lesson."
+        }
+      ],
+      "reason": "E116: The visible prompt has the article error and incorrect word order in the embedded question context."
+    },
+    {
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-structured-content-6-phrases-meaning-example-a-matter-of-life-and-death--009",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            4
+          ],
+          "before": [
+            "ONE’S NUMBER IS UP",
+            "Someone is appointed to die.",
+            "I truly think Jake’s number is up."
+          ],
+          "after": [
+            "ONE’S NUMBER IS UP",
+            "Someone’s time has come; they are in imminent danger of death.",
+            "I truly think Jake’s number is up."
+          ]
+        }
+      ],
+      "reason": "E117: The visible definition does not express the meaning of the idiom."
+    },
+    {
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-text-14-14-019",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>World War II showed that war must be avoided at all costs and democracies must resist aggression, says Stanford historian WitWorld War II provided two contradictory lessons: war must be avoided at all costs and democracies must resist aggression, says Stanford historian James J. Sheehan. On the 75th anniversary of “Victory in Europe Day” – the day when people from across the world celebrated the acceptance of Nazi Germany’s unconditional surrender to the Allied forces of the United States, the United Kingdom, France and the Soviet Union on May 8, 1945 – Sheehan discusses the difficult challenges ahead, despite war in Europe being over. Sheehan is the Dickason Professor in the Humanities and Professor of History emeritus in the School of Humanities and Sciences. He is the author of Where Have All the Soldiers Gone? The Transformation of Modern Europe, a history of war and peace in 20th-century Europe. Are there any elements to VE Day that you think have been largely forgotten, overlooked or misunderstood? It is important to realize what actually occurred on May 8, 1945. Most wars end when one side either surrenders or agrees to a cease-fire. That is what happened on Nov. 11, 1918, when the representatives of the German government agreed to an armistice and then, seven months later, signed a peace treaty; if they hadn’t we would not be talking about this now. On May 8, 1945, there was no German state recognized by its enemies. In three different places, the commanders of the German armed forces surrendered unconditionally. Civil and military authority in what had been the German state was assumed by the allies. Germany was divided among them. Although peace treaties were signed with Germany’s allies in 1947, a final treaty that recognized Germany as a fully sovereign state did not take place until 1991. One of the ironies of the postwar settlement is that, despite the absence of a formal peace treaty, it turned out to be so durable like if it had actually taken place. Adapted from: https://news.stanford.edu/2020/05/04/world-war-iis-contradictory-lessons/</p>",
+          "after": "<p>World War II provided two contradictory lessons: war must be avoided at all costs and democracies must resist aggression, says Stanford historian James J. Sheehan.</p><p>On the 75th anniversary of “Victory in Europe Day” – the day when people from across the world celebrated the acceptance of Nazi Germany’s unconditional surrender to the Allied forces of the United States, the United Kingdom, France and the Soviet Union on May 8, 1945 – Sheehan discusses the difficult challenges ahead, despite war in Europe being over. Sheehan is the Dickason Professor in the Humanities and Professor of History emeritus in the School of Humanities and Sciences. He is the author of Where Have All the Soldiers Gone? The Transformation of Modern Europe, a history of war and peace in 20th-century Europe.</p><p>Are there any elements to VE Day that you think have been largely forgotten, overlooked or misunderstood?</p><p>It is important to realize what actually occurred on May 8, 1945. Most wars end when one side either surrenders or agrees to a cease-fire. That is what happened on Nov. 11, 1918, when the representatives of the German government agreed to an armistice and then, seven months later, signed a peace treaty; if they hadn’t we would not be talking about this now.</p><p>On May 8, 1945, there was no German state recognized by its enemies. In three different places, the commanders of the German armed forces surrendered unconditionally. Civil and military authority in what had been the German state was assumed by the allies. Germany was divided among them. Although peace treaties were signed with Germany’s allies in 1947, a final treaty that recognized Germany as a fully sovereign state did not take place until 1991.</p><p>One of the ironies of the postwar settlement is that, despite the absence of a formal peace treaty, it turned out to be so durable as if it had actually taken place.</p><p>Adapted from: https://news.stanford.edu/2020/05/04/world-war-iis-contradictory-lessons/</p>"
+        }
+      ],
+      "reason": "E118: The learner-visible reading contains a duplicated/corrupted opening fragment. Use paragraph breaks for readable source sections and correct the final as-if comparison."
+    },
+    {
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-text-2-communicative-function-talk-about-hypothetical-present-situations-002",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Communicative Function Talk about hypothetical present situations with a result in the past.</p><p>Competencies understand and express ideas about Talk about hypothetical present situations with a result in the past. in written and spoken English.</p>",
+          "after": "<p>Communicative Function Talk about hypothetical present situations with a result in the past.</p><p>Competencies: Understand and express hypothetical present situations with past results in written and spoken English.</p>"
+        }
+      ],
+      "reason": "E120: The visible competency statement contains a duplicated/malformed objective."
+    },
+    {
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-structured-content-6-phrases-meaning-example-a-boost-of-confidence-somet-009",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            2
+          ],
+          "before": [
+            "AN ACT OF FAITH",
+            "Something you do believing in someone else; giving someone ot something a chance.",
+            "Staying with Dean was an act of faith."
+          ],
+          "after": [
+            "AN ACT OF FAITH",
+            "Something you do believing in someone else; giving someone or something a chance.",
+            "Staying with Dean was an act of faith."
+          ]
+        },
+        {
+          "path": [
+            "content",
+            "rows",
+            6
+          ],
+          "before": [
+            "TO HAVE SENSE OF WORTH",
+            "To have self-esteem, to know one’s worth and value",
+            "She would not accept that if she had sense of worth."
+          ],
+          "after": [
+            "TO HAVE A SENSE OF WORTH",
+            "To have self-esteem, to know one’s worth and value",
+            "She would not accept that if she had a sense of worth."
+          ]
+        }
+      ],
+      "reason": "E121: The visible definition contains a typo. E122: The visible headword and example omit required articles."
+    },
+    {
+      "lessonId": "cmnmm9w6q002ww1qkmhschbtj",
+      "rowId": "course-guided-cmnmm9w6q002ww1qkmhschbtj-text-14-14-020",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Titanic sunk by steering mistake, author says LONDON (Reuters) - The Titanic hit an iceberg in 1912 because of a basic steering error, and only sank as fast as it did because an official persuaded the captain to continue sailing, an author said in an interview published on Wednesday. Louise Patten, a writer and granddaughter of Titanic second officer Charles Lightoller, said the truth about what happened nearly 100 years ago had been hidden for fear of tarnishing the reputation of her grandfather, who later became a war hero. Lightoller, the most senior officer to have survived the disaster, covered up the error in two inquiries on both sides of the Atlantic because he was worried it would bankrupt the ill-fated liner’s owners and put his colleagues out of a job. Id they did not cover this, the facts would have turned out differently. “They could easily have avoided the iceberg if it wasn’t for the blunder,” Patten told the Daily Telegraph. “Instead of steering Titanic safely round to the left of the iceberg, once it had been spotted dead ahead, the steersman, Robert Hitchins, had panicked and turned it the wrong way.” Patten, who made the revelations to coincide with the publication of her new novel “Good as Gold” into which her account of events are woven, said that the conversion from sail ships to steam meant there were two different steering systems. Crucially, one system meant turning the wheel one way and the other in completely the opposite direction. Adapted from: https://www.reuters.com/article/us-britain-titanic-book-idUSTRE68L1HG20100922</p>",
+          "after": "<p>Titanic sunk by steering mistake, author says LONDON (Reuters) - The Titanic hit an iceberg in 1912 because of a basic steering error, and only sank as fast as it did because an official persuaded the captain to continue sailing, an author said in an interview published on Wednesday. Louise Patten, a writer and granddaughter of Titanic second officer Charles Lightoller, said the truth about what happened nearly 100 years ago had been hidden for fear of tarnishing the reputation of her grandfather, who later became a war hero. Lightoller, the most senior officer to have survived the disaster, covered up the error in two inquiries on both sides of the Atlantic because he was worried it would bankrupt the ill-fated liner’s owners and put his colleagues out of a job. If they did not cover this, the facts would have turned out differently. “They could easily have avoided the iceberg if it wasn’t for the blunder,” Patten told the Daily Telegraph. “Instead of steering Titanic safely round to the left of the iceberg, once it had been spotted dead ahead, the steersman, Robert Hitchins, had panicked and turned it the wrong way.” Patten, who made the revelations to coincide with the publication of her new novel “Good as Gold” into which her account of events are woven, said that the conversion from sail ships to steam meant there were two different steering systems. Crucially, one system meant turning the wheel one way and the other in completely the opposite direction. Adapted from: https://www.reuters.com/article/us-britain-titanic-book-idUSTRE68L1HG20100922</p>"
+        }
+      ],
+      "reason": "E123: The visible reading contains a clear typo."
+    },
+    {
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "rowId": "course-guided-cmnmm9wiv002zw1qkz23p6kdp-text-2-communicative-function-talk-about-hypothetical-future-situation-w-002",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Communicative Function Talk about hypothetical future situation with a past result.</p><p>Competencies understand and express ideas about hypothetical future situation with a past result. in written and spoken English.</p>",
+          "after": "<p>Communicative Function Talk about hypothetical future situation with a past result.</p><p>Competencies: Understand and express hypothetical future situations with past results in written and spoken English.</p>"
+        }
+      ],
+      "reason": "E124: The visible competency statement is missing articles, plural marking, and punctuation."
+    },
+    {
+      "lessonId": "cmnmm9wiv002zw1qkz23p6kdp",
+      "rowId": "course-guided-cmnmm9wiv002zw1qkz23p6kdp-text-14-14-020",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>An interview with Ukrainian President Volodymyr Zelensky Q: Can you describe to us the moment when you found out a full-scale invasion had begun? Who informed you and what were your first moves that morning? A: First of all, the war began in 2014. But I do not want to look like some deep, great historian right now and say that the war began long before 2014, because if they weren’t going on war, they would have acted differently long ago. The war of the Russian Federation in one form or another against Ukraine or against the sovereignty of our state or against statehood or against the general existence of Ukraine — this war is old and it has been going on for many decades, even hundreds of years. But if we rely on the date that appears everywhere as the date of Russia’s full-scale invasion of Ukraine, of course, this is Feb. 24, 2022. They began this war of occupation where they chipped away from us little by little in 2014, although I believe that they have been encroaching on Crimea since 1991 through [providing Russian passports to Ukrainians] and various other steps. These are hybrid, heavy, cynical measures — albeit professionally implemented ones. They have been trying to devour our country through their information policy, all of their television — I worked in [television], and I understood perfectly how this functions and if they weren’t intending harm, thye would have not played that card . They have been devouring Ukraine as they had big assets, the petrodollars and revenue from gas, so of course, they bought up our industries and so on. They acted through informational [policy], humanitarian [means], passportization and then bought up the deputies of the Verkhovna Rada [parliament] of Ukraine, financed various parties. And by the way, their party was the second party in the country by the time I became president. The second party in the country was the party of the Russian Federation. If I hadn’t — not specifically because of me — but if I hadn’t run for president, this party would have been the first. This is also very important to understand. I am not saying that this is my personal merit; this is the merit of the people of Ukraine, who believed [in us]. I am not trying to break this down into right or wrong, but this is a fact. The influence is so strong that this party would have been the first party. Today, we see that this party does not enjoy trust anymore. And this suggests that starting from Feb. 24, there has been a complete reboot, a complete reset of consciousness in Ukraine. That’s what I think. Adapted from:https://www.washingtonpost.com/national-security/2022/08/16/zelensky-interview-transcript/</p>",
+          "after": "<p>An interview with Ukrainian President Volodymyr Zelensky Q: Can you describe to us the moment when you found out a full-scale invasion had begun? Who informed you and what were your first moves that morning? A: First of all, the war began in 2014. But I do not want to look like some deep, great historian right now and say that the war began long before 2014, because if they weren’t waging war, they would have acted differently long ago. The war of the Russian Federation in one form or another against Ukraine or against the sovereignty of our state or against statehood or against the general existence of Ukraine — this war is old and it has been going on for many decades, even hundreds of years. But if we rely on the date that appears everywhere as the date of Russia’s full-scale invasion of Ukraine, of course, this is Feb. 24, 2022. They began this war of occupation where they chipped away from us little by little in 2014, although I believe that they have been encroaching on Crimea since 1991 through [providing Russian passports to Ukrainians] and various other steps. These are hybrid, heavy, cynical measures — albeit professionally implemented ones. They have been trying to devour our country through their information policy, all of their television — I worked in [television], and I understood perfectly how this functions and if they weren’t intending harm, they would not have played that card. They have been devouring Ukraine as they had big assets, the petrodollars and revenue from gas, so of course, they bought up our industries and so on. They acted through informational [policy], humanitarian [means], passportization and then bought up the deputies of the Verkhovna Rada [parliament] of Ukraine, financed various parties. And by the way, their party was the second party in the country by the time I became president. The second party in the country was the party of the Russian Federation. If I hadn’t — not specifically because of me — but if I hadn’t run for president, this party would have been the first. This is also very important to understand. I am not saying that this is my personal merit; this is the merit of the people of Ukraine, who believed [in us]. I am not trying to break this down into right or wrong, but this is a fact. The influence is so strong that this party would have been the first party. Today, we see that this party does not enjoy trust anymore. And this suggests that starting from Feb. 24, there has been a complete reboot, a complete reset of consciousness in Ukraine. That’s what I think. Adapted from:https://www.washingtonpost.com/national-security/2022/08/16/zelensky-interview-transcript/</p>"
+        }
+      ],
+      "reason": "E125: The visible reading contains an incorrect collocation and a typo/word-order error."
+    },
+    {
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-text-2-communicative-function-use-right-phrase-to-introduce-simple-or-co-002",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>Communicative Function Use right phrase to introduce simple or complex topics.</p><p>Competencies understand and express ideas about using right phrases to introduce simple or complex topics in written and spoken English.</p>",
+          "after": "<p>Communicative Function: Use the right phrases to introduce simple or complex topics.</p><p>Competencies: Understand and express ideas about using the right phrases to introduce simple or complex topics in written and spoken English.</p>"
+        }
+      ],
+      "reason": "E126: The visible competency statement is missing required articles and punctuation."
+    },
+    {
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-structured-content-6-phrases-meaning-example-blood-sweat-and-tears-if-so-009",
+      "changes": [
+        {
+          "path": [
+            "content",
+            "rows",
+            5
+          ],
+          "before": [
+            "RAISE THE BAR",
+            "Raise the standards which need to be met in order to qualify for something.s.",
+            "Apple has really raised the bar with their latest iPhone."
+          ],
+          "after": [
+            "RAISE THE BAR",
+            "Raise the standards which need to be met in order to qualify for something.",
+            "Apple has really raised the bar with their latest iPhone."
+          ]
+        }
+      ],
+      "reason": "E127: The visible definition has an extra character."
+    },
+    {
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-text-8-we-consider-right-phrases-to-introduce-simple-or-complex-topics-n-012",
+      "changes": [
+        {
+          "path": [
+            "content"
+          ],
+          "before": "<p>We consider right phrases, to introduce simple or complex topics, NOMINAL phrases. These can be presented differently, Check the chart.</p>",
+          "after": "<p>We use the right phrases to introduce simple or complex topics. These nominal phrases can be structured in different ways; check the chart.</p>"
+        }
+      ],
+      "reason": "E128: The visible explanation has missing articles, faulty punctuation, and unclear syntax."
+    },
+    {
+      "lessonId": "cmnmm9wv00032w1qkxr02azgp",
+      "rowId": "course-guided-cmnmm9wv00032w1qkxr02azgp-essay-15-d-make-a-small-presentation-discussion-about-a-couple-of-the-mo-023",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "E. Write an 160-200 word text addressing the different scenarios people live if they are immigrants. What to expect? Which are the reasons that move them to make such a decision? Have you got an idea of how easy or difficult is to cope in a new country?",
+          "after": "E. Write a 160–200-word text addressing the different scenarios immigrants may face. What can they expect? What reasons lead people to make such a decision? Have you got an idea of how easy or difficult it is to cope in a new country?",
+          "reason": "E129: Correct the article, prompt structure, and missing it in “how easy or difficult it is to cope” while preserving the full writing task."
+        }
+      ],
+      "reason": "E129: The visible prompt has an article error and unclear question structures."
+    },
+    {
+      "lessonId": "cmnmm9qog001kw1qkht1v6i81",
+      "rowId": "course-guided-cmnmm9qog001kw1qkht1v6i81-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E130: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+        }
+      ],
+      "reason": "E131: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9rcz001qw1qka3igty9u",
+      "rowId": "course-guided-cmnmm9rcz001qw1qka3igty9u-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E132: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E133: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9s1b001ww1qkz2zll59e",
+      "rowId": "course-guided-cmnmm9s1b001ww1qkz2zll59e-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+        }
+      ],
+      "reason": "E134: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9sdw001zw1qktwvzlc1f",
+      "rowId": "course-guided-cmnmm9sdw001zw1qktwvzlc1f-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+        }
+      ],
+      "reason": "E135: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9sq20022w1qkn3bi0mm7",
+      "rowId": "course-guided-cmnmm9sq20022w1qkn3bi0mm7-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his /her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his /her questions."
+        }
+      ],
+      "reason": "E136: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9t2a0025w1qk877v6313",
+      "rowId": "course-guided-cmnmm9t2a0025w1qk877v6313-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E137: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+      "rowId": "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E138: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9tqo002bw1qklsuz2eli",
+      "rowId": "course-guided-cmnmm9tqo002bw1qklsuz2eli-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+        }
+      ],
+      "reason": "E139: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9u2w002ew1qkvb9dzxjp",
+      "rowId": "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+        }
+      ],
+      "reason": "E140: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9uey002hw1qk4poj2sfe",
+      "rowId": "course-guided-cmnmm9uey002hw1qk4poj2sfe-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E141: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9ur4002kw1qkr4g1untw",
+      "rowId": "course-guided-cmnmm9ur4002kw1qkr4g1untw-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E142: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9v3a002nw1qkedoaw2od",
+      "rowId": "course-guided-cmnmm9v3a002nw1qkedoaw2od-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+        }
+      ],
+      "reason": "E143: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9vfh002qw1qknevwf813",
+      "rowId": "course-guided-cmnmm9vfh002qw1qknevwf813-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "changes": [
+        {
+          "path": [
+            "prompt"
+          ],
+          "before": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions.\n4",
+          "after": "A. Look at the picture. What is it suggesting? What is today’s topic?\nB. Listen to the audio. What are they talking about? Tell your teacher and answer his/her questions."
+        }
+      ],
+      "reason": "E144: The learner-visible prompt ends with an orphan slide number."
+    },
+    {
+      "lessonId": "cmnmm9r0u001nw1qkmd7iwebn",
+      "rowId": "course-guided-cmnmm9r0u001nw1qkmd7iwebn-vocabulary-8-phrasal-verb-formation-examples-more-examples-1-verb-prepos-014",
+      "changes": [
+        {
+          "path": [
+            "type"
+          ],
+          "before": "vocabulary",
+          "after": "teacher_notes"
+        },
+        {
+          "path": [
+            "items"
+          ],
+          "before": [
+            {
+              "id": "course-vocabulary-8-001",
+              "term": "rurouni",
+              "definition": "kenshin"
+            },
+            {
+              "id": "course-vocabulary-8-002",
+              "term": "meiji",
+              "definition": "kenkaku"
+            },
+            {
+              "id": "course-vocabulary-8-003",
+              "term": "romantan",
+              "definition": "cap"
+            }
+          ],
+          "after": []
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Vocabulario.",
+          "after": ""
+        },
+        {
+          "path": [
+            "format"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "html"
+        },
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "<p>Phrasal Verb Formation Examples</p>"
+        },
+        {
+          "path": [
+            "sourceRole"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "noninstructional-overhead"
+        },
+        {
+          "path": [
+            "hiddenFromLearners"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": true
+        }
+      ],
+      "reason": "E069: Convert the accidental URL-token vocabulary row to hidden teacher notes; retain the source archive and map its discarded fragments to the preserved phrasal-verb source row."
+    },
+    {
+      "lessonId": "cmnmm9rp6001tw1qk9ct8o936",
+      "rowId": "course-guided-cmnmm9rp6001tw1qk9ct8o936-vocabulary-15-15-025",
+      "changes": [
+        {
+          "path": [
+            "type"
+          ],
+          "before": "vocabulary",
+          "after": "teacher_notes"
+        },
+        {
+          "path": [
+            "items"
+          ],
+          "before": [
+            {
+              "id": "course-vocabulary-15-001",
+              "term": "grammar",
+              "definition": "and"
+            },
+            {
+              "id": "course-vocabulary-15-002",
+              "term": "grammar",
+              "definition": "lessons"
+            },
+            {
+              "id": "course-vocabulary-15-003",
+              "term": "one",
+              "definition": "those"
+            },
+            {
+              "id": "course-vocabulary-15-004",
+              "term": "days",
+              "definition": "past"
+            }
+          ],
+          "after": []
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Vocabulario.",
+          "after": ""
+        },
+        {
+          "path": [
+            "format"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "html"
+        },
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "<p>C. Read the following paragraph and extract sentences with the delexical verbs and tell your teacher what their intended meaning is.</p>"
+        },
+        {
+          "path": [
+            "sourceRole"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "teacher-guided-listening"
+        },
+        {
+          "path": [
+            "hiddenFromLearners"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": true
+        }
+      ],
+      "reason": "E080: Convert the accidental headline-token vocabulary row to hidden teacher notes; retain the source archive and map its discarded fragments to the preserved reading source row."
+    },
+    {
+      "lessonId": "cmnmm9vul002tw1qkq6vmdn9t",
+      "rowId": "course-guided-cmnmm9vul002tw1qkq6vmdn9t-vocabulary-14-14-021",
+      "changes": [
+        {
+          "path": [
+            "type"
+          ],
+          "before": "vocabulary",
+          "after": "teacher_notes"
+        },
+        {
+          "path": [
+            "items"
+          ],
+          "before": [
+            {
+              "id": "course-vocabulary-14-001",
+              "term": "th",
+              "definition": "century Europe"
+            },
+            {
+              "id": "course-vocabulary-14-002",
+              "term": "world",
+              "definition": "war"
+            },
+            {
+              "id": "course-vocabulary-14-003",
+              "term": "iis",
+              "definition": "contradictory"
+            }
+          ],
+          "after": []
+        },
+        {
+          "path": [
+            "title"
+          ],
+          "before": "Vocabulario.",
+          "after": ""
+        },
+        {
+          "path": [
+            "format"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "html"
+        },
+        {
+          "path": [
+            "content"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "<p>C. Read the following paragraph and have a discussion with the teacher. After that, read the text aloud to your teacher. Check the full article in the link below.</p>"
+        },
+        {
+          "path": [
+            "sourceRole"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": "teacher-guided-listening"
+        },
+        {
+          "path": [
+            "hiddenFromLearners"
+          ],
+          "before": {
+            "$missing": true
+          },
+          "after": true
+        }
+      ],
+      "reason": "E119: Convert the accidental headline-token vocabulary row to hidden teacher notes; retain the source archive and map its discarded fragments to the preserved World War II reading source row."
+    }
+  ],
+  "coverage": [
+    {
+      "findingId": "E065",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9qog001kw1qkht1v6i81-structured-content-8-structures-examples-observations-1-have-someone-do--021"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",1]."
+    },
+    {
+      "findingId": "E066",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9qog001kw1qkht1v6i81-text-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-make-032"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E067",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9r0u001nw1qkmd7iwebn-structured-content-6-look-at-the-information-listen-to-your-teacher-and--010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",1]."
+    },
+    {
+      "findingId": "E068",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9r0u001nw1qkmd7iwebn-structured-content-6-look-at-the-information-listen-to-your-teacher-and--010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",7]."
+    },
+    {
+      "findingId": "E069",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9r0u001nw1qkmd7iwebn-vocabulary-8-phrasal-verb-formation-examples-more-examples-1-verb-prepos-014"
+      ],
+      "reason": "Converted the accidental URL-token vocabulary row to hidden teacher notes and removed only its corrupt anime-derived fragments. Preserved source row course-guided-cmnmm9r0u001nw1qkmd7iwebn-text-8-phrasal-verb-formation-examples-more-examples-1-verb-preposition--013 carries the genuine phrasal-verb content; the original row ID/order and nested data.originalSource archive remain unchanged."
+    },
+    {
+      "findingId": "E070",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9r0u001nw1qkmd7iwebn-text-14-b-listen-to-the-audio-and-answer-the-questions-your-teacher-make-025"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E071",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rcz001qw1qka3igty9u-vocabulary-6-idiom-meaning-example-give-something-a-shot-to-have-a-try-a-011"
+      ],
+      "reason": "Restored one source-grounded GO-TO GUY/GAL card with the authored example retained in its definition; the corrupt second fragment was discarded."
+    },
+    {
+      "findingId": "E072",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rcz001qw1qka3igty9u-structured-content-6-idiom-meaning-example-give-something-a-shot-to-have-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",1]."
+    },
+    {
+      "findingId": "E073",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rcz001qw1qka3igty9u-structured-content-6-idiom-meaning-example-give-something-a-shot-to-have-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",6]."
+    },
+    {
+      "findingId": "E074",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rcz001qw1qka3igty9u-recording-15-d-what-are-the-things-you-are-grateful-for-name-simple-thin-030"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"instruction\"]."
+    },
+    {
+      "findingId": "E076",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rp6001tw1qk9ct8o936-structured-content-6-idiom-meaning-example-go-ballistic-to-lose-one-s-te-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",0]."
+    },
+    {
+      "findingId": "E077",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rp6001tw1qk9ct8o936-structured-content-6-idiom-meaning-example-go-ballistic-to-lose-one-s-te-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",2]."
+    },
+    {
+      "findingId": "E078",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rp6001tw1qk9ct8o936-structured-content-6-idiom-meaning-example-go-ballistic-to-lose-one-s-te-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",4]."
+    },
+    {
+      "findingId": "E079",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rp6001tw1qk9ct8o936-text-8-structures-examples-switching-clauses-had-past-participle-by-jake-012"
+      ],
+      "reason": "Corrected both matching past-perfect clauses to “came up with the answer” and removed the missing space in “.There”."
+    },
+    {
+      "findingId": "E080",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rp6001tw1qk9ct8o936-vocabulary-15-15-025"
+      ],
+      "reason": "Converted the accidental headline-token vocabulary row to hidden teacher notes and removed only its corrupt fragments. Preserved source row course-guided-cmnmm9rp6001tw1qk9ct8o936-text-15-15-023 carries the complete reading; the original row ID/order and nested data.originalSource archive remain unchanged."
+    },
+    {
+      "findingId": "E081",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9s1b001ww1qkz2zll59e-text-13-a-write-the-correct-reported-speech-for-each-sentence-follow-the-020"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E082",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9s1b001ww1qkz2zll59e-text-15-15-024"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E083",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9s1b001ww1qkz2zll59e-recording-16-d-tell-your-teacher-a-story-gossip-you-remember-from-your-y-027"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"instruction\"]."
+    },
+    {
+      "findingId": "E084",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-6-phrases-meaning-example-a-fuss-a-display-of-unneces-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",1]."
+    },
+    {
+      "findingId": "E085",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-6-phrases-meaning-example-a-fuss-a-display-of-unneces-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",2]."
+    },
+    {
+      "findingId": "E086",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-6-phrases-meaning-example-a-fuss-a-display-of-unneces-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",3]."
+    },
+    {
+      "findingId": "E087",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sdw001zw1qktwvzlc1f-structured-content-8-structures-questions-tag-questions-simple-present-a-012"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",1]."
+    },
+    {
+      "findingId": "E088",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sq20022w1qkn3bi0mm7-text-6-look-at-the-phrases-and-discuss-them-with-your-teacher-did-you-kn-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E089",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sq20022w1qkn3bi0mm7-text-13-a-write-the-corresponding-passive-voice-for-each-of-the-sentence-020"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E090",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sq20022w1qkn3bi0mm7-recording-16-d-based-on-the-topic-presented-in-the-reading-section-what--027"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"instruction\"]."
+    },
+    {
+      "findingId": "E091",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sq20022w1qkn3bi0mm7-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-028"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E092",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-6-phrases-meaning-example-once-in-a-blue-moon-somethi-010"
+      ],
+      "reason": "Replaced the malformed example with “Calls from John are few and far between.”"
+    },
+    {
+      "findingId": "E093",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-6-phrases-meaning-example-once-in-a-blue-moon-somethi-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",3]."
+    },
+    {
+      "findingId": "E094",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9t2a0025w1qk877v6313-structured-content-8-we-are-able-to-express-ideas-about-things-that-neve-012"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",3]."
+    },
+    {
+      "findingId": "E095",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9t2a0025w1qk877v6313-essay-16-d-based-on-the-topic-presented-in-the-reading-section-what-othe-027"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E096",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010"
+      ],
+      "reason": "Defined A SHOT IN THE DARK as an information-limited guess and supplied a guessing example."
+    },
+    {
+      "findingId": "E097",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",3]."
+    },
+    {
+      "findingId": "E098",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",4]."
+    },
+    {
+      "findingId": "E099",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",6]."
+    },
+    {
+      "findingId": "E100",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-8-we-are-able-to-express-regrets-in-different-ways-ch-012"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",3]."
+    },
+    {
+      "findingId": "E101",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-8-we-are-able-to-express-regrets-in-different-ways-ch-012"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",5]."
+    },
+    {
+      "findingId": "E102",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tqo002bw1qklsuz2eli-text-8-we-are-able-to-express-regrets-in-different-ways-check-the-chart-013"
+      ],
+      "reason": "Kept one source-grounded regrets objective paragraph and removed the duplicated unrelated paragraph."
+    },
+    {
+      "findingId": "E103",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-11-we-can-use-these-structures-to-state-the-following-017"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",0]."
+    },
+    {
+      "findingId": "E104",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tqo002bw1qklsuz2eli-structured-content-11-we-can-use-these-structures-to-state-the-following-017"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",2]."
+    },
+    {
+      "findingId": "E105",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tqo002bw1qklsuz2eli-essay-17-d-based-on-the-topic-presented-in-the-reading-section-how-would-031"
+      ],
+      "reason": "Corrected “an160” to “a 160–200-word”, fixed singular agreement, and closed the prompt with punctuation."
+    },
+    {
+      "findingId": "E106",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-structured-content-8-structures-statements-questions-could-have-past-par-012"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"subtitle\"]."
+    },
+    {
+      "findingId": "E107",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-text-8-structures-statements-questions-could-have-past-participle-i-coul-013"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E108",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9uey002hw1qk4poj2sfe-recording-15-d-based-on-the-topic-presented-in-the-reading-section-what--024"
+      ],
+      "reason": "Inserted do into the original direct question while preserving the complete teacher instruction and follow-up question."
+    },
+    {
+      "findingId": "E109",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9uey002hw1qk4poj2sfe-essay-15-d-based-on-the-topic-presented-in-the-reading-section-what-othe-025"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E110",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9v3a002nw1qkedoaw2od-structured-content-6-phrases-meaning-example-castles-in-the-air-to-have--010"
+      ],
+      "reason": "Kept the eccentric sense and replaced the mismatched example with “That was an off-the-wall idea.”"
+    },
+    {
+      "findingId": "E112",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9v3a002nw1qkedoaw2od-text-14-14-021"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E113",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vfh002qw1qknevwf813-structured-content-6-phrases-meaning-example-third-time-s-a-charm-the-th-010"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",5]."
+    },
+    {
+      "findingId": "E114",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vfh002qw1qknevwf813-text-8-we-are-able-to-express-ideas-about-things-or-events-yet-to-happen-012"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E115",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vfh002qw1qknevwf813-recording-15-d-make-a-small-presentation-discussion-about-where-will-we--024"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"instruction\"]."
+    },
+    {
+      "findingId": "E116",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vfh002qw1qknevwf813-essay-15-d-make-a-small-presentation-discussion-about-where-will-we-have-025"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E117",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vul002tw1qkq6vmdn9t-structured-content-6-phrases-meaning-example-a-matter-of-life-and-death--009"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",4]."
+    },
+    {
+      "findingId": "E118",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vul002tw1qkq6vmdn9t-text-14-14-019"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E119",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vul002tw1qkq6vmdn9t-vocabulary-14-14-021"
+      ],
+      "reason": "Converted the accidental headline-token vocabulary row to hidden teacher notes and removed only its corrupt fragments. Preserved source row course-guided-cmnmm9vul002tw1qkq6vmdn9t-text-14-14-019 carries the World War II reading; the original row ID/order and nested data.originalSource archive remain unchanged."
+    },
+    {
+      "findingId": "E120",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9w6q002ww1qkmhschbtj-text-2-communicative-function-talk-about-hypothetical-present-situations-002"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E121",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9w6q002ww1qkmhschbtj-structured-content-6-phrases-meaning-example-a-boost-of-confidence-somet-009"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",2]."
+    },
+    {
+      "findingId": "E122",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9w6q002ww1qkmhschbtj-structured-content-6-phrases-meaning-example-a-boost-of-confidence-somet-009"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",6]."
+    },
+    {
+      "findingId": "E123",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9w6q002ww1qkmhschbtj-text-14-14-020"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E124",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9wiv002zw1qkz23p6kdp-text-2-communicative-function-talk-about-hypothetical-future-situation-w-002"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E125",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9wiv002zw1qkz23p6kdp-text-14-14-020"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E126",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9wv00032w1qkxr02azgp-text-2-communicative-function-use-right-phrase-to-introduce-simple-or-co-002"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E127",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9wv00032w1qkxr02azgp-structured-content-6-phrases-meaning-example-blood-sweat-and-tears-if-so-009"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\",\"rows\",5]."
+    },
+    {
+      "findingId": "E128",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9wv00032w1qkxr02azgp-text-8-we-consider-right-phrases-to-introduce-simple-or-complex-topics-n-012"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"content\"]."
+    },
+    {
+      "findingId": "E129",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9wv00032w1qkxr02azgp-essay-15-d-make-a-small-presentation-discussion-about-a-couple-of-the-mo-023"
+      ],
+      "reason": "Corrected the article, prompt structure, and missing it in “how easy or difficult it is to cope” while preserving the full writing task."
+    },
+    {
+      "findingId": "E130",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9qog001kw1qkht1v6i81-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E131",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9r0u001nw1qkmd7iwebn-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E132",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rcz001qw1qka3igty9u-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E133",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9rp6001tw1qk9ct8o936-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E134",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9s1b001ww1qkz2zll59e-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E135",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sdw001zw1qktwvzlc1f-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E136",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9sq20022w1qkn3bi0mm7-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E137",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9t2a0025w1qk877v6313-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E138",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tei0028w1qkri0q23eb-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E139",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9tqo002bw1qklsuz2eli-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E140",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9u2w002ew1qkvb9dzxjp-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E141",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9uey002hw1qk4poj2sfe-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E142",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9ur4002kw1qkr4g1untw-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E143",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9v3a002nw1qkedoaw2od-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    },
+    {
+      "findingId": "E144",
+      "status": "patched",
+      "rowIds": [
+        "course-guided-cmnmm9vfh002qw1qknevwf813-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008"
+      ],
+      "reason": "Applied source-grounded correction at [\"data\",\"prompt\"]."
+    }
+  ]
+}

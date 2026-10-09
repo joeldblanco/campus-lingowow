@@ -1,0 +1,1862 @@
+[
+  {
+    "id": "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+    "data": {
+      "data": {
+        "originalIDs": [
+          "cmk0vhjh80001jm04epgai2ay:slide:14"
+        ],
+        "sourceSlides": [
+          14
+        ],
+        "originalSource": {
+          "links": [],
+          "media": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSZDzRn6CMIGTkSbTVcxbUtA5yjU65eRckrIlbIMalOIgrlgdhpMqZoNVLhPrqz_3wSxU7dP5m1fLFhTnGI-OAr0KXxEyn30zCSfA3Ix787g0YSCbtybcb-lZGWhzHfwb82XtmpVDiv_llS--TG9HfZXD5vYeCZlwbqZWzE4uSNdCuiREgKRJPxzCevnmag=s2048",
+              "kind": "rendered-slide-image",
+              "source": "image",
+              "original": false
+            }
+          ],
+          "title": "A glimpse to Jenny’s life Jenny is from USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican, they come from Monterrey; Jenny speaks English but she speaks Spanish too because her parents speak Spanish. Jenny’s boyfriend is Takaishi, he is American too but his parents are from Japan. He speaks English and Japanese.",
+          "tables": [],
+          "lessonId": "cmk0vhjh80001jm04epgai2ay",
+          "contentId": "block_1767602053322",
+          "deckTitle": "Unit 2 - I come from.pptx",
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRWGfVMrqnyaAJBOaexmCHwOzyv26_YoADyileU5iN8cv9KQwQ5FiElQqjVGLYneg/pub?start=false&loop=false&delayms=3000",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:14"
+          ],
+          "originalIds": [
+            "cmk0vhjh80001jm04epgai2ay:slide:14"
+          ],
+          "slideNumbers": [
+            14
+          ],
+          "sourceDigest": "60a0acd24239c32f07d0c92240756d517afd76cb96e192076c2f6cd2cb0258c7",
+          "visibleTexts": [
+            "A glimpse to Jenny’s life Jenny is from USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican, they come from Monterrey; Jenny speaks English but she speaks Spanish too because her parents speak Spanish. Jenny’s boyfriend is Takaishi, he is American too but his parents are from Japan. He speaks English and Japanese.",
+            "C. Read the following paragraph and answer the questions below. After that, read the paragraph aloud to your teacher.",
+            "1. What is her name? 2. Where is she from? 3. Where was she born? 4. What is her parents’ nationality?",
+            "5. Where do they come from? 6. Does she Speak English and Spanish? 7. Where does Takaishi come from? 8. Are his parents American?"
+          ],
+          "nativeEvidence": {
+            "audio": [],
+            "tables": null,
+            "figures": [],
+            "recordId": "1fEaWrxShNc26OntGuaZekRd3R8PGBLfv",
+            "paragraphs": [
+              "A glimpse to Jenny’s life",
+              "Jenny is from USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican, they come from Monterrey; Jenny speaks English but she speaks Spanish too because her parents speak Spanish. Jenny’s boyfriend is Takaishi, he is American too but his parents are from Japan. He speaks English and Japanese.",
+              "C. Read the following paragraph and answer the questions below. After that, read the paragraph aloud to your teacher.",
+              "1. What is her name?",
+              "2. Where is she from?",
+              "3. Where was she born?",
+              "4. What is her parents’ nationality?",
+              "5. Where do they come from?",
+              "6. Does she Speak English and Spanish?",
+              "7. Where does Takaishi come from?",
+              "8. Are his parents American?"
+            ],
+            "slideNumber": 14,
+            "figureEvidencePresent": false
+          }
+        },
+        "learningRevision": "course-guided-v1",
+        "exerciseReviewItems": [
+          {
+            "id": "u02-s14-q1",
+            "kind": "reading-comprehension",
+            "prompt": "What is her name?",
+            "rationale": "The reading names the subject Jenny.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "Jenny"
+                ],
+                "evidence": "Jenny is from USA, so she is American.",
+                "canonical": "Jenny"
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "Jenny"
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Jenny is from USA, so she is American."
+            ]
+          },
+          {
+            "id": "u02-s14-q2",
+            "kind": "reading-comprehension",
+            "prompt": "Where is she from?",
+            "rationale": "The reading explicitly states Jenny's country of origin.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "the USA",
+                  "USA",
+                  "United States",
+                  "the United States"
+                ],
+                "evidence": "Jenny is from USA, so she is American.",
+                "canonical": "the USA"
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "the USA"
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Jenny is from USA, so she is American."
+            ]
+          },
+          {
+            "id": "u02-s14-q3",
+            "kind": "reading-comprehension",
+            "prompt": "Where was she born?",
+            "rationale": "The birthplace is stated verbatim.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "San Antonio, Texas",
+                  "San Antonio Texas"
+                ],
+                "evidence": "She was born in San Antonio, Texas.",
+                "canonical": "San Antonio, Texas"
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "San Antonio, Texas"
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "She was born in San Antonio, Texas."
+            ]
+          },
+          {
+            "id": "u02-s14-q4",
+            "kind": "reading-comprehension",
+            "prompt": "What is her parents’ nationality?",
+            "rationale": "The reading directly identifies the parents' nationality.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "Mexican",
+                  "Mexicans"
+                ],
+                "evidence": "Her parents are Mexican.",
+                "canonical": "Mexican"
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "Mexican"
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Her parents are Mexican."
+            ]
+          },
+          {
+            "id": "u02-s14-q5",
+            "kind": "reading-comprehension",
+            "prompt": "Where do they come from?",
+            "rationale": "The parents' origin is stated directly.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "Monterrey"
+                ],
+                "evidence": "They come from Monterrey.",
+                "canonical": "Monterrey"
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "Monterrey"
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "They come from Monterrey."
+            ]
+          },
+          {
+            "id": "u02-s14-q6",
+            "kind": "reading-comprehension",
+            "prompt": "Does she speak English and Spanish?",
+            "rationale": "The paragraph explicitly confirms both languages.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "Yes",
+                  "Yes, she does",
+                  "Yes, she speaks English and Spanish"
+                ],
+                "evidence": "Jenny speaks English but she speaks Spanish too.",
+                "canonical": "Yes, she speaks English and Spanish."
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "Yes, she speaks English and Spanish."
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Jenny speaks English but she speaks Spanish too."
+            ]
+          },
+          {
+            "id": "u02-s14-q7",
+            "kind": "reading-comprehension-with-source-qualification",
+            "prompt": "Where does Takaishi come from?",
+            "rationale": "The source attributes Japan to Takaishi's parents; no other origin is stated.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "Japan"
+                ],
+                "evidence": "Takaishi is American too but his parents are from Japan.",
+                "canonical": "Japan"
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "Japan"
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Takaishi is American too but his parents are from Japan."
+            ]
+          },
+          {
+            "id": "u02-s14-q8",
+            "kind": "reading-comprehension",
+            "prompt": "Are his parents American?",
+            "rationale": "The source contrasts Takaishi being American with his parents being from Japan.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "No",
+                  "No, they are from Japan",
+                  "No, his parents are Japanese"
+                ],
+                "evidence": "His parents are from Japan.",
+                "canonical": "No, his parents are from Japan."
+              }
+            ],
+            "builderHints": {
+              "_explicit_answer_key": "No, his parents are from Japan."
+            },
+            "responseMode": "typed-short-answer",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "His parents are from Japan."
+            ]
+          }
+        ]
+      },
+      "type": "short_answer",
+      "items": [
+        {
+          "id": "course-short-answer-14-u02-s14-q1-001",
+          "question": "What is her name?",
+          "sourcePrompt": "What is her name?",
+          "correctAnswer": "Jenny",
+          "sourceReviewId": "u02-s14-q1",
+          "acceptedAnswers": [
+            "Jenny"
+          ]
+        },
+        {
+          "id": "course-short-answer-14-u02-s14-q2-001",
+          "question": "Where is she from?",
+          "sourcePrompt": "Where is she from?",
+          "correctAnswer": "the USA",
+          "sourceReviewId": "u02-s14-q2",
+          "acceptedAnswers": [
+            "the USA",
+            "USA",
+            "United States",
+            "the United States"
+          ]
+        },
+        {
+          "id": "course-short-answer-14-u02-s14-q3-001",
+          "question": "Where was she born?",
+          "sourcePrompt": "Where was she born?",
+          "correctAnswer": "San Antonio, Texas",
+          "sourceReviewId": "u02-s14-q3",
+          "acceptedAnswers": [
+            "San Antonio, Texas",
+            "San Antonio Texas"
+          ]
+        },
+        {
+          "id": "course-short-answer-14-u02-s14-q4-001",
+          "question": "What is her parents’ nationality?",
+          "sourcePrompt": "What is her parents’ nationality?",
+          "correctAnswer": "Mexican",
+          "sourceReviewId": "u02-s14-q4",
+          "acceptedAnswers": [
+            "Mexican",
+            "Mexicans"
+          ]
+        },
+        {
+          "id": "course-short-answer-14-u02-s14-q5-001",
+          "question": "Where do they come from?",
+          "sourcePrompt": "Where do they come from?",
+          "correctAnswer": "Monterrey",
+          "sourceReviewId": "u02-s14-q5",
+          "acceptedAnswers": [
+            "Monterrey",
+            "They come from Monterrey.",
+            "They come from Monterrey"
+          ]
+        },
+        {
+          "id": "course-short-answer-14-u02-s14-q6-001",
+          "question": "Does she speak English and Spanish?",
+          "sourcePrompt": "Does she speak English and Spanish?",
+          "correctAnswer": "Yes, she speaks English and Spanish.",
+          "sourceReviewId": "u02-s14-q6",
+          "acceptedAnswers": [
+            "Yes",
+            "Yes, she does",
+            "Yes, she speaks English and Spanish"
+          ]
+        },
+        {
+          "id": "course-short-answer-14-u02-s14-q7-001",
+          "question": "Where does Takaishi come from?",
+          "sourcePrompt": "Where does Takaishi come from?",
+          "correctAnswer": "Japan",
+          "sourceReviewId": "u02-s14-q7",
+          "acceptedAnswers": [
+            "Japan"
+          ]
+        },
+        {
+          "id": "course-short-answer-14-u02-s14-q8-001",
+          "question": "Are his parents American?",
+          "sourcePrompt": "Are his parents American?",
+          "correctAnswer": "No, his parents are from Japan.",
+          "sourceReviewId": "u02-s14-q8",
+          "acceptedAnswers": [
+            "No",
+            "No, they are from Japan",
+            "No, his parents are Japanese"
+          ]
+        }
+      ],
+      "title": "Responde la actividad.",
+      "context": "Responde las preguntas de comprensión.",
+      "question": "What is her name?"
+    },
+    "order": 25,
+    "title": "A glimpse to Jenny’s life Jenny is from USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican, they come from Monterrey; Jenny speaks English but she speaks Spanish too because her parents speak Spanish. Jenny’s boyfriend is Takaishi, he is American too but his parents are from Japan. He speaks English and Japanese.",
+    "lessonId": "cmk0vhjh80001jm04epgai2ay",
+    "parentId": null,
+    "contentType": "RICH_TEXT"
+  },
+  {
+    "id": "course-guided-cmk3z9vfj0007jp04aiu6wqaq-multiple-choice-14-c-read-the-following-dialogue-and-state-if-the-senten-034",
+    "data": {
+      "data": {
+        "originalIDs": [
+          "cmk3z9vfj0007jp04aiu6wqaq:slide:14"
+        ],
+        "sourceSlides": [
+          14
+        ],
+        "originalSource": {
+          "links": [],
+          "media": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSYTpwz4v3Im2Dh5e7m4M7j9B_-A3Ox3j46d5aAk5ht8-QQSUHX7AfFGK8Pm651Q4fVOzywC0PRYSzAFfePb1UDjke8hJ60VOW90Ta2V3tkzNacqLxt5N-svcUf87Fkbw_zK3s7ySep5LNElBTTkA0HmOr0ZQZgBvOofYbc6yeDIktQ8ZxA_GQ9nqnhC=s2048",
+              "kind": "rendered-slide-image",
+              "source": "image",
+              "original": false
+            }
+          ],
+          "title": "C. Read the following dialogue and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.",
+          "tables": [],
+          "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+          "contentId": "block_1767788325764",
+          "deckTitle": "Unit 8 - This is not yours.pptx",
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSvtLSJ1QMIkZypRdBE7yt_enL1S4f0MPXgmBrhySEo6gxPOAX8pnbYRnnmUbz4jA/pub?start=false&loop=false&delayms=3000",
+          "originalIDs": [
+            "cmk3z9vfj0007jp04aiu6wqaq:slide:14"
+          ],
+          "originalIds": [
+            "cmk3z9vfj0007jp04aiu6wqaq:slide:14"
+          ],
+          "slideNumbers": [
+            14
+          ],
+          "sourceDigest": "73506b4c67b9b188c8dd75273b66df37384774a48ad16c17905b979441d6d498",
+          "visibleTexts": [
+            "C. Read the following dialogue and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.",
+            "Lost and Found - Hi, Tom. How are you? - David, hi! I am fine. What are you doing here? - Well, Do you know whose keys are these? - Oh! Let me see. I think these are Mary’s keys. - Mary’s? Who is she? - The girl from the B12 department. - Oh, yes! But are you sure? - Not really, but I can ask her. Oh, by the way, is this yours? - WOW! That is my iPad - Joe’s kid found it. Here you have. - Thanks, Tom. See you later.",
+            "1. David has some keys. (T) (F) 2. The keys are Tom’s. (T) (F) 3. Mary’s department is C11. (T) (F) 4. Tom is sure the keys are Mary’s. (T) (F)",
+            "5. Tom has David’s Camera. (T) (F) 6. The iPad is David’s. (T) (F) 7. Tom found the iPad. (T) (F) 8. Joe’s kid found the iPad. (T) (F)"
+          ],
+          "nativeEvidence": {
+            "audio": [],
+            "tables": null,
+            "figures": [],
+            "recordId": "1uzMAvGj89ZZTNkvd6keCvLbI_KuiSKj4",
+            "paragraphs": [
+              "C. Read the following dialogue and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.",
+              "Lost and Found",
+              "- Hi, Tom. How are you?",
+              "- David, hi! I am fine. What are you doing here?",
+              "- Well, Do you know whose keys are these?",
+              "- Oh! Let me see. I think these are Mary’s keys.",
+              "- Mary’s? Who is she?",
+              "- The girl from the B12 department.",
+              "- Oh, yes! But are you sure?",
+              "- Not really, but I can ask her. Oh, by the way, is this yours?",
+              "- WOW! That is my iPad",
+              "- Joe’s kid found it. Here you have.",
+              "- Thanks, Tom. See you later.",
+              "1. David has some keys. (T) (F)",
+              "2. The keys are Tom’s. (T) (F)",
+              "3. Mary’s department is C11. (T) (F)",
+              "4. Tom is sure the keys are Mary’s. (T) (F)",
+              "5. Tom has David’s Camera. (T) (F)",
+              "6. The iPad is David’s. (T) (F)",
+              "7. Tom found the iPad. (T) (F)",
+              "8. Joe’s kid found the iPad. (T) (F)"
+            ],
+            "slideNumber": 14,
+            "figureEvidencePresent": false
+          }
+        },
+        "learningRevision": "course-guided-v1",
+        "exerciseReviewItems": [
+          {
+            "id": "u08-s14-q1",
+            "kind": "reading-true-false",
+            "prompt": "David has some keys.",
+            "rationale": "David is the speaker asking about the keys; the exercise treats the keys as the item he has/handles.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "T",
+                  "true"
+                ],
+                "evidence": "Do you know whose keys are these?",
+                "canonical": "T"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": true
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": false
+                }
+              ],
+              "_explicit_answer_key": "true"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Do you know whose keys are these?"
+            ]
+          },
+          {
+            "id": "u08-s14-q2",
+            "kind": "reading-true-false",
+            "prompt": "The keys are Tom’s.",
+            "rationale": "The dialogue attributes the keys to Mary, with uncertainty.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "F",
+                  "false"
+                ],
+                "evidence": "I think these are Mary’s keys.",
+                "canonical": "F"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": false
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": true
+                }
+              ],
+              "_explicit_answer_key": "false"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "I think these are Mary’s keys."
+            ]
+          },
+          {
+            "id": "u08-s14-q3",
+            "kind": "reading-true-false",
+            "prompt": "Mary’s department is C11.",
+            "rationale": "The department is B12.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "F",
+                  "false"
+                ],
+                "evidence": "The girl from the B12 department.",
+                "canonical": "F"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": false
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": true
+                }
+              ],
+              "_explicit_answer_key": "false"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "The girl from the B12 department."
+            ]
+          },
+          {
+            "id": "u08-s14-q4",
+            "kind": "reading-true-false",
+            "prompt": "Tom is sure the keys are Mary’s.",
+            "rationale": "Tom explicitly expresses uncertainty.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "F",
+                  "false"
+                ],
+                "evidence": "Not really, but I can ask her.",
+                "canonical": "F"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": false
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": true
+                }
+              ],
+              "_explicit_answer_key": "false"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Not really, but I can ask her."
+            ]
+          },
+          {
+            "id": "u08-s14-q5",
+            "kind": "reading-true-false",
+            "prompt": "Tom has David’s camera.",
+            "rationale": "The object is an iPad, not a camera.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "F",
+                  "false"
+                ],
+                "evidence": "WOW! That is my iPad.",
+                "canonical": "F"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": false
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": true
+                }
+              ],
+              "_explicit_answer_key": "false"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "WOW! That is my iPad."
+            ]
+          },
+          {
+            "id": "u08-s14-q6",
+            "kind": "reading-true-false",
+            "prompt": "The iPad is David’s.",
+            "rationale": "David claims the iPad as his.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "T",
+                  "true"
+                ],
+                "evidence": "WOW! That is my iPad.",
+                "canonical": "T"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": true
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": false
+                }
+              ],
+              "_explicit_answer_key": "true"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "WOW! That is my iPad."
+            ]
+          },
+          {
+            "id": "u08-s14-q7",
+            "kind": "reading-true-false",
+            "prompt": "Tom found the iPad.",
+            "rationale": "The dialogue attributes finding it to Joe's kid.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "F",
+                  "false"
+                ],
+                "evidence": "Joe’s kid found it.",
+                "canonical": "F"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": false
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": true
+                }
+              ],
+              "_explicit_answer_key": "false"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Joe’s kid found it."
+            ]
+          },
+          {
+            "id": "u08-s14-q8",
+            "kind": "reading-true-false",
+            "prompt": "Joe’s kid found the iPad.",
+            "rationale": "The statement is verbatim.",
+            "answerItems": [
+              {
+                "id": "answer",
+                "accepted": [
+                  "T",
+                  "true"
+                ],
+                "evidence": "Joe’s kid found it.",
+                "canonical": "T"
+              }
+            ],
+            "builderHints": {
+              "_explicit_options": [
+                {
+                  "id": "true",
+                  "text": "T",
+                  "isCorrect": true
+                },
+                {
+                  "id": "false",
+                  "text": "F",
+                  "isCorrect": false
+                }
+              ],
+              "_explicit_answer_key": "true"
+            },
+            "responseMode": "multiple-choice",
+            "reviewStatus": "reviewed",
+            "sourceEvidence": [
+              "Joe’s kid found it."
+            ]
+          }
+        ],
+        "multipleChoiceScope": {
+          "kind": "reading-true-false",
+          "sourceSlide": 14,
+          "responseScope": "reading"
+        }
+      },
+      "type": "multiple_choice",
+      "items": [
+        {
+          "id": "course-review-14-u08-s14-q1-001",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "David has some keys.",
+          "sourcePrompt": "David has some keys.",
+          "sourceEvidence": [
+            "Do you know whose keys are these?"
+          ],
+          "sourceReviewId": "u08-s14-q1",
+          "correctOptionId": "true"
+        },
+        {
+          "id": "course-review-14-u08-s14-q2-002",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "The keys are Tom’s.",
+          "sourcePrompt": "The keys are Tom’s.",
+          "sourceEvidence": [
+            "I think these are Mary’s keys."
+          ],
+          "sourceReviewId": "u08-s14-q2",
+          "correctOptionId": "false"
+        },
+        {
+          "id": "course-review-14-u08-s14-q3-003",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "Mary’s department is C11.",
+          "sourcePrompt": "Mary’s department is C11.",
+          "sourceEvidence": [
+            "The girl from the B12 department."
+          ],
+          "sourceReviewId": "u08-s14-q3",
+          "correctOptionId": "false"
+        },
+        {
+          "id": "course-review-14-u08-s14-q4-004",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "Tom is sure the keys are Mary’s.",
+          "sourcePrompt": "Tom is sure the keys are Mary’s.",
+          "sourceEvidence": [
+            "Not really, but I can ask her."
+          ],
+          "sourceReviewId": "u08-s14-q4",
+          "correctOptionId": "false"
+        },
+        {
+          "id": "course-review-14-u08-s14-q5-005",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "Tom has David’s camera.",
+          "sourcePrompt": "Tom has David’s camera.",
+          "sourceEvidence": [
+            "WOW! That is my iPad."
+          ],
+          "sourceReviewId": "u08-s14-q5",
+          "correctOptionId": "false"
+        },
+        {
+          "id": "course-review-14-u08-s14-q6-006",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "The iPad is David’s.",
+          "sourcePrompt": "The iPad is David’s.",
+          "sourceEvidence": [
+            "WOW! That is my iPad."
+          ],
+          "sourceReviewId": "u08-s14-q6",
+          "correctOptionId": "true"
+        },
+        {
+          "id": "course-review-14-u08-s14-q7-007",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "Tom found the iPad.",
+          "sourcePrompt": "Tom found the iPad.",
+          "sourceEvidence": [
+            "Joe’s kid found it."
+          ],
+          "sourceReviewId": "u08-s14-q7",
+          "correctOptionId": "false"
+        },
+        {
+          "id": "course-review-14-u08-s14-q8-008",
+          "options": [
+            {
+              "id": "true",
+              "text": "T"
+            },
+            {
+              "id": "false",
+              "text": "F"
+            }
+          ],
+          "question": "Joe’s kid found the iPad.",
+          "sourcePrompt": "Joe’s kid found the iPad.",
+          "sourceEvidence": [
+            "Joe’s kid found it."
+          ],
+          "sourceReviewId": "u08-s14-q8",
+          "correctOptionId": "true"
+        }
+      ],
+      "title": "Elige la respuesta."
+    },
+    "order": 34,
+    "title": "C. Read the following dialogue and state if the sentences are true (T) or false (F). After that, read the paragraph aloud to your teacher.",
+    "lessonId": "cmk3z9vfj0007jp04aiu6wqaq",
+    "parentId": null,
+    "contentType": "RICH_TEXT"
+  },
+  {
+    "id": "course-guided-cmnmm9pns001bw1qki5fh6r0j-structured-content-8-1-might-verb-simple-form-david-might-not-answer-as--012",
+    "data": {
+      "data": {
+        "originalIDs": [
+          "cmnmm9pns001bw1qki5fh6r0j:slide:8"
+        ],
+        "tableReview": {
+          "unit": 35,
+          "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+          "projection": {
+            "mode": "structured",
+            "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+            "source": "native-a:tbl",
+            "approved": true,
+            "tableCount": 1,
+            "nativeIdentityConfirmed": true
+          },
+          "sourceRefs": [
+            {
+              "kind": "published",
+              "path": "docs/audit/source-files/cmnmm9pns001bw1qki5fh6r0j.json",
+              "sha256": "11ae7781af3dc47301191c803eded405a661f48f10e7ba1bbcc99f2937625ae5"
+            },
+            {
+              "kind": "native",
+              "path": "docs/audit/source-files-native/unit-35.json",
+              "sha256": "f0c9cf1e1ae547378986c0b84d023c35aa7027c4a647e89417846bb88de786fd"
+            }
+          ],
+          "tableBlock": {
+            "mode": "structured",
+            "source": "native-a:tbl",
+            "tableCount": 1,
+            "nativeShapeProvenance": [
+              {
+                "bbox": {
+                  "x": 910550,
+                  "y": 1427625,
+                  "cx": 3000000,
+                  "cy": 3000000,
+                  "right": 3910550,
+                  "bottom": 4427625
+                },
+                "shapeId": "258",
+                "shapeName": "Google Shape;258;g72967b2bcc_0_86",
+                "columnWidths": [
+                  386300,
+                  1816150,
+                  3706950,
+                  1153900
+                ]
+              }
+            ],
+            "tableReferenceResolved": true,
+            "publishedSourceProjection": false
+          },
+          "sourceSlide": 8,
+          "reviewStatus": "reviewed-with-preserved-published-notes",
+          "schemaVersion": 1,
+          "sourceEvidence": {
+            "differences": [
+              {
+                "kind": "native-note-omission",
+                "native": "To Consider All of the three modals deal with probability. Some grammarians establish that might states a higher level of probability. Could can also be used to talk about about abilities or facts in the past. E.G. She could walk before the accident.",
+                "reason": "The chart rows remain aligned; the full published note, including point 4, must remain visible outside the projection.",
+                "rowIndex": 3,
+                "published": "To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+                "tableIndex": 0,
+                "columnIndex": 0
+              },
+              {
+                "kind": "published-cell-correction",
+                "native": "The modals are organized from the highest level to the lowest.",
+                "reason": "Published source retains the complete authored phrase; native extraction omitted “of probability”.",
+                "rowIndex": 0,
+                "published": "The modals are organized from the highest level of probability to the lowest.",
+                "tableIndex": 0,
+                "columnIndex": 3
+              }
+            ],
+            "publishedTitle": "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+            "publishedVisibleTexts": [
+              "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+              "There are many ways in which we can express probability in English. Check the following chart."
+            ]
+          },
+          "tableReferenceResolved": true,
+          "clearTableSemanticsBlocker": true
+        },
+        "sourceSlides": [
+          8
+        ],
+        "originalSource": {
+          "links": [],
+          "media": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSaBd_utgU1obHCJhMDbpZBidGmpOBOUpszU_-MwqHG_R-fl4WDeCuFXQ04GLe4P5-VIi7Jf66vWVrStrd7D5h4IO0mQ-o6wnzfzcERPSi3QovlZMmI3vQzEo93NzsdKu_luTyJFgCSNCoCRhi9MkxZYQFmOobXMEo6maekRHA2gP-Gx94CfVg08-EmTj0ZXLw=s2048",
+              "kind": "rendered-slide-image",
+              "source": "image",
+              "original": false
+            }
+          ],
+          "title": "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+          "tables": [
+            {
+              "rows": [
+                [
+                  "1",
+                  "Might + Verb simple form",
+                  "David might not answer as usual.",
+                  "The modals are organized from the highest level of probability to the lowest."
+                ],
+                [
+                  "2",
+                  "May + Verb simple form",
+                  "They may attend to the concert, but I would not bet on it.",
+                  ""
+                ],
+                [
+                  "3",
+                  "Could + Verb simple form",
+                  "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+                  ""
+                ]
+              ]
+            }
+          ],
+          "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+          "contentId": "cmnmm9pr1001cw1qkvgiwnlqn",
+          "deckTitle": "New I might not go - Unit 35.pptx",
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRNt2DWUL7WelOabuFQqj2IwGFLNMJS5nkOpuJ0f6RHQ4M_GEnGSW_QK6lhQ2mJhg/embed?start=false&loop=false&delayms=3000",
+          "originalIDs": [
+            "cmnmm9pns001bw1qki5fh6r0j:slide:8"
+          ],
+          "originalIds": [
+            "cmnmm9pns001bw1qki5fh6r0j:slide:8"
+          ],
+          "tableReview": {
+            "unit": 35,
+            "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+            "projection": {
+              "mode": "structured",
+              "notes": "Rows are exact native cell text except explicitly listed published corrections; excluded native note rows remain in publishedVisibleTexts.",
+              "source": "native-a:tbl",
+              "approved": true,
+              "tableCount": 1,
+              "nativeIdentityConfirmed": true
+            },
+            "sourceRefs": [
+              {
+                "kind": "published",
+                "path": "docs/audit/source-files/cmnmm9pns001bw1qki5fh6r0j.json",
+                "sha256": "11ae7781af3dc47301191c803eded405a661f48f10e7ba1bbcc99f2937625ae5"
+              },
+              {
+                "kind": "native",
+                "path": "docs/audit/source-files-native/unit-35.json",
+                "sha256": "f0c9cf1e1ae547378986c0b84d023c35aa7027c4a647e89417846bb88de786fd"
+              }
+            ],
+            "tableBlock": {
+              "mode": "structured",
+              "source": "native-a:tbl",
+              "tableCount": 1,
+              "nativeShapeProvenance": [
+                {
+                  "bbox": {
+                    "x": 910550,
+                    "y": 1427625,
+                    "cx": 3000000,
+                    "cy": 3000000,
+                    "right": 3910550,
+                    "bottom": 4427625
+                  },
+                  "shapeId": "258",
+                  "shapeName": "Google Shape;258;g72967b2bcc_0_86",
+                  "columnWidths": [
+                    386300,
+                    1816150,
+                    3706950,
+                    1153900
+                  ]
+                }
+              ],
+              "tableReferenceResolved": true,
+              "publishedSourceProjection": false
+            },
+            "sourceSlide": 8,
+            "reviewStatus": "reviewed-with-preserved-published-notes",
+            "schemaVersion": 1,
+            "sourceEvidence": {
+              "differences": [
+                {
+                  "kind": "native-note-omission",
+                  "native": "To Consider All of the three modals deal with probability. Some grammarians establish that might states a higher level of probability. Could can also be used to talk about about abilities or facts in the past. E.G. She could walk before the accident.",
+                  "reason": "The chart rows remain aligned; the full published note, including point 4, must remain visible outside the projection.",
+                  "rowIndex": 3,
+                  "published": "To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+                  "tableIndex": 0,
+                  "columnIndex": 0
+                },
+                {
+                  "kind": "published-cell-correction",
+                  "native": "The modals are organized from the highest level to the lowest.",
+                  "reason": "Published source retains the complete authored phrase; native extraction omitted “of probability”.",
+                  "rowIndex": 0,
+                  "published": "The modals are organized from the highest level of probability to the lowest.",
+                  "tableIndex": 0,
+                  "columnIndex": 3
+                }
+              ],
+              "publishedTitle": "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+              "publishedVisibleTexts": [
+                "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+                "There are many ways in which we can express probability in English. Check the following chart."
+              ]
+            },
+            "tableReferenceResolved": true,
+            "clearTableSemanticsBlocker": true
+          },
+          "slideNumbers": [
+            8
+          ],
+          "sourceDigest": "2ed0ed62fc22e5520a0c1c1ed06f2673e0eff82791b74ab64332505c6a84a3ca",
+          "visibleTexts": [
+            "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+            "There are many ways in which we can express probability in English. Check the following chart."
+          ],
+          "tableSemantics": {
+            "mode": "structured",
+            "source": "native-a:tbl",
+            "tables": [
+              [
+                [
+                  "1",
+                  "Might + Verb simple form",
+                  "David might not answer as usual.",
+                  "The modals are organized from the highest level of probability to the lowest."
+                ],
+                [
+                  "2",
+                  "May + Verb simple form",
+                  "They may attend to the concert, but I would not bet on it.",
+                  ""
+                ],
+                [
+                  "3",
+                  "Could + Verb simple form",
+                  "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+                  ""
+                ]
+              ]
+            ],
+            "tableReferenceResolved": true
+          }
+        },
+        "tableSemantics": {
+          "mode": "structured",
+          "source": "native-a:tbl",
+          "tables": [
+            [
+              [
+                "1",
+                "Might + Verb simple form",
+                "David might not answer as usual.",
+                "The modals are organized from the highest level of probability to the lowest."
+              ],
+              [
+                "2",
+                "May + Verb simple form",
+                "They may attend to the concert, but I would not bet on it.",
+                ""
+              ],
+              [
+                "3",
+                "Could + Verb simple form",
+                "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+                ""
+              ]
+            ]
+          ],
+          "tableReferenceResolved": true
+        },
+        "learningRevision": "course-guided-v1"
+      },
+      "type": "structured-content",
+      "title": "Consulta las formas.",
+      "tables": [
+        [
+          [
+            "1",
+            "Might + Verb simple form",
+            "David might not answer as usual.",
+            "The modals are organized from the highest level of probability to the lowest."
+          ],
+          [
+            "2",
+            "May + Verb simple form",
+            "They may attend to the concert, but I would not bet on it.",
+            ""
+          ],
+          [
+            "3",
+            "Could + Verb simple form",
+            "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+            ""
+          ]
+        ]
+      ],
+      "content": {
+        "rows": [
+          [
+            "2",
+            "May + Verb simple form",
+            "They may attend to the concert, but I would not bet on it.",
+            ""
+          ],
+          [
+            "3",
+            "Could + Verb simple form",
+            "The Jenkins could visit us this weekend; just in case, let’s get some groceries.",
+            ""
+          ]
+        ],
+        "headers": [
+          "1",
+          "Might + Verb simple form",
+          "David might not answer as usual.",
+          "The modals are organized from the highest level of probability to the lowest."
+        ]
+      },
+      "subtitle": "There are many ways in which we can express probability in English. Check the following chart.",
+      "sourceText": [
+        "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+        "There are many ways in which we can express probability in English. Check the following chart."
+      ],
+      "sourceTitle": "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?"
+    },
+    "order": 12,
+    "title": "1 Might + Verb simple form David might not answer as usual. The modals are organized from the highest level of probability to the lowest. 2 May + Verb simple form They may attend to the concert, but I would not bet on it. 3 Could + Verb simple form The Jenkins could visit us this weekend; just in case, let’s get some groceries. To Consider 1. All of the three modals deal with probability. 2. Some grammarians establish that might states a higher level of probability. 3. Could can also be used to talk about about abilities, or facts in the past. E.G. She could walk before the accident. 4. Also, could can be used to make formal requests: Could you please call Dan for me?",
+    "lessonId": "cmnmm9pns001bw1qki5fh6r0j",
+    "parentId": null,
+    "contentType": "RICH_TEXT"
+  },
+  {
+    "id": "course-guided-cmnmm9tei0028w1qkri0q23eb-structured-content-6-phrases-meaning-example-a-smoking-gun-something-tha-010",
+    "data": {
+      "data": {
+        "originalIDs": [
+          "cmnmm9tei0028w1qkri0q23eb:slide:6"
+        ],
+        "sourceSlides": [
+          6
+        ],
+        "originalSource": {
+          "links": [],
+          "media": [
+            {
+              "url": "https://docs.google.com/slides-images-rt/AE1YXSaWe-BSpKWMNlnVAftqSjtE5ukfCQIumOAVNjHjpA2BL5PdEcC9_yytPf6F0NaPzPAo1kiafDHG8z41Cl7Zkfhz18zOBlCdQyJRYyyOWne8nRnXkY8LXnqjU9kshMag7tvVn27evSFWCm1i1NnoEEUHm3ZqCX8bXAVM6UabedUyRVrhgmjv3rjLTm1NhfU=s2048",
+              "kind": "rendered-slide-image",
+              "source": "image",
+              "original": false
+            }
+          ],
+          "title": "PHRASES MEANING EXAMPLE A SMOKING GUN Something that is obvious; an indisputable truth You should have seen the smoking gun; that man could not be trusted. HIDDEN AGENDA Something that may refer to a secret plan or an implication I would not have expected Freddy to have a hidden agenda. A SHOT IN THE DARK To have an ide or suspicion about someone or something Thank God I had already gotten a shot in the dark about Tim, he almost got away with that. NUTS AND BOLTS The detailed information about someone or something and how it works If it had been me, I would have gone nut and bolts with Jenny; now she’s gone! AN INSIDE STORY Considered as an advice or a hot tip What an inside story John has just dropped us. A STRAW IN THE WIND It refers to an indication or sign that one can see or get from someone or something We should have seen the straw in the wind; now, we can’t do anything. UPPER HAND It means someone or something has a position of advantage and control Fortunately, I had already upper-handed the rest of the contestants. TIP OF THE ICEBERG The small piece or amount of something that we can see Handing over the project was just the tip of the iceberg.",
+          "tables": [],
+          "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+          "contentId": "cmnmm9thk0029w1qk0zfq5ucy",
+          "deckTitle": "NEW If it had been me.... - Unit 46.pptx",
+          "sourceUrl": "https://docs.google.com/presentation/d/e/2PACX-1vR94uKUH9GxmAjQsdhCQI5LAFneW1xtYFln8WJaTsErKgUPlEX-305BZrjXe36z6A/embed?start=false&loop=false&delayms=3000",
+          "originalIDs": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:6"
+          ],
+          "originalIds": [
+            "cmnmm9tei0028w1qkri0q23eb:slide:6"
+          ],
+          "slideNumbers": [
+            6
+          ],
+          "sourceDigest": "6d6443a0df4ba82b2e9d5940315b4b63ef0e5cf66c3106fddc547bf8bdd7dab5",
+          "visibleTexts": [
+            "PHRASES MEANING EXAMPLE A SMOKING GUN Something that is obvious; an indisputable truth You should have seen the smoking gun; that man could not be trusted. HIDDEN AGENDA Something that may refer to a secret plan or an implication I would not have expected Freddy to have a hidden agenda. A SHOT IN THE DARK To have an ide or suspicion about someone or something Thank God I had already gotten a shot in the dark about Tim, he almost got away with that. NUTS AND BOLTS The detailed information about someone or something and how it works If it had been me, I would have gone nut and bolts with Jenny; now she’s gone! AN INSIDE STORY Considered as an advice or a hot tip What an inside story John has just dropped us. A STRAW IN THE WIND It refers to an indication or sign that one can see or get from someone or something We should have seen the straw in the wind; now, we can’t do anything. UPPER HAND It means someone or something has a position of advantage and control Fortunately, I had already upper-handed the rest of the contestants. TIP OF THE ICEBERG The small piece or amount of something that we can see Handing over the project was just the tip of the iceberg.",
+            "Look at the phrases and discuss them with your teacher. Did you know them?"
+          ],
+          "nativeEvidence": {
+            "audio": [],
+            "tables": [
+              {
+                "bbox": {
+                  "x": 515613,
+                  "y": 638460,
+                  "cx": 3000000,
+                  "cy": 3000000,
+                  "right": 3515613,
+                  "bottom": 3638460
+                },
+                "rows": [
+                  {
+                    "cells": [
+                      {
+                        "text": "PHRASES",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "PHRASES"
+                            ],
+                            "text": "PHRASES"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "MEANING",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "MEANING"
+                            ],
+                            "text": "MEANING"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "EXAMPLE",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "EXAMPLE"
+                            ],
+                            "text": "EXAMPLE"
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 402650
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "A SMOKING GUN",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "A SMOKING GUN"
+                            ],
+                            "text": "A SMOKING GUN"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Something that is obvious; an indisputable truth.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "Something that is ",
+                              "obvious; an indisputable truth."
+                            ],
+                            "text": "Something that is obvious; an indisputable truth."
+                          }
+                        ]
+                      },
+                      {
+                        "text": "You should have seen the smoking gun; that man could not be trusted.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "You should have seen the smoking gun; that man could not be trusted."
+                            ],
+                            "text": "You should have seen the smoking gun; that man could not be trusted."
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "HIDDEN AGENDA",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "HIDDEN AGENDA"
+                            ],
+                            "text": "HIDDEN AGENDA"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Something that may refer to a secret plan or an implication.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "Something tha",
+                              "t may refer to a secret plan or an implication."
+                            ],
+                            "text": "Something that may refer to a secret plan or an implication."
+                          }
+                        ]
+                      },
+                      {
+                        "text": "I would not have expected Freddy to have a hidden agenda.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "I would not have expected Freddy to have a hidden agenda. "
+                            ],
+                            "text": "I would not have expected Freddy to have a hidden agenda. "
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "A SHOT IN THE DARK",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "A SHOT IN THE DARK"
+                            ],
+                            "text": "A SHOT IN THE DARK"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "To have an ide or suspicion about someone or something.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "To have an ide or suspicion about someone or something. "
+                            ],
+                            "text": "To have an ide or suspicion about someone or something. "
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that."
+                            ],
+                            "text": "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that."
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "NUTS AND BOLTS",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "NUTS AND BOLTS"
+                            ],
+                            "text": "NUTS AND BOLTS"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "The detailed information about someone or something and how it works.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "The detailed information about someone or something and how it works. "
+                            ],
+                            "text": "The detailed information about someone or something and how it works. "
+                          }
+                        ]
+                      },
+                      {
+                        "text": "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!"
+                            ],
+                            "text": "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!"
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "AN INSIDE STORY",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "AN INSIDE STORY"
+                            ],
+                            "text": "AN INSIDE STORY"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Considered as an advice or a hot tip.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "Considered as an advice or a hot tip. "
+                            ],
+                            "text": "Considered as an advice or a hot tip. "
+                          }
+                        ]
+                      },
+                      {
+                        "text": "What an inside story John has just dropped us.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "What an inside story John has just dropped us."
+                            ],
+                            "text": "What an inside story John has just dropped us."
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "A STRAW IN THE WIND",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "A STRAW IN THE WIND"
+                            ],
+                            "text": "A STRAW IN THE WIND"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "It refers to an indication or sign that one can see or get from someone or something.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "It ",
+                              "refers to an indication or sign that one can see or get from someone or something. ",
+                              " "
+                            ],
+                            "text": "It refers to an indication or sign that one can see or get from someone or something.  "
+                          }
+                        ]
+                      },
+                      {
+                        "text": "We should have seen the straw in the wind; now, we can’t do anything.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "We should have seen the straw in the wind; now, we can’t do anything. "
+                            ],
+                            "text": "We should have seen the straw in the wind; now, we can’t do anything. "
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "UPPER HAND",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "UPPER HAND"
+                            ],
+                            "text": "UPPER HAND"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "It means someone or something has a position of advantage and control.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "It means ",
+                              "someone or something has a position of advantage and control. "
+                            ],
+                            "text": "It means someone or something has a position of advantage and control. "
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Fortunately, I had already upper-handed the rest of the contestants.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "Fortunately, I had already upper-handed the rest of the contestants. "
+                            ],
+                            "text": "Fortunately, I had already upper-handed the rest of the contestants. "
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  },
+                  {
+                    "cells": [
+                      {
+                        "text": "TIP OF THE ICEBERG",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "TIP OF THE ICEBERG"
+                            ],
+                            "text": "TIP OF THE ICEBERG"
+                          }
+                        ]
+                      },
+                      {
+                        "text": "The small piece or amount of something that we can see.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "The small piece or amount of ",
+                              "something",
+                              " that we can see. "
+                            ],
+                            "text": "The small piece or amount of something that we can see. "
+                          }
+                        ]
+                      },
+                      {
+                        "text": "Handing over the project was just the tip of the iceberg.",
+                        "paragraphs": [
+                          {
+                            "runs": [
+                              "Handing over the project was just the tip of the iceberg."
+                            ],
+                            "text": "Handing over the project was just the tip of the iceberg."
+                          }
+                        ]
+                      }
+                    ],
+                    "height": 450975
+                  }
+                ],
+                "shapeId": "234",
+                "shapeName": "Google Shape;234;gd6c0dc1310_0_17",
+                "columnWidths": [
+                  1351275,
+                  3225425,
+                  3399725
+                ]
+              }
+            ],
+            "figures": [],
+            "recordId": "1fPwDdnWKKiU26J_NLZal_Yps8mHasmSz",
+            "paragraphs": [
+              "PHRASES",
+              "MEANING",
+              "EXAMPLE",
+              "A SMOKING GUN",
+              "Something that is obvious; an indisputable truth.",
+              "You should have seen the smoking gun; that man could not be trusted.",
+              "HIDDEN AGENDA",
+              "Something that may refer to a secret plan or an implication.",
+              "I would not have expected Freddy to have a hidden agenda.",
+              "A SHOT IN THE DARK",
+              "To have an ide or suspicion about someone or something.",
+              "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that.",
+              "NUTS AND BOLTS",
+              "The detailed information about someone or something and how it works.",
+              "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!",
+              "AN INSIDE STORY",
+              "Considered as an advice or a hot tip.",
+              "What an inside story John has just dropped us.",
+              "A STRAW IN THE WIND",
+              "It refers to an indication or sign that one can see or get from someone or something.",
+              "We should have seen the straw in the wind; now, we can’t do anything.",
+              "UPPER HAND",
+              "It means someone or something has a position of advantage and control.",
+              "Fortunately, I had already upper-handed the rest of the contestants.",
+              "TIP OF THE ICEBERG",
+              "The small piece or amount of something that we can see.",
+              "Handing over the project was just the tip of the iceberg.",
+              "Look at the phrases and discuss them with your teacher. Did you know them?"
+            ],
+            "slideNumber": 6,
+            "figureEvidencePresent": false
+          }
+        },
+        "learningRevision": "course-guided-v1"
+      },
+      "type": "structured-content",
+      "title": "Consulta las formas.",
+      "tables": [
+        [
+          [
+            "PHRASES",
+            "MEANING",
+            "EXAMPLE"
+          ],
+          [
+            "A SMOKING GUN",
+            "Something that is obvious; an indisputable truth.",
+            "You should have seen the smoking gun; that man could not be trusted."
+          ],
+          [
+            "HIDDEN AGENDA",
+            "Something that may refer to a secret plan or an implication.",
+            "I would not have expected Freddy to have a hidden agenda."
+          ],
+          [
+            "A SHOT IN THE DARK",
+            "To have an ide or suspicion about someone or something.",
+            "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that."
+          ],
+          [
+            "NUTS AND BOLTS",
+            "The detailed information about someone or something and how it works.",
+            "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!"
+          ],
+          [
+            "AN INSIDE STORY",
+            "Considered as an advice or a hot tip.",
+            "What an inside story John has just dropped us."
+          ],
+          [
+            "A STRAW IN THE WIND",
+            "It refers to an indication or sign that one can see or get from someone or something.",
+            "We should have seen the straw in the wind; now, we can’t do anything."
+          ],
+          [
+            "UPPER HAND",
+            "It means someone or something has a position of advantage and control.",
+            "Fortunately, I had already upper-handed the rest of the contestants."
+          ],
+          [
+            "TIP OF THE ICEBERG",
+            "The small piece or amount of something that we can see.",
+            "Handing over the project was just the tip of the iceberg."
+          ]
+        ]
+      ],
+      "content": {
+        "rows": [
+          [
+            "A SMOKING GUN",
+            "Something that is obvious; an indisputable truth.",
+            "You should have seen the smoking gun; that man could not be trusted."
+          ],
+          [
+            "HIDDEN AGENDA",
+            "Something that may refer to a secret plan or an implication.",
+            "I would not have expected Freddy to have a hidden agenda."
+          ],
+          [
+            "A SHOT IN THE DARK",
+            "To have an ide or suspicion about someone or something.",
+            "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that."
+          ],
+          [
+            "NUTS AND BOLTS",
+            "The detailed information about someone or something and how it works.",
+            "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!"
+          ],
+          [
+            "AN INSIDE STORY",
+            "Considered as an advice or a hot tip.",
+            "What an inside story John has just dropped us."
+          ],
+          [
+            "A STRAW IN THE WIND",
+            "It refers to an indication or sign that one can see or get from someone or something.",
+            "We should have seen the straw in the wind; now, we can’t do anything."
+          ],
+          [
+            "UPPER HAND",
+            "It means someone or something has a position of advantage and control.",
+            "Fortunately, I had already upper-handed the rest of the contestants."
+          ],
+          [
+            "TIP OF THE ICEBERG",
+            "The small piece or amount of something that we can see.",
+            "Handing over the project was just the tip of the iceberg."
+          ]
+        ],
+        "headers": [
+          "PHRASES",
+          "MEANING",
+          "EXAMPLE"
+        ]
+      },
+      "sourceText": [
+        "PHRASES MEANING EXAMPLE A SMOKING GUN Something that is obvious; an indisputable truth You should have seen the smoking gun; that man could not be trusted. HIDDEN AGENDA Something that may refer to a secret plan or an implication I would not have expected Freddy to have a hidden agenda. A SHOT IN THE DARK To have an ide or suspicion about someone or something Thank God I had already gotten a shot in the dark about Tim, he almost got away with that. NUTS AND BOLTS The detailed information about someone or something and how it works If it had been me, I would have gone nut and bolts with Jenny; now she’s gone! AN INSIDE STORY Considered as an advice or a hot tip What an inside story John has just dropped us. A STRAW IN THE WIND It refers to an indication or sign that one can see or get from someone or something We should have seen the straw in the wind; now, we can’t do anything. UPPER HAND It means someone or something has a position of advantage and control Fortunately, I had already upper-handed the rest of the contestants. TIP OF THE ICEBERG The small piece or amount of something that we can see Handing over the project was just the tip of the iceberg.",
+        "Look at the phrases and discuss them with your teacher. Did you know them?"
+      ],
+      "sourceTitle": "PHRASES MEANING EXAMPLE A SMOKING GUN Something that is obvious; an indisputable truth You should have seen the smoking gun; that man could not be trusted. HIDDEN AGENDA Something that may refer to a secret plan or an implication I would not have expected Freddy to have a hidden agenda. A SHOT IN THE DARK To have an ide or suspicion about someone or something Thank God I had already gotten a shot in the dark about Tim, he almost got away with that. NUTS AND BOLTS The detailed information about someone or something and how it works If it had been me, I would have gone nut and bolts with Jenny; now she’s gone! AN INSIDE STORY Considered as an advice or a hot tip What an inside story John has just dropped us. A STRAW IN THE WIND It refers to an indication or sign that one can see or get from someone or something We should have seen the straw in the wind; now, we can’t do anything. UPPER HAND It means someone or something has a position of advantage and control Fortunately, I had already upper-handed the rest of the contestants. TIP OF THE ICEBERG The small piece or amount of something that we can see Handing over the project was just the tip of the iceberg.",
+      "nativeParagraphs": [
+        "PHRASES",
+        "MEANING",
+        "EXAMPLE",
+        "A SMOKING GUN",
+        "Something that is obvious; an indisputable truth.",
+        "You should have seen the smoking gun; that man could not be trusted.",
+        "HIDDEN AGENDA",
+        "Something that may refer to a secret plan or an implication.",
+        "I would not have expected Freddy to have a hidden agenda.",
+        "A SHOT IN THE DARK",
+        "To have an ide or suspicion about someone or something.",
+        "Thank God I had already gotten a shot in the dark about Tim, he almost got away with that.",
+        "NUTS AND BOLTS",
+        "The detailed information about someone or something and how it works.",
+        "If it had been me, I would have gone nut and bolts with Jenny; now she’s gone!",
+        "AN INSIDE STORY",
+        "Considered as an advice or a hot tip.",
+        "What an inside story John has just dropped us.",
+        "A STRAW IN THE WIND",
+        "It refers to an indication or sign that one can see or get from someone or something.",
+        "We should have seen the straw in the wind; now, we can’t do anything.",
+        "UPPER HAND",
+        "It means someone or something has a position of advantage and control.",
+        "Fortunately, I had already upper-handed the rest of the contestants.",
+        "TIP OF THE ICEBERG",
+        "The small piece or amount of something that we can see.",
+        "Handing over the project was just the tip of the iceberg.",
+        "Look at the phrases and discuss them with your teacher. Did you know them?"
+      ]
+    },
+    "order": 10,
+    "title": "PHRASES MEANING EXAMPLE A SMOKING GUN Something that is obvious; an indisputable truth You should have seen the smoking gun; that man could not be trusted. HIDDEN AGENDA Something that may refer to a secret plan or an implication I would not have expected Freddy to have a hidden agenda. A SHOT IN THE DARK To have an ide or suspicion about someone or something Thank God I had already gotten a shot in the dark about Tim, he almost got away with that. NUTS AND BOLTS The detailed information about someone or something and how it works If it had been me, I would have gone nut and bolts with Jenny; now she’s gone! AN INSIDE STORY Considered as an advice or a hot tip What an inside story John has just dropped us. A STRAW IN THE WIND It refers to an indication or sign that one can see or get from someone or something We should have seen the straw in the wind; now, we can’t do anything. UPPER HAND It means someone or something has a position of advantage and control Fortunately, I had already upper-handed the rest of the contestants. TIP OF THE ICEBERG The small piece or amount of something that we can see Handing over the project was just the tip of the iceberg.",
+    "lessonId": "cmnmm9tei0028w1qkri0q23eb",
+    "parentId": null,
+    "contentType": "RICH_TEXT"
+  }
+]
