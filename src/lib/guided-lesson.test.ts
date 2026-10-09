@@ -11,6 +11,16 @@ function block(type: Block['type'], id: string, extra: Record<string, unknown> =
 }
 
 describe('buildGuidedLessonSteps', () => {
+  it('omits archived native activities without changing their historical payload', () => {
+    const archived = block('multiple_choice', 'old-question', {
+      items: [{ id: 'old-item', question: 'Original question', options: [] }],
+      data: { archivedPilotSource: true },
+    })
+    expect(buildGuidedLessonSteps([archived, block('text', 'current')])
+      .flatMap(step => step.blocks.map(item => item.id))).toEqual(['current'])
+    expect(archived.type).toBe('multiple_choice')
+  })
+
   it('builds the pilot sequence from authored blocks and keeps containers intact', () => {
     const roots = [
       block('audio', 'audio-intro'),

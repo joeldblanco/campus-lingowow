@@ -63,6 +63,7 @@ import Image from 'next/image'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { sanitizeHtml } from '@/lib/sanitize-html'
+import { getLearningReviewChecklist, LearningReviewChecklist } from '@/components/lessons/learning-review-checklist'
 import { getGuidedEssayPrompt } from '@/lib/guided-essay-prompt'
 import {
   buildGuidedMatchOptions,
@@ -4101,6 +4102,8 @@ function EssayBlockPreview({
   const [localText, setLocalText] = useState('')
   const [gradingState, setGradingState] = useState<'idle' | 'draft' | 'loading' | 'success' | 'error'>('idle')
   const [showProfileExample, setShowProfileExample] = useState(false)
+  const [reviewReady, setReviewReady] = useState(false)
+  const reviewChecklist = guidedAppearance && !isExamMode && !block.aiGrading ? getLearningReviewChecklist(block.data?.reviewChecklist) : []
 
   // En modo examen, usar las respuestas externas; de lo contrario, usar estado local
   const externalText = (answer as string) || ''
@@ -4130,7 +4133,7 @@ function EssayBlockPreview({
   useGuidedCompletion(
     guidedAppearance,
     gradingState === 'success',
-    gradingState !== 'idle',
+    gradingState !== 'idle' || reviewChecklist.length > 0,
     onGuidedCompletionChange
   )
   useGuidedActionPresence(
@@ -4141,6 +4144,7 @@ function EssayBlockPreview({
 
   const handleTextChange = (value: string) => {
     if (isTeacherInClassroom) return
+    setReviewReady(false)
     if (guidedAppearance) setGradingState('draft')
     setText(value)
 
@@ -4271,6 +4275,11 @@ function EssayBlockPreview({
         </p>
       )}
 
+      {hasEssayAction && reviewChecklist.length > 0 && <LearningReviewChecklist key={text} items={reviewChecklist} onReady={ready => {
+        setReviewReady(ready)
+        if (!ready && gradingState === 'success') setGradingState('draft')
+      }} />}
+      {reviewChecklist.length > 0 && gradingState === 'success' && <p role="status" className="text-base text-[#08775E]">Autoevaluación completada.</p>}
       {hasEssayAction &&
         (() => {
           const essayAction = block.aiGrading ? (
@@ -4292,10 +4301,11 @@ function EssayBlockPreview({
           ) : (
             <Button
               size="sm"
-              disabled={!meetsMinWords}
+              disabled={reviewChecklist.length > 0 ? !meetsMinWords || !withinMaxWords || !text.trim() || !reviewReady : !meetsMinWords}
+              onClick={reviewChecklist.length > 0 ? () => setGradingState('success') : undefined}
               className={guidedAppearance ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
             >
-              Enviar
+              {reviewChecklist.length > 0 ? 'Confirmar revisión' : 'Enviar'}
             </Button>
           )
 
@@ -4352,12 +4362,15 @@ function RecordingBlockPreview({
   const audioChunksRef = useRef<Blob[]>([])
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
+  const [reviewReady, setReviewReady] = useState(false)
+  const reviewChecklist = guidedAppearance && !isExamMode && block.aiGrading === false ? getLearningReviewChecklist(block.data?.reviewChecklist) : []
   const recordingStateCallbackRef = useRef(onRecordingStateChange)
   const classroomSync = useClassroomSync()
   const isTeacherInClassroom = classroomSync.isInClassroom && classroomSync.isTeacher
 
   const hasRecordingAction =
     Boolean(audioUrl) && hasRecorded && !isRecording && !isUploading && block.aiGrading !== false
+  const hasReviewAction = reviewChecklist.length > 0 && !isTeacherInClassroom && !isExamMode && gradingState !== 'success'
   const hasPresentationAction =
     isUnit1Presentation &&
     !isTeacherInClassroom &&
@@ -4372,12 +4385,12 @@ function RecordingBlockPreview({
   useGuidedCompletion(
     guidedAppearance,
     gradingState === 'success',
-    gradingState !== 'idle',
+    gradingState !== 'idle' || reviewChecklist.length > 0,
     onGuidedCompletionChange
   )
   useGuidedActionPresence(
     guidedAppearance,
-    (hasRecordingAction || hasPresentationAction) && gradingState !== 'success',
+    (hasRecordingAction || hasPresentationAction || hasReviewAction) && gradingState !== 'success',
     onGuidedActionPresence
   )
 
@@ -4517,6 +4530,7 @@ function RecordingBlockPreview({
       stopRecording()
     } else {
       if (guidedAppearance) setGradingState('draft')
+      setReviewReady(false)
       // Si ya hay una grabación, limpiarla primero
       if (audioUrl && !(answer as { audioUrl?: string })?.audioUrl) {
         URL.revokeObjectURL(audioUrl)
@@ -4726,9 +4740,15 @@ function RecordingBlockPreview({
         )}
 
         {/* AI Grading Button */}
-        {(hasRecordingAction || hasPresentationAction) &&
+        {reviewChecklist.length > 0 && audioUrl && !isRecording && <LearningReviewChecklist key={audioUrl} items={reviewChecklist} onReady={ready => {
+          setReviewReady(ready)
+          if (!ready && gradingState === 'success') setGradingState('draft')
+        }} />}
+        {reviewChecklist.length > 0 && gradingState === 'success' && <p role="status" className="text-base text-[#08775E]">Autoevaluación completada.</p>}
+        {(hasRecordingAction || hasPresentationAction || hasReviewAction) &&
           (() => {
-            const gradingAction = hasRecordingAction ? (
+            const gradingAction = hasReviewAction ? <Button type="button" className={GUIDED_PRIMARY_ACTION_CLASS}
+              disabled={!audioUrl || isRecording || isUploading || !reviewReady} onClick={() => setGradingState('success')}>Confirmar revisión</Button> : hasRecordingAction ? (
               <RecordingAIGrading
                 audioUrl={audioUrl as string}
                 instruction={block.instruction || block.prompt || ''}
@@ -5486,9 +5506,11 @@ function MultipleChoiceBlockPreview(props: Parameters<typeof ClassicMultipleChoi
   useGuidedActionPresence(automatic, false, automatic ? props.onGuidedActionPresence : undefined)
   return automatic ? <GuidedChoiceActivity
     shuffleChoices
+    waitForContinue={props.block.data?.feedbackMode === 'continue'}
+    actionTarget={props.guidedActionTarget}
     questions={items.map(item => ({
       id: item.id, prompt: item.question, choices: guidedTruthOptionLabels(item.options),
-      correctChoiceId: item.correctOptionId, explanation: props.block.explanation,
+      correctChoiceId: item.correctOptionId, explanation: 'explanation' in item ? item.explanation ?? props.block.explanation : props.block.explanation,
     }))}
     onAnswer={guidedClassroomSync.handleAnswer}
     onNavigation={guidedClassroomSync.handleNavigation}

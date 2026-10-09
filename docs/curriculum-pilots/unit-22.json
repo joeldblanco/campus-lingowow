@@ -1,0 +1,2265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": "pilot-unit-curriculum.v1",
+  "unit": {
+    "number": 22,
+    "id": "cmkpx0d310001gy04zr4lq99y",
+    "title": "Behaving properly",
+    "language": "en",
+    "goal": "Talk about people's behavior in places and under circumstances by choosing and producing modals that match suggestion, obligation, prohibition, permission, or no obligation.",
+    "objectiveEvidence": {
+      "sourceRowId": "course-guided-cmkpx0d310001gy04zr4lq99y-text-2-communicative-function-talk-about-people-s-behavior-in-places-and-002",
+      "sourceSlide": "cmkpx0d310001gy04zr4lq99y:slide:2",
+      "quote": "Talk about people’s behavior in places and under circumstances."
+    },
+    "prerequisites": [
+      "Base-form verbs after a modal",
+      "Subjects and simple present questions",
+      "Home and school situations",
+      "will may be recalled only as a contrast; it is not a new focus"
+    ]
+  },
+  "pedagogy": {
+    "focus": [
+      "should for a suggestion or advice",
+      "have to and must for obligation; context can make them overlap",
+      "mustn't and can't for prohibition",
+      "can and can't for permission questions and answers",
+      "don't have to for no obligation: the action remains optional"
+    ],
+    "nonGoals": [
+      "Do not teach have to and must as rigid, mutually exclusive categories.",
+      "Do not claim that must is always personal or that have to is always external.",
+      "Do not turn an ambiguous photograph into a single graded fact without a stated context.",
+      "Do not infer listening answers from an audio URL when a verified transcript is unavailable."
+    ],
+    "modalMap": [
+      {
+        "form": "should",
+        "function": "suggestion",
+        "example": "You should call home first.",
+        "note": "The speaker presents a helpful or recommended action."
+      },
+      {
+        "form": "have to",
+        "function": "obligation",
+        "example": "You have to wear a badge here.",
+        "note": "Often foregrounds a rule, requirement, or responsibility from the situation; must can also express the same obligation."
+      },
+      {
+        "form": "must",
+        "function": "obligation",
+        "example": "I must remember to greet the host.",
+        "note": "Can sound like a strong speaker commitment or requirement; context, not a rigid label, determines the force."
+      },
+      {
+        "form": "mustn't",
+        "function": "prohibition",
+        "example": "You mustn't touch the controls.",
+        "note": "The action is disallowed."
+      },
+      {
+        "form": "can't",
+        "function": "prohibitionOrPermissionDenied",
+        "example": "Can she touch the controls? No, she can't.",
+        "note": "Can ask for permission; can't can deny permission or communicate a prohibition in context."
+      },
+      {
+        "form": "don't have to",
+        "function": "noObligation",
+        "example": "The invitation says lunch is provided and bringing your own lunch is optional: You don't have to bring food.",
+        "note": "The action is optional. It does not mean the action is forbidden."
+      }
+    ],
+    "criticalContrast": {
+      "mustnt": {
+        "meaning": "prohibited",
+        "example": "The sign says No food: You mustn't bring food in.",
+        "learnerCheck": "The speaker cannot choose that action."
+      },
+      "dontHaveTo": {
+        "meaning": "not necessary; optional",
+        "example": "The invitation says lunch is provided and bringing your own lunch is optional: You don't have to bring food.",
+        "learnerCheck": "The speaker may bring food, but it is unnecessary."
+      }
+    },
+    "sequenceRationale": "The eight stages teach the modal meanings before a minimal permission retrieval, use four selected images for focused contextual practice, preserve the remaining source images in the archive, then move to verified listening, form repair, meaning selection, guided role-play, and a real code-of-conduct task."
+  },
+  "visualRequirements": {
+    "approvedReferences": [
+      "docs/design/graphic-guide-v1/README.md",
+      "docs/design/graphic-guide-v1/scene-acceptance-v5.md",
+      "docs/design/graphic-guide-v1/characters.webp",
+      "docs/design/graphic-guide-v1/scenes-ui.webp",
+      "docs/design/content-format-mockups/v3/README.md",
+      "docs/design/content-format-mockups/v3/01-basic-practice.webp",
+      "docs/design/content-format-mockups/v3/02-advanced-practice.webp",
+      "docs/design/content-format-mockups/v3/03-language.webp",
+      "docs/design/content-format-mockups/v3/04-multimedia.webp",
+      "docs/design/content-format-mockups/v3/05-production.webp"
+    ],
+    "composition": [
+      "Use the approved adult semirealistic painterly family, ivory surface, lilac organic decoration, and navy serif headings.",
+      "Keep the complete environment and the complete source image in view; use contain for contentful photos and never crop a face or meaningful object.",
+      "Each screen has a small unit/status line, one task heading, one short prompt, the actual response area, inline feedback, and one primary footer action.",
+      "Keep text short and readable: body at least 16px, heading 32px desktop/26px mobile, spacing from the 8/16/24/32/48px scale, controls at least 44px.",
+      "Use a cobalt primary action that changes from Comprobar to Siguiente only after checking; keep Saltar ejercicio as the only footer secondary action.",
+      "Wrong clicks leave the answer visible, announce a concise correction, and allow a retry; never use color alone for state.",
+      "On mobile, stack media and options in reading order, preserve the full image and keep the footer reachable without horizontal overflow."
+    ],
+    "identity": "If a new illustration is needed for the host/classroom context, use only the approved Lucas, Carl, or interlocutora identities. Do not assign names or new identities to the source-photo subjects."
+  },
+  "sourceProvenance": {
+    "snapshot": "C:\\Users\\ACER\\.codex\\visualizations\\2026\\10\\03\\01a102c6-28e9-7d12-ab7a-d8b58f36616a\\pedagogical-review\\dev-current-snapshot.json",
+    "sourceDeckUrl": "https://docs.google.com/presentation/d/e/2PACX-1vSnE7nV13b3CHtxW--tM13-EZPfNSDRJ1M0Pw8OoIQjSsK6zMKkvKdF6DxRgzhaiQ/pub?start=false&loop=false&delayms=3000",
+    "recordId": "13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB",
+    "deckTitle": "Behaving Properly - Unit 22.pptx",
+    "sourceDigest": "de76ada2ecf9e58de34fb9da1ad095b09268fd8e490324c240e7d754a498c44c"
+  },
+  "sourceRows": [
+    {
+      "id": "block_1769114361836",
+      "order": 0,
+      "type": "teacher_notes",
+      "title": "Embedded Content",
+      "sourceIDs": [
+        "block_1769114361836"
+      ],
+      "sourceSlides": []
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-1-22-001",
+      "order": 1,
+      "type": "teacher_notes",
+      "title": "22",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:1"
+      ],
+      "sourceSlides": [
+        1
+      ],
+      "sourceText": [
+        "Behaving Properly"
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-text-2-communicative-function-talk-about-people-s-behavior-in-places-and-002",
+      "order": 2,
+      "type": "text",
+      "title": "Communicative Function Talk about people’s behavior in places and under circumstances.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:2"
+      ],
+      "sourceSlides": [
+        2
+      ],
+      "sourceText": [
+        "Communicative Function Talk about people’s behavior in places and under circumstances.",
+        "Competencies Manage the vocabulary and grammatical aspect in relation to people’s behaviour in places and under circumstances in written and spoken language."
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-3-introduction-003",
+      "order": 3,
+      "type": "teacher_notes",
+      "title": "Introduction",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:3"
+      ],
+      "sourceSlides": [
+        3
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+      "order": 4,
+      "type": "text",
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ],
+      "sourceText": [
+        "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+      "order": 5,
+      "type": "image",
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-84c0a93b334fd921.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image9.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 4."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+      "order": 6,
+      "type": "audio",
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ],
+      "sourceText": [
+        "A. Look at the picture. What is it suggesting? What is today’s topic?",
+        "B. Listen to the audio. What are they talking about? Tell your teacher and answer his questions."
+      ],
+      "audio": {
+        "url": "/audio/lessons/course/unit-22-audio-01.mp3",
+        "publicUrl": "/audio/lessons/course/unit-22-audio-01.mp3",
+        "publicHref": "/audio/lessons/course/unit-22-audio-01.mp3",
+        "digest": "38e367b482888d2938516ac8ecc14e0c1ae73602709429717bfe07341080ef27",
+        "originalMediaUrl": "https://drive.google.com/file/d/1j2-VQ2SyccCdvm4_yWtCU59BPwY93fgV/view?usp=drivesdk",
+        "transcript": "Tom, what happened in the room? I had some friends coming over and we had lunch there. Tom, how many times do I have to tell you that you must ask for permission to do that? I know that, but... No, but you have to call home first and ask, and you know you should at least do your house chores before asking for anything. Come on, Dad, you should not overreact. Am I what? You should not say another thing, young man. Go and clean your room. Okay, I'll do it."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-007",
+      "order": 7,
+      "type": "text",
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-008",
+      "order": 8,
+      "type": "essay",
+      "title": "A. Look at the picture. What is it suggesting? What is today’s topic?",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:4"
+      ],
+      "sourceSlides": [
+        4
+      ],
+      "reviewId": "u22-s04-review"
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-5-vocabulary-introduction-009",
+      "order": 9,
+      "type": "teacher_notes",
+      "title": "Vocabulary Introduction",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:5"
+      ],
+      "sourceSlides": [
+        5
+      ],
+      "sourceText": [
+        "A glimpse to new words"
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-010",
+      "order": 10,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-5a3e10c0d6402a54.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image10.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      },
+      "sourceText": [
+        "RUDE",
+        "MOODY",
+        "SPOILED",
+        "DISRESPECTFUL",
+        "CARELESS",
+        "HYPOCRITE",
+        "UNGRATEFUL",
+        "GOSSIPER"
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-011",
+      "order": 11,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-cf1a7744da68e335.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image11.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-012",
+      "order": 12,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-b3455fc7d4c61977.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image12.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-013",
+      "order": 13,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-fad308302e847d89.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image13.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-014",
+      "order": 14,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-ea14d1dbd3f52ae0.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image14.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-015",
+      "order": 15,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-80cae609e4449034.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image6.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-016",
+      "order": 16,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-02befd2b3d0dd0de.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image7.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-017",
+      "order": 17,
+      "type": "image",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "asset": {
+        "url": "/images/lessons/course/source-7278ba0e5cecca87.webp",
+        "assetPath": "C:\\Users\\ACER\\.codex\\worktrees\\course-source-import\\docs\\audit\\source-originals\\images\\B-unit-22-13IJkli4Zp3qWvwidjPw1nMFqwns9ntXB\\image8.jpg",
+        "alt": "Original instructional figure from Unit 22, slide 6."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-6-look-at-the-information-listen-to-your-teacher-and-repea-018",
+      "order": 18,
+      "type": "teacher_notes",
+      "title": "Look at the information, listen to your teacher and repeat the words. Discuss about them.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:6"
+      ],
+      "sourceSlides": [
+        6
+      ],
+      "reviewId": "u22-s06-review"
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-7-grammar-analysis-019",
+      "order": 19,
+      "type": "teacher_notes",
+      "title": "Grammar Analysis",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:7"
+      ],
+      "sourceSlides": [
+        7
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-8-statements-questions-answers-1-you-should-talk-to-h-020",
+      "order": 20,
+      "type": "structured-content",
+      "title": "Statements Questions Answers",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:8"
+      ],
+      "sourceSlides": [
+        8
+      ],
+      "sourceText": [
+        "Statements Questions Answers 1 You should talk to her. Should I talk to her? Yes, you should talk to her. 2 We have to be nice to them. Do you have to be nice to them? No, we don’t have to be nice to them. 3 She must be careful now. Must she be careful now? No, she mustn't be careful now. 4 They can’t act like children. Can they act like children? Yes, they can act like children.",
+        "You should talk to her. / Should I talk to her? / Yes, you should talk to her.",
+        "We have to be nice to them. / Do you have to be nice to them? / No, we don’t have to be nice to them.",
+        "She must be careful now. / Must she be careful now? / No, she mustn't be careful now.",
+        "They can’t act like children. / Can they act like children? / Yes, they can act like children.",
+        "We can talk about people’s behaviour and how they are supposed to act by using modals.",
+        "To consider 1. All verbs go in simple form after a modal. 2. Modals work with all pronouns with no problem. 3. Modals affect the main verbs according to the speaker's intention. 4. Would is also a common modal; You’ll hear more of it in an upcoming lesson."
+      ],
+      "sourceNote": "The third and fourth source examples are not reliable semantic answer pairs without a context. Scene u22-s05 repairs the form with a stated situation and does not reuse the incoherent negative answer as a key."
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-text-8-statements-questions-answers-1-you-should-talk-to-her-should-i-ta-021",
+      "order": 21,
+      "type": "text",
+      "title": "Statements Questions Answers",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:8"
+      ],
+      "sourceSlides": [
+        8
+      ],
+      "sourceText": [
+        "Statements Questions Answers 1 You should talk to her. Should I talk to her? Yes, you should talk to her. 2 We have to be nice to them. Do you have to be nice to them? No, we don’t have to be nice to them. 3 She must be careful now. Must she be careful now? No, she mustn't be careful now. 4 They can’t act like children. Can they act like children? Yes, they can act like children.",
+        "We can talk about people’s behaviour and how they are supposed to act by using modals.",
+        "To consider 1. All verbs go in simple form after a modal. 2. Modals work with all pronouns with no problem. 3. Modals affect the main verbs according to the speaker's intention. 4. Would is also a common modal; You’ll hear more of it in an upcoming lesson."
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-9-language-use-022",
+      "order": 22,
+      "type": "teacher_notes",
+      "title": "Language Use",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:9"
+      ],
+      "sourceSlides": [
+        9
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-10-we-can-use-the-modals-to-indicate-different-meanin-023",
+      "order": 23,
+      "type": "structured-content",
+      "title": "We can use the modals to indicate different meanings in messages.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:10"
+      ],
+      "sourceSlides": [
+        10
+      ],
+      "sourceText": [
+        "Suggestions: They should not talk loud.",
+        "Responsibility: She has to finish his homework.",
+        "Obligation: I must act normal before her.",
+        "Prohibition: You must not hit your sister. You can’t yell at your mum."
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-text-10-we-can-use-the-modals-to-indicate-different-meanings-in-messages-024",
+      "order": 24,
+      "type": "text",
+      "title": "We can use the modals to indicate different meanings in messages.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:10"
+      ],
+      "sourceSlides": [
+        10
+      ],
+      "sourceText": [
+        "To consider 1. There are other uses for each of the modals. 2. Can also works with abilities."
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-11-let-s-practice-025",
+      "order": 25,
+      "type": "teacher_notes",
+      "title": "Let’s Practice",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:11"
+      ],
+      "sourceSlides": [
+        11
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-audio-12-a-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-026",
+      "order": 26,
+      "type": "audio",
+      "title": "A. Listen to the audio and answer the questions your teacher makes.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:12"
+      ],
+      "sourceSlides": [
+        12
+      ],
+      "sourceText": [
+        "A. Listen to the audio and answer the questions your teacher makes.",
+        "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly."
+      ],
+      "audio": {
+        "url": "/audio/lessons/course/unit-22-audio-02.mp3",
+        "publicUrl": "/audio/lessons/course/unit-22-audio-02.mp3",
+        "publicHref": "/audio/lessons/course/unit-22-audio-02.mp3",
+        "digest": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916",
+        "originalMediaUrl": "https://drive.google.com/file/d/1fzcZNQWmAXsdMNLNVbxDbHSACw3LAodl/view?usp=drivesdk",
+        "transcript": "Man, I'm finally visiting Heather's house. Wait, what? I mean like, having dinner with family? Yes, like that. Oh boy. What should I wear? How am I supposed to act? Calm down. You should act normal, but you must look grateful and honoured. And overall, you must not show that moody side of you. Moody side? Me? Never mind. How about being honoured? Well, you must dress the parents once you are there and tell them how honoured you are for the invitation. Do I have to smile all night? No, there will be hypocrisy, but you need to look happy and you must not ask for more food. What if I'm hungry? You should wait for them to tell you and you should not look hungry, okay? Okay, I will do my best. And you should not be bossy. You are my friend. I'm not bossy. I have a talent for leading people."
+      }
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-text-12-a-listen-to-the-audio-and-answer-the-questions-your-teacher-make-027",
+      "order": 27,
+      "type": "text",
+      "title": "A. Listen to the audio and answer the questions your teacher makes.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:12"
+      ],
+      "sourceSlides": [
+        12
+      ],
+      "sourceText": [
+        "A. Listen to the audio and answer the questions your teacher makes.",
+        "B. Write 8 sentences addressing children’s behaviour at home, in public, at school, etc. Remember to use the different modals and to contextualize the sentences properly."
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-essay-12-a-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-028",
+      "order": 28,
+      "type": "essay",
+      "title": "A. Listen to the audio and answer the questions your teacher makes.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:12"
+      ],
+      "sourceSlides": [
+        12
+      ],
+      "reviewId": "u22-s12-b",
+      "sourcePrompt": "Write eight behaviour sentences using the different modals."
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-multiple-choice-12-a-listen-to-the-audio-and-answer-the-questions-your-t-029",
+      "order": 29,
+      "type": "multiple_choice",
+      "title": "A. Listen to the audio and answer the questions your teacher makes.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:12"
+      ],
+      "sourceSlides": [
+        12
+      ],
+      "reviewId": "source-listening-questions-preserved-in-u22-s06"
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-13-c-read-the-following-paragraph-extract-sentences-w-030",
+      "order": 30,
+      "type": "structured-content",
+      "title": "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:13"
+      ],
+      "sourceSlides": [
+        13
+      ],
+      "sourceText": [
+        "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+        "An insight I always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me.",
+        "Suggestions Responsibility Obligation Prohibition"
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-text-13-c-read-the-following-paragraph-extract-sentences-with-the-functi-031",
+      "order": 31,
+      "type": "text",
+      "title": "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:13"
+      ],
+      "sourceSlides": [
+        13
+      ],
+      "sourceText": [
+        "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+        "An insight I always talk to myself, I find it interesting and refreshing. I know I should talk to other people for advise or just to share some of the things or situations I live, but it is very difficult. People have to be trustworthy and they need to prove themselves friend. “I should not look back into other bad experiences” I say to myself all the time; however, I must be clear too and I can’t be friends with everyone at first. People must give back what they receive and they should act towards others the same way others act towards them, but I guess not everyone thinks like me.",
+        "Suggestions Responsibility Obligation Prohibition"
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-essay-13-c-read-the-following-paragraph-extract-sentences-with-the-funct-032",
+      "order": 32,
+      "type": "essay",
+      "title": "C. Read the following paragraph, extract sentences with the functions studied and locate them in the space provided.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:13"
+      ],
+      "sourceSlides": [
+        13
+      ],
+      "reviewId": "u22-s13-c",
+      "sourcePrompt": "Extract modal sentences and classify them as suggestions, responsibility, obligation or prohibition."
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-recording-14-d-discuss-with-your-teacher-how-people-should-be-when-they--033",
+      "order": 33,
+      "type": "recording",
+      "title": "D. Discuss with your teacher how people should be when they claim to be friends with others.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:14"
+      ],
+      "sourceSlides": [
+        14
+      ],
+      "reviewId": "u22-s14-d",
+      "sourcePrompt": "D. Discuss with your teacher how people should be when they claim to be friends with others. What are your considerations on people’s way of acting."
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-essay-14-d-discuss-with-your-teacher-how-people-should-be-when-they-clai-034",
+      "order": 34,
+      "type": "essay",
+      "title": "D. Discuss with your teacher how people should be when they claim to be friends with others.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:14"
+      ],
+      "sourceSlides": [
+        14
+      ],
+      "reviewId": "u22-s14-d",
+      "sourcePrompt": "E. Write a 100 - 120 text where you state your opinion about how people are supposed to act and what they are supposed to consider when finding something that is not theirs."
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-15-congrats-035",
+      "order": 35,
+      "type": "teacher_notes",
+      "title": "Congrats!",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:15"
+      ],
+      "sourceSlides": [
+        15
+      ],
+      "sourceText": [
+        "This is the end of your lesson. Remember to: Rate your teacher after every lesson. Revise the self-study material."
+      ]
+    },
+    {
+      "id": "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-16-2020-the-utterers-corner-all-rights-reserved-036",
+      "order": 36,
+      "type": "teacher_notes",
+      "title": "©2020 The Utterers’ Corner. All rights reserved.",
+      "sourceIDs": [
+        "cmkpx0d310001gy04zr4lq99y:slide:16"
+      ],
+      "sourceSlides": [
+        16
+      ],
+      "sourceText": [
+        "Worldwide Language Community"
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "u22-s01-diagnostic",
+      "stage": 1,
+      "title": "Name the purpose",
+      "type": "multiple_choice",
+      "purpose": "Teach the modal meanings briefly, then retrieve only the familiar permission form before the new function choices.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-text-2-communicative-function-talk-about-people-s-behavior-in-places-and-002",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-10-we-can-use-the-modals-to-indicate-different-meanin-023"
+      ],
+      "prompt": "Read the mini-lesson first. Then retrieve the permission form you already know.",
+      "items": [
+        {
+          "id": "u22-s01-q-can",
+          "sentence": "___ I put my bag here?",
+          "options": [
+            "permission",
+            "obligation",
+            "prohibition"
+          ],
+          "correctOption": "permission",
+          "explanation": "Can I ...? is the familiar permission question. The answer can be No, you can’t when the action is not allowed."
+        }
+      ],
+      "interaction": {
+        "selection": "one option per item by click or keyboard",
+        "primaryAction": [
+          "Comprobar",
+          "Siguiente"
+        ],
+        "secondaryAction": "Saltar ejercicio",
+        "wrongClick": "Keep the choice visible and show: ‘Check the function: advice, required action, or forbidden action.’"
+      },
+      "teacherVariant": "After the mini-lesson, ask the learner to make one permission question with Can I ...? and one negative answer with can’t. Do not test the new modal meanings before teaching them.",
+      "individualVariant": "Read the Spanish mini-lesson, answer the one Can I ...? recall item, then keep the four new meanings visible while continuing.",
+      "runtimeBlocks": [
+        {
+          "id": "u22-s01-preteach-html",
+          "type": "text",
+          "order": 0,
+          "format": "html",
+          "language": "es",
+          "content": "<p>Primero, mira la fuerza de cada forma:</p><ul><li><strong>should</strong> = consejo o recomendación.</li><li><strong>have to</strong> y <strong>must</strong> = obligación; pueden coincidir según el contexto.</li><li><strong>mustn’t</strong> = una acción prohibida.</li><li><strong>don’t have to</strong> = no es necesario; la acción sigue siendo posible.</li></ul><p>Recordatorio conocido: <strong>Can I ...?</strong> pide permiso y <strong>No, you can’t.</strong> lo niega.</p>"
+        },
+        {
+          "id": "u22-s01-diagnostic-mc",
+          "type": "multiple_choice",
+          "question": "Choose the function in the familiar permission question.",
+          "items": [
+            {
+              "id": "u22-s01-q-can",
+              "question": "___ I put my bag here?",
+              "options": [
+                {
+                  "id": "permission",
+                  "text": "permission"
+                },
+                {
+                  "id": "obligation",
+                  "text": "obligation"
+                },
+                {
+                  "id": "prohibition",
+                  "text": "prohibition"
+                }
+              ],
+              "correctOptionId": "permission",
+              "explanation": "Can I ...? is the familiar permission question. The answer can be No, you can’t when the action is not allowed."
+            }
+          ],
+          "explanation": "Can asks for permission; the remaining modal meanings are introduced in the mini-lesson before later practice."
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/01-basic-practice.webp",
+        "requirements": [
+          "navy serif heading",
+          "short prompt above the options",
+          "no decorative card grid that competes with the choices",
+          "single visible primary action and skip"
+        ],
+        "mobile": "Stack the three items; keep each option at least 44px high and keep feedback beside the item."
+      },
+      "preTeach": {
+        "language": "es",
+        "title": "Antes de elegir",
+        "content": "<p>Primero, mira la fuerza de cada forma:</p><ul><li><strong>should</strong> = consejo o recomendación.</li><li><strong>have to</strong> y <strong>must</strong> = obligación; pueden coincidir según el contexto.</li><li><strong>mustn’t</strong> = una acción prohibida.</li><li><strong>don’t have to</strong> = no es necesario; la acción sigue siendo posible.</li></ul><p>Recordatorio conocido: <strong>Can I ...?</strong> pide permiso y <strong>No, you can’t.</strong> lo niega.</p>",
+        "placement": "before-diagnostic-choice"
+      }
+    },
+    {
+      "id": "u22-s02-image-decisions",
+      "stage": 2,
+      "title": "Read behavior in context",
+      "type": "image-plus-choice",
+      "purpose": "Practice modal force from four explicit written situations. The original source images remain archived for history; the learner interprets the stated rule, advice, prohibition, or invitation instead of guessing a person’s personality.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-010",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-011",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-012",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-013",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-014",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-015",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-016",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-017",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-teacher-notes-6-look-at-the-information-listen-to-your-teacher-and-repea-018"
+      ],
+      "pairing": [
+        [
+          "u22-s02-card-1",
+          "u22-s02-card-3"
+        ],
+        [
+          "u22-s02-card-4",
+          "u22-s02-card-6"
+        ]
+      ],
+      "instruction": "Lee cada situación escrita y elige la frase modal que corresponde. Usa la norma, el consejo o la invitación que aparece en el texto; no adivines la personalidad de nadie.",
+      "cards": [
+        {
+          "id": "u22-s02-card-1",
+          "sourceRowId": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-010",
+          "context": "At home, a parent asks a child to tidy up and gives advice about calming down.",
+          "modalQuestion": "The parent is giving advice, not quoting a rule. What fits?",
+          "modalOptions": [
+            "The child should calm down.",
+            "The child mustn’t calm down.",
+            "The child doesn’t have to calm down."
+          ],
+          "modalAnswer": "The child should calm down.",
+          "explanation": "The parent gives advice, so should fits; mustn’t would prohibit calming down and don’t have to would make it optional.",
+          "sourceImageArchived": true
+        },
+        {
+          "id": "u22-s02-card-3",
+          "sourceRowId": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-012",
+          "context": "At work, the office handbook requires respectful language when a coworker gives instructions.",
+          "modalQuestion": "The office handbook requires respectful language. What fits?",
+          "modalOptions": [
+            "Everyone has to use respectful language.",
+            "Everyone mustn’t use respectful language.",
+            "Everyone doesn’t have to use respectful language."
+          ],
+          "modalAnswer": "Everyone has to use respectful language.",
+          "explanation": "The handbook creates an obligation. Have to is a natural fit for an external rule; must could also express the same requirement.",
+          "sourceImageArchived": true
+        },
+        {
+          "id": "u22-s02-card-4",
+          "sourceRowId": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-013",
+          "context": "The host says joining the activity is optional; the guest may choose not to join.",
+          "modalQuestion": "The host says joining is optional. What can the host say?",
+          "modalOptions": [
+            "You don’t have to join.",
+            "You mustn’t join.",
+            "You have to join."
+          ],
+          "modalAnswer": "You don’t have to join.",
+          "explanation": "Optional means no obligation. Don’t have to leaves the choice open; it does not forbid joining.",
+          "sourceImageArchived": true
+        },
+        {
+          "id": "u22-s02-card-6",
+          "sourceRowId": "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-015",
+          "context": "The class rule says students must not gossip about a classmate during class.",
+          "modalQuestion": "The class rule forbids gossip. What fits?",
+          "modalOptions": [
+            "They mustn’t gossip in class.",
+            "They can gossip in class.",
+            "They don’t have to gossip in class."
+          ],
+          "modalAnswer": "They mustn’t gossip in class.",
+          "explanation": "The stated rule makes gossip prohibited. Mustn’t communicates that prohibition.",
+          "sourceImageArchived": true
+        }
+      ],
+      "interaction": {
+        "primaryAction": [
+          "Comprobar",
+          "Siguiente"
+        ],
+        "secondaryAction": "Saltar ejercicio",
+        "clickCorrection": "After a wrong choice, keep the image and response visible; say which meaning to reconsider (suggestion, required, prohibited, or optional) and let the learner try again.",
+        "keyboard": "Select the behavior or modal with Enter/Space; no drag is required."
+      },
+      "teacherVariant": "Show two selected cards at a time. Ask the learner to explain why the written situation calls for advice, an obligation, a prohibition, or optional action.",
+      "individualVariant": "Answer the four selected context cards and write one modal sentence for each. The four archived source images remain reference material; do not turn them into extra practice items or infer pronunciation from them.",
+      "runtimeBlocks": [
+        {
+          "id": "u22-s02-context-html",
+          "type": "text",
+          "order": 0,
+          "format": "html",
+          "language": "es",
+          "content": "<p>Lee la situación antes de elegir. Aquí decides la fuerza del modal, no la personalidad de una persona.</p><ul><li><strong>should</strong> expresa un consejo.</li><li><strong>have to</strong> o <strong>must</strong> expresan una obligación cuando el contexto la exige.</li><li><strong>mustn’t</strong> indica que una acción está prohibida.</li><li><strong>don’t have to</strong> indica que no es necesario; la acción sigue siendo posible.</li></ul><p>Busca la norma, el consejo o la invitación escrita y elige la frase que coincide.</p>"
+        },
+        {
+          "id": "u22-s02-decisions-mc",
+          "type": "multiple_choice",
+          "question": "Lee cada contexto escrito y elige la frase modal que corresponde.",
+          "items": [
+            {
+              "id": "u22-s02-card-1",
+              "question": "At home, a parent asks a child to tidy up and gives advice about calming down. The parent is giving advice, not quoting a rule. What fits?",
+              "options": [
+                {
+                  "id": "the-child-should-calm-down",
+                  "text": "The child should calm down."
+                },
+                {
+                  "id": "the-child-mustn-t-calm-down",
+                  "text": "The child mustn’t calm down."
+                },
+                {
+                  "id": "the-child-doesn-t-have-to-calm-down",
+                  "text": "The child doesn’t have to calm down."
+                }
+              ],
+              "correctOptionId": "the-child-should-calm-down",
+              "explanation": "The parent gives advice, so should fits; mustn’t would prohibit calming down and don’t have to would make it optional."
+            },
+            {
+              "id": "u22-s02-card-3",
+              "question": "At work, the office handbook requires respectful language when a coworker gives instructions. The office handbook requires respectful language. What fits?",
+              "options": [
+                {
+                  "id": "everyone-has-to-use-respectful-language",
+                  "text": "Everyone has to use respectful language."
+                },
+                {
+                  "id": "everyone-mustn-t-use-respectful-language",
+                  "text": "Everyone mustn’t use respectful language."
+                },
+                {
+                  "id": "everyone-doesn-t-have-to-use-respectful-language",
+                  "text": "Everyone doesn’t have to use respectful language."
+                }
+              ],
+              "correctOptionId": "everyone-has-to-use-respectful-language",
+              "explanation": "The handbook creates an obligation. Have to is a natural fit for an external rule; must could also express the same requirement."
+            },
+            {
+              "id": "u22-s02-card-4",
+              "question": "The host says joining the activity is optional; the guest may choose not to join. The host says joining is optional. What can the host say?",
+              "options": [
+                {
+                  "id": "you-don-t-have-to-join",
+                  "text": "You don’t have to join."
+                },
+                {
+                  "id": "you-mustn-t-join",
+                  "text": "You mustn’t join."
+                },
+                {
+                  "id": "you-have-to-join",
+                  "text": "You have to join."
+                }
+              ],
+              "correctOptionId": "you-don-t-have-to-join",
+              "explanation": "Optional means no obligation. Don’t have to leaves the choice open; it does not forbid joining."
+            },
+            {
+              "id": "u22-s02-card-6",
+              "question": "The class rule says students must not gossip about a classmate during class. The class rule forbids gossip. What fits?",
+              "options": [
+                {
+                  "id": "they-mustn-t-gossip-in-class",
+                  "text": "They mustn’t gossip in class."
+                },
+                {
+                  "id": "they-can-gossip-in-class",
+                  "text": "They can gossip in class."
+                },
+                {
+                  "id": "they-don-t-have-to-gossip-in-class",
+                  "text": "They don’t have to gossip in class."
+                }
+              ],
+              "correctOptionId": "they-mustn-t-gossip-in-class",
+              "explanation": "The stated rule makes gossip prohibited. Mustn’t communicates that prohibition."
+            }
+          ],
+          "explanation": "Cada caso presenta su contexto por escrito. Elige la fuerza modal del caso; los archivos de imagen originales están archivados y no son pasos adicionales."
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "requirements": [
+          "show each source asset in full with contain and no face crop",
+          "pair every asset with a short real context card",
+          "preserve the source asset URL and source ID in the data",
+          "reserve a clear text area outside the photo for the question and options"
+        ],
+        "mobile": "One photo, context, and two decision groups per viewport; stack the groups and keep the full photo accessible."
+      },
+      "learnerSourceImageRowIds": [],
+      "archivedSourceImageRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-010",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-011",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-012",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-013",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-014",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-015",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-016",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-017"
+      ],
+      "imageArchive": {
+        "sourceRowIds": [
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-010",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-011",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-012",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-013",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-014",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-015",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-016",
+          "course-guided-cmkpx0d310001gy04zr4lq99y-image-6-look-at-the-information-listen-to-your-teacher-and-repeat-the-wo-017"
+        ],
+        "reason": "All original image assets from the opening slide and slide 6 remain in sourceRows with URLs, asset paths, and source IDs. They are archived reference material and do not create static learner steps."
+      }
+    },
+    {
+      "id": "u22-s03-audio-parent-child",
+      "stage": 3,
+      "title": "Listen for the rules at home",
+      "type": "audio-plus-multiple-choice",
+      "purpose": "Extract only verified modal evidence from the parent-child audio.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006"
+      ],
+      "media": {
+        "url": "/audio/lessons/course/unit-22-audio-01.mp3",
+        "digest": "38e367b482888d2938516ac8ecc14e0c1ae73602709429717bfe07341080ef27",
+        "transcriptStatus": "verified-in-snapshot",
+        "listenLabel": "Listen. You may read the transcript after the first attempt.",
+        "transcript": "Tom, what happened in the room? I had some friends coming over and we had lunch there. Tom, how many times do I have to tell you that you must ask for permission to do that? I know that, but... No, but you have to call home first and ask, and you know you should at least do your house chores before asking for anything. Come on, Dad, you should not overreact. Am I what? You should not say another thing, young man. Go and clean your room. Okay, I'll do it."
+      },
+      "questions": [
+        {
+          "id": "u22-s03-q1",
+          "question": "Why were Tom’s friends in the room?",
+          "options": [
+            "They were having lunch there.",
+            "They were repairing the house.",
+            "They were studying for an exam.",
+            "They were borrowing a car."
+          ],
+          "correctOption": "They were having lunch there.",
+          "evidence": "‘I had some friends coming over and we had lunch there.’",
+          "explanation": "The transcript explicitly says they had lunch in the room."
+        },
+        {
+          "id": "u22-s03-q2",
+          "question": "What must Tom ask for before doing that?",
+          "options": [
+            "permission",
+            "a badge",
+            "more food",
+            "a new phone"
+          ],
+          "correctOption": "permission",
+          "evidence": "‘you must ask for permission to do that’",
+          "explanation": "Must ask for permission expresses the parent’s strong requirement in this exchange."
+        },
+        {
+          "id": "u22-s03-q3",
+          "question": "What does Tom have to do first to ask permission for inviting friends?",
+          "options": [
+            "call home first",
+            "leave the house",
+            "buy lunch",
+            "touch the controls"
+          ],
+          "correctOption": "call home first",
+          "evidence": "‘you have to call home first and ask’",
+          "explanation": "The transcript says he has to call home first and ask. Dad’s separate advice about doing chores is not the answer to this question."
+        },
+        {
+          "id": "u22-s03-q4",
+          "question": "What does Tom say his dad should not do?",
+          "options": [
+            "overreact",
+            "call home",
+            "clean the room",
+            "ask for permission"
+          ],
+          "correctOption": "overreact",
+          "evidence": "‘you should not overreact’",
+          "explanation": "Should not gives Tom’s advice about the father’s reaction."
+        }
+      ],
+      "grading": "graded-listening; all keys are supported by the verified transcript",
+      "interaction": {
+        "primaryAction": [
+          "Comprobar",
+          "Siguiente"
+        ],
+        "secondaryAction": "Saltar ejercicio",
+        "wrongClick": "Keep the selected option and say: ‘Listen again for the modal and the action that follows it.’",
+        "audioFallback": "Show the transcript and the same evidence-grounded questions if the player fails."
+      },
+      "teacherVariant": "Pause after each modal phrase and ask the learner to identify suggestion, obligation, or prohibition without demanding a word-for-word retell.",
+      "individualVariant": "Listen once, answer, then check the transcript. Highlight must ask, have to call, should do chores, and should not overreact.",
+      "runtimeBlocks": [
+        {
+          "id": "u22-s03-audio",
+          "type": "audio",
+          "url": "/audio/lessons/course/unit-22-audio-01.mp3",
+          "instruction": "Listen. You may read the transcript after the first attempt.",
+          "transcript": "Tom, what happened in the room? I had some friends coming over and we had lunch there. Tom, how many times do I have to tell you that you must ask for permission to do that? I know that, but... No, but you have to call home first and ask, and you know you should at least do your house chores before asking for anything. Come on, Dad, you should not overreact. Am I what? You should not say another thing, young man. Go and clean your room. Okay, I'll do it."
+        },
+        {
+          "id": "u22-s03-listening-mc",
+          "type": "multiple_choice",
+          "question": "Answer the four questions from the verified transcript.",
+          "items": [
+            {
+              "id": "u22-s03-q1",
+              "question": "Why were Tom’s friends in the room?",
+              "options": [
+                {
+                  "id": "they-were-having-lunch-there",
+                  "text": "They were having lunch there."
+                },
+                {
+                  "id": "they-were-repairing-the-house",
+                  "text": "They were repairing the house."
+                },
+                {
+                  "id": "they-were-studying-for-an-exam",
+                  "text": "They were studying for an exam."
+                },
+                {
+                  "id": "they-were-borrowing-a-car",
+                  "text": "They were borrowing a car."
+                }
+              ],
+              "correctOptionId": "they-were-having-lunch-there",
+              "explanation": "The transcript explicitly says they had lunch in the room."
+            },
+            {
+              "id": "u22-s03-q2",
+              "question": "What must Tom ask for before doing that?",
+              "options": [
+                {
+                  "id": "permission",
+                  "text": "permission"
+                },
+                {
+                  "id": "a-badge",
+                  "text": "a badge"
+                },
+                {
+                  "id": "more-food",
+                  "text": "more food"
+                },
+                {
+                  "id": "a-new-phone",
+                  "text": "a new phone"
+                }
+              ],
+              "correctOptionId": "permission",
+              "explanation": "Must ask for permission expresses the parent’s strong requirement in this exchange."
+            },
+            {
+              "id": "u22-s03-q3",
+              "question": "What does Tom have to do first to ask permission for inviting friends?",
+              "options": [
+                {
+                  "id": "call-home-first",
+                  "text": "call home first"
+                },
+                {
+                  "id": "leave-the-house",
+                  "text": "leave the house"
+                },
+                {
+                  "id": "buy-lunch",
+                  "text": "buy lunch"
+                },
+                {
+                  "id": "touch-the-controls",
+                  "text": "touch the controls"
+                }
+              ],
+              "correctOptionId": "call-home-first",
+              "explanation": "The transcript says he has to call home first and ask. Dad’s separate advice about doing chores is not the answer to this question."
+            },
+            {
+              "id": "u22-s03-q4",
+              "question": "What does Tom say his dad should not do?",
+              "options": [
+                {
+                  "id": "overreact",
+                  "text": "overreact"
+                },
+                {
+                  "id": "call-home",
+                  "text": "call home"
+                },
+                {
+                  "id": "clean-the-room",
+                  "text": "clean the room"
+                },
+                {
+                  "id": "ask-for-permission",
+                  "text": "ask for permission"
+                }
+              ],
+              "correctOptionId": "overreact",
+              "explanation": "Should not gives Tom’s advice about the father’s reaction."
+            }
+          ],
+          "explanation": "Every answer is supported by a phrase in the verified transcript; the transcript remains the fallback evidence."
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "requirements": [
+          "real audio player with transcript fallback",
+          "navy serif heading and short prompt",
+          "no autoplay and no invented replay limit",
+          "one primary action plus skip"
+        ],
+        "mobile": "Keep player controls and the transcript link above the options; options stack without shrinking below readable text."
+      }
+    },
+    {
+      "id": "u22-s04-modal-map",
+      "stage": 4,
+      "title": "Match force to context",
+      "type": "grammar-plus-choice",
+      "purpose": "Organize modal form, function, and context, including the prohibition/no-obligation contrast.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-8-statements-questions-answers-1-you-should-talk-to-h-020",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-10-we-can-use-the-modals-to-indicate-different-meanin-023"
+      ],
+      "ruleText": "Use the explicit sign, handbook, invitation, or owner response to decide the force. Mustn’t means prohibited; don’t have to means optional. Have to and must can overlap for obligation when the context supports it.",
+      "items": [
+        {
+          "id": "u22-s04-q1",
+          "context": "The school handbook requires a badge at the door.",
+          "question": "You ___ wear a badge here.",
+          "options": [
+            "have to",
+            "should",
+            "don’t have to",
+            "mustn’t"
+          ],
+          "correctOption": "have to",
+          "acceptedAlternatives": [
+            "must"
+          ],
+          "explanation": "The handbook supplies an external requirement. Must is also possible if the speaker emphasizes the same requirement."
+        },
+        {
+          "id": "u22-s04-q2",
+          "context": "A friend asks for helpful advice.",
+          "question": "You ___ call her before the meeting.",
+          "options": [
+            "should",
+            "mustn’t",
+            "don’t have to",
+            "can’t"
+          ],
+          "correctOption": "should",
+          "explanation": "This is a recommendation, not a ban or a statement that the action is optional."
+        },
+        {
+          "id": "u22-s04-q3",
+          "context": "A sign says ‘No food in the gallery.’",
+          "question": "You ___ bring food inside.",
+          "options": [
+            "mustn’t",
+            "should",
+            "don’t have to",
+            "can"
+          ],
+          "correctOption": "mustn’t",
+          "explanation": "The sign prohibits the action. Don’t have to would incorrectly make bringing food optional."
+        },
+        {
+          "id": "u22-s04-q4",
+          "context": "The invitation says lunch is provided and bringing your own lunch is optional.",
+          "question": "You ___ bring food.",
+          "options": [
+            "don’t have to",
+            "mustn’t",
+            "have to",
+            "can’t"
+          ],
+          "correctOption": "don’t have to",
+          "explanation": "The invitation explicitly makes bringing lunch optional. Don’t have to means unnecessary, not forbidden."
+        },
+        {
+          "id": "u22-s04-q5",
+          "context": "A learner asks permission and the owner denies access to restricted controls.",
+          "question": "Which pair asks for and denies permission to touch the controls?",
+          "options": [
+            "Can she touch the controls? — No, she can’t.",
+            "Mustn’t she touch the controls? — No, she shouldn’t.",
+            "Doesn’t she have to touch the controls? — No, she doesn’t."
+          ],
+          "correctOption": "Can she touch the controls? — No, she can’t.",
+          "explanation": "Can asks for permission and can’t denies permission in this stated situation."
+        }
+      ],
+      "interaction": {
+        "primaryAction": [
+          "Comprobar",
+          "Siguiente"
+        ],
+        "secondaryAction": "Saltar ejercicio",
+        "wrongClick": "Show the relevant meaning in words: ‘prohibited’ or ‘not necessary’; do not mark the two as interchangeable."
+      },
+      "teacherVariant": "For q1, invite both have to and must, then ask which wording foregrounds the handbook. For q3/q4, ask the learner to explain whether the action remains possible.",
+      "individualVariant": "Copy the two contrast sentences into a two-column note: ‘not allowed’ versus ‘optional’. Add one home and one school example for each.",
+      "runtimeBlocks": [
+        {
+          "id": "u22-s04-context-html",
+          "type": "text",
+          "order": 0,
+          "format": "html",
+          "language": "es",
+          "content": "<p>Lee el contexto y después completa la frase.</p><ul><li>Una regla del manual o un cartel puede exigir una acción: usa <strong>have to</strong> o <strong>must</strong>.</li><li>Un consejo usa <strong>should</strong>.</li><li><strong>mustn’t</strong> significa prohibido.</li><li><strong>don’t have to</strong> significa no es necesario: todavía puedes hacerlo.</li><li><strong>Can ...?</strong> pide permiso y <strong>can’t</strong> puede negarlo.</li></ul><p>La invitación del almuerzo dice explícitamente que traer comida es opcional.</p>"
+        },
+        {
+          "id": "u22-s04-modal-map-mc",
+          "type": "multiple_choice",
+          "question": "Choose the modal that matches the stated context.",
+          "items": [
+            {
+              "id": "u22-s04-q1",
+              "question": "The school handbook requires a badge at the door. You ___ wear a badge here.",
+              "options": [
+                {
+                  "id": "have-to",
+                  "text": "have to"
+                },
+                {
+                  "id": "should",
+                  "text": "should"
+                },
+                {
+                  "id": "don-t-have-to",
+                  "text": "don’t have to"
+                },
+                {
+                  "id": "mustn-t",
+                  "text": "mustn’t"
+                }
+              ],
+              "correctOptionId": "have-to",
+              "explanation": "The handbook supplies an external requirement. Must is also possible if the speaker emphasizes the same requirement."
+            },
+            {
+              "id": "u22-s04-q2",
+              "question": "A friend asks for helpful advice. You ___ call her before the meeting.",
+              "options": [
+                {
+                  "id": "should",
+                  "text": "should"
+                },
+                {
+                  "id": "mustn-t",
+                  "text": "mustn’t"
+                },
+                {
+                  "id": "don-t-have-to",
+                  "text": "don’t have to"
+                },
+                {
+                  "id": "can-t",
+                  "text": "can’t"
+                }
+              ],
+              "correctOptionId": "should",
+              "explanation": "This is a recommendation, not a ban or a statement that the action is optional."
+            },
+            {
+              "id": "u22-s04-q3",
+              "question": "A sign says ‘No food in the gallery.’ You ___ bring food inside.",
+              "options": [
+                {
+                  "id": "mustn-t",
+                  "text": "mustn’t"
+                },
+                {
+                  "id": "should",
+                  "text": "should"
+                },
+                {
+                  "id": "don-t-have-to",
+                  "text": "don’t have to"
+                },
+                {
+                  "id": "can",
+                  "text": "can"
+                }
+              ],
+              "correctOptionId": "mustn-t",
+              "explanation": "The sign prohibits the action. Don’t have to would incorrectly make bringing food optional."
+            },
+            {
+              "id": "u22-s04-q4",
+              "question": "The invitation says lunch is provided and bringing your own lunch is optional. You ___ bring food.",
+              "options": [
+                {
+                  "id": "don-t-have-to",
+                  "text": "don’t have to"
+                },
+                {
+                  "id": "mustn-t",
+                  "text": "mustn’t"
+                },
+                {
+                  "id": "have-to",
+                  "text": "have to"
+                },
+                {
+                  "id": "can-t",
+                  "text": "can’t"
+                }
+              ],
+              "correctOptionId": "don-t-have-to",
+              "explanation": "The invitation explicitly makes bringing lunch optional. Don’t have to means unnecessary, not forbidden."
+            },
+            {
+              "id": "u22-s04-q5",
+              "question": "A learner asks permission and the owner denies access to restricted controls. Which pair asks for and denies permission to touch the controls?",
+              "options": [
+                {
+                  "id": "can-she-touch-the-controls-no-she-can-t",
+                  "text": "Can she touch the controls? — No, she can’t."
+                },
+                {
+                  "id": "mustn-t-she-touch-the-controls-no-she-shouldn-t",
+                  "text": "Mustn’t she touch the controls? — No, she shouldn’t."
+                },
+                {
+                  "id": "doesn-t-she-have-to-touch-the-controls-no-she-do",
+                  "text": "Doesn’t she have to touch the controls? — No, she doesn’t."
+                }
+              ],
+              "correctOptionId": "can-she-touch-the-controls-no-she-can-t",
+              "explanation": "Can asks for permission and can’t denies permission in this stated situation."
+            }
+          ],
+          "explanation": "The contexts keep prohibited, optional, required, advice, and permission meanings distinct without making have to and must rigidly exclusive."
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/03-language.webp",
+        "requirements": [
+          "one compact rule panel and one answer group at a time",
+          "navy serif heading with short examples",
+          "do not render the whole source table as an unreadable wall",
+          "show the contrast in real text beside the choices"
+        ],
+        "mobile": "Stack rule, context, and options; never place mustn’t and don’t have to labels in a clipped two-column table."
+      }
+    },
+    {
+      "id": "u22-s05-table-repair",
+      "stage": 5,
+      "title": "Repair the question and answer",
+      "type": "structured-content-plus-choice",
+      "purpose": "Practice statements, permission questions, and negative answers with a coherent context.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-structured-content-8-statements-questions-answers-1-you-should-talk-to-h-020",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-text-8-statements-questions-answers-1-you-should-talk-to-her-should-i-ta-021"
+      ],
+      "sourceCorrection": "The published table includes “No, she mustn't be careful now” without a context that would make the negative answer meaningful. Keep the source row for history, but use the three contextual repair rows below as the learner-facing keys.",
+      "prompt": "Repair three real exchanges by checking the auxiliary, modal, and meaning.",
+      "rows": [
+        {
+          "id": "u22-s05-r2",
+          "statement": "The posted school handbook says you have to wear a badge here.",
+          "question": "Do I have to wear a badge here?",
+          "answerOptions": [
+            "Yes, you do.",
+            "Yes, you should.",
+            "No, you mustn't."
+          ],
+          "correctAnswer": "Yes, you do.",
+          "explanation": "Do is the auxiliary for the have-to question; the short answer repeats do."
+        },
+        {
+          "id": "u22-s05-r3",
+          "statement": "The host says she mustn’t touch the controls.",
+          "question": "Can she touch the controls?",
+          "answerOptions": [
+            "No, she can't.",
+            "No, she doesn't have to.",
+            "Yes, she can."
+          ],
+          "correctAnswer": "No, she can't.",
+          "explanation": "Can asks about permission. Because the action is prohibited, the answer is can’t."
+        },
+        {
+          "id": "u22-s05-r4",
+          "statement": "The invitation says lunch is provided and bringing your own lunch is optional.",
+          "question": "Do I have to bring food?",
+          "answerOptions": [
+            "No, you don't have to.",
+            "No, you mustn't bring food.",
+            "Yes, you do."
+          ],
+          "correctAnswer": "No, you don't have to.",
+          "explanation": "The invitation makes bringing food optional, not forbidden."
+        }
+      ],
+      "interaction": {
+        "primaryAction": [
+          "Comprobar",
+          "Siguiente"
+        ],
+        "secondaryAction": "Saltar ejercicio",
+        "wrongClick": "Keep the choice and identify the repair: auxiliary, permission, prohibition, or optional action.",
+        "keyboard": "Options are selectable with Enter/Space; no drag-only table interaction."
+      },
+      "teacherVariant": "Read each of the three statements, ask the learner to form the question orally, then reveal the answer choices. Contrast the prohibition and optional rows aloud.",
+      "individualVariant": "Cover the answer choices and write each of the three answers first. Then select the matching option and compare the auxiliary and modal forms.",
+      "runtimeBlocks": [
+        {
+          "id": "u22-s05-reference-table",
+          "type": "structured-content",
+          "title": "Repair the question and answer",
+          "content": {
+            "headers": [
+              "",
+              "Statements",
+              "Questions",
+              "Answers"
+            ],
+            "rows": [
+              [
+                "1",
+                "The posted school handbook says you have to wear a badge here.",
+                "Do I have to wear a badge here?",
+                "Yes, you do."
+              ],
+              [
+                "2",
+                "The host says she mustn’t touch the controls.",
+                "Can she touch the controls?",
+                "No, she can't."
+              ],
+              [
+                "3",
+                "The invitation says lunch is provided and bringing your own lunch is optional.",
+                "Do I have to bring food?",
+                "No, you don't have to."
+              ]
+            ]
+          }
+        },
+        {
+          "id": "u22-s05-repair-mc",
+          "type": "multiple_choice",
+          "question": "Choose the answer that completes each real exchange.",
+          "items": [
+            {
+              "id": "u22-s05-r2",
+              "question": "The posted school handbook says you have to wear a badge here. / Do I have to wear a badge here?",
+              "options": [
+                {
+                  "id": "yes-you-do",
+                  "text": "Yes, you do."
+                },
+                {
+                  "id": "yes-you-should",
+                  "text": "Yes, you should."
+                },
+                {
+                  "id": "no-you-mustn-t",
+                  "text": "No, you mustn't."
+                }
+              ],
+              "correctOptionId": "yes-you-do",
+              "explanation": "Do is the auxiliary for the have-to question; the short answer repeats do."
+            },
+            {
+              "id": "u22-s05-r3",
+              "question": "The host says she mustn’t touch the controls. / Can she touch the controls?",
+              "options": [
+                {
+                  "id": "no-she-can-t",
+                  "text": "No, she can't."
+                },
+                {
+                  "id": "no-she-doesn-t-have-to",
+                  "text": "No, she doesn't have to."
+                },
+                {
+                  "id": "yes-she-can",
+                  "text": "Yes, she can."
+                }
+              ],
+              "correctOptionId": "no-she-can-t",
+              "explanation": "Can asks about permission. Because the action is prohibited, the answer is can’t."
+            },
+            {
+              "id": "u22-s05-r4",
+              "question": "The invitation says lunch is provided and bringing your own lunch is optional. / Do I have to bring food?",
+              "options": [
+                {
+                  "id": "no-you-don-t-have-to",
+                  "text": "No, you don't have to."
+                },
+                {
+                  "id": "no-you-mustn-t-bring-food",
+                  "text": "No, you mustn't bring food."
+                },
+                {
+                  "id": "yes-you-do",
+                  "text": "Yes, you do."
+                }
+              ],
+              "correctOptionId": "no-you-don-t-have-to",
+              "explanation": "The invitation makes bringing food optional, not forbidden."
+            }
+          ],
+          "explanation": "The repaired rows make the obligation, prohibition, and optional action explicit; the source’s context-free negative must example is not used as a key."
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/03-language.webp",
+        "requirements": [
+          "show one row at a time with statement, question, and answer choices",
+          "use the source table as a compact reference, not as decorative text",
+          "keep feedback adjacent to the row",
+          "one primary action plus skip"
+        ],
+        "mobile": "Rows become vertical blocks; preserve the statement-to-question-to-answer reading order."
+      }
+    },
+    {
+      "id": "u22-s06-audio-visit-and-selection",
+      "stage": 6,
+      "title": "Listen, then choose the right force",
+      "type": "audio-plus-multiple-choice",
+      "purpose": "Use the verified dinner-visit audio for evidence, then transfer its functions to new contexts.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-audio-12-a-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-026",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-multiple-choice-12-a-listen-to-the-audio-and-answer-the-questions-your-t-029"
+      ],
+      "audio": {
+        "url": "/audio/lessons/course/unit-22-audio-02.mp3",
+        "digest": "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916",
+        "transcriptStatus": "verified-in-snapshot",
+        "transcript": "Man, I'm finally visiting Heather's house. Wait, what? I mean like, having dinner with family? Yes, like that. Oh boy. What should I wear? How am I supposed to act? Calm down. You should act normal, but you must look grateful and honoured. And overall, you must not show that moody side of you. Moody side? Me? Never mind. How about being honoured? Well, you must dress the parents once you are there and tell them how honoured you are for the invitation. Do I have to smile all night? No, there will be hypocrisy, but you need to look happy and you must not ask for more food. What if I'm hungry? You should wait for them to tell you and you should not look hungry, okay? Okay, I will do my best. And you should not be bossy. You are my friend. I'm not bossy. I have a talent for leading people."
+      },
+      "listeningQuestions": [
+        {
+          "id": "u22-s06-listen-1",
+          "question": "Why was the speaker visiting Heather’s house?",
+          "options": [
+            "For dinner with the family.",
+            "To repair the house.",
+            "To attend a school exam.",
+            "To borrow a car."
+          ],
+          "correctOption": "For dinner with the family.",
+          "evidence": "‘having dinner with family’",
+          "explanation": "The speaker clarifies that the visit is for dinner with the family."
+        },
+        {
+          "id": "u22-s06-listen-2",
+          "question": "How should the visitor act?",
+          "options": [
+            "Normally.",
+            "Angrily.",
+            "Secretly.",
+            "Carelessly."
+          ],
+          "correctOption": "Normally.",
+          "evidence": "‘You should act normal’",
+          "explanation": "The advice is stated with should."
+        },
+        {
+          "id": "u22-s06-listen-3",
+          "question": "What should the visitor show to the family?",
+          "options": [
+            "Gratitude and honour.",
+            "Fear and impatience.",
+            "Confusion and anger.",
+            "Boredom and silence."
+          ],
+          "correctOption": "Gratitude and honour.",
+          "evidence": "‘you must look grateful and honoured’",
+          "explanation": "The transcript explicitly names gratitude and honour."
+        },
+        {
+          "id": "u22-s06-listen-4",
+          "question": "What should the visitor do if hungry?",
+          "options": [
+            "Wait for the family to tell him to eat.",
+            "Ask for more food immediately.",
+            "Leave the dinner early.",
+            "Cook a second meal."
+          ],
+          "correctOption": "Wait for the family to tell him to eat.",
+          "evidence": "‘You should wait for them to tell you’",
+          "explanation": "The answer preserves the advice in the recording; it does not infer a new rule."
+        }
+      ],
+      "transferItems": [
+        {
+          "id": "u22-s06-transfer-1",
+          "context": "A sign says ‘No food’.",
+          "question": "You ___ bring food in.",
+          "options": [
+            "mustn’t",
+            "don’t have to",
+            "should",
+            "can"
+          ],
+          "correctOption": "mustn’t",
+          "explanation": "The sign prohibits bringing food."
+        },
+        {
+          "id": "u22-s06-transfer-2",
+          "context": "The invitation says lunch is provided and bringing your own lunch is optional.",
+          "question": "You ___ bring food.",
+          "options": [
+            "don’t have to",
+            "mustn’t",
+            "have to",
+            "can’t"
+          ],
+          "correctOption": "don’t have to",
+          "explanation": "The invitation explicitly makes bringing lunch optional; it is unnecessary, not forbidden."
+        }
+      ],
+      "interaction": {
+        "flow": "Play audio and answer the four evidence questions; after feedback, continue to the two transfer items.",
+        "primaryAction": [
+          "Comprobar",
+          "Siguiente"
+        ],
+        "secondaryAction": "Saltar ejercicio",
+        "wrongClick": "For listening, point to the transcript phrase. For transfer, name the contrast to revisit.",
+        "audioFallback": "Transcript remains available and all questions remain answerable without guessing."
+      },
+      "teacherVariant": "Ask one extra spoken follow-up only when it repeats a transcript fact, such as ‘What must he not ask for?’ Do not quiz unsupported details.",
+      "individualVariant": "Use the transcript after the first attempt, highlight should act, must look, must not ask, and should wait, then complete the two transfer items about prohibition and optional action.",
+      "runtimeBlocks": [
+        {
+          "id": "u22-s06-audio",
+          "type": "audio",
+          "url": "/audio/lessons/course/unit-22-audio-02.mp3",
+          "instruction": "Listen and choose the answer. Read the transcript after the first attempt if needed.",
+          "transcript": "Man, I'm finally visiting Heather's house. Wait, what? I mean like, having dinner with family? Yes, like that. Oh boy. What should I wear? How am I supposed to act? Calm down. You should act normal, but you must look grateful and honoured. And overall, you must not show that moody side of you. Moody side? Me? Never mind. How about being honoured? Well, you must dress the parents once you are there and tell them how honoured you are for the invitation. Do I have to smile all night? No, there will be hypocrisy, but you need to look happy and you must not ask for more food. What if I'm hungry? You should wait for them to tell you and you should not look hungry, okay? Okay, I will do my best. And you should not be bossy. You are my friend. I'm not bossy. I have a talent for leading people."
+        },
+        {
+          "id": "u22-s06-listening-and-transfer-mc",
+          "type": "multiple_choice",
+          "question": "Answer the transcript questions, then transfer the modal meanings to two new contexts.",
+          "items": [
+            {
+              "id": "u22-s06-listen-1",
+              "question": "Why was the speaker visiting Heather’s house?",
+              "options": [
+                {
+                  "id": "for-dinner-with-the-family",
+                  "text": "For dinner with the family."
+                },
+                {
+                  "id": "to-repair-the-house",
+                  "text": "To repair the house."
+                },
+                {
+                  "id": "to-attend-a-school-exam",
+                  "text": "To attend a school exam."
+                },
+                {
+                  "id": "to-borrow-a-car",
+                  "text": "To borrow a car."
+                }
+              ],
+              "correctOptionId": "for-dinner-with-the-family",
+              "explanation": "The speaker clarifies that the visit is for dinner with the family."
+            },
+            {
+              "id": "u22-s06-listen-2",
+              "question": "How should the visitor act?",
+              "options": [
+                {
+                  "id": "normally",
+                  "text": "Normally."
+                },
+                {
+                  "id": "angrily",
+                  "text": "Angrily."
+                },
+                {
+                  "id": "secretly",
+                  "text": "Secretly."
+                },
+                {
+                  "id": "carelessly",
+                  "text": "Carelessly."
+                }
+              ],
+              "correctOptionId": "normally",
+              "explanation": "The advice is stated with should."
+            },
+            {
+              "id": "u22-s06-listen-3",
+              "question": "What should the visitor show to the family?",
+              "options": [
+                {
+                  "id": "gratitude-and-honour",
+                  "text": "Gratitude and honour."
+                },
+                {
+                  "id": "fear-and-impatience",
+                  "text": "Fear and impatience."
+                },
+                {
+                  "id": "confusion-and-anger",
+                  "text": "Confusion and anger."
+                },
+                {
+                  "id": "boredom-and-silence",
+                  "text": "Boredom and silence."
+                }
+              ],
+              "correctOptionId": "gratitude-and-honour",
+              "explanation": "The transcript explicitly names gratitude and honour."
+            },
+            {
+              "id": "u22-s06-listen-4",
+              "question": "What should the visitor do if hungry?",
+              "options": [
+                {
+                  "id": "wait-for-the-family-to-tell-him-to-eat",
+                  "text": "Wait for the family to tell him to eat."
+                },
+                {
+                  "id": "ask-for-more-food-immediately",
+                  "text": "Ask for more food immediately."
+                },
+                {
+                  "id": "leave-the-dinner-early",
+                  "text": "Leave the dinner early."
+                },
+                {
+                  "id": "cook-a-second-meal",
+                  "text": "Cook a second meal."
+                }
+              ],
+              "correctOptionId": "wait-for-the-family-to-tell-him-to-eat",
+              "explanation": "The answer preserves the advice in the recording; it does not infer a new rule."
+            },
+            {
+              "id": "u22-s06-transfer-1",
+              "question": "A sign says ‘No food’. You ___ bring food in.",
+              "options": [
+                {
+                  "id": "mustn-t",
+                  "text": "mustn’t"
+                },
+                {
+                  "id": "don-t-have-to",
+                  "text": "don’t have to"
+                },
+                {
+                  "id": "should",
+                  "text": "should"
+                },
+                {
+                  "id": "can",
+                  "text": "can"
+                }
+              ],
+              "correctOptionId": "mustn-t",
+              "explanation": "The sign prohibits bringing food."
+            },
+            {
+              "id": "u22-s06-transfer-2",
+              "question": "The invitation says lunch is provided and bringing your own lunch is optional. You ___ bring food.",
+              "options": [
+                {
+                  "id": "don-t-have-to",
+                  "text": "don’t have to"
+                },
+                {
+                  "id": "mustn-t",
+                  "text": "mustn’t"
+                },
+                {
+                  "id": "have-to",
+                  "text": "have to"
+                },
+                {
+                  "id": "can-t",
+                  "text": "can’t"
+                }
+              ],
+              "correctOptionId": "don-t-have-to",
+              "explanation": "The invitation explicitly makes bringing lunch optional; it is unnecessary, not forbidden."
+            }
+          ],
+          "explanation": "The first four answers quote the verified audio. The two transfer items distinguish prohibited and optional action with explicit contexts."
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "requirements": [
+          "real player and transcript fallback",
+          "short listening prompt followed by one question at a time",
+          "clear text contrast for mustn’t versus don’t have to",
+          "one primary action plus skip"
+        ],
+        "mobile": "Stack player, transcript link, and one option group; do not compress the audio controls into an icon-only strip."
+      }
+    },
+    {
+      "id": "u22-s07-house-visit-roleplay",
+      "stage": 7,
+      "title": "Role-play a house visit",
+      "type": "recording-and-conversation",
+      "purpose": "Rehearse permission, obligation, prohibition, suggestion, and no obligation in a responsive exchange.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-audio-12-a-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-026",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-recording-14-d-discuss-with-your-teacher-how-people-should-be-when-they--033"
+      ],
+      "scenario": "You are visiting a friend’s home for dinner. Use the host’s posted or spoken instructions: leave shoes by the door, do not touch the control panel, and wait until the host offers food.",
+      "turns": [
+        {
+          "turn": 1,
+          "role": "visitor",
+          "prompt": "Ask permission to sit or put your bag somewhere.",
+          "function": "permission-question",
+          "model": "Can I put my bag here?"
+        },
+        {
+          "turn": 2,
+          "role": "host",
+          "prompt": "Read the posted house note and state the external rule.",
+          "function": "obligation",
+          "model": "You have to leave your shoes by the door."
+        },
+        {
+          "turn": 3,
+          "role": "visitor",
+          "prompt": "Give one helpful suggestion about the visit.",
+          "function": "suggestion",
+          "model": "You should tell me where to put my coat."
+        },
+        {
+          "turn": 4,
+          "role": "host",
+          "prompt": "Read the host’s message and reject touching the controls.",
+          "function": "prohibition",
+          "model": "You mustn’t touch the controls."
+        },
+        {
+          "turn": 5,
+          "role": "visitor",
+          "prompt": "Ask whether bringing food is necessary, then accept the answer.",
+          "function": "no-obligation",
+          "model": "Do I have to bring food? — No, you don’t have to; the host invitation says dinner is provided."
+        },
+        {
+          "turn": 6,
+          "role": "host",
+          "prompt": "The host has not invited anyone to eat yet. Respond using the host’s stated instruction.",
+          "function": "prohibition-plus-suggestion",
+          "model": "You mustn’t take food yet. You should wait to be told."
+        }
+      ],
+      "successCriteria": [
+        "Uses can for a permission question and can’t or another clear negative permission response when needed.",
+        "Expresses an obligation with have to or must in a clear context; does not claim the forms are always separate.",
+        "Expresses a prohibition with mustn’t or can’t.",
+        "Expresses no obligation with don’t have to and leaves the action optional.",
+        "Responds appropriately to the unexpected behavior and remains intelligible."
+      ],
+      "teacherVariant": {
+        "roles": "Teacher is the host; learner is the visitor.",
+        "prompts": "Show one turn card at a time and recast only the modal or base-form error. Ask ‘Is this forbidden or optional?’ after turns 4 and 5.",
+        "feedback": "Teacher-reviewed open response; no automatic pass claim."
+      },
+      "individualVariant": {
+        "roles": "Record both voices or alternate visitor and host turns.",
+        "supports": "Write the six model frames first, then replace the objects and places with a real home or classroom situation.",
+        "selfCheck": "Underline each modal and label its function before submitting the recording."
+      },
+      "assessment": {
+        "responseMode": "teacher-reviewed recording",
+        "doNotAutoGrade": true,
+        "rubric": [
+          "function fit",
+          "mustn’t/don’t have to contrast",
+          "question and answer form",
+          "appropriate response",
+          "intelligibility"
+        ]
+      },
+      "interaction": {
+        "primaryAction": "Grabar respuesta",
+        "secondaryAction": "Saltar ejercicio",
+        "afterRecording": "Continue remains available according to the configured recording flow; do not invent a score or attempt count.",
+        "accessibility": "Provide the same six prompts as text and a typed response alternative if recording is unavailable."
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u22-s07-dialogue-html",
+          "type": "text",
+          "order": 0,
+          "format": "html",
+          "language": "es",
+          "content": "<p>Visitas a un amigo para cenar. Lee cada turno y graba las dos voces en este orden:</p><ol><li><strong>Visitante:</strong> <em>Can I put my bag here?</em></li><li><strong>Anfitrión:</strong> la nota publicada dice <em>You have to leave your shoes by the door.</em></li><li><strong>Visitante:</strong> <em>You should tell me where to put my coat.</em></li><li><strong>Anfitrión:</strong> <em>You mustn’t touch the controls.</em></li><li><strong>Visitante:</strong> <em>Do I have to bring food?</em> — <em>No, you don’t have to; the host invitation says dinner is provided.</em></li><li><strong>Tarjeta inesperada:</strong> aún no te han invitado a comer. Responde: <em>You mustn’t take food yet. You should wait to be told.</em></li></ol><p>Después de leer los seis turnos, graba la conversación y responde a la tarjeta.</p>"
+        },
+        {
+          "id": "u22-s07-recording",
+          "type": "recording",
+          "instruction": "Graba los seis turnos visibles de la visita a la casa y responde a la tarjeta inesperada sobre la comida.",
+          "timeLimit": 60,
+          "timeLimitPolicy": "runtime-default-not-learner-facing",
+          "aiGrading": false,
+          "learningModes": {
+            "individual": "Practica y graba las dos voces; usa la alternativa escrita si no puedes grabar.",
+            "teacher": "Alterna visitante y anfitrión con el docente, siguiendo los seis turnos visibles."
+          },
+          "reviewChecklist": [
+            "Pide permiso con Can I put my bag here?",
+            "Expresa la nota publicada con You have to leave your shoes by the door.",
+            "Da un consejo con should.",
+            "Prohíbe tocar los controles con mustn’t.",
+            "Distingue don’t have to de mustn’t en la pregunta sobre la comida.",
+            "Responde a la tarjeta de comida con una prohibición y un consejo."
+          ]
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/05-production.webp",
+        "requirements": [
+          "show a complete warm home/dining environment with the real prompt cards in a readable side panel",
+          "preserve the source visit context and do not replace it with abstract cards",
+          "keep recording state, label, and text alternative as real controls",
+          "navy serif heading, one primary action, skip"
+        ],
+        "mobile": "Place the environment above the active turn card; stack role, prompt, recording, and typed alternative with no overlap."
+      },
+      "contextSources": [
+        "Posted house note: Leave shoes by the door.",
+        "Host message: Guests mustn’t touch the controls.",
+        "Host invitation: Dinner is provided; bringing food is optional.",
+        "Host invitation: Wait until I offer food."
+      ]
+    },
+    {
+      "id": "u22-s08-real-code-of-conduct",
+      "stage": 8,
+      "title": "Make a code for a real visit",
+      "type": "essay-and-recording",
+      "purpose": "Transfer the modal system to a usable home-and-school code of conduct and defend the choices in speech.",
+      "sourceRowIds": [
+        "course-guided-cmkpx0d310001gy04zr4lq99y-essay-12-a-listen-to-the-audio-and-answer-the-questions-your-teacher-mak-028",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-essay-14-d-discuss-with-your-teacher-how-people-should-be-when-they-clai-034",
+        "course-guided-cmkpx0d310001gy04zr4lq99y-recording-14-d-discuss-with-your-teacher-how-people-should-be-when-they--033"
+      ],
+      "realTask": {
+        "situation": "You are welcoming a new classmate to a shared study club in a home-like room. Write and present a six-line code whose sources are explicit: a club guide, a posted handbook rule, your own commitment, a host’s instruction, a host invitation, and an invitation that says dinner is provided.",
+        "deliverable": "Six written lines totaling the inherited 100–120-word source range, plus a short spoken reading and one response to an unexpected behavior card.",
+        "requiredFunctions": [
+          "one suggestion with should",
+          "one obligation with have to",
+          "one strong obligation or speaker commitment with must",
+          "one prohibition with mustn’t or can’t",
+          "one can permission question with a negative answer",
+          "one don’t have to no-obligation sentence"
+        ],
+        "unexpectedBehaviorCards": [
+          "A guest reaches for food before the host invites them.",
+          "A guest touches the control panel.",
+          "A guest speaks loudly while another student is presenting."
+        ],
+        "responsePrompt": "Choose one card and respond with a prohibition plus a helpful suggestion.",
+        "modelAnswer": [
+          "The club guide suggests: You should speak quietly in the study room.",
+          "The posted club handbook says: You have to wear a visitor badge here.",
+          "I must remember to greet the host.",
+          "The host says: You mustn’t touch the controls.",
+          "Can I sit by the window? — No, you can’t; the host’s invitation reserves that seat.",
+          "The invitation says dinner is provided, so you don’t have to bring food.",
+          "Unexpected card model: The host has not invited us yet. You mustn’t take food before the invitation. You should wait to be told."
+        ],
+        "contextSources": [
+          "Club guide suggestion",
+          "Posted club handbook rule",
+          "Speaker commitment",
+          "Host instruction",
+          "Host invitation with a reserved seat",
+          "Invitation stating that dinner is provided"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each line names or clearly implies its source context: guide, posted rule, speaker commitment, host instruction, host invitation, or provided meal.",
+        "All six required functions appear in a context that makes the force understandable.",
+        "Mustn’t is used for an action that is not allowed, while don’t have to leaves an action optional.",
+        "Have to and must are treated as overlapping obligation choices where the context allows; no rigid personal-versus-external rule is asserted.",
+        "The permission question and negative answer use can/can’t with the base verb.",
+        "The learner responds to one unexpected behavior with a clear correction and suggestion.",
+        "The spoken reading is intelligible and the written code is readable to a classmate."
+      ],
+      "teacherVariant": {
+        "setup": "Teacher chooses the study club, a home visit, or a classroom scenario and asks the learner to name the source of two modal choices.",
+        "followUp": "Ask ‘Could must also work here?’ for the have-to line, and ‘Is the last action forbidden or optional?’ for the contrast.",
+        "review": "Teacher reviews the six functions, context fit, intelligibility, and response to the behavior card."
+      },
+      "individualVariant": {
+        "setup": "Choose a real home, school, library, or community setting. State the source of each rule or invitation, draft six lines, record them in two voices, and type the justification for two choices.",
+        "support": "Use the model frames, then replace only the setting and object nouns. Keep the modal meaning unchanged.",
+        "selfCheck": "Mark S (suggestion), O (obligation), P (prohibition), Perm (permission), or N (no obligation) beside each line."
+      },
+      "assessment": {
+        "responseMode": "teacher-reviewed written and spoken production",
+        "doNotAutoGrade": true,
+        "rubric": {
+          "functionFit": "6 points: one for each required function in a clear context",
+          "criticalContrast": "2 points: mustn’t and don’t have to meanings remain distinct",
+          "interaction": "1 point: appropriate response to the unexpected behavior",
+          "formAndIntelligibility": "1 point: modal plus base verb and understandable delivery"
+        },
+        "sourceConstraint": "The former source requests eight behavior sentences and a 100–120-text opinion. This pilot reduces the sentence count to six functional lines plus one transfer response while retaining the source 100–120-word range for the written deliverable."
+      },
+      "interaction": {
+        "primaryAction": "Entregar respuesta",
+        "secondaryAction": "Saltar ejercicio",
+        "typedAlternative": "Always expose the written response field alongside recording.",
+        "feedback": "Show teacher feedback beside the response; do not claim a score or automatic mastery."
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u22-s08-final-task-html",
+          "type": "text",
+          "order": 0,
+          "format": "html",
+          "language": "es",
+          "content": "<p>Producto final: escribe y presenta un código de seis líneas para un club de estudio que recibe a un compañero nuevo. Escribe entre 100 y 120 palabras y deja claro de dónde sale cada idea: guía del club, regla publicada, compromiso propio, instrucción del anfitrión, invitación del anfitrión y comida incluida en la invitación.</p><p>Incluye estas funciones:</p><ul><li>un consejo con <strong>should</strong>;</li><li>una obligación con <strong>have to</strong> o <strong>must</strong>;</li><li>una prohibición con <strong>mustn’t</strong> o <strong>can’t</strong>;</li><li>una frase de no obligación con <strong>don’t have to</strong>;</li><li>una pregunta de permiso con <strong>Can ...?</strong> y una respuesta negativa con <strong>can’t</strong>.</li></ul><p>Luego lee el código en voz alta y responde a una tarjeta inesperada con una prohibición y un consejo. No uses una regla general sin indicar su contexto.</p>"
+        },
+        {
+          "id": "u22-s08-essay",
+          "type": "essay",
+          "prompt": "Write six lines (100–120 words) for a real study-club code. Name the source context for each line. Include: one should suggestion; one have to or must obligation; one mustn’t or can’t prohibition; one don’t have to no-obligation statement; and one Can ...? permission question with a can’t negative answer. Then choose one unexpected behavior card and write a prohibition plus a helpful suggestion.",
+          "aiGrading": false,
+          "explanation": "The written code must show the stated functions and sources; use the typed response for teacher review.",
+          "minWords": 100,
+          "maxWords": 120,
+          "wordLimitSource": "course-guided-cmkpx0d310001gy04zr4lq99y-essay-14-d-discuss-with-your-teacher-how-people-should-be-when-they-clai-034",
+          "learningModes": {
+            "individual": "Escribe el código con los seis contextos indicados y entrega también tu respuesta a una tarjeta inesperada.",
+            "teacher": "Redacta el código con el docente y explica la fuente de dos líneas antes de entregar."
+          },
+          "reviewChecklist": [
+            "Incluye should para un consejo.",
+            "Incluye have to o must para una obligación.",
+            "Incluye mustn’t o can’t para una prohibición.",
+            "Incluye don’t have to para una acción opcional.",
+            "Incluye Can ...? y una respuesta con can’t.",
+            "Nombra el contexto de cada línea y responde a una tarjeta inesperada."
+          ]
+        },
+        {
+          "id": "u22-s08-recording",
+          "type": "recording",
+          "instruction": "Lee tu código de seis líneas en voz alta y responde a una tarjeta inesperada con una prohibición y un consejo.",
+          "timeLimit": 60,
+          "timeLimitPolicy": "runtime-default-not-learner-facing",
+          "aiGrading": false,
+          "learningModes": {
+            "individual": "Graba la lectura y la respuesta a la tarjeta; conserva también el texto escrito.",
+            "teacher": "Lee el código con el docente y responde oralmente a la tarjeta elegida."
+          },
+          "reviewChecklist": [
+            "Lee las seis líneas con sus contextos.",
+            "Pronuncia la diferencia entre mustn’t y don’t have to.",
+            "Formula la pregunta Can ...? y la respuesta negativa con can’t.",
+            "Responde a la tarjeta con una prohibición y un consejo."
+          ]
+        }
+      ],
+      "visual": {
+        "reference": "docs/design/content-format-mockups/v3/05-production.webp",
+        "requirements": [
+          "complete study-club/home environment with a clear table or doorway object that motivates the code",
+          "keep the written lines and recording control as real UI outside the illustration",
+          "navy serif heading, short prompt, no text baked into the art",
+          "one primary delivery action and skip"
+        ],
+        "mobile": "Stack scene, six-line editor, unexpected-card prompt, and recording/typed alternative; keep line height readable and avoid overlap with the footer."
+      }
+    }
+  ],
+  "validation": {
+    "requiredSceneIds": [
+      "u22-s01-diagnostic",
+      "u22-s02-image-decisions",
+      "u22-s03-audio-parent-child",
+      "u22-s04-modal-map",
+      "u22-s05-table-repair",
+      "u22-s06-audio-visit-and-selection",
+      "u22-s07-house-visit-roleplay",
+      "u22-s08-real-code-of-conduct"
+    ],
+    "requiredAudioUrls": [
+      "/audio/lessons/course/unit-22-audio-01.mp3",
+      "/audio/lessons/course/unit-22-audio-02.mp3"
+    ],
+    "requiredAudioDigests": [
+      "38e367b482888d2938516ac8ecc14e0c1ae73602709429717bfe07341080ef27",
+      "8bcc8fafc607a148d5b68693e8c0b042abf8fea42ac1cb64705a610f60e31916"
+    ],
+    "requiredImageUrls": [
+      "/images/lessons/course/source-84c0a93b334fd921.webp",
+      "/images/lessons/course/source-5a3e10c0d6402a54.webp",
+      "/images/lessons/course/source-cf1a7744da68e335.webp",
+      "/images/lessons/course/source-b3455fc7d4c61977.webp",
+      "/images/lessons/course/source-fad308302e847d89.webp",
+      "/images/lessons/course/source-ea14d1dbd3f52ae0.webp",
+      "/images/lessons/course/source-80cae609e4449034.webp",
+      "/images/lessons/course/source-02befd2b3d0dd0de.webp",
+      "/images/lessons/course/source-7278ba0e5cecca87.webp"
+    ],
+    "checks": [
+      "Every scene has a sourceRowIds mapping.",
+      "Every multiple-choice item has options, one key, and an explanation.",
+      "Both audio URLs and digests match the snapshot; questions cite transcript evidence.",
+      "mustn’t and don’t have to are explicitly contrasted in scenes 4, 5, 6, 7, and 8.",
+      "Open production is teacher-reviewed and is never presented as automatically graded.",
+      "The opening source image and eight slide-6 image assets remain present with their runtime URLs and source rows."
+    ],
+    "learnerImageUrls": [],
+    "archivedImageUrls": [
+      "/images/lessons/course/source-84c0a93b334fd921.webp",
+      "/images/lessons/course/source-5a3e10c0d6402a54.webp",
+      "/images/lessons/course/source-cf1a7744da68e335.webp",
+      "/images/lessons/course/source-b3455fc7d4c61977.webp",
+      "/images/lessons/course/source-fad308302e847d89.webp",
+      "/images/lessons/course/source-ea14d1dbd3f52ae0.webp",
+      "/images/lessons/course/source-80cae609e4449034.webp",
+      "/images/lessons/course/source-02befd2b3d0dd0de.webp",
+      "/images/lessons/course/source-7278ba0e5cecca87.webp"
+    ],
+    "learnerClosedItemCount": 23
+  }
+}

@@ -57,6 +57,8 @@ const PRACTICE_TYPES = new Set<Block['type']>([
  * drops authored lesson material.
  */
 export function isIgnorableGuidedBlock(block: Block): boolean {
+  if (block.data?.archivedPilotSource === true) return true
+
   // Teacher notes are intentionally omitted from the student-facing pilot.
   if (block.type === 'teacher_notes') {
     return true

@@ -8,6 +8,20 @@ import {
 import { ClassroomSyncContext } from '@/components/classroom/use-classroom-sync'
 
 describe('guided source truth labels', () => {
+  it('explains each pilot question using its own context rather than a generic block explanation', () => {
+    vi.useFakeTimers()
+    render(<BlockPreview guidedAppearance block={{ id: 'pilot-feedback', type: 'multiple_choice', order: 0,
+      explanation: 'General fallback.', items: [
+        { id: 'p1', question: 'No visitors allowed.', options: [{ id: 'a', text: 'Prohibition' }, { id: 'b', text: 'Optional' }], correctOptionId: 'a', explanation: 'Must not expresses a prohibition.' },
+        { id: 'p2', question: 'Uniform optional.', options: [{ id: 'a', text: 'Required' }, { id: 'b', text: 'Optional' }], correctOptionId: 'b', explanation: 'Do not have to means it is not necessary.' },
+      ] }} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Prohibition' }))
+    expect(screen.getByRole('status')).toHaveTextContent('Must not expresses a prohibition.')
+    expect(screen.getByRole('status')).not.toHaveTextContent('General fallback.')
+    act(() => vi.advanceTimersByTime(900))
+    fireEvent.click(screen.getByRole('button', { name: 'Required' }))
+    expect(screen.getByRole('status')).toHaveTextContent('Do not have to means it is not necessary.')
+  })
   it('expands reviewed T/F labels while keeping the original answer IDs', () => {
     const options = [{ id: 'true', text: 'T' }, { id: 'false', text: 'F' }]
     render(<BlockPreview guidedAppearance block={{ id: 'source-truth', type: 'multiple_choice', order: 0, question: 'Joe likes animals.', options, correctOptionId: 'true' }} />)
@@ -82,9 +96,75 @@ vi.mock('@/lib/actions/ai-grading-limits', () => ({
 afterEach(() => {
   vi.useRealTimers()
   cleanup()
+  vi.unstubAllGlobals()
 })
 
 describe('BlockPreview guided appearance', () => {
+  it('completes a spoken pilot review after recording and checking criteria, and invalidates a new take', async () => {
+    vi.useFakeTimers()
+    const trackStop = vi.fn()
+    const getUserMedia = vi.fn(async () => ({ getTracks: () => [{ stop: trackStop }] }))
+    vi.stubGlobal('navigator', { mediaDevices: { getUserMedia } })
+    class TestRecorder {
+      state = 'inactive'
+      ondataavailable?: (event: { data: Blob }) => void
+      onstop?: () => void
+      start() { this.state = 'recording' }
+      stop() { this.state = 'inactive'; this.ondataavailable?.({ data: new Blob(['test-response']) }); this.onstop?.() }
+    }
+    class TestURL extends URL {
+      static createObjectURL() { return 'blob:pilot-test' }
+      static revokeObjectURL() {}
+    }
+    vi.stubGlobal('MediaRecorder', TestRecorder)
+    vi.stubGlobal('URL', TestURL)
+    const done = vi.fn()
+    render(<BlockPreview guidedAppearance onGuidedCompletionChange={done} block={{ id: 'spoken-finish', type: 'recording', order: 0,
+      instruction: 'Explain a rule.', aiGrading: false, data: { reviewChecklist: ['Escuché mi respuesta.', 'Expliqué la prohibición.'] } }} />)
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /^Grabar$/ })) })
+    fireEvent.click(screen.getByRole('button', { name: 'Detener grabación' }))
+    expect(getUserMedia).toHaveBeenCalledWith({ audio: true })
+    expect(trackStop).toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Escuché mi respuesta.' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Expliqué la prohibición.' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmar revisión' }))
+    expect(done).toHaveBeenLastCalledWith(true)
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /^Grabar$/ })) })
+    expect(done).toHaveBeenLastCalledWith(false)
+    expect(screen.getByRole('button', { name: 'Confirmar revisión' })).toBeDisabled()
+  })
+  it('completes a pilot self-review only after a valid draft and every criterion, and resets after editing', () => {
+    const done = vi.fn()
+    render(<BlockPreview guidedAppearance onGuidedCompletionChange={done} block={{ id: 'self-review', type: 'essay', order: 0,
+      prompt: 'Write two rules.', minWords: 3, maxWords: 20, aiGrading: false,
+      data: { reviewChecklist: ['Distinguí obligación y prohibición.', 'Revisé la forma del verbo.'] } }} />)
+    expect(screen.getByRole('button', { name: 'Confirmar revisión' })).toBeDisabled()
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'You must wear a badge.' } })
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Distinguí obligación y prohibición.' }))
+    expect(screen.getByRole('button', { name: 'Confirmar revisión' })).toBeDisabled()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Revisé la forma del verbo.' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmar revisión' }))
+    expect(done).toHaveBeenLastCalledWith(true)
+    expect(screen.getByRole('status')).toHaveTextContent('Autoevaluación completada.')
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Revisé la forma del verbo.' }))
+    expect(done).toHaveBeenLastCalledWith(false)
+    expect(screen.getByRole('button', { name: 'Confirmar revisión' })).toBeDisabled()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Revisé la forma del verbo.' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmar revisión' }))
+    expect(done).toHaveBeenLastCalledWith(true)
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'You must not bring food.' } })
+    expect(done).toHaveBeenLastCalledWith(false)
+    expect(screen.getByRole('button', { name: 'Confirmar revisión' })).toBeDisabled()
+    expect(screen.getByRole('checkbox', { name: 'Revisé la forma del verbo.' })).not.toBeChecked()
+  })
+  it('does not allow a recording self-review before a response exists', () => {
+    const done = vi.fn()
+    render(<BlockPreview guidedAppearance onGuidedCompletionChange={done} block={{ id: 'spoken-review', type: 'recording', order: 0,
+      instruction: 'Explain the rule.', aiGrading: false, data: { reviewChecklist: ['Escuché mi respuesta.'] } }} />)
+    expect(screen.getByRole('button', { name: 'Confirmar revisión' })).toBeDisabled()
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+    expect(done).toHaveBeenLastCalledWith(false)
+  })
   it('does not reveal answers or auto-advance in exam mode even with guided appearance', () => {
     vi.useFakeTimers()
     const changed = vi.fn()

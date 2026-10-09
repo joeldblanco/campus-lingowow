@@ -638,6 +638,12 @@ export function GuidedLessonBlock({
   suppressHeading = false,
 }: GuidedLessonBlockProps) {
   if (!enabled) return children
+  if (typeof block.data?.supportLabel === 'string' && block.data.supportLabel.trim()) {
+    return <details className="text-base leading-7 text-[#10245C]" data-learning-support>
+      <summary className="min-h-11 cursor-pointer py-2 font-semibold underline underline-offset-4">{block.data.supportLabel}</summary>
+      <div className="mt-3"><GuidedLessonBlock block={{ ...block, data: { ...block.data, supportLabel: undefined } }} suppressHeading={suppressHeading}>{children}</GuidedLessonBlock></div>
+    </details>
+  }
 
   switch (block.type) {
     case 'title':

@@ -39,6 +39,26 @@ afterEach(() => {
 })
 
 describe('GuidedChoiceActivity', () => {
+  it('checks immediately but lets a pilot learner read the explanation before advancing', () => {
+    vi.useFakeTimers()
+    const target = document.createElement('div')
+    document.body.appendChild(target)
+    const done = vi.fn()
+    const { unmount } = render(<GuidedChoiceActivity questions={questions} waitForContinue actionTarget={target} onCompletionChange={done} />)
+    expect(screen.getByRole('button', { name: 'Siguiente pregunta' })).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Her' }))
+    expect(screen.getByRole('status')).toHaveTextContent('Usa «her»')
+    act(() => vi.advanceTimersByTime(10000))
+    expect(screen.getByText(questions[0].prompt)).toBeVisible()
+    fireEvent.click(screen.getByRole('button', { name: 'Siguiente pregunta' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Their' }))
+    expect(done).toHaveBeenLastCalledWith(false)
+    fireEvent.click(screen.getByRole('button', { name: 'Ver resultados' }))
+    expect(done).toHaveBeenLastCalledWith(true)
+    expect(target).toBeEmptyDOMElement()
+    unmount()
+    target.remove()
+  })
   it('checks a correct selection immediately and advances after the short feedback delay', () => {
     vi.useFakeTimers()
     render(<GuidedChoiceActivity questions={questions} />)

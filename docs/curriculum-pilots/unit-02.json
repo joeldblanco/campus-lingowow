@@ -1,0 +1,3991 @@
+{
+  "specVersion": "pilot-curriculum-scene-v1",
+  "kind": "human-authored-neutral-scene-spec",
+  "unit": {
+    "number": 2,
+    "slug": "i-come-from",
+    "title": "I come from…",
+    "lessonId": "cmk0vhjh80001jm04epgai2ay",
+    "instructionLanguage": "es",
+    "learningItemLanguage": "en",
+    "communicativeGoal": "Describe one's own and other people's origins by talking about countries and nationalities.",
+    "competency": "Use basic grammar, vocabulary, and phrases for countries and nationalities in short spoken and written exchanges.",
+    "prerequisites": [
+      "Unit 1 subject pronouns and the verb to be",
+      "The distinction between a person, a country, and a nationality",
+      "Basic question-and-answer turns"
+    ],
+    "languageTargets": [
+      "country names: Japan, Peru, the USA, Australia, the Netherlands",
+      "nationalities: Japanese, Peruvian, American, Australian, Dutch",
+      "be from + country: I am from Spain.",
+      "be + nationality: She is Japanese.",
+      "come from + country: They come from Venezuela.",
+      "Where are you from? / Where do you come from?",
+      "do/does questions with the base verb come",
+      "country and nationality names begin with capital letters"
+    ]
+  },
+  "source": {
+    "snapshot": "C:/Users/ACER/.codex/visualizations/2026/10/03/01a102c6-28e9-7d12-ab7a-d8b58f36616a/pedagogical-review/dev-curriculum-review.json",
+    "redesign": "C:/Users/ACER/.codex/visualizations/2026/10/03/01a102c6-28e9-7d12-ab7a-d8b58f36616a/pedagogical-review/curriculum-redesign-01-18.md#unidad-2-i-come-from",
+    "deckTitle": "Unit 2 - I come from.pptx",
+    "deckUrl": "https://docs.google.com/presentation/d/e/2PACX-1vRWGfVMrqnyaAJBOaexmCHwOzyv26_YoADyileU5iN8cv9KQwQ5FiElQqjVGLYneg/pub?start=false&loop=false&delayms=3000",
+    "sourceDigest": "60a0acd24239c32f07d0c92240756d517afd76cb96e192076c2f6cd2cb0258c7",
+    "studentHistory": {
+      "preserveSourceIDs": true,
+      "rule": "Keep these IDs as the stable origin for progress, attempts, and review. New pilot scenes may add a new scene ID, but they must retain the listed sourceIDs whenever they teach, quote, or transform an original row.",
+      "sourceIDs": [
+        "block_1767602053322",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-1-i-come-from-001",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-2-communicative-function-002",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-3-introduction-003",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-9-language-use-015",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-11-let-s-practice-018",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-019",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--020",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-021",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-a-026",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-17-congrats-029",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-18-2020-the-utterers-corner-all-rights-reserved-030"
+      ],
+      "sourceRows": [
+        {
+          "sourceID": "block_1767602053322",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "block_1767602053322"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-1-i-come-from-001",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:1"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-text-2-communicative-function-002",
+          "type": "text",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:2"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-3-introduction-003",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:3"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+          "type": "text",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:4"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+          "type": "image",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:4"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+          "type": "audio",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:4"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007",
+          "type": "essay",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:4"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:5"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+          "type": "text",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:6"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010",
+          "type": "vocabulary",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:6"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:7"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+          "type": "structured-content",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:8"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+          "type": "text",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:8"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+          "type": "video",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:8"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-9-language-use-015",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:9"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+          "type": "structured-content",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:10"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017",
+          "type": "text",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:10"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-11-let-s-practice-018",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:11"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-019",
+          "type": "structured-content",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:12"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--020",
+          "type": "short_answer",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:12"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-021",
+          "type": "essay",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:12"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+          "type": "audio",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:13"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023",
+          "type": "multiple_choice",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:13"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024",
+          "type": "text",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:14"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+          "type": "short_answer",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:14"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-a-026",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:14"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+          "type": "recording",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:15"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028",
+          "type": "essay",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:16"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-17-congrats-029",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:17"
+          ]
+        },
+        {
+          "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-18-2020-the-utterers-corner-all-rights-reserved-030",
+          "type": "teacher_notes",
+          "originalIDs": [
+            "cmk0vhjh80001jm04epgai2ay:slide:18"
+          ]
+        }
+      ]
+    },
+    "audio": [
+      {
+        "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+        "originalSlideID": "cmk0vhjh80001jm04epgai2ay:slide:4",
+        "url": "/audio/lessons/course/unit-02-audio-01.mp3",
+        "publicUrl": "/audio/lessons/course/unit-02-audio-01.mp3",
+        "originalMediaUrl": "https://drive.google.com/file/d/1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp/view?usp=drivesdk",
+        "digest": "facd6fb47bd391993d409191e18e44c3691e09a33371c2187255c8b3d6ba0cb0",
+        "transcriptStatus": "inherited-source-audit-transcript",
+        "transcript": "Hi! This tour is nice, right? Yes, New York is a beautiful city. Yes, it is. By the way, my name is Johnny. Nice to meet you, Johnny. My name is Neil. Nice to meet you, too. I come from the Netherlands. Where are you from? I'm from Australia. However, my parents are American. Great. I'm Dutch, but my mother is from Germany, so I can speak English, Dutch and German. Marvellous! Well, I can only speak English and I know some Spanish. Amazing! The tour is about to continue. We talk later. Okay, see ya!",
+        "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media."
+      },
+      {
+        "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+        "originalSlideID": "cmk0vhjh80001jm04epgai2ay:slide:13",
+        "url": "/audio/lessons/course/unit-02-audio-02.mp3",
+        "publicUrl": "/audio/lessons/course/unit-02-audio-02.mp3",
+        "originalMediaUrl": "https://drive.google.com/file/d/1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF/view?usp=drivesdk",
+        "digest": "b9b12f0f4a6400412181b4aa0146dc3fdcf55be3d4e52fc5b744ab1b22750284",
+        "transcriptStatus": "inherited-source-audit-transcript-with-ambiguity-note",
+        "transcript": "good morning sir good morning may I see your passport certainly here you have oh you're from Venezuela yes they come from Venezuela but my dad is American oh and you are here to visit him exactly we speak very great English thanks language teacher welcome to the USA sir thanks",
+        "ambiguity": "The pronoun in 'they come from Venezuela' has no unambiguous antecedent in the transcript. Do not grade or teach a subject from that clause. Use only the explicit 'you're from Venezuela', 'my dad is American', and 'here to visit him' evidence.",
+        "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media."
+      }
+    ]
+  },
+  "approvedVisualContract": {
+    "referenceRoot": "C:/Users/ACER/.codex/worktrees/lesson-guided-pilot/web",
+    "references": [
+      {
+        "path": "docs/design/graphic-guide-v1/README.md",
+        "role": "normative visual, typography, interaction, and responsive rules"
+      },
+      {
+        "path": "docs/design/graphic-guide-v1/characters.webp",
+        "role": "canonical Lucas, Carl, and Interlocutora identities"
+      },
+      {
+        "path": "docs/design/graphic-guide-v1/scenes-ui.webp",
+        "role": "approved painterly environments, objects, palette, and interface family"
+      },
+      {
+        "path": "docs/design/content-format-mockups/v3/01-basic-practice.webp",
+        "role": "choice and guided practice composition"
+      },
+      {
+        "path": "docs/design/content-format-mockups/v3/02-advanced-practice.webp",
+        "role": "multi-item practice and feedback composition"
+      },
+      {
+        "path": "docs/design/content-format-mockups/v3/03-language.webp",
+        "role": "language and grammar explanation composition"
+      },
+      {
+        "path": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "role": "audio, reading, and media composition"
+      },
+      {
+        "path": "docs/design/content-format-mockups/v3/05-production.webp",
+        "role": "speaking, writing, and final production composition"
+      }
+    ],
+    "requirements": {
+      "art": "Use the adult painterly editorial, matte, semirealistic family from the guide. Preserve full environments: classroom, tour/city setting, map/globe table, or conversation workspace as named by each scene. Do not replace an environment with a generic card grid, abstract CSS shapes, gradient-only backdrop, or isolated portrait.",
+      "characters": "Only use the canonical Lucas, Carl, and Interlocutora identities when a named visual model is useful. Do not invent a biography or a new named face for an audio speaker. Source names Jenny, Takaishi, Johnny, and Neil remain text/audio entities unless an approved source illustration supplies them.",
+      "typography": "Use a small unit breadcrumb, one task heading in navy Georgia-like serif, and Spanish body instructions in legible Nunito-like body text. English learning items stay in English. Keep body text at least 16px with comfortable line height.",
+      "textProtection": "Keep all prompts, English examples, options, labels, feedback, and controls in a clear ivory content surface or an uncluttered foreground zone. Do not put required text inside the raster illustration and do not allow flags, plants, desks, or people to reduce text contrast.",
+      "primaryAction": "Show one cobalt primary action at a time. For choice checks, a click or Enter/Space checks immediately; after feedback the same control changes to Siguiente. Never show Comprobar and Siguiente together.",
+      "secondaryActions": "Use quiet outlined actions for Atrás and Saltar ejercicio where the flow supports them. Do not add a second filled primary or invent a progress gate.",
+      "mobile": "Keep recognizable navigation and breadcrumb/progress without covering the response area. Stack columns in reading order, keep controls at least 44x44px, keep the footer visible or reachable, and keep the single cobalt action full-width when needed.",
+      "accessibility": "Every audio/video has real controls and a transcript or text alternative where specified. Every image has useful alt text or an empty alt when decorative. Choice controls support keyboard selection and visible focus.",
+      "spacing": "Use the approved 8/16/24/32/48px scale, ivory #FAF8F4, navy #10245C, cobalt #245CFF, lilac #EEE8FA, slate #506187, green #08775E, and error text #C13E50."
+    },
+    "backgroundCatalog": {
+      "sourceFiles": [
+        "src/lib/lesson-backgrounds.ts",
+        "docs/design/graphic-guide-v1/background-library-v1.json",
+        "docs/design/content-format-mockups/v3/"
+      ],
+      "rule": "Use one existing approved full environment per scene; preserve the painterly scene, ivory protected text surface, navy serif heading hierarchy, one cobalt primary action, and mobile navigation.",
+      "assignments": {
+        "u02-scene-01-map-activation": "/images/lessons/backgrounds/travel-station.webp",
+        "u02-scene-02-audio-tour-explore": "/images/lessons/backgrounds/listening-lounge.webp",
+        "u02-scene-03-vocabulary-teach": "/images/lessons/backgrounds/campus.webp",
+        "u02-scene-04-audio-tour-check": "/images/lessons/backgrounds/city-directions.webp",
+        "u02-scene-05-grammar-teach": "/images/lessons/backgrounds/botanical-office.webp",
+        "u02-scene-06-guided-grammar-choice": "/images/lessons/backgrounds/library.webp",
+        "u02-scene-07-reading-jenny-takaishi": "/images/lessons/backgrounds/community-bookshop.webp",
+        "u02-scene-08-audio-passport-check": "/images/lessons/backgrounds/airport-lounge.webp",
+        "u02-scene-09-family-profile-practice": "/images/lessons/backgrounds/museum-gallery.webp",
+        "u02-scene-10-communication-rehearsal": "/images/lessons/this-is-me/speaking.webp",
+        "u02-scene-11-final-communication": "/images/lessons/this-is-me/writing.webp"
+      }
+    }
+  },
+  "sequence": [
+    {
+      "id": "u02-scene-01-map-activation",
+      "order": 1,
+      "phase": "teach",
+      "nativeTypes": [
+        "title",
+        "text",
+        "image",
+        "multiple_choice"
+      ],
+      "title": "Mira el mapa",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:4"
+      ],
+      "objective": "Activate the topic and distinguish a country name from a nationality before grammar practice.",
+      "instruction": "Observa el mapa ilustrado. Elige la pareja correcta para cada destino.",
+      "learningItems": [
+        {
+          "country": "Japan",
+          "nationality": "Japanese"
+        },
+        {
+          "country": "Brazil",
+          "nationality": "Brazilian"
+        },
+        {
+          "country": "Australia",
+          "nationality": "Australian"
+        },
+        {
+          "country": "France",
+          "nationality": "French"
+        },
+        {
+          "country": "Venezuela",
+          "nationality": "Venezuelan"
+        }
+      ],
+      "interaction": {
+        "type": "choice",
+        "graded": false,
+        "checkOn": "click",
+        "keyboard": [
+          "Enter",
+          "Space"
+        ],
+        "feedback": "formative",
+        "primaryAction": "Continuar",
+        "secondaryActions": [
+          "Saltar actividad"
+        ]
+      },
+      "checks": [
+        {
+          "id": "u02-scene-01-q1",
+          "question": "Which pair is correct?",
+          "options": [
+            {
+              "id": "u02-scene-01-q1-a",
+              "text": "Japan — Japanese",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-01-q1-b",
+              "text": "Japan — Japanian",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-01-q1-c",
+              "text": "Japanese — Japan",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-01-q1-d",
+              "text": "Japan — Japanish",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-01-q1-a",
+          "explanation": "Japan is the country; Japanese is the nationality."
+        }
+      ],
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/01-basic-practice.webp",
+        "environment": "A complete painterly classroom-travel corner: a large world map on the wall, a wooden table with a globe and an open atlas, window light, plant, and a calm ivory foreground. The map and globe carry the geographic meaning; they are not a row of generic cards. Render the complete approved environment from /images/lessons/backgrounds/travel-station.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The map/globe environment fills the upper half and remains visible beside the response area; no required prompt overlays it.",
+        "characters": "No portrait is required. If a guide figure is shown, use canonical Interlocutora at natural scale and no invented name or biography.",
+        "objects": [
+          "world map",
+          "globe",
+          "open atlas",
+          "plant",
+          "wooden table"
+        ],
+        "textSafeArea": "Ivory content panel for the Spanish prompt, English choices, and feedback; no words are rendered inside the map art.",
+        "controls": "One cobalt Continuar in the lower-right footer; choices are quiet outline controls with visible selected/focus state; Saltar actividad is secondary outline.",
+        "mobile": "Map and globe stack above the prompt; choices become one column, navigation/breadcrumb remains at the top, and the footer action spans the available width.",
+        "backgroundAsset": "/images/lessons/backgrounds/travel-station.webp",
+        "backgroundRole": "travel-station: map, globe, and atlas orientation",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-01-map-activation-title",
+          "type": "title",
+          "order": 1,
+          "title": "Mira el mapa",
+          "data": {
+            "sceneID": "u02-scene-01-map-activation",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-01-map-activation-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Observa el mapa ilustrado y activa el tema.</p><p><strong>Idea clave:</strong> Un país nombra un lugar; una nacionalidad describe a una persona.</p><ul><li>Japan — Japanese</li><li>Brazil — Brazilian</li><li>Australia — Australian</li><li>France — French</li><li>Venezuela — Venezuelan</li></ul>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-01-map-activation",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-01-map-activation-map",
+          "type": "image",
+          "order": 3,
+          "url": "/images/lessons/course/source-ca210bc894d0ba1c.webp",
+          "alt": "Illustrated world map with travel objects",
+          "data": {
+            "sceneID": "u02-scene-01-map-activation",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "original-source-image",
+            "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005"
+          }
+        },
+        {
+          "id": "u02-scene-01-map-activation-choices",
+          "type": "multiple_choice",
+          "order": 4,
+          "items": [
+            {
+              "id": "u02-scene-01-q1",
+              "question": "Which pair is correct?",
+              "options": [
+                {
+                  "id": "u02-scene-01-q1-a",
+                  "text": "Japan — Japanese"
+                },
+                {
+                  "id": "u02-scene-01-q1-b",
+                  "text": "Japan — Japanian"
+                },
+                {
+                  "id": "u02-scene-01-q1-c",
+                  "text": "Japanese — Japan"
+                },
+                {
+                  "id": "u02-scene-01-q1-d",
+                  "text": "Japan — Japanish"
+                }
+              ],
+              "correctOptionId": "u02-scene-01-q1-a",
+              "explanation": "Japan es el país; Japanese es la nacionalidad."
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-01-map-activation",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-02-audio-tour-explore",
+      "order": 2,
+      "phase": "teach",
+      "nativeTypes": [
+        "title",
+        "text",
+        "audio",
+        "essay"
+      ],
+      "title": "Escucha el recorrido",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:4"
+      ],
+      "objective": "Hear the topic and notice origin expressions without testing memory before teaching the forms.",
+      "instruction": "Escucha el audio una o dos veces. Anota las palabras o frases que reconoces; esta primera escucha es exploratoria y no tiene calificación.",
+      "media": {
+        "type": "audio",
+        "url": "/audio/lessons/course/unit-02-audio-01.mp3",
+        "preserveOriginal": true,
+        "transcriptStatus": "inherited-source-audit-transcript",
+        "transcript": "Hi! This tour is nice, right? Yes, New York is a beautiful city. Yes, it is. By the way, my name is Johnny. Nice to meet you, Johnny. My name is Neil. Nice to meet you, too. I come from the Netherlands. Where are you from? I'm from Australia. However, my parents are American. Great. I'm Dutch, but my mother is from Germany, so I can speak English, Dutch and German. Marvellous! Well, I can only speak English and I know some Spanish. Amazing! The tour is about to continue. We talk later. Okay, see ya!",
+        "originalMediaUrl": "https://drive.google.com/file/d/1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp/view?usp=drivesdk",
+        "maxReplays": null,
+        "autoplay": false,
+        "transcriptAccess": "quiet transcript link; keep available as an alternative",
+        "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media."
+      },
+      "exploratoryTask": {
+        "id": "u02-scene-02-explore",
+        "prompt": "¿Qué palabras sobre lugares, países o idiomas reconoces?",
+        "responseMode": "private-notes-or-teacher-talk",
+        "graded": false,
+        "doNotAutoGrade": true,
+        "answerKey": null
+      },
+      "assessment": {
+        "status": "ungraded-exploratory",
+        "reason": "The first listen prepares attention; factual choice checks appear only after vocabulary teaching in u02-scene-04."
+      },
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "environment": "A full painterly outdoor tour environment with a city-park path, skyline, mature tree, bench, small globe or map stand, and two adult conversational figures at a natural distance. Use the environment to establish the tour; do not reduce it to an audio card. Render the complete approved environment from /images/lessons/backgrounds/listening-lounge.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The tour illustration occupies the upper-left/side media region at generous scale; the player and prompt sit in a clear ivory surface beside or below it.",
+        "characters": "Do not assign the audio speakers the canonical characters or invent their biographies. Anonymous adult figures may be shown only to stage the tour; the transcript remains the authority.",
+        "objects": [
+          "park bench",
+          "tree",
+          "city skyline",
+          "globe/map stand",
+          "real audio player"
+        ],
+        "textSafeArea": "Transcript link, Spanish instruction, and response notes sit on ivory; no text is embedded in the skyline or illustration.",
+        "controls": "Real audio controls with play/pause, seek, and accessible label; one cobalt Continuar in the footer; no auto-play and no invented replay limit.",
+        "mobile": "Player follows the illustration in reading order, transcript link stays reachable, the navigation/breadcrumb does not cover the player, and Continuar remains one full-width action.",
+        "backgroundAsset": "/images/lessons/backgrounds/listening-lounge.webp",
+        "backgroundRole": "listening-lounge: protected audio listening and transcript access",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-02-audio-tour-explore-title",
+          "type": "title",
+          "order": 1,
+          "title": "Escucha el recorrido",
+          "data": {
+            "sceneID": "u02-scene-02-audio-tour-explore",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-02-audio-tour-explore-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Escucha una o dos veces y anota las palabras o frases que reconoces.</p><p><strong>Escucha:</strong> Presta atención a los nombres de países, nacionalidades e idiomas.</p><p>Escribe cualquier palabra o frase que reconozcas; puedes comparar tus notas con tu profesora.</p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-02-audio-tour-explore",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-02-audio-tour-explore-audio-original",
+          "type": "audio",
+          "order": 3,
+          "url": "/audio/lessons/course/unit-02-audio-01.mp3",
+          "title": "Unit 2 Audio 1 — first exploratory listen",
+          "data": {
+            "sceneID": "u02-scene-02-audio-tour-explore",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "original-audio-row",
+            "sourceRole": "original-audio-row",
+            "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+            "originalMediaUrl": "https://drive.google.com/file/d/1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp/view?usp=drivesdk",
+            "liveOriginal": true,
+            "preserveOriginal": true,
+            "transcriptStatus": "inherited-source-audit-transcript",
+            "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media.",
+            "transcript": "Hi! This tour is nice, right? Yes, New York is a beautiful city. Yes, it is. By the way, my name is Johnny. Nice to meet you, Johnny. My name is Neil. Nice to meet you, too. I come from the Netherlands. Where are you from? I'm from Australia. However, my parents are American. Great. I'm Dutch, but my mother is from Germany, so I can speak English, Dutch and German. Marvellous! Well, I can only speak English and I know some Spanish. Amazing! The tour is about to continue. We talk later. Okay, see ya!",
+            "transcriptAccess": "quiet transcript link",
+            "maxReplays": null
+          }
+        },
+        {
+          "id": "u02-scene-02-audio-tour-explore-exploratory-note",
+          "type": "essay",
+          "order": 4,
+          "prompt": "Escribe en inglés dos palabras o frases que reconociste en el audio. Esta nota es exploratoria y no se califica automáticamente.",
+          "aiGrading": false,
+          "data": {
+            "sceneID": "u02-scene-02-audio-tour-explore",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topic-004",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-image-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-005",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "doNotAutoGrade": true,
+            "responseMode": "exploratory-ungraded",
+            "instructionLanguage": "es",
+            "learningItemLanguage": "en"
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-03-vocabulary-teach",
+      "order": 3,
+      "phase": "teach",
+      "nativeTypes": [
+        "title",
+        "text",
+        "structured-content",
+        "vocabulary",
+        "multiple_choice"
+      ],
+      "title": "País o nacionalidad",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:6"
+      ],
+      "objective": "Build a visible country/nationality bank before asking learners to produce the forms.",
+      "instruction": "Lee el banco de palabras. País nombra el lugar; nationality nombra a la persona. Escucha o repite las parejas.",
+      "teaching": {
+        "countryNationalityPairs": [
+          {
+            "country": "Brazil",
+            "nationality": "Brazilian"
+          },
+          {
+            "country": "China",
+            "nationality": "Chinese"
+          },
+          {
+            "country": "Australia",
+            "nationality": "Australian"
+          },
+          {
+            "country": "India",
+            "nationality": "Indian"
+          },
+          {
+            "country": "Venezuela",
+            "nationality": "Venezuelan"
+          },
+          {
+            "country": "France",
+            "nationality": "French"
+          },
+          {
+            "country": "Nigeria",
+            "nationality": "Nigerian"
+          },
+          {
+            "country": "Japan",
+            "nationality": "Japanese"
+          }
+        ],
+        "miniLesson": [
+          "A country is a place: She is from Japan.",
+          "A nationality describes a person: She is Japanese.",
+          "Both country names and nationalities use capital letters.",
+          "Some forms are irregular: France/French and Japan/Japanese."
+        ],
+        "teacherPrompt": "¿Qué parte de la pareja nombra el lugar? Pide al estudiante que explique la diferencia antes de avanzar."
+      },
+      "interaction": {
+        "type": "guided-choice",
+        "graded": false,
+        "checkOn": "click",
+        "feedback": "formative",
+        "primaryAction": "Continuar",
+        "secondaryActions": [
+          "Saltar actividad"
+        ]
+      },
+      "checks": [
+        {
+          "id": "u02-scene-03-q1",
+          "question": "Choose the nationality for France.",
+          "options": [
+            {
+              "id": "u02-scene-03-q1-a",
+              "text": "French",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-03-q1-b",
+              "text": "France",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-03-q1-c",
+              "text": "Franch",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-03-q1-d",
+              "text": "Francian",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-03-q1-a",
+          "explanation": "French is the nationality; France is the country."
+        }
+      ],
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/03-language.webp",
+        "environment": "A complete painterly classroom with a chalkboard, world map, globe on a wood desk, plant, warm window light, and enough open wall/desk space for the language bank. The scene teaches geography rather than presenting disconnected UI cards. Render the complete approved environment from /images/lessons/backgrounds/campus.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "Classroom environment remains visible across the top half; the vocabulary bank is a readable interface layer in the foreground, not painted into the board.",
+        "characters": "No portrait needed; a canonical Interlocutora may gesture toward the map when a human model improves the explanation.",
+        "objects": [
+          "chalkboard without decorative writing",
+          "world map",
+          "globe",
+          "desk",
+          "plant"
+        ],
+        "textSafeArea": "Country/nationality pairs are real text on ivory/lilac surfaces with navy labels; preserve contrast and do not depend on the raster board.",
+        "controls": "Options are clickable and keyboard-selectable with outline state; one cobalt Continuar; Saltar actividad remains secondary outline.",
+        "mobile": "Map and desk illustration move above a single-column vocabulary bank; the header keeps the breadcrumb, and the footer action stays reachable.",
+        "backgroundAsset": "/images/lessons/backgrounds/campus.webp",
+        "backgroundRole": "campus: vocabulary teaching table and country/nationality examples",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-03-vocabulary-teach-title",
+          "type": "title",
+          "order": 1,
+          "title": "País o nacionalidad",
+          "data": {
+            "sceneID": "u02-scene-03-vocabulary-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-03-vocabulary-teach-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Lee el banco de palabras y repite las parejas.</p><p>Un país es un lugar: <strong>She is from Japan.</strong> Una nacionalidad describe a una persona: <strong>She is Japanese.</strong></p><p>Los nombres de países y nacionalidades llevan mayúscula.</p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-03-vocabulary-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-03-vocabulary-teach-country-nationality-table",
+          "type": "structured-content",
+          "order": 3,
+          "title": "País y nacionalidad",
+          "content": {
+            "headers": [
+              "País",
+              "Nacionalidad"
+            ],
+            "rows": [
+              [
+                "Brazil",
+                "Brazilian"
+              ],
+              [
+                "China",
+                "Chinese"
+              ],
+              [
+                "Australia",
+                "Australian"
+              ],
+              [
+                "India",
+                "Indian"
+              ],
+              [
+                "Venezuela",
+                "Venezuelan"
+              ],
+              [
+                "France",
+                "French"
+              ],
+              [
+                "Nigeria",
+                "Nigerian"
+              ],
+              [
+                "Japan",
+                "Japanese"
+              ]
+            ]
+          },
+          "config": {
+            "hasHeaderRow": true,
+            "hasStripedRows": true,
+            "hasBorders": true
+          },
+          "data": {
+            "sceneID": "u02-scene-03-vocabulary-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6"
+            ],
+            "role": "teaching-table"
+          }
+        },
+        {
+          "id": "u02-scene-03-vocabulary-teach-vocabulary",
+          "type": "vocabulary",
+          "order": 4,
+          "title": "Country / nationality pairs",
+          "items": [
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-1",
+              "term": "Brazil",
+              "definition": "Brazilian",
+              "example": "Brazil — Brazilian"
+            },
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-2",
+              "term": "China",
+              "definition": "Chinese",
+              "example": "China — Chinese"
+            },
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-3",
+              "term": "Australia",
+              "definition": "Australian",
+              "example": "Australia — Australian"
+            },
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-4",
+              "term": "India",
+              "definition": "Indian",
+              "example": "India — Indian"
+            },
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-5",
+              "term": "Venezuela",
+              "definition": "Venezuelan",
+              "example": "Venezuela — Venezuelan"
+            },
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-6",
+              "term": "France",
+              "definition": "French",
+              "example": "France — French"
+            },
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-7",
+              "term": "Nigeria",
+              "definition": "Nigerian",
+              "example": "Nigeria — Nigerian"
+            },
+            {
+              "id": "u02-scene-03-vocabulary-teach-vocab-8",
+              "term": "Japan",
+              "definition": "Japanese",
+              "example": "Japan — Japanese"
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-03-vocabulary-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6"
+            ],
+            "role": "vocabulary-teaching"
+          }
+        },
+        {
+          "id": "u02-scene-03-vocabulary-teach-choices",
+          "type": "multiple_choice",
+          "order": 5,
+          "items": [
+            {
+              "id": "u02-scene-03-q1",
+              "question": "Choose the nationality for France.",
+              "options": [
+                {
+                  "id": "u02-scene-03-q1-a",
+                  "text": "French"
+                },
+                {
+                  "id": "u02-scene-03-q1-b",
+                  "text": "France"
+                },
+                {
+                  "id": "u02-scene-03-q1-c",
+                  "text": "Franch"
+                },
+                {
+                  "id": "u02-scene-03-q1-d",
+                  "text": "Francian"
+                }
+              ],
+              "correctOptionId": "u02-scene-03-q1-a",
+              "explanation": "French es la nacionalidad; France es el país."
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-03-vocabulary-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-5-vocabulary-introduction-008",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-6-ol-009",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-04-audio-tour-check",
+      "order": 4,
+      "phase": "practice",
+      "nativeTypes": [
+        "title",
+        "text",
+        "audio",
+        "multiple_choice"
+      ],
+      "title": "Comprueba lo que escuchaste",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:4"
+      ],
+      "objective": "Check only country, nationality, and language facts that are explicitly stated in the inherited source-audit tour transcript.",
+      "instruction": "Escucha de nuevo si lo necesitas y elige una respuesta para cada pregunta.",
+      "media": {
+        "type": "audio",
+        "url": "/audio/lessons/course/unit-02-audio-01.mp3",
+        "preserveOriginal": true,
+        "transcriptStatus": "inherited-source-audit-transcript",
+        "transcriptLink": true,
+        "autoplay": false,
+        "maxReplays": null,
+        "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media.",
+        "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006"
+      },
+      "interaction": {
+        "type": "choice",
+        "graded": true,
+        "checkOn": "click",
+        "keyboard": [
+          "Enter",
+          "Space"
+        ],
+        "autoAdvanceAfterFeedback": true,
+        "primaryAction": {
+          "beforeFeedback": "Comprobar",
+          "afterFeedback": "Siguiente",
+          "sameControl": true
+        },
+        "secondaryActions": [
+          "Saltar ejercicio"
+        ]
+      },
+      "checks": [
+        {
+          "id": "u02-scene-04-q1",
+          "question": "Which country is named in the sentence “I come from the Netherlands”?",
+          "options": [
+            {
+              "id": "u02-scene-04-q1-a",
+              "text": "The Netherlands",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-04-q1-b",
+              "text": "Australia",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-04-q1-c",
+              "text": "Germany",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-04-q1-d",
+              "text": "The USA",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-04-q1-a",
+          "explanation": "The sentence explicitly names the Netherlands after “I come from.”",
+          "transcriptEvidence": "I come from the Netherlands."
+        },
+        {
+          "id": "u02-scene-04-q2",
+          "question": "Which country is named in the sentence “I'm from Australia”?",
+          "options": [
+            {
+              "id": "u02-scene-04-q2-a",
+              "text": "Australia",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-04-q2-b",
+              "text": "The Netherlands",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-04-q2-c",
+              "text": "Germany",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-04-q2-d",
+              "text": "Spain",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-04-q2-a",
+          "explanation": "The sentence explicitly names Australia after “I'm from.”",
+          "transcriptEvidence": "I'm from Australia."
+        },
+        {
+          "id": "u02-scene-04-q3",
+          "question": "Which languages are listed immediately after “I'm Dutch”?",
+          "options": [
+            {
+              "id": "u02-scene-04-q3-a",
+              "text": "English, Dutch and German",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-04-q3-b",
+              "text": "English and Spanish only",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-04-q3-c",
+              "text": "French, Dutch and German",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-04-q3-d",
+              "text": "Spanish and German only",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-04-q3-a",
+          "explanation": "The transcript lists the three languages immediately after that quoted phrase.",
+          "transcriptEvidence": "I'm Dutch, but my mother is from Germany, so I can speak English, Dutch and German."
+        }
+      ],
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "environment": "Reuse the complete painterly tour/city-park setting from scene 02, with the skyline, mature tree, bench, map/globe stand, and two conversational figures visible around the audio player. Render the complete approved environment from /images/lessons/backgrounds/city-directions.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The environment is a substantial media panel; the player, question, options, and feedback have a separate ivory reading surface.",
+        "characters": "Anonymous audio figures only; no new portrait labels and no inferred nationality shown in the art.",
+        "objects": [
+          "audio player",
+          "park bench",
+          "tree",
+          "city skyline",
+          "map/globe stand"
+        ],
+        "textSafeArea": "Questions and options stay outside the image, in navy text on ivory; transcript evidence is revealed only as feedback text and remains legible.",
+        "controls": "Clicking an option checks it immediately; one cobalt Comprobar/Siguiente control is visible at a time; Saltar ejercicio is outline.",
+        "mobile": "Player precedes one-column questions, options keep 44px targets, transcript link remains available, and mobile navigation stays outside the answer region.",
+        "backgroundAsset": "/images/lessons/backgrounds/city-directions.webp",
+        "backgroundRole": "city-directions: replay plus evidence-based listening check",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-04-audio-tour-check-title",
+          "type": "title",
+          "order": 1,
+          "title": "Comprueba lo que escuchaste",
+          "data": {
+            "sceneID": "u02-scene-04-audio-tour-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-04-audio-tour-check-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Reproduce el audio si lo necesitas y elige la opción que coincide con el diálogo.</p><p>Escucha cada frase y selecciona solo la información que aparece en ella.</p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-04-audio-tour-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-04-audio-tour-check-audio-replay",
+          "type": "audio",
+          "order": 3,
+          "url": "/audio/lessons/course/unit-02-audio-01.mp3",
+          "title": "Unit 2 Audio 1 — replay",
+          "data": {
+            "sceneID": "u02-scene-04-audio-tour-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "audio-replay",
+            "sourceRole": "replay-existing-audio",
+            "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+            "replayOf": "u02-scene-02-audio-tour-explore",
+            "liveOriginal": false,
+            "preserveOriginal": true,
+            "originalMediaUrl": "https://drive.google.com/file/d/1rW5uWRAP94J-4ulHvzq-sTYBCuIE8zdp/view?usp=drivesdk",
+            "transcriptStatus": "inherited-source-audit-transcript",
+            "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media.",
+            "transcript": "Hi! This tour is nice, right? Yes, New York is a beautiful city. Yes, it is. By the way, my name is Johnny. Nice to meet you, Johnny. My name is Neil. Nice to meet you, too. I come from the Netherlands. Where are you from? I'm from Australia. However, my parents are American. Great. I'm Dutch, but my mother is from Germany, so I can speak English, Dutch and German. Marvellous! Well, I can only speak English and I know some Spanish. Amazing! The tour is about to continue. We talk later. Okay, see ya!",
+            "transcriptAccess": "quiet transcript link",
+            "maxReplays": null
+          }
+        },
+        {
+          "id": "u02-scene-04-audio-tour-check-choices",
+          "type": "multiple_choice",
+          "order": 4,
+          "items": [
+            {
+              "id": "u02-scene-04-q1",
+              "question": "Which country is named in the sentence “I come from the Netherlands”?",
+              "options": [
+                {
+                  "id": "u02-scene-04-q1-a",
+                  "text": "The Netherlands"
+                },
+                {
+                  "id": "u02-scene-04-q1-b",
+                  "text": "Australia"
+                },
+                {
+                  "id": "u02-scene-04-q1-c",
+                  "text": "Germany"
+                },
+                {
+                  "id": "u02-scene-04-q1-d",
+                  "text": "The USA"
+                }
+              ],
+              "correctOptionId": "u02-scene-04-q1-a",
+              "explanation": "La oración nombra the Netherlands después de la frase I come from."
+            },
+            {
+              "id": "u02-scene-04-q2",
+              "question": "Which country is named in the sentence “I'm from Australia”?",
+              "options": [
+                {
+                  "id": "u02-scene-04-q2-a",
+                  "text": "Australia"
+                },
+                {
+                  "id": "u02-scene-04-q2-b",
+                  "text": "The Netherlands"
+                },
+                {
+                  "id": "u02-scene-04-q2-c",
+                  "text": "Germany"
+                },
+                {
+                  "id": "u02-scene-04-q2-d",
+                  "text": "Spain"
+                }
+              ],
+              "correctOptionId": "u02-scene-04-q2-a",
+              "explanation": "La oración nombra Australia después de la frase I am from."
+            },
+            {
+              "id": "u02-scene-04-q3",
+              "question": "Which languages are listed immediately after “I'm Dutch”?",
+              "options": [
+                {
+                  "id": "u02-scene-04-q3-a",
+                  "text": "English, Dutch and German"
+                },
+                {
+                  "id": "u02-scene-04-q3-b",
+                  "text": "English and Spanish only"
+                },
+                {
+                  "id": "u02-scene-04-q3-c",
+                  "text": "French, Dutch and German"
+                },
+                {
+                  "id": "u02-scene-04-q3-d",
+                  "text": "Spanish and German only"
+                }
+              ],
+              "correctOptionId": "u02-scene-04-q3-a",
+              "explanation": "Después de la frase I am Dutch, el diálogo menciona English, Dutch y German."
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-04-audio-tour-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-006",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-4-a-look-at-the-picture-what-is-it-suggesting-what-is-today-s-topi-007"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:4"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": true,
+            "transcriptEvidenceRequired": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-05-grammar-teach",
+      "order": 5,
+      "phase": "teach",
+      "nativeTypes": [
+        "title",
+        "text",
+        "structured-content",
+        "video",
+        "multiple_choice"
+      ],
+      "title": "Tres formas para hablar del origen",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:8",
+        "cmk0vhjh80001jm04epgai2ay:slide:10"
+      ],
+      "objective": "Teach the form and meaning contrast before the learner is asked to choose or produce it.",
+      "instruction": "Lee la regla y di los ejemplos en voz alta. Primero identifica si la respuesta necesita un país o una nacionalidad.",
+      "media": {
+        "type": "video-reference",
+        "url": "https://youtu.be/EMWmCb1CIdc",
+        "preserveOriginal": true,
+        "autoplay": false,
+        "transcriptLink": true
+      },
+      "teaching": {
+        "rules": [
+          {
+            "label": "be from + country",
+            "example": "I am from Peru.",
+            "meaning": "Peru is the place."
+          },
+          {
+            "label": "be + nationality",
+            "example": "She is Peruvian.",
+            "meaning": "Peruvian describes the person."
+          },
+          {
+            "label": "come from + country",
+            "example": "They come from Venezuela.",
+            "meaning": "come is the main verb; the question uses do/does."
+          }
+        ],
+        "questions": [
+          {
+            "form": "Where are you from?",
+            "answer": "I am from Brazil."
+          },
+          {
+            "form": "What nationality are you?",
+            "answer": "I am Brazilian."
+          },
+          {
+            "form": "Where does Nina come from?",
+            "answer": "She comes from Japan."
+          }
+        ],
+        "auxiliaryRule": "The verb to be makes its own question: Where are you from? Other present-simple verbs use do/does: Where does she come from? The main verb stays in the base form after does.",
+        "capitalization": "Country names and nationalities take capital letters: Peru, Peruvian, Japan, Japanese."
+      },
+      "formativeChecks": [
+        {
+          "id": "u02-scene-05-q1",
+          "question": "Which sentence names a country as the place?",
+          "options": [
+            {
+              "id": "u02-scene-05-q1-a",
+              "text": "She is from Japan.",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-05-q1-b",
+              "text": "She is Japan.",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-05-q1-c",
+              "text": "She from Japanese.",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-05-q1-d",
+              "text": "She are Japanese.",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-05-q1-a",
+          "explanation": "Japan is the country after from."
+        },
+        {
+          "id": "u02-scene-05-q2",
+          "question": "Which question uses does with the base verb come?",
+          "options": [
+            {
+              "id": "u02-scene-05-q2-a",
+              "text": "Where does Nina come from?",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-05-q2-b",
+              "text": "Where does Nina comes from?",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-05-q2-c",
+              "text": "Where is Nina come from?",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-05-q2-d",
+              "text": "Where do Nina comes from?",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-05-q2-a",
+          "explanation": "Does carries the third-person marker, so the main verb stays come."
+        }
+      ],
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/03-language.webp",
+        "environment": "A complete painterly classroom/teacher desk with chalkboard, map, globe, plant, lamp, and warm window light. A clean, real text table sits in front of the environment; it is not painted into the board and does not become a generic card grid. Render the complete approved environment from /images/lessons/backgrounds/botanical-office.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The classroom establishes the lesson context across the upper half; grammar table and examples use the protected foreground surface.",
+        "characters": "Canonical Interlocutora may model one question at the desk; preserve her loose dark-brown bun and cream/navy striped top.",
+        "objects": [
+          "chalkboard",
+          "map",
+          "globe",
+          "teacher desk",
+          "lamp",
+          "plant",
+          "video player"
+        ],
+        "textSafeArea": "Rule labels and English examples use navy serif headings plus 16px body text on ivory; the board contains no required text.",
+        "controls": "Video has real controls and transcript link; formative choices use outline selection; one cobalt Continuar; no second filled action.",
+        "mobile": "The grammar table becomes a vertical sequence (be from, be nationality, come from), the video follows the explanation, and the footer remains a single reachable action.",
+        "backgroundAsset": "/images/lessons/backgrounds/botanical-office.webp",
+        "backgroundRole": "botanical-office: grammar teaching and video reference",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-05-grammar-teach-title",
+          "type": "title",
+          "order": 1,
+          "title": "Tres formas para hablar del origen",
+          "data": {
+            "sceneID": "u02-scene-05-grammar-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:8",
+              "cmk0vhjh80001jm04epgai2ay:slide:10"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-05-grammar-teach-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Lee la regla y di los ejemplos en voz alta.</p><p><strong>be from + country:</strong> <strong>I am from Peru.</strong> &nbsp; <strong>be + nationality:</strong> <strong>She is Peruvian.</strong></p><p><strong>come from + country:</strong> <strong>They come from Venezuela.</strong> Después de <em>does</em>, usa el verbo base: <strong>Where does Nina come from?</strong></p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-05-grammar-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:8",
+              "cmk0vhjh80001jm04epgai2ay:slide:10"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-05-grammar-teach-grammar-table",
+          "type": "structured-content",
+          "order": 3,
+          "title": "Patrones para hablar del origen",
+          "content": {
+            "headers": [
+              "Forma",
+              "Ejemplo",
+              "Significado"
+            ],
+            "rows": [
+              [
+                "be from + country",
+                "I am from Peru.",
+                "Peru es el lugar."
+              ],
+              [
+                "be + nationality",
+                "She is Peruvian.",
+                "Peruvian describe a la persona."
+              ],
+              [
+                "come from + country",
+                "They come from Venezuela.",
+                "La pregunta usa do/does."
+              ]
+            ]
+          },
+          "config": {
+            "hasHeaderRow": true,
+            "hasStripedRows": true,
+            "hasBorders": true
+          },
+          "data": {
+            "sceneID": "u02-scene-05-grammar-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:8",
+              "cmk0vhjh80001jm04epgai2ay:slide:10"
+            ],
+            "role": "grammar-teaching-table"
+          }
+        },
+        {
+          "id": "u02-scene-05-grammar-teach-video",
+          "type": "video",
+          "order": 4,
+          "url": "https://youtu.be/EMWmCb1CIdc",
+          "title": "Grammar reference — countries and nationalities",
+          "data": {
+            "sceneID": "u02-scene-05-grammar-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:8",
+              "cmk0vhjh80001jm04epgai2ay:slide:10"
+            ],
+            "role": "original-source-video",
+            "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+            "preserveOriginal": true,
+            "transcriptLink": true
+          }
+        },
+        {
+          "id": "u02-scene-05-grammar-teach-formative-choices",
+          "type": "multiple_choice",
+          "order": 5,
+          "items": [
+            {
+              "id": "u02-scene-05-q1",
+              "question": "Which sentence names a country as the place?",
+              "options": [
+                {
+                  "id": "u02-scene-05-q1-a",
+                  "text": "She is from Japan."
+                },
+                {
+                  "id": "u02-scene-05-q1-b",
+                  "text": "She is Japan."
+                },
+                {
+                  "id": "u02-scene-05-q1-c",
+                  "text": "She from Japanese."
+                },
+                {
+                  "id": "u02-scene-05-q1-d",
+                  "text": "She are Japanese."
+                }
+              ],
+              "correctOptionId": "u02-scene-05-q1-a",
+              "explanation": "Japan es el país que aparece después de from."
+            },
+            {
+              "id": "u02-scene-05-q2",
+              "question": "Which question uses does with the base verb come?",
+              "options": [
+                {
+                  "id": "u02-scene-05-q2-a",
+                  "text": "Where does Nina come from?"
+                },
+                {
+                  "id": "u02-scene-05-q2-b",
+                  "text": "Where does Nina comes from?"
+                },
+                {
+                  "id": "u02-scene-05-q2-c",
+                  "text": "Where is Nina come from?"
+                },
+                {
+                  "id": "u02-scene-05-q2-d",
+                  "text": "Where do Nina comes from?"
+                }
+              ],
+              "correctOptionId": "u02-scene-05-q2-a",
+              "explanation": "Con Nina usamos does y el verbo base come."
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-05-grammar-teach",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-7-grammar-analysis-011",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-8-we-normally-use-simple-present-tense-to-talk-about--012",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-8-we-normally-use-simple-present-tense-to-talk-about-countries-and--013",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-video-8-we-normally-use-simple-present-tense-to-talk-about-countries-and-014",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-10-language-targets-016",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-10-language-targets-017"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:8",
+              "cmk0vhjh80001jm04epgai2ay:slide:10"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-06-guided-grammar-choice",
+      "order": 6,
+      "phase": "practice",
+      "nativeTypes": [
+        "title",
+        "text",
+        "structured-content",
+        "multiple_choice"
+      ],
+      "title": "Completa las frases",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-11-let-s-practice-018",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-019",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--020",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-021"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:12"
+      ],
+      "objective": "Practice the country/nationality contrast and do/does forms after the explicit grammar lesson.",
+      "instruction": "Elige la palabra o la transformación correcta. Haz clic en una opción para comprobarla.",
+      "interaction": {
+        "type": "choice",
+        "graded": true,
+        "checkOn": "click",
+        "keyboard": [
+          "Enter",
+          "Space"
+        ],
+        "autoAdvanceAfterFeedback": true,
+        "primaryAction": {
+          "beforeFeedback": "Comprobar",
+          "afterFeedback": "Siguiente",
+          "sameControl": true
+        },
+        "secondaryActions": [
+          "Saltar ejercicio"
+        ]
+      },
+      "checks": [
+        {
+          "id": "u02-scene-06-q1",
+          "question": "I ___ from Peru.",
+          "options": [
+            {
+              "id": "u02-scene-06-q1-a",
+              "text": "am",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-06-q1-b",
+              "text": "is",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q1-c",
+              "text": "are",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q1-d",
+              "text": "does",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-06-q1-a",
+          "explanation": "Use am with I: I am from Peru."
+        },
+        {
+          "id": "u02-scene-06-q2",
+          "question": "She ___ Japanese.",
+          "options": [
+            {
+              "id": "u02-scene-06-q2-a",
+              "text": "is",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-06-q2-b",
+              "text": "are",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q2-c",
+              "text": "am",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q2-d",
+              "text": "does",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-06-q2-a",
+          "explanation": "Use is with she: She is Japanese."
+        },
+        {
+          "id": "u02-scene-06-q3",
+          "question": "Where ___ Nina come from?",
+          "options": [
+            {
+              "id": "u02-scene-06-q3-a",
+              "text": "does",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-06-q3-b",
+              "text": "do",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q3-c",
+              "text": "is",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q3-d",
+              "text": "are",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-06-q3-a",
+          "explanation": "Nina is third-person singular, so the question uses does."
+        },
+        {
+          "id": "u02-scene-06-q4",
+          "question": "She ___ from Japan.",
+          "options": [
+            {
+              "id": "u02-scene-06-q4-a",
+              "text": "comes",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-06-q4-b",
+              "text": "come",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q4-c",
+              "text": "coming",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q4-d",
+              "text": "does come",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-06-q4-a",
+          "explanation": "In a positive third-person present sentence, come becomes comes."
+        },
+        {
+          "id": "u02-scene-06-q5",
+          "question": "Choose the question for: Jared comes from Morocco.",
+          "options": [
+            {
+              "id": "u02-scene-06-q5-a",
+              "text": "Does Jared come from Morocco?",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-06-q5-b",
+              "text": "Does Jared comes from Morocco?",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q5-c",
+              "text": "Is Jared come from Morocco?",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-06-q5-d",
+              "text": "Do Jared comes from Morocco?",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-06-q5-a",
+          "explanation": "After does, the main verb returns to the base form come.",
+          "sourceEvidence": "Jared comes from Morocco."
+        }
+      ],
+      "newMaterial": {
+        "name": "Nina",
+        "status": "fictional-practice-character",
+        "rule": "Nina is created only for this exercise. Do not attribute her facts to Jenny, Takaishi, Johnny, Neil, or either recording."
+      },
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/01-basic-practice.webp",
+        "environment": "A complete painterly study desk in the classroom with a visible map, globe, chalkboard, plant, and warm light. The response surface sits in front of this environment with enough empty space for options and feedback. Render the complete approved environment from /images/lessons/backgrounds/library.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The environment frames the task without shrinking the question; choices are large, separated controls rather than painted labels.",
+        "characters": "No portrait is needed; never show Nina as a newly invented portrait.",
+        "objects": [
+          "map",
+          "globe",
+          "study desk",
+          "chalkboard",
+          "plant"
+        ],
+        "textSafeArea": "English sentence and options are real navy text on ivory; feedback appears adjacent to the checked choice and does not move the footer.",
+        "controls": "A click checks the selected option immediately. One cobalt Comprobar becomes Siguiente after feedback; Saltar ejercicio is outline; visible focus and keyboard activation are required.",
+        "mobile": "Question and options stack in one column, with no option below the sticky footer; breadcrumb and navigation remain outside the answer surface.",
+        "backgroundAsset": "/images/lessons/backgrounds/library.webp",
+        "backgroundRole": "library: quiet guided form practice",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-06-guided-grammar-choice-title",
+          "type": "title",
+          "order": 1,
+          "title": "Completa las frases",
+          "data": {
+            "sceneID": "u02-scene-06-guided-grammar-choice",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-11-let-s-practice-018",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-019",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--020",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-021"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:12"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-06-guided-grammar-choice-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Elige la palabra o transformación correcta y comprueba cada respuesta.</p><p>Con <em>I</em> usamos <em>am</em>; con <em>she/he</em> usamos <em>is</em>. En preguntas con <em>does</em>, el verbo principal queda en su forma base: <strong>Where does Nina come from?</strong></p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-06-guided-grammar-choice",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-11-let-s-practice-018",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-019",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--020",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-021"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:12"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-06-guided-grammar-choice-practice-table",
+          "type": "structured-content",
+          "order": 3,
+          "title": "Referencia rápida",
+          "content": {
+            "headers": [
+              "Sujeto / pregunta",
+              "Forma",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Yo (I)",
+                "am",
+                "I am from Peru."
+              ],
+              [
+                "Ella / él (she / he)",
+                "is / comes",
+                "She is Japanese. / She comes from Japan."
+              ],
+              [
+                "Pregunta con tercera persona",
+                "does + come",
+                "Where does Nina come from?"
+              ],
+              [
+                "Sujeto plural",
+                "do + base verb",
+                "Do they come from Brazil?"
+              ]
+            ]
+          },
+          "config": {
+            "hasHeaderRow": true,
+            "hasStripedRows": true,
+            "hasBorders": true
+          },
+          "data": {
+            "sceneID": "u02-scene-06-guided-grammar-choice",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-11-let-s-practice-018",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-019",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--020",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-021"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:12"
+            ],
+            "role": "grammar-practice-table"
+          }
+        },
+        {
+          "id": "u02-scene-06-guided-grammar-choice-choices",
+          "type": "multiple_choice",
+          "order": 4,
+          "items": [
+            {
+              "id": "u02-scene-06-q1",
+              "question": "I ___ from Peru.",
+              "options": [
+                {
+                  "id": "u02-scene-06-q1-a",
+                  "text": "am"
+                },
+                {
+                  "id": "u02-scene-06-q1-b",
+                  "text": "is"
+                },
+                {
+                  "id": "u02-scene-06-q1-c",
+                  "text": "are"
+                },
+                {
+                  "id": "u02-scene-06-q1-d",
+                  "text": "does"
+                }
+              ],
+              "correctOptionId": "u02-scene-06-q1-a",
+              "explanation": "Con I usamos am: I am from Peru."
+            },
+            {
+              "id": "u02-scene-06-q2",
+              "question": "She ___ Japanese.",
+              "options": [
+                {
+                  "id": "u02-scene-06-q2-a",
+                  "text": "is"
+                },
+                {
+                  "id": "u02-scene-06-q2-b",
+                  "text": "are"
+                },
+                {
+                  "id": "u02-scene-06-q2-c",
+                  "text": "am"
+                },
+                {
+                  "id": "u02-scene-06-q2-d",
+                  "text": "does"
+                }
+              ],
+              "correctOptionId": "u02-scene-06-q2-a",
+              "explanation": "Con she usamos is: She is Japanese."
+            },
+            {
+              "id": "u02-scene-06-q3",
+              "question": "Where ___ Nina come from?",
+              "options": [
+                {
+                  "id": "u02-scene-06-q3-a",
+                  "text": "does"
+                },
+                {
+                  "id": "u02-scene-06-q3-b",
+                  "text": "do"
+                },
+                {
+                  "id": "u02-scene-06-q3-c",
+                  "text": "is"
+                },
+                {
+                  "id": "u02-scene-06-q3-d",
+                  "text": "are"
+                }
+              ],
+              "correctOptionId": "u02-scene-06-q3-a",
+              "explanation": "Nina es tercera persona singular; la pregunta usa does."
+            },
+            {
+              "id": "u02-scene-06-q4",
+              "question": "She ___ from Japan.",
+              "options": [
+                {
+                  "id": "u02-scene-06-q4-a",
+                  "text": "comes"
+                },
+                {
+                  "id": "u02-scene-06-q4-b",
+                  "text": "come"
+                },
+                {
+                  "id": "u02-scene-06-q4-c",
+                  "text": "coming"
+                },
+                {
+                  "id": "u02-scene-06-q4-d",
+                  "text": "does come"
+                }
+              ],
+              "correctOptionId": "u02-scene-06-q4-a",
+              "explanation": "En una oración afirmativa con she usamos comes: She comes from Japan."
+            },
+            {
+              "id": "u02-scene-06-q5",
+              "question": "Choose the question for: Jared comes from Morocco.",
+              "options": [
+                {
+                  "id": "u02-scene-06-q5-a",
+                  "text": "Does Jared come from Morocco?"
+                },
+                {
+                  "id": "u02-scene-06-q5-b",
+                  "text": "Does Jared comes from Morocco?"
+                },
+                {
+                  "id": "u02-scene-06-q5-c",
+                  "text": "Is Jared come from Morocco?"
+                },
+                {
+                  "id": "u02-scene-06-q5-d",
+                  "text": "Do Jared comes from Morocco?"
+                }
+              ],
+              "correctOptionId": "u02-scene-06-q5-a",
+              "explanation": "Después de does usamos el verbo base: Does Jared come from Morocco?"
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-06-guided-grammar-choice",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-11-let-s-practice-018",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-structured-content-12-a-change-the-following-sentences-into-the-interrog-019",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-12-a-change-the-following-sentences-into-the-interrogative--020",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-essay-12-a-change-the-following-sentences-into-the-interrogative-and-neg-021"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:12"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-07-reading-jenny-takaishi",
+      "order": 7,
+      "phase": "teach-and-check",
+      "nativeTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "title": "Lee dos perfiles",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-a-026"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:14"
+      ],
+      "objective": "Read country, nationality, family-origin, and language facts, then distinguish what is stated about a person from what is stated about their family.",
+      "instruction": "Lee el texto y elige la respuesta que aparece en el texto. No infieras el origen de una persona si la frase solo describe a sus padres.",
+      "readingText": "Jenny is from the USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican; they come from Monterrey. Jenny speaks English, and she speaks Spanish too because her parents speak Spanish. Jenny's boyfriend is Takaishi; he is American too, but his parents are from Japan. He speaks English and Japanese.",
+      "interaction": {
+        "type": "choice",
+        "graded": true,
+        "checkOn": "click",
+        "keyboard": [
+          "Enter",
+          "Space"
+        ],
+        "autoAdvanceAfterFeedback": true,
+        "primaryAction": {
+          "beforeFeedback": "Comprobar",
+          "afterFeedback": "Siguiente",
+          "sameControl": true
+        },
+        "secondaryActions": [
+          "Saltar ejercicio"
+        ]
+      },
+      "checks": [
+        {
+          "id": "u02-scene-07-q2",
+          "question": "Where is Jenny from?",
+          "options": [
+            {
+              "id": "u02-scene-07-q2-a",
+              "text": "The USA",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-07-q2-b",
+              "text": "Japan",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q2-c",
+              "text": "Mexico",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q2-d",
+              "text": "Monterrey",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-07-q2-a",
+          "explanation": "The text says, “Jenny is from the USA.”"
+        },
+        {
+          "id": "u02-scene-07-q4",
+          "question": "What is Jenny's parents' nationality?",
+          "options": [
+            {
+              "id": "u02-scene-07-q4-a",
+              "text": "Mexican",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-07-q4-b",
+              "text": "American",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q4-c",
+              "text": "Japanese",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q4-d",
+              "text": "Peruvian",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-07-q4-a",
+          "explanation": "The text says, “Her parents are Mexican.”"
+        },
+        {
+          "id": "u02-scene-07-q5",
+          "question": "Where do Jenny's parents come from?",
+          "options": [
+            {
+              "id": "u02-scene-07-q5-a",
+              "text": "Monterrey",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-07-q5-b",
+              "text": "The USA",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q5-c",
+              "text": "Japan",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q5-d",
+              "text": "San Antonio",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-07-q5-a",
+          "explanation": "The parents' place of origin is Monterrey."
+        },
+        {
+          "id": "u02-scene-07-q6",
+          "question": "Which languages does Jenny speak?",
+          "options": [
+            {
+              "id": "u02-scene-07-q6-a",
+              "text": "English and Spanish",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-07-q6-b",
+              "text": "English only",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q6-c",
+              "text": "Spanish and Japanese",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q6-d",
+              "text": "French and English",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-07-q6-a",
+          "explanation": "The text explicitly says Jenny speaks English and Spanish."
+        },
+        {
+          "id": "u02-scene-07-q7",
+          "question": "Where do Takaishi's parents come from?",
+          "options": [
+            {
+              "id": "u02-scene-07-q7-a",
+              "text": "Japan",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-07-q7-b",
+              "text": "The USA",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q7-c",
+              "text": "Mexico",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-07-q7-d",
+              "text": "Australia",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-07-q7-a",
+          "explanation": "The text attributes Japan to Takaishi's parents, not directly to Takaishi."
+        }
+      ],
+      "teacherNote": "La pregunta original “Where does Takaishi come from?” se reformula como “Where do Takaishi's parents come from?” porque el texto solo atribuye Japan a sus padres.",
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "environment": "A complete painterly reading workspace: wood desk, open passport/notebook, globe, map pin board, plant, and a softly lit classroom window. Keep the environment visible while the reading text occupies a protected ivory column. Render the complete approved environment from /images/lessons/backgrounds/community-bookshop.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "Objects and environment fill the side media panel; the three-sentence reading is fully visible in the text panel without being placed inside the raster.",
+        "characters": "Do not create new portrait art for Jenny or Takaishi. Their identities remain in the English text; canonical characters may appear only as neutral reading companions and must not be labeled as Jenny or Takaishi.",
+        "objects": [
+          "open passport",
+          "notebook",
+          "globe",
+          "map pin board",
+          "plant",
+          "desk"
+        ],
+        "textSafeArea": "The complete reading and one question at a time use navy text on ivory; no answer depends on tiny text or image-only flags.",
+        "controls": "Choices are click/keyboard controls, with nearby Spanish feedback; one cobalt Comprobar/Siguiente control; Saltar ejercicio outline.",
+        "mobile": "Reading text precedes one question at a time, media stacks below or above without cutting the text, and navigation/progress remains visible but secondary.",
+        "backgroundAsset": "/images/lessons/backgrounds/community-bookshop.webp",
+        "backgroundRole": "community-bookshop: reading evidence and inference boundary",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-07-reading-jenny-takaishi-title",
+          "type": "title",
+          "order": 1,
+          "title": "Lee dos perfiles",
+          "data": {
+            "sceneID": "u02-scene-07-reading-jenny-takaishi",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-a-026"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:14"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-07-reading-jenny-takaishi-reading",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Lee el texto y responde solo con información que aparece.</p><p>Jenny is from the USA, so she is American. She was born in San Antonio, Texas. Her parents are Mexican; they come from Monterrey. Jenny speaks English, and she speaks Spanish too because her parents speak Spanish. Jenny&#39;s boyfriend is Takaishi; he is American too, but his parents are from Japan. He speaks English and Japanese.</p><p><strong>Consejo:</strong> Relaciona cada lugar con la persona o grupo que aparece en la misma oración.</p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-07-reading-jenny-takaishi",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-a-026"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:14"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-07-reading-jenny-takaishi-choices",
+          "type": "multiple_choice",
+          "order": 3,
+          "items": [
+            {
+              "id": "u02-scene-07-q2",
+              "question": "Where is Jenny from?",
+              "options": [
+                {
+                  "id": "u02-scene-07-q2-a",
+                  "text": "The USA"
+                },
+                {
+                  "id": "u02-scene-07-q2-b",
+                  "text": "Japan"
+                },
+                {
+                  "id": "u02-scene-07-q2-c",
+                  "text": "Mexico"
+                },
+                {
+                  "id": "u02-scene-07-q2-d",
+                  "text": "Monterrey"
+                }
+              ],
+              "correctOptionId": "u02-scene-07-q2-a",
+              "explanation": "El texto dice: Jenny is from the USA."
+            },
+            {
+              "id": "u02-scene-07-q4",
+              "question": "What is Jenny's parents' nationality?",
+              "options": [
+                {
+                  "id": "u02-scene-07-q4-a",
+                  "text": "Mexican"
+                },
+                {
+                  "id": "u02-scene-07-q4-b",
+                  "text": "American"
+                },
+                {
+                  "id": "u02-scene-07-q4-c",
+                  "text": "Japanese"
+                },
+                {
+                  "id": "u02-scene-07-q4-d",
+                  "text": "Peruvian"
+                }
+              ],
+              "correctOptionId": "u02-scene-07-q4-a",
+              "explanation": "El texto dice: Her parents are Mexican."
+            },
+            {
+              "id": "u02-scene-07-q5",
+              "question": "Where do Jenny's parents come from?",
+              "options": [
+                {
+                  "id": "u02-scene-07-q5-a",
+                  "text": "Monterrey"
+                },
+                {
+                  "id": "u02-scene-07-q5-b",
+                  "text": "The USA"
+                },
+                {
+                  "id": "u02-scene-07-q5-c",
+                  "text": "Japan"
+                },
+                {
+                  "id": "u02-scene-07-q5-d",
+                  "text": "San Antonio"
+                }
+              ],
+              "correctOptionId": "u02-scene-07-q5-a",
+              "explanation": "El texto dice que sus padres come from Monterrey."
+            },
+            {
+              "id": "u02-scene-07-q6",
+              "question": "Which languages does Jenny speak?",
+              "options": [
+                {
+                  "id": "u02-scene-07-q6-a",
+                  "text": "English and Spanish"
+                },
+                {
+                  "id": "u02-scene-07-q6-b",
+                  "text": "English only"
+                },
+                {
+                  "id": "u02-scene-07-q6-c",
+                  "text": "Spanish and Japanese"
+                },
+                {
+                  "id": "u02-scene-07-q6-d",
+                  "text": "French and English"
+                }
+              ],
+              "correctOptionId": "u02-scene-07-q6-a",
+              "explanation": "El texto dice que Jenny habla English y Spanish."
+            },
+            {
+              "id": "u02-scene-07-q7",
+              "question": "Where do Takaishi's parents come from?",
+              "options": [
+                {
+                  "id": "u02-scene-07-q7-a",
+                  "text": "Japan"
+                },
+                {
+                  "id": "u02-scene-07-q7-b",
+                  "text": "The USA"
+                },
+                {
+                  "id": "u02-scene-07-q7-c",
+                  "text": "Mexico"
+                },
+                {
+                  "id": "u02-scene-07-q7-d",
+                  "text": "Australia"
+                }
+              ],
+              "correctOptionId": "u02-scene-07-q7-a",
+              "explanation": "Japan se refiere a los padres de Takaishi, como dice el texto."
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-07-reading-jenny-takaishi",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-short-answer-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-am-025",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-teacher-notes-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-a-026"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:14"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": true,
+            "evidenceSource": "readingText"
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-08-audio-passport-check",
+      "order": 8,
+      "phase": "practice",
+      "nativeTypes": [
+        "title",
+        "text",
+        "audio",
+        "essay",
+        "multiple_choice"
+      ],
+      "title": "Escucha en el control de pasaportes",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:13"
+      ],
+      "objective": "Apply country and nationality vocabulary to a second audio while limiting grading to unambiguous transcript evidence.",
+      "instruction": "Escucha el diálogo. Primero escribe palabras que reconoces. Después elige solo los datos que se dicen claramente.",
+      "media": {
+        "type": "audio",
+        "url": "/audio/lessons/course/unit-02-audio-02.mp3",
+        "preserveOriginal": true,
+        "transcriptStatus": "inherited-source-audit-transcript-with-ambiguity-note",
+        "transcript": "good morning sir good morning may I see your passport certainly here you have oh you're from Venezuela yes they come from Venezuela but my dad is American oh and you are here to visit him exactly we speak very great English thanks language teacher welcome to the USA sir thanks",
+        "originalMediaUrl": "https://drive.google.com/file/d/1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF/view?usp=drivesdk",
+        "maxReplays": null,
+        "autoplay": false,
+        "transcriptAccess": "quiet transcript link",
+        "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media."
+      },
+      "exploratoryTask": {
+        "id": "u02-scene-08-explore",
+        "prompt": "¿Qué palabras del diálogo reconoces? Escribe cualquier palabra; esta parte no se califica.",
+        "responseMode": "private-notes-or-teacher-talk",
+        "graded": false,
+        "doNotAutoGrade": true,
+        "answerKey": null
+      },
+      "interaction": {
+        "type": "choice",
+        "graded": true,
+        "checkOn": "click",
+        "keyboard": [
+          "Enter",
+          "Space"
+        ],
+        "autoAdvanceAfterFeedback": true,
+        "primaryAction": {
+          "beforeFeedback": "Comprobar",
+          "afterFeedback": "Siguiente",
+          "sameControl": true
+        },
+        "secondaryActions": [
+          "Saltar ejercicio"
+        ]
+      },
+      "checks": [
+        {
+          "id": "u02-scene-08-q1",
+          "question": "What country is clearly named after the passport request?",
+          "options": [
+            {
+              "id": "u02-scene-08-q1-a",
+              "text": "Venezuela",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-08-q1-b",
+              "text": "The USA",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-08-q1-c",
+              "text": "Australia",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-08-q1-d",
+              "text": "France",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-08-q1-a",
+          "explanation": "The officer says, “Oh, you're from Venezuela.”",
+          "transcriptEvidence": "Oh you're from Venezuela"
+        },
+        {
+          "id": "u02-scene-08-q2",
+          "question": "Whose nationality is explicitly described as American?",
+          "options": [
+            {
+              "id": "u02-scene-08-q2-a",
+              "text": "The visitor's dad",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-08-q2-b",
+              "text": "The language teacher",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-08-q2-c",
+              "text": "The passport officer",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-08-q2-d",
+              "text": "The visitor's mother",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-08-q2-a",
+          "explanation": "The visitor says, “My dad is American.”",
+          "transcriptEvidence": "But my dad is American"
+        },
+        {
+          "id": "u02-scene-08-q3",
+          "question": "Why is the visitor in the USA?",
+          "options": [
+            {
+              "id": "u02-scene-08-q3-a",
+              "text": "To visit his dad",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-08-q3-b",
+              "text": "To start a new job",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-08-q3-c",
+              "text": "To study at university",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-08-q3-d",
+              "text": "To teach a language course",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-08-q3-a",
+          "explanation": "The officer asks if he is there to visit him, and the visitor answers, “Exactly.”",
+          "transcriptEvidence": "And you are here to visit him exactly"
+        }
+      ],
+      "audioSafety": {
+        "safeFactsUsed": [
+          "you're from Venezuela",
+          "my dad is American",
+          "here to visit him"
+        ],
+        "notGraded": [
+          "they come from Venezuela"
+        ],
+        "reason": "The pronoun they has no unambiguous antecedent in the available inherited transcript. Do not ask who they refers to or infer an origin from it.",
+        "sourceOptionRemoved": "Which language is complimented?",
+        "sourceOptionReason": "The transcript's phrase around language/compliment is not clear enough to make a deterministic factual key. Preserve the audio and exploratory task instead."
+      },
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/04-multimedia.webp",
+        "environment": "A complete painterly passport-control/travel-desk environment with wood counter, passport, globe, world map, plant, and a calm airport or welcome-desk background. Keep the scene adult and editorial; do not use a generic quiz card as the environment. Render the complete approved environment from /images/lessons/backgrounds/airport-lounge.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The travel-desk illustration occupies the media region; player, transcript link, question, options, and ambiguity-safe feedback stay in a clear foreground panel.",
+        "characters": "No new named portraits. If figures are shown, keep them anonymous or use canonical identities without assigning the transcript's names to them.",
+        "objects": [
+          "passport",
+          "travel desk",
+          "globe",
+          "world map",
+          "real audio player"
+        ],
+        "textSafeArea": "All choices and evidence are real text on ivory; do not put a country answer only on a flag in the illustration.",
+        "controls": "Audio controls are real; click checks each choice; one cobalt Comprobar/Siguiente; the exploratory note remains ungraded; no separate source question is silently auto-graded.",
+        "mobile": "Player and transcript link remain before the one-column choices, with navigation outside the answer region and a full-width single primary action.",
+        "backgroundAsset": "/images/lessons/backgrounds/airport-lounge.webp",
+        "backgroundRole": "airport-lounge: passport dialogue and safe transcript facts",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-08-audio-passport-check-title",
+          "type": "title",
+          "order": 1,
+          "title": "Escucha en el control de pasaportes",
+          "data": {
+            "sceneID": "u02-scene-08-audio-passport-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:13"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-08-audio-passport-check-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Escucha el diálogo y anota primero las palabras que reconoces.</p><p>Elige solo los datos que reconozcas con claridad y continúa.</p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-08-audio-passport-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:13"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-08-audio-passport-check-audio-original",
+          "type": "audio",
+          "order": 3,
+          "url": "/audio/lessons/course/unit-02-audio-02.mp3",
+          "title": "Unit 2 Audio 2 — passport dialogue",
+          "data": {
+            "sceneID": "u02-scene-08-audio-passport-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:13"
+            ],
+            "role": "original-audio-row",
+            "sourceRole": "original-audio-row",
+            "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+            "originalMediaUrl": "https://drive.google.com/file/d/1zxUqYkLHIdx6kAq-4VdPruZuT1eY1vIF/view?usp=drivesdk",
+            "liveOriginal": true,
+            "preserveOriginal": true,
+            "transcriptStatus": "inherited-source-audit-transcript-with-ambiguity-note",
+            "transcriptEvidenceBasis": "Inherited verbatim from the dev curriculum review source audit; this task did not independently listen to the media.",
+            "transcript": "good morning sir good morning may I see your passport certainly here you have oh you're from Venezuela yes they come from Venezuela but my dad is American oh and you are here to visit him exactly we speak very great English thanks language teacher welcome to the USA sir thanks",
+            "ambiguity": "The pronoun in 'they come from Venezuela' has no unambiguous antecedent in the transcript. Do not grade or teach a subject from that clause. Use only the explicit 'you're from Venezuela', 'my dad is American', and 'here to visit him' evidence.",
+            "transcriptAccess": "quiet transcript link",
+            "maxReplays": null
+          }
+        },
+        {
+          "id": "u02-scene-08-audio-passport-check-exploratory-note",
+          "type": "essay",
+          "order": 4,
+          "prompt": "Escribe en inglés una palabra o frase que reconociste. No intentes resolver el pronombre ambiguo; esta nota es exploratoria y no se califica automáticamente.",
+          "aiGrading": false,
+          "data": {
+            "sceneID": "u02-scene-08-audio-passport-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:13"
+            ],
+            "doNotAutoGrade": true,
+            "responseMode": "exploratory-ungraded",
+            "instructionLanguage": "es",
+            "learningItemLanguage": "en"
+          }
+        },
+        {
+          "id": "u02-scene-08-audio-passport-check-choices",
+          "type": "multiple_choice",
+          "order": 5,
+          "items": [
+            {
+              "id": "u02-scene-08-q1",
+              "question": "What country is clearly named after the passport request?",
+              "options": [
+                {
+                  "id": "u02-scene-08-q1-a",
+                  "text": "Venezuela"
+                },
+                {
+                  "id": "u02-scene-08-q1-b",
+                  "text": "The USA"
+                },
+                {
+                  "id": "u02-scene-08-q1-c",
+                  "text": "Australia"
+                },
+                {
+                  "id": "u02-scene-08-q1-d",
+                  "text": "France"
+                }
+              ],
+              "correctOptionId": "u02-scene-08-q1-a",
+              "explanation": "El diálogo dice: you are from Venezuela."
+            },
+            {
+              "id": "u02-scene-08-q2",
+              "question": "Whose nationality is explicitly described as American?",
+              "options": [
+                {
+                  "id": "u02-scene-08-q2-a",
+                  "text": "The visitor's dad"
+                },
+                {
+                  "id": "u02-scene-08-q2-b",
+                  "text": "The language teacher"
+                },
+                {
+                  "id": "u02-scene-08-q2-c",
+                  "text": "The passport officer"
+                },
+                {
+                  "id": "u02-scene-08-q2-d",
+                  "text": "The visitor's mother"
+                }
+              ],
+              "correctOptionId": "u02-scene-08-q2-a",
+              "explanation": "El visitante dice: My dad is American."
+            },
+            {
+              "id": "u02-scene-08-q3",
+              "question": "Why is the visitor in the USA?",
+              "options": [
+                {
+                  "id": "u02-scene-08-q3-a",
+                  "text": "To visit his dad"
+                },
+                {
+                  "id": "u02-scene-08-q3-b",
+                  "text": "To start a new job"
+                },
+                {
+                  "id": "u02-scene-08-q3-c",
+                  "text": "To study at university"
+                },
+                {
+                  "id": "u02-scene-08-q3-d",
+                  "text": "To teach a language course"
+                }
+              ],
+              "correctOptionId": "u02-scene-08-q3-a",
+              "explanation": "Primero aparece que está allí para visit him y responde Exactly."
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-08-audio-passport-check",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-audio-13-13-022",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-multiple-choice-13-13-023"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:13"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": true,
+            "transcriptEvidenceRequired": true,
+            "ambiguityExcluded": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-09-family-profile-practice",
+      "order": 9,
+      "phase": "practice",
+      "nativeTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "title": "Compara dos personas",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:6",
+        "cmk0vhjh80001jm04epgai2ay:slide:14"
+      ],
+      "objective": "Contrast two explicit profiles without inferring an unstated relative's origin.",
+      "instruction": "Lee el perfil ficticio y elige la frase que coincide con cada dato. Nina es un personaje nuevo para practicar; no es Jenny ni Takaishi.",
+      "newMaterial": {
+        "status": "fictional-practice-profile",
+        "profile": "Nina is from Japan. She is Japanese. Her mother is from Peru. She is Peruvian. Nina speaks English.",
+        "rule": "Only the stated person gets the stated country or nationality. Do not infer the mother's language or Nina's father's origin."
+      },
+      "interaction": {
+        "type": "choice",
+        "graded": true,
+        "checkOn": "click",
+        "keyboard": [
+          "Enter",
+          "Space"
+        ],
+        "autoAdvanceAfterFeedback": true,
+        "primaryAction": {
+          "beforeFeedback": "Comprobar",
+          "afterFeedback": "Siguiente",
+          "sameControl": true
+        },
+        "secondaryActions": [
+          "Saltar ejercicio"
+        ]
+      },
+      "checks": [
+        {
+          "id": "u02-scene-09-q1",
+          "question": "Where is Nina from?",
+          "options": [
+            {
+              "id": "u02-scene-09-q1-a",
+              "text": "Japan",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-09-q1-b",
+              "text": "Peru",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-09-q1-c",
+              "text": "The USA",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-09-q1-d",
+              "text": "Australia",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-09-q1-a",
+          "explanation": "The profile says, “Nina is from Japan.”"
+        },
+        {
+          "id": "u02-scene-09-q2",
+          "question": "What nationality is Nina?",
+          "options": [
+            {
+              "id": "u02-scene-09-q2-a",
+              "text": "Japanese",
+              "correct": true
+            },
+            {
+              "id": "u02-scene-09-q2-b",
+              "text": "Japan",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-09-q2-c",
+              "text": "Peruvian",
+              "correct": false
+            },
+            {
+              "id": "u02-scene-09-q2-d",
+              "text": "American",
+              "correct": false
+            }
+          ],
+          "correctOptionId": "u02-scene-09-q2-a",
+          "explanation": "Japanese describes Nina; Japan names the country."
+        }
+      ],
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/02-advanced-practice.webp",
+        "environment": "A complete painterly family-profile workspace: classroom table with two blank profile sheets, globe, map, passport, plant, and warm wall light. The sheets are real UI text surfaces, not decorative card tiles or abstract shapes. Render the complete approved environment from /images/lessons/backgrounds/museum-gallery.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The table and travel objects occupy the media side; the explicit fictional profile and one question at a time stay readable in the foreground.",
+        "characters": "No Nina portrait; this keeps the new material from becoming an invented identity. Canonical characters may model the activity only if not labeled as Nina.",
+        "objects": [
+          "two profile sheets",
+          "globe",
+          "map",
+          "passport",
+          "plant",
+          "table"
+        ],
+        "textSafeArea": "Profile sentences and choices remain real 16px+ text on ivory with navy hierarchy; no required fact is embedded in image art.",
+        "controls": "Choices are click/keyboard with visible focus; one cobalt Comprobar/Siguiente and an outlined Saltar ejercicio.",
+        "mobile": "Profile text is placed before choices, columns stack, and the footer action remains one full-width control below feedback.",
+        "backgroundAsset": "/images/lessons/backgrounds/museum-gallery.webp",
+        "backgroundRole": "museum-gallery: profile comparison and explicit evidence",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-09-family-profile-practice-title",
+          "type": "title",
+          "order": 1,
+          "title": "Compara dos personas",
+          "data": {
+            "sceneID": "u02-scene-09-family-profile-practice",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6",
+              "cmk0vhjh80001jm04epgai2ay:slide:14"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-09-family-profile-practice-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Lee el perfil ficticio y elige la frase que coincide con cada dato.</p><p><strong>Nina is from Japan. She is Japanese. Her mother is from Peru. She is Peruvian. Nina speaks English.</strong></p><p>Nina es un personaje de práctica. Usa solo los datos de este perfil.</p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-09-family-profile-practice",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6",
+              "cmk0vhjh80001jm04epgai2ay:slide:14"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-09-family-profile-practice-choices",
+          "type": "multiple_choice",
+          "order": 3,
+          "items": [
+            {
+              "id": "u02-scene-09-q1",
+              "question": "Where is Nina from?",
+              "options": [
+                {
+                  "id": "u02-scene-09-q1-a",
+                  "text": "Japan"
+                },
+                {
+                  "id": "u02-scene-09-q1-b",
+                  "text": "Peru"
+                },
+                {
+                  "id": "u02-scene-09-q1-c",
+                  "text": "The USA"
+                },
+                {
+                  "id": "u02-scene-09-q1-d",
+                  "text": "Australia"
+                }
+              ],
+              "correctOptionId": "u02-scene-09-q1-a",
+              "explanation": "El perfil dice: Nina is from Japan."
+            },
+            {
+              "id": "u02-scene-09-q2",
+              "question": "What nationality is Nina?",
+              "options": [
+                {
+                  "id": "u02-scene-09-q2-a",
+                  "text": "Japanese"
+                },
+                {
+                  "id": "u02-scene-09-q2-b",
+                  "text": "Japan"
+                },
+                {
+                  "id": "u02-scene-09-q2-c",
+                  "text": "Peruvian"
+                },
+                {
+                  "id": "u02-scene-09-q2-d",
+                  "text": "American"
+                }
+              ],
+              "correctOptionId": "u02-scene-09-q2-a",
+              "explanation": "Japanese describe la nacionalidad; Japan nombra el país."
+            }
+          ],
+          "data": {
+            "sceneID": "u02-scene-09-family-profile-practice",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-vocabulary-6-ol-010",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-text-14-a-glimpse-to-jenny-s-life-jenny-is-from-usa-so-she-is-american-s-024"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:6",
+              "cmk0vhjh80001jm04epgai2ay:slide:14"
+            ],
+            "role": "choice-check",
+            "checkOn": "click",
+            "keyboard": [
+              "Enter",
+              "Space"
+            ],
+            "graded": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-10-communication-rehearsal",
+      "order": 10,
+      "phase": "produce-rehearsal",
+      "nativeTypes": [
+        "title",
+        "text",
+        "structured-content",
+        "recording"
+      ],
+      "title": "Practica el intercambio",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:15"
+      ],
+      "objective": "Rehearse an origin exchange with a profile card before the final communication task.",
+      "instruction": "Usa una tarjeta de perfil. Di de dónde eres, di tu nacionalidad, pregunta por el origen de la otra persona y pide una aclaración si no entiendes.",
+      "profileBank": [
+        {
+          "name": "Nina",
+          "country": "Japan",
+          "nationality": "Japanese",
+          "language": "English"
+        },
+        {
+          "name": "Omar",
+          "country": "Peru",
+          "nationality": "Peruvian",
+          "language": "Spanish"
+        },
+        {
+          "name": "Maya",
+          "country": "Brazil",
+          "nationality": "Brazilian",
+          "language": "Portuguese"
+        },
+        {
+          "name": "Leo",
+          "country": "France",
+          "nationality": "French",
+          "language": "English"
+        }
+      ],
+      "turns": [
+        {
+          "id": "u02-scene-10-turn-1",
+          "prompt": "Introduce yourself: say where you are from, your nationality, and one language you speak.",
+          "model": "I’m from [country]. I’m [nationality]. I speak [language]."
+        },
+        {
+          "id": "u02-scene-10-turn-2",
+          "prompt": "Ask the partner where they are from.",
+          "model": "Where are you from?"
+        },
+        {
+          "id": "u02-scene-10-turn-3",
+          "prompt": "Ask one follow-up question about country, nationality, or language.",
+          "model": "What nationality are you? / What language do you speak?"
+        },
+        {
+          "id": "u02-scene-10-turn-4",
+          "prompt": "Ask for clarification if a country is not clear.",
+          "model": "Could you repeat the country, please?"
+        }
+      ],
+      "modes": {
+        "individual": {
+          "label": "Por tu cuenta",
+          "instruction": "Elige dos perfiles ficticios. Graba los dos papeles, haciendo una pausa entre interlocutores. No uses datos personales reales.",
+          "turnOrder": "learner-profile, partner-profile, learner-follow-up, partner-answer",
+          "responseMode": "record-both-roles",
+          "grading": "rehearsal-only-manual-self-check"
+        },
+        "teacher": {
+          "label": "Con profesora",
+          "instruction": "La profesora conserva una tarjeta y el estudiante otra. Alternen los turnos; la profesora puede reformular country/nationality y pedir una aclaración.",
+          "turnOrder": "learner-introduction, teacher-answer, learner-follow-up, teacher-follow-up",
+          "responseMode": "live-two-speaker",
+          "teacherPrompts": [
+            "Where are you from?",
+            "What nationality are you?",
+            "Could you repeat the country, please?"
+          ],
+          "grading": "teacher-observation-no-auto-grade"
+        }
+      },
+      "feedback": {
+        "instruction": "Después de grabar, comprueba que cada país coincide con su nacionalidad y que hiciste una pregunta de seguimiento.",
+        "doNotAutoGrade": true,
+        "allowPausesAndSelfCorrection": true
+      },
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/05-production.webp",
+        "environment": "A full painterly classroom conversation scene: a wood table with globe and profile sheets, map on the wall, plant, warm window light, and two canonical adult conversation models (Lucas and Interlocutora) used only as visual models, not as profile facts. Render the complete approved environment from /images/lessons/this-is-me/speaking.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The conversation environment occupies a broad media panel; recording controls and turn prompts are real interface elements in a protected ivory panel.",
+        "characters": "If shown, Lucas keeps warm tan skin, dark curly hair, short beard, cobalt overshirt, white tee; Interlocutora keeps medium warm skin, loose dark-brown bun, cream/navy striped top. Do not substitute other faces or outfits.",
+        "objects": [
+          "globe",
+          "profile sheets",
+          "map",
+          "wood table",
+          "plant",
+          "microphone/recording control"
+        ],
+        "textSafeArea": "Spanish directions, English models, mode labels, and recording state are real text outside the illustration; profile data is not painted into props.",
+        "controls": "Use a recognizable recording control with visible recording state. Keep one cobalt primary action for the current recording/continue step; any Saltar option is outline and secondary.",
+        "mobile": "The environment stacks above the current turn, mode selector remains accessible, recording control is at least 44px, and navigation never covers the microphone or response state.",
+        "backgroundAsset": "/images/lessons/this-is-me/speaking.webp",
+        "backgroundRole": "this-is-me/speaking: supported two-role rehearsal",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-10-communication-rehearsal-title",
+          "type": "title",
+          "order": 1,
+          "title": "Practica el intercambio",
+          "data": {
+            "sceneID": "u02-scene-10-communication-rehearsal",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-10-communication-rehearsal-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Usa una tarjeta de perfil, di de dónde eres, di tu nacionalidad, pregunta por el origen de la otra persona y pide una aclaración si no entiendes.</p><p><strong>Modelo:</strong> <em>I am from [country]. I am [nationality]. I speak [language]. Where are you from?</em></p><p>Puedes hacer pausas y corregirte mientras practicas.</p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-10-communication-rehearsal",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-10-communication-rehearsal-profile-bank",
+          "type": "structured-content",
+          "order": 3,
+          "title": "Banco de perfiles",
+          "content": {
+            "headers": [
+              "Nombre",
+              "País",
+              "Nacionalidad",
+              "Idioma"
+            ],
+            "rows": [
+              [
+                "Nina",
+                "Japan",
+                "Japanese",
+                "English"
+              ],
+              [
+                "Omar",
+                "Peru",
+                "Peruvian",
+                "Spanish"
+              ],
+              [
+                "Maya",
+                "Brazil",
+                "Brazilian",
+                "Portuguese"
+              ],
+              [
+                "Leo",
+                "France",
+                "French",
+                "English"
+              ]
+            ]
+          },
+          "config": {
+            "hasHeaderRow": true,
+            "hasStripedRows": true,
+            "hasBorders": true
+          },
+          "data": {
+            "sceneID": "u02-scene-10-communication-rehearsal",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15"
+            ],
+            "role": "practice-profile-bank"
+          }
+        },
+        {
+          "id": "u02-scene-10-communication-rehearsal-learning-modes",
+          "type": "structured-content",
+          "order": 4,
+          "title": "Formas de practicar",
+          "content": {
+            "headers": [
+              "Por tu cuenta",
+              "Con profesora"
+            ],
+            "rows": [
+              [
+                "Graba los dos papeles con una pausa entre turnos; usa dos perfiles ficticios.",
+                "Alternen turnos; la profesora puede pedir Where are you from? / What nationality are you? / Could you repeat the country, please?"
+              ]
+            ]
+          },
+          "config": {
+            "hasHeaderRow": true,
+            "hasStripedRows": true,
+            "hasBorders": true
+          },
+          "data": {
+            "sceneID": "u02-scene-10-communication-rehearsal",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15"
+            ],
+            "role": "learning-modes",
+            "learningModes": {
+              "individual": {
+                "label": "Por tu cuenta",
+                "instruction": "Elige dos perfiles ficticios. Graba los dos papeles, haciendo una pausa entre interlocutores. No uses datos personales reales.",
+                "turnOrder": "learner-profile, partner-profile, learner-follow-up, partner-answer",
+                "responseMode": "record-both-roles",
+                "grading": "rehearsal-only-manual-self-check"
+              },
+              "teacher": {
+                "label": "Con profesora",
+                "instruction": "La profesora conserva una tarjeta y el estudiante otra. Alternen los turnos; la profesora puede reformular country/nationality y pedir una aclaración.",
+                "turnOrder": "learner-introduction, teacher-answer, learner-follow-up, teacher-follow-up",
+                "responseMode": "live-two-speaker",
+                "teacherPrompts": [
+                  "Where are you from?",
+                  "What nationality are you?",
+                  "Could you repeat the country, please?"
+                ],
+                "grading": "teacher-observation-no-auto-grade"
+              }
+            }
+          }
+        },
+        {
+          "id": "u02-scene-10-communication-rehearsal-recording",
+          "type": "recording",
+          "order": 5,
+          "instruction": "Graba el intercambio de práctica siguiendo los turnos. Después usa la lista de auto-revisión.",
+          "prompt": "Say where you are from, say your nationality and one language, ask where the partner is from, ask one follow-up question, and request clarification when needed.",
+          "timeLimit": 90,
+          "aiGrading": false,
+          "data": {
+            "sceneID": "u02-scene-10-communication-rehearsal",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15"
+            ],
+            "role": "rehearsal-recording",
+            "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+            "timeLimit": 90,
+            "learningModes": {
+              "individual": {
+                "label": "Por tu cuenta",
+                "instruction": "Elige dos perfiles ficticios. Graba los dos papeles, haciendo una pausa entre interlocutores. No uses datos personales reales.",
+                "turnOrder": "learner-profile, partner-profile, learner-follow-up, partner-answer",
+                "responseMode": "record-both-roles",
+                "grading": "rehearsal-only-manual-self-check"
+              },
+              "teacher": {
+                "label": "Con profesora",
+                "instruction": "La profesora conserva una tarjeta y el estudiante otra. Alternen los turnos; la profesora puede reformular country/nationality y pedir una aclaración.",
+                "turnOrder": "learner-introduction, teacher-answer, learner-follow-up, teacher-follow-up",
+                "responseMode": "live-two-speaker",
+                "teacherPrompts": [
+                  "Where are you from?",
+                  "What nationality are you?",
+                  "Could you repeat the country, please?"
+                ],
+                "grading": "teacher-observation-no-auto-grade"
+              }
+            },
+            "rubric": {
+              "countryNationalityMatch": true,
+              "followUpQuestion": true,
+              "clarificationTurn": true,
+              "intelligibility": true
+            },
+            "doNotAutoGrade": true,
+            "allowPausesAndSelfCorrection": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "u02-scene-11-final-communication",
+      "order": 11,
+      "phase": "final-production",
+      "nativeTypes": [
+        "title",
+        "text",
+        "structured-content",
+        "recording",
+        "essay"
+      ],
+      "title": "Intercambia dos perfiles",
+      "sourceIDs": [
+        "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+        "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028"
+      ],
+      "sourceOriginalIDs": [
+        "cmk0vhjh80001jm04epgai2ay:slide:15",
+        "cmk0vhjh80001jm04epgai2ay:slide:16"
+      ],
+      "objective": "Demonstrate that the learner can identify and communicate who is from where, state a nationality, and answer a follow-up question.",
+      "instruction": "Crea dos perfiles ficticios y haz un intercambio. Para cada persona incluye país y nacionalidad; luego responde una pregunta de seguimiento.",
+      "task": {
+        "requiredOutput": [
+          "Two fictional profiles, each with a person/name, country, and nationality",
+          "One spoken introduction for each profile",
+          "One follow-up question and answer about country, nationality, or language",
+          "A clarification turn when the listener does not understand a country"
+        ],
+        "profileTemplate": {
+          "name": "[first name or fictional name]",
+          "country": "[country]",
+          "nationality": "[nationality]",
+          "language": "[one language]"
+        },
+        "modelExchange": [
+          "This is Nina. She is from Japan. She is Japanese.",
+          "Where does she come from?",
+          "She comes from Japan.",
+          "What nationality is she?",
+          "She is Japanese."
+        ],
+        "sourceBoundary": "Use fictitious profiles or the profile bank. Do not present an unverified audio speaker's identity as a new fact."
+      },
+      "modes": {
+        "individual": {
+          "label": "Entrega individual",
+          "instruction": "Elige o crea dos perfiles ficticios. Graba ambos lados del exchange, dejando una pausa para cada turno. Puedes leer el marco y autocorregirte.",
+          "steps": [
+            "Selecciona dos países y sus nacionalidades del banco visible.",
+            "Graba la presentación del perfil 1.",
+            "Graba la pregunta y respuesta de seguimiento del perfil 2.",
+            "Escucha tu grabación y verifica país/nacionalidad antes de entregar."
+          ],
+          "responseMode": "recorded-open-response",
+          "review": "self-check plus teacher review when assigned"
+        },
+        "teacher": {
+          "label": "Entrega con profesora",
+          "instruction": "La profesora recibe un perfil y el estudiante otro. Preséntense, intercambien país y nacionalidad y hagan una pregunta de seguimiento cada uno.",
+          "steps": [
+            "La profesora entrega o elige un perfil ficticio.",
+            "El estudiante presenta su perfil y pregunta Where are you from?",
+            "La profesora responde y pregunta What nationality are you?",
+            "El estudiante responde y pide aclaración si hace falta.",
+            "La profesora registra la evidencia con la rúbrica, sin calificar datos no dichos."
+          ],
+          "responseMode": "live-teacher-conversation",
+          "review": "teacher-observation"
+        }
+      },
+      "successCriteria": [
+        {
+          "id": "origin-identification",
+          "criterion": "El oyente puede identificar correctamente quién es de dónde.",
+          "evidence": "Cada perfil contiene una frase clara con be from o come from."
+        },
+        {
+          "id": "country-nationality",
+          "criterion": "Cada país coincide con su nacionalidad.",
+          "evidence": "Japan/Japanese, Peru/Peruvian, Brazil/Brazilian, France/French, or another checked bank pair."
+        },
+        {
+          "id": "follow-up",
+          "criterion": "El estudiante pregunta y responde una pregunta de seguimiento.",
+          "evidence": "Where are you from? / What nationality are you? / What language do you speak? with a relevant answer."
+        },
+        {
+          "id": "repair",
+          "criterion": "El estudiante can ask for clarification when needed.",
+          "evidence": "Could you repeat the country, please? or an equivalent clear request."
+        },
+        {
+          "id": "intelligibility",
+          "criterion": "The exchange is understandable even with pauses or self-correction.",
+          "evidence": "Meaning remains clear; speed and accent are not scored as long as the origin information is recoverable."
+        }
+      ],
+      "assessment": {
+        "mode": "open-response-manual-review",
+        "doNotAutoGrade": true,
+        "noPassGateInvented": true,
+        "teacherNotes": "Marca solo evidencia presente. No penalices pausas ni autocorrecciones. No infieras missing facts from a profile image or from an audio speaker whose subject is unclear."
+      },
+      "optionalWrittenExtension": {
+        "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028",
+        "instruction": "Como extensión, escribe 30–50 palabras en inglés sobre tu origen y el de un familiar. Incluye países, nacionalidades e idiomas solo cuando sean datos que tú eliges.",
+        "responseMode": "open-writing",
+        "minWords": 30,
+        "maxWords": 50,
+        "graded": "teacher-review-or-configured-writing-review",
+        "notRequiredForSpokenMastery": true
+      },
+      "visual": {
+        "approvedMockup": "docs/design/content-format-mockups/v3/05-production.webp",
+        "environment": "A complete painterly production workspace: classroom conversation table, globe, large world map, two profile sheets, plant, lamp, and warm window light. The environment communicates a real exchange and remains visible beside the response panel; never collapse it into generic cards or abstract shapes. Render the complete approved environment from /images/lessons/this-is-me/writing.webp as the media-side illustration; keep the required text and response controls in the protected foreground surface.",
+        "illustrationScale": "The environment/characters occupy the media side at adult editorial scale; the two profile fields, English model, recording/live controls, and rubric remain readable in an ivory foreground surface.",
+        "characters": "Use canonical Lucas and Interlocutora only as visual conversation models, preserving their approved identity/style. Profile facts come from the learner's text or teacher card, never from the illustration.",
+        "objects": [
+          "globe",
+          "world map",
+          "two profile sheets",
+          "microphone/recording control",
+          "wood table",
+          "plant",
+          "lamp"
+        ],
+        "textSafeArea": "Spanish instructions, English profile lines, mode labels, and feedback are real navy text with 16px+ body size; no required text is placed inside the image.",
+        "controls": "Recording/live controls are explicit. Show one primary action appropriate to the current state (Grabar, Guardar respuesta, or Continuar); secondary Saltar/Atrás controls stay outlined. Never show two primary actions together.",
+        "mobile": "Mode choice, prompt, profile fields, response control, feedback, and footer follow a single vertical order. Keep recognizable mobile navigation and a full-width primary action without covering the recording state.",
+        "backgroundAsset": "/images/lessons/this-is-me/writing.webp",
+        "backgroundRole": "this-is-me/writing: final profile exchange and written extension",
+        "references": [
+          "docs/design/graphic-guide-v1/README.md",
+          "docs/design/graphic-guide-v1/scenes-ui.webp",
+          "docs/design/content-format-mockups/v3/"
+        ]
+      },
+      "runtimeBlocks": [
+        {
+          "id": "u02-scene-11-final-communication-title",
+          "type": "title",
+          "order": 1,
+          "title": "Intercambia dos perfiles",
+          "data": {
+            "sceneID": "u02-scene-11-final-communication",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15",
+              "cmk0vhjh80001jm04epgai2ay:slide:16"
+            ],
+            "role": "scene-title"
+          }
+        },
+        {
+          "id": "u02-scene-11-final-communication-teaching",
+          "type": "text",
+          "order": 2,
+          "content": "<p><strong>Instrucción:</strong> Crea dos perfiles ficticios y haz un intercambio.</p><p><strong>En inglés:</strong> Incluye el país y la nacionalidad de cada persona, una pregunta y respuesta de seguimiento, y una frase para pedir aclaración.</p><p><strong>Modelo:</strong> <em>This is Nina. She is from Japan. She is Japanese. Where does she come from? She comes from Japan. What nationality is she? She is Japanese.</em></p>",
+          "format": "html",
+          "data": {
+            "sceneID": "u02-scene-11-final-communication",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15",
+              "cmk0vhjh80001jm04epgai2ay:slide:16"
+            ],
+            "role": "teaching"
+          }
+        },
+        {
+          "id": "u02-scene-11-final-communication-success-rubric",
+          "type": "structured-content",
+          "order": 3,
+          "title": "Lista de revisión",
+          "content": {
+            "headers": [
+              "Comprueba",
+              "Ejemplo"
+            ],
+            "rows": [
+              [
+                "Se entiende de dónde es cada persona.",
+                "I am from [country]."
+              ],
+              [
+                "Cada país coincide con su nacionalidad.",
+                "Japan — Japanese"
+              ],
+              [
+                "Hay una pregunta y una respuesta de seguimiento.",
+                "Where are you from?"
+              ],
+              [
+                "Pides aclaración cuando hace falta.",
+                "Could you repeat the country, please?"
+              ],
+              [
+                "El intercambio se entiende aunque hagas pausas o autocorrecciones.",
+                "Habla con claridad y conserva la información principal."
+              ]
+            ]
+          },
+          "config": {
+            "hasHeaderRow": true,
+            "hasStripedRows": true,
+            "hasBorders": true
+          },
+          "data": {
+            "sceneID": "u02-scene-11-final-communication",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15",
+              "cmk0vhjh80001jm04epgai2ay:slide:16"
+            ],
+            "role": "production-rubric"
+          }
+        },
+        {
+          "id": "u02-scene-11-final-communication-learning-modes",
+          "type": "structured-content",
+          "order": 4,
+          "title": "Formas de practicar",
+          "content": {
+            "headers": [
+              "Por tu cuenta",
+              "Con profesora"
+            ],
+            "rows": [
+              [
+                "Elige o crea dos perfiles ficticios; graba ambos lados y autocorrige antes de entregar.",
+                "La profesora y el estudiante conservan un perfil cada uno; alternan turnos y la profesora registra solo la evidencia presente."
+              ]
+            ]
+          },
+          "config": {
+            "hasHeaderRow": true,
+            "hasStripedRows": true,
+            "hasBorders": true
+          },
+          "data": {
+            "sceneID": "u02-scene-11-final-communication",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15",
+              "cmk0vhjh80001jm04epgai2ay:slide:16"
+            ],
+            "role": "learning-modes",
+            "learningModes": {
+              "individual": {
+                "label": "Entrega individual",
+                "instruction": "Elige o crea dos perfiles ficticios. Graba ambos lados del exchange, dejando una pausa para cada turno. Puedes leer el marco y autocorregirte.",
+                "steps": [
+                  "Selecciona dos países y sus nacionalidades del banco visible.",
+                  "Graba la presentación del perfil 1.",
+                  "Graba la pregunta y respuesta de seguimiento del perfil 2.",
+                  "Escucha tu grabación y verifica país/nacionalidad antes de entregar."
+                ],
+                "responseMode": "recorded-open-response",
+                "review": "self-check plus teacher review when assigned"
+              },
+              "teacher": {
+                "label": "Entrega con profesora",
+                "instruction": "La profesora recibe un perfil y el estudiante otro. Preséntense, intercambien país y nacionalidad y hagan una pregunta de seguimiento cada uno.",
+                "steps": [
+                  "La profesora entrega o elige un perfil ficticio.",
+                  "El estudiante presenta su perfil y pregunta Where are you from?",
+                  "La profesora responde y pregunta What nationality are you?",
+                  "El estudiante responde y pide aclaración si hace falta.",
+                  "La profesora registra la evidencia con la rúbrica, sin calificar datos no dichos."
+                ],
+                "responseMode": "live-teacher-conversation",
+                "review": "teacher-observation"
+              }
+            }
+          }
+        },
+        {
+          "id": "u02-scene-11-final-communication-recording",
+          "type": "recording",
+          "order": 5,
+          "instruction": "Graba el intercambio final. Deja una pausa entre turnos si grabas ambos papeles y entrega la evidencia para la revisión.",
+          "prompt": "Present two fictional profiles, state each country and nationality, ask and answer one follow-up question, and use a clarification turn.",
+          "timeLimit": 120,
+          "aiGrading": false,
+          "data": {
+            "sceneID": "u02-scene-11-final-communication",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15",
+              "cmk0vhjh80001jm04epgai2ay:slide:16"
+            ],
+            "role": "final-recording",
+            "timeLimit": 120,
+            "learningModes": {
+              "individual": {
+                "label": "Entrega individual",
+                "instruction": "Elige o crea dos perfiles ficticios. Graba ambos lados del exchange, dejando una pausa para cada turno. Puedes leer el marco y autocorregirte.",
+                "steps": [
+                  "Selecciona dos países y sus nacionalidades del banco visible.",
+                  "Graba la presentación del perfil 1.",
+                  "Graba la pregunta y respuesta de seguimiento del perfil 2.",
+                  "Escucha tu grabación y verifica país/nacionalidad antes de entregar."
+                ],
+                "responseMode": "recorded-open-response",
+                "review": "self-check plus teacher review when assigned"
+              },
+              "teacher": {
+                "label": "Entrega con profesora",
+                "instruction": "La profesora recibe un perfil y el estudiante otro. Preséntense, intercambien país y nacionalidad y hagan una pregunta de seguimiento cada uno.",
+                "steps": [
+                  "La profesora entrega o elige un perfil ficticio.",
+                  "El estudiante presenta su perfil y pregunta Where are you from?",
+                  "La profesora responde y pregunta What nationality are you?",
+                  "El estudiante responde y pide aclaración si hace falta.",
+                  "La profesora registra la evidencia con la rúbrica, sin calificar datos no dichos."
+                ],
+                "responseMode": "live-teacher-conversation",
+                "review": "teacher-observation"
+              }
+            },
+            "rubric": [
+              {
+                "id": "origin-identification",
+                "criterion": "El oyente puede identificar correctamente quién es de dónde.",
+                "evidence": "Cada perfil contiene una frase clara con be from o come from."
+              },
+              {
+                "id": "country-nationality",
+                "criterion": "Cada país coincide con su nacionalidad.",
+                "evidence": "Japan/Japanese, Peru/Peruvian, Brazil/Brazilian, France/French, or another checked bank pair."
+              },
+              {
+                "id": "follow-up",
+                "criterion": "El estudiante pregunta y responde una pregunta de seguimiento.",
+                "evidence": "Where are you from? / What nationality are you? / What language do you speak? with a relevant answer."
+              },
+              {
+                "id": "repair",
+                "criterion": "El estudiante can ask for clarification when needed.",
+                "evidence": "Could you repeat the country, please? or an equivalent clear request."
+              },
+              {
+                "id": "intelligibility",
+                "criterion": "The exchange is understandable even with pauses or self-correction.",
+                "evidence": "Meaning remains clear; speed and accent are not scored as long as the origin information is recoverable."
+              }
+            ],
+            "doNotAutoGrade": true
+          }
+        },
+        {
+          "id": "u02-scene-11-final-communication-written-extension",
+          "type": "essay",
+          "order": 6,
+          "prompt": "Como extensión, escribe 30–50 palabras en inglés sobre tu origen y el de un familiar. Incluye países, nacionalidades e idiomas solo cuando sean datos que tú eliges.",
+          "minWords": 30,
+          "maxWords": 50,
+          "aiGrading": false,
+          "data": {
+            "sceneID": "u02-scene-11-final-communication",
+            "sourceIDs": [
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-15-d-act-out-the-following-situation-with-your-teacher-imagine-027",
+              "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028"
+            ],
+            "sourceOriginalIDs": [
+              "cmk0vhjh80001jm04epgai2ay:slide:15",
+              "cmk0vhjh80001jm04epgai2ay:slide:16"
+            ],
+            "role": "optional-written-extension",
+            "sourceID": "course-guided-cmk0vhjh80001jm04epgai2ay-recording-16-e-write-a-30-50-word-paragraph-where-you-talk-about-your-or-028",
+            "responseMode": "open-writing",
+            "notRequiredForSpokenMastery": true,
+            "teacherReviewOnly": true,
+            "doNotAutoGrade": true,
+            "learningModes": {
+              "individual": {
+                "label": "Entrega individual",
+                "instruction": "Elige o crea dos perfiles ficticios. Graba ambos lados del exchange, dejando una pausa para cada turno. Puedes leer el marco y autocorregirte.",
+                "steps": [
+                  "Selecciona dos países y sus nacionalidades del banco visible.",
+                  "Graba la presentación del perfil 1.",
+                  "Graba la pregunta y respuesta de seguimiento del perfil 2.",
+                  "Escucha tu grabación y verifica país/nacionalidad antes de entregar."
+                ],
+                "responseMode": "recorded-open-response",
+                "review": "self-check plus teacher review when assigned"
+              },
+              "teacher": {
+                "label": "Entrega con profesora",
+                "instruction": "La profesora recibe un perfil y el estudiante otro. Preséntense, intercambien país y nacionalidad y hagan una pregunta de seguimiento cada uno.",
+                "steps": [
+                  "La profesora entrega o elige un perfil ficticio.",
+                  "El estudiante presenta su perfil y pregunta Where are you from?",
+                  "La profesora responde y pregunta What nationality are you?",
+                  "El estudiante responde y pide aclaración si hace falta.",
+                  "La profesora registra la evidencia con la rúbrica, sin calificar datos no dichos."
+                ],
+                "responseMode": "live-teacher-conversation",
+                "review": "teacher-observation"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "runtimeMappingGuidance": {
+    "choiceScenes": "Project each authored closed item to a native multiple_choice block with items[{id,question,options[{id,text}],correctOptionId,explanation}]. Preserve one click/keyboard check and a single Comprobar-to-Siguiente control.",
+    "teachScenes": "Each scene carries learner-facing runtimeBlocks with concise Spanish directions, English examples or task language, and teaching tables only when they support the lesson. Do not place answer-revealing evidence tables before a question.",
+    "audioScenes": "Each original audio row appears once as a native audio block with its exact URL and sourceID. Scene 4 is a replay reference to scene 2, not a second original row. Grade only exact transcriptEvidence; exploratory audio notes remain essay/open response with doNotAutoGrade.",
+    "productionScenes": "Rehearsal and final speaking use native recording blocks with explicit individual and teacher learningModes, time limits, rubric metadata, and aiGrading:false. The optional 30–50 word extension uses native essay fields.",
+    "sourceRetention": "Do not replace sourceIDs with runtime IDs. New scene IDs are presentation containers; attempts and progress resolve through the original sourceIDs in studentHistory."
+  },
+  "implementationNotes": {
+    "teachBeforeTest": "Scenes 01–03 teach/activate; scene 04 checks three explicit audio quotations; scene 05 teaches grammar; scene 06 checks five controlled forms; scene 07 teaches through reading and checks five explicit evidence items; scene 08 checks only three safe transcript facts and leaves the ambiguous clause ungraded; scene 09 consolidates; scenes 10–11 move to open communication.",
+    "audioPolicy": "Audio1 country/language checks use quoted transcript evidence and avoid inferred speaker-name mapping. Audio2 grades only explicit Venezuela, American dad, and visit-him evidence; the unclear subject in 'they come from Venezuela' is preserved as an ambiguity note and never keyed.",
+    "historyPolicy": "Runtime translation retains sourceIDs on every derived scene, preserves all 31 original row IDs in the student history ledger, and leaves teacher notes out of the learner route.",
+    "languagePolicy": "Spanish is used for directions, feedback, and teacher notes. English is used for learning content, target forms, questions, answer choices, and model exchanges.",
+    "visualPolicy": "Use the unique existing approved backgroundAsset recorded per scene with its complete painterly environment. Keep navy serif hierarchy, legible protected text, one cobalt primary action, click/keyboard checking, and recognizable mobile navigation."
+  },
+  "closedItemCount": 22
+}
