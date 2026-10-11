@@ -492,11 +492,28 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                 },
             )
             for block in audio_blocks:
-                self.assertEqual(block["data"]["audioLabel"], "Referencia sintética")
+                self.assertIn("prompt", block)
+                self.assertIn("sintética", block["prompt"])
+                self.assertTrue(block["data"]["audioLabel"].startswith("Referencia sintética · "))
                 self.assertTrue(block["data"]["syntheticReference"])
                 self.assertTrue(block["data"]["noListeningAssessment"])
                 self.assertFalse(block["data"]["gradedListening"])
                 self.assertEqual(block["data"]["spokenTranscript"], block["transcript"])
+            self.assertEqual(
+                {block["data"]["audioLabel"] for block in audio_blocks},
+                {
+                    "Referencia sintética · saludo y nombre",
+                    "Referencia sintética · abecedario y deletreo",
+                    "Referencia sintética · números 0–20",
+                    "Referencia sintética · teléfono, hora y sala",
+                    "Referencia sintética · frases de ayuda",
+                    "Referencia sintética · saludo, origen, ciudad y hora",
+                    "Referencia sintética · puente de presentación",
+                },
+            )
+            all_audio_blocks = [block for block in _blocks(course) if block["type"] == "audio"]
+            self.assertEqual(len(all_audio_blocks), 11)
+            self.assertTrue(all("sintética" in block["prompt"] for block in all_audio_blocks))
             audio_manifest_data = manifest["audioManifest"]
             self.assertEqual(audio_manifest_data["verifiedFileCount"], 11)
             self.assertEqual(
@@ -584,7 +601,16 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertEqual(self.generated["course"]["id"], self.course["course"]["id"])
         generated_acceptance = self.generated_manifest["acceptance"]
         current_acceptance = self.manifest["acceptance"]
-        if generated_acceptance.get("audioPending") != current_acceptance.get("audioPending"):
+        if self.audio_manifest_path is not None:
+            # A caller that supplies a real manifest is asking for an exact
+            # checked-in artifact comparison.  The relaxed pending-versus-
+            # verified branch below is only for source-only local builds.
+            self.assertEqual(generated_acceptance, current_acceptance)
+            self.assertEqual(
+                self.generated_manifest["audioManifest"]["status"],
+                self.manifest["audioManifest"]["status"],
+            )
+        elif generated_acceptance.get("audioPending") != current_acceptance.get("audioPending"):
             self.assertEqual(
                 {key: value for key, value in generated_acceptance.items() if key != "audioPending"},
                 {key: value for key, value in current_acceptance.items() if key != "audioPending"},

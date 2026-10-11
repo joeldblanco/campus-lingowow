@@ -336,6 +336,7 @@ STARTER_REFERENCE_AUDIO = (
         "sceneId": "a1m1-start-s1-teach",
         "sourceRef": "starter.S1.input.english",
         "referenceId": "starter-s1-greeting",
+        "displayLabel": "Referencia sintética · saludo y nombre",
     },
     {
         "filename": "starter-s2-alphabet.mp3",
@@ -343,6 +344,7 @@ STARTER_REFERENCE_AUDIO = (
         "sceneId": "a1m1-start-s2-teach",
         "sourceRef": "starter.S2.input.alphabet",
         "referenceId": "starter-s2-alphabet",
+        "displayLabel": "Referencia sintética · abecedario y deletreo",
     },
     {
         "filename": "starter-s3-numbers-0-20.mp3",
@@ -350,6 +352,7 @@ STARTER_REFERENCE_AUDIO = (
         "sceneId": "a1m1-start-s3-teach",
         "sourceRef": "starter.S3.input.number_table",
         "referenceId": "starter-s3-numbers-0-20",
+        "displayLabel": "Referencia sintética · números 0–20",
     },
     {
         "filename": "starter-s3-contact-time.mp3",
@@ -357,6 +360,7 @@ STARTER_REFERENCE_AUDIO = (
         "sceneId": "a1m1-start-s3-teach",
         "sourceRef": "starter.S3.model_answer",
         "referenceId": "starter-s3-contact-time",
+        "displayLabel": "Referencia sintética · teléfono, hora y sala",
     },
     {
         "filename": "starter-u4-help-phrases.mp3",
@@ -364,6 +368,7 @@ STARTER_REFERENCE_AUDIO = (
         "sceneId": "a1m1-start-s4-teach",
         "sourceRef": "module1.unit4.language",
         "referenceId": "starter-u4-help-phrases",
+        "displayLabel": "Referencia sintética · frases de ayuda",
     },
     {
         "filename": "starter-s4-listening.mp3",
@@ -371,6 +376,7 @@ STARTER_REFERENCE_AUDIO = (
         "sceneId": "a1m1-start-s4-teach",
         "sourceRef": "starter.S4.input.english",
         "referenceId": "starter-s4-listening",
+        "displayLabel": "Referencia sintética · saludo, origen, ciudad y hora",
     },
     {
         "filename": "starter-s5-bridge.mp3",
@@ -378,6 +384,7 @@ STARTER_REFERENCE_AUDIO = (
         "sceneId": "a1m1-start-s5-teach",
         "sourceRef": "starter.S5.input.teacher_read_script",
         "referenceId": "starter-s5-bridge",
+        "displayLabel": "Referencia sintética · puente de presentación",
     },
 )
 
@@ -2662,11 +2669,13 @@ def _verified_audio_block(
     source_ref: str,
     sha256: str,
     reference_only: bool,
+    audio_label: str | None = None,
+    prompt: str,
 ) -> dict[str, Any]:
     """Build a playable, provenance-linked audio block after hash verification."""
 
     content_role = "reference-audio" if reference_only else "listening"
-    label = "Referencia sintética" if reference_only else "Audio de práctica con voz sintética"
+    label = audio_label or ("Referencia sintética" if reference_only else "Audio de práctica con voz sintética")
     return _block(
         block_id,
         "audio",
@@ -2676,6 +2685,7 @@ def _verified_audio_block(
         scene["background"],
         content_role=content_role,
         source_refs=[source_ref],
+        prompt=prompt,
         url=url,
         title=title,
         transcript=transcript,
@@ -2752,7 +2762,8 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
             block_id = _as_text(entry.get("blockId")) or f"{target['sceneId']}-{target['referenceId']}-audio"
             if block_id in seen_ids:
                 raise ValueError(f"Duplicate verified reference audio block id: {block_id!r}")
-            title = _as_text(entry.get("label")) or f"Referencia sintética · {target['referenceId']}"
+            title = _as_text(entry.get("label")) or target.get("displayLabel") or f"Referencia sintética · {target['referenceId']}"
+            prompt = f"Voz sintética · {title}. Referencia de apoyo; no es una actividad calificada."
             source_ref = _as_text(entry.get("sourceRef")) or target["sourceRef"]
             audio_block = _verified_audio_block(
                 block_id=block_id,
@@ -2763,6 +2774,8 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                 source_ref=source_ref,
                 sha256=sha256,
                 reference_only=True,
+                audio_label=title,
+                prompt=prompt,
             )
             teach_scene["runtimeBlocks"].append(audio_block)
             teach_scene["runtimeBlockIds"].append(block_id)
@@ -2823,6 +2836,7 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
             raise ValueError(f"Duplicate verified listening block id(s): {duplicates or generated_ids!r}")
         seen_ids.update(generated_ids)
         title = _as_text(entry.get("label")) or "Audio de práctica con voz sintética"
+        prompt = f"Voz sintética · {title}. Escucha antes de responder las seis preguntas."
         source_ref = _as_text(entry.get("sourceRef")) or target["sourceRef"]
         listening_title = f"{lesson['title']} · escucha"
         transcript_html = _markdown_to_safe_html(transcript)
@@ -2854,6 +2868,7 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
             teach_scene["background"],
             content_role="listening",
             source_refs=[source_ref],
+            prompt=prompt,
             url=url,
             title=title,
             data={
