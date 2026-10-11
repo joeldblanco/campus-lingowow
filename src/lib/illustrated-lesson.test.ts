@@ -22,6 +22,17 @@ describe('illustrated vocabulary sequence', () => {
     expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Comprende la norma.')
     expect(steps[1].blocks).toEqual([next])
   })
+  it('keeps new A1 teaching, support and practice together only with its exact authored revision', () => {
+    const metadata = { learningRevision: 'course-guided-v1', pilotRevision: 'a1-module1-pilot-v1', pilotSceneId: 'a1-meaning', guidedTitle: 'Elige un saludo.' }
+    const input: Block = { id: 'a1-input', type: 'text', order: 0, content: '<p>Hello significa hola.</p>', data: metadata }
+    const practice: Block = { id: 'a1-choice', type: 'multiple_choice', order: 1, question: 'Elige un saludo.', options: [{ id: 'a', text: 'Hello' }, { id: 'b', text: 'Tuesday' }], correctOptionId: 'a', data: metadata }
+    const next: Block = { id: 'a1-next', type: 'text', order: 2, content: '<p>Practica con un nombre nuevo.</p>', data: { ...metadata, pilotSceneId: 'a1-transfer' } }
+    const steps = buildIllustratedLessonSteps([input, practice, next])
+    expect(steps).toHaveLength(2)
+    expect(steps[0].blocks).toEqual([input, practice])
+    expect(steps[1].blocks).toEqual([next])
+    expect(getIllustratedLessonTaskTitle(steps[0])).toBe('Elige un saludo.')
+  })
   it('keeps a published picture question with its own figure instead of a separate step', () => {
     const prompt = {
       id: 'picture-prompt', type: 'text', order: 0, content: 'What is the picture suggesting?',
