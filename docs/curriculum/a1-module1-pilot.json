@@ -3435,7 +3435,7 @@
             },
             {
               "id": "a1m1-u1-listening-check-items-q5",
-              "question": "¿Qué dice Ana al final?",
+              "question": "¿Qué dice Luis al final?",
               "options": [
                 {
                   "id": "a1m1-u1-listening-check-items-q5-option-1",
@@ -3451,7 +3451,7 @@
                 }
               ],
               "correctOptionId": "a1m1-u1-listening-check-items-q5-option-1",
-              "explanation": "Ana termina con See you in class.",
+              "explanation": "Luis termina con See you in class.",
               "sourceKey": "module1.unit1.listening.5",
               "sourceType": "listening"
             },
@@ -3511,7 +3511,7 @@
             "module1.unit1.listening.2": "El modelo indica que es una clase vespertina.",
             "module1.unit1.listening.3": "Ana dice que vive en Lima.",
             "module1.unit1.listening.4": "Luis dice que es de Chile.",
-            "module1.unit1.listening.5": "Ana termina con See you in class.",
+            "module1.unit1.listening.5": "Luis termina con See you in class.",
             "module1.unit1.listening.6": "Luis responde I’m Luis."
           }
         },

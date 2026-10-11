@@ -98,6 +98,18 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             raise RuntimeError("Provide source paths or generate both the public JSON and its manifest first")
         cls.audio_enabled = any(block["type"] == "audio" for block in _blocks(cls.course))
 
+    def test_u1_farewell_question_attributes_the_spoken_speaker(self) -> None:
+        question = COMPILER.LISTENING_CHECKS[1][4]
+        self.assertEqual(question['prompt'], '¿Qué dice Luis al final?')
+        self.assertEqual(question['feedback'], 'Luis termina con See you in class.')
+        self.assertEqual(question['answer'], 'See you in class')
+        if self.audio_enabled:
+            published = next(item for block in _blocks(self.course)
+                             for item in block.get('items', [])
+                             if item.get('id') == 'a1m1-u1-listening-check-items-q5')
+            self.assertEqual(published['question'], question['prompt'])
+            self.assertEqual(published['explanation'], question['feedback'])
+
     def test_public_contract_and_fixed_ids(self) -> None:
         self.assertEqual(set(self.course), {"course", "module", "lessons"})
         self.assertEqual(set(self.course["course"]), {"id", "title", "description", "language", "level"})

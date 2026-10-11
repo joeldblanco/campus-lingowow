@@ -285,7 +285,7 @@ LISTENING_CHECKS: dict[int, list[dict[str, Any]]] = {
         {"prompt": "¿Qué tipo de clase es?", "answer": "An evening class", "options": ["An evening class", "A morning class", "A phone class"], "feedback": "El modelo indica que es una clase vespertina."},
         {"prompt": "¿Dónde vive Ana?", "answer": "Lima", "options": ["Lima", "Peru", "Chile"], "feedback": "Ana dice que vive en Lima."},
         {"prompt": "¿Quién es de Chile?", "answer": "Luis", "options": ["Luis", "Ana", "Diego"], "feedback": "Luis dice que es de Chile."},
-        {"prompt": "¿Qué dice Ana al final?", "answer": "See you in class", "options": ["See you in class", "See you tomorrow", "See you at the door"], "feedback": "Ana termina con See you in class."},
+        {"prompt": "¿Qué dice Luis al final?", "answer": "See you in class", "options": ["See you in class", "See you tomorrow", "See you at the door"], "feedback": "Luis termina con See you in class."},
         {"prompt": "¿Qué nombre dice Luis?", "answer": "Luis", "options": ["Luis", "Ana", "Rosa"], "feedback": "Luis responde I’m Luis."},
     ],
     2: [
