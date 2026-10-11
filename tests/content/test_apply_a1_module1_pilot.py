@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -75,6 +77,25 @@ def identities() -> dict[str, str]:
     }
 
 
+def audio_plan() -> dict:
+    plan = make_plan()
+    plan["lessons"][1]["blocks"][0] = {
+        "id": "a1-general-u1-audio-0",
+        "type": "audio",
+        "order": 0,
+        "title": "Unit 1 model audio",
+        "url": "/audio/a1-module1-pilot/u1-model.mp3",
+        "data": {
+            "learningRevision": MODULE.REVISION,
+            "pilotRevision": MODULE.PILOT_REVISION,
+            "pilotSceneId": "a1m1-1-scene-0",
+            "scene": "/images/lessons/backgrounds/community-bookshop.webp",
+            "sceneSide": "right",
+        },
+    }
+    return plan
+
+
 class A1Module1PilotSafetyTests(unittest.TestCase):
     def test_valid_plan_accepts_exact_source_inventory_and_strips_runtime_identity(self) -> None:
         plan = make_plan()
@@ -103,6 +124,8 @@ class A1Module1PilotSafetyTests(unittest.TestCase):
         self.assertIn("SET LOCAL statement_timeout = '120s'", sql)
         self.assertIn('AND status = \'ACTIVE\'::"UserStatus"', sql)
         self.assertIn('\'STUDENT\'::"UserRole" = ANY(roles)', sql)
+        self.assertIn('SELECT 1 FROM "User"', sql)
+        self.assertNotIn("SELECT 1 FROM users", sql)
 
     def test_collision_guard_and_expected_counts_are_fail_closed(self) -> None:
         sql = MODULE.build_sql(make_plan(), identities())
@@ -150,6 +173,130 @@ class A1Module1PilotSafetyTests(unittest.TestCase):
         plan = make_plan()
         plan["lessons"][0]["blocks"][0]["data"]["url"] = "https://cdn.example/voice.mp3"
         with self.assertRaisesRegex(MODULE.PlanError, "unapproved audio URL"):
+            MODULE.validate_plan(plan)
+
+    def test_verified_new_audio_manifest_allows_only_matching_local_asset(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old_audio_root = MODULE.AUDIO_ROOT
+            try:
+                MODULE.AUDIO_ROOT = Path(temporary) / "public" / "audio" / "a1-module1-pilot"
+                MODULE.AUDIO_ROOT.mkdir(parents=True)
+                asset = MODULE.AUDIO_ROOT / "u1-model.mp3"
+                asset.write_bytes(b"synthetic audio bytes")
+                manifest = {
+                    "files": [
+                        {
+                            "path": "public/audio/a1-module1-pilot/u1-model.mp3",
+                            "sha256": hashlib.sha256(asset.read_bytes()).hexdigest(),
+                            "sourceEnglishTranscript": "Hi, I am Ana.",
+                        }
+                    ]
+                }
+                MODULE.validate_plan(audio_plan(), audio_manifest=manifest)
+                sql = MODULE.build_sql(audio_plan(), identities(), audio_manifest=manifest)
+                self.assertTrue(sql.rstrip().endswith("ROLLBACK;"))
+                self.assertIn("AND (data ? 'id' OR data ? 'order')", sql)
+                self.assertNotIn(
+                    "AND (data ? 'id' OR data ? 'order' OR data->>'type' = 'audio')",
+                    sql,
+                )
+            finally:
+                MODULE.AUDIO_ROOT = old_audio_root
+
+    def test_audio_manifest_missing_file_is_rejected(self) -> None:
+        manifest = {
+            "files": [
+                {
+                    "path": "public/audio/a1-module1-pilot/missing.mp3",
+                    "sha256": "0" * 64,
+                    "sourceEnglishTranscript": "Missing asset.",
+                }
+            ]
+        }
+        with self.assertRaisesRegex(MODULE.PlanError, "asset is missing"):
+            MODULE.validate_audio_manifest(manifest)
+
+    def test_audio_manifest_hash_mismatch_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            old_audio_root = MODULE.AUDIO_ROOT
+            try:
+                MODULE.AUDIO_ROOT = Path(temporary) / "public" / "audio" / "a1-module1-pilot"
+                MODULE.AUDIO_ROOT.mkdir(parents=True)
+                (MODULE.AUDIO_ROOT / "u1-model.mp3").write_bytes(b"actual bytes")
+                manifest = {
+                    "files": [
+                        {
+                            "path": "public/audio/a1-module1-pilot/u1-model.mp3",
+                            "sha256": "0" * 64,
+                            "sourceEnglishTranscript": "The transcript is present.",
+                        }
+                    ]
+                }
+                with self.assertRaisesRegex(MODULE.PlanError, "hash mismatch"):
+                    MODULE.validate_audio_manifest(manifest)
+            finally:
+                MODULE.AUDIO_ROOT = old_audio_root
+
+    def test_audio_manifest_traversal_external_and_original_paths_are_rejected(self) -> None:
+        cases = (
+            "public/audio/a1-module1-pilot/../old.mp3",
+            "https://cdn.example/audio.mp3",
+            "public/audio/lessons/course/unit-02-audio-01.mp3",
+        )
+        for path in cases:
+            with self.subTest(path=path):
+                manifest = {
+                    "files": [
+                        {
+                            "path": path,
+                            "sha256": "0" * 64,
+                            "sourceEnglishTranscript": "Source transcript.",
+                        }
+                    ]
+                }
+                with self.assertRaises(MODULE.PlanError):
+                    MODULE.validate_audio_manifest(manifest)
+
+    def test_audio_manifest_rejects_inline_source_and_unverified_extra(self) -> None:
+        plan = audio_plan()
+        plan["lessons"][1]["blocks"][0]["url"] = "data:audio/mpeg;base64,AAAA"
+        with self.assertRaisesRegex(MODULE.PlanError, "unapproved audio"):
+            MODULE.validate_plan(plan)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            old_audio_root = MODULE.AUDIO_ROOT
+            try:
+                MODULE.AUDIO_ROOT = Path(temporary) / "public" / "audio" / "a1-module1-pilot"
+                MODULE.AUDIO_ROOT.mkdir(parents=True)
+                asset = MODULE.AUDIO_ROOT / "u1-model.mp3"
+                asset.write_bytes(b"synthetic audio bytes")
+                (MODULE.AUDIO_ROOT / "extra.mp3").write_bytes(b"synthetic audio bytes")
+                manifest = {
+                    "files": [
+                        {
+                            "path": "public/audio/a1-module1-pilot/u1-model.mp3",
+                            "sha256": hashlib.sha256(asset.read_bytes()).hexdigest(),
+                            "sourceEnglishTranscript": "Hi, I am Ana.",
+                        },
+                        {
+                            "path": "public/audio/a1-module1-pilot/extra.mp3",
+                            "sha256": hashlib.sha256(asset.read_bytes()).hexdigest(),
+                            "sourceEnglishTranscript": "Unused source.",
+                        },
+                    ]
+                }
+                with self.assertRaisesRegex(MODULE.PlanError, "unreferenced manifest"):
+                    MODULE.validate_plan(audio_plan(), audio_manifest=manifest)
+            finally:
+                MODULE.AUDIO_ROOT = old_audio_root
+
+    def test_runtime_revision_matches_generic_guided_runtime_and_optional_pilot_revision(self) -> None:
+        self.assertEqual(MODULE.REVISION, "course-guided-v1")
+        plan = make_plan()
+        plan["lessons"][0]["blocks"][0]["data"]["pilotRevision"] = MODULE.PILOT_REVISION
+        MODULE.validate_plan(plan)
+        plan["lessons"][0]["blocks"][0]["data"]["pilotRevision"] = "wrong-revision"
+        with self.assertRaisesRegex(MODULE.PlanError, "pilotRevision"):
             MODULE.validate_plan(plan)
 
     def test_private_identities_are_strict_and_safe(self) -> None:

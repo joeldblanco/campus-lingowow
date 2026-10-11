@@ -12,11 +12,12 @@ from __future__ import annotations
 import argparse
 import base64
 import copy
+import hashlib
 import json
 import re
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any, Mapping, Sequence
 
 
@@ -31,11 +32,19 @@ LESSON_IDS = (
     "a1-general-mission",
 )
 ENROLLMENT_ID = "a1-general-pilot-joel"
-REVISION = "a1-module1-pilot-v1"
+# The guided runtime intentionally uses the existing generic production
+# revision. The exact course ID is the pilot scope; pilotRevision is optional
+# provenance metadata and never a global runtime gate.
+REVISION = "course-guided-v1"
+PILOT_REVISION = "a1-module1-pilot-v1"
 SERVER = "root@137.184.8.53"
 APP_CONTAINER = "wnzn19ljdvtk84yzz4j3orj1"
 DEV_DATABASE_NAME = "lingowow_dev"
 DEV_DATABASE_USER = "lingowow_dev"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+AUDIO_ROOT = PROJECT_ROOT / "public" / "audio" / "a1-module1-pilot"
+AUDIO_PUBLIC_PREFIX = "public/audio/a1-module1-pilot/"
+AUDIO_URL_PREFIX = "/audio/a1-module1-pilot/"
 
 _SAFE_ID = re.compile(r"^[a-z0-9][a-z0-9_-]{0,127}$")
 _AUDIO_SUFFIX = re.compile(r"\.(?:mp3|wav|m4a|ogg|aac|flac|webm)(?:$|[?#])", re.IGNORECASE)
@@ -126,6 +135,8 @@ _COURSE_ALLOWED_KEYS = _COURSE_REQUIRED_KEYS | {"image"}
 _MODULE_KEYS = frozenset({"id", "title", "description", "level", "objectives"})
 _LESSON_KEYS = frozenset({"id", "title", "description", "order", "blocks"})
 _IDENTITY_KEYS = frozenset({"creatorId", "studentId", "academicPeriodId"})
+_AUDIO_MANIFEST_KEYS = frozenset({"files"})
+_AUDIO_ENTRY_KEYS = frozenset({"path", "sha256", "sourceEnglishTranscript"})
 
 
 class PlanError(ValueError):
@@ -163,19 +174,119 @@ def _validate_text(value: Any, label: str, *, nullable: bool = False) -> str | N
     return value
 
 
-def _walk_media_values(value: Any, path: str = "block") -> None:
-    """Reject pre-recorded audio URLs/fields without inspecting user secrets."""
+def _audio_public_path(value: Any, label: str) -> str:
+    """Normalize one manifest or runtime reference to the local public path."""
+
+    if not isinstance(value, str) or not value:
+        raise PlanError(f"{label} must be a local audio path")
+    if value.startswith(AUDIO_URL_PREFIX):
+        path = "public" + value
+    elif value.startswith(AUDIO_PUBLIC_PREFIX):
+        path = value
+    else:
+        raise PlanError(f"{label} must stay under {AUDIO_PUBLIC_PREFIX}")
+    if "\\" in path or "//" in path:
+        raise PlanError(f"{label} contains an unsafe path")
+    pure = PurePosixPath(path)
+    if pure.as_posix() != path or any(part in {".", ".."} for part in pure.parts):
+        raise PlanError(f"{label} contains path traversal")
+    if len(pure.parts) != 4 or pure.parts[:3] != ("public", "audio", "a1-module1-pilot"):
+        raise PlanError(f"{label} must name a file directly under the pilot audio directory")
+    if not re.fullmatch(r"[a-z0-9][a-z0-9_.-]*\.mp3", pure.name):
+        raise PlanError(f"{label} must be a lowercase .mp3 asset name")
+    return path
+
+
+def validate_audio_manifest(manifest: Any) -> dict[str, dict[str, str]]:
+    """Verify a new-only local synthetic-audio manifest and every file hash."""
+
+    if not isinstance(manifest, dict):
+        raise PlanError("audio manifest must be an object")
+    _require_keys(manifest, _AUDIO_MANIFEST_KEYS, "audio manifest")
+    files = manifest["files"]
+    if not isinstance(files, list) or not files:
+        raise PlanError("audio manifest must contain a non-empty files array")
+
+    entries: dict[str, dict[str, str]] = {}
+    audio_root = AUDIO_ROOT.resolve()
+    for index, entry in enumerate(files):
+        label = f"audio manifest.files[{index}]"
+        if not isinstance(entry, dict):
+            raise PlanError(f"{label} must be an object")
+        _require_keys(entry, _AUDIO_ENTRY_KEYS, label)
+        path = _audio_public_path(entry["path"], f"{label}.path")
+        if path in entries:
+            raise PlanError(f"duplicate audio manifest path {path}")
+        sha256 = entry["sha256"]
+        if not isinstance(sha256, str) or not re.fullmatch(r"[0-9a-f]{64}", sha256):
+            raise PlanError(f"{label}.sha256 must be a lowercase SHA-256 hex digest")
+        transcript = entry["sourceEnglishTranscript"]
+        if not isinstance(transcript, str) or not transcript.strip():
+            raise PlanError(f"{label}.sourceEnglishTranscript is required")
+
+        asset_path = AUDIO_ROOT / PurePosixPath(path).name
+        resolved_asset = asset_path.resolve()
+        try:
+            resolved_asset.relative_to(audio_root)
+        except ValueError as error:
+            raise PlanError(f"{label}.path resolves outside the pilot audio directory") from error
+        if not resolved_asset.is_file():
+            raise PlanError(f"audio asset is missing: {path}")
+        actual_sha256 = hashlib.sha256(resolved_asset.read_bytes()).hexdigest()
+        if actual_sha256 != sha256:
+            raise PlanError(f"audio asset hash mismatch: {path}")
+        entries[path] = {
+            "path": path,
+            "sha256": sha256,
+            "sourceEnglishTranscript": transcript,
+        }
+    return entries
+
+
+def _iter_audio_references(value: Any) -> list[str]:
+    references: list[str] = []
+    if isinstance(value, dict):
+        for nested in value.values():
+            references.extend(_iter_audio_references(nested))
+    elif isinstance(value, list):
+        for nested in value:
+            references.extend(_iter_audio_references(nested))
+    elif isinstance(value, str) and _AUDIO_SUFFIX.search(value):
+        references.append(value)
+    return references
+
+
+def _walk_media_values(
+    value: Any,
+    path: str = "block",
+    *,
+    allowed_audio_paths: frozenset[str] = frozenset(),
+) -> None:
+    """Reject external, inline, old, or unverified audio references."""
 
     if isinstance(value, dict):
         for key, nested in value.items():
             if key in _FORBIDDEN_AUDIO_KEYS:
-                raise PlanError(f"{path}.{key} is not approved for this pilot")
-            _walk_media_values(nested, f"{path}.{key}")
+                if not isinstance(nested, str):
+                    raise PlanError(f"{path}.{key} is not an approved local audio path")
+                normalized = _audio_public_path(nested, f"{path}.{key}")
+                if normalized not in allowed_audio_paths:
+                    raise PlanError(f"{path}.{key} is not listed in the verified audio manifest")
+            _walk_media_values(nested, f"{path}.{key}", allowed_audio_paths=allowed_audio_paths)
     elif isinstance(value, list):
         for index, nested in enumerate(value):
-            _walk_media_values(nested, f"{path}[{index}]")
-    elif isinstance(value, str) and _AUDIO_SUFFIX.search(value):
-        raise PlanError(f"{path} contains an unapproved audio URL")
+            _walk_media_values(nested, f"{path}[{index}]", allowed_audio_paths=allowed_audio_paths)
+    elif isinstance(value, str):
+        lowered = value.lower()
+        if lowered.startswith("data:audio/") or lowered.startswith("data:application/octet-stream"):
+            raise PlanError(f"{path} contains inline embedded audio")
+        if _AUDIO_SUFFIX.search(value):
+            try:
+                normalized = _audio_public_path(value, path)
+            except PlanError as error:
+                raise PlanError(f"{path} contains an unapproved audio URL") from error
+            if normalized not in allowed_audio_paths:
+                raise PlanError(f"{path} contains an unapproved audio URL")
 
 
 def _block_metadata(block: Mapping[str, Any]) -> dict[str, Any]:
@@ -188,13 +299,25 @@ def _block_metadata(block: Mapping[str, Any]) -> dict[str, Any]:
         nested = direct.get("data")
         if isinstance(nested, dict):
             metadata.update(nested)
-    for key in ("scene", "illustratedScene", "sceneSide", "pilotSceneId", "learningRevision"):
+    for key in (
+        "scene",
+        "illustratedScene",
+        "sceneSide",
+        "pilotSceneId",
+        "learningRevision",
+        "pilotRevision",
+    ):
         if key in block:
             metadata[key] = block[key]
     return metadata
 
 
-def _validate_block(block: Any, *, label: str) -> dict[str, Any]:
+def _validate_block(
+    block: Any,
+    *,
+    label: str,
+    audio_manifest: Mapping[str, Mapping[str, str]] | None = None,
+) -> dict[str, Any]:
     if not isinstance(block, dict):
         raise PlanError(f"{label} must be an object")
     for field in ("id", "type", "order"):
@@ -204,12 +327,21 @@ def _validate_block(block: Any, *, label: str) -> dict[str, Any]:
     block_type = block["type"]
     if not isinstance(block_type, str) or block_type not in KNOWN_BLOCK_TYPES:
         raise PlanError(f"{label}.type is not a supported runtime block type")
+    audio_paths: frozenset[str] = frozenset()
     if block_type == "audio":
-        raise PlanError(f"{label} cannot contain unapproved audio")
+        if audio_manifest is None:
+            raise PlanError(f"{label} cannot contain unapproved audio; provide a verified audio manifest")
+        references = _iter_audio_references(block)
+        if len(references) != 1:
+            raise PlanError(f"{label} must reference exactly one verified local audio asset")
+        audio_path = _audio_public_path(references[0], f"{label}.audio")
+        if audio_path not in audio_manifest:
+            raise PlanError(f"{label} audio is missing from the verified audio manifest")
+        audio_paths = frozenset({audio_path})
     if not _is_int(block["order"]) or block["order"] < 0:
         raise PlanError(f"{label}.order must be a non-negative integer")
     json.dumps(block, ensure_ascii=False, allow_nan=False)
-    _walk_media_values(block, label)
+    _walk_media_values(block, label, allowed_audio_paths=audio_paths)
 
     metadata = _block_metadata(block)
     scene = metadata.get("scene") or metadata.get("illustratedScene")
@@ -221,6 +353,8 @@ def _validate_block(block: Any, *, label: str) -> dict[str, Any]:
     if block_type != "teacher_notes":
         if metadata.get("learningRevision") != REVISION:
             raise PlanError(f"{label} must use learningRevision {REVISION}")
+        if metadata.get("pilotRevision") is not None and metadata["pilotRevision"] != PILOT_REVISION:
+            raise PlanError(f"{label}.pilotRevision must be {PILOT_REVISION} when present")
         pilot_scene_id = metadata.get("pilotSceneId")
         _validate_id(pilot_scene_id, f"{label}.pilotSceneId")
         if scene is None:
@@ -262,8 +396,15 @@ def _content_rows(plan: Mapping[str, Any]) -> list[dict[str, Any]]:
     return rows
 
 
-def validate_plan(plan: Any) -> dict[str, Any]:
-    """Validate the public compiler output without adding private identities."""
+def validate_plan(
+    plan: Any,
+    *,
+    audio_manifest: Any = None,
+) -> dict[str, Any]:
+    """Validate public compiler output and optional verified synthetic audio."""
+
+    audio_entries = validate_audio_manifest(audio_manifest) if audio_manifest is not None else None
+    referenced_audio_paths: set[str] = set()
 
     if not isinstance(plan, dict):
         raise PlanError("public plan must be an object")
@@ -327,7 +468,11 @@ def validate_plan(plan: Any) -> dict[str, Any]:
         block_ids: set[str] = set()
         scene_ids: set[str] = set()
         for block_order, block in enumerate(blocks):
-            validated = _validate_block(block, label=f"{label}.blocks[{block_order}]")
+            validated = _validate_block(
+                block,
+                label=f"{label}.blocks[{block_order}]",
+                audio_manifest=audio_entries,
+            )
             if validated["order"] != block_order:
                 raise PlanError(f"{label}.blocks[{block_order}].order must be {block_order}")
             block_id = validated["id"]
@@ -338,12 +483,28 @@ def validate_plan(plan: Any) -> dict[str, Any]:
             metadata = _block_metadata(validated)
             if validated["type"] != "teacher_notes":
                 scene_ids.add(metadata["pilotSceneId"])
+            if validated["type"] == "audio":
+                referenced_audio_paths.add(
+                    _audio_public_path(
+                        _iter_audio_references(validated)[0],
+                        f"{label}.blocks[{block_order}].audio",
+                    )
+                )
         if not scene_ids:
             raise PlanError(f"{label} must contain a learner-facing illustrated scene")
 
     rows = _content_rows(plan)
     if len(rows) != sum(len(lesson["blocks"]) for lesson in lessons):
         raise PlanError("source block count does not match content rows")
+    if audio_entries is not None and set(audio_entries) != referenced_audio_paths:
+        missing = sorted(referenced_audio_paths - set(audio_entries))
+        unused = sorted(set(audio_entries) - referenced_audio_paths)
+        detail: list[str] = []
+        if missing:
+            detail.append(f"missing manifest entries {missing}")
+        if unused:
+            detail.append(f"unreferenced manifest entries {unused}")
+        raise PlanError("audio manifest does not exactly match plan references: " + "; ".join(detail))
     return plan
 
 
@@ -361,8 +522,13 @@ def validate_identities(identities: Any) -> dict[str, str]:
     return result
 
 
-def _sql_payload(plan: Mapping[str, Any], identities: Mapping[str, str]) -> str:
-    checked = validate_plan(plan)
+def _sql_payload(
+    plan: Mapping[str, Any],
+    identities: Mapping[str, str],
+    *,
+    audio_manifest: Any = None,
+) -> str:
+    checked = validate_plan(plan, audio_manifest=audio_manifest)
     checked_identities = validate_identities(identities)
     rows = _content_rows(checked)
     payload = {
@@ -373,6 +539,7 @@ def _sql_payload(plan: Mapping[str, Any], identities: Mapping[str, str]) -> str:
         "identities": checked_identities,
         "enrollmentId": ENROLLMENT_ID,
         "revision": REVISION,
+        "pilotRevision": PILOT_REVISION,
     }
     return base64.b64encode(
         json.dumps(payload, ensure_ascii=False, separators=(",", ":"), allow_nan=False).encode("utf-8")
@@ -384,10 +551,11 @@ def build_sql(
     identities: Mapping[str, str],
     *,
     apply: bool = False,
+    audio_manifest: Any = None,
 ) -> str:
     """Generate the guarded SQL transaction without opening a database connection."""
 
-    payload = _sql_payload(plan, identities)
+    payload = _sql_payload(plan, identities, audio_manifest=audio_manifest)
     finish = "COMMIT;" if apply else "ROLLBACK;"
     return f"""BEGIN ISOLATION LEVEL SERIALIZABLE;
 SET LOCAL lock_timeout = '10s';
@@ -437,13 +605,13 @@ BEGIN
   END IF;
 
   IF NOT EXISTS (
-    SELECT 1 FROM users
+    SELECT 1 FROM "User"
     WHERE id = p->'identities'->>'creatorId'
   ) THEN
     RAISE EXCEPTION 'Creator identity is not present';
   END IF;
   IF NOT EXISTS (
-    SELECT 1 FROM users
+    SELECT 1 FROM "User"
     WHERE id = p->'identities'->>'studentId'
       AND status = 'ACTIVE'::"UserStatus"
       AND 'STUDENT'::"UserRole" = ANY(roles)
@@ -612,9 +780,9 @@ BEGIN
   IF EXISTS (
     SELECT 1 FROM contents
     WHERE id IN (SELECT id FROM a1_module1_expected_contents)
-      AND (data ? 'id' OR data ? 'order' OR data->>'type' = 'audio')
+      AND (data ? 'id' OR data ? 'order')
   ) THEN
-    RAISE EXCEPTION 'Seed content payload contains forbidden identity or audio data';
+    RAISE EXCEPTION 'Seed content payload contains forbidden identity data';
   END IF;
 
   IF (
@@ -679,10 +847,11 @@ def generate_sql(
     identities: Mapping[str, str],
     *,
     apply: bool = False,
+    audio_manifest: Any = None,
 ) -> str:
     """Compatibility alias for callers of the other guarded seed scripts."""
 
-    return build_sql(plan, identities, apply=apply)
+    return build_sql(plan, identities, apply=apply, audio_manifest=audio_manifest)
 
 
 def build_remote_script(sql: str) -> str:
@@ -712,10 +881,11 @@ def apply_plan(
     identities: Mapping[str, str],
     *,
     apply: bool = False,
+    audio_manifest: Any = None,
 ) -> None:
     """Run the guarded transaction only after the remote DEV checks pass."""
 
-    sql = build_sql(plan, identities, apply=apply)
+    sql = build_sql(plan, identities, apply=apply, audio_manifest=audio_manifest)
     result = subprocess.run(
         [
             "ssh",
@@ -766,6 +936,11 @@ def main(argv: Sequence[str] | None = None) -> None:
         help="private JSON file with creatorId, studentId, and academicPeriodId",
     )
     parser.add_argument(
+        "--audio-manifest",
+        type=Path,
+        help="optional verified local synthetic-audio manifest JSON",
+    )
+    parser.add_argument(
         "--apply",
         action="store_true",
         help="commit the guarded DEV transaction; without this flag it rolls back",
@@ -774,7 +949,13 @@ def main(argv: Sequence[str] | None = None) -> None:
     try:
         plan = _load_json(args.public_plan, "public plan")
         identities = _load_json(args.identities, "private identities")
-        apply_plan(plan, validate_identities(identities), apply=args.apply)
+        audio_manifest = _load_json(args.audio_manifest, "audio manifest") if args.audio_manifest else None
+        apply_plan(
+            plan,
+            validate_identities(identities),
+            apply=args.apply,
+            audio_manifest=audio_manifest,
+        )
     except PlanError as error:
         raise SystemExit(f"Invalid A1 pilot seed input: {error}") from error
 
