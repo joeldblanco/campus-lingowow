@@ -116,6 +116,9 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
     def test_text_blocks_are_safe_html_and_carry_pilot_revision(self) -> None:
         text_blocks = [block for block in _blocks(self.course) if block["type"] == "text"]
         self.assertTrue(text_blocks)
+        self.assertEqual(self.manifest["runtimeMappingGuidance"]["pilotRevision"], "a1-module1-pilot-v1")
+        public_orders = [block["order"] for block in _blocks(self.course)]
+        self.assertEqual(public_orders, list(range(len(public_orders))))
         for block in _blocks(self.course):
             self.assertEqual(block["data"].get("pilotRevision"), "a1-module1-pilot-v1", block["id"])
         for block in text_blocks:
@@ -123,6 +126,38 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             self.assertNotIn("**", block["content"], block["id"])
             self.assertNotIn("\n", block["content"], block["id"])
             self.assertRegex(block["content"], r"<(?:p|details|ul)>", block["id"])
+
+    def test_learner_copy_is_compact_and_spanish_guided(self) -> None:
+        teaching_ids = {
+            "a1m1-start-s1-teach-text",
+            "a1m1-start-s2-teach-text",
+            "a1m1-start-s3-teach-text",
+            "a1m1-start-s4-teach-text",
+            "a1m1-start-s5-teach-text",
+            "module1.unit1-teach-text",
+            "module1.unit2-teach-text",
+            "module1.unit3-teach-text",
+            "module1.unit4-teach-text",
+        }
+        blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
+        for block_id in teaching_ids:
+            content = blocks_by_id[block_id]["content"]
+            self.assertIn("<strong>Consigna:</strong>", content, block_id)
+            self.assertIn("<strong>Modelo:</strong>", content, block_id)
+            self.assertNotIn("Modelo original", content, block_id)
+            self.assertNotIn("Ruta docente", content, block_id)
+            self.assertNotIn("Ruta autónoma", content, block_id)
+        comp_blocks = [block for block in _blocks(self.course) if block["data"].get("contentRole") == "comprehension"]
+        questions = [item["question"] for block in comp_blocks for item in block.get("items", [])]
+        self.assertTrue(questions)
+        self.assertTrue(all("¿" in question or question.startswith("¿") for question in questions))
+        practice_prompts = [
+            item.get("question", "")
+            for block in _blocks(self.course)
+            if block["data"].get("contentRole") == "practice"
+            for item in block.get("items", [])
+        ]
+        self.assertTrue(any("¿" in prompt or prompt.startswith(("Completa", "Ordena", "Responde", "Identifica", "Da", "Confirma", "Al ")) for prompt in practice_prompts))
 
     def test_source_counts_and_coverage(self) -> None:
         unit_lessons = self.course["lessons"][1:5]
@@ -204,6 +239,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
         for scene in self.manifest["sceneSummaries"]:
             asset = scene["background"]
+            self.assertEqual(scene["backgroundSrc"], asset)
             self.assertTrue((WORKTREE / "public" / asset.lstrip("/")).exists(), asset)
             self.assertLessEqual(scene["interactiveCount"], 1, scene["id"])
             scene_blocks = [blocks_by_id[block_id] for block_id in scene["runtimeBlockIds"]]
@@ -215,6 +251,18 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                 self.assertEqual(metadata["pilotSceneId"], scene["id"])
                 self.assertEqual(metadata["sceneSide"], "right")
             self.assertEqual(scene["interactiveCount"], sum(block["type"] in interactive for block in scene_blocks))
+        for lesson in self.course["lessons"]:
+            scenes = [scene for scene in self.manifest["sceneSummaries"] if scene["lessonId"] == lesson["id"]]
+            unique_assets = {scene["background"] for scene in scenes}
+            expected_unique = min(len(scenes), len(COMPILER.APPROVED_BACKGROUND_CATALOG))
+            self.assertEqual(len(unique_assets), expected_unique, lesson["id"])
+            assignment = next(item for item in self.manifest["backgroundAssignment"]["lessons"] if item["lessonId"] == lesson["id"])
+            self.assertEqual(assignment["sceneCount"], len(scenes))
+            self.assertEqual(len(assignment["scenes"]), len(scenes))
+            if len(scenes) > len(COMPILER.APPROVED_BACKGROUND_CATALOG):
+                self.assertTrue(assignment["reuseReason"])
+            else:
+                self.assertIsNone(assignment["reuseReason"])
 
     def test_starter_support_tables_are_collapsible(self) -> None:
         blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
@@ -236,6 +284,8 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             self.assertTrue(block["data"].get("teacherReviewOnly"), block["id"])
             self.assertIn("reviewChecklist", block["data"], block["id"])
             self.assertIn("learningModes", block["data"], block["id"])
+        for block in [block for block in production if block["type"] == "essay"]:
+            self.assertEqual(block["data"].get("unit1Role"), "profile", block["id"])
         u1_production = [block for block in self.course["lessons"][1]["blocks"] if block["type"] in {"recording", "essay"}]
         self.assertEqual(u1_production[0]["data"].get("guidedRole"), "conversation")
         self.assertEqual(u1_production[0]["data"]["conversationTurns"][0]["question"], "What is your name and where are you from?")

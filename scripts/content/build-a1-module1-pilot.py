@@ -39,38 +39,278 @@ BACKGROUND_BY_LESSON = {
     "a1-general-mission": "/images/lessons/backgrounds/botanical-office.webp",
 }
 
+APPROVED_BACKGROUND_CATALOG = [
+    "/images/lessons/backgrounds/airport-lounge.webp",
+    "/images/lessons/backgrounds/art-studio.webp",
+    "/images/lessons/backgrounds/bakery.webp",
+    "/images/lessons/backgrounds/botanical-office.webp",
+    "/images/lessons/backgrounds/campus.webp",
+    "/images/lessons/backgrounds/city-directions.webp",
+    "/images/lessons/backgrounds/community-bookshop.webp",
+    "/images/lessons/backgrounds/daily-kitchen.webp",
+    "/images/lessons/backgrounds/family-living-room.webp",
+    "/images/lessons/backgrounds/flower-courtyard.webp",
+    "/images/lessons/backgrounds/garden.webp",
+    "/images/lessons/backgrounds/harbor-promenade.webp",
+    "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+    "/images/lessons/backgrounds/library.webp",
+    "/images/lessons/backgrounds/listening-lounge.webp",
+    "/images/lessons/backgrounds/market.webp",
+    "/images/lessons/backgrounds/mountain-cabin.webp",
+    "/images/lessons/backgrounds/museum-gallery.webp",
+    "/images/lessons/backgrounds/music-room.webp",
+    "/images/lessons/backgrounds/restaurant.webp",
+    "/images/lessons/backgrounds/science-lab.webp",
+    "/images/lessons/backgrounds/seaside.webp",
+    "/images/lessons/backgrounds/town-park.webp",
+    "/images/lessons/backgrounds/travel-station.webp",
+    "/images/lessons/backgrounds/village-square.webp",
+    "/images/lessons/backgrounds/workshop.webp",
+]
+
+BACKGROUND_PREFERENCES = {
+    "a1-general-start": [
+        "/images/lessons/backgrounds/listening-lounge.webp",
+        "/images/lessons/backgrounds/library.webp",
+        "/images/lessons/backgrounds/music-room.webp",
+        "/images/lessons/backgrounds/workshop.webp",
+        "/images/lessons/backgrounds/science-lab.webp",
+    ],
+    "a1-general-u1": [
+        "/images/lessons/backgrounds/campus.webp",
+        "/images/lessons/backgrounds/village-square.webp",
+        "/images/lessons/backgrounds/library.webp",
+        "/images/lessons/backgrounds/music-room.webp",
+        "/images/lessons/backgrounds/workshop.webp",
+    ],
+    "a1-general-u2": [
+        "/images/lessons/backgrounds/community-bookshop.webp",
+        "/images/lessons/backgrounds/museum-gallery.webp",
+        "/images/lessons/backgrounds/art-studio.webp",
+        "/images/lessons/backgrounds/market.webp",
+        "/images/lessons/backgrounds/bakery.webp",
+    ],
+    "a1-general-u3": [
+        "/images/lessons/backgrounds/town-park.webp",
+        "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+        "/images/lessons/backgrounds/harbor-promenade.webp",
+        "/images/lessons/backgrounds/garden.webp",
+        "/images/lessons/backgrounds/seaside.webp",
+    ],
+    "a1-general-u4": [
+        "/images/lessons/backgrounds/travel-station.webp",
+        "/images/lessons/backgrounds/airport-lounge.webp",
+        "/images/lessons/backgrounds/city-directions.webp",
+        "/images/lessons/backgrounds/village-square.webp",
+        "/images/lessons/backgrounds/museum-gallery.webp",
+    ],
+    "a1-general-mission": [
+        "/images/lessons/backgrounds/botanical-office.webp",
+        "/images/lessons/backgrounds/flower-courtyard.webp",
+        "/images/lessons/backgrounds/garden.webp",
+        "/images/lessons/backgrounds/workshop.webp",
+        "/images/lessons/backgrounds/community-bookshop.webp",
+    ],
+}
+
+UNIT_PHRASE_MEANINGS = {
+    1: {
+        "Hi, I’m Ana.": "Hola, soy Ana.",
+        "What’s your name?": "¿Cómo te llamas?",
+        "Nice to meet you.": "Encantado/a de conocerte.",
+        "I’m from Peru.": "Soy de Perú.",
+        "See you in class.": "Nos vemos en clase.",
+    },
+    2: {
+        "This is my colleague.": "Este es mi compañero.",
+        "Who is she?": "¿Quién es ella?",
+        "That is our manager.": "Esa es nuestra encargada.",
+        "The blue folder is hers.": "La carpeta azul es suya.",
+        "Is this your badge?": "¿Esta es tu credencial?",
+    },
+    3: {
+        "My phone number is...": "Mi teléfono es...",
+        "My email is...": "Mi correo es...",
+        "When are you free?": "¿Cuándo estás disponible?",
+        "I’m free on Tuesday at six.": "Estoy disponible el martes a las seis.",
+        "That works for me.": "Me va bien.",
+    },
+    4: {
+        "Sorry, could you repeat that, please?": "Perdón, ¿puedes repetirlo, por favor?",
+        "I don’t understand.": "No entiendo.",
+        "Do you mean this Thursday?": "¿Te refieres a este jueves?",
+        "Yes, this Thursday.": "Sí, este jueves.",
+        "The room is 204.": "La sala es la 204.",
+    },
+}
+
+UNIT_EXPLANATIONS_ES = {
+    1: "I’m + nombre / My name is + nombre presentan a la persona; I’m from indica el origen e I live in indica dónde vive.",
+    2: "This is / That is identifican; my, hers y mine expresan pertenencia; Who is...? pregunta por una persona.",
+    3: "My phone number is / My email is comparten contacto; When are you free? pregunta disponibilidad; on + día y at + hora fijan una cita.",
+    4: "Could you repeat that? pide repetición; I don’t understand expresa dificultad; Do you mean...? confirma el dato exacto.",
+}
+
+COMPREHENSION_PROMPTS_ES = {
+    "module1.unit1.comprehension.1": "¿Dónde se encuentra Ana con Luis?",
+    "module1.unit1.comprehension.2": "¿De dónde es Ana?",
+    "module1.unit1.comprehension.3": "¿De dónde es Luis?",
+    "module1.unit2.comprehension.1": "¿Quién es Diego?",
+    "module1.unit2.comprehension.2": "¿Quién es Elena?",
+    "module1.unit2.comprehension.3": "¿Qué carpeta es de Rosa?",
+    "module1.unit3.comprehension.1": "¿Cuál es el teléfono de Elena?",
+    "module1.unit3.comprehension.2": "¿Cuál es su correo?",
+    "module1.unit3.comprehension.3": "¿A quién le viene bien el martes a las seis?",
+    "module1.unit4.comprehension.1": "¿Cuándo es la cita?",
+    "module1.unit4.comprehension.2": "¿Qué le pide Tom a Paula?",
+    "module1.unit4.comprehension.3": "¿Cuál es el número de sala?",
+}
+
+PRACTICE_LOCALIZATION = {
+    "starter.S2.practice.5": {
+        "prompt": "¿Qué letra tiene el nombre inglés “jay”?",
+        "feedback": "J se llama jay; G se llama gee y K se llama kay.",
+        "hint": "Busca jay.",
+    },
+    "starter.S2.practice.6": {
+        "prompt": "Completa el abecedario: “X, Y, ___.”",
+        "feedback": "Z es la última letra del abecedario inglés.",
+        "hint": "Es la última ficha.",
+    },
+    "module1.unit1.practice.1": {
+        "prompt": "Al conocer a un compañero, elige la mejor apertura.",
+        "feedback": "Un saludo más el nombre abre el primer encuentro.",
+        "hint": "Elige un saludo y un nombre.",
+    },
+    "module1.unit1.practice.2": {
+        "prompt": "Completa: “I’m ___ Peru.”",
+        "feedback": "Después de I’m va from para indicar el origen.",
+        "hint": "Usa from.",
+    },
+    "module1.unit1.practice.3": {
+        "prompt": "¿De dónde es Ana?",
+        "feedback": "El modelo dice I’m from Peru.",
+        "hint": "Busca I’m from.",
+    },
+    "module1.unit1.practice.4": {
+        "prompt": "Responde a “What’s your name?” como Luis.",
+        "feedback": "La respuesta da el nombre que se pregunta.",
+        "hint": "Responde con el nombre.",
+    },
+    "module1.unit1.practice.5": {
+        "prompt": "Ordena: meet / you / Nice / to",
+        "feedback": "Esta es la despedida del primer encuentro.",
+        "hint": "Empieza con Nice.",
+    },
+    "module1.unit2.practice.1": {
+        "prompt": "Señalas a Diego. Elige la presentación correcta.",
+        "feedback": "Esta frase identifica a la persona y su relación.",
+        "hint": "Señala la persona y la relación.",
+    },
+    "module1.unit2.practice.2": {
+        "prompt": "Completa: “This is my ___ Diego.”",
+        "feedback": "Colleague nombra la relación de Diego.",
+        "hint": "Nombra la relación.",
+    },
+    "module1.unit2.practice.3": {
+        "prompt": "¿Quién es Elena?",
+        "feedback": "Elena es la encargada.",
+        "hint": "Busca manager.",
+    },
+    "module1.unit2.practice.4": {
+        "prompt": "Identifica a Diego con una frase completa.",
+        "feedback": "La frase identifica a Diego y su relación.",
+        "hint": "Incluye persona y relación.",
+    },
+    "module1.unit2.practice.5": {
+        "prompt": "Ordena: my / colleague / Diego / This / is",
+        "feedback": "La frase identifica a Diego.",
+        "hint": "Ordena sujeto y relación.",
+    },
+    "module1.unit3.practice.1": {
+        "prompt": "Un compañero pregunta por tu disponibilidad. Elige la pregunta.",
+        "feedback": "When pregunta por el horario disponible.",
+        "hint": "Busca la pregunta por el horario.",
+    },
+    "module1.unit3.practice.2": {
+        "prompt": "Completa: “My phone number ___ 555-0142.”",
+        "feedback": "Is une el número singular con su valor.",
+        "hint": "Número singular: is.",
+    },
+    "module1.unit3.practice.3": {
+        "prompt": "¿Cuál es el teléfono de Elena?",
+        "feedback": "El modelo da 555-0142.",
+        "hint": "Comprueba los dígitos.",
+    },
+    "module1.unit3.practice.4": {
+        "prompt": "Da el teléfono de Elena en una frase completa.",
+        "feedback": "La frase da el número exacto.",
+        "hint": "Conserva los dígitos.",
+    },
+    "module1.unit3.practice.5": {
+        "prompt": "Ordena: number / is / 555-0142 / My / phone",
+        "feedback": "La frase comparte el teléfono.",
+        "hint": "Ordena contacto y número.",
+    },
+    "module1.unit4.practice.1": {
+        "prompt": "No oíste la fecha. Elige cómo pedir que la repitan.",
+        "feedback": "Esta petición cortés solicita repetición.",
+        "hint": "Pide repetición.",
+    },
+    "module1.unit4.practice.2": {
+        "prompt": "Completa: “I ___ understand.”",
+        "feedback": "Don’t convierte la frase en negativa.",
+        "hint": "Usa la negación.",
+    },
+    "module1.unit4.practice.3": {
+        "prompt": "¿Cuál es el número de sala?",
+        "feedback": "La sala es 204.",
+        "hint": "Busca room.",
+    },
+    "module1.unit4.practice.4": {
+        "prompt": "Confirma el día y la hora de la cita.",
+        "feedback": "La respuesta repite el día y la hora.",
+        "hint": "Incluye día y hora.",
+    },
+    "module1.unit4.practice.5": {
+        "prompt": "Ordena: repeat / that, / please / Could / you",
+        "feedback": "Esta es una petición cortés para reparar la escucha.",
+        "hint": "Ordena la petición.",
+    },
+}
+
 LISTENING_CHECKS: dict[int, list[dict[str, Any]]] = {
     1: [
-        {"prompt": "Where does Ana meet Luis?", "answer": "At the door", "options": ["At the door", "At a market", "At a station"], "feedback": "Ana meets Luis at the door of the evening class."},
-        {"prompt": "What kind of class is it?", "answer": "An evening class", "options": ["An evening class", "A morning class", "A phone class"], "feedback": "The model says evening class."},
-        {"prompt": "Where does Ana live?", "answer": "Lima", "options": ["Lima", "Peru", "Chile"], "feedback": "Ana says she lives in Lima."},
-        {"prompt": "Who is from Chile?", "answer": "Luis", "options": ["Luis", "Ana", "Diego"], "feedback": "Luis says he is from Chile."},
-        {"prompt": "What does Ana say at the end?", "answer": "See you in class", "options": ["See you in class", "See you tomorrow", "See you at the door"], "feedback": "Ana closes with See you in class."},
-        {"prompt": "What name does Luis give?", "answer": "Luis", "options": ["Luis", "Ana", "Rosa"], "feedback": "Luis answers I’m Luis."},
+        {"prompt": "¿Dónde se encuentran Ana y Luis?", "answer": "At the door", "options": ["At the door", "At a market", "At a station"], "feedback": "Ana se encuentra con Luis en la puerta de la clase vespertina."},
+        {"prompt": "¿Qué tipo de clase es?", "answer": "An evening class", "options": ["An evening class", "A morning class", "A phone class"], "feedback": "El modelo indica que es una clase vespertina."},
+        {"prompt": "¿Dónde vive Ana?", "answer": "Lima", "options": ["Lima", "Peru", "Chile"], "feedback": "Ana dice que vive en Lima."},
+        {"prompt": "¿Quién es de Chile?", "answer": "Luis", "options": ["Luis", "Ana", "Diego"], "feedback": "Luis dice que es de Chile."},
+        {"prompt": "¿Qué dice Ana al final?", "answer": "See you in class", "options": ["See you in class", "See you tomorrow", "See you at the door"], "feedback": "Ana termina con See you in class."},
+        {"prompt": "¿Qué nombre dice Luis?", "answer": "Luis", "options": ["Luis", "Ana", "Rosa"], "feedback": "Luis responde I’m Luis."},
     ],
     2: [
-        {"prompt": "Where does Rosa point?", "answer": "At a photo", "options": ["At a photo", "At a phone", "At a door"], "feedback": "Rosa points to a photo at the community desk."},
-        {"prompt": "Who is Diego?", "answer": "Rosa’s colleague", "options": ["Rosa’s colleague", "The manager", "The visitor"], "feedback": "Rosa calls Diego her colleague."},
-        {"prompt": "Which folder is hers?", "answer": "The blue folder", "options": ["The blue folder", "The red folder", "The green folder"], "feedback": "The blue folder is hers."},
-        {"prompt": "Which folder is mine?", "answer": "The red folder", "options": ["The red folder", "The blue folder", "The yellow folder"], "feedback": "Rosa says the red folder is mine."},
-        {"prompt": "Who is the woman beside Diego?", "answer": "Elena", "options": ["Elena", "Rosa", "Ana"], "feedback": "Rosa identifies Elena as the manager."},
-        {"prompt": "What does Rosa say about the badge?", "answer": "Yes, it is", "options": ["Yes, it is", "No, it isn’t", "It is hers"], "feedback": "Rosa confirms the badge with Yes, it is."},
+        {"prompt": "¿Qué señala Rosa?", "answer": "At a photo", "options": ["At a photo", "At a phone", "At a door"], "feedback": "Rosa señala una foto en la recepción."},
+        {"prompt": "¿Quién es Diego?", "answer": "Rosa’s colleague", "options": ["Rosa’s colleague", "The manager", "The visitor"], "feedback": "Rosa llama a Diego su compañero."},
+        {"prompt": "¿Qué carpeta es de ella?", "answer": "The blue folder", "options": ["The blue folder", "The red folder", "The green folder"], "feedback": "La carpeta azul es suya."},
+        {"prompt": "¿Qué carpeta es mía?", "answer": "The red folder", "options": ["The red folder", "The blue folder", "The yellow folder"], "feedback": "Rosa dice que la carpeta roja es mía."},
+        {"prompt": "¿Quién es la mujer junto a Diego?", "answer": "Elena", "options": ["Elena", "Rosa", "Ana"], "feedback": "Rosa identifica a Elena como la encargada."},
+        {"prompt": "¿Qué dice Rosa sobre la credencial?", "answer": "Yes, it is", "options": ["Yes, it is", "No, it isn’t", "It is hers"], "feedback": "Rosa confirma la credencial con Yes, it is."},
     ],
     3: [
-        {"prompt": "When does the conversation happen?", "answer": "After class", "options": ["After class", "Before breakfast", "At the door"], "feedback": "The model begins After class."},
-        {"prompt": "What is Elena’s phone number?", "answer": "555-0142", "options": ["555-0142", "555-0412", "555-1024"], "feedback": "Elena gives 555-0142."},
-        {"prompt": "What is Elena’s email?", "answer": "elena.ramos@example.org", "options": ["elena.ramos@example.org", "maria.soto@example.org", "welcome@centro.example"], "feedback": "The model gives Elena’s email."},
-        {"prompt": "When is Elena free?", "answer": "Tuesday at six or Saturday morning", "options": ["Tuesday at six or Saturday morning", "Thursday at three", "Monday at eight"], "feedback": "Elena offers Tuesday at six or Saturday morning."},
-        {"prompt": "Who will send a message?", "answer": "Marco", "options": ["Marco", "Elena", "Paula"], "feedback": "Marco says I’ll send a message."},
-        {"prompt": "Where do they write the details?", "answer": "On a small card", "options": ["On a small card", "On the door", "In a notebook"], "feedback": "They write the details on a small card."},
+        {"prompt": "¿Cuándo ocurre la conversación?", "answer": "After class", "options": ["After class", "Before breakfast", "At the door"], "feedback": "El modelo comienza con After class."},
+        {"prompt": "¿Cuál es el teléfono de Elena?", "answer": "555-0142", "options": ["555-0142", "555-0412", "555-1024"], "feedback": "Elena da el número 555-0142."},
+        {"prompt": "¿Cuál es el correo de Elena?", "answer": "elena.ramos@example.org", "options": ["elena.ramos@example.org", "maria.soto@example.org", "welcome@centro.example"], "feedback": "El modelo da el correo de Elena."},
+        {"prompt": "¿Cuándo está disponible Elena?", "answer": "Tuesday at six or Saturday morning", "options": ["Tuesday at six or Saturday morning", "Thursday at three", "Monday at eight"], "feedback": "Elena ofrece el martes a las seis o el sábado por la mañana."},
+        {"prompt": "¿Quién enviará un mensaje?", "answer": "Marco", "options": ["Marco", "Elena", "Paula"], "feedback": "Marco dice I’ll send a message."},
+        {"prompt": "¿Dónde escriben los datos?", "answer": "On a small card", "options": ["On a small card", "On the door", "In a notebook"], "feedback": "Escriben los datos en una tarjeta pequeña."},
     ],
     4: [
-        {"prompt": "Where are Paula and Tom?", "answer": "During an orientation", "options": ["During an orientation", "After class", "At the community desk"], "feedback": "The model says During an orientation."},
-        {"prompt": "When is the appointment?", "answer": "Thursday at 3:30", "options": ["Thursday at 3:30", "Friday at 4:00", "Tuesday at six"], "feedback": "Paula gives Thursday at 3:30."},
-        {"prompt": "Why does Tom ask for repetition?", "answer": "He does not understand", "options": ["He does not understand", "He is late", "He needs a phone"], "feedback": "Tom says he does not understand the date."},
-        {"prompt": "What does Paula repeat?", "answer": "Thursday at 3:30", "options": ["Thursday at 3:30", "Tuesday at six", "Friday at 4:00"], "feedback": "Paula repeats the day and time."},
-        {"prompt": "What is the room number?", "answer": "204", "options": ["204", "240", "105"], "feedback": "Paula says The room is 204."},
-        {"prompt": "What does Tom repeat to check?", "answer": "The room number", "options": ["The room number", "The phone number", "The person’s name"], "feedback": "Tom repeats the room number to check it."},
+        {"prompt": "¿Dónde están Paula y Tom?", "answer": "During an orientation", "options": ["During an orientation", "After class", "At the community desk"], "feedback": "El modelo dice During an orientation."},
+        {"prompt": "¿Cuándo es la cita?", "answer": "Thursday at 3:30", "options": ["Thursday at 3:30", "Friday at 4:00", "Tuesday at six"], "feedback": "Paula da el jueves a las 3:30."},
+        {"prompt": "¿Por qué pide Tom que repitan?", "answer": "He does not understand", "options": ["He does not understand", "He is late", "He needs a phone"], "feedback": "Tom dice que no entiende la fecha."},
+        {"prompt": "¿Qué repite Paula?", "answer": "Thursday at 3:30", "options": ["Thursday at 3:30", "Tuesday at six", "Friday at 4:00"], "feedback": "Paula repite el día y la hora."},
+        {"prompt": "¿Cuál es el número de sala?", "answer": "204", "options": ["204", "240", "105"], "feedback": "Paula dice The room is 204."},
+        {"prompt": "¿Qué repite Tom para comprobar?", "answer": "The room number", "options": ["The room number", "The phone number", "The person’s name"], "feedback": "Tom repite el número de sala para comprobarlo."},
     ],
 }
 
@@ -154,6 +394,32 @@ def _markdown_to_safe_html(content: str) -> str:
     flush_paragraph()
     flush_list()
     return "".join(chunks)
+
+
+def _details_html(summary: str, content: str) -> str:
+    return (
+        f"<details><summary>{_safe_inline_html(summary)}</summary>"
+        f"{_markdown_to_safe_html(content)}</details>"
+    )
+
+
+def _localized_comprehension_prompt(source_key: str, value: Any) -> str:
+    return _as_text(COMPREHENSION_PROMPTS_ES.get(source_key, value))
+
+
+def _localized_practice(source_key: str, practice: dict[str, Any]) -> dict[str, str]:
+    source_prompt = _as_text(practice.get("prompt"))
+    source_feedback = _as_text(practice.get("feedback"))
+    source_hint = _as_text(practice.get("pista"))
+    localized = PRACTICE_LOCALIZATION.get(source_key, {})
+    return {
+        "prompt": _as_text(localized.get("prompt", source_prompt)),
+        "feedback": _as_text(localized.get("feedback", source_feedback)),
+        "hint": _as_text(localized.get("hint", source_hint)),
+        "sourcePrompt": source_prompt,
+        "sourceFeedback": source_feedback,
+        "sourceHint": source_hint,
+    }
 
 
 def _norm(value: str) -> str:
@@ -428,7 +694,7 @@ def _comprehension_block(
         items.append(
             {
                 "id": f"{block_id}-q{index}",
-                "question": _as_text(question.get("prompt")),
+                "question": _localized_comprehension_prompt(source_key, question.get("prompt")),
                 "options": option_objects,
                 "correctOptionId": correct_id,
                 "explanation": feedback,
@@ -699,14 +965,23 @@ def _practice_block(
     source_key: str,
 ) -> dict[str, Any]:
     source_type = _as_text(practice.get("type"))
+    localized = _localized_practice(source_key, practice)
+    localized_practice = dict(practice)
+    localized_practice.update(
+        {
+            "prompt": localized["prompt"],
+            "feedback": localized["feedback"],
+            "pista": localized["hint"],
+        }
+    )
     common = {
         "title": title,
-        "prompt": _as_text(practice.get("prompt")),
-        "feedback": _as_text(practice.get("feedback")),
-        "hint": _as_text(practice.get("pista")),
+        "prompt": localized["prompt"],
+        "feedback": localized["feedback"],
+        "hint": localized["hint"],
     }
     if source_type == "choice":
-        return _choice_block(
+        block = _choice_block(
             block_id,
             scene_id,
             title,
@@ -718,8 +993,8 @@ def _practice_block(
             scene,
             source_key,
         )
-    if source_type == "cloze":
-        return _short_answer_block(
+    elif source_type == "cloze":
+        block = _short_answer_block(
             block_id,
             scene_id,
             title,
@@ -732,8 +1007,8 @@ def _practice_block(
             source_key,
             inline_blank=True,
         )
-    if source_type == "rewrite":
-        return _short_answer_block(
+    elif source_type == "rewrite":
+        block = _short_answer_block(
             block_id,
             scene_id,
             title,
@@ -746,11 +1021,20 @@ def _practice_block(
             source_key,
             source_type="rewrite",
         )
-    if source_type == "order":
-        return _ordering_block(block_id, scene_id, title, practice, scene, source_key)
-    if source_type == "match":
-        return _match_block(block_id, scene_id, title, practice, scene, source_key)
-    raise ValueError(f"Unsupported source practice type {source_type!r} for {source_key}")
+    elif source_type == "order":
+        block = _ordering_block(block_id, scene_id, title, localized_practice, scene, source_key)
+    elif source_type == "match":
+        block = _match_block(block_id, scene_id, title, localized_practice, scene, source_key)
+    else:
+        raise ValueError(f"Unsupported source practice type {source_type!r} for {source_key}")
+    block["data"].update(
+        {
+            "sourcePromptOriginal": localized["sourcePrompt"],
+            "sourceFeedbackOriginal": localized["sourceFeedback"],
+            "sourceHintOriginal": localized["sourceHint"],
+        }
+    )
+    return block
 
 
 def _scene(
@@ -823,9 +1107,66 @@ def _lesson(
         "scenes": scenes,
         "blocks": blocks,
         "routePolicy": {
-            "self": "La ruta autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia o docente.",
-            "teacher": "La ruta docente permite lectura en voz alta, intercambio de roles y revisión humana de producción.",
+            "self": "La modalidad autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia.",
+            "teacher": "La modalidad con docente permite lectura en voz alta, intercambio de roles y revisión humana de producción.",
         },
+    }
+
+
+def _background_order_for_lesson(lesson: dict[str, Any]) -> list[str]:
+    lesson_id = lesson["id"]
+    authored = lesson.get("authoredBackgrounds", [])
+    if not isinstance(authored, list):
+        authored = []
+    preferred = [
+        _as_text(value)
+        for value in [*authored, *BACKGROUND_PREFERENCES.get(lesson_id, []), BACKGROUND_BY_LESSON.get(lesson_id)]
+        if _as_text(value) in APPROVED_BACKGROUND_CATALOG
+    ]
+    ordered = list(dict.fromkeys(preferred))
+    ordered.extend(asset for asset in APPROVED_BACKGROUND_CATALOG if asset not in ordered)
+    if not ordered:
+        raise ValueError(f"No approved painted background exists for {lesson_id!r}")
+    return ordered
+
+
+def _assign_lesson_backgrounds(lesson: dict[str, Any]) -> dict[str, Any]:
+    catalog = _background_order_for_lesson(lesson)
+    scenes = lesson.get("scenes", [])
+    scene_assignments: list[dict[str, str]] = []
+    for index, scene in enumerate(scenes):
+        asset = catalog[index % len(catalog)]
+        scene["background"] = asset
+        scene["backgroundSrc"] = asset
+        for block in scene.get("runtimeBlocks", []):
+            block.setdefault("data", {})["scene"] = asset
+            block["data"]["sceneSide"] = scene.get("sceneSide", "right")
+        scene_assignments.append({"sceneId": scene["id"], "src": asset})
+    lesson["background"] = scenes[0]["background"] if scenes else catalog[0]
+    unique_count = len({item["src"] for item in scene_assignments})
+    reused = len(scene_assignments) > len(catalog)
+    return {
+        "lessonId": lesson["id"],
+        "catalogSize": len(catalog),
+        "sceneCount": len(scene_assignments),
+        "uniqueBackgroundCount": unique_count,
+        "reused": reused,
+        "reuseReason": (
+            f"{len(scene_assignments)} scenes exceed the {len(catalog)} approved backgrounds; "
+            "the first themed background is reused deterministically after the catalog is exhausted."
+            if reused
+            else None
+        ),
+        "scenes": scene_assignments,
+    }
+
+
+def _assign_all_lesson_backgrounds(lessons: list[dict[str, Any]]) -> dict[str, Any]:
+    assignments = [_assign_lesson_backgrounds(lesson) for lesson in lessons]
+    return {
+        "catalog": APPROVED_BACKGROUND_CATALOG,
+        "policy": "Use themed approved painted environments first, then the remaining catalog; reuse only after the catalog is exhausted.",
+        "lessons": assignments,
     }
 
 
@@ -861,12 +1202,19 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
         input_data = activity.get("input", {})
         model = _as_text(activity.get("model_answer") or input_data.get("english"))
         teacher_read = _as_text(input_data.get("teacher_read_script"))
+        self_check = " / ".join(_as_text(item) for item in activity.get("self_check", []))
+        teacher_reading = _as_text(activity.get("teacher_reading", "Lee el modelo y comprueba el significado."))
+        teacher_guidance = "\n".join(
+            [
+                teacher_read,
+                f"Comprobación: {self_check}",
+                f"Procedimiento: {teacher_reading}",
+            ]
+        )
         teach_text = (
-            f"**Instrucción:** {activity.get('objective', '')} Lee el modelo por significado; no memorices una lista.\n\n"
-            f"**Modelo original en inglés:** {model}\n\n"
-            f"**Apoyo docente:** {teacher_read}\n\n"
-            f"**Ruta autónoma:** {activity.get('self_check', ['Lee y comprueba el sentido.'])[0]}\n"
-            f"**Ruta docente:** {activity.get('teacher_reading', 'Lee el modelo y comprueba el significado.') }"
+            f"<p><strong>Consigna:</strong> {_safe_inline_html(_as_text(activity.get('objective')))}</p>"
+            f"<p><strong>Modelo:</strong> {_safe_inline_html(model)}</p>"
+            f"{_details_html('Guía para docente', teacher_guidance)}"
         )
         teaching_blocks = [
             _title_block(
@@ -876,7 +1224,7 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
                 asset,
                 source_refs=[activity_key],
             ),
-            _text_block(
+            _html_text_block(
                 f"a1m1-start-{activity_id.lower()}-teach-text",
                 teach_scene_id,
                 _as_text(activity.get("title")),
@@ -886,6 +1234,11 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
                 content_role="teaching",
                 originalEnglishModel=model,
                 teacherReadScript=teacher_read,
+                sourceObjective=_as_text(activity.get("objective")),
+                learningModeGuidance={
+                    "self": activity.get("self_check", []),
+                    "teacher": teacher_reading,
+                },
             ),
         ]
         headers, rows = _activity_support_rows(activity)
@@ -893,13 +1246,14 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
             _structured_block(
                 f"a1m1-start-{activity_id.lower()}-support",
                 teach_scene_id,
-                "Tabla de apoyo",
+                "Ayuda de significado",
                 headers,
                 rows,
                 asset,
                 source_refs=[activity_key],
                 content_role="support",
                 collapsible=True,
+                supportLabel="Abrir ayuda de significado",
                 supportPurpose="Consulta significativa durante la tarea; no es una lista para memorizar.",
             )
         )
@@ -924,6 +1278,7 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
             source_key = f"{activity_key}.practice.{practice_index}"
             scene_id = f"a1m1-start-{activity_id.lower()}-check-{practice_index}"
             title = f"{activity.get('title')} · comprobación {practice_index}"
+            localized = _localized_practice(source_key, practice)
             practice_block = _practice_block(
                 f"a1m1-start-{activity_id.lower()}-practice-{practice_index}",
                 scene_id,
@@ -945,7 +1300,7 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
                     f"a1m1-start-{activity_id.lower()}-check-{practice_index}-instruction",
                     scene_id,
                     title,
-                    f"**Instrucción:** {_as_text(practice.get('prompt'))}\n\nUsa la pista solo después de intentar la tarea.",
+                    f"**Instrucción:** {localized['prompt']}\n\nUsa la pista solo después de intentar la tarea.",
                     asset,
                     source_refs=[source_key],
                     content_role="practice",
@@ -960,7 +1315,7 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
                     scene_order,
                     "starter-practice",
                     title,
-                    _as_text(practice.get("prompt")),
+                    localized["prompt"],
                     blocks,
                     [source_key],
                     asset=asset,
@@ -974,13 +1329,21 @@ def _starter_scenes(starter: dict[str, Any], asset: str) -> list[dict[str, Any]]
 
 def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_key: str) -> list[dict[str, Any]]:
     model = _as_text(unit.get("model", {}).get("text"))
-    language_rows = [[_as_text(value), "Usa esta frase para el propósito del escenario."] for value in unit.get("language", [])]
+    unit_number = int(unit_key.rsplit("unit", 1)[-1])
+    meanings = UNIT_PHRASE_MEANINGS.get(unit_number, {})
+    language_rows = [
+        [_as_text(value), _as_text(meanings.get(_as_text(value), "Elige esta frase para el escenario."))]
+        for value in unit.get("language", [])
+    ]
+    guidance = (
+        f"Escenario: {_as_text(unit.get('scenario'))}\n"
+        f"Significado: {_as_text(UNIT_EXPLANATIONS_ES.get(unit_number, unit.get('explanation')))}\n"
+        "La producción se revisa por significado y claridad; no exige repetir el modelo palabra por palabra."
+    )
     text = (
-        f"**Instrucción:** {unit.get('objective', '')} Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.\n\n"
-        f"**Escenario:** {unit.get('scenario', '')}\n\n"
-        f"**Modelo original en inglés:** {model}\n\n"
-        f"**Explicación breve:** {unit.get('explanation', '')}\n\n"
-        "La tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal."
+        f"<p><strong>Consigna:</strong> {_safe_inline_html(_as_text(unit.get('objective')))} Usa una frase con información nueva.</p>"
+        f"<p><strong>Modelo:</strong> {_safe_inline_html(model)}</p>"
+        f"{_details_html('Más ayuda', guidance)}"
     )
     return [
         _title_block(
@@ -990,7 +1353,7 @@ def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_
             asset,
             source_refs=[unit_key],
         ),
-        _text_block(
+        _html_text_block(
             f"{unit_key}-teach-text",
             scene_id,
             _as_text(unit.get("title")),
@@ -1001,17 +1364,23 @@ def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_
             originalEnglishModel=model,
             modelMode=_as_text(unit.get("model", {}).get("mode")),
             sourceScenario=_as_text(unit.get("scenario")),
+            sourceExplanation=_as_text(unit.get("explanation")),
+            learningModeGuidance={
+                "self": "Lee el modelo, consulta los significados y cambia un dato.",
+                "teacher": "Modela una ronda y comprueba significado, datos y una forma útil.",
+            },
         ),
         _structured_block(
             f"{unit_key}-language-support",
             scene_id,
-            "Frases de apoyo",
-            ["English", "Uso"],
+            "Significados de apoyo",
+            ["English", "Español / uso"],
             language_rows,
             asset,
             source_refs=[unit_key],
             content_role="support",
             collapsible=True,
+            supportLabel="Abrir significados",
             supportPurpose="Recupera significado y elige una frase; no exige repetir el modelo palabra por palabra.",
         ),
     ]
@@ -1020,13 +1389,13 @@ def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_
 def _production_modes(unit: dict[str, Any]) -> dict[str, Any]:
     return {
         "self": {
-            "label": "Ruta autónoma",
+            "label": "Trabajo autónomo",
             "instruction": _as_text(unit.get("independent", {}).get("procedure")),
             "time": _as_text(unit.get("independent", {}).get("oral_limit", "30–60 segundos")),
             "review": _as_text(unit.get("independent", {}).get("self_check", [])),
         },
         "teacher": {
-            "label": "Ruta docente",
+            "label": "Trabajo con docente",
             "instruction": _as_text(unit.get("teacher", {}).get("procedure")),
             "roles": _as_text(unit.get("teacher", {}).get("interaction_roles")),
             "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma.",
@@ -1102,7 +1471,7 @@ def _essay_block(
     modes: dict[str, Any],
     *,
     content_role: str = "production",
-    unit1_role: str | None = None,
+    unit1_role: str | None = "profile",
 ) -> dict[str, Any]:
     metadata = _metadata(
         scene_id,
@@ -1208,6 +1577,7 @@ def _unit_scenes(unit: dict[str, Any], unit_number: int, lesson_id: str, asset: 
         source_key = f"{unit_key}.practice.{practice_index}"
         scene_id = f"a1m1-u{unit_number}-practice-{practice_index}"
         title = f"{unit.get('title')} · práctica {practice_index}"
+        localized = _localized_practice(source_key, practice)
         practice_block = _practice_block(
             f"a1m1-u{unit_number}-practice-block-{practice_index}",
             scene_id,
@@ -1229,7 +1599,7 @@ def _unit_scenes(unit: dict[str, Any], unit_number: int, lesson_id: str, asset: 
                 f"{scene_id}-instruction",
                 scene_id,
                 title,
-                f"**Instrucción:** {_as_text(practice.get('prompt'))}\n\nPrimero intenta comunicar el dato; usa la pista después.",
+                f"**Instrucción:** {localized['prompt']}\n\nPrimero intenta comunicar el dato; usa la pista después.",
                 asset,
                 source_refs=[source_key],
                 content_role="practice",
@@ -1244,7 +1614,7 @@ def _unit_scenes(unit: dict[str, Any], unit_number: int, lesson_id: str, asset: 
                 scene_order,
                 "practice",
                 title,
-                _as_text(practice.get("prompt")),
+                localized["prompt"],
                 blocks,
                 [source_key],
                 asset=asset,
@@ -1356,7 +1726,7 @@ def _unit_scenes(unit: dict[str, Any], unit_number: int, lesson_id: str, asset: 
             f"{review_scene_id}-prompt",
             review_scene_id,
             f"{unit.get('title')} · revisión escrita",
-            f"**Instrucción:** {review_prompt}\n\n**Modelo original:** {transfer_model}\n\nLa docente revisa significado, datos y una forma útil; no hay calificación automática.",
+            f"**Instrucción:** {review_prompt}\n\n**Modelo:** {transfer_model}\n\nLa docente revisa significado, datos y una forma útil; no hay calificación automática.",
             asset,
             source_refs=[transfer_key],
             content_role="production",
@@ -1372,7 +1742,7 @@ def _unit_scenes(unit: dict[str, Any], unit_number: int, lesson_id: str, asset: 
             asset,
             [transfer_key],
             modes,
-            unit1_role="profile" if unit_number == 1 else None,
+            unit1_role="profile",
         ),
     ]
     scenes.append(
@@ -1478,11 +1848,13 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
     model_text = "Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204."
     model_blocks = [
         _title_block(f"{model_id}-title", model_id, "Misión · modelo breve", asset, source_refs=[source_key]),
-        _text_block(
+        _html_text_block(
             f"{model_id}-text",
             model_id,
             "Misión · modelo breve",
-            f"**Modelo original en inglés:** {model_text}\n\n**Observa:** saludo, nombre, objeto, contacto y hora. Cambia los datos de la hoja; no repitas el diálogo como recitación.\n\n**Ruta docente:** lee una vez y cambia un dato. **Ruta autónoma:** tapa una frase y reconstruye el propósito con la hoja.",
+            f"<p><strong>Modelo:</strong> {_safe_inline_html(model_text)}</p>"
+            "<p>Observa el propósito: saludo, nombre, objeto, contacto y hora. Cambia los datos de la hoja.</p>"
+            f"{_details_html('Guía para docente', 'Lee una vez y cambia un dato. Comprueba que la persona entiende el propósito; no exige recitar el diálogo.')}",
             asset,
             source_refs=[source_key],
             originalEnglishModel=model_text,
@@ -1525,12 +1897,12 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
     ]
     modes = {
         "self": {
-            "label": "Ruta autónoma",
+            "label": "Trabajo autónomo",
             "instruction": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
             "review": "Marca cada criterio y anota un dato que debas comprobar.",
         },
         "teacher": {
-            "label": "Ruta docente",
+            "label": "Trabajo con docente",
             "instruction": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda.",
             "review": "Usa la lista de comprobación y pide una reparación de significado.",
         },
@@ -1543,7 +1915,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             f"{speak_id}-prompt",
             speak_id,
             "Misión · diálogo",
-            f"**Instrucción:** {speak_prompt}\n\n**Modelo original:** {model_text}\n\nCambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana; el runtime no debe enviar esta respuesta a una calificación automática.",
+            f"**Instrucción:** {speak_prompt}\n\n**Modelo:** {model_text}\n\nCambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana; el runtime no debe enviar esta respuesta a una calificación automática.",
             asset,
             source_refs=[source_key],
             content_role="production",
@@ -1598,7 +1970,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             f"{write_id}-prompt",
             write_id,
             "Misión · tarjeta",
-            f"**Instrucción:** {write_prompt}\n\n**Modelo original:** Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.\n\nComprueba que los datos coinciden con la hoja; no hay calificación automática.",
+            f"**Instrucción:** {write_prompt}\n\n**Modelo:** Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.\n\nComprueba que los datos coinciden con la hoja; no hay calificación automática.",
             asset,
             source_refs=[source_key],
             content_role="production",
@@ -1644,7 +2016,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             f"{mediation_id}-prompt",
             mediation_id,
             "Misión · mediación",
-            f"**Instrucción:** {mediation_prompt}\n\n**Modelo original de control:** {mediation_model}\n\nLa evidencia de mediación se revisa por transferencia de información; no se exige traducción palabra por palabra.",
+            f"**Instrucción:** {mediation_prompt}\n\n**Modelo de referencia:** {mediation_model}\n\nLa evidencia de mediación se revisa por transferencia de información; no se exige traducción palabra por palabra.",
             asset,
             source_refs=[mediation_key],
             content_role="mediation",
@@ -1793,6 +2165,7 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
             ],
         )
     )
+    background_assignment = _assign_all_lesson_backgrounds(lessons)
 
     counts = _source_counts(starter, units)
     source_files = {
@@ -1867,6 +2240,7 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
             "lessons": lessons,
         },
         "lessons": lessons,
+        "backgroundAssignment": background_assignment,
         "sourceAudit": {
             "sourceFiles": source_files,
             "selectedSourceModule": "numeric module 1",
@@ -1929,6 +2303,11 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
                     "sceneSide": "right",
                     "learningRevision": LEARNING_REVISION,
                     "sceneCount": lesson["sceneCount"],
+                    "sceneAssets": next(
+                        item["scenes"]
+                        for item in background_assignment["lessons"]
+                        if item["lessonId"] == lesson["id"]
+                    ),
                 }
                 for lesson in lessons
             },
@@ -1958,14 +2337,19 @@ def _primary_course(full: dict[str, Any]) -> dict[str, Any]:
     if isinstance(objectives, list):
         objectives = " ".join(_as_text(item) for item in objectives)
     primary_lessons = []
+    public_order = 0
     for lesson in full["lessons"]:
+        public_blocks = deepcopy(lesson["blocks"])
+        for block in public_blocks:
+            block["order"] = public_order
+            public_order += 1
         primary_lessons.append(
             {
                 "id": lesson["id"],
                 "title": lesson["title"],
                 "description": lesson["description"],
                 "order": lesson["order"],
-                "blocks": lesson["blocks"],
+                "blocks": public_blocks,
             }
         )
     return {
@@ -2003,6 +2387,7 @@ def _scene_summaries(full: dict[str, Any]) -> list[dict[str, Any]]:
                 "interactiveCount": scene["interactiveCount"],
                 "runtimeBlockIds": scene["runtimeBlockIds"],
                 "background": scene["background"],
+                "backgroundSrc": scene.get("backgroundSrc", scene["background"]),
                 "sceneSide": scene["sceneSide"],
             }
             # Keep scene-level planning fields while excluding full model/card
@@ -2063,6 +2448,7 @@ def _manifest_from_full(full: dict[str, Any]) -> dict[str, Any]:
         "kind": "standalone-pilot-course-manifest",
         "courseId": full["course"]["id"],
         "moduleId": full["module"]["id"],
+        "backgroundAssignment": full["backgroundAssignment"],
         "lessonSummaries": [
             {
                 "id": lesson["id"],
@@ -2323,6 +2709,7 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                         "checkSceneId": check_scene_id,
                     }
                 )
+    full["backgroundAssignment"] = _assign_all_lesson_backgrounds(full["lessons"])
     full["audioManifest"].update(
         {
             "status": "verified_audio_integrated",

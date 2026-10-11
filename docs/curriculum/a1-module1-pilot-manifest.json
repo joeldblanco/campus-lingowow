@@ -3,6 +3,371 @@
   "kind": "standalone-pilot-course-manifest",
   "courseId": "a1-general-module1-pilot",
   "moduleId": "a1-general-module1",
+  "backgroundAssignment": {
+    "catalog": [
+      "/images/lessons/backgrounds/airport-lounge.webp",
+      "/images/lessons/backgrounds/art-studio.webp",
+      "/images/lessons/backgrounds/bakery.webp",
+      "/images/lessons/backgrounds/botanical-office.webp",
+      "/images/lessons/backgrounds/campus.webp",
+      "/images/lessons/backgrounds/city-directions.webp",
+      "/images/lessons/backgrounds/community-bookshop.webp",
+      "/images/lessons/backgrounds/daily-kitchen.webp",
+      "/images/lessons/backgrounds/family-living-room.webp",
+      "/images/lessons/backgrounds/flower-courtyard.webp",
+      "/images/lessons/backgrounds/garden.webp",
+      "/images/lessons/backgrounds/harbor-promenade.webp",
+      "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+      "/images/lessons/backgrounds/library.webp",
+      "/images/lessons/backgrounds/listening-lounge.webp",
+      "/images/lessons/backgrounds/market.webp",
+      "/images/lessons/backgrounds/mountain-cabin.webp",
+      "/images/lessons/backgrounds/museum-gallery.webp",
+      "/images/lessons/backgrounds/music-room.webp",
+      "/images/lessons/backgrounds/restaurant.webp",
+      "/images/lessons/backgrounds/science-lab.webp",
+      "/images/lessons/backgrounds/seaside.webp",
+      "/images/lessons/backgrounds/town-park.webp",
+      "/images/lessons/backgrounds/travel-station.webp",
+      "/images/lessons/backgrounds/village-square.webp",
+      "/images/lessons/backgrounds/workshop.webp"
+    ],
+    "policy": "Use themed approved painted environments first, then the remaining catalog; reuse only after the catalog is exhausted.",
+    "lessons": [
+      {
+        "lessonId": "a1-general-start",
+        "catalogSize": 26,
+        "sceneCount": 27,
+        "uniqueBackgroundCount": 26,
+        "reused": true,
+        "reuseReason": "27 scenes exceed the 26 approved backgrounds; the first themed background is reused deterministically after the catalog is exhausted.",
+        "scenes": [
+          {
+            "sceneId": "a1m1-start-s1-teach",
+            "src": "/images/lessons/backgrounds/listening-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s1-check-1",
+            "src": "/images/lessons/backgrounds/library.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s1-check-2",
+            "src": "/images/lessons/backgrounds/music-room.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s1-check-3",
+            "src": "/images/lessons/backgrounds/workshop.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-teach",
+            "src": "/images/lessons/backgrounds/science-lab.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-1",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-2",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-3",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-4",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-5",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-6",
+            "src": "/images/lessons/backgrounds/city-directions.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-teach",
+            "src": "/images/lessons/backgrounds/community-bookshop.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-1",
+            "src": "/images/lessons/backgrounds/daily-kitchen.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-2",
+            "src": "/images/lessons/backgrounds/family-living-room.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-3",
+            "src": "/images/lessons/backgrounds/flower-courtyard.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-4",
+            "src": "/images/lessons/backgrounds/garden.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-5",
+            "src": "/images/lessons/backgrounds/harbor-promenade.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-6",
+            "src": "/images/lessons/backgrounds/lakeside-reading-terrace.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-teach",
+            "src": "/images/lessons/backgrounds/market.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-check-1",
+            "src": "/images/lessons/backgrounds/mountain-cabin.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-check-2",
+            "src": "/images/lessons/backgrounds/museum-gallery.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-check-3",
+            "src": "/images/lessons/backgrounds/restaurant.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-teach",
+            "src": "/images/lessons/backgrounds/seaside.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-1",
+            "src": "/images/lessons/backgrounds/town-park.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-2",
+            "src": "/images/lessons/backgrounds/travel-station.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-3",
+            "src": "/images/lessons/backgrounds/village-square.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-4",
+            "src": "/images/lessons/backgrounds/listening-lounge.webp"
+          }
+        ]
+      },
+      {
+        "lessonId": "a1-general-u1",
+        "catalogSize": 26,
+        "sceneCount": 9,
+        "uniqueBackgroundCount": 9,
+        "reused": false,
+        "reuseReason": null,
+        "scenes": [
+          {
+            "sceneId": "a1m1-u1-teach",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-comprehension",
+            "src": "/images/lessons/backgrounds/village-square.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-1",
+            "src": "/images/lessons/backgrounds/library.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-2",
+            "src": "/images/lessons/backgrounds/music-room.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-3",
+            "src": "/images/lessons/backgrounds/workshop.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-4",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-5",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-transfer-speak",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-transfer-review",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          }
+        ]
+      },
+      {
+        "lessonId": "a1-general-u2",
+        "catalogSize": 26,
+        "sceneCount": 9,
+        "uniqueBackgroundCount": 9,
+        "reused": false,
+        "reuseReason": null,
+        "scenes": [
+          {
+            "sceneId": "a1m1-u2-teach",
+            "src": "/images/lessons/backgrounds/community-bookshop.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-comprehension",
+            "src": "/images/lessons/backgrounds/museum-gallery.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-1",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-2",
+            "src": "/images/lessons/backgrounds/market.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-3",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-4",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-5",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-transfer-speak",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-transfer-review",
+            "src": "/images/lessons/backgrounds/city-directions.webp"
+          }
+        ]
+      },
+      {
+        "lessonId": "a1-general-u3",
+        "catalogSize": 26,
+        "sceneCount": 9,
+        "uniqueBackgroundCount": 9,
+        "reused": false,
+        "reuseReason": null,
+        "scenes": [
+          {
+            "sceneId": "a1m1-u3-teach",
+            "src": "/images/lessons/backgrounds/town-park.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-comprehension",
+            "src": "/images/lessons/backgrounds/lakeside-reading-terrace.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-1",
+            "src": "/images/lessons/backgrounds/harbor-promenade.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-2",
+            "src": "/images/lessons/backgrounds/garden.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-3",
+            "src": "/images/lessons/backgrounds/seaside.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-4",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-5",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-transfer-speak",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-transfer-review",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          }
+        ]
+      },
+      {
+        "lessonId": "a1-general-u4",
+        "catalogSize": 26,
+        "sceneCount": 9,
+        "uniqueBackgroundCount": 9,
+        "reused": false,
+        "reuseReason": null,
+        "scenes": [
+          {
+            "sceneId": "a1m1-u4-teach",
+            "src": "/images/lessons/backgrounds/travel-station.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-comprehension",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-1",
+            "src": "/images/lessons/backgrounds/city-directions.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-2",
+            "src": "/images/lessons/backgrounds/village-square.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-3",
+            "src": "/images/lessons/backgrounds/museum-gallery.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-4",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-5",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-transfer-speak",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-transfer-review",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          }
+        ]
+      },
+      {
+        "lessonId": "a1-general-mission",
+        "catalogSize": 26,
+        "sceneCount": 5,
+        "uniqueBackgroundCount": 5,
+        "reused": false,
+        "reuseReason": null,
+        "scenes": [
+          {
+            "sceneId": "a1m1-mission-briefing",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-model",
+            "src": "/images/lessons/backgrounds/flower-courtyard.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-speak",
+            "src": "/images/lessons/backgrounds/garden.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-card",
+            "src": "/images/lessons/backgrounds/workshop.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-mediation",
+            "src": "/images/lessons/backgrounds/community-bookshop.webp"
+          }
+        ]
+      }
+    ]
+  },
   "lessonSummaries": [
     {
       "id": "a1-general-start",
@@ -117,6 +482,7 @@
         "a1m1-start-s1-support"
       ],
       "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/listening-lounge.webp",
       "sceneSide": "right",
       "activityId": "S1"
     },
@@ -137,7 +503,8 @@
         "a1m1-start-s1-check-1-instruction",
         "a1m1-start-s1-practice-1"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/library.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/library.webp",
       "sceneSide": "right",
       "activityId": "S1",
       "practiceIndex": 1
@@ -159,7 +526,8 @@
         "a1m1-start-s1-check-2-instruction",
         "a1m1-start-s1-practice-2"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/music-room.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/music-room.webp",
       "sceneSide": "right",
       "activityId": "S1",
       "practiceIndex": 2
@@ -181,7 +549,8 @@
         "a1m1-start-s1-check-3-instruction",
         "a1m1-start-s1-practice-3"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/workshop.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/workshop.webp",
       "sceneSide": "right",
       "activityId": "S1",
       "practiceIndex": 3
@@ -203,7 +572,8 @@
         "a1m1-start-s2-teach-text",
         "a1m1-start-s2-support"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/science-lab.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/science-lab.webp",
       "sceneSide": "right",
       "activityId": "S2"
     },
@@ -224,7 +594,8 @@
         "a1m1-start-s2-check-1-instruction",
         "a1m1-start-s2-practice-1"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/airport-lounge.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/airport-lounge.webp",
       "sceneSide": "right",
       "activityId": "S2",
       "practiceIndex": 1
@@ -246,7 +617,8 @@
         "a1m1-start-s2-check-2-instruction",
         "a1m1-start-s2-practice-2"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/art-studio.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/art-studio.webp",
       "sceneSide": "right",
       "activityId": "S2",
       "practiceIndex": 2
@@ -268,7 +640,8 @@
         "a1m1-start-s2-check-3-instruction",
         "a1m1-start-s2-practice-3"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/bakery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/bakery.webp",
       "sceneSide": "right",
       "activityId": "S2",
       "practiceIndex": 3
@@ -290,7 +663,8 @@
         "a1m1-start-s2-check-4-instruction",
         "a1m1-start-s2-practice-4"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/botanical-office.webp",
       "sceneSide": "right",
       "activityId": "S2",
       "practiceIndex": 4
@@ -301,7 +675,7 @@
       "order": 10,
       "phase": "starter-practice",
       "title": "Abecedario y deletreo · comprobación 5",
-      "instruction": "Which letter has the English name “jay”?",
+      "instruction": "¿Qué letra tiene el nombre inglés “jay”?",
       "route": "learner",
       "sourceRefs": [
         "starter.S2.practice.5"
@@ -312,7 +686,8 @@
         "a1m1-start-s2-check-5-instruction",
         "a1m1-start-s2-practice-5"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/campus.webp",
       "sceneSide": "right",
       "activityId": "S2",
       "practiceIndex": 5
@@ -323,7 +698,7 @@
       "order": 11,
       "phase": "starter-practice",
       "title": "Abecedario y deletreo · comprobación 6",
-      "instruction": "Complete the alphabet: “X, Y, ___.”",
+      "instruction": "Completa el abecedario: “X, Y, ___.”",
       "route": "learner",
       "sourceRefs": [
         "starter.S2.practice.6"
@@ -334,7 +709,8 @@
         "a1m1-start-s2-check-6-instruction",
         "a1m1-start-s2-practice-6"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/city-directions.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/city-directions.webp",
       "sceneSide": "right",
       "activityId": "S2",
       "practiceIndex": 6
@@ -356,7 +732,8 @@
         "a1m1-start-s3-teach-text",
         "a1m1-start-s3-support"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/community-bookshop.webp",
       "sceneSide": "right",
       "activityId": "S3"
     },
@@ -377,7 +754,8 @@
         "a1m1-start-s3-check-1-instruction",
         "a1m1-start-s3-practice-1"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/daily-kitchen.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/daily-kitchen.webp",
       "sceneSide": "right",
       "activityId": "S3",
       "practiceIndex": 1
@@ -399,7 +777,8 @@
         "a1m1-start-s3-check-2-instruction",
         "a1m1-start-s3-practice-2"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/family-living-room.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/family-living-room.webp",
       "sceneSide": "right",
       "activityId": "S3",
       "practiceIndex": 2
@@ -421,7 +800,8 @@
         "a1m1-start-s3-check-3-instruction",
         "a1m1-start-s3-practice-3"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/flower-courtyard.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/flower-courtyard.webp",
       "sceneSide": "right",
       "activityId": "S3",
       "practiceIndex": 3
@@ -443,7 +823,8 @@
         "a1m1-start-s3-check-4-instruction",
         "a1m1-start-s3-practice-4"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/garden.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/garden.webp",
       "sceneSide": "right",
       "activityId": "S3",
       "practiceIndex": 4
@@ -465,7 +846,8 @@
         "a1m1-start-s3-check-5-instruction",
         "a1m1-start-s3-practice-5"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/harbor-promenade.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/harbor-promenade.webp",
       "sceneSide": "right",
       "activityId": "S3",
       "practiceIndex": 5
@@ -487,7 +869,8 @@
         "a1m1-start-s3-check-6-instruction",
         "a1m1-start-s3-practice-6"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
       "sceneSide": "right",
       "activityId": "S3",
       "practiceIndex": 6
@@ -509,7 +892,8 @@
         "a1m1-start-s4-teach-text",
         "a1m1-start-s4-support"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/market.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/market.webp",
       "sceneSide": "right",
       "activityId": "S4"
     },
@@ -530,7 +914,8 @@
         "a1m1-start-s4-check-1-instruction",
         "a1m1-start-s4-practice-1"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/mountain-cabin.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/mountain-cabin.webp",
       "sceneSide": "right",
       "activityId": "S4",
       "practiceIndex": 1
@@ -552,7 +937,8 @@
         "a1m1-start-s4-check-2-instruction",
         "a1m1-start-s4-practice-2"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/museum-gallery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/museum-gallery.webp",
       "sceneSide": "right",
       "activityId": "S4",
       "practiceIndex": 2
@@ -574,7 +960,8 @@
         "a1m1-start-s4-check-3-instruction",
         "a1m1-start-s4-practice-3"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/restaurant.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/restaurant.webp",
       "sceneSide": "right",
       "activityId": "S4",
       "practiceIndex": 3
@@ -596,7 +983,8 @@
         "a1m1-start-s5-teach-text",
         "a1m1-start-s5-support"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/seaside.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/seaside.webp",
       "sceneSide": "right",
       "activityId": "S5"
     },
@@ -617,7 +1005,8 @@
         "a1m1-start-s5-check-1-instruction",
         "a1m1-start-s5-practice-1"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/town-park.webp",
       "sceneSide": "right",
       "activityId": "S5",
       "practiceIndex": 1
@@ -639,7 +1028,8 @@
         "a1m1-start-s5-check-2-instruction",
         "a1m1-start-s5-practice-2"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/travel-station.webp",
       "sceneSide": "right",
       "activityId": "S5",
       "practiceIndex": 2
@@ -661,7 +1051,8 @@
         "a1m1-start-s5-check-3-instruction",
         "a1m1-start-s5-practice-3"
       ],
-      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "background": "/images/lessons/backgrounds/village-square.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/village-square.webp",
       "sceneSide": "right",
       "activityId": "S5",
       "practiceIndex": 3
@@ -684,6 +1075,7 @@
         "a1m1-start-s5-practice-4"
       ],
       "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/listening-lounge.webp",
       "sceneSide": "right",
       "activityId": "S5",
       "practiceIndex": 4
@@ -706,6 +1098,7 @@
         "module1.unit1-language-support"
       ],
       "background": "/images/lessons/backgrounds/campus.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/campus.webp",
       "sceneSide": "right"
     },
     {
@@ -727,7 +1120,8 @@
         "a1m1-u1-comprehension-instruction",
         "a1m1-u1-comprehension-items"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/village-square.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/village-square.webp",
       "sceneSide": "right"
     },
     {
@@ -736,7 +1130,7 @@
       "order": 3,
       "phase": "practice",
       "title": "Saludar y presentarse · práctica 1",
-      "instruction": "When you first meet a classmate, choose the best opening.",
+      "instruction": "Al conocer a un compañero, elige la mejor apertura.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit1.practice.1"
@@ -747,7 +1141,8 @@
         "a1m1-u1-practice-1-instruction",
         "a1m1-u1-practice-block-1"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/library.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/library.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -757,7 +1152,7 @@
       "order": 4,
       "phase": "practice",
       "title": "Saludar y presentarse · práctica 2",
-      "instruction": "Complete: “I’m ___ Peru.”",
+      "instruction": "Completa: “I’m ___ Peru.”",
       "route": "learner",
       "sourceRefs": [
         "module1.unit1.practice.2"
@@ -768,7 +1163,8 @@
         "a1m1-u1-practice-2-instruction",
         "a1m1-u1-practice-block-2"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/music-room.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/music-room.webp",
       "sceneSide": "right",
       "practiceType": "cloze"
     },
@@ -778,7 +1174,7 @@
       "order": 5,
       "phase": "practice",
       "title": "Saludar y presentarse · práctica 3",
-      "instruction": "Where is Ana from?",
+      "instruction": "¿De dónde es Ana?",
       "route": "learner",
       "sourceRefs": [
         "module1.unit1.practice.3"
@@ -789,7 +1185,8 @@
         "a1m1-u1-practice-3-instruction",
         "a1m1-u1-practice-block-3"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/workshop.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/workshop.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -799,7 +1196,7 @@
       "order": 6,
       "phase": "practice",
       "title": "Saludar y presentarse · práctica 4",
-      "instruction": "Reply to “What’s your name?” as Luis.",
+      "instruction": "Responde a “What’s your name?” como Luis.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit1.practice.4"
@@ -810,7 +1207,8 @@
         "a1m1-u1-practice-4-instruction",
         "a1m1-u1-practice-block-4"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/airport-lounge.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/airport-lounge.webp",
       "sceneSide": "right",
       "practiceType": "rewrite"
     },
@@ -820,7 +1218,7 @@
       "order": 7,
       "phase": "practice",
       "title": "Saludar y presentarse · práctica 5",
-      "instruction": "Order: meet / you / Nice / to",
+      "instruction": "Ordena: meet / you / Nice / to",
       "route": "learner",
       "sourceRefs": [
         "module1.unit1.practice.5"
@@ -831,7 +1229,8 @@
         "a1m1-u1-practice-5-instruction",
         "a1m1-u1-practice-block-5"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/art-studio.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/art-studio.webp",
       "sceneSide": "right",
       "practiceType": "order"
     },
@@ -852,7 +1251,8 @@
         "a1m1-u1-transfer-speak-prompt",
         "a1m1-u1-transfer-speak-recording"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/bakery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/bakery.webp",
       "sceneSide": "right"
     },
     {
@@ -872,7 +1272,8 @@
         "a1m1-u1-transfer-review-prompt",
         "a1m1-u1-transfer-review-essay"
       ],
-      "background": "/images/lessons/backgrounds/campus.webp",
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/botanical-office.webp",
       "sceneSide": "right"
     },
     {
@@ -893,6 +1294,7 @@
         "module1.unit2-language-support"
       ],
       "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/community-bookshop.webp",
       "sceneSide": "right"
     },
     {
@@ -914,7 +1316,8 @@
         "a1m1-u2-comprehension-instruction",
         "a1m1-u2-comprehension-items"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/museum-gallery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/museum-gallery.webp",
       "sceneSide": "right"
     },
     {
@@ -923,7 +1326,7 @@
       "order": 3,
       "phase": "practice",
       "title": "Identificar personas y objetos · práctica 1",
-      "instruction": "You point to Diego. Choose the correct introduction.",
+      "instruction": "Señalas a Diego. Elige la presentación correcta.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit2.practice.1"
@@ -934,7 +1337,8 @@
         "a1m1-u2-practice-1-instruction",
         "a1m1-u2-practice-block-1"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/art-studio.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/art-studio.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -944,7 +1348,7 @@
       "order": 4,
       "phase": "practice",
       "title": "Identificar personas y objetos · práctica 2",
-      "instruction": "Complete: “This is my ___ Diego.”",
+      "instruction": "Completa: “This is my ___ Diego.”",
       "route": "learner",
       "sourceRefs": [
         "module1.unit2.practice.2"
@@ -955,7 +1359,8 @@
         "a1m1-u2-practice-2-instruction",
         "a1m1-u2-practice-block-2"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/market.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/market.webp",
       "sceneSide": "right",
       "practiceType": "cloze"
     },
@@ -965,7 +1370,7 @@
       "order": 5,
       "phase": "practice",
       "title": "Identificar personas y objetos · práctica 3",
-      "instruction": "Who is Elena?",
+      "instruction": "¿Quién es Elena?",
       "route": "learner",
       "sourceRefs": [
         "module1.unit2.practice.3"
@@ -976,7 +1381,8 @@
         "a1m1-u2-practice-3-instruction",
         "a1m1-u2-practice-block-3"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/bakery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/bakery.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -986,7 +1392,7 @@
       "order": 6,
       "phase": "practice",
       "title": "Identificar personas y objetos · práctica 4",
-      "instruction": "Identify Diego in a complete sentence.",
+      "instruction": "Identifica a Diego con una frase completa.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit2.practice.4"
@@ -997,7 +1403,8 @@
         "a1m1-u2-practice-4-instruction",
         "a1m1-u2-practice-block-4"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/airport-lounge.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/airport-lounge.webp",
       "sceneSide": "right",
       "practiceType": "rewrite"
     },
@@ -1007,7 +1414,7 @@
       "order": 7,
       "phase": "practice",
       "title": "Identificar personas y objetos · práctica 5",
-      "instruction": "Order: my / colleague / Diego / This / is",
+      "instruction": "Ordena: my / colleague / Diego / This / is",
       "route": "learner",
       "sourceRefs": [
         "module1.unit2.practice.5"
@@ -1018,7 +1425,8 @@
         "a1m1-u2-practice-5-instruction",
         "a1m1-u2-practice-block-5"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/botanical-office.webp",
       "sceneSide": "right",
       "practiceType": "order"
     },
@@ -1039,7 +1447,8 @@
         "a1m1-u2-transfer-speak-prompt",
         "a1m1-u2-transfer-speak-recording"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/campus.webp",
       "sceneSide": "right"
     },
     {
@@ -1059,7 +1468,8 @@
         "a1m1-u2-transfer-review-prompt",
         "a1m1-u2-transfer-review-essay"
       ],
-      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "background": "/images/lessons/backgrounds/city-directions.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/city-directions.webp",
       "sceneSide": "right"
     },
     {
@@ -1080,6 +1490,7 @@
         "module1.unit3-language-support"
       ],
       "background": "/images/lessons/backgrounds/town-park.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/town-park.webp",
       "sceneSide": "right"
     },
     {
@@ -1101,7 +1512,8 @@
         "a1m1-u3-comprehension-instruction",
         "a1m1-u3-comprehension-items"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/lakeside-reading-terrace.webp",
       "sceneSide": "right"
     },
     {
@@ -1110,7 +1522,7 @@
       "order": 3,
       "phase": "practice",
       "title": "Compartir contactos y horarios · práctica 1",
-      "instruction": "A classmate asks about availability. Choose the question.",
+      "instruction": "Un compañero pregunta por tu disponibilidad. Elige la pregunta.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit3.practice.1"
@@ -1121,7 +1533,8 @@
         "a1m1-u3-practice-1-instruction",
         "a1m1-u3-practice-block-1"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/harbor-promenade.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/harbor-promenade.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -1131,7 +1544,7 @@
       "order": 4,
       "phase": "practice",
       "title": "Compartir contactos y horarios · práctica 2",
-      "instruction": "Complete: “My phone number ___ 555-0142.”",
+      "instruction": "Completa: “My phone number ___ 555-0142.”",
       "route": "learner",
       "sourceRefs": [
         "module1.unit3.practice.2"
@@ -1142,7 +1555,8 @@
         "a1m1-u3-practice-2-instruction",
         "a1m1-u3-practice-block-2"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/garden.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/garden.webp",
       "sceneSide": "right",
       "practiceType": "cloze"
     },
@@ -1152,7 +1566,7 @@
       "order": 5,
       "phase": "practice",
       "title": "Compartir contactos y horarios · práctica 3",
-      "instruction": "What is Elena’s phone number?",
+      "instruction": "¿Cuál es el teléfono de Elena?",
       "route": "learner",
       "sourceRefs": [
         "module1.unit3.practice.3"
@@ -1163,7 +1577,8 @@
         "a1m1-u3-practice-3-instruction",
         "a1m1-u3-practice-block-3"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/seaside.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/seaside.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -1173,7 +1588,7 @@
       "order": 6,
       "phase": "practice",
       "title": "Compartir contactos y horarios · práctica 4",
-      "instruction": "Give Elena’s contact phone in a complete sentence.",
+      "instruction": "Da el teléfono de Elena en una frase completa.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit3.practice.4"
@@ -1184,7 +1599,8 @@
         "a1m1-u3-practice-4-instruction",
         "a1m1-u3-practice-block-4"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/airport-lounge.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/airport-lounge.webp",
       "sceneSide": "right",
       "practiceType": "rewrite"
     },
@@ -1194,7 +1610,7 @@
       "order": 7,
       "phase": "practice",
       "title": "Compartir contactos y horarios · práctica 5",
-      "instruction": "Order: number / is / 555-0142 / My / phone",
+      "instruction": "Ordena: number / is / 555-0142 / My / phone",
       "route": "learner",
       "sourceRefs": [
         "module1.unit3.practice.5"
@@ -1205,7 +1621,8 @@
         "a1m1-u3-practice-5-instruction",
         "a1m1-u3-practice-block-5"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/art-studio.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/art-studio.webp",
       "sceneSide": "right",
       "practiceType": "order"
     },
@@ -1226,7 +1643,8 @@
         "a1m1-u3-transfer-speak-prompt",
         "a1m1-u3-transfer-speak-recording"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/bakery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/bakery.webp",
       "sceneSide": "right"
     },
     {
@@ -1246,7 +1664,8 @@
         "a1m1-u3-transfer-review-prompt",
         "a1m1-u3-transfer-review-essay"
       ],
-      "background": "/images/lessons/backgrounds/town-park.webp",
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/botanical-office.webp",
       "sceneSide": "right"
     },
     {
@@ -1267,6 +1686,7 @@
         "module1.unit4-language-support"
       ],
       "background": "/images/lessons/backgrounds/travel-station.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/travel-station.webp",
       "sceneSide": "right"
     },
     {
@@ -1288,7 +1708,8 @@
         "a1m1-u4-comprehension-instruction",
         "a1m1-u4-comprehension-items"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/airport-lounge.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/airport-lounge.webp",
       "sceneSide": "right"
     },
     {
@@ -1297,7 +1718,7 @@
       "order": 3,
       "phase": "practice",
       "title": "Pedir repetición y aclaración · práctica 1",
-      "instruction": "You did not hear the date. Choose the repair.",
+      "instruction": "No oíste la fecha. Elige cómo pedir que la repitan.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit4.practice.1"
@@ -1308,7 +1729,8 @@
         "a1m1-u4-practice-1-instruction",
         "a1m1-u4-practice-block-1"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/city-directions.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/city-directions.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -1318,7 +1740,7 @@
       "order": 4,
       "phase": "practice",
       "title": "Pedir repetición y aclaración · práctica 2",
-      "instruction": "Complete: “I ___ understand.”",
+      "instruction": "Completa: “I ___ understand.”",
       "route": "learner",
       "sourceRefs": [
         "module1.unit4.practice.2"
@@ -1329,7 +1751,8 @@
         "a1m1-u4-practice-2-instruction",
         "a1m1-u4-practice-block-2"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/village-square.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/village-square.webp",
       "sceneSide": "right",
       "practiceType": "cloze"
     },
@@ -1339,7 +1762,7 @@
       "order": 5,
       "phase": "practice",
       "title": "Pedir repetición y aclaración · práctica 3",
-      "instruction": "What is the room number?",
+      "instruction": "¿Cuál es el número de sala?",
       "route": "learner",
       "sourceRefs": [
         "module1.unit4.practice.3"
@@ -1350,7 +1773,8 @@
         "a1m1-u4-practice-3-instruction",
         "a1m1-u4-practice-block-3"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/museum-gallery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/museum-gallery.webp",
       "sceneSide": "right",
       "practiceType": "choice"
     },
@@ -1360,7 +1784,7 @@
       "order": 6,
       "phase": "practice",
       "title": "Pedir repetición y aclaración · práctica 4",
-      "instruction": "Confirm the appointment day and time.",
+      "instruction": "Confirma el día y la hora de la cita.",
       "route": "learner",
       "sourceRefs": [
         "module1.unit4.practice.4"
@@ -1371,7 +1795,8 @@
         "a1m1-u4-practice-4-instruction",
         "a1m1-u4-practice-block-4"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/art-studio.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/art-studio.webp",
       "sceneSide": "right",
       "practiceType": "rewrite"
     },
@@ -1381,7 +1806,7 @@
       "order": 7,
       "phase": "practice",
       "title": "Pedir repetición y aclaración · práctica 5",
-      "instruction": "Order: repeat / that, / please / Could / you",
+      "instruction": "Ordena: repeat / that, / please / Could / you",
       "route": "learner",
       "sourceRefs": [
         "module1.unit4.practice.5"
@@ -1392,7 +1817,8 @@
         "a1m1-u4-practice-5-instruction",
         "a1m1-u4-practice-block-5"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/bakery.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/bakery.webp",
       "sceneSide": "right",
       "practiceType": "order"
     },
@@ -1413,7 +1839,8 @@
         "a1m1-u4-transfer-speak-prompt",
         "a1m1-u4-transfer-speak-recording"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/botanical-office.webp",
       "sceneSide": "right"
     },
     {
@@ -1433,7 +1860,8 @@
         "a1m1-u4-transfer-review-prompt",
         "a1m1-u4-transfer-review-essay"
       ],
-      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/campus.webp",
       "sceneSide": "right"
     },
     {
@@ -1455,6 +1883,7 @@
         "a1m1-mission-briefing-role-notes"
       ],
       "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/botanical-office.webp",
       "sceneSide": "right",
       "roleCardRevealMode": "role-card-only",
       "roleCardRuntimeStatus": "metadata-only-until-role-card-viewer-exists"
@@ -1476,7 +1905,8 @@
         "a1m1-mission-model-text",
         "a1m1-mission-model-language"
       ],
-      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "background": "/images/lessons/backgrounds/flower-courtyard.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/flower-courtyard.webp",
       "sceneSide": "right"
     },
     {
@@ -1496,7 +1926,8 @@
         "a1m1-mission-speak-prompt",
         "a1m1-mission-speak-recording"
       ],
-      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "background": "/images/lessons/backgrounds/garden.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/garden.webp",
       "sceneSide": "right",
       "reviewChecklist": [
         "Saluda y se presenta.",
@@ -1524,7 +1955,8 @@
         "a1m1-mission-card-prompt",
         "a1m1-mission-card-essay"
       ],
-      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "background": "/images/lessons/backgrounds/workshop.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/workshop.webp",
       "sceneSide": "right",
       "reviewChecklist": [
         "Saluda y se presenta.",
@@ -1553,7 +1985,8 @@
         "a1m1-mission-mediation-source",
         "a1m1-mission-mediation-essay"
       ],
-      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "backgroundSrc": "/images/lessons/backgrounds/community-bookshop.webp",
       "sceneSide": "right",
       "reviewChecklist": [
         "Tuesday, 18:00 y Room 4",
@@ -2729,37 +3162,321 @@
         "background": "/images/lessons/backgrounds/listening-lounge.webp",
         "sceneSide": "right",
         "learningRevision": "course-guided-v1",
-        "sceneCount": 27
+        "sceneCount": 27,
+        "sceneAssets": [
+          {
+            "sceneId": "a1m1-start-s1-teach",
+            "src": "/images/lessons/backgrounds/listening-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s1-check-1",
+            "src": "/images/lessons/backgrounds/library.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s1-check-2",
+            "src": "/images/lessons/backgrounds/music-room.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s1-check-3",
+            "src": "/images/lessons/backgrounds/workshop.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-teach",
+            "src": "/images/lessons/backgrounds/science-lab.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-1",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-2",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-3",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-4",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-5",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s2-check-6",
+            "src": "/images/lessons/backgrounds/city-directions.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-teach",
+            "src": "/images/lessons/backgrounds/community-bookshop.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-1",
+            "src": "/images/lessons/backgrounds/daily-kitchen.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-2",
+            "src": "/images/lessons/backgrounds/family-living-room.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-3",
+            "src": "/images/lessons/backgrounds/flower-courtyard.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-4",
+            "src": "/images/lessons/backgrounds/garden.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-5",
+            "src": "/images/lessons/backgrounds/harbor-promenade.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s3-check-6",
+            "src": "/images/lessons/backgrounds/lakeside-reading-terrace.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-teach",
+            "src": "/images/lessons/backgrounds/market.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-check-1",
+            "src": "/images/lessons/backgrounds/mountain-cabin.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-check-2",
+            "src": "/images/lessons/backgrounds/museum-gallery.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s4-check-3",
+            "src": "/images/lessons/backgrounds/restaurant.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-teach",
+            "src": "/images/lessons/backgrounds/seaside.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-1",
+            "src": "/images/lessons/backgrounds/town-park.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-2",
+            "src": "/images/lessons/backgrounds/travel-station.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-3",
+            "src": "/images/lessons/backgrounds/village-square.webp"
+          },
+          {
+            "sceneId": "a1m1-start-s5-check-4",
+            "src": "/images/lessons/backgrounds/listening-lounge.webp"
+          }
+        ]
       },
       "a1-general-u1": {
         "background": "/images/lessons/backgrounds/campus.webp",
         "sceneSide": "right",
         "learningRevision": "course-guided-v1",
-        "sceneCount": 9
+        "sceneCount": 9,
+        "sceneAssets": [
+          {
+            "sceneId": "a1m1-u1-teach",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-comprehension",
+            "src": "/images/lessons/backgrounds/village-square.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-1",
+            "src": "/images/lessons/backgrounds/library.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-2",
+            "src": "/images/lessons/backgrounds/music-room.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-3",
+            "src": "/images/lessons/backgrounds/workshop.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-4",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-practice-5",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-transfer-speak",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u1-transfer-review",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          }
+        ]
       },
       "a1-general-u2": {
         "background": "/images/lessons/backgrounds/community-bookshop.webp",
         "sceneSide": "right",
         "learningRevision": "course-guided-v1",
-        "sceneCount": 9
+        "sceneCount": 9,
+        "sceneAssets": [
+          {
+            "sceneId": "a1m1-u2-teach",
+            "src": "/images/lessons/backgrounds/community-bookshop.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-comprehension",
+            "src": "/images/lessons/backgrounds/museum-gallery.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-1",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-2",
+            "src": "/images/lessons/backgrounds/market.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-3",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-4",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-practice-5",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-transfer-speak",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          },
+          {
+            "sceneId": "a1m1-u2-transfer-review",
+            "src": "/images/lessons/backgrounds/city-directions.webp"
+          }
+        ]
       },
       "a1-general-u3": {
         "background": "/images/lessons/backgrounds/town-park.webp",
         "sceneSide": "right",
         "learningRevision": "course-guided-v1",
-        "sceneCount": 9
+        "sceneCount": 9,
+        "sceneAssets": [
+          {
+            "sceneId": "a1m1-u3-teach",
+            "src": "/images/lessons/backgrounds/town-park.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-comprehension",
+            "src": "/images/lessons/backgrounds/lakeside-reading-terrace.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-1",
+            "src": "/images/lessons/backgrounds/harbor-promenade.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-2",
+            "src": "/images/lessons/backgrounds/garden.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-3",
+            "src": "/images/lessons/backgrounds/seaside.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-4",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-practice-5",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-transfer-speak",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u3-transfer-review",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          }
+        ]
       },
       "a1-general-u4": {
         "background": "/images/lessons/backgrounds/travel-station.webp",
         "sceneSide": "right",
         "learningRevision": "course-guided-v1",
-        "sceneCount": 9
+        "sceneCount": 9,
+        "sceneAssets": [
+          {
+            "sceneId": "a1m1-u4-teach",
+            "src": "/images/lessons/backgrounds/travel-station.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-comprehension",
+            "src": "/images/lessons/backgrounds/airport-lounge.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-1",
+            "src": "/images/lessons/backgrounds/city-directions.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-2",
+            "src": "/images/lessons/backgrounds/village-square.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-3",
+            "src": "/images/lessons/backgrounds/museum-gallery.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-4",
+            "src": "/images/lessons/backgrounds/art-studio.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-practice-5",
+            "src": "/images/lessons/backgrounds/bakery.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-transfer-speak",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-u4-transfer-review",
+            "src": "/images/lessons/backgrounds/campus.webp"
+          }
+        ]
       },
       "a1-general-mission": {
         "background": "/images/lessons/backgrounds/botanical-office.webp",
         "sceneSide": "right",
         "learningRevision": "course-guided-v1",
-        "sceneCount": 5
+        "sceneCount": 5,
+        "sceneAssets": [
+          {
+            "sceneId": "a1m1-mission-briefing",
+            "src": "/images/lessons/backgrounds/botanical-office.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-model",
+            "src": "/images/lessons/backgrounds/flower-courtyard.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-speak",
+            "src": "/images/lessons/backgrounds/garden.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-card",
+            "src": "/images/lessons/backgrounds/workshop.webp"
+          },
+          {
+            "sceneId": "a1m1-mission-mediation",
+            "src": "/images/lessons/backgrounds/community-bookshop.webp"
+          }
+        ]
       }
     }
   },
