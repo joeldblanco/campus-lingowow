@@ -604,6 +604,16 @@ BEGIN
     RAISE EXCEPTION 'Seed identity collision; refusing insert';
   END IF;
 
+  IF EXISTS (
+    SELECT 1
+    FROM enrollments AS existing
+    WHERE existing."studentId" = p->'identities'->>'studentId'
+      AND existing."courseId" = p->'course'->>'id'
+      AND existing."academicPeriodId" = p->'identities'->>'academicPeriodId'
+  ) THEN
+    RAISE EXCEPTION 'Enrollment composite identity collision; refusing insert';
+  END IF;
+
   IF NOT EXISTS (
     SELECT 1 FROM "User"
     WHERE id = p->'identities'->>'creatorId'
@@ -635,6 +645,7 @@ CREATE TEMP TABLE a1_module1_existing_baseline (
   lesson_progress_digest text NOT NULL,
   user_contents_digest text NOT NULL,
   block_responses_digest text NOT NULL,
+  user_activities_digest text NOT NULL,
   enrollments_digest text NOT NULL
 ) ON COMMIT DROP;
 
@@ -652,9 +663,8 @@ SELECT
   (SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row.id), '[]'::jsonb)::text)
    FROM contents AS row
    WHERE NOT EXISTS (SELECT 1 FROM a1_module1_expected_contents AS expected WHERE expected.id = row.id)),
-  (SELECT md5(coalesce(jsonb_agg(
-      jsonb_build_object('id', row.id, 'url', row.data->>'url') ORDER BY row.id
-    ), '[]'::jsonb)::text)
+  -- Hash the complete existing audio row, including audioUrl and nested data.
+  (SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row.id), '[]'::jsonb)::text)
    FROM contents AS row
    WHERE NOT EXISTS (SELECT 1 FROM a1_module1_expected_contents AS expected WHERE expected.id = row.id)
      AND (
@@ -668,6 +678,8 @@ SELECT
    FROM user_contents AS row),
   (SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row.id), '[]'::jsonb)::text)
    FROM block_responses AS row),
+  (SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row."userId", row."activityId"), '[]'::jsonb)::text)
+   FROM user_activities AS row),
   (SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row.id), '[]'::jsonb)::text)
    FROM enrollments AS row
    WHERE row.id <> (SELECT payload->>'enrollmentId' FROM a1_module1_seed_plan));
@@ -806,9 +818,8 @@ BEGIN
     WHERE NOT EXISTS (SELECT 1 FROM a1_module1_expected_contents AS expected WHERE expected.id = row.id)
   ) IS DISTINCT FROM (SELECT contents_digest FROM a1_module1_existing_baseline)
   OR (
-    SELECT md5(coalesce(jsonb_agg(
-        jsonb_build_object('id', row.id, 'url', row.data->>'url') ORDER BY row.id
-      ), '[]'::jsonb)::text)
+    -- Hash the complete existing audio row, including audioUrl and nested data.
+    SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row.id), '[]'::jsonb)::text)
     FROM contents AS row
     WHERE NOT EXISTS (SELECT 1 FROM a1_module1_expected_contents AS expected WHERE expected.id = row.id)
       AND (
@@ -829,6 +840,10 @@ BEGIN
     SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row.id), '[]'::jsonb)::text)
     FROM block_responses AS row
   ) IS DISTINCT FROM (SELECT block_responses_digest FROM a1_module1_existing_baseline)
+  OR (
+    SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row."userId", row."activityId"), '[]'::jsonb)::text)
+    FROM user_activities AS row
+  ) IS DISTINCT FROM (SELECT user_activities_digest FROM a1_module1_existing_baseline)
   OR (
     SELECT md5(coalesce(jsonb_agg(to_jsonb(row) ORDER BY row.id), '[]'::jsonb)::text)
     FROM enrollments AS row

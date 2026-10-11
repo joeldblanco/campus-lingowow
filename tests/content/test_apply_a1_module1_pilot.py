@@ -136,6 +136,15 @@ class A1Module1PilotSafetyTests(unittest.TestCase):
         self.assertIn("a1_module1_expected_contents", sql)
         self.assertNotIn("ON CONFLICT", sql.upper())
 
+    def test_enrollment_composite_collision_is_guarded_before_insert(self) -> None:
+        sql = MODULE.build_sql(make_plan(), identities())
+        guard = """Enrollment composite identity collision; refusing insert"""
+        self.assertIn(guard, sql)
+        self.assertIn('existing."studentId" = p->\'identities\'->>\'studentId\'', sql)
+        self.assertIn('existing."courseId" = p->\'course\'->>\'id\'', sql)
+        self.assertIn('existing."academicPeriodId" = p->\'identities\'->>\'academicPeriodId\'', sql)
+        self.assertLess(sql.index(guard), sql.index("INSERT INTO courses"))
+
     def test_malformed_source_count_is_rejected(self) -> None:
         plan = make_plan()
         plan["lessons"].pop()
@@ -317,6 +326,7 @@ class A1Module1PilotSafetyTests(unittest.TestCase):
             "lesson_progress_digest",
             "user_contents_digest",
             "block_responses_digest",
+            "user_activities_digest",
             "enrollments_digest",
         ):
             self.assertIn(digest, sql)
@@ -324,6 +334,17 @@ class A1Module1PilotSafetyTests(unittest.TestCase):
         self.assertIn("WHERE row.id <> p->'course'->>'id'", sql)
         self.assertIn("WHERE row.id <> p->>'enrollmentId'", sql)
         self.assertIn("data ? 'audioUrl'", sql)
+        self.assertGreaterEqual(sql.count("FROM user_activities AS row"), 2)
+        self.assertGreaterEqual(sql.count('ORDER BY row."userId", row."activityId"'), 2)
+
+    def test_audio_digest_covers_complete_row_payload(self) -> None:
+        sql = MODULE.build_sql(make_plan(), identities())
+        self.assertIn("Hash the complete existing audio row, including audioUrl and nested data.", sql)
+        self.assertNotIn(
+            "jsonb_build_object('id', row.id, 'url', row.data->>'url')",
+            sql,
+        )
+        self.assertGreaterEqual(sql.count("jsonb_agg(to_jsonb(row) ORDER BY row.id)"), 10)
 
     def test_seed_is_insert_only_and_never_writes_users_or_history_tables(self) -> None:
         sql = MODULE.build_sql(make_plan(), identities())
@@ -334,6 +355,7 @@ class A1Module1PilotSafetyTests(unittest.TestCase):
         self.assertNotIn("INSERT INTO LESSON_PROGRESS", upper_sql)
         self.assertNotIn("INSERT INTO USER_CONTENTS", upper_sql)
         self.assertNotIn("INSERT INTO BLOCK_RESPONSES", upper_sql)
+        self.assertNotIn("INSERT INTO USER_ACTIVITIES", upper_sql)
         for table in ("courses", "modules", "lessons", "contents", "enrollments"):
             self.assertIn(f"INSERT INTO {table}", sql)
 
