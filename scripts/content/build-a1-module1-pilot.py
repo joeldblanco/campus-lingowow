@@ -198,7 +198,7 @@ PRACTICE_LOCALIZATION = {
         "hint": "Responde con el nombre.",
     },
     "module1.unit1.practice.5": {
-        "prompt": "Ordena: meet / you / Nice / to",
+        "prompt": "Reconstruye la frase completa con estos tokens: meet / you / Nice / to",
         "feedback": "Esta es la despedida del primer encuentro.",
         "hint": "Empieza con Nice.",
     },
@@ -1097,7 +1097,31 @@ def _practice_block(
             source_type="rewrite",
         )
     elif source_type == "order":
-        block = _ordering_block(block_id, scene_id, title, localized_practice, scene, source_key)
+        if source_key == "module1.unit1.practice.5":
+            # U1's sentence reconstruction needs the guided short-answer
+            # action. Keep the authored order provenance and token prompt,
+            # while avoiding the legacy ordering renderer and its duplicate
+            # controls.
+            answer = _as_text(practice.get("answer") or " ".join(_order_sequence(practice)))
+            block = _short_answer_block(
+                block_id,
+                scene_id,
+                title,
+                common["prompt"],
+                answer,
+                [_as_text(value) for value in practice.get("alternatives", [])],
+                common["feedback"],
+                common["hint"],
+                scene,
+                source_key,
+                source_type="order",
+            )
+            block["data"]["expectedAnswer"] = answer
+            block["data"]["reconstructionTokens"] = [
+                _as_text(value) for value in practice.get("items", [])
+            ]
+        else:
+            block = _ordering_block(block_id, scene_id, title, localized_practice, scene, source_key)
     elif source_type == "match":
         block = _match_block(block_id, scene_id, title, localized_practice, scene, source_key)
     else:
@@ -1462,11 +1486,17 @@ def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_
 
 
 def _production_modes(unit: dict[str, Any]) -> dict[str, Any]:
+    active_information = _as_text(unit.get("transfer", {}).get("new_information"))
     return {
-        # The production renderer consumes this exact compact shape. Detailed
-        # timing, roles, and review notes remain in the lesson route policy.
-        "individual": _as_text(unit.get("independent", {}).get("procedure")),
-        "teacher": _as_text(unit.get("teacher", {}).get("procedure")),
+        # The production renderer consumes this exact compact shape. Keep the
+        # learner selector brief and derive its data from the active transfer
+        # card, rather than an older independent example in the source.
+        "individual": (
+            f"Lee el ejemplo y usa el dato nuevo: {active_information}"
+            if active_information
+            else "Lee el ejemplo y usa el dato nuevo de la tarjeta."
+        ),
+        "teacher": "La docente modela una ronda y revisa significado y datos.",
     }
 
 
@@ -1510,7 +1540,6 @@ def _recording_block(
                 doNotAutoGrade=True,
                 teacherReviewOnly=True,
                 originalEnglishModel=model,
-                learningModes=modes,
                 reviewChecklist=criteria,
                 noAudioSourceAvailable=True,
                 guidedRole="conversation",
@@ -1789,11 +1818,15 @@ def _unit_scenes(unit: dict[str, Any], unit_number: int, lesson_id: str, asset: 
             source_refs=[transfer_key],
             content_role="production",
         ),
-        _text_block(
+        _html_text_block(
             f"{review_scene_id}-prompt",
             review_scene_id,
             f"{unit.get('title')} · revisión escrita",
-            f"**Instrucción:** {review_prompt}\n\n**Modelo:** {transfer_model}\n\nLa docente revisa significado, datos y una forma útil; no hay calificación automática.",
+            _details_html("Ver ejemplo", f"Modelo: {transfer_model}")
+            + _details_html(
+                "Guía docente",
+                "Revisa significado, datos y una forma útil; no hay calificación automática.",
+            ),
             asset,
             source_refs=[transfer_key],
             content_role="production",
@@ -1847,11 +1880,17 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             asset,
             source_refs=[source_key],
         ),
-        _text_block(
+        _html_text_block(
             f"{briefing_id}-instructions",
             briefing_id,
             "Misión: recepción de un centro de formación",
-            f"**Escenario:** {mission.get('scenario', '')}\n\n**Instrucción:** {mission.get('instructions', '')}\n\n**Roles:** {mission.get('roles', '')}\n\n**Entrega:** {mission.get('deliverable', '')}\n\n**Reparación:** {mission.get('recovery', '')}\n\nLas tarjetas de rol se muestran solo al iniciar la misión cuando el runtime tenga visor de roles. En el runtime actual se deja visible la hoja común y se marca la información privada como apoyo docente; no se afirma un modo oculto que la aplicación todavía no soporta.",
+            f"<p><strong>Escenario:</strong> {_safe_inline_html(_as_text(mission.get('scenario', '')))}</p>"
+            f"<p><strong>Consigna:</strong> {_safe_inline_html(_as_text(mission.get('instructions', '')))}</p>"
+            + _details_html(
+                "Roles y entrega",
+                f"Roles: {_as_text(mission.get('roles', ''))}\n\nEntrega: {_as_text(mission.get('deliverable', ''))}",
+            )
+            + _details_html("Ayuda", _as_text(mission.get("recovery", ""))),
             asset,
             source_refs=[source_key],
             originalEnglishModel="Welcome. I’m Ana. What’s your name?",
@@ -1881,10 +1920,9 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             source_refs=[source_key],
             title="Tarjetas de rol para la docente",
             content=(
-                "**Modo previsto:** role-card-only / reveal-on-start.\n\n"
                 "**Recepcionista:** recibe a Ana Torres; puede ver la etiqueta de recepción y la agenda.\n\n"
                 "**Persona nueva:** necesita localizar la sala 204, confirmar 18:00 y pedir repetición si no oye.\n\n"
-                "**Cambio de roles:** entrega las mismas tarjetas al cambiar. Mantén los datos comunes y revela solo la tarjeta del rol cuando el visor exista."
+                "**Cambio de roles:** entrega las mismas tarjetas al cambiar y mantén los datos comunes."
             ),
             highlightColor="blue",
             roleCardReveal={
@@ -1986,7 +2024,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             f"{speak_id}-prompt",
             speak_id,
             "Misión · diálogo",
-            f"**Instrucción:** {speak_prompt}\n\n**Modelo:** {model_text}\n\nCambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana; el runtime no debe enviar esta respuesta a una calificación automática.",
+            f"**Instrucción:** {speak_prompt}\n\n**Modelo:** {model_text}\n\nCambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana.",
             asset,
             source_refs=[source_key],
             content_role="production",
@@ -2037,11 +2075,18 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
     write_prompt = "Completa una tarjeta en inglés con nombre, contacto, día, hora y sala; añade una frase para pedir repetición."
     write_blocks = [
         _title_block(f"{write_id}-title", write_id, "Misión · tarjeta", asset, source_refs=[source_key], content_role="production"),
-        _text_block(
+        _html_text_block(
             f"{write_id}-prompt",
             write_id,
             "Misión · tarjeta",
-            f"**Instrucción:** {write_prompt}\n\n**Modelo:** Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.\n\nComprueba que los datos coinciden con la hoja; no hay calificación automática.",
+            _details_html(
+                "Ver ejemplo",
+                "Modelo: Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.",
+            )
+            + _details_html(
+                "Guía docente",
+                "Comprueba que los datos coinciden con la hoja; no hay calificación automática.",
+            ),
             asset,
             source_refs=[source_key],
             content_role="production",
@@ -2330,7 +2375,7 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
             "normalizations": [
                 "Source choice maps to multiple_choice with unique deterministic option keys.",
                 "Source cloze maps to short_answer with answerLayout inlineBlank and question blank ___ preserved.",
-                "Source order maps to ordering with 1-based positions and actual correctSentence.",
+                "Source order maps to ordering with 1-based positions, except U1 practice 5 maps to guided short_answer full-sentence reconstruction with order provenance.",
                 "Source rewrite maps to short_answer with teacherReviewOnly and no automatic grading.",
                 "Source match arrows map to structured pairs.",
                 "Authored Markdown-like instructions are escaped and emitted as HTML paragraphs/strong/list markup.",

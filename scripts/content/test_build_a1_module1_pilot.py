@@ -244,14 +244,29 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         for block in _blocks(self.course):
             if "order" not in _source_types(block):
                 continue
-            order_count += 1
-            self.assertEqual(block["type"], "ordering")
-            expected = [item["text"] for item in sorted(block["items"], key=lambda item: item["correctPosition"])]
-            strip_punctuation = lambda value: re.sub(r"[.,!?]", "", value)
-            self.assertEqual(strip_punctuation(" ".join(expected)), strip_punctuation(block["data"]["correctSentence"]))
-            self.assertTrue(block["data"]["acceptedSequences"])
-            self.assertEqual(len(expected), len({item["correctPosition"] for item in block["items"]}))
-        self.assertEqual(order_count, 6)
+            if block["type"] == "ordering":
+                order_count += 1
+                expected = [item["text"] for item in sorted(block["items"], key=lambda item: item["correctPosition"])]
+                strip_punctuation = lambda value: re.sub(r"[.,!?]", "", value)
+                self.assertEqual(strip_punctuation(" ".join(expected)), strip_punctuation(block["data"]["correctSentence"]))
+                self.assertTrue(block["data"]["acceptedSequences"])
+                self.assertEqual(len(expected), len({item["correctPosition"] for item in block["items"]}))
+        self.assertEqual(order_count, 5)
+        reconstruction = next(
+            block
+            for block in _blocks(self.course)
+            if block["type"] == "short_answer"
+            and block["data"].get("sourceRefs") == ["module1.unit1.practice.5"]
+        )
+        self.assertEqual(reconstruction["type"], "short_answer")
+        self.assertEqual(reconstruction["data"]["expectedAnswer"], "Nice to meet you")
+        self.assertEqual(reconstruction["items"][0]["correctAnswer"], "Nice to meet you")
+        self.assertEqual(reconstruction["items"][0]["sourceType"], "order")
+        self.assertEqual(reconstruction["data"]["sourceItems"][0]["sourceType"], "order")
+        self.assertEqual(reconstruction["data"]["answerLayout"], "freeText")
+        self.assertNotEqual(reconstruction["data"]["answerLayout"], "inlineBlank")
+        for token in ("meet", "you", "Nice", "to"):
+            self.assertIn(token, reconstruction["items"][0]["question"])
 
     def test_every_scene_has_existing_asset_and_at_most_one_interactive(self) -> None:
         interactive = {"multiple_choice", "short_answer", "ordering", "match", "essay", "recording"}
@@ -302,15 +317,64 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             self.assertTrue(block["data"].get("doNotAutoGrade"), block["id"])
             self.assertTrue(block["data"].get("teacherReviewOnly"), block["id"])
             self.assertIn("reviewChecklist", block["data"], block["id"])
-            self.assertIn("learningModes", block["data"], block["id"])
-            self.assertEqual(set(block["data"]["learningModes"]), {"individual", "teacher"}, block["id"])
-            self.assertTrue(all(isinstance(value, str) for value in block["data"]["learningModes"].values()), block["id"])
+            if block["type"] == "recording":
+                self.assertNotIn("learningModes", block["data"], block["id"])
+                self.assertTrue(block["data"].get("conversationTurns"), block["id"])
+            else:
+                self.assertIn("learningModes", block["data"], block["id"])
+                self.assertEqual(set(block["data"]["learningModes"]), {"individual", "teacher"}, block["id"])
+                self.assertTrue(all(isinstance(value, str) for value in block["data"]["learningModes"].values()), block["id"])
         for block in [block for block in production if block["type"] == "essay"]:
             self.assertEqual(block["data"].get("unit1Role"), "profile", block["id"])
         u1_production = [block for block in self.course["lessons"][1]["blocks"] if block["type"] in {"recording", "essay"}]
         self.assertEqual(u1_production[0]["data"].get("guidedRole"), "conversation")
         self.assertEqual(u1_production[0]["data"]["conversationTurns"][0]["question"], "What is your name and where are you from?")
         self.assertEqual(u1_production[1]["data"].get("unit1Role"), "profile")
+        self.assertIn("Arequipa", u1_production[1]["data"]["learningModes"]["individual"])
+        self.assertNotIn("Lima", u1_production[1]["data"]["learningModes"]["individual"])
+        review_intro = next(
+            block
+            for block in self.course["lessons"][1]["blocks"]
+            if block["id"] == "a1m1-u1-transfer-review-prompt"
+        )
+        self.assertIn("<details><summary>Ver ejemplo</summary>", review_intro["content"])
+        self.assertIn("<details><summary>Guía docente</summary>", review_intro["content"])
+        self.assertNotIn("<strong>Instrucción:</strong>", review_intro["content"])
+        self.assertNotIn("La tarjeta confirma que Ana vive en Lima", review_intro["content"])
+        active_transfer_markers = ("Arequipa", "credencial 17", "maria.soto@example.org", "Friday at 4:00")
+        stale_transfer_markers = ("Lima", "carpeta azul", "Saturday morning", "Thursday at 3:30")
+        for lesson, active_marker, stale_marker in zip(
+            self.course["lessons"][1:5], active_transfer_markers, stale_transfer_markers
+        ):
+            essay = next(block for block in lesson["blocks"] if block["type"] == "essay")
+            self.assertIn(active_marker, essay["data"]["learningModes"]["individual"], lesson["id"])
+            self.assertNotIn(stale_marker, essay["data"]["learningModes"]["individual"], lesson["id"])
+        mission_intro = next(
+            block
+            for block in self.course["lessons"][-1]["blocks"]
+            if block["id"] == "a1m1-mission-card-prompt"
+        )
+        self.assertIn("<details><summary>Ver ejemplo</summary>", mission_intro["content"])
+        self.assertIn("<details><summary>Guía docente</summary>", mission_intro["content"])
+        self.assertNotIn("<strong>Instrucción:</strong>", mission_intro["content"])
+        mission_briefing = next(
+            block
+            for block in self.course["lessons"][-1]["blocks"]
+            if block["id"] == "a1m1-mission-briefing-instructions"
+        )
+        self.assertIn("<strong>Escenario:</strong>", mission_briefing["content"])
+        self.assertIn("<strong>Consigna:</strong>", mission_briefing["content"])
+        self.assertIn("<details><summary>Roles y entrega</summary>", mission_briefing["content"])
+        self.assertIn("<details><summary>Ayuda</summary>", mission_briefing["content"])
+        for block in _blocks(self.course):
+            for field in ("content", "prompt", "instruction"):
+                value = block.get(field)
+                if isinstance(value, str):
+                    self.assertNotRegex(
+                        value,
+                        r"runtime|visor|aplicaci[oó]n|role-card-only|reveal-on-start|modo oculto",
+                        f"{block['id']}.{field}",
+                    )
 
     def test_no_audio_is_fabricated_and_role_cards_do_not_claim_hidden_runtime(self) -> None:
         manifest = self.manifest["audioManifest"]
