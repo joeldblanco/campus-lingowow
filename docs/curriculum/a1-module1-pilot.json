@@ -26,6 +26,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-teach",
             "guidedTitle": "Hello, I’m / My name is",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -45,6 +46,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-teach",
             "guidedTitle": "Hello, I’m / My name is",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -58,8 +60,8 @@
             "originalEnglishModel": "Hello. I’m Ana. My name is Ana.",
             "teacherReadScript": "Hello. Hi. I’m Ana. My name is Ana."
           },
-          "content": "**Instrucción:** Reconocer un saludo y decir el nombre con apoyo visual. Lee el modelo por significado; no memorices una lista.\n\n**Modelo original en inglés:** Hello. I’m Ana. My name is Ana.\n\n**Apoyo docente:** Hello. Hi. I’m Ana. My name is Ana.\n\n**Ruta autónoma:** Puedo reconocer Hello.\n**Ruta docente:** Lee cada frase dos veces; señala Hello y el nombre en la tarjeta.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Reconocer un saludo y decir el nombre con apoyo visual. Lee el modelo por significado; no memorices una lista.</p><p><strong>Modelo original en inglés:</strong> Hello. I’m Ana. My name is Ana.</p><p><strong>Apoyo docente:</strong> Hello. Hi. I’m Ana. My name is Ana.</p><p><strong>Ruta autónoma:</strong> Puedo reconocer Hello.<br /><strong>Ruta docente:</strong> Lee cada frase dos veces; señala Hello y el nombre en la tarjeta.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s1-support",
@@ -67,6 +69,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-teach",
             "guidedTitle": "Tabla de apoyo",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -106,6 +109,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-1",
             "guidedTitle": "Hello, I’m / My name is · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -125,6 +129,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-1",
             "guidedTitle": "Hello, I’m / My name is · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -137,8 +142,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hello. I’m Ana. My name is Ana."
           },
-          "content": "**Instrucción:** Relaciona cada frase con su significado.\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Relaciona cada frase con su significado.</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s1-practice-1",
@@ -146,6 +151,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-1",
             "guidedTitle": "Hello, I’m / My name is · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -193,6 +199,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-2",
             "guidedTitle": "Hello, I’m / My name is · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -212,6 +219,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-2",
             "guidedTitle": "Hello, I’m / My name is · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -224,8 +232,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hello. I’m Ana. My name is Ana."
           },
-          "content": "**Instrucción:** Complete la presentación: “Hello. I’m ___.”\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Complete la presentación: “Hello. I’m ___.”</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s1-practice-2",
@@ -233,6 +241,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-2",
             "guidedTitle": "Hello, I’m / My name is · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -279,6 +288,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-3",
             "guidedTitle": "Hello, I’m / My name is · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -298,6 +308,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-3",
             "guidedTitle": "Hello, I’m / My name is · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -310,8 +321,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hello. I’m Ana. My name is Ana."
           },
-          "content": "**Instrucción:** ¿Qué frase dice el nombre de la persona?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿Qué frase dice el nombre de la persona?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s1-practice-3",
@@ -319,6 +330,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s1-check-3",
             "guidedTitle": "Hello, I’m / My name is · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -372,6 +384,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-teach",
             "guidedTitle": "Abecedario y deletreo",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -391,6 +404,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-teach",
             "guidedTitle": "Abecedario y deletreo",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -404,8 +418,8 @@
             "originalEnglishModel": "My name is Ana Torres. A-N-A T-O-R-R-E-S.",
             "teacherReadScript": "A eɪ, B bee, C cee, D dee, E ee, F ef, G gee, H aitch, I eye, J jay, K kay, L el, M em, N en, O oh, P pee, Q cue, R ar, S es, T tee, U you, V vee, W double-you, X ex, Y why, Z zee (zed in the UK). A-N-A T-O-R-R-E-S."
           },
-          "content": "**Instrucción:** Identificar letras y deletrear un nombre breve. Lee el modelo por significado; no memorices una lista.\n\n**Modelo original en inglés:** My name is Ana Torres. A-N-A T-O-R-R-E-S.\n\n**Apoyo docente:** A eɪ, B bee, C cee, D dee, E ee, F ef, G gee, H aitch, I eye, J jay, K kay, L el, M em, N en, O oh, P pee, Q cue, R ar, S es, T tee, U you, V vee, W double-you, X ex, Y why, Z zee (zed in the UK). A-N-A T-O-R-R-E-S.\n\n**Ruta autónoma:** Reconozco A, N, T, O y R.\n**Ruta docente:** Señala una letra cada vez; el estudiante repite y después ordena las tarjetas.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Identificar letras y deletrear un nombre breve. Lee el modelo por significado; no memorices una lista.</p><p><strong>Modelo original en inglés:</strong> My name is Ana Torres. A-N-A T-O-R-R-E-S.</p><p><strong>Apoyo docente:</strong> A eɪ, B bee, C cee, D dee, E ee, F ef, G gee, H aitch, I eye, J jay, K kay, L el, M em, N en, O oh, P pee, Q cue, R ar, S es, T tee, U you, V vee, W double-you, X ex, Y why, Z zee (zed in the UK). A-N-A T-O-R-R-E-S.</p><p><strong>Ruta autónoma:</strong> Reconozco A, N, T, O y R.<br /><strong>Ruta docente:</strong> Señala una letra cada vez; el estudiante repite y después ordena las tarjetas.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s2-support",
@@ -413,6 +427,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-teach",
             "guidedTitle": "Tabla de apoyo",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -552,6 +567,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-1",
             "guidedTitle": "Abecedario y deletreo · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -571,6 +587,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-1",
             "guidedTitle": "Abecedario y deletreo · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -583,8 +600,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My name is Ana Torres. A-N-A T-O-R-R-E-S."
           },
-          "content": "**Instrucción:** ¿Qué deletreo corresponde a Ana?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿Qué deletreo corresponde a Ana?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s2-practice-1",
@@ -592,6 +609,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-1",
             "guidedTitle": "Abecedario y deletreo · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -645,6 +663,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-2",
             "guidedTitle": "Abecedario y deletreo · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -664,6 +683,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-2",
             "guidedTitle": "Abecedario y deletreo · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -676,8 +696,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My name is Ana Torres. A-N-A T-O-R-R-E-S."
           },
-          "content": "**Instrucción:** Ordena las letras para formar ANA.\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Ordena las letras para formar ANA.</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s2-practice-2",
@@ -685,6 +705,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-2",
             "guidedTitle": "Abecedario y deletreo · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -746,6 +767,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-3",
             "guidedTitle": "Abecedario y deletreo · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -765,6 +787,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-3",
             "guidedTitle": "Abecedario y deletreo · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -777,8 +800,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My name is Ana Torres. A-N-A T-O-R-R-E-S."
           },
-          "content": "**Instrucción:** Completa el deletreo de TORRES: T-O-R-___-E-S.\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Completa el deletreo de TORRES: T-O-R-___-E-S.</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s2-practice-3",
@@ -786,6 +809,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-3",
             "guidedTitle": "Abecedario y deletreo · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -832,6 +856,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-4",
             "guidedTitle": "Abecedario y deletreo · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -851,6 +876,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-4",
             "guidedTitle": "Abecedario y deletreo · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -863,8 +889,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My name is Ana Torres. A-N-A T-O-R-R-E-S."
           },
-          "content": "**Instrucción:** Escribe con un espacio: ANATORRES.\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Escribe con un espacio: ANATORRES.</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s2-practice-4",
@@ -872,6 +898,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-4",
             "guidedTitle": "Abecedario y deletreo · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -922,6 +949,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-5",
             "guidedTitle": "Abecedario y deletreo · comprobación 5",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -941,6 +969,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-5",
             "guidedTitle": "Abecedario y deletreo · comprobación 5",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -953,8 +982,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My name is Ana Torres. A-N-A T-O-R-R-E-S."
           },
-          "content": "**Instrucción:** Which letter has the English name “jay”?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Which letter has the English name “jay”?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s2-practice-5",
@@ -962,6 +991,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-5",
             "guidedTitle": "Abecedario y deletreo · comprobación 5",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1015,6 +1045,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-6",
             "guidedTitle": "Abecedario y deletreo · comprobación 6",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1034,6 +1065,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-6",
             "guidedTitle": "Abecedario y deletreo · comprobación 6",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1046,8 +1078,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My name is Ana Torres. A-N-A T-O-R-R-E-S."
           },
-          "content": "**Instrucción:** Complete the alphabet: “X, Y, ___.”\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Complete the alphabet: “X, Y, ___.”</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s2-practice-6",
@@ -1055,6 +1087,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s2-check-6",
             "guidedTitle": "Abecedario y deletreo · comprobación 6",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1102,6 +1135,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-teach",
             "guidedTitle": "Números para contacto",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1121,6 +1155,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-teach",
             "guidedTitle": "Números para contacto",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1134,8 +1169,8 @@
             "originalEnglishModel": "My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m.",
             "teacherReadScript": "Zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty. One hundred. Two hundred four, or two oh four. Six a.m., six p.m., eight thirty a.m. Twenty, thirty, forty, fifty dollars."
           },
-          "content": "**Instrucción:** Reconocer números de teléfono, aula y hora con una tarjeta. Lee el modelo por significado; no memorices una lista.\n\n**Modelo original en inglés:** My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m.\n\n**Apoyo docente:** Zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty. One hundred. Two hundred four, or two oh four. Six a.m., six p.m., eight thirty a.m. Twenty, thirty, forty, fifty dollars.\n\n**Ruta autónoma:** Puedo leer 204 como two hundred four y reconocer two oh four para un aula.\n**Ruta docente:** Lee cada dato y deja que el estudiante señale el número correspondiente.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Reconocer números de teléfono, aula y hora con una tarjeta. Lee el modelo por significado; no memorices una lista.</p><p><strong>Modelo original en inglés:</strong> My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m.</p><p><strong>Apoyo docente:</strong> Zero, one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen, twenty. One hundred. Two hundred four, or two oh four. Six a.m., six p.m., eight thirty a.m. Twenty, thirty, forty, fifty dollars.</p><p><strong>Ruta autónoma:</strong> Puedo leer 204 como two hundred four y reconocer two oh four para un aula.<br /><strong>Ruta docente:</strong> Lee cada dato y deja que el estudiante señale el número correspondiente.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s3-support",
@@ -1143,6 +1178,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-teach",
             "guidedTitle": "Tabla de apoyo",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1278,6 +1314,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-1",
             "guidedTitle": "Números para contacto · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1297,6 +1334,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-1",
             "guidedTitle": "Números para contacto · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1309,8 +1347,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m."
           },
-          "content": "**Instrucción:** ¿Cuál es la lectura completa de room 204 en la tabla?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿Cuál es la lectura completa de room 204 en la tabla?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s3-practice-1",
@@ -1318,6 +1356,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-1",
             "guidedTitle": "Números para contacto · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1371,6 +1410,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-2",
             "guidedTitle": "Números para contacto · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1390,6 +1430,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-2",
             "guidedTitle": "Números para contacto · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1402,8 +1443,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m."
           },
-          "content": "**Instrucción:** Complete: “The class starts at ___ o’clock.” (18:00)\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Complete: “The class starts at ___ o’clock.” (18:00)</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s3-practice-2",
@@ -1411,6 +1452,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-2",
             "guidedTitle": "Números para contacto · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1458,6 +1500,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-3",
             "guidedTitle": "Números para contacto · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1477,6 +1520,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-3",
             "guidedTitle": "Números para contacto · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1489,8 +1533,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m."
           },
-          "content": "**Instrucción:** Escribe 555-0142 con palabras inglesas.\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Escribe 555-0142 con palabras inglesas.</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s3-practice-3",
@@ -1498,6 +1542,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-3",
             "guidedTitle": "Números para contacto · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1547,6 +1592,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-4",
             "guidedTitle": "Números para contacto · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1566,6 +1612,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-4",
             "guidedTitle": "Números para contacto · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1578,8 +1625,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m."
           },
-          "content": "**Instrucción:** ¿Cómo se dice 18:00 en esta tarjeta?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿Cómo se dice 18:00 en esta tarjeta?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s3-practice-4",
@@ -1587,6 +1634,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-4",
             "guidedTitle": "Números para contacto · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1640,6 +1688,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-5",
             "guidedTitle": "Números para contacto · comprobación 5",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1659,6 +1708,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-5",
             "guidedTitle": "Números para contacto · comprobación 5",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1671,8 +1721,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m."
           },
-          "content": "**Instrucción:** ¿Qué lectura corta también sirve para room 204?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿Qué lectura corta también sirve para room 204?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s3-practice-5",
@@ -1680,6 +1730,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-5",
             "guidedTitle": "Números para contacto · comprobación 5",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1733,6 +1784,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-6",
             "guidedTitle": "Números para contacto · comprobación 6",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1752,6 +1804,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-6",
             "guidedTitle": "Números para contacto · comprobación 6",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1764,8 +1817,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My phone is 555-0142. The class is at six p.m. in room 204. The morning session is at eight thirty a.m."
           },
-          "content": "**Instrucción:** ¿Cuál indica una hora de la mañana?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿Cuál indica una hora de la mañana?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s3-practice-6",
@@ -1773,6 +1826,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s3-check-6",
             "guidedTitle": "Números para contacto · comprobación 6",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1826,6 +1880,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-teach",
             "guidedTitle": "Escucha inicial con lectura del docente",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1845,6 +1900,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-teach",
             "guidedTitle": "Escucha inicial con lectura del docente",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1858,8 +1914,8 @@
             "originalEnglishModel": "Hello. I’m Ana. I’m from Peru. I live in Lima.",
             "teacherReadScript": "Hello. I’m Ana. I’m from Peru. I live in Lima. My class is at six."
           },
-          "content": "**Instrucción:** Relacionar una mini presentación oral con país y ciudad escritos. Lee el modelo por significado; no memorices una lista.\n\n**Modelo original en inglés:** Hello. I’m Ana. I’m from Peru. I live in Lima.\n\n**Apoyo docente:** Hello. I’m Ana. I’m from Peru. I live in Lima. My class is at six.\n\n**Ruta autónoma:** Relaciono from con país.\n**Ruta docente:** Lee el guion tres veces: normal, con pausas y normal; el estudiante marca Peru y Lima.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Relacionar una mini presentación oral con país y ciudad escritos. Lee el modelo por significado; no memorices una lista.</p><p><strong>Modelo original en inglés:</strong> Hello. I’m Ana. I’m from Peru. I live in Lima.</p><p><strong>Apoyo docente:</strong> Hello. I’m Ana. I’m from Peru. I live in Lima. My class is at six.</p><p><strong>Ruta autónoma:</strong> Relaciono from con país.<br /><strong>Ruta docente:</strong> Lee el guion tres veces: normal, con pausas y normal; el estudiante marca Peru y Lima.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s4-support",
@@ -1867,6 +1923,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-teach",
             "guidedTitle": "Tabla de apoyo",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1906,6 +1963,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-1",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1925,6 +1983,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-1",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1937,8 +1996,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hello. I’m Ana. I’m from Peru. I live in Lima."
           },
-          "content": "**Instrucción:** ¿De qué país es Ana?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿De qué país es Ana?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s4-practice-1",
@@ -1946,6 +2005,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-1",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -1999,6 +2059,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-2",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2018,6 +2079,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-2",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2030,8 +2092,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hello. I’m Ana. I’m from Peru. I live in Lima."
           },
-          "content": "**Instrucción:** ¿En qué ciudad vive Ana?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿En qué ciudad vive Ana?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s4-practice-2",
@@ -2039,6 +2101,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-2",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2092,6 +2155,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-3",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2111,6 +2175,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-3",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2123,8 +2188,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hello. I’m Ana. I’m from Peru. I live in Lima."
           },
-          "content": "**Instrucción:** Completa lo que lees después de “I’m from”: “I’m from ___.”\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Completa lo que lees después de “I’m from”: “I’m from ___.”</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s4-practice-3",
@@ -2132,6 +2197,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s4-check-3",
             "guidedTitle": "Escucha inicial con lectura del docente · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2178,6 +2244,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-teach",
             "guidedTitle": "Tarjeta puente para la unidad 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2197,6 +2264,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-teach",
             "guidedTitle": "Tarjeta puente para la unidad 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2210,8 +2278,8 @@
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204.",
             "teacherReadScript": "Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204."
           },
-          "content": "**Instrucción:** Usar nombre, origen, día, hora y aula en una tarjeta de primer contacto. Lee el modelo por significado; no memorices una lista.\n\n**Modelo original en inglés:** Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204.\n\n**Apoyo docente:** Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204.\n\n**Ruta autónoma:** Puedo decir mi nombre.\n**Ruta docente:** Entrega la tarjeta; lee el guion y pide que señalen nombre, país, día y aula.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Usar nombre, origen, día, hora y aula en una tarjeta de primer contacto. Lee el modelo por significado; no memorices una lista.</p><p><strong>Modelo original en inglés:</strong> Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204.</p><p><strong>Apoyo docente:</strong> Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204.</p><p><strong>Ruta autónoma:</strong> Puedo decir mi nombre.<br /><strong>Ruta docente:</strong> Entrega la tarjeta; lee el guion y pide que señalen nombre, país, día y aula.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s5-support",
@@ -2219,6 +2287,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-teach",
             "guidedTitle": "Tabla de apoyo",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2274,6 +2343,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-1",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2293,6 +2363,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-1",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2305,8 +2376,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204."
           },
-          "content": "**Instrucción:** Ordena la mini presentación de la tarjeta.\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Ordena la mini presentación de la tarjeta.</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s5-practice-1",
@@ -2314,6 +2385,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-1",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 1",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2380,6 +2452,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-2",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2399,6 +2472,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-2",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2411,8 +2485,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204."
           },
-          "content": "**Instrucción:** ¿En qué aula es la clase de Ana?\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> ¿En qué aula es la clase de Ana?</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s5-practice-2",
@@ -2420,6 +2494,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-2",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 2",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2473,6 +2548,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-3",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2492,6 +2568,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-3",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2504,8 +2581,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204."
           },
-          "content": "**Instrucción:** Convierte los datos Ana + Peru en dos frases.\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Convierte los datos Ana + Peru en dos frases.</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s5-practice-3",
@@ -2513,6 +2590,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-3",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 3",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2562,6 +2640,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-4",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2581,6 +2660,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-4",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2593,8 +2673,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room 204."
           },
-          "content": "**Instrucción:** Completa: “See you on ___.” (día de la tarjeta)\n\nUsa la pista solo después de intentar la tarea.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Completa: “See you on ___.” (día de la tarjeta)</p><p>Usa la pista solo después de intentar la tarea.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-start-s5-practice-4",
@@ -2602,6 +2682,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-start-s5-check-4",
             "guidedTitle": "Tarjeta puente para la unidad 1 · comprobación 4",
             "scene": "/images/lessons/backgrounds/listening-lounge.webp",
@@ -2656,6 +2737,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-teach",
             "guidedTitle": "Saludar y presentarse",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2675,6 +2757,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-teach",
             "guidedTitle": "Saludar y presentarse",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2689,8 +2772,8 @@
             "modelMode": "original reading model; teacher may read aloud; authentic audio pending approval",
             "sourceScenario": "En una clase vespertina, una persona nueva entra y dos compañeros se presentan."
           },
-          "content": "**Instrucción:** Saludar, decir el nombre y compartir origen o ciudad. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.\n\n**Escenario:** En una clase vespertina, una persona nueva entra y dos compañeros se presentan.\n\n**Modelo original en inglés:** Ana meets Luis at the door of an evening class. Ana says, \"Hi, I’m Ana. What’s your name?\" Luis answers, \"I’m Luis. Nice to meet you.\" Ana says, \"Nice to meet you too. I’m from Peru, and I live in Lima.\" Luis replies, \"I’m from Chile. See you in class.\"\n\n**Explicación breve:** I’m + nombre y My name is + nombre presentan a la persona; I’m from indica origen, I live in residencia y Nice to meet you cierra el primer encuentro.\n\nLa tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Saludar, decir el nombre y compartir origen o ciudad. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.</p><p><strong>Escenario:</strong> En una clase vespertina, una persona nueva entra y dos compañeros se presentan.</p><p><strong>Modelo original en inglés:</strong> Ana meets Luis at the door of an evening class. Ana says, \"Hi, I’m Ana. What’s your name?\" Luis answers, \"I’m Luis. Nice to meet you.\" Ana says, \"Nice to meet you too. I’m from Peru, and I live in Lima.\" Luis replies, \"I’m from Chile. See you in class.\"</p><p><strong>Explicación breve:</strong> I’m + nombre y My name is + nombre presentan a la persona; I’m from indica origen, I live in residencia y Nice to meet you cierra el primer encuentro.</p><p>La tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.</p>",
+          "format": "html"
         },
         {
           "id": "module1.unit1-language-support",
@@ -2698,6 +2781,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-teach",
             "guidedTitle": "Frases de apoyo",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2753,6 +2837,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-comprehension",
             "guidedTitle": "Saludar y presentarse · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2774,6 +2859,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-comprehension",
             "guidedTitle": "Saludar y presentarse · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2787,8 +2873,8 @@
             "instructionStyle": "compact-spanish",
             "contentMode": "meaningful-use-and-transfer"
           },
-          "content": "**Instrucción:** Lee el modelo y elige la evidencia que responde cada pregunta.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Lee el modelo y elige la evidencia que responde cada pregunta.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-comprehension-items",
@@ -2796,6 +2882,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-comprehension",
             "guidedTitle": "Saludar y presentarse · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2900,6 +2987,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-1",
             "guidedTitle": "Saludar y presentarse · práctica 1",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2919,6 +3007,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-1",
             "guidedTitle": "Saludar y presentarse · práctica 1",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2931,8 +3020,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Ana meets Luis at the door of an evening class. Ana says, \"Hi, I’m Ana. What’s your name?\" Luis answers, \"I’m Luis. Nice to meet you.\" Ana says, \"Nice to meet you too. I’m from Peru, and I live in Lima.\" Luis replies, \"I’m from Chile. See you in class.\""
           },
-          "content": "**Instrucción:** When you first meet a classmate, choose the best opening.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> When you first meet a classmate, choose the best opening.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-practice-block-1",
@@ -2940,6 +3029,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-1",
             "guidedTitle": "Saludar y presentarse · práctica 1",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -2993,6 +3083,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-2",
             "guidedTitle": "Saludar y presentarse · práctica 2",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3012,6 +3103,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-2",
             "guidedTitle": "Saludar y presentarse · práctica 2",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3024,8 +3116,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Ana meets Luis at the door of an evening class. Ana says, \"Hi, I’m Ana. What’s your name?\" Luis answers, \"I’m Luis. Nice to meet you.\" Ana says, \"Nice to meet you too. I’m from Peru, and I live in Lima.\" Luis replies, \"I’m from Chile. See you in class.\""
           },
-          "content": "**Instrucción:** Complete: “I’m ___ Peru.”\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Complete: “I’m ___ Peru.”</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-practice-block-2",
@@ -3033,6 +3125,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-2",
             "guidedTitle": "Saludar y presentarse · práctica 2",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3079,6 +3172,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-3",
             "guidedTitle": "Saludar y presentarse · práctica 3",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3098,6 +3192,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-3",
             "guidedTitle": "Saludar y presentarse · práctica 3",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3110,8 +3205,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Ana meets Luis at the door of an evening class. Ana says, \"Hi, I’m Ana. What’s your name?\" Luis answers, \"I’m Luis. Nice to meet you.\" Ana says, \"Nice to meet you too. I’m from Peru, and I live in Lima.\" Luis replies, \"I’m from Chile. See you in class.\""
           },
-          "content": "**Instrucción:** Where is Ana from?\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Where is Ana from?</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-practice-block-3",
@@ -3119,6 +3214,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-3",
             "guidedTitle": "Saludar y presentarse · práctica 3",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3172,6 +3268,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-4",
             "guidedTitle": "Saludar y presentarse · práctica 4",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3191,6 +3288,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-4",
             "guidedTitle": "Saludar y presentarse · práctica 4",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3203,8 +3301,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Ana meets Luis at the door of an evening class. Ana says, \"Hi, I’m Ana. What’s your name?\" Luis answers, \"I’m Luis. Nice to meet you.\" Ana says, \"Nice to meet you too. I’m from Peru, and I live in Lima.\" Luis replies, \"I’m from Chile. See you in class.\""
           },
-          "content": "**Instrucción:** Reply to “What’s your name?” as Luis.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Reply to “What’s your name?” as Luis.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-practice-block-4",
@@ -3212,6 +3310,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-4",
             "guidedTitle": "Saludar y presentarse · práctica 4",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3261,6 +3360,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-5",
             "guidedTitle": "Saludar y presentarse · práctica 5",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3280,6 +3380,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-5",
             "guidedTitle": "Saludar y presentarse · práctica 5",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3292,8 +3393,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Ana meets Luis at the door of an evening class. Ana says, \"Hi, I’m Ana. What’s your name?\" Luis answers, \"I’m Luis. Nice to meet you.\" Ana says, \"Nice to meet you too. I’m from Peru, and I live in Lima.\" Luis replies, \"I’m from Chile. See you in class.\""
           },
-          "content": "**Instrucción:** Order: meet / you / Nice / to\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Order: meet / you / Nice / to</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-practice-block-5",
@@ -3301,6 +3402,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-practice-5",
             "guidedTitle": "Saludar y presentarse · práctica 5",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3368,6 +3470,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-transfer-speak",
             "guidedTitle": "Saludar y presentarse · transferencia oral",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3387,6 +3490,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-transfer-speak",
             "guidedTitle": "Saludar y presentarse · transferencia oral",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3404,8 +3508,8 @@
               "modelAnswer": "Hi, I’m Ana. I’m from Peru and I live in Arequipa. Nice to meet you. The class starts at six."
             }
           },
-          "content": "Resuelve el escenario: En una clase vespertina, una persona nueva entra y dos compañeros se presentan. Incluye la información nueva indicada.\n\n**Dato nuevo:** La tarjeta de transferencia confirma que Ana vive en Arequipa y la clase empieza a las 18:00.\nUsa el propósito del escenario y una expresión que puedas adaptar.",
-          "format": "markdown"
+          "content": "<p>Resuelve el escenario: En una clase vespertina, una persona nueva entra y dos compañeros se presentan. Incluye la información nueva indicada.</p><p><strong>Dato nuevo:</strong> La tarjeta de transferencia confirma que Ana vive en Arequipa y la clase empieza a las 18:00.<br />Usa el propósito del escenario y una expresión que puedas adaptar.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-transfer-speak-recording",
@@ -3413,6 +3517,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-transfer-speak",
             "guidedTitle": "Saludar y presentarse · transferencia oral",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3475,6 +3580,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-transfer-review",
             "guidedTitle": "Saludar y presentarse · revisión escrita",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3494,6 +3600,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-transfer-review",
             "guidedTitle": "Saludar y presentarse · revisión escrita",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3506,8 +3613,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru and I live in Arequipa. Nice to meet you. The class starts at six."
           },
-          "content": "**Instrucción:** Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.\n\n**Modelo original:** Hi, I’m Ana. I’m from Peru and I live in Arequipa. Nice to meet you. The class starts at six.\n\nLa docente revisa significado, datos y una forma útil; no hay calificación automática.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.</p><p><strong>Modelo original:</strong> Hi, I’m Ana. I’m from Peru and I live in Arequipa. Nice to meet you. The class starts at six.</p><p>La docente revisa significado, datos y una forma útil; no hay calificación automática.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u1-transfer-review-essay",
@@ -3515,6 +3622,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u1-transfer-review",
             "guidedTitle": "Saludar y presentarse · revisión escrita",
             "scene": "/images/lessons/backgrounds/campus.webp",
@@ -3572,6 +3680,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-teach",
             "guidedTitle": "Identificar personas y objetos",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3591,6 +3700,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-teach",
             "guidedTitle": "Identificar personas y objetos",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3605,8 +3715,8 @@
             "modelMode": "original reading model; teacher may read aloud; authentic audio pending approval",
             "sourceScenario": "En una recepción, una estudiante mira una foto, carpetas y una credencial."
           },
-          "content": "**Instrucción:** Señalar personas y objetos y preguntar quién o qué es. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.\n\n**Escenario:** En una recepción, una estudiante mira una foto, carpetas y una credencial.\n\n**Modelo original en inglés:** At the community desk, Rosa points to a photo. \"This is my colleague Diego,\" she says. Omar asks, \"Who is the woman beside him?\" Rosa answers, \"That is our manager, Elena. The blue folder is hers, and the red folder is mine.\" Omar points to a badge: \"Is this your badge?\" Rosa says, \"Yes, it is.\"\n\n**Explicación breve:** This is/That is identifica personas y objetos; my, his, hers y mine expresan pertenencia; Who is...? pregunta por una persona e Is this...? comprueba un objeto.\n\nLa tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Señalar personas y objetos y preguntar quién o qué es. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.</p><p><strong>Escenario:</strong> En una recepción, una estudiante mira una foto, carpetas y una credencial.</p><p><strong>Modelo original en inglés:</strong> At the community desk, Rosa points to a photo. \"This is my colleague Diego,\" she says. Omar asks, \"Who is the woman beside him?\" Rosa answers, \"That is our manager, Elena. The blue folder is hers, and the red folder is mine.\" Omar points to a badge: \"Is this your badge?\" Rosa says, \"Yes, it is.\"</p><p><strong>Explicación breve:</strong> This is/That is identifica personas y objetos; my, his, hers y mine expresan pertenencia; Who is...? pregunta por una persona e Is this...? comprueba un objeto.</p><p>La tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.</p>",
+          "format": "html"
         },
         {
           "id": "module1.unit2-language-support",
@@ -3614,6 +3724,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-teach",
             "guidedTitle": "Frases de apoyo",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3669,6 +3780,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-comprehension",
             "guidedTitle": "Identificar personas y objetos · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3690,6 +3802,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-comprehension",
             "guidedTitle": "Identificar personas y objetos · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3703,8 +3816,8 @@
             "instructionStyle": "compact-spanish",
             "contentMode": "meaningful-use-and-transfer"
           },
-          "content": "**Instrucción:** Lee el modelo y elige la evidencia que responde cada pregunta.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Lee el modelo y elige la evidencia que responde cada pregunta.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-comprehension-items",
@@ -3712,6 +3825,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-comprehension",
             "guidedTitle": "Identificar personas y objetos · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3816,6 +3930,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-1",
             "guidedTitle": "Identificar personas y objetos · práctica 1",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3835,6 +3950,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-1",
             "guidedTitle": "Identificar personas y objetos · práctica 1",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3847,8 +3963,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "At the community desk, Rosa points to a photo. \"This is my colleague Diego,\" she says. Omar asks, \"Who is the woman beside him?\" Rosa answers, \"That is our manager, Elena. The blue folder is hers, and the red folder is mine.\" Omar points to a badge: \"Is this your badge?\" Rosa says, \"Yes, it is.\""
           },
-          "content": "**Instrucción:** You point to Diego. Choose the correct introduction.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> You point to Diego. Choose the correct introduction.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-practice-block-1",
@@ -3856,6 +3972,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-1",
             "guidedTitle": "Identificar personas y objetos · práctica 1",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3909,6 +4026,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-2",
             "guidedTitle": "Identificar personas y objetos · práctica 2",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3928,6 +4046,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-2",
             "guidedTitle": "Identificar personas y objetos · práctica 2",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3940,8 +4059,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "At the community desk, Rosa points to a photo. \"This is my colleague Diego,\" she says. Omar asks, \"Who is the woman beside him?\" Rosa answers, \"That is our manager, Elena. The blue folder is hers, and the red folder is mine.\" Omar points to a badge: \"Is this your badge?\" Rosa says, \"Yes, it is.\""
           },
-          "content": "**Instrucción:** Complete: “This is my ___ Diego.”\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Complete: “This is my ___ Diego.”</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-practice-block-2",
@@ -3949,6 +4068,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-2",
             "guidedTitle": "Identificar personas y objetos · práctica 2",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -3995,6 +4115,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-3",
             "guidedTitle": "Identificar personas y objetos · práctica 3",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4014,6 +4135,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-3",
             "guidedTitle": "Identificar personas y objetos · práctica 3",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4026,8 +4148,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "At the community desk, Rosa points to a photo. \"This is my colleague Diego,\" she says. Omar asks, \"Who is the woman beside him?\" Rosa answers, \"That is our manager, Elena. The blue folder is hers, and the red folder is mine.\" Omar points to a badge: \"Is this your badge?\" Rosa says, \"Yes, it is.\""
           },
-          "content": "**Instrucción:** Who is Elena?\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Who is Elena?</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-practice-block-3",
@@ -4035,6 +4157,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-3",
             "guidedTitle": "Identificar personas y objetos · práctica 3",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4088,6 +4211,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-4",
             "guidedTitle": "Identificar personas y objetos · práctica 4",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4107,6 +4231,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-4",
             "guidedTitle": "Identificar personas y objetos · práctica 4",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4119,8 +4244,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "At the community desk, Rosa points to a photo. \"This is my colleague Diego,\" she says. Omar asks, \"Who is the woman beside him?\" Rosa answers, \"That is our manager, Elena. The blue folder is hers, and the red folder is mine.\" Omar points to a badge: \"Is this your badge?\" Rosa says, \"Yes, it is.\""
           },
-          "content": "**Instrucción:** Identify Diego in a complete sentence.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Identify Diego in a complete sentence.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-practice-block-4",
@@ -4128,6 +4253,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-4",
             "guidedTitle": "Identificar personas y objetos · práctica 4",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4177,6 +4303,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-5",
             "guidedTitle": "Identificar personas y objetos · práctica 5",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4196,6 +4323,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-5",
             "guidedTitle": "Identificar personas y objetos · práctica 5",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4208,8 +4336,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "At the community desk, Rosa points to a photo. \"This is my colleague Diego,\" she says. Omar asks, \"Who is the woman beside him?\" Rosa answers, \"That is our manager, Elena. The blue folder is hers, and the red folder is mine.\" Omar points to a badge: \"Is this your badge?\" Rosa says, \"Yes, it is.\""
           },
-          "content": "**Instrucción:** Order: my / colleague / Diego / This / is\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Order: my / colleague / Diego / This / is</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-practice-block-5",
@@ -4217,6 +4345,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-practice-5",
             "guidedTitle": "Identificar personas y objetos · práctica 5",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4290,6 +4419,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-transfer-speak",
             "guidedTitle": "Identificar personas y objetos · transferencia oral",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4309,6 +4439,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-transfer-speak",
             "guidedTitle": "Identificar personas y objetos · transferencia oral",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4326,8 +4457,8 @@
               "modelAnswer": "This is Diego, my colleague. Elena is our manager. The red folder is beside Elena, and Rosa’s badge is number 17."
             }
           },
-          "content": "Resuelve el escenario: En una recepción, una estudiante mira una foto, carpetas y una credencial. Incluye la información nueva indicada.\n\n**Dato nuevo:** La ficha de recepción indica que la credencial 17 pertenece a Rosa y la carpeta roja está junto a Elena.\nUsa el propósito del escenario y una expresión que puedas adaptar.",
-          "format": "markdown"
+          "content": "<p>Resuelve el escenario: En una recepción, una estudiante mira una foto, carpetas y una credencial. Incluye la información nueva indicada.</p><p><strong>Dato nuevo:</strong> La ficha de recepción indica que la credencial 17 pertenece a Rosa y la carpeta roja está junto a Elena.<br />Usa el propósito del escenario y una expresión que puedas adaptar.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-transfer-speak-recording",
@@ -4335,6 +4466,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-transfer-speak",
             "guidedTitle": "Identificar personas y objetos · transferencia oral",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4397,6 +4529,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-transfer-review",
             "guidedTitle": "Identificar personas y objetos · revisión escrita",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4416,6 +4549,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-transfer-review",
             "guidedTitle": "Identificar personas y objetos · revisión escrita",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4428,8 +4562,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "This is Diego, my colleague. Elena is our manager. The red folder is beside Elena, and Rosa’s badge is number 17."
           },
-          "content": "**Instrucción:** Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.\n\n**Modelo original:** This is Diego, my colleague. Elena is our manager. The red folder is beside Elena, and Rosa’s badge is number 17.\n\nLa docente revisa significado, datos y una forma útil; no hay calificación automática.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.</p><p><strong>Modelo original:</strong> This is Diego, my colleague. Elena is our manager. The red folder is beside Elena, and Rosa’s badge is number 17.</p><p>La docente revisa significado, datos y una forma útil; no hay calificación automática.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u2-transfer-review-essay",
@@ -4437,6 +4571,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u2-transfer-review",
             "guidedTitle": "Identificar personas y objetos · revisión escrita",
             "scene": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -4493,6 +4628,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-teach",
             "guidedTitle": "Compartir contactos y horarios",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4512,6 +4648,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-teach",
             "guidedTitle": "Compartir contactos y horarios",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4526,8 +4663,8 @@
             "modelMode": "original reading model; teacher may read aloud; authentic audio pending approval",
             "sourceScenario": "Después de clase, dos adultos intercambian datos."
           },
-          "content": "**Instrucción:** Dar un teléfono o correo y acordar una hora disponible. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.\n\n**Escenario:** Después de clase, dos adultos intercambian datos.\n\n**Modelo original en inglés:** After class, Elena gives her contact to Marco. \"My phone number is 555-0142, and my email is elena.ramos@example.org.\" Marco asks, \"When are you free?\" Elena says, \"I’m free on Tuesday at six, or Saturday morning.\" Marco replies, \"Tuesday at six works for me. I’ll send a message.\" They write the details on a small card.\n\n**Explicación breve:** My phone number is y My email is comparten contacto; When are you free? pregunta disponibilidad y on + día / at + hora fijan un horario.\n\nLa tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Dar un teléfono o correo y acordar una hora disponible. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.</p><p><strong>Escenario:</strong> Después de clase, dos adultos intercambian datos.</p><p><strong>Modelo original en inglés:</strong> After class, Elena gives her contact to Marco. \"My phone number is 555-0142, and my email is elena.ramos@example.org.\" Marco asks, \"When are you free?\" Elena says, \"I’m free on Tuesday at six, or Saturday morning.\" Marco replies, \"Tuesday at six works for me. I’ll send a message.\" They write the details on a small card.</p><p><strong>Explicación breve:</strong> My phone number is y My email is comparten contacto; When are you free? pregunta disponibilidad y on + día / at + hora fijan un horario.</p><p>La tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.</p>",
+          "format": "html"
         },
         {
           "id": "module1.unit3-language-support",
@@ -4535,6 +4672,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-teach",
             "guidedTitle": "Frases de apoyo",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4590,6 +4728,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-comprehension",
             "guidedTitle": "Compartir contactos y horarios · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4611,6 +4750,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-comprehension",
             "guidedTitle": "Compartir contactos y horarios · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4624,8 +4764,8 @@
             "instructionStyle": "compact-spanish",
             "contentMode": "meaningful-use-and-transfer"
           },
-          "content": "**Instrucción:** Lee el modelo y elige la evidencia que responde cada pregunta.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Lee el modelo y elige la evidencia que responde cada pregunta.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-comprehension-items",
@@ -4633,6 +4773,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-comprehension",
             "guidedTitle": "Compartir contactos y horarios · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4737,6 +4878,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-1",
             "guidedTitle": "Compartir contactos y horarios · práctica 1",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4756,6 +4898,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-1",
             "guidedTitle": "Compartir contactos y horarios · práctica 1",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4768,8 +4911,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "After class, Elena gives her contact to Marco. \"My phone number is 555-0142, and my email is elena.ramos@example.org.\" Marco asks, \"When are you free?\" Elena says, \"I’m free on Tuesday at six, or Saturday morning.\" Marco replies, \"Tuesday at six works for me. I’ll send a message.\" They write the details on a small card."
           },
-          "content": "**Instrucción:** A classmate asks about availability. Choose the question.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> A classmate asks about availability. Choose the question.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-practice-block-1",
@@ -4777,6 +4920,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-1",
             "guidedTitle": "Compartir contactos y horarios · práctica 1",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4830,6 +4974,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-2",
             "guidedTitle": "Compartir contactos y horarios · práctica 2",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4849,6 +4994,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-2",
             "guidedTitle": "Compartir contactos y horarios · práctica 2",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4861,8 +5007,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "After class, Elena gives her contact to Marco. \"My phone number is 555-0142, and my email is elena.ramos@example.org.\" Marco asks, \"When are you free?\" Elena says, \"I’m free on Tuesday at six, or Saturday morning.\" Marco replies, \"Tuesday at six works for me. I’ll send a message.\" They write the details on a small card."
           },
-          "content": "**Instrucción:** Complete: “My phone number ___ 555-0142.”\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Complete: “My phone number ___ 555-0142.”</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-practice-block-2",
@@ -4870,6 +5016,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-2",
             "guidedTitle": "Compartir contactos y horarios · práctica 2",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4916,6 +5063,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-3",
             "guidedTitle": "Compartir contactos y horarios · práctica 3",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4935,6 +5083,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-3",
             "guidedTitle": "Compartir contactos y horarios · práctica 3",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -4947,8 +5096,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "After class, Elena gives her contact to Marco. \"My phone number is 555-0142, and my email is elena.ramos@example.org.\" Marco asks, \"When are you free?\" Elena says, \"I’m free on Tuesday at six, or Saturday morning.\" Marco replies, \"Tuesday at six works for me. I’ll send a message.\" They write the details on a small card."
           },
-          "content": "**Instrucción:** What is Elena’s phone number?\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> What is Elena’s phone number?</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-practice-block-3",
@@ -4956,6 +5105,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-3",
             "guidedTitle": "Compartir contactos y horarios · práctica 3",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5009,6 +5159,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-4",
             "guidedTitle": "Compartir contactos y horarios · práctica 4",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5028,6 +5179,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-4",
             "guidedTitle": "Compartir contactos y horarios · práctica 4",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5040,8 +5192,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "After class, Elena gives her contact to Marco. \"My phone number is 555-0142, and my email is elena.ramos@example.org.\" Marco asks, \"When are you free?\" Elena says, \"I’m free on Tuesday at six, or Saturday morning.\" Marco replies, \"Tuesday at six works for me. I’ll send a message.\" They write the details on a small card."
           },
-          "content": "**Instrucción:** Give Elena’s contact phone in a complete sentence.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Give Elena’s contact phone in a complete sentence.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-practice-block-4",
@@ -5049,6 +5201,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-4",
             "guidedTitle": "Compartir contactos y horarios · práctica 4",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5098,6 +5251,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-5",
             "guidedTitle": "Compartir contactos y horarios · práctica 5",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5117,6 +5271,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-5",
             "guidedTitle": "Compartir contactos y horarios · práctica 5",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5129,8 +5284,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "After class, Elena gives her contact to Marco. \"My phone number is 555-0142, and my email is elena.ramos@example.org.\" Marco asks, \"When are you free?\" Elena says, \"I’m free on Tuesday at six, or Saturday morning.\" Marco replies, \"Tuesday at six works for me. I’ll send a message.\" They write the details on a small card."
           },
-          "content": "**Instrucción:** Order: number / is / 555-0142 / My / phone\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Order: number / is / 555-0142 / My / phone</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-practice-block-5",
@@ -5138,6 +5293,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-practice-5",
             "guidedTitle": "Compartir contactos y horarios · práctica 5",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5211,6 +5367,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-transfer-speak",
             "guidedTitle": "Compartir contactos y horarios · transferencia oral",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5230,6 +5387,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-transfer-speak",
             "guidedTitle": "Compartir contactos y horarios · transferencia oral",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5247,8 +5405,8 @@
               "modelAnswer": "My phone number is 555-0142. My email is maria.soto@example.org. I’m free on Sunday afternoon."
             }
           },
-          "content": "Resuelve el escenario: Después de clase, dos adultos intercambian datos. Incluye la información nueva indicada.\n\n**Dato nuevo:** La tarjeta adicional da el correo maria.soto@example.org y confirma que Sunday afternoon está disponible.\nUsa el propósito del escenario y una expresión que puedas adaptar.",
-          "format": "markdown"
+          "content": "<p>Resuelve el escenario: Después de clase, dos adultos intercambian datos. Incluye la información nueva indicada.</p><p><strong>Dato nuevo:</strong> La tarjeta adicional da el correo maria.soto@example.org y confirma que Sunday afternoon está disponible.<br />Usa el propósito del escenario y una expresión que puedas adaptar.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-transfer-speak-recording",
@@ -5256,6 +5414,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-transfer-speak",
             "guidedTitle": "Compartir contactos y horarios · transferencia oral",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5318,6 +5477,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-transfer-review",
             "guidedTitle": "Compartir contactos y horarios · revisión escrita",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5337,6 +5497,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-transfer-review",
             "guidedTitle": "Compartir contactos y horarios · revisión escrita",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5349,8 +5510,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "My phone number is 555-0142. My email is maria.soto@example.org. I’m free on Sunday afternoon."
           },
-          "content": "**Instrucción:** Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.\n\n**Modelo original:** My phone number is 555-0142. My email is maria.soto@example.org. I’m free on Sunday afternoon.\n\nLa docente revisa significado, datos y una forma útil; no hay calificación automática.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.</p><p><strong>Modelo original:</strong> My phone number is 555-0142. My email is maria.soto@example.org. I’m free on Sunday afternoon.</p><p>La docente revisa significado, datos y una forma útil; no hay calificación automática.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u3-transfer-review-essay",
@@ -5358,6 +5519,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u3-transfer-review",
             "guidedTitle": "Compartir contactos y horarios · revisión escrita",
             "scene": "/images/lessons/backgrounds/town-park.webp",
@@ -5414,6 +5576,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-teach",
             "guidedTitle": "Pedir repetición y aclaración",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5433,6 +5596,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-teach",
             "guidedTitle": "Pedir repetición y aclaración",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5447,8 +5611,8 @@
             "modelMode": "original reading model; teacher may read aloud; authentic audio pending approval",
             "sourceScenario": "En una orientación, una persona no oye bien una fecha."
           },
-          "content": "**Instrucción:** Pedir que repitan un dato y comprobar día o lugar. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.\n\n**Escenario:** En una orientación, una persona no oye bien una fecha.\n\n**Modelo original en inglés:** During an orientation, Paula says, \"The appointment is on Thursday at 3:30.\" Tom does not understand. He says, \"Sorry, could you repeat that, please?\" Paula repeats, \"Thursday at 3:30.\" Tom asks, \"Do you mean this Thursday?\" Paula answers, \"Yes, this Thursday. The room is 204.\" Tom repeats the room number to check it.\n\n**Explicación breve:** Could you repeat that? y Could you speak slowly? reparan una escucha; Do you mean...? verifica el dato exacto y on + día / at + hora ubican la cita.\n\nLa tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Pedir que repitan un dato y comprobar día o lugar. Lee el modelo para entender quién, dónde y para qué; después usa una frase con información nueva.</p><p><strong>Escenario:</strong> En una orientación, una persona no oye bien una fecha.</p><p><strong>Modelo original en inglés:</strong> During an orientation, Paula says, \"The appointment is on Thursday at 3:30.\" Tom does not understand. He says, \"Sorry, could you repeat that, please?\" Paula repeats, \"Thursday at 3:30.\" Tom asks, \"Do you mean this Thursday?\" Paula answers, \"Yes, this Thursday. The room is 204.\" Tom repeats the room number to check it.</p><p><strong>Explicación breve:</strong> Could you repeat that? y Could you speak slowly? reparan una escucha; Do you mean...? verifica el dato exacto y on + día / at + hora ubican la cita.</p><p>La tabla es apoyo durante la tarea. La producción se revisa por significado y claridad, no por memorización literal.</p>",
+          "format": "html"
         },
         {
           "id": "module1.unit4-language-support",
@@ -5456,6 +5620,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-teach",
             "guidedTitle": "Frases de apoyo",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5511,6 +5676,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-comprehension",
             "guidedTitle": "Pedir repetición y aclaración · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5532,6 +5698,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-comprehension",
             "guidedTitle": "Pedir repetición y aclaración · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5545,8 +5712,8 @@
             "instructionStyle": "compact-spanish",
             "contentMode": "meaningful-use-and-transfer"
           },
-          "content": "**Instrucción:** Lee el modelo y elige la evidencia que responde cada pregunta.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Lee el modelo y elige la evidencia que responde cada pregunta.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-comprehension-items",
@@ -5554,6 +5721,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-comprehension",
             "guidedTitle": "Pedir repetición y aclaración · comprueba el sentido",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5658,6 +5826,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-1",
             "guidedTitle": "Pedir repetición y aclaración · práctica 1",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5677,6 +5846,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-1",
             "guidedTitle": "Pedir repetición y aclaración · práctica 1",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5689,8 +5859,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "During an orientation, Paula says, \"The appointment is on Thursday at 3:30.\" Tom does not understand. He says, \"Sorry, could you repeat that, please?\" Paula repeats, \"Thursday at 3:30.\" Tom asks, \"Do you mean this Thursday?\" Paula answers, \"Yes, this Thursday. The room is 204.\" Tom repeats the room number to check it."
           },
-          "content": "**Instrucción:** You did not hear the date. Choose the repair.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> You did not hear the date. Choose the repair.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-practice-block-1",
@@ -5698,6 +5868,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-1",
             "guidedTitle": "Pedir repetición y aclaración · práctica 1",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5751,6 +5922,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-2",
             "guidedTitle": "Pedir repetición y aclaración · práctica 2",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5770,6 +5942,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-2",
             "guidedTitle": "Pedir repetición y aclaración · práctica 2",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5782,8 +5955,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "During an orientation, Paula says, \"The appointment is on Thursday at 3:30.\" Tom does not understand. He says, \"Sorry, could you repeat that, please?\" Paula repeats, \"Thursday at 3:30.\" Tom asks, \"Do you mean this Thursday?\" Paula answers, \"Yes, this Thursday. The room is 204.\" Tom repeats the room number to check it."
           },
-          "content": "**Instrucción:** Complete: “I ___ understand.”\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Complete: “I ___ understand.”</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-practice-block-2",
@@ -5791,6 +5964,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-2",
             "guidedTitle": "Pedir repetición y aclaración · práctica 2",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5838,6 +6012,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-3",
             "guidedTitle": "Pedir repetición y aclaración · práctica 3",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5857,6 +6032,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-3",
             "guidedTitle": "Pedir repetición y aclaración · práctica 3",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5869,8 +6045,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "During an orientation, Paula says, \"The appointment is on Thursday at 3:30.\" Tom does not understand. He says, \"Sorry, could you repeat that, please?\" Paula repeats, \"Thursday at 3:30.\" Tom asks, \"Do you mean this Thursday?\" Paula answers, \"Yes, this Thursday. The room is 204.\" Tom repeats the room number to check it."
           },
-          "content": "**Instrucción:** What is the room number?\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> What is the room number?</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-practice-block-3",
@@ -5878,6 +6054,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-3",
             "guidedTitle": "Pedir repetición y aclaración · práctica 3",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5931,6 +6108,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-4",
             "guidedTitle": "Pedir repetición y aclaración · práctica 4",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5950,6 +6128,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-4",
             "guidedTitle": "Pedir repetición y aclaración · práctica 4",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -5962,8 +6141,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "During an orientation, Paula says, \"The appointment is on Thursday at 3:30.\" Tom does not understand. He says, \"Sorry, could you repeat that, please?\" Paula repeats, \"Thursday at 3:30.\" Tom asks, \"Do you mean this Thursday?\" Paula answers, \"Yes, this Thursday. The room is 204.\" Tom repeats the room number to check it."
           },
-          "content": "**Instrucción:** Confirm the appointment day and time.\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Confirm the appointment day and time.</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-practice-block-4",
@@ -5971,6 +6150,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-4",
             "guidedTitle": "Pedir repetición y aclaración · práctica 4",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6020,6 +6200,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-5",
             "guidedTitle": "Pedir repetición y aclaración · práctica 5",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6039,6 +6220,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-5",
             "guidedTitle": "Pedir repetición y aclaración · práctica 5",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6051,8 +6233,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "During an orientation, Paula says, \"The appointment is on Thursday at 3:30.\" Tom does not understand. He says, \"Sorry, could you repeat that, please?\" Paula repeats, \"Thursday at 3:30.\" Tom asks, \"Do you mean this Thursday?\" Paula answers, \"Yes, this Thursday. The room is 204.\" Tom repeats the room number to check it."
           },
-          "content": "**Instrucción:** Order: repeat / that, / please / Could / you\n\nPrimero intenta comunicar el dato; usa la pista después.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Order: repeat / that, / please / Could / you</p><p>Primero intenta comunicar el dato; usa la pista después.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-practice-block-5",
@@ -6060,6 +6242,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-practice-5",
             "guidedTitle": "Pedir repetición y aclaración · práctica 5",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6133,6 +6316,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-transfer-speak",
             "guidedTitle": "Pedir repetición y aclaración · transferencia oral",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6152,6 +6336,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-transfer-speak",
             "guidedTitle": "Pedir repetición y aclaración · transferencia oral",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6169,8 +6354,8 @@
               "modelAnswer": "The appointment is Friday at 4:00 in room 105. Sorry, could you repeat that, please?"
             }
           },
-          "content": "Resuelve el escenario: En una orientación, una persona no oye bien una fecha. Incluye la información nueva indicada.\n\n**Dato nuevo:** La hoja actualizada confirma Friday at 4:00 y room 105.\nUsa el propósito del escenario y una expresión que puedas adaptar.",
-          "format": "markdown"
+          "content": "<p>Resuelve el escenario: En una orientación, una persona no oye bien una fecha. Incluye la información nueva indicada.</p><p><strong>Dato nuevo:</strong> La hoja actualizada confirma Friday at 4:00 y room 105.<br />Usa el propósito del escenario y una expresión que puedas adaptar.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-transfer-speak-recording",
@@ -6178,6 +6363,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-transfer-speak",
             "guidedTitle": "Pedir repetición y aclaración · transferencia oral",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6240,6 +6426,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-transfer-review",
             "guidedTitle": "Pedir repetición y aclaración · revisión escrita",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6259,6 +6446,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-transfer-review",
             "guidedTitle": "Pedir repetición y aclaración · revisión escrita",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6271,8 +6459,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "The appointment is Friday at 4:00 in room 105. Sorry, could you repeat that, please?"
           },
-          "content": "**Instrucción:** Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.\n\n**Modelo original:** The appointment is Friday at 4:00 in room 105. Sorry, could you repeat that, please?\n\nLa docente revisa significado, datos y una forma útil; no hay calificación automática.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Escribe 2–4 frases en inglés para resolver la tarjeta de transferencia. Incluye el dato nuevo y una comprobación o reparación breve.</p><p><strong>Modelo original:</strong> The appointment is Friday at 4:00 in room 105. Sorry, could you repeat that, please?</p><p>La docente revisa significado, datos y una forma útil; no hay calificación automática.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-u4-transfer-review-essay",
@@ -6280,6 +6468,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-u4-transfer-review",
             "guidedTitle": "Pedir repetición y aclaración · revisión escrita",
             "scene": "/images/lessons/backgrounds/travel-station.webp",
@@ -6336,6 +6525,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-briefing",
             "guidedTitle": "Misión: recepción de un centro de formación",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6355,6 +6545,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-briefing",
             "guidedTitle": "Misión: recepción de un centro de formación",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6369,8 +6560,8 @@
             "roleCardRevealMode": "role-card-only",
             "roleCardRuntimeStatus": "metadata-only-until-role-card-viewer-exists"
           },
-          "content": "**Escenario:** En la recepción de un centro de formación, una persona nueva necesita bienvenida, objetos, contacto y horario.\n\n**Instrucción:** Reciban a la persona, intercambien datos, señalen objetos, acuerden una hora y pidan repetición si falta un dato.\n\n**Roles:** Recepcionista y persona nueva; cambien roles.\n\n**Entrega:** Diálogo de 60–90 segundos y tarjeta con nombre, contacto y horario.\n\n**Reparación:** Señala la tarjeta, usa una expresión de apoyo y repite solo el dato que falta.\n\nLas tarjetas de rol se muestran solo al iniciar la misión cuando el runtime tenga visor de roles. En el runtime actual se deja visible la hoja común y se marca la información privada como apoyo docente; no se afirma un modo oculto que la aplicación todavía no soporta.",
-          "format": "markdown"
+          "content": "<p><strong>Escenario:</strong> En la recepción de un centro de formación, una persona nueva necesita bienvenida, objetos, contacto y horario.</p><p><strong>Instrucción:</strong> Reciban a la persona, intercambien datos, señalen objetos, acuerden una hora y pidan repetición si falta un dato.</p><p><strong>Roles:</strong> Recepcionista y persona nueva; cambien roles.</p><p><strong>Entrega:</strong> Diálogo de 60–90 segundos y tarjeta con nombre, contacto y horario.</p><p><strong>Reparación:</strong> Señala la tarjeta, usa una expresión de apoyo y repite solo el dato que falta.</p><p>Las tarjetas de rol se muestran solo al iniciar la misión cuando el runtime tenga visor de roles. En el runtime actual se deja visible la hoja común y se marca la información privada como apoyo docente; no se afirma un modo oculto que la aplicación todavía no soporta.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-mission-briefing-common-sheet",
@@ -6378,6 +6569,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-briefing",
             "guidedTitle": "Hoja común de la misión",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6425,6 +6617,7 @@
           "order": 3,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-briefing",
             "guidedTitle": "Tarjetas de rol para la docente",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6452,6 +6645,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-model",
             "guidedTitle": "Misión · modelo breve",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6471,6 +6665,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-model",
             "guidedTitle": "Misión · modelo breve",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6483,8 +6678,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204."
           },
-          "content": "**Modelo original en inglés:** Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204.\n\n**Observa:** saludo, nombre, objeto, contacto y hora. Cambia los datos de la hoja; no repitas el diálogo como recitación.\n\n**Ruta docente:** lee una vez y cambia un dato. **Ruta autónoma:** tapa una frase y reconstruye el propósito con la hoja.",
-          "format": "markdown"
+          "content": "<p><strong>Modelo original en inglés:</strong> Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204.</p><p><strong>Observa:</strong> saludo, nombre, objeto, contacto y hora. Cambia los datos de la hoja; no repitas el diálogo como recitación.</p><p><strong>Ruta docente:</strong> lee una vez y cambia un dato. <strong>Ruta autónoma:</strong> tapa una frase y reconstruye el propósito con la hoja.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-mission-model-language",
@@ -6492,6 +6687,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-model",
             "guidedTitle": "Frases de misión",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6542,6 +6738,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-speak",
             "guidedTitle": "Misión · diálogo",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6561,6 +6758,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-speak",
             "guidedTitle": "Misión · diálogo",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6573,8 +6771,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204."
           },
-          "content": "**Instrucción:** Reciban a la persona, intercambien datos, señalen objetos, acuerden una hora y pidan repetición si falta un dato. Representa el diálogo durante 60–90 segundos.\n\n**Modelo original:** Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204.\n\nCambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana; el runtime no debe enviar esta respuesta a una calificación automática.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Reciban a la persona, intercambien datos, señalen objetos, acuerden una hora y pidan repetición si falta un dato. Representa el diálogo durante 60–90 segundos.</p><p><strong>Modelo original:</strong> Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204.</p><p>Cambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana; el runtime no debe enviar esta respuesta a una calificación automática.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-mission-speak-recording",
@@ -6582,6 +6780,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-speak",
             "guidedTitle": "Misión · diálogo",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6643,6 +6842,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-card",
             "guidedTitle": "Misión · tarjeta",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6662,6 +6862,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-card",
             "guidedTitle": "Misión · tarjeta",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6674,8 +6875,8 @@
             "contentMode": "meaningful-use-and-transfer",
             "originalEnglishModel": "Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204."
           },
-          "content": "**Instrucción:** Completa una tarjeta en inglés con nombre, contacto, día, hora y sala; añade una frase para pedir repetición.\n\n**Modelo original:** Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.\n\nComprueba que los datos coinciden con la hoja; no hay calificación automática.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Completa una tarjeta en inglés con nombre, contacto, día, hora y sala; añade una frase para pedir repetición.</p><p><strong>Modelo original:</strong> Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.</p><p>Comprueba que los datos coinciden con la hoja; no hay calificación automática.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-mission-card-essay",
@@ -6683,6 +6884,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-card",
             "guidedTitle": "Misión · tarjeta",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6730,6 +6932,7 @@
           "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-mediation",
             "guidedTitle": "Misión · mediación",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6749,6 +6952,7 @@
           "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-mediation",
             "guidedTitle": "Misión · mediación",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6770,8 +6974,8 @@
               "observable": "Conserva cuatro datos y marca el dato ausente."
             }
           },
-          "content": "**Instrucción:** Lee la ficha y redacta una respuesta breve en español para la persona nueva: día, hora, sala, qué llevar y a quién preguntar. Indica qué dato no aparece.\n\n**Modelo original de control:** The class is on Tuesday at six in Room 4. Bring a notebook. If you need help, ask Marta at reception. The card does not mention parking.\n\nLa evidencia de mediación se revisa por transferencia de información; no se exige traducción palabra por palabra.",
-          "format": "markdown"
+          "content": "<p><strong>Instrucción:</strong> Lee la ficha y redacta una respuesta breve en español para la persona nueva: día, hora, sala, qué llevar y a quién preguntar. Indica qué dato no aparece.</p><p><strong>Modelo original de control:</strong> The class is on Tuesday at six in Room 4. Bring a notebook. If you need help, ask Marta at reception. The card does not mention parking.</p><p>La evidencia de mediación se revisa por transferencia de información; no se exige traducción palabra por palabra.</p>",
+          "format": "html"
         },
         {
           "id": "a1m1-mission-mediation-source",
@@ -6779,6 +6983,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-mediation",
             "guidedTitle": "Ficha de control",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",
@@ -6817,6 +7022,7 @@
           "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
+            "pilotRevision": "a1-module1-pilot-v1",
             "pilotSceneId": "a1m1-mission-mediation",
             "guidedTitle": "Misión · mediación",
             "scene": "/images/lessons/backgrounds/botanical-office.webp",

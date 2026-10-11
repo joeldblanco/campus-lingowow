@@ -1593,7 +1593,8 @@
       "Source cloze maps to short_answer with answerLayout inlineBlank and question blank ___ preserved.",
       "Source order maps to ordering with 1-based positions and actual correctSentence.",
       "Source rewrite maps to short_answer with teacherReviewOnly and no automatic grading.",
-      "Source match arrows map to structured pairs."
+      "Source match arrows map to structured pairs.",
+      "Authored Markdown-like instructions are escaped and emitted as HTML paragraphs/strong/list markup."
     ],
     "ambiguousSourceFieldsCorrected": [
       "answer and answer_key are normalised by source type.",
@@ -2695,6 +2696,7 @@
   },
   "runtimeMappingGuidance": {
     "learningRevision": "course-guided-v1",
+    "pilotRevision": "a1-module1-pilot-v1",
     "oneInteractiveBlockPerScene": true,
     "interactiveTypes": [
       "essay",

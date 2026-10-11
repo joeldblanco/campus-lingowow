@@ -11,6 +11,7 @@ block and scene receives a new pilot ID.
 from __future__ import annotations
 
 import argparse
+import html
 import hashlib
 import json
 import re
@@ -22,6 +23,7 @@ from typing import Any, Iterable
 COURSE_ID = "a1-general-module1-pilot"
 MODULE_ID = "a1-general-module1"
 LEARNING_REVISION = "course-guided-v1"
+PILOT_REVISION = "a1-module1-pilot-v1"
 SCHEMA_VERSION = "a1-module1-pilot-v1"
 
 DEFAULT_BLUEPRINT = Path("blueprint.json")
@@ -35,6 +37,41 @@ BACKGROUND_BY_LESSON = {
     "a1-general-u3": "/images/lessons/backgrounds/town-park.webp",
     "a1-general-u4": "/images/lessons/backgrounds/travel-station.webp",
     "a1-general-mission": "/images/lessons/backgrounds/botanical-office.webp",
+}
+
+LISTENING_CHECKS: dict[int, list[dict[str, Any]]] = {
+    1: [
+        {"prompt": "Where does Ana meet Luis?", "answer": "At the door", "options": ["At the door", "At a market", "At a station"], "feedback": "Ana meets Luis at the door of the evening class."},
+        {"prompt": "What kind of class is it?", "answer": "An evening class", "options": ["An evening class", "A morning class", "A phone class"], "feedback": "The model says evening class."},
+        {"prompt": "Where does Ana live?", "answer": "Lima", "options": ["Lima", "Peru", "Chile"], "feedback": "Ana says she lives in Lima."},
+        {"prompt": "Who is from Chile?", "answer": "Luis", "options": ["Luis", "Ana", "Diego"], "feedback": "Luis says he is from Chile."},
+        {"prompt": "What does Ana say at the end?", "answer": "See you in class", "options": ["See you in class", "See you tomorrow", "See you at the door"], "feedback": "Ana closes with See you in class."},
+        {"prompt": "What name does Luis give?", "answer": "Luis", "options": ["Luis", "Ana", "Rosa"], "feedback": "Luis answers I’m Luis."},
+    ],
+    2: [
+        {"prompt": "Where does Rosa point?", "answer": "At a photo", "options": ["At a photo", "At a phone", "At a door"], "feedback": "Rosa points to a photo at the community desk."},
+        {"prompt": "Who is Diego?", "answer": "Rosa’s colleague", "options": ["Rosa’s colleague", "The manager", "The visitor"], "feedback": "Rosa calls Diego her colleague."},
+        {"prompt": "Which folder is hers?", "answer": "The blue folder", "options": ["The blue folder", "The red folder", "The green folder"], "feedback": "The blue folder is hers."},
+        {"prompt": "Which folder is mine?", "answer": "The red folder", "options": ["The red folder", "The blue folder", "The yellow folder"], "feedback": "Rosa says the red folder is mine."},
+        {"prompt": "Who is the woman beside Diego?", "answer": "Elena", "options": ["Elena", "Rosa", "Ana"], "feedback": "Rosa identifies Elena as the manager."},
+        {"prompt": "What does Rosa say about the badge?", "answer": "Yes, it is", "options": ["Yes, it is", "No, it isn’t", "It is hers"], "feedback": "Rosa confirms the badge with Yes, it is."},
+    ],
+    3: [
+        {"prompt": "When does the conversation happen?", "answer": "After class", "options": ["After class", "Before breakfast", "At the door"], "feedback": "The model begins After class."},
+        {"prompt": "What is Elena’s phone number?", "answer": "555-0142", "options": ["555-0142", "555-0412", "555-1024"], "feedback": "Elena gives 555-0142."},
+        {"prompt": "What is Elena’s email?", "answer": "elena.ramos@example.org", "options": ["elena.ramos@example.org", "maria.soto@example.org", "welcome@centro.example"], "feedback": "The model gives Elena’s email."},
+        {"prompt": "When is Elena free?", "answer": "Tuesday at six or Saturday morning", "options": ["Tuesday at six or Saturday morning", "Thursday at three", "Monday at eight"], "feedback": "Elena offers Tuesday at six or Saturday morning."},
+        {"prompt": "Who will send a message?", "answer": "Marco", "options": ["Marco", "Elena", "Paula"], "feedback": "Marco says I’ll send a message."},
+        {"prompt": "Where do they write the details?", "answer": "On a small card", "options": ["On a small card", "On the door", "In a notebook"], "feedback": "They write the details on a small card."},
+    ],
+    4: [
+        {"prompt": "Where are Paula and Tom?", "answer": "During an orientation", "options": ["During an orientation", "After class", "At the community desk"], "feedback": "The model says During an orientation."},
+        {"prompt": "When is the appointment?", "answer": "Thursday at 3:30", "options": ["Thursday at 3:30", "Friday at 4:00", "Tuesday at six"], "feedback": "Paula gives Thursday at 3:30."},
+        {"prompt": "Why does Tom ask for repetition?", "answer": "He does not understand", "options": ["He does not understand", "He is late", "He needs a phone"], "feedback": "Tom says he does not understand the date."},
+        {"prompt": "What does Paula repeat?", "answer": "Thursday at 3:30", "options": ["Thursday at 3:30", "Tuesday at six", "Friday at 4:00"], "feedback": "Paula repeats the day and time."},
+        {"prompt": "What is the room number?", "answer": "204", "options": ["204", "240", "105"], "feedback": "Paula says The room is 204."},
+        {"prompt": "What does Tom repeat to check?", "answer": "The room number", "options": ["The room number", "The phone number", "The person’s name"], "feedback": "Tom repeats the room number to check it."},
+    ],
 }
 
 INTERACTIVE_TYPES = {
@@ -80,6 +117,45 @@ def _unique(values: Iterable[str]) -> list[str]:
     return result
 
 
+def _safe_inline_html(value: str) -> str:
+    escaped = html.escape(value, quote=False)
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+    return escaped.replace("**", "")
+
+
+def _markdown_to_safe_html(content: str) -> str:
+    """Convert the compiler's small Markdown subset into safe authored HTML."""
+
+    chunks: list[str] = []
+    paragraph: list[str] = []
+    list_items: list[str] = []
+
+    def flush_paragraph() -> None:
+        if paragraph:
+            chunks.append(f"<p>{'<br />'.join(paragraph)}</p>")
+            paragraph.clear()
+
+    def flush_list() -> None:
+        if list_items:
+            chunks.append(f"<ul>{''.join(f'<li>{item}</li>' for item in list_items)}</ul>")
+            list_items.clear()
+
+    for raw_line in content.splitlines():
+        line = raw_line.strip()
+        if not line:
+            flush_paragraph()
+            flush_list()
+        elif line.startswith("- "):
+            flush_paragraph()
+            list_items.append(_safe_inline_html(line[2:].strip()))
+        else:
+            flush_list()
+            paragraph.append(_safe_inline_html(line))
+    flush_paragraph()
+    flush_list()
+    return "".join(chunks)
+
+
 def _norm(value: str) -> str:
     return re.sub(r"\s+", " ", value.strip().lower().strip(".,!?;:"))
 
@@ -109,6 +185,7 @@ def _metadata(
 ) -> dict[str, Any]:
     data: dict[str, Any] = {
         "learningRevision": LEARNING_REVISION,
+        "pilotRevision": PILOT_REVISION,
         "pilotSceneId": scene_id,
         "guidedTitle": guided_title,
         "scene": scene,
@@ -194,8 +271,38 @@ def _text_block(
         scene,
         source_refs=source_refs,
         content_role=content_role,
+        content=_markdown_to_safe_html(content),
+        format="html",
+    )
+    block["data"].update(data)
+    return block
+
+
+def _html_text_block(
+    block_id: str,
+    scene_id: str,
+    title: str,
+    content: str,
+    scene: str,
+    order: int = 1,
+    *,
+    source_refs: list[str] | None = None,
+    content_role: str = "teaching",
+    **data: Any,
+) -> dict[str, Any]:
+    """Emit compiler-generated, already escaped HTML (for transcript details)."""
+
+    block = _block(
+        block_id,
+        "text",
+        order,
+        scene_id,
+        title,
+        scene,
+        source_refs=source_refs,
+        content_role=content_role,
         content=content,
-        format="markdown",
+        format="html",
     )
     block["data"].update(data)
     return block
@@ -343,6 +450,55 @@ def _comprehension_block(
         explanation="Lee la evidencia antes de elegir.",
         points=len(items),
         sourceItems=source_items,
+    )
+
+
+def _listening_check_block(
+    block_id: str,
+    scene_id: str,
+    title: str,
+    unit_number: int,
+    scene: str,
+) -> dict[str, Any]:
+    items: list[dict[str, Any]] = []
+    source_items: list[dict[str, str]] = []
+    feedback_by_key: dict[str, str] = {}
+    for index, question in enumerate(LISTENING_CHECKS[unit_number], start=1):
+        source_key = f"module1.unit{unit_number}.listening.{index}"
+        options = _stable_order(_unique([_as_text(value) for value in question["options"]]), source_key)
+        option_objects = [
+            {"id": f"{block_id}-q{index}-option-{option_index + 1}", "text": option}
+            for option_index, option in enumerate(options)
+        ]
+        correct_id = next(item["id"] for item in option_objects if item["text"] == question["answer"])
+        feedback = _as_text(question["feedback"])
+        items.append(
+            {
+                "id": f"{block_id}-q{index}",
+                "question": _as_text(question["prompt"]),
+                "options": option_objects,
+                "correctOptionId": correct_id,
+                "explanation": feedback,
+                "sourceKey": source_key,
+                "sourceType": "listening",
+            }
+        )
+        source_items.append({"sourceKey": source_key, "sourceType": "listening"})
+        feedback_by_key[source_key] = feedback
+    return _block(
+        block_id,
+        "multiple_choice",
+        2,
+        scene_id,
+        title,
+        scene,
+        content_role="listening-check",
+        source_refs=[item["sourceKey"] for item in source_items],
+        items=items,
+        explanation="Escucha primero y responde las preguntas nuevas.",
+        points=len(items),
+        sourceItems=source_items,
+        sourceFeedback=feedback_by_key,
     )
 
 
@@ -1726,6 +1882,7 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
                 "Source order maps to ordering with 1-based positions and actual correctSentence.",
                 "Source rewrite maps to short_answer with teacherReviewOnly and no automatic grading.",
                 "Source match arrows map to structured pairs.",
+                "Authored Markdown-like instructions are escaped and emitted as HTML paragraphs/strong/list markup.",
             ],
             "ambiguousSourceFieldsCorrected": [
                 "answer and answer_key are normalised by source type.",
@@ -1745,6 +1902,7 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
         },
         "runtimeMappingGuidance": {
             "learningRevision": LEARNING_REVISION,
+            "pilotRevision": PILOT_REVISION,
             "oneInteractiveBlockPerScene": True,
             "interactiveTypes": sorted(INTERACTIVE_TYPES),
             "teacherNotesRoute": "teacher-only",
@@ -1856,6 +2014,9 @@ def _scene_summaries(full: dict[str, Any]) -> list[dict[str, Any]]:
                 "roleCardRevealMode",
                 "roleCardRuntimeStatus",
                 "reviewChecklist",
+                "listeningCheckSceneId",
+                "transcriptDisclosure",
+                "transcriptSupportLabel",
             ):
                 if key in scene:
                     summary[key] = deepcopy(scene[key])
@@ -1969,42 +2130,96 @@ def _audio_url(entry: dict[str, Any], file_path: Path) -> str:
 def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None:
     entries = _audio_entries(manifest_path)
     lessons = {lesson["id"]: lesson for lesson in full["lessons"]}
-    seen_ids: set[str] = set()
+    seen_ids = {
+        block["id"]
+        for lesson in full["lessons"]
+        for block in lesson["blocks"]
+    }
+    verified_files: list[dict[str, Any]] = []
     for entry in entries:
         lesson_id = _as_text(entry.get("lessonId"))
         lesson = lessons.get(lesson_id)
         if lesson is None:
             raise ValueError(f"Audio manifest references unknown lesson {lesson_id!r}")
+        unit_match = re.fullmatch(r"a1-general-u([1-4])", lesson_id)
+        if unit_match is None:
+            raise ValueError(
+                "Verified listening audio must target one of the four unit lessons; "
+                f"got {lesson_id!r}"
+            )
+        unit_number = int(unit_match.group(1))
         file_path = _verified_file_path(entry.get("filePath", entry.get("path")))
         url = _audio_url(entry, file_path)
-        scene_id = _as_text(entry.get("sceneId"))
-        scene = next((item for item in lesson["scenes"] if item["id"] == scene_id), None) if scene_id else None
-        if scene is None:
-            scene = next((item for item in lesson["scenes"] if item["phase"] == "unit-teach"), None)
-        if scene is None:
+        teach_scene = next((item for item in lesson["scenes"] if item["phase"] == "unit-teach"), None)
+        if teach_scene is None:
             raise ValueError(f"Audio manifest has no target scene for {lesson_id!r}")
+        listening_scene_id = _as_text(entry.get("sceneId")) or f"a1m1-u{unit_number}-listening"
+        if any(scene["id"] == listening_scene_id for scene in lesson["scenes"]):
+            raise ValueError(f"Duplicate verified listening scene id {listening_scene_id!r}")
+        check_scene_id = f"{listening_scene_id}-check"
+        if any(scene["id"] == check_scene_id for scene in lesson["scenes"]):
+            raise ValueError(f"Duplicate verified listening check scene id {check_scene_id!r}")
         block_id = _as_text(entry.get("blockId")) or f"{lesson_id}-verified-audio"
-        if block_id in seen_ids or any(block["id"] == block_id for item in full["lessons"] for block in item["blocks"]):
-            raise ValueError(f"Duplicate verified audio block id {block_id!r}")
-        seen_ids.add(block_id)
+        title_block_id = f"{listening_scene_id}-title"
+        transcript_block_id = f"{listening_scene_id}-transcript"
+        check_title_id = f"{check_scene_id}-title"
+        check_instruction_id = f"{check_scene_id}-instruction"
+        check_block_id = f"{check_scene_id}-items"
+        generated_ids = [block_id, title_block_id, transcript_block_id, check_title_id, check_instruction_id, check_block_id]
+        duplicates = [candidate for candidate in generated_ids if candidate in seen_ids]
+        if len(set(generated_ids)) != len(generated_ids) or duplicates:
+            raise ValueError(f"Duplicate verified listening block id(s): {duplicates or generated_ids!r}")
+        seen_ids.update(generated_ids)
         title = _as_text(entry.get("label")) or "Audio de práctica con voz sintética"
         source_ref = _as_text(entry.get("sourceRef")) or f"{lesson.get('sourceRef')}.model.text"
+        transcript = _as_text(teach_scene.get("originalEnglishModel"))
+        if not transcript:
+            transcript = next(
+                (
+                    _as_text(block.get("data", {}).get("originalEnglishModel"))
+                    for block in teach_scene.get("runtimeBlocks", [])
+                    if block.get("data", {}).get("originalEnglishModel")
+                ),
+            )
+        if not transcript:
+            raise ValueError(f"Verified listening audio has no source transcript for {lesson_id!r}")
+        listening_title = f"{lesson['title']} · escucha"
+        transcript_html = _markdown_to_safe_html(transcript)
+        listening_content = (
+            "<p><strong>Instrucción:</strong> Escucha una vez y responde las seis preguntas nuevas.</p>"
+            "<p>Después de comprobar tus respuestas, abre la transcripción.</p>"
+            '<details><summary>Ver transcripción</summary>'
+            f"{transcript_html}"
+            "</details>"
+        )
+        listening_text = _html_text_block(
+            transcript_block_id,
+            listening_scene_id,
+            listening_title,
+            listening_content,
+            teach_scene["background"],
+            order=1,
+            source_refs=[source_ref],
+            content_role="listening",
+            transcriptDisclosure="after-listen-check",
+            transcriptSupportLabel="Ver transcripción",
+        )
         audio_block = _block(
             block_id,
             "audio",
-            max((block.get("order", 0) for block in scene["runtimeBlocks"]), default=0) + 1,
-            scene["id"],
+            2,
+            listening_scene_id,
             title,
-            scene["background"],
+            teach_scene["background"],
             content_role="listening",
             source_refs=[source_ref],
             url=url,
             title=title,
             data={
                 **_metadata(
-                    scene["id"],
+                    listening_scene_id,
                     title,
-                    scene["background"],
+                    teach_scene["background"],
                     content_role="listening",
                     source_refs=[source_ref],
                     audioVerified=True,
@@ -2014,19 +2229,107 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                 )
             },
         )
-        scene["runtimeBlocks"].append(audio_block)
-        scene["runtimeBlockIds"].append(block_id)
-        lesson["blocks"].append(audio_block)
+        listening_scene = _scene(
+            lesson_id,
+            listening_scene_id,
+            teach_scene["order"] + 1,
+            "listening-audio",
+            listening_title,
+            "Escucha el audio; comprueba seis datos nuevos y abre la transcripción después.",
+            [
+                _title_block(
+                    title_block_id,
+                    listening_scene_id,
+                    listening_title,
+                    teach_scene["background"],
+                    source_refs=[source_ref],
+                    content_role="listening",
+                ),
+                listening_text,
+                audio_block,
+            ],
+            [source_ref],
+            asset=teach_scene["background"],
+            route_modes=deepcopy(teach_scene.get("routeModes")),
+            transcriptDisclosure="after-listen-check",
+            transcriptSupportLabel="Ver transcripción",
+            listeningCheckSceneId=check_scene_id,
+        )
+        check_title = f"{lesson['title']} · comprueba lo que escuchaste"
+        check_source_refs = [f"module1.unit{unit_number}.listening.{index}" for index in range(1, 7)]
+        listening_check_scene = _scene(
+            lesson_id,
+            check_scene_id,
+            teach_scene["order"] + 2,
+            "listening-check",
+            check_title,
+            "Responde las seis preguntas nuevas antes de abrir la transcripción.",
+            [
+                _title_block(
+                    check_title_id,
+                    check_scene_id,
+                    check_title,
+                    teach_scene["background"],
+                    source_refs=check_source_refs,
+                    content_role="listening-check",
+                ),
+                _text_block(
+                    check_instruction_id,
+                    check_scene_id,
+                    check_title,
+                    "**Instrucción:** Responde seis preguntas nuevas sobre el audio antes de ver la transcripción.",
+                    teach_scene["background"],
+                    source_refs=check_source_refs,
+                    content_role="listening-check",
+                ),
+                _listening_check_block(
+                    check_block_id,
+                    check_scene_id,
+                    check_title,
+                    unit_number,
+                    teach_scene["background"],
+                ),
+            ],
+            check_source_refs,
+            asset=teach_scene["background"],
+            route_modes=deepcopy(teach_scene.get("routeModes")),
+            transcriptDisclosure="after-listen-check",
+            transcriptSupportLabel="Ver transcripción",
+        )
+        insertion_index = next(
+            (index + 1 for index, scene in enumerate(lesson["scenes"]) if scene["id"] == teach_scene["id"]),
+            len(lesson["scenes"]),
+        )
+        lesson["scenes"][insertion_index:insertion_index] = [listening_scene, listening_check_scene]
+        for index, scene in enumerate(lesson["scenes"], start=1):
+            scene["order"] = index
+        lesson["sceneCount"] = len(lesson["scenes"])
+        lesson["blocks"] = [block for scene in lesson["scenes"] for block in scene["runtimeBlocks"]]
+        verified_files.append(
+            {
+                "lessonId": lesson_id,
+                "sceneId": listening_scene_id,
+                "checkSceneId": check_scene_id,
+                "url": url,
+                "sourceRef": source_ref,
+            }
+        )
+        for plan in full["audioManifest"].get("listeningPlan", []):
+            if plan.get("lessonId") == lesson_id and plan.get("sceneId") == listening_scene_id:
+                plan.update(
+                    {
+                        "status": "verified_audio_integrated",
+                        "audioPath": url,
+                        "checkSceneId": check_scene_id,
+                    }
+                )
     full["audioManifest"].update(
         {
             "status": "verified_audio_integrated",
             "currentState": "verified_audio_blocks_inserted",
             "noAudioBlocksGenerated": False,
             "verifiedManifest": manifest_path.as_posix(),
-            "verifiedFiles": [
-                {"lessonId": entry.get("lessonId"), "sceneId": entry.get("sceneId"), "url": entry.get("url")}
-                for entry in entries
-            ],
+            "verifiedFiles": verified_files,
         }
     )
 

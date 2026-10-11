@@ -113,6 +113,17 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         source_ids = {"starter", "S1", "S2", "S3", "S4", "S5", "M01", "1", "2", "3", "4"}
         self.assertTrue(source_ids.isdisjoint(identifiers))
 
+    def test_text_blocks_are_safe_html_and_carry_pilot_revision(self) -> None:
+        text_blocks = [block for block in _blocks(self.course) if block["type"] == "text"]
+        self.assertTrue(text_blocks)
+        for block in _blocks(self.course):
+            self.assertEqual(block["data"].get("pilotRevision"), "a1-module1-pilot-v1", block["id"])
+        for block in text_blocks:
+            self.assertEqual(block.get("format"), "html", block["id"])
+            self.assertNotIn("**", block["content"], block["id"])
+            self.assertNotIn("\n", block["content"], block["id"])
+            self.assertRegex(block["content"], r"<(?:p|details|ul)>", block["id"])
+
     def test_source_counts_and_coverage(self) -> None:
         unit_lessons = self.course["lessons"][1:5]
         comp_keys = {
@@ -263,7 +274,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                         "audio": [
                             {
                                 "lessonId": "a1-general-u1",
-                                "sceneId": "a1m1-u1-teach",
+                                "sceneId": "a1m1-u1-listening",
                                 "filePath": str(audio_file),
                                 "url": "/audio/a1-module1-pilot/u1-model.mp3",
                                 "label": "Audio de práctica con voz sintética",
@@ -279,6 +290,31 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             self.assertEqual(len(audio_blocks), 1)
             self.assertEqual(audio_blocks[0]["url"], "/audio/a1-module1-pilot/u1-model.mp3")
             self.assertTrue(audio_blocks[0]["data"]["audioVerified"])
+            self.assertEqual(audio_blocks[0]["data"]["pilotRevision"], "a1-module1-pilot-v1")
+            listening_scene = next(
+                scene for scene in manifest["sceneSummaries"] if scene["id"] == "a1m1-u1-listening"
+            )
+            check_scene = next(
+                scene for scene in manifest["sceneSummaries"] if scene["id"] == "a1m1-u1-listening-check"
+            )
+            self.assertEqual(listening_scene["phase"], "listening-audio")
+            self.assertEqual(check_scene["phase"], "listening-check")
+            self.assertEqual(check_scene["interactiveCount"], 1)
+            self.assertLess(listening_scene["order"], next(
+                scene["order"]
+                for scene in manifest["sceneSummaries"]
+                if scene["id"] == "a1m1-u1-comprehension"
+            ))
+            blocks_by_id = {block["id"]: block for block in _blocks(course)}
+            transcript = blocks_by_id["a1m1-u1-listening-transcript"]
+            self.assertEqual(transcript["format"], "html")
+            self.assertIn("<details><summary>Ver transcripción</summary>", transcript["content"])
+            self.assertIn("Ana", transcript["content"])
+            self.assertNotIn("originalEnglishModel", transcript["data"])
+            listening_check = blocks_by_id["a1m1-u1-listening-check-items"]
+            self.assertEqual(listening_check["data"]["contentRole"], "listening-check")
+            self.assertEqual(len(listening_check["items"]), 6)
+            self.assertEqual({item["sourceType"] for item in listening_check["items"]}, {"listening"})
             self.assertEqual(manifest["audioManifest"]["status"], "verified_audio_integrated")
             self.assertFalse(manifest["audioManifest"]["noAudioBlocksGenerated"])
 
