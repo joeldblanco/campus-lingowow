@@ -2843,7 +2843,7 @@
       "order": 1,
       "blocks": [
         {
-          "id": "module1.unit1-teach-title",
+          "id": "a1m1-u1-teach-title",
           "type": "title",
           "order": 81,
           "data": {
@@ -2863,7 +2863,7 @@
           "title": "Saludar y presentarse"
         },
         {
-          "id": "module1.unit1-teach-text",
+          "id": "a1m1-u1-teach-text",
           "type": "text",
           "order": 82,
           "data": {
@@ -2892,7 +2892,7 @@
           "format": "html"
         },
         {
-          "id": "module1.unit1-language-support",
+          "id": "a1m1-u1-teach-language-support",
           "type": "structured-content",
           "order": 83,
           "data": {
@@ -3664,18 +3664,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru and I live in Arequipa. Nice to meet you. The class starts at six.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma que Ana vive en Lima y la clase empieza a las 18:00.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una clase vespertina, una persona nueva entra y dos compañeros se presentan.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma que Ana vive en Lima y la clase empieza a las 18:00.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una clase vespertina, una persona nueva entra y dos compañeros se presentan."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -3769,18 +3759,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "Hi, I’m Ana. I’m from Peru and I live in Arequipa. Nice to meet you. The class starts at six.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma que Ana vive en Lima y la clase empieza a las 18:00.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una clase vespertina, una persona nueva entra y dos compañeros se presentan.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma que Ana vive en Lima y la clase empieza a las 18:00.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una clase vespertina, una persona nueva entra y dos compañeros se presentan."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -3806,7 +3786,7 @@
       "order": 2,
       "blocks": [
         {
-          "id": "module1.unit2-teach-title",
+          "id": "a1m1-u2-teach-title",
           "type": "title",
           "order": 108,
           "data": {
@@ -3826,7 +3806,7 @@
           "title": "Identificar personas y objetos"
         },
         {
-          "id": "module1.unit2-teach-text",
+          "id": "a1m1-u2-teach-text",
           "type": "text",
           "order": 109,
           "data": {
@@ -3855,7 +3835,7 @@
           "format": "html"
         },
         {
-          "id": "module1.unit2-language-support",
+          "id": "a1m1-u2-teach-language-support",
           "type": "structured-content",
           "order": 110,
           "data": {
@@ -4633,18 +4613,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "This is Diego, my colleague. Elena is our manager. The red folder is beside Elena, and Rosa’s badge is number 17.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La foto ubica a Diego y Elena; la carpeta azul está junto a Elena.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una recepción, una estudiante mira una foto, carpetas y una credencial.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La foto ubica a Diego y Elena; la carpeta azul está junto a Elena.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una recepción, una estudiante mira una foto, carpetas y una credencial."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -4738,18 +4708,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "This is Diego, my colleague. Elena is our manager. The red folder is beside Elena, and Rosa’s badge is number 17.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La foto ubica a Diego y Elena; la carpeta azul está junto a Elena.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una recepción, una estudiante mira una foto, carpetas y una credencial.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La foto ubica a Diego y Elena; la carpeta azul está junto a Elena.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una recepción, una estudiante mira una foto, carpetas y una credencial."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -4775,7 +4735,7 @@
       "order": 3,
       "blocks": [
         {
-          "id": "module1.unit3-teach-title",
+          "id": "a1m1-u3-teach-title",
           "type": "title",
           "order": 135,
           "data": {
@@ -4795,7 +4755,7 @@
           "title": "Compartir contactos y horarios"
         },
         {
-          "id": "module1.unit3-teach-text",
+          "id": "a1m1-u3-teach-text",
           "type": "text",
           "order": 136,
           "data": {
@@ -4824,7 +4784,7 @@
           "format": "html"
         },
         {
-          "id": "module1.unit3-language-support",
+          "id": "a1m1-u3-teach-language-support",
           "type": "structured-content",
           "order": 137,
           "data": {
@@ -5602,18 +5562,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "My phone number is 555-0142. My email is maria.soto@example.org. I’m free on Sunday afternoon.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma el correo y que Saturday morning también está disponible.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: Después de clase, dos adultos intercambian datos.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma el correo y que Saturday morning también está disponible.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: Después de clase, dos adultos intercambian datos."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -5707,18 +5657,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "My phone number is 555-0142. My email is maria.soto@example.org. I’m free on Sunday afternoon.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma el correo y que Saturday morning también está disponible.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: Después de clase, dos adultos intercambian datos.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La tarjeta confirma el correo y que Saturday morning también está disponible.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: Después de clase, dos adultos intercambian datos."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -5744,7 +5684,7 @@
       "order": 4,
       "blocks": [
         {
-          "id": "module1.unit4-teach-title",
+          "id": "a1m1-u4-teach-title",
           "type": "title",
           "order": 162,
           "data": {
@@ -5764,7 +5704,7 @@
           "title": "Pedir repetición y aclaración"
         },
         {
-          "id": "module1.unit4-teach-text",
+          "id": "a1m1-u4-teach-text",
           "type": "text",
           "order": 163,
           "data": {
@@ -5793,7 +5733,7 @@
           "format": "html"
         },
         {
-          "id": "module1.unit4-language-support",
+          "id": "a1m1-u4-teach-language-support",
           "type": "structured-content",
           "order": 164,
           "data": {
@@ -6572,18 +6512,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "The appointment is Friday at 4:00 in room 105. Sorry, could you repeat that, please?",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La hoja confirma Thursday at 3:30 y room 204.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una orientación, una persona no oye bien una fecha.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La hoja confirma Thursday at 3:30 y room 204.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una orientación, una persona no oye bien una fecha."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -6677,18 +6607,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "The appointment is Friday at 4:00 in room 105. Sorry, could you repeat that, please?",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee el modelo, tapa una parte y repite la tarea con esta información: La hoja confirma Thursday at 3:30 y room 204.",
-                "time": "30–60 segundos; se permite una pausa y apoyo visual.",
-                "review": "[\"Puedo recuperar dos expresiones.\", \"Puedo dar o comprobar un dato.\", \"Puedo reparar una duda con cortesía.\"]"
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una orientación, una persona no oye bien una fecha.",
-                "roles": "Docente guía; estudiante representa el rol adulto; observador comprueba datos.",
-                "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma."
-              }
+              "individual": "Lee el modelo, tapa una parte y repite la tarea con esta información: La hoja confirma Thursday at 3:30 y room 204.",
+              "teacher": "Presenta el material concreto, modela una ronda y cambia un dato del escenario: En una orientación, una persona no oye bien una fecha."
             },
             "reviewChecklist": [
               "Incluye la información concreta del escenario.",
@@ -6990,16 +6910,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "Welcome. I’m Ana. What’s your name? Nice to meet you. The class is on Tuesday at six in room 204.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
-                "review": "Marca cada criterio y anota un dato que debas comprobar."
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda.",
-                "review": "Usa la lista de comprobación y pide una reparación de significado."
-              }
+              "individual": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
+              "teacher": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda."
             },
             "reviewChecklist": [
               "Saluda y se presenta.",
@@ -7094,16 +7006,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
-                "review": "Marca cada criterio y anota un dato que debas comprobar."
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda.",
-                "review": "Usa la lista de comprobación y pide una reparación de significado."
-              }
+              "individual": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
+              "teacher": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda."
             },
             "reviewChecklist": [
               "Saluda y se presenta.",
@@ -7233,16 +7137,8 @@
             "teacherReviewOnly": true,
             "originalEnglishModel": "The class is on Tuesday at six in Room 4. Bring a notebook. If you need help, ask Marta at reception. The card does not mention parking.",
             "learningModes": {
-              "self": {
-                "label": "Trabajo autónomo",
-                "instruction": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
-                "review": "Marca cada criterio y anota un dato que debas comprobar."
-              },
-              "teacher": {
-                "label": "Trabajo con docente",
-                "instruction": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda.",
-                "review": "Usa la lista de comprobación y pide una reparación de significado."
-              }
+              "individual": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
+              "teacher": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda."
             },
             "reviewChecklist": [
               "Incluye Tuesday, 18:00, Room 4 y notebook.",

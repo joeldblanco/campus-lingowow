@@ -382,7 +382,11 @@
         "Lee modelos breves y transfiere datos a una tarjeta."
       ],
       "sceneCount": 27,
-      "background": "/images/lessons/backgrounds/listening-lounge.webp"
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "routePolicy": {
+        "self": "La modalidad autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia.",
+        "teacher": "La modalidad con docente permite lectura en voz alta, intercambio de roles y revisión humana de producción."
+      }
     },
     {
       "id": "a1-general-u1",
@@ -397,7 +401,11 @@
         "Transfiere información nueva en una tarea adulta."
       ],
       "sceneCount": 9,
-      "background": "/images/lessons/backgrounds/campus.webp"
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "routePolicy": {
+        "self": "La modalidad autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia.",
+        "teacher": "La modalidad con docente permite lectura en voz alta, intercambio de roles y revisión humana de producción."
+      }
     },
     {
       "id": "a1-general-u2",
@@ -413,7 +421,11 @@
         "Transfiere información nueva en una tarea adulta."
       ],
       "sceneCount": 9,
-      "background": "/images/lessons/backgrounds/community-bookshop.webp"
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "routePolicy": {
+        "self": "La modalidad autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia.",
+        "teacher": "La modalidad con docente permite lectura en voz alta, intercambio de roles y revisión humana de producción."
+      }
     },
     {
       "id": "a1-general-u3",
@@ -429,7 +441,11 @@
         "Transfiere información nueva en una tarea adulta."
       ],
       "sceneCount": 9,
-      "background": "/images/lessons/backgrounds/town-park.webp"
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "routePolicy": {
+        "self": "La modalidad autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia.",
+        "teacher": "La modalidad con docente permite lectura en voz alta, intercambio de roles y revisión humana de producción."
+      }
     },
     {
       "id": "a1-general-u4",
@@ -445,7 +461,11 @@
         "Transfiere información nueva en una tarea adulta."
       ],
       "sceneCount": 9,
-      "background": "/images/lessons/backgrounds/travel-station.webp"
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "routePolicy": {
+        "self": "La modalidad autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia.",
+        "teacher": "La modalidad con docente permite lectura en voz alta, intercambio de roles y revisión humana de producción."
+      }
     },
     {
       "id": "a1-general-mission",
@@ -460,7 +480,11 @@
         "Pide repetición y transfiere datos a una conversación y una tarjeta."
       ],
       "sceneCount": 5,
-      "background": "/images/lessons/backgrounds/botanical-office.webp"
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "routePolicy": {
+        "self": "La modalidad autónoma ofrece modelo escrito, apoyo colapsable y auto-comprobación; la voz queda para lectura propia.",
+        "teacher": "La modalidad con docente permite lectura en voz alta, intercambio de roles y revisión humana de producción."
+      }
     }
   ],
   "sceneSummaries": [
@@ -1093,9 +1117,9 @@
       ],
       "interactiveCount": 0,
       "runtimeBlockIds": [
-        "module1.unit1-teach-title",
-        "module1.unit1-teach-text",
-        "module1.unit1-language-support"
+        "a1m1-u1-teach-title",
+        "a1m1-u1-teach-text",
+        "a1m1-u1-teach-language-support"
       ],
       "background": "/images/lessons/backgrounds/campus.webp",
       "backgroundSrc": "/images/lessons/backgrounds/campus.webp",
@@ -1289,9 +1313,9 @@
       ],
       "interactiveCount": 0,
       "runtimeBlockIds": [
-        "module1.unit2-teach-title",
-        "module1.unit2-teach-text",
-        "module1.unit2-language-support"
+        "a1m1-u2-teach-title",
+        "a1m1-u2-teach-text",
+        "a1m1-u2-teach-language-support"
       ],
       "background": "/images/lessons/backgrounds/community-bookshop.webp",
       "backgroundSrc": "/images/lessons/backgrounds/community-bookshop.webp",
@@ -1485,9 +1509,9 @@
       ],
       "interactiveCount": 0,
       "runtimeBlockIds": [
-        "module1.unit3-teach-title",
-        "module1.unit3-teach-text",
-        "module1.unit3-language-support"
+        "a1m1-u3-teach-title",
+        "a1m1-u3-teach-text",
+        "a1m1-u3-teach-language-support"
       ],
       "background": "/images/lessons/backgrounds/town-park.webp",
       "backgroundSrc": "/images/lessons/backgrounds/town-park.webp",
@@ -1681,9 +1705,9 @@
       ],
       "interactiveCount": 0,
       "runtimeBlockIds": [
-        "module1.unit4-teach-title",
-        "module1.unit4-teach-text",
-        "module1.unit4-language-support"
+        "a1m1-u4-teach-title",
+        "a1m1-u4-teach-text",
+        "a1m1-u4-teach-language-support"
       ],
       "background": "/images/lessons/backgrounds/travel-station.webp",
       "backgroundSrc": "/images/lessons/backgrounds/travel-station.webp",
@@ -3004,38 +3028,87 @@
     "plannedScripts": [
       {
         "lessonId": "a1-general-start",
-        "scriptId": "a1-general-start-s1-reference",
-        "plannedPath": "/audio/a1-module1-pilot/starter-s1-reference.mp3",
-        "sourceRef": "starter.S1.input.teacher_read_script",
-        "status": "pending_authorization"
+        "sceneId": "a1m1-start-s1-teach",
+        "scriptId": "starter-s1-greeting",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s1-greeting.mp3",
+        "sourceRef": "starter.S1.input.english",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
       },
       {
         "lessonId": "a1-general-start",
-        "scriptId": "a1-general-start-s2-reference",
-        "plannedPath": "/audio/a1-module1-pilot/starter-s2-reference.mp3",
-        "sourceRef": "starter.S2.input.teacher_read_script",
-        "status": "pending_authorization"
+        "sceneId": "a1m1-start-s2-teach",
+        "scriptId": "starter-s2-alphabet",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s2-alphabet.mp3",
+        "sourceRef": "starter.S2.input.alphabet",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
       },
       {
         "lessonId": "a1-general-start",
-        "scriptId": "a1-general-start-s3-reference",
-        "plannedPath": "/audio/a1-module1-pilot/starter-s3-reference.mp3",
-        "sourceRef": "starter.S3.input.teacher_read_script",
-        "status": "pending_authorization"
+        "sceneId": "a1m1-start-s3-teach",
+        "scriptId": "starter-s3-numbers-0-20",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s3-numbers-0-20.mp3",
+        "sourceRef": "starter.S3.input.number_table",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
       },
       {
         "lessonId": "a1-general-start",
-        "scriptId": "a1-general-start-s4-reference",
-        "plannedPath": "/audio/a1-module1-pilot/starter-s4-reference.mp3",
-        "sourceRef": "starter.S4.input.teacher_read_script",
-        "status": "pending_authorization"
+        "sceneId": "a1m1-start-s3-teach",
+        "scriptId": "starter-s3-contact-time",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s3-contact-time.mp3",
+        "sourceRef": "starter.S3.model_answer",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
       },
       {
         "lessonId": "a1-general-start",
-        "scriptId": "a1-general-start-s5-reference",
-        "plannedPath": "/audio/a1-module1-pilot/starter-s5-reference.mp3",
+        "sceneId": "a1m1-start-s4-teach",
+        "scriptId": "starter-u4-help-phrases",
+        "plannedPath": "/audio/a1-module1-pilot/starter-u4-help-phrases.mp3",
+        "sourceRef": "module1.unit4.language",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s4-teach",
+        "scriptId": "starter-s4-listening",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s4-listening.mp3",
+        "sourceRef": "starter.S4.input.english",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s5-teach",
+        "scriptId": "starter-s5-bridge",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s5-bridge.mp3",
         "sourceRef": "starter.S5.input.teacher_read_script",
-        "status": "pending_authorization"
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
       },
       {
         "lessonId": "a1-general-u1",
@@ -3064,6 +3137,92 @@
         "plannedPath": "/audio/a1-module1-pilot/u4-model.mp3",
         "sourceRef": "module1.unit4.model.text",
         "status": "pending_authorization"
+      }
+    ],
+    "starterReferencePlan": [
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s1-teach",
+        "scriptId": "starter-s1-greeting",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s1-greeting.mp3",
+        "sourceRef": "starter.S1.input.english",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s2-teach",
+        "scriptId": "starter-s2-alphabet",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s2-alphabet.mp3",
+        "sourceRef": "starter.S2.input.alphabet",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s3-teach",
+        "scriptId": "starter-s3-numbers-0-20",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s3-numbers-0-20.mp3",
+        "sourceRef": "starter.S3.input.number_table",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s3-teach",
+        "scriptId": "starter-s3-contact-time",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s3-contact-time.mp3",
+        "sourceRef": "starter.S3.model_answer",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s4-teach",
+        "scriptId": "starter-u4-help-phrases",
+        "plannedPath": "/audio/a1-module1-pilot/starter-u4-help-phrases.mp3",
+        "sourceRef": "module1.unit4.language",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s4-teach",
+        "scriptId": "starter-s4-listening",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s4-listening.mp3",
+        "sourceRef": "starter.S4.input.english",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s5-teach",
+        "scriptId": "starter-s5-bridge",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s5-bridge.mp3",
+        "sourceRef": "starter.S5.input.teacher_read_script",
+        "status": "planned_pending_file_verification",
+        "referenceOnly": true,
+        "gradedListening": false,
+        "visibleLabelWhenReady": "Referencia sintética",
+        "transcriptDisclosure": "visible-reference"
       }
     ],
     "listeningPlan": [

@@ -112,6 +112,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertEqual(len(identifiers), len(set(identifiers)))
         source_ids = {"starter", "S1", "S2", "S3", "S4", "S5", "M01", "1", "2", "3", "4"}
         self.assertTrue(source_ids.isdisjoint(identifiers))
+        self.assertTrue(all(re.fullmatch(r"[a-z0-9_-]+", identifier) for identifier in identifiers), identifiers)
 
     def test_text_blocks_are_safe_html_and_carry_pilot_revision(self) -> None:
         text_blocks = [block for block in _blocks(self.course) if block["type"] == "text"]
@@ -134,10 +135,10 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             "a1m1-start-s3-teach-text",
             "a1m1-start-s4-teach-text",
             "a1m1-start-s5-teach-text",
-            "module1.unit1-teach-text",
-            "module1.unit2-teach-text",
-            "module1.unit3-teach-text",
-            "module1.unit4-teach-text",
+            "a1m1-u1-teach-text",
+            "a1m1-u2-teach-text",
+            "a1m1-u3-teach-text",
+            "a1m1-u4-teach-text",
         }
         blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
         for block_id in teaching_ids:
@@ -284,6 +285,8 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             self.assertTrue(block["data"].get("teacherReviewOnly"), block["id"])
             self.assertIn("reviewChecklist", block["data"], block["id"])
             self.assertIn("learningModes", block["data"], block["id"])
+            self.assertEqual(set(block["data"]["learningModes"]), {"individual", "teacher"}, block["id"])
+            self.assertTrue(all(isinstance(value, str) for value in block["data"]["learningModes"].values()), block["id"])
         for block in [block for block in production if block["type"] == "essay"]:
             self.assertEqual(block["data"].get("unit1Role"), "profile", block["id"])
         u1_production = [block for block in self.course["lessons"][1]["blocks"] if block["type"] in {"recording", "essay"}]
@@ -299,9 +302,15 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertTrue(manifest["preserveExistingAudio"])
         planned_paths = {item["plannedPath"] for item in manifest["plannedScripts"]}
         self.assertIn("/audio/a1-module1-pilot/u1-model.mp3", planned_paths)
-        self.assertIn("/audio/a1-module1-pilot/starter-s1-reference.mp3", planned_paths)
+        self.assertIn("/audio/a1-module1-pilot/starter-s1-greeting.mp3", planned_paths)
+        self.assertIn("/audio/a1-module1-pilot/starter-s3-numbers-0-20.mp3", planned_paths)
+        self.assertIn("/audio/a1-module1-pilot/starter-s3-contact-time.mp3", planned_paths)
+        self.assertIn("/audio/a1-module1-pilot/starter-u4-help-phrases.mp3", planned_paths)
+        self.assertEqual(len(planned_paths), 11)
         self.assertEqual(manifest["syntheticAudioLabel"], "Audio de práctica con voz sintética")
         self.assertEqual(len(manifest["listeningPlan"]), 4)
+        self.assertEqual(len(manifest["starterReferencePlan"]), 7)
+        self.assertTrue(all(item["referenceOnly"] for item in manifest["starterReferencePlan"]))
         self.assertTrue(all(item["detailsHiddenUntilCheck"] for item in manifest["listeningPlan"]))
         self.assertTrue(all(item["followUpQuestionCount"] == 6 for item in manifest["listeningPlan"]))
         briefing = next(scene for scene in self.manifest["sceneSummaries"] if scene["id"] == "a1m1-mission-briefing")
@@ -317,6 +326,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             audio_file = Path(directory) / "u1-model.mp3"
             audio_file.write_bytes(b"verified test fixture")
+            spoken_transcript = "Ana meets Luis at the door. five five five."
             audio_manifest = Path(directory) / "audio.json"
             audio_manifest.write_text(
                 json.dumps(
@@ -329,6 +339,8 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                                 "url": "/audio/a1-module1-pilot/u1-model.mp3",
                                 "label": "Audio de práctica con voz sintética",
                                 "sourceRef": "module1.unit1.model.text",
+                                "sha256": COMPILER._sha256(audio_file),
+                                "sourceEnglishTranscript": spoken_transcript,
                             }
                         ]
                     }
@@ -340,6 +352,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             self.assertEqual(len(audio_blocks), 1)
             self.assertEqual(audio_blocks[0]["url"], "/audio/a1-module1-pilot/u1-model.mp3")
             self.assertTrue(audio_blocks[0]["data"]["audioVerified"])
+            self.assertEqual(audio_blocks[0]["data"]["spokenTranscript"], spoken_transcript)
             self.assertEqual(audio_blocks[0]["data"]["pilotRevision"], "a1-module1-pilot-v1")
             listening_scene = next(
                 scene for scene in manifest["sceneSummaries"] if scene["id"] == "a1m1-u1-listening"
@@ -359,7 +372,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             transcript = blocks_by_id["a1m1-u1-listening-transcript"]
             self.assertEqual(transcript["format"], "html")
             self.assertIn("<details><summary>Ver transcripción</summary>", transcript["content"])
-            self.assertIn("Ana", transcript["content"])
+            self.assertIn("five five five", transcript["content"])
             self.assertNotIn("originalEnglishModel", transcript["data"])
             listening_check = blocks_by_id["a1m1-u1-listening-check-items"]
             self.assertEqual(listening_check["data"]["contentRole"], "listening-check")
@@ -367,6 +380,114 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             self.assertEqual({item["sourceType"] for item in listening_check["items"]}, {"listening"})
             self.assertEqual(manifest["audioManifest"]["status"], "verified_audio_integrated")
             self.assertFalse(manifest["audioManifest"]["noAudioBlocksGenerated"])
+            self.assertFalse(manifest["acceptance"]["audioPending"])
+            self.assertEqual(manifest["audioManifest"]["verifiedFileCount"], 1)
+            self.assertEqual(manifest["audioManifest"]["plannedScripts"], [])
+
+    @unittest.skipUnless(all(path is not None and path.exists() for path in (EARLY, BLUEPRINT, MAPPING)), "verified audio integration needs the private source files")
+    def test_verified_manifest_attaches_all_eleven_real_clips(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            entries = []
+            for index, target in enumerate(COMPILER.STARTER_REFERENCE_AUDIO, start=1):
+                audio_file = Path(directory) / target["filename"]
+                audio_file.write_bytes(f"starter verified fixture {index}".encode("utf-8"))
+                transcript = f"Starter reference {index}; spoken value five five five."
+                entries.append(
+                    {
+                        "lessonId": target["lessonId"],
+                        "sceneId": target["sceneId"],
+                        "path": str(audio_file),
+                        "url": f"/audio/a1-module1-pilot/{target['filename']}",
+                        "sha256": COMPILER._sha256(audio_file),
+                        "sourceEnglishTranscript": transcript,
+                    }
+                )
+            for unit_number in range(1, 5):
+                target = COMPILER.UNIT_REFERENCE_AUDIO[f"u{unit_number}-model.mp3"]
+                filename = f"u{unit_number}-model.mp3"
+                audio_file = Path(directory) / filename
+                audio_file.write_bytes(f"unit verified fixture {unit_number}".encode("utf-8"))
+                entries.append(
+                    {
+                        "lessonId": target["lessonId"],
+                        "sceneId": target["sceneId"],
+                        "path": str(audio_file),
+                        "url": f"/audio/a1-module1-pilot/{filename}",
+                        "sha256": COMPILER._sha256(audio_file),
+                        "sourceEnglishTranscript": f"Unit {unit_number} spoken transcript with five five five.",
+                    }
+                )
+            audio_manifest = Path(directory) / "starter-audio.json"
+            audio_manifest.write_text(json.dumps({"files": entries}), encoding="utf-8")
+            course, manifest = COMPILER.build_artifacts(EARLY, BLUEPRINT, MAPPING, audio_manifest)
+            all_blocks = list(_blocks(course))
+            self.assertEqual([block["order"] for block in all_blocks], list(range(len(all_blocks))))
+            self.assertTrue(all(re.fullmatch(r"[a-z0-9_-]+", block["id"]) for block in all_blocks))
+            audio_blocks = [
+                block
+                for block in _blocks(course)
+                if block["type"] == "audio" and block["data"].get("audioKind") == "starter-reference"
+            ]
+            self.assertEqual(len(audio_blocks), 7)
+            self.assertEqual(
+                {
+                    block["data"]["pilotSceneId"]: sum(
+                        item["data"].get("pilotSceneId") == block["data"]["pilotSceneId"]
+                        and item["type"] == "audio"
+                        for item in audio_blocks
+                    )
+                    for block in audio_blocks
+                },
+                {
+                    "a1m1-start-s1-teach": 1,
+                    "a1m1-start-s2-teach": 1,
+                    "a1m1-start-s3-teach": 2,
+                    "a1m1-start-s4-teach": 2,
+                    "a1m1-start-s5-teach": 1,
+                },
+            )
+            for block in audio_blocks:
+                self.assertEqual(block["data"]["audioLabel"], "Referencia sintética")
+                self.assertTrue(block["data"]["syntheticReference"])
+                self.assertTrue(block["data"]["noListeningAssessment"])
+                self.assertFalse(block["data"]["gradedListening"])
+                self.assertEqual(block["data"]["spokenTranscript"], block["transcript"])
+            audio_manifest_data = manifest["audioManifest"]
+            self.assertEqual(audio_manifest_data["verifiedFileCount"], 11)
+            self.assertEqual(
+                {item["url"] for item in audio_manifest_data["verifiedFiles"]},
+                {entry["url"] for entry in entries},
+            )
+            self.assertEqual(audio_manifest_data["plannedScripts"], [])
+            self.assertTrue(all(item["status"] == "verified_audio_integrated" for item in audio_manifest_data["listeningPlan"]))
+            self.assertNotIn("pending_authorization", json.dumps(audio_manifest_data))
+            self.assertNotIn("planned_pending_file_verification", json.dumps(audio_manifest_data))
+
+    @unittest.skipUnless(all(path is not None and path.exists() for path in (EARLY, BLUEPRINT, MAPPING)), "verified audio integration needs the private source files")
+    def test_verified_audio_rejects_wrong_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            audio_file = Path(directory) / "starter-s1-greeting.mp3"
+            audio_file.write_bytes(b"verified test fixture")
+            audio_manifest = Path(directory) / "bad-audio.json"
+            audio_manifest.write_text(
+                json.dumps(
+                    {
+                        "files": [
+                            {
+                                "lessonId": "a1-general-start",
+                                "sceneId": "a1m1-start-s1-teach",
+                                "path": str(audio_file),
+                                "url": "/audio/a1-module1-pilot/starter-s1-greeting.mp3",
+                                "sha256": "0" * 64,
+                                "sourceEnglishTranscript": "Hello.",
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "sha256 mismatch"):
+                COMPILER.build_artifacts(EARLY, BLUEPRINT, MAPPING, audio_manifest)
 
     def test_blueprint_m01_and_visual_references_are_recorded(self) -> None:
         mediation = [

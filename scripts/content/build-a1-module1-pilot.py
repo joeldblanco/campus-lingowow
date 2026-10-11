@@ -324,6 +324,74 @@ INTERACTIVE_TYPES = {
 }
 
 
+# The optional verified-audio manifest may include these fields explicitly,
+# but keeping the target map here lets the generated manifest from the audio
+# worker (which only has path/hash/transcript) resolve to an exact teaching
+# scene.  These are reference clips: they are playable source material and
+# do not create a listening assessment for the starter.
+STARTER_REFERENCE_AUDIO = (
+    {
+        "filename": "starter-s1-greeting.mp3",
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s1-teach",
+        "sourceRef": "starter.S1.input.english",
+        "referenceId": "starter-s1-greeting",
+    },
+    {
+        "filename": "starter-s2-alphabet.mp3",
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s2-teach",
+        "sourceRef": "starter.S2.input.alphabet",
+        "referenceId": "starter-s2-alphabet",
+    },
+    {
+        "filename": "starter-s3-numbers-0-20.mp3",
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s3-teach",
+        "sourceRef": "starter.S3.input.number_table",
+        "referenceId": "starter-s3-numbers-0-20",
+    },
+    {
+        "filename": "starter-s3-contact-time.mp3",
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s3-teach",
+        "sourceRef": "starter.S3.model_answer",
+        "referenceId": "starter-s3-contact-time",
+    },
+    {
+        "filename": "starter-u4-help-phrases.mp3",
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s4-teach",
+        "sourceRef": "module1.unit4.language",
+        "referenceId": "starter-u4-help-phrases",
+    },
+    {
+        "filename": "starter-s4-listening.mp3",
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s4-teach",
+        "sourceRef": "starter.S4.input.english",
+        "referenceId": "starter-s4-listening",
+    },
+    {
+        "filename": "starter-s5-bridge.mp3",
+        "lessonId": "a1-general-start",
+        "sceneId": "a1m1-start-s5-teach",
+        "sourceRef": "starter.S5.input.teacher_read_script",
+        "referenceId": "starter-s5-bridge",
+    },
+)
+
+UNIT_REFERENCE_AUDIO = {
+    f"u{unit_number}-model.mp3": {
+        "lessonId": f"a1-general-u{unit_number}",
+        "sceneId": f"a1m1-u{unit_number}-listening",
+        "sourceRef": f"module1.unit{unit_number}.model.text",
+        "referenceId": f"u{unit_number}-model",
+    }
+    for unit_number in range(1, 5)
+}
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -1347,14 +1415,14 @@ def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_
     )
     return [
         _title_block(
-            f"{unit_key}-teach-title",
+            f"{scene_id}-title",
             scene_id,
             _as_text(unit.get("title")),
             asset,
             source_refs=[unit_key],
         ),
         _html_text_block(
-            f"{unit_key}-teach-text",
+            f"{scene_id}-text",
             scene_id,
             _as_text(unit.get("title")),
             text,
@@ -1371,7 +1439,7 @@ def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_
             },
         ),
         _structured_block(
-            f"{unit_key}-language-support",
+            f"{scene_id}-language-support",
             scene_id,
             "Significados de apoyo",
             ["English", "Español / uso"],
@@ -1388,18 +1456,10 @@ def _unit_teaching_blocks(unit: dict[str, Any], scene_id: str, asset: str, unit_
 
 def _production_modes(unit: dict[str, Any]) -> dict[str, Any]:
     return {
-        "self": {
-            "label": "Trabajo autónomo",
-            "instruction": _as_text(unit.get("independent", {}).get("procedure")),
-            "time": _as_text(unit.get("independent", {}).get("oral_limit", "30–60 segundos")),
-            "review": _as_text(unit.get("independent", {}).get("self_check", [])),
-        },
-        "teacher": {
-            "label": "Trabajo con docente",
-            "instruction": _as_text(unit.get("teacher", {}).get("procedure")),
-            "roles": _as_text(unit.get("teacher", {}).get("interaction_roles")),
-            "review": "La docente usa la lista de comprobación y da una corrección breve de significado o forma.",
-        },
+        # The production renderer consumes this exact compact shape. Detailed
+        # timing, roles, and review notes remain in the lesson route policy.
+        "individual": _as_text(unit.get("independent", {}).get("procedure")),
+        "teacher": _as_text(unit.get("teacher", {}).get("procedure")),
     }
 
 
@@ -1896,14 +1956,18 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
         "Completa la tarjeta sin inventar contacto u horario.",
     ]
     modes = {
+        "individual": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
+        "teacher": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda.",
+    }
+    mission_route_policy = {
         "self": {
             "label": "Trabajo autónomo",
-            "instruction": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
+            "instruction": modes["individual"],
             "review": "Marca cada criterio y anota un dato que debas comprobar.",
         },
         "teacher": {
             "label": "Trabajo con docente",
-            "instruction": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda.",
+            "instruction": modes["teacher"],
             "review": "Usa la lista de comprobación y pide una reparación de significado.",
         },
     }
@@ -1957,7 +2021,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             speak_blocks,
             [source_key],
             asset=asset,
-            route_modes=modes,
+            route_modes=mission_route_policy,
             reviewChecklist=criteria,
         )
     )
@@ -1999,7 +2063,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             write_blocks,
             [source_key],
             asset=asset,
-            route_modes=modes,
+            route_modes=mission_route_policy,
             reviewChecklist=criteria,
         )
     )
@@ -2062,7 +2126,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             mediation_blocks,
             [mediation_key],
             asset=asset,
-            route_modes=modes,
+            route_modes=mission_route_policy,
             reviewChecklist=[
                 "Tuesday, 18:00 y Room 4",
                 "notebook y Marta en recepción",
@@ -2173,16 +2237,22 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
         "blueprint": {"label": "programa-completo-c2/blueprint.json", "sha256": _sha256(blueprint_path)},
         "academicMapping": {"label": "a1-module1-pilot/academic-mapping.md", "sha256": _sha256(mapping_path)},
     }
-    planned_scripts = [
+    starter_reference_plan = [
         {
-            "lessonId": "a1-general-start",
-            "scriptId": f"a1-general-start-{activity_id.lower()}-reference",
-            "plannedPath": f"/audio/a1-module1-pilot/starter-{activity_id.lower()}-reference.mp3",
-            "sourceRef": f"starter.{activity_id}.input.teacher_read_script",
-            "status": "pending_authorization",
+            "lessonId": item["lessonId"],
+            "sceneId": item["sceneId"],
+            "scriptId": item["referenceId"],
+            "plannedPath": f"/audio/a1-module1-pilot/{item['filename']}",
+            "sourceRef": item["sourceRef"],
+            "status": "planned_pending_file_verification",
+            "referenceOnly": True,
+            "gradedListening": False,
+            "visibleLabelWhenReady": "Referencia sintética",
+            "transcriptDisclosure": "visible-reference",
         }
-        for activity_id in ["S1", "S2", "S3", "S4", "S5"]
-    ] + [
+        for item in STARTER_REFERENCE_AUDIO
+    ]
+    planned_scripts = starter_reference_plan + [
         {
             "lessonId": f"a1-general-u{unit_number}",
             "scriptId": f"a1-general-u{unit_number}-model",
@@ -2270,6 +2340,7 @@ def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Pat
             "preserveExistingAudio": True,
             "noAudioBlocksGenerated": True,
             "plannedScripts": planned_scripts,
+            "starterReferencePlan": starter_reference_plan,
             "listeningPlan": listening_plan,
             "syntheticAudioLabel": "Audio de práctica con voz sintética",
             "policy": "Do not create fake players or audio URLs; teacher may read original scripts until approved resources exist. Integrate a real audio block only after the planned file is verified.",
@@ -2459,6 +2530,7 @@ def _manifest_from_full(full: dict[str, Any]) -> dict[str, Any]:
                 "learningOutcomes": lesson["learningOutcomes"],
                 "sceneCount": lesson["sceneCount"],
                 "background": lesson["background"],
+                "routePolicy": lesson["routePolicy"],
             }
             for lesson in full["lessons"]
         ],
@@ -2491,7 +2563,13 @@ def _verified_file_path(value: Any) -> Path:
     if not isinstance(value, str) or not value.strip():
         raise ValueError("Verified audio requires a filePath/path")
     raw = Path(value)
-    candidates = [raw, Path.cwd() / raw, Path(__file__).resolve().parents[2] / raw]
+    repo_root = Path(__file__).resolve().parents[2]
+    candidates = [
+        raw,
+        Path.cwd() / raw,
+        repo_root / raw,
+        repo_root / "public" / raw.as_posix().lstrip("/"),
+    ]
     for candidate in candidates:
         if candidate.is_file():
             return candidate.resolve()
@@ -2499,18 +2577,130 @@ def _verified_file_path(value: Any) -> Path:
 
 
 def _audio_url(entry: dict[str, Any], file_path: Path) -> str:
-    value = entry.get("url")
+    value = entry.get("url") or entry.get("audioUrl")
     if isinstance(value, str) and value.startswith("/audio/") and "pending" not in value.lower():
         return value
+    path_value = entry.get("path")
+    if isinstance(path_value, str) and path_value.startswith("/audio/") and "pending" not in path_value.lower():
+        return path_value
     public_root = (Path(__file__).resolve().parents[2] / "public").resolve()
     try:
         relative = file_path.relative_to(public_root)
     except ValueError as exc:
-        raise ValueError("Verified audio outside public/ requires an explicit /audio/... url") from exc
+        # Audio QA may hand the compiler a path from its isolated worktree.
+        # Preserve the public URL contract when that path still contains a
+        # public/audio subtree; arbitrary outside files still need an explicit
+        # URL so a temporary fixture cannot silently publish a wrong path.
+        parts = file_path.parts
+        public_indexes = [index for index, part in enumerate(parts) if part.casefold() == "public"]
+        if public_indexes and len(parts) > public_indexes[-1] + 2 and parts[public_indexes[-1] + 1].casefold() == "audio":
+            relative = Path(*parts[public_indexes[-1] + 1 :])
+        else:
+            raise ValueError("Verified audio outside public/ requires an explicit /audio/... url") from exc
     url = "/" + relative.as_posix()
     if not url.startswith("/audio/"):
         raise ValueError("Verified audio url must be under /audio/")
     return url
+
+
+def _audio_filename(entry: dict[str, Any], file_path: Path) -> str:
+    value = entry.get("filePath", entry.get("path"))
+    if isinstance(value, str) and value.strip():
+        return Path(value.replace("\\", "/")).name
+    return file_path.name
+
+
+def _audio_target(entry: dict[str, Any], file_path: Path) -> dict[str, str]:
+    """Resolve a verified file to one of the authored pilot scenes."""
+
+    filename = _audio_filename(entry, file_path)
+    known = next(
+        (item for item in STARTER_REFERENCE_AUDIO if item["filename"] == filename),
+        None,
+    )
+    if known is None:
+        known = UNIT_REFERENCE_AUDIO.get(filename)
+    if known is None:
+        raise ValueError(f"Verified audio filename is not in the A1 pilot plan: {filename!r}")
+    for key in ("lessonId", "sceneId"):
+        supplied = entry.get(key)
+        if supplied and _as_text(supplied) != known[key]:
+            raise ValueError(
+                f"Verified audio {filename!r} has {key}={supplied!r}; expected {known[key]!r}"
+            )
+    return {key: _as_text(value) for key, value in known.items()}
+
+
+def _verify_audio_entry(entry: dict[str, Any], file_path: Path) -> tuple[str, str]:
+    expected = _as_text(entry.get("sha256")).strip().lower()
+    if not re.fullmatch(r"[0-9a-f]{64}", expected):
+        raise ValueError(
+            f"Verified audio {file_path.name!r} requires a 64-character sha256 in the manifest"
+        )
+    actual = _sha256(file_path)
+    if actual != expected:
+        raise ValueError(
+            f"Verified audio sha256 mismatch for {file_path.name!r}: expected {expected}, got {actual}"
+        )
+    transcript = _as_text(
+        entry.get("sourceEnglishTranscript")
+        or entry.get("spokenTranscript")
+        or entry.get("transcript")
+    ).strip()
+    if not transcript:
+        raise ValueError(f"Verified audio {file_path.name!r} requires sourceEnglishTranscript")
+    return expected, transcript
+
+
+def _verified_audio_block(
+    *,
+    block_id: str,
+    scene: dict[str, Any],
+    title: str,
+    url: str,
+    transcript: str,
+    source_ref: str,
+    sha256: str,
+    reference_only: bool,
+) -> dict[str, Any]:
+    """Build a playable, provenance-linked audio block after hash verification."""
+
+    content_role = "reference-audio" if reference_only else "listening"
+    label = "Referencia sintética" if reference_only else "Audio de práctica con voz sintética"
+    return _block(
+        block_id,
+        "audio",
+        len(scene.get("runtimeBlocks", [])),
+        scene["id"],
+        title,
+        scene["background"],
+        content_role=content_role,
+        source_refs=[source_ref],
+        url=url,
+        title=title,
+        transcript=transcript,
+        data={
+            **_metadata(
+                scene["id"],
+                title,
+                scene["background"],
+                content_role=content_role,
+                source_refs=[source_ref],
+                audioVerified=True,
+                audioLabel=label,
+                audioKind="starter-reference" if reference_only else "unit-model",
+                synthetic=True,
+                syntheticReference=reference_only,
+                sha256=sha256,
+                spokenTranscript=transcript,
+                transcript=transcript,
+                transcriptDisclosure="visible-reference" if reference_only else "after-listen-check",
+                listeningAssessment="none" if reference_only else "six-question-follow-up",
+                gradedListening=False if reference_only else True,
+                noListeningAssessment=reference_only,
+            )
+        },
+    )
 
 
 def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None:
@@ -2521,12 +2711,90 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
         for lesson in full["lessons"]
         for block in lesson["blocks"]
     }
+    seen_paths: set[str] = set()
+    seen_urls: set[str] = set()
+    seen_targets: set[tuple[str, str, str]] = set()
     verified_files: list[dict[str, Any]] = []
     for entry in entries:
-        lesson_id = _as_text(entry.get("lessonId"))
+        file_path = _verified_file_path(entry.get("filePath", entry.get("path")))
+        sha256, transcript = _verify_audio_entry(entry, file_path)
+        target = _audio_target(entry, file_path)
+        lesson_id = target["lessonId"]
         lesson = lessons.get(lesson_id)
         if lesson is None:
             raise ValueError(f"Audio manifest references unknown lesson {lesson_id!r}")
+        url = _audio_url(entry, file_path)
+        path_key = file_path.resolve().as_posix().casefold()
+        if path_key in seen_paths:
+            raise ValueError(f"Duplicate verified audio path: {file_path}")
+        if url in seen_urls:
+            raise ValueError(f"Duplicate verified audio url: {url}")
+        expected_url = f"/audio/a1-module1-pilot/{_audio_filename(entry, file_path)}"
+        if url != expected_url:
+            raise ValueError(
+                f"Verified audio URL for {_audio_filename(entry, file_path)!r} must be {expected_url!r}; got {url!r}"
+            )
+        seen_paths.add(path_key)
+        seen_urls.add(url)
+        target_key = (lesson_id, target["sceneId"], target["referenceId"])
+        if target_key in seen_targets:
+            raise ValueError(f"Duplicate verified audio target: {target_key!r}")
+        seen_targets.add(target_key)
+        if lesson_id == "a1-general-start":
+            teach_scene = next(
+                (item for item in lesson["scenes"] if item["id"] == target["sceneId"]),
+                None,
+            )
+            if teach_scene is None or teach_scene.get("phase") != "starter-teach":
+                raise ValueError(
+                    f"Starter reference audio must target an existing teaching scene: {target['sceneId']!r}"
+                )
+            block_id = _as_text(entry.get("blockId")) or f"{target['sceneId']}-{target['referenceId']}-audio"
+            if block_id in seen_ids:
+                raise ValueError(f"Duplicate verified reference audio block id: {block_id!r}")
+            title = _as_text(entry.get("label")) or f"Referencia sintética · {target['referenceId']}"
+            source_ref = _as_text(entry.get("sourceRef")) or target["sourceRef"]
+            audio_block = _verified_audio_block(
+                block_id=block_id,
+                scene=teach_scene,
+                title=title,
+                url=url,
+                transcript=transcript,
+                source_ref=source_ref,
+                sha256=sha256,
+                reference_only=True,
+            )
+            teach_scene["runtimeBlocks"].append(audio_block)
+            teach_scene["runtimeBlockIds"].append(block_id)
+            lesson["blocks"] = [block for scene in lesson["scenes"] for block in scene["runtimeBlocks"]]
+            seen_ids.add(block_id)
+            verified_files.append(
+                {
+                    "lessonId": lesson_id,
+                    "sceneId": target["sceneId"],
+                    "url": url,
+                    "path": file_path.as_posix(),
+                    "sha256": sha256,
+                    "sourceEnglishTranscript": transcript,
+                    "blockId": block_id,
+                    "referenceOnly": True,
+                }
+            )
+            for plan in full["audioManifest"].get("starterReferencePlan", []):
+                if (
+                    plan.get("lessonId") == lesson_id
+                    and plan.get("sceneId") == target["sceneId"]
+                    and plan.get("plannedPath") == url
+                ):
+                    plan.update(
+                        {
+                            "status": "verified_audio_integrated",
+                            "audioPath": url,
+                            "sha256": sha256,
+                            "blockId": block_id,
+                        }
+                    )
+            continue
         unit_match = re.fullmatch(r"a1-general-u([1-4])", lesson_id)
         if unit_match is None:
             raise ValueError(
@@ -2534,12 +2802,10 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                 f"got {lesson_id!r}"
             )
         unit_number = int(unit_match.group(1))
-        file_path = _verified_file_path(entry.get("filePath", entry.get("path")))
-        url = _audio_url(entry, file_path)
         teach_scene = next((item for item in lesson["scenes"] if item["phase"] == "unit-teach"), None)
         if teach_scene is None:
             raise ValueError(f"Audio manifest has no target scene for {lesson_id!r}")
-        listening_scene_id = _as_text(entry.get("sceneId")) or f"a1m1-u{unit_number}-listening"
+        listening_scene_id = target["sceneId"]
         if any(scene["id"] == listening_scene_id for scene in lesson["scenes"]):
             raise ValueError(f"Duplicate verified listening scene id {listening_scene_id!r}")
         check_scene_id = f"{listening_scene_id}-check"
@@ -2557,18 +2823,7 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
             raise ValueError(f"Duplicate verified listening block id(s): {duplicates or generated_ids!r}")
         seen_ids.update(generated_ids)
         title = _as_text(entry.get("label")) or "Audio de práctica con voz sintética"
-        source_ref = _as_text(entry.get("sourceRef")) or f"{lesson.get('sourceRef')}.model.text"
-        transcript = _as_text(teach_scene.get("originalEnglishModel"))
-        if not transcript:
-            transcript = next(
-                (
-                    _as_text(block.get("data", {}).get("originalEnglishModel"))
-                    for block in teach_scene.get("runtimeBlocks", [])
-                    if block.get("data", {}).get("originalEnglishModel")
-                ),
-            )
-        if not transcript:
-            raise ValueError(f"Verified listening audio has no source transcript for {lesson_id!r}")
+        source_ref = _as_text(entry.get("sourceRef")) or target["sourceRef"]
         listening_title = f"{lesson['title']} · escucha"
         transcript_html = _markdown_to_safe_html(transcript)
         listening_content = (
@@ -2610,11 +2865,21 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                     source_refs=[source_ref],
                     audioVerified=True,
                     audioLabel=title,
+                    audioKind="unit-model",
+                    synthetic=True,
+                    syntheticReference=False,
+                    sha256=sha256,
+                    spokenTranscript=transcript,
+                    transcript=transcript,
                     transcriptDisclosure="after-listen-check",
                     supportLabel="Ver transcripción",
+                    listeningAssessment="six-question-follow-up",
+                    gradedListening=True,
+                    noListeningAssessment=False,
                 )
             },
         )
+        audio_block["transcript"] = transcript
         listening_scene = _scene(
             lesson_id,
             listening_scene_id,
@@ -2697,7 +2962,11 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                 "sceneId": listening_scene_id,
                 "checkSceneId": check_scene_id,
                 "url": url,
+                "path": file_path.as_posix(),
+                "sha256": sha256,
+                "sourceEnglishTranscript": transcript,
                 "sourceRef": source_ref,
+                "referenceOnly": False,
             }
         )
         for plan in full["audioManifest"].get("listeningPlan", []):
@@ -2707,9 +2976,14 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                         "status": "verified_audio_integrated",
                         "audioPath": url,
                         "checkSceneId": check_scene_id,
+                        "sha256": sha256,
                     }
                 )
+        for plan in full["audioManifest"].get("plannedScripts", []):
+            if plan.get("lessonId") == lesson_id and plan.get("plannedPath") == url:
+                plan.update({"status": "verified_audio_integrated", "audioPath": url, "sha256": sha256})
     full["backgroundAssignment"] = _assign_all_lesson_backgrounds(full["lessons"])
+    full["acceptance"]["audioPending"] = False
     full["audioManifest"].update(
         {
             "status": "verified_audio_integrated",
@@ -2717,8 +2991,14 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
             "noAudioBlocksGenerated": False,
             "verifiedManifest": manifest_path.as_posix(),
             "verifiedFiles": verified_files,
+            "verifiedFileCount": len(verified_files),
+            "policy": "Only hash-verified pilot assets are playable; synthetic clips remain labeled and starter references are not graded listening.",
         }
     )
+    # Pending authorization language belongs to the no-audio source build.  A
+    # verified build is self-contained in verifiedFiles and must not retain
+    # stale pending script records in the learner-facing sidecar.
+    full["audioManifest"]["plannedScripts"] = []
 
 
 def build_artifacts(
