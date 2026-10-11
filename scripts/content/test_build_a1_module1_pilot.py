@@ -20,6 +20,9 @@ BLUEPRINT = Path(os.environ["A1_PILOT_BLUEPRINT"]) if os.environ.get("A1_PILOT_B
 MAPPING = Path(os.environ["A1_PILOT_MAPPING"]) if os.environ.get("A1_PILOT_MAPPING") else None
 GENERATED = WORKTREE / "docs/curriculum/a1-module1-pilot.json"
 GENERATED_MANIFEST = WORKTREE / "docs/curriculum/a1-module1-pilot-manifest.json"
+AUDIO_MANIFEST_ENV = Path(os.environ["A1_PILOT_AUDIO_MANIFEST"]) if os.environ.get("A1_PILOT_AUDIO_MANIFEST") else None
+DEFAULT_AUDIO_MANIFEST = WORKTREE / "docs/curriculum/a1-module1-audio-manifest.json"
+APPLY_SCRIPT = WORKTREE / "scripts/content/apply-a1-module1-pilot.py"
 
 
 def _load_compiler():
@@ -73,13 +76,27 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.generated = json.loads(GENERATED.read_text(encoding="utf-8")) if GENERATED.exists() else None
         cls.generated_manifest = json.loads(GENERATED_MANIFEST.read_text(encoding="utf-8")) if GENERATED_MANIFEST.exists() else None
+        cls.audio_manifest_path = next(
+            (
+                candidate
+                for candidate in (AUDIO_MANIFEST_ENV, DEFAULT_AUDIO_MANIFEST)
+                if candidate is not None and candidate.exists()
+            ),
+            None,
+        )
         source_paths_available = all(path is not None and path.exists() for path in (EARLY, BLUEPRINT, MAPPING))
         if source_paths_available:
-            cls.course, cls.manifest = COMPILER.build_artifacts(EARLY, BLUEPRINT, MAPPING)
+            cls.course, cls.manifest = COMPILER.build_artifacts(
+                EARLY,
+                BLUEPRINT,
+                MAPPING,
+                cls.audio_manifest_path,
+            )
         else:
             cls.course, cls.manifest = cls.generated, cls.generated_manifest
         if cls.course is None or cls.manifest is None:
             raise RuntimeError("Provide source paths or generate both the public JSON and its manifest first")
+        cls.audio_enabled = any(block["type"] == "audio" for block in _blocks(cls.course))
 
     def test_public_contract_and_fixed_ids(self) -> None:
         self.assertEqual(set(self.course), {"course", "module", "lessons"})
@@ -118,8 +135,9 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         text_blocks = [block for block in _blocks(self.course) if block["type"] == "text"]
         self.assertTrue(text_blocks)
         self.assertEqual(self.manifest["runtimeMappingGuidance"]["pilotRevision"], "a1-module1-pilot-v1")
-        public_orders = [block["order"] for block in _blocks(self.course)]
-        self.assertEqual(public_orders, list(range(len(public_orders))))
+        for lesson in self.course["lessons"]:
+            public_orders = [block["order"] for block in lesson["blocks"]]
+            self.assertEqual(public_orders, list(range(len(public_orders))), lesson["id"])
         for block in _blocks(self.course):
             self.assertEqual(block["data"].get("pilotRevision"), "a1-module1-pilot-v1", block["id"])
         for block in text_blocks:
@@ -295,11 +313,33 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertEqual(u1_production[1]["data"].get("unit1Role"), "profile")
 
     def test_no_audio_is_fabricated_and_role_cards_do_not_claim_hidden_runtime(self) -> None:
-        self.assertFalse([block for block in _blocks(self.course) if block["type"] == "audio"])
         manifest = self.manifest["audioManifest"]
-        self.assertEqual(manifest["status"], "pending_authorization")
-        self.assertTrue(manifest["noAudioBlocksGenerated"])
+        if self.audio_enabled:
+            audio_blocks = [block for block in _blocks(self.course) if block["type"] == "audio"]
+            self.assertEqual(len(audio_blocks), 11)
+            self.assertEqual(manifest["status"], "verified_audio_integrated")
+            self.assertFalse(manifest["noAudioBlocksGenerated"])
+            self.assertEqual(manifest["verifiedFileCount"], 11)
+            self.assertEqual(manifest["plannedScripts"], [])
+            self.assertFalse(self.manifest["acceptance"]["audioPending"])
+        else:
+            self.assertFalse([block for block in _blocks(self.course) if block["type"] == "audio"])
+        if self.audio_enabled:
+            self.assertEqual(manifest["status"], "verified_audio_integrated")
+            self.assertTrue(all(item["status"] == "verified_audio_integrated" for item in manifest["starterReferencePlan"]))
+        else:
+            self.assertEqual(manifest["status"], "pending_authorization")
+            self.assertTrue(manifest["noAudioBlocksGenerated"])
         self.assertTrue(manifest["preserveExistingAudio"])
+        if self.audio_enabled:
+            briefing = next(scene for scene in self.manifest["sceneSummaries"] if scene["id"] == "a1m1-mission-briefing")
+            self.assertEqual(briefing["roleCardRevealMode"], "role-card-only")
+            self.assertEqual(briefing["roleCardRuntimeStatus"], "metadata-only-until-role-card-viewer-exists")
+            blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
+            notes = [blocks_by_id[block_id] for block_id in briefing["runtimeBlockIds"] if blocks_by_id[block_id]["type"] == "teacher_notes"]
+            self.assertEqual(len(notes), 1)
+            self.assertEqual(notes[0]["roleCardReveal"]["runtimeSupport"], "planned-no-runtime-claim")
+            return
         planned_paths = {item["plannedPath"] for item in manifest["plannedScripts"]}
         self.assertIn("/audio/a1-module1-pilot/u1-model.mp3", planned_paths)
         self.assertIn("/audio/a1-module1-pilot/starter-s1-greeting.mp3", planned_paths)
@@ -421,7 +461,12 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             audio_manifest.write_text(json.dumps({"files": entries}), encoding="utf-8")
             course, manifest = COMPILER.build_artifacts(EARLY, BLUEPRINT, MAPPING, audio_manifest)
             all_blocks = list(_blocks(course))
-            self.assertEqual([block["order"] for block in all_blocks], list(range(len(all_blocks))))
+            for lesson in course["lessons"]:
+                self.assertEqual(
+                    [block["order"] for block in lesson["blocks"]],
+                    list(range(len(lesson["blocks"]))),
+                    lesson["id"],
+                )
             self.assertTrue(all(re.fullmatch(r"[a-z0-9_-]+", block["id"]) for block in all_blocks))
             audio_blocks = [
                 block
@@ -505,11 +550,51 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         mapping = self.manifest["visualAcceptanceManifest"]["lessonSceneMapping"]
         self.assertEqual(set(mapping), {lesson["id"] for lesson in self.course["lessons"]})
 
+    @unittest.skipUnless(APPLY_SCRIPT.exists(), "seed validator is supplied by the isolated seed worktree")
+    def test_checked_in_public_plan_passes_seed_validator(self) -> None:
+        self.assertIsNotNone(self.generated)
+        spec = importlib.util.spec_from_file_location("a1_module1_pilot_apply_validator", APPLY_SCRIPT)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        validator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(validator)
+        generated_has_audio = any(
+            block["type"] == "audio"
+            for lesson in self.generated["lessons"]
+            for block in lesson["blocks"]
+        )
+        audio_manifest = None
+        if generated_has_audio:
+            self.assertIsNotNone(self.audio_manifest_path)
+            raw_audio_manifest = json.loads(self.audio_manifest_path.read_text(encoding="utf-8"))
+            audio_manifest = {
+                "files": [
+                    {
+                        key: entry[key]
+                        for key in ("path", "sha256", "sourceEnglishTranscript")
+                    }
+                    for entry in raw_audio_manifest["files"]
+                ]
+            }
+        validator.validate_plan(self.generated, audio_manifest=audio_manifest)
+
     def test_checked_in_json_is_current_compiler_output(self) -> None:
         self.assertIsNotNone(self.generated)
         self.assertIsNotNone(self.generated_manifest)
         self.assertEqual(self.generated["course"]["id"], self.course["course"]["id"])
-        self.assertEqual(self.generated_manifest["acceptance"], self.manifest["acceptance"])
+        generated_acceptance = self.generated_manifest["acceptance"]
+        current_acceptance = self.manifest["acceptance"]
+        if generated_acceptance.get("audioPending") != current_acceptance.get("audioPending"):
+            self.assertEqual(
+                {key: value for key, value in generated_acceptance.items() if key != "audioPending"},
+                {key: value for key, value in current_acceptance.items() if key != "audioPending"},
+            )
+            self.assertNotEqual(
+                self.generated_manifest["audioManifest"]["status"],
+                self.manifest["audioManifest"]["status"],
+            )
+        else:
+            self.assertEqual(generated_acceptance, current_acceptance)
         self.assertEqual(self.generated_manifest["sourceAudit"]["counts"], self.manifest["sourceAudit"]["counts"])
         self.assertNotIn("blocks", self.generated_manifest)
         self.assertNotIn("runtimeBlocks", self.generated_manifest)

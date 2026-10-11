@@ -2845,7 +2845,7 @@
         {
           "id": "a1m1-u1-teach-title",
           "type": "title",
-          "order": 81,
+          "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -2865,7 +2865,7 @@
         {
           "id": "a1m1-u1-teach-text",
           "type": "text",
-          "order": 82,
+          "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -2894,7 +2894,7 @@
         {
           "id": "a1m1-u1-teach-language-support",
           "type": "structured-content",
-          "order": 83,
+          "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -2950,7 +2950,7 @@
         {
           "id": "a1m1-u1-comprehension-title",
           "type": "title",
-          "order": 84,
+          "order": 3,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -2972,7 +2972,7 @@
         {
           "id": "a1m1-u1-comprehension-instruction",
           "type": "text",
-          "order": 85,
+          "order": 4,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -2995,7 +2995,7 @@
         {
           "id": "a1m1-u1-comprehension-items",
           "type": "multiple_choice",
-          "order": 86,
+          "order": 5,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3100,7 +3100,7 @@
         {
           "id": "a1m1-u1-practice-1-title",
           "type": "title",
-          "order": 87,
+          "order": 6,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3120,7 +3120,7 @@
         {
           "id": "a1m1-u1-practice-1-instruction",
           "type": "text",
-          "order": 88,
+          "order": 7,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3142,7 +3142,7 @@
         {
           "id": "a1m1-u1-practice-block-1",
           "type": "multiple_choice",
-          "order": 89,
+          "order": 8,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3199,7 +3199,7 @@
         {
           "id": "a1m1-u1-practice-2-title",
           "type": "title",
-          "order": 90,
+          "order": 9,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3219,7 +3219,7 @@
         {
           "id": "a1m1-u1-practice-2-instruction",
           "type": "text",
-          "order": 91,
+          "order": 10,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3241,7 +3241,7 @@
         {
           "id": "a1m1-u1-practice-block-2",
           "type": "short_answer",
-          "order": 92,
+          "order": 11,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3291,7 +3291,7 @@
         {
           "id": "a1m1-u1-practice-3-title",
           "type": "title",
-          "order": 93,
+          "order": 12,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3311,7 +3311,7 @@
         {
           "id": "a1m1-u1-practice-3-instruction",
           "type": "text",
-          "order": 94,
+          "order": 13,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3333,7 +3333,7 @@
         {
           "id": "a1m1-u1-practice-block-3",
           "type": "multiple_choice",
-          "order": 95,
+          "order": 14,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3390,7 +3390,7 @@
         {
           "id": "a1m1-u1-practice-4-title",
           "type": "title",
-          "order": 96,
+          "order": 15,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3410,7 +3410,7 @@
         {
           "id": "a1m1-u1-practice-4-instruction",
           "type": "text",
-          "order": 97,
+          "order": 16,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3432,7 +3432,7 @@
         {
           "id": "a1m1-u1-practice-block-4",
           "type": "short_answer",
-          "order": 98,
+          "order": 17,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3485,7 +3485,7 @@
         {
           "id": "a1m1-u1-practice-5-title",
           "type": "title",
-          "order": 99,
+          "order": 18,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3505,7 +3505,7 @@
         {
           "id": "a1m1-u1-practice-5-instruction",
           "type": "text",
-          "order": 100,
+          "order": 19,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3527,7 +3527,7 @@
         {
           "id": "a1m1-u1-practice-block-5",
           "type": "ordering",
-          "order": 101,
+          "order": 20,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3598,7 +3598,7 @@
         {
           "id": "a1m1-u1-transfer-speak-title",
           "type": "title",
-          "order": 102,
+          "order": 21,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3618,7 +3618,7 @@
         {
           "id": "a1m1-u1-transfer-speak-prompt",
           "type": "text",
-          "order": 103,
+          "order": 22,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3645,7 +3645,7 @@
         {
           "id": "a1m1-u1-transfer-speak-recording",
           "type": "recording",
-          "order": 104,
+          "order": 23,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3698,7 +3698,7 @@
         {
           "id": "a1m1-u1-transfer-review-title",
           "type": "title",
-          "order": 105,
+          "order": 24,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3718,7 +3718,7 @@
         {
           "id": "a1m1-u1-transfer-review-prompt",
           "type": "text",
-          "order": 106,
+          "order": 25,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3740,7 +3740,7 @@
         {
           "id": "a1m1-u1-transfer-review-essay",
           "type": "essay",
-          "order": 107,
+          "order": 26,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3788,7 +3788,7 @@
         {
           "id": "a1m1-u2-teach-title",
           "type": "title",
-          "order": 108,
+          "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3808,7 +3808,7 @@
         {
           "id": "a1m1-u2-teach-text",
           "type": "text",
-          "order": 109,
+          "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3837,7 +3837,7 @@
         {
           "id": "a1m1-u2-teach-language-support",
           "type": "structured-content",
-          "order": 110,
+          "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3893,7 +3893,7 @@
         {
           "id": "a1m1-u2-comprehension-title",
           "type": "title",
-          "order": 111,
+          "order": 3,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3915,7 +3915,7 @@
         {
           "id": "a1m1-u2-comprehension-instruction",
           "type": "text",
-          "order": 112,
+          "order": 4,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -3938,7 +3938,7 @@
         {
           "id": "a1m1-u2-comprehension-items",
           "type": "multiple_choice",
-          "order": 113,
+          "order": 5,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4043,7 +4043,7 @@
         {
           "id": "a1m1-u2-practice-1-title",
           "type": "title",
-          "order": 114,
+          "order": 6,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4063,7 +4063,7 @@
         {
           "id": "a1m1-u2-practice-1-instruction",
           "type": "text",
-          "order": 115,
+          "order": 7,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4085,7 +4085,7 @@
         {
           "id": "a1m1-u2-practice-block-1",
           "type": "multiple_choice",
-          "order": 116,
+          "order": 8,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4142,7 +4142,7 @@
         {
           "id": "a1m1-u2-practice-2-title",
           "type": "title",
-          "order": 117,
+          "order": 9,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4162,7 +4162,7 @@
         {
           "id": "a1m1-u2-practice-2-instruction",
           "type": "text",
-          "order": 118,
+          "order": 10,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4184,7 +4184,7 @@
         {
           "id": "a1m1-u2-practice-block-2",
           "type": "short_answer",
-          "order": 119,
+          "order": 11,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4234,7 +4234,7 @@
         {
           "id": "a1m1-u2-practice-3-title",
           "type": "title",
-          "order": 120,
+          "order": 12,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4254,7 +4254,7 @@
         {
           "id": "a1m1-u2-practice-3-instruction",
           "type": "text",
-          "order": 121,
+          "order": 13,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4276,7 +4276,7 @@
         {
           "id": "a1m1-u2-practice-block-3",
           "type": "multiple_choice",
-          "order": 122,
+          "order": 14,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4333,7 +4333,7 @@
         {
           "id": "a1m1-u2-practice-4-title",
           "type": "title",
-          "order": 123,
+          "order": 15,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4353,7 +4353,7 @@
         {
           "id": "a1m1-u2-practice-4-instruction",
           "type": "text",
-          "order": 124,
+          "order": 16,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4375,7 +4375,7 @@
         {
           "id": "a1m1-u2-practice-block-4",
           "type": "short_answer",
-          "order": 125,
+          "order": 17,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4428,7 +4428,7 @@
         {
           "id": "a1m1-u2-practice-5-title",
           "type": "title",
-          "order": 126,
+          "order": 18,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4448,7 +4448,7 @@
         {
           "id": "a1m1-u2-practice-5-instruction",
           "type": "text",
-          "order": 127,
+          "order": 19,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4470,7 +4470,7 @@
         {
           "id": "a1m1-u2-practice-block-5",
           "type": "ordering",
-          "order": 128,
+          "order": 20,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4547,7 +4547,7 @@
         {
           "id": "a1m1-u2-transfer-speak-title",
           "type": "title",
-          "order": 129,
+          "order": 21,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4567,7 +4567,7 @@
         {
           "id": "a1m1-u2-transfer-speak-prompt",
           "type": "text",
-          "order": 130,
+          "order": 22,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4594,7 +4594,7 @@
         {
           "id": "a1m1-u2-transfer-speak-recording",
           "type": "recording",
-          "order": 131,
+          "order": 23,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4647,7 +4647,7 @@
         {
           "id": "a1m1-u2-transfer-review-title",
           "type": "title",
-          "order": 132,
+          "order": 24,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4667,7 +4667,7 @@
         {
           "id": "a1m1-u2-transfer-review-prompt",
           "type": "text",
-          "order": 133,
+          "order": 25,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4689,7 +4689,7 @@
         {
           "id": "a1m1-u2-transfer-review-essay",
           "type": "essay",
-          "order": 134,
+          "order": 26,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4737,7 +4737,7 @@
         {
           "id": "a1m1-u3-teach-title",
           "type": "title",
-          "order": 135,
+          "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4757,7 +4757,7 @@
         {
           "id": "a1m1-u3-teach-text",
           "type": "text",
-          "order": 136,
+          "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4786,7 +4786,7 @@
         {
           "id": "a1m1-u3-teach-language-support",
           "type": "structured-content",
-          "order": 137,
+          "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4842,7 +4842,7 @@
         {
           "id": "a1m1-u3-comprehension-title",
           "type": "title",
-          "order": 138,
+          "order": 3,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4864,7 +4864,7 @@
         {
           "id": "a1m1-u3-comprehension-instruction",
           "type": "text",
-          "order": 139,
+          "order": 4,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4887,7 +4887,7 @@
         {
           "id": "a1m1-u3-comprehension-items",
           "type": "multiple_choice",
-          "order": 140,
+          "order": 5,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -4992,7 +4992,7 @@
         {
           "id": "a1m1-u3-practice-1-title",
           "type": "title",
-          "order": 141,
+          "order": 6,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5012,7 +5012,7 @@
         {
           "id": "a1m1-u3-practice-1-instruction",
           "type": "text",
-          "order": 142,
+          "order": 7,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5034,7 +5034,7 @@
         {
           "id": "a1m1-u3-practice-block-1",
           "type": "multiple_choice",
-          "order": 143,
+          "order": 8,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5091,7 +5091,7 @@
         {
           "id": "a1m1-u3-practice-2-title",
           "type": "title",
-          "order": 144,
+          "order": 9,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5111,7 +5111,7 @@
         {
           "id": "a1m1-u3-practice-2-instruction",
           "type": "text",
-          "order": 145,
+          "order": 10,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5133,7 +5133,7 @@
         {
           "id": "a1m1-u3-practice-block-2",
           "type": "short_answer",
-          "order": 146,
+          "order": 11,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5183,7 +5183,7 @@
         {
           "id": "a1m1-u3-practice-3-title",
           "type": "title",
-          "order": 147,
+          "order": 12,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5203,7 +5203,7 @@
         {
           "id": "a1m1-u3-practice-3-instruction",
           "type": "text",
-          "order": 148,
+          "order": 13,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5225,7 +5225,7 @@
         {
           "id": "a1m1-u3-practice-block-3",
           "type": "multiple_choice",
-          "order": 149,
+          "order": 14,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5282,7 +5282,7 @@
         {
           "id": "a1m1-u3-practice-4-title",
           "type": "title",
-          "order": 150,
+          "order": 15,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5302,7 +5302,7 @@
         {
           "id": "a1m1-u3-practice-4-instruction",
           "type": "text",
-          "order": 151,
+          "order": 16,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5324,7 +5324,7 @@
         {
           "id": "a1m1-u3-practice-block-4",
           "type": "short_answer",
-          "order": 152,
+          "order": 17,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5377,7 +5377,7 @@
         {
           "id": "a1m1-u3-practice-5-title",
           "type": "title",
-          "order": 153,
+          "order": 18,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5397,7 +5397,7 @@
         {
           "id": "a1m1-u3-practice-5-instruction",
           "type": "text",
-          "order": 154,
+          "order": 19,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5419,7 +5419,7 @@
         {
           "id": "a1m1-u3-practice-block-5",
           "type": "ordering",
-          "order": 155,
+          "order": 20,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5496,7 +5496,7 @@
         {
           "id": "a1m1-u3-transfer-speak-title",
           "type": "title",
-          "order": 156,
+          "order": 21,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5516,7 +5516,7 @@
         {
           "id": "a1m1-u3-transfer-speak-prompt",
           "type": "text",
-          "order": 157,
+          "order": 22,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5543,7 +5543,7 @@
         {
           "id": "a1m1-u3-transfer-speak-recording",
           "type": "recording",
-          "order": 158,
+          "order": 23,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5596,7 +5596,7 @@
         {
           "id": "a1m1-u3-transfer-review-title",
           "type": "title",
-          "order": 159,
+          "order": 24,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5616,7 +5616,7 @@
         {
           "id": "a1m1-u3-transfer-review-prompt",
           "type": "text",
-          "order": 160,
+          "order": 25,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5638,7 +5638,7 @@
         {
           "id": "a1m1-u3-transfer-review-essay",
           "type": "essay",
-          "order": 161,
+          "order": 26,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5686,7 +5686,7 @@
         {
           "id": "a1m1-u4-teach-title",
           "type": "title",
-          "order": 162,
+          "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5706,7 +5706,7 @@
         {
           "id": "a1m1-u4-teach-text",
           "type": "text",
-          "order": 163,
+          "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5735,7 +5735,7 @@
         {
           "id": "a1m1-u4-teach-language-support",
           "type": "structured-content",
-          "order": 164,
+          "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5791,7 +5791,7 @@
         {
           "id": "a1m1-u4-comprehension-title",
           "type": "title",
-          "order": 165,
+          "order": 3,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5813,7 +5813,7 @@
         {
           "id": "a1m1-u4-comprehension-instruction",
           "type": "text",
-          "order": 166,
+          "order": 4,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5836,7 +5836,7 @@
         {
           "id": "a1m1-u4-comprehension-items",
           "type": "multiple_choice",
-          "order": 167,
+          "order": 5,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5941,7 +5941,7 @@
         {
           "id": "a1m1-u4-practice-1-title",
           "type": "title",
-          "order": 168,
+          "order": 6,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5961,7 +5961,7 @@
         {
           "id": "a1m1-u4-practice-1-instruction",
           "type": "text",
-          "order": 169,
+          "order": 7,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -5983,7 +5983,7 @@
         {
           "id": "a1m1-u4-practice-block-1",
           "type": "multiple_choice",
-          "order": 170,
+          "order": 8,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6040,7 +6040,7 @@
         {
           "id": "a1m1-u4-practice-2-title",
           "type": "title",
-          "order": 171,
+          "order": 9,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6060,7 +6060,7 @@
         {
           "id": "a1m1-u4-practice-2-instruction",
           "type": "text",
-          "order": 172,
+          "order": 10,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6082,7 +6082,7 @@
         {
           "id": "a1m1-u4-practice-block-2",
           "type": "short_answer",
-          "order": 173,
+          "order": 11,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6133,7 +6133,7 @@
         {
           "id": "a1m1-u4-practice-3-title",
           "type": "title",
-          "order": 174,
+          "order": 12,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6153,7 +6153,7 @@
         {
           "id": "a1m1-u4-practice-3-instruction",
           "type": "text",
-          "order": 175,
+          "order": 13,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6175,7 +6175,7 @@
         {
           "id": "a1m1-u4-practice-block-3",
           "type": "multiple_choice",
-          "order": 176,
+          "order": 14,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6232,7 +6232,7 @@
         {
           "id": "a1m1-u4-practice-4-title",
           "type": "title",
-          "order": 177,
+          "order": 15,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6252,7 +6252,7 @@
         {
           "id": "a1m1-u4-practice-4-instruction",
           "type": "text",
-          "order": 178,
+          "order": 16,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6274,7 +6274,7 @@
         {
           "id": "a1m1-u4-practice-block-4",
           "type": "short_answer",
-          "order": 179,
+          "order": 17,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6327,7 +6327,7 @@
         {
           "id": "a1m1-u4-practice-5-title",
           "type": "title",
-          "order": 180,
+          "order": 18,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6347,7 +6347,7 @@
         {
           "id": "a1m1-u4-practice-5-instruction",
           "type": "text",
-          "order": 181,
+          "order": 19,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6369,7 +6369,7 @@
         {
           "id": "a1m1-u4-practice-block-5",
           "type": "ordering",
-          "order": 182,
+          "order": 20,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6446,7 +6446,7 @@
         {
           "id": "a1m1-u4-transfer-speak-title",
           "type": "title",
-          "order": 183,
+          "order": 21,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6466,7 +6466,7 @@
         {
           "id": "a1m1-u4-transfer-speak-prompt",
           "type": "text",
-          "order": 184,
+          "order": 22,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6493,7 +6493,7 @@
         {
           "id": "a1m1-u4-transfer-speak-recording",
           "type": "recording",
-          "order": 185,
+          "order": 23,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6546,7 +6546,7 @@
         {
           "id": "a1m1-u4-transfer-review-title",
           "type": "title",
-          "order": 186,
+          "order": 24,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6566,7 +6566,7 @@
         {
           "id": "a1m1-u4-transfer-review-prompt",
           "type": "text",
-          "order": 187,
+          "order": 25,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6588,7 +6588,7 @@
         {
           "id": "a1m1-u4-transfer-review-essay",
           "type": "essay",
-          "order": 188,
+          "order": 26,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6636,7 +6636,7 @@
         {
           "id": "a1m1-mission-briefing-title",
           "type": "title",
-          "order": 189,
+          "order": 0,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6656,7 +6656,7 @@
         {
           "id": "a1m1-mission-briefing-instructions",
           "type": "text",
-          "order": 190,
+          "order": 1,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6680,7 +6680,7 @@
         {
           "id": "a1m1-mission-briefing-common-sheet",
           "type": "structured-content",
-          "order": 191,
+          "order": 2,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6728,7 +6728,7 @@
         {
           "id": "a1m1-mission-briefing-role-notes",
           "type": "teacher_notes",
-          "order": 192,
+          "order": 3,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6756,7 +6756,7 @@
         {
           "id": "a1m1-mission-model-title",
           "type": "title",
-          "order": 193,
+          "order": 4,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6776,7 +6776,7 @@
         {
           "id": "a1m1-mission-model-text",
           "type": "text",
-          "order": 194,
+          "order": 5,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6798,7 +6798,7 @@
         {
           "id": "a1m1-mission-model-language",
           "type": "structured-content",
-          "order": 195,
+          "order": 6,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6849,7 +6849,7 @@
         {
           "id": "a1m1-mission-speak-title",
           "type": "title",
-          "order": 196,
+          "order": 7,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6869,7 +6869,7 @@
         {
           "id": "a1m1-mission-speak-prompt",
           "type": "text",
-          "order": 197,
+          "order": 8,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6891,7 +6891,7 @@
         {
           "id": "a1m1-mission-speak-recording",
           "type": "recording",
-          "order": 198,
+          "order": 9,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6945,7 +6945,7 @@
         {
           "id": "a1m1-mission-card-title",
           "type": "title",
-          "order": 199,
+          "order": 10,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6965,7 +6965,7 @@
         {
           "id": "a1m1-mission-card-prompt",
           "type": "text",
-          "order": 200,
+          "order": 11,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -6987,7 +6987,7 @@
         {
           "id": "a1m1-mission-card-essay",
           "type": "essay",
-          "order": 201,
+          "order": 12,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -7028,7 +7028,7 @@
         {
           "id": "a1m1-mission-mediation-title",
           "type": "title",
-          "order": 202,
+          "order": 13,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -7048,7 +7048,7 @@
         {
           "id": "a1m1-mission-mediation-prompt",
           "type": "text",
-          "order": 203,
+          "order": 14,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -7079,7 +7079,7 @@
         {
           "id": "a1m1-mission-mediation-source",
           "type": "structured-content",
-          "order": 204,
+          "order": 15,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",
@@ -7118,7 +7118,7 @@
         {
           "id": "a1m1-mission-mediation-essay",
           "type": "essay",
-          "order": 205,
+          "order": 16,
           "data": {
             "learningRevision": "course-guided-v1",
             "pilotRevision": "a1-module1-pilot-v1",

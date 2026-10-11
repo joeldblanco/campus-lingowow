@@ -2408,8 +2408,8 @@ def _primary_course(full: dict[str, Any]) -> dict[str, Any]:
     if isinstance(objectives, list):
         objectives = " ".join(_as_text(item) for item in objectives)
     primary_lessons = []
-    public_order = 0
     for lesson in full["lessons"]:
+        public_order = 0
         public_blocks = deepcopy(lesson["blocks"])
         for block in public_blocks:
             block["order"] = public_order
