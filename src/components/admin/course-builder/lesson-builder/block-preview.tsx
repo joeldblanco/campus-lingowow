@@ -4092,7 +4092,8 @@ function EssayBlockPreview({
 }) {
   void hideHeader // Essay blocks have a different layout
   const unit1Role = getUnit1ProductionRole(block)
-  const isUnit1Profile = guidedAppearance && unit1Role === 'profile'
+  const isA1PilotProduction = guidedAppearance && block.data?.pilotRevision === 'a1-module1-pilot-v1'
+  const isUnit1Profile = guidedAppearance && unit1Role === 'profile' && !isA1PilotProduction
   const essayPrompt = isUnit1Profile
     ? getUnit1DataString(block, 'productionPrompt') ||
       'Escribe en inglés un perfil de 30–50 palabras con tu nombre, edad, origen, ocupación y dónde vives.'

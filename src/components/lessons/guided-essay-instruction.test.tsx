@@ -17,6 +17,15 @@ const block: EssayBlock = {
 }
 
 describe('guided profile writing instruction', () => {
+  it('uses the new A1 pilot task and its short response limits instead of the legacy profile', () => {
+    render(<BlockPreview guidedAppearance block={{ ...block, prompt: 'Confirma el horario de la tarjeta en dos frases.', minWords: 5, maxWords: 80,
+      data: { unit1Role: 'profile', pilotRevision: 'a1-module1-pilot-v1', reviewChecklist: ['Confirmé la hora.'] } }} />)
+    expect(screen.getByRole('textbox', { name: 'Confirma el horario de la tarjeta en dos frases.' })).toBeVisible()
+    expect(screen.getByText('Mínimo 5 palabras')).toBeVisible()
+    expect(screen.getByText('Máx 80')).toBeVisible()
+    expect(screen.queryByText('Mínimo 30 palabras')).not.toBeInTheDocument()
+    expect(screen.queryByText('Ver ejemplo')).not.toBeInTheDocument()
+  })
   it('sends the displayed instruction and the configured level to grading', () => {
     render(<BlockPreview guidedAppearance block={{ ...block, aiGrading: true }} />)
     expect(screen.getByTestId('grading')).toHaveAttribute('data-level', 'A1')
