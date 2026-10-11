@@ -349,6 +349,11 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             essay = next(block for block in lesson["blocks"] if block["type"] == "essay")
             self.assertIn(active_marker, essay["data"]["learningModes"]["individual"], lesson["id"])
             self.assertNotIn(stale_marker, essay["data"]["learningModes"]["individual"], lesson["id"])
+        essays = [block for block in production if block["type"] == "essay"]
+        for essay in essays:
+            individual_guidance = essay["data"]["learningModes"]["individual"].lower()
+            self.assertNotIn("graba", individual_guidance, essay["id"])
+            self.assertNotIn("cambia el rol", individual_guidance, essay["id"])
         mission_intro = next(
             block
             for block in self.course["lessons"][-1]["blocks"]
@@ -357,6 +362,28 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertIn("<details><summary>Ver ejemplo</summary>", mission_intro["content"])
         self.assertIn("<details><summary>Guía docente</summary>", mission_intro["content"])
         self.assertNotIn("<strong>Instrucción:</strong>", mission_intro["content"])
+        mission_card = next(
+            block
+            for block in self.course["lessons"][-1]["blocks"]
+            if block["id"] == "a1m1-mission-card-essay"
+        )
+        card_guidance = mission_card["data"]["learningModes"]["individual"]
+        self.assertIn("Escribe", card_guidance)
+        self.assertIn("tarjeta", card_guidance.lower())
+        self.assertNotIn("graba", card_guidance.lower())
+        self.assertNotIn("cambia el rol", card_guidance.lower())
+        self.assertEqual(
+            mission_card["data"]["reviewChecklist"],
+            [
+                "Incluye el nombre.",
+                "Incluye contacto.",
+                "Incluye día y hora.",
+                "Incluye la sala.",
+                "Añade una frase para pedir repetición.",
+            ],
+        )
+        self.assertNotIn("Saluda y se presenta.", mission_card["data"]["reviewChecklist"])
+        self.assertNotIn("Identifica dos personas u objetos.", mission_card["data"]["reviewChecklist"])
         mission_briefing = next(
             block
             for block in self.course["lessons"][-1]["blocks"]

@@ -2002,27 +2002,66 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
         )
     )
 
-    criteria = [_as_text(value) for value in mission.get("criteria", [])] + [
+    dialogue_criteria = [_as_text(value) for value in mission.get("criteria", [])] + [
         "Pide repetición o aclaración si falta un dato.",
         "Confirma día, hora y sala con los datos de la tarjeta.",
         "Completa la tarjeta sin inventar contacto u horario.",
     ]
-    modes = {
+    dialogue_modes = {
         "individual": "Lee la hoja común, elige un rol y graba una ronda de 60–90 segundos; repite con el rol cambiado.",
         "teacher": "Entrega una tarjeta de rol, observa la interacción y cambia los roles después de una ronda.",
+    }
+    essay_modes = {
+        "individual": "Escribe la respuesta y comprueba que conserva los datos de la ficha.",
+        "teacher": "La docente revisa los datos transferidos y la claridad de la respuesta.",
+    }
+    card_modes = {
+        "individual": "Escribe la tarjeta con los datos de la hoja y añade una frase para pedir repetición.",
+        "teacher": "La docente revisa nombre, contacto, día, hora, sala y la frase de apoyo.",
     }
     mission_route_policy = {
         "self": {
             "label": "Trabajo autónomo",
-            "instruction": modes["individual"],
+            "instruction": dialogue_modes["individual"],
             "review": "Marca cada criterio y anota un dato que debas comprobar.",
         },
         "teacher": {
             "label": "Trabajo con docente",
-            "instruction": modes["teacher"],
+            "instruction": dialogue_modes["teacher"],
             "review": "Usa la lista de comprobación y pide una reparación de significado.",
         },
     }
+    mission_essay_route_policy = {
+        "self": {
+            "label": "Trabajo autónomo",
+            "instruction": essay_modes["individual"],
+            "review": "Comprueba que la respuesta conserva todos los datos de la ficha.",
+        },
+        "teacher": {
+            "label": "Trabajo con docente",
+            "instruction": essay_modes["teacher"],
+            "review": "Usa la lista de comprobación para revisar transferencia y claridad.",
+        },
+    }
+    mission_card_route_policy = {
+        "self": {
+            "label": "Trabajo autónomo",
+            "instruction": card_modes["individual"],
+            "review": "Comprueba los cinco datos y la frase para pedir repetición.",
+        },
+        "teacher": {
+            "label": "Trabajo con docente",
+            "instruction": card_modes["teacher"],
+            "review": "Usa la lista de comprobación de la tarjeta.",
+        },
+    }
+    card_review_checklist = [
+        "Incluye el nombre.",
+        "Incluye contacto.",
+        "Incluye día y hora.",
+        "Incluye la sala.",
+        "Añade una frase para pedir repetición.",
+    ]
     speak_id = "a1m1-mission-speak"
     speak_prompt = f"{mission.get('instructions', '')} Representa el diálogo durante 60–90 segundos."
     speak_blocks = [
@@ -2048,10 +2087,10 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             "Misión · diálogo",
             speak_prompt,
             model_text,
-            criteria,
+            dialogue_criteria,
             asset,
             [source_key],
-            modes,
+            dialogue_modes,
             time_limit=90,
             conversation_turns=[
                 {
@@ -2079,7 +2118,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             [source_key],
             asset=asset,
             route_modes=mission_route_policy,
-            reviewChecklist=criteria,
+            reviewChecklist=dialogue_criteria,
         )
     )
 
@@ -2110,10 +2149,10 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             "Misión · tarjeta",
             write_prompt,
             "Name: Ana Torres. Contact: 555-0142. Tuesday at six, room 204.",
-            criteria,
+            card_review_checklist,
             asset,
             [source_key],
-            modes,
+            card_modes,
         ),
     ]
     scenes.append(
@@ -2127,8 +2166,8 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             write_blocks,
             [source_key],
             asset=asset,
-            route_modes=mission_route_policy,
-            reviewChecklist=criteria,
+            route_modes=mission_card_route_policy,
+            reviewChecklist=card_review_checklist,
         )
     )
 
@@ -2175,7 +2214,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             ],
             asset,
             [mediation_key],
-            modes,
+            essay_modes,
             content_role="mediation",
         ),
     ]
@@ -2190,7 +2229,7 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
             mediation_blocks,
             [mediation_key],
             asset=asset,
-            route_modes=mission_route_policy,
+            route_modes=mission_essay_route_policy,
             reviewChecklist=[
                 "Tuesday, 18:00 y Room 4",
                 "notebook y Marta en recepción",
