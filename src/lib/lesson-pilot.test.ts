@@ -2,6 +2,16 @@ import { describe, expect, it } from 'vitest'
 import { isGuidedLessonPilot, guidedLessonStorageKey } from './lesson-pilot'
 
 describe('guided lesson pilot eligibility', () => {
+  it('opts the six new A1 pilot lessons into guided presentation only with reviewed metadata in their own course', () => {
+    const contents = [{ data: { type: 'text', data: { learningRevision: 'course-guided-v1' } } }]
+    for (const lesson of ['a1-general-start', 'a1-general-u1', 'a1-general-u2', 'a1-general-u3', 'a1-general-u4', 'a1-general-mission']) {
+      expect(isGuidedLessonPilot(lesson, 'a1-general-module1-pilot', contents)).toBe(true)
+      expect(isGuidedLessonPilot(lesson, 'another-course', contents)).toBe(false)
+      expect(isGuidedLessonPilot(lesson, 'a1-general-module1-pilot')).toBe(false)
+    }
+    expect(isGuidedLessonPilot('unreviewed', 'a1-general-module1-pilot', contents)).toBe(false)
+    expect(isGuidedLessonPilot('a1-general-u1', 'a1-general-module1-pilot', [{ data: { type: 'embed' } }])).toBe(false)
+  })
   it('recognizes only the three reviewed curriculum pilots in their own course', () => {
     const contents = [{ data: { type: 'text', data: { learningRevision: 'curriculum-pilot-v1' } } }]
     for (const lessonId of ['cmk0vhjh80001jm04epgai2ay', 'cmkpx0d310001gy04zr4lq99y', 'cmnmm9tei0028w1qkri0q23eb']) {

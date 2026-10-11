@@ -379,8 +379,11 @@ function getSpeakingTitle(step: GuidedLessonStep): string {
 /** Preserve authored material while presenting related activities in focused scenes. */
 export function buildIllustratedLessonSteps(blocks: Block[]): GuidedLessonStep[] {
   const visible = blocks.filter(block => !isIgnorableGuidedBlock(block))
-  if (visible.length > 0 && visible.every(block => getMetadataValue(block, ['learningRevision']) === 'curriculum-pilot-v1' &&
-      typeof getMetadataValue(block, ['pilotSceneId']) === 'string')) {
+  if (visible.length > 0 && visible.every(block => (
+    getMetadataValue(block, ['learningRevision']) === 'curriculum-pilot-v1' ||
+    getMetadataValue(block, ['learningRevision']) === 'course-guided-v1' &&
+      getMetadataValue(block, ['pilotRevision']) === 'a1-module1-pilot-v1'
+  ) && typeof getMetadataValue(block, ['pilotSceneId']) === 'string')) {
     const authored: GuidedLessonStep[] = []
     for (const block of visible) {
       const id = String(getMetadataValue(block, ['pilotSceneId']))

@@ -39,6 +39,10 @@ jobs:
       - run: npm run test:unit -- --run
       - run: npm run lint
       - run: npx tsc --noEmit
+      - name: Validate A1 pilot content and safe seed
+        run: |
+          python3 scripts/content/test_build_a1_module1_pilot.py
+          python3 -m unittest discover -s tests/content -p test_apply_a1_module1_pilot.py
   deploy:
     needs: release-quality
     if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'

@@ -4,8 +4,22 @@ const CURRICULUM_PILOT_LESSONS = new Set([
   'cmnmm9tei0028w1qkri0q23eb',
 ])
 
+export const A1_GENERAL_PILOT_COURSE_ID = 'a1-general-module1-pilot'
+const A1_GENERAL_PILOT_LESSONS = new Set([
+  'a1-general-start', 'a1-general-u1', 'a1-general-u2',
+  'a1-general-u3', 'a1-general-u4', 'a1-general-mission',
+])
+
 // Audited published lesson in Lingowow Esencial. Titles are not stable identifiers.
 export function isGuidedLessonPilot(lessonId: string, courseId: string, contents: readonly { data: unknown }[] = []): boolean {
+  if (courseId === A1_GENERAL_PILOT_COURSE_ID) {
+    return A1_GENERAL_PILOT_LESSONS.has(lessonId) && contents.some(({ data }) => {
+      if (!data || typeof data !== 'object' || !('data' in data)) return false
+      const metadata = data.data
+      return Boolean(metadata && typeof metadata === 'object' &&
+        'learningRevision' in metadata && metadata.learningRevision === 'course-guided-v1')
+    })
+  }
   if (courseId !== 'cmjnr0g5x0001jp04fsw2fejs') return false
   if (lessonId === 'cmk4otvgp0001w1p4ijdkv6i2') return true
   // The transactional importer marks reviewed native rows. Unconverted embeds
