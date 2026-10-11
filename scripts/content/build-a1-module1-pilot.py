@@ -1759,11 +1759,18 @@ def _unit_scenes(unit: dict[str, Any], unit_number: int, lesson_id: str, asset: 
             source_refs=[transfer_key],
             content_role="production",
         ),
-        _text_block(
+        _html_text_block(
             f"{transfer_scene_id}-prompt",
             transfer_scene_id,
             f"{unit.get('title')} · transferencia oral",
-            transfer_prompt,
+            f"<p><strong>Consigna:</strong> Responde con tus palabras y comprueba el dato nuevo.</p>"
+            f"<p><strong>Dato nuevo:</strong> {_safe_inline_html(_as_text(transfer.get('new_information')))}</p>"
+            + _details_html("Ver ejemplo", f"Modelo: {transfer_model}")
+            + _details_html(
+                "Guía docente",
+                _as_text(unit.get("teacher", {}).get("procedure"))
+                or "Modela una ronda y revisa significado y datos.",
+            ),
             asset,
             source_refs=[transfer_key],
             content_role="production",
@@ -2020,11 +2027,16 @@ def _mission_scenes(mission: dict[str, Any], blueprint_case: dict[str, Any], ass
     speak_prompt = f"{mission.get('instructions', '')} Representa el diálogo durante 60–90 segundos."
     speak_blocks = [
         _title_block(f"{speak_id}-title", speak_id, "Misión · diálogo", asset, source_refs=[source_key], content_role="production"),
-        _text_block(
+        _html_text_block(
             f"{speak_id}-prompt",
             speak_id,
             "Misión · diálogo",
-            f"**Instrucción:** {speak_prompt}\n\n**Modelo:** {model_text}\n\nCambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana.",
+            "<p><strong>Consigna:</strong> Representa el diálogo e intercambia los datos de la hoja.</p>"
+            + _details_html("Ver ejemplo", f"Modelo: {model_text}")
+            + _details_html(
+                "Guía docente",
+                "Cambia nombre, contacto, día, hora u objeto con la hoja común. La revisión es humana.",
+            ),
             asset,
             source_refs=[source_key],
             content_role="production",

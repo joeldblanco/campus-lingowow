@@ -375,6 +375,18 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                         r"runtime|visor|aplicaci[oó]n|role-card-only|reveal-on-start|modo oculto",
                         f"{block['id']}.{field}",
                     )
+        all_blocks = list(_blocks(self.course))
+        for recording in [block for block in all_blocks if block["type"] == "recording"]:
+            intro = next(
+                block
+                for block in all_blocks
+                if block["type"] == "text"
+                and block["data"].get("pilotSceneId") == recording["data"].get("pilotSceneId")
+            )
+            self.assertEqual(intro["content"].count("<strong>Consigna:</strong>"), 1, recording["id"])
+            self.assertEqual(intro["content"].count("<details><summary>Ver ejemplo</summary>"), 1, recording["id"])
+            self.assertEqual(intro["content"].count("<details><summary>Guía docente</summary>"), 1, recording["id"])
+            self.assertNotIn("<strong>Modelo:</strong>", intro["content"], recording["id"])
 
     def test_no_audio_is_fabricated_and_role_cards_do_not_claim_hidden_runtime(self) -> None:
         manifest = self.manifest["audioManifest"]
