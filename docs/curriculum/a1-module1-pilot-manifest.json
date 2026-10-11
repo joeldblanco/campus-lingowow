@@ -1,0 +1,2790 @@
+{
+  "schemaVersion": "a1-module1-pilot-v1",
+  "kind": "standalone-pilot-course-manifest",
+  "courseId": "a1-general-module1-pilot",
+  "moduleId": "a1-general-module1",
+  "lessonSummaries": [
+    {
+      "id": "a1-general-start",
+      "order": 0,
+      "sourceRef": "starter.S1–S5",
+      "durationMinutes": 35,
+      "prerequisites": [
+        "Solo se presupone alfabetización general adulta; el estudiante no tiene que reconocer letras, números ni frases en inglés."
+      ],
+      "learningOutcomes": [
+        "Reconoce y usa saludos, nombre, letras y números con apoyo.",
+        "Lee modelos breves y transfiere datos a una tarjeta."
+      ],
+      "sceneCount": 27,
+      "background": "/images/lessons/backgrounds/listening-lounge.webp"
+    },
+    {
+      "id": "a1-general-u1",
+      "order": 1,
+      "sourceRef": "module1.unit1",
+      "durationMinutes": 45,
+      "prerequisites": [
+        "Arranque A1 S1–S5: reconoce Hello/I’m/Name, practica deletreo y números con apoyo; no se presupone inglés previo."
+      ],
+      "learningOutcomes": [
+        "Saludar, decir el nombre y compartir origen o ciudad.",
+        "Transfiere información nueva en una tarea adulta."
+      ],
+      "sceneCount": 9,
+      "background": "/images/lessons/backgrounds/campus.webp"
+    },
+    {
+      "id": "a1-general-u2",
+      "order": 2,
+      "sourceRef": "module1.unit2",
+      "durationMinutes": 45,
+      "prerequisites": [
+        "1: Saludar y presentarse",
+        "Puede leer una tarjeta breve y confirmar un dato."
+      ],
+      "learningOutcomes": [
+        "Señalar personas y objetos y preguntar quién o qué es.",
+        "Transfiere información nueva en una tarea adulta."
+      ],
+      "sceneCount": 9,
+      "background": "/images/lessons/backgrounds/community-bookshop.webp"
+    },
+    {
+      "id": "a1-general-u3",
+      "order": 3,
+      "sourceRef": "module1.unit3",
+      "durationMinutes": 45,
+      "prerequisites": [
+        "2: Identificar personas y objetos",
+        "Puede leer una tarjeta breve y confirmar un dato."
+      ],
+      "learningOutcomes": [
+        "Dar un teléfono o correo y acordar una hora disponible.",
+        "Transfiere información nueva en una tarea adulta."
+      ],
+      "sceneCount": 9,
+      "background": "/images/lessons/backgrounds/town-park.webp"
+    },
+    {
+      "id": "a1-general-u4",
+      "order": 4,
+      "sourceRef": "module1.unit4",
+      "durationMinutes": 45,
+      "prerequisites": [
+        "3: Compartir contactos y horarios",
+        "Puede leer una tarjeta breve y confirmar un dato."
+      ],
+      "learningOutcomes": [
+        "Pedir que repitan un dato y comprobar día o lugar.",
+        "Transfiere información nueva en una tarea adulta."
+      ],
+      "sceneCount": 9,
+      "background": "/images/lessons/backgrounds/travel-station.webp"
+    },
+    {
+      "id": "a1-general-mission",
+      "order": 5,
+      "sourceRef": "module1.mission",
+      "durationMinutes": 30,
+      "prerequisites": [
+        "Completa starter y U1–U4; consulta las tablas cuando falte un dato."
+      ],
+      "learningOutcomes": [
+        "Saluda, presenta personas y objetos y confirma contacto y horario.",
+        "Pide repetición y transfiere datos a una conversación y una tarjeta."
+      ],
+      "sceneCount": 5,
+      "background": "/images/lessons/backgrounds/botanical-office.webp"
+    }
+  ],
+  "sceneSummaries": [
+    {
+      "id": "a1m1-start-s1-teach",
+      "lessonId": "a1-general-start",
+      "order": 1,
+      "phase": "starter-teach",
+      "title": "Hello, I’m / My name is",
+      "instruction": "Lee el modelo y usa la tabla solo para resolver la tarea.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S1"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "a1m1-start-s1-teach-title",
+        "a1m1-start-s1-teach-text",
+        "a1m1-start-s1-support"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S1"
+    },
+    {
+      "id": "a1m1-start-s1-check-1",
+      "lessonId": "a1-general-start",
+      "order": 2,
+      "phase": "starter-practice",
+      "title": "Hello, I’m / My name is · comprobación 1",
+      "instruction": "Relaciona cada frase con su significado.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S1.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s1-check-1-title",
+        "a1m1-start-s1-check-1-instruction",
+        "a1m1-start-s1-practice-1"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S1",
+      "practiceIndex": 1
+    },
+    {
+      "id": "a1m1-start-s1-check-2",
+      "lessonId": "a1-general-start",
+      "order": 3,
+      "phase": "starter-practice",
+      "title": "Hello, I’m / My name is · comprobación 2",
+      "instruction": "Complete la presentación: “Hello. I’m ___.”",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S1.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s1-check-2-title",
+        "a1m1-start-s1-check-2-instruction",
+        "a1m1-start-s1-practice-2"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S1",
+      "practiceIndex": 2
+    },
+    {
+      "id": "a1m1-start-s1-check-3",
+      "lessonId": "a1-general-start",
+      "order": 4,
+      "phase": "starter-practice",
+      "title": "Hello, I’m / My name is · comprobación 3",
+      "instruction": "¿Qué frase dice el nombre de la persona?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S1.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s1-check-3-title",
+        "a1m1-start-s1-check-3-instruction",
+        "a1m1-start-s1-practice-3"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S1",
+      "practiceIndex": 3
+    },
+    {
+      "id": "a1m1-start-s2-teach",
+      "lessonId": "a1-general-start",
+      "order": 5,
+      "phase": "starter-teach",
+      "title": "Abecedario y deletreo",
+      "instruction": "Lee el modelo y usa la tabla solo para resolver la tarea.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S2"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "a1m1-start-s2-teach-title",
+        "a1m1-start-s2-teach-text",
+        "a1m1-start-s2-support"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S2"
+    },
+    {
+      "id": "a1m1-start-s2-check-1",
+      "lessonId": "a1-general-start",
+      "order": 6,
+      "phase": "starter-practice",
+      "title": "Abecedario y deletreo · comprobación 1",
+      "instruction": "¿Qué deletreo corresponde a Ana?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S2.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s2-check-1-title",
+        "a1m1-start-s2-check-1-instruction",
+        "a1m1-start-s2-practice-1"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S2",
+      "practiceIndex": 1
+    },
+    {
+      "id": "a1m1-start-s2-check-2",
+      "lessonId": "a1-general-start",
+      "order": 7,
+      "phase": "starter-practice",
+      "title": "Abecedario y deletreo · comprobación 2",
+      "instruction": "Ordena las letras para formar ANA.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S2.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s2-check-2-title",
+        "a1m1-start-s2-check-2-instruction",
+        "a1m1-start-s2-practice-2"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S2",
+      "practiceIndex": 2
+    },
+    {
+      "id": "a1m1-start-s2-check-3",
+      "lessonId": "a1-general-start",
+      "order": 8,
+      "phase": "starter-practice",
+      "title": "Abecedario y deletreo · comprobación 3",
+      "instruction": "Completa el deletreo de TORRES: T-O-R-___-E-S.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S2.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s2-check-3-title",
+        "a1m1-start-s2-check-3-instruction",
+        "a1m1-start-s2-practice-3"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S2",
+      "practiceIndex": 3
+    },
+    {
+      "id": "a1m1-start-s2-check-4",
+      "lessonId": "a1-general-start",
+      "order": 9,
+      "phase": "starter-practice",
+      "title": "Abecedario y deletreo · comprobación 4",
+      "instruction": "Escribe con un espacio: ANATORRES.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S2.practice.4"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s2-check-4-title",
+        "a1m1-start-s2-check-4-instruction",
+        "a1m1-start-s2-practice-4"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S2",
+      "practiceIndex": 4
+    },
+    {
+      "id": "a1m1-start-s2-check-5",
+      "lessonId": "a1-general-start",
+      "order": 10,
+      "phase": "starter-practice",
+      "title": "Abecedario y deletreo · comprobación 5",
+      "instruction": "Which letter has the English name “jay”?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S2.practice.5"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s2-check-5-title",
+        "a1m1-start-s2-check-5-instruction",
+        "a1m1-start-s2-practice-5"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S2",
+      "practiceIndex": 5
+    },
+    {
+      "id": "a1m1-start-s2-check-6",
+      "lessonId": "a1-general-start",
+      "order": 11,
+      "phase": "starter-practice",
+      "title": "Abecedario y deletreo · comprobación 6",
+      "instruction": "Complete the alphabet: “X, Y, ___.”",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S2.practice.6"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s2-check-6-title",
+        "a1m1-start-s2-check-6-instruction",
+        "a1m1-start-s2-practice-6"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S2",
+      "practiceIndex": 6
+    },
+    {
+      "id": "a1m1-start-s3-teach",
+      "lessonId": "a1-general-start",
+      "order": 12,
+      "phase": "starter-teach",
+      "title": "Números para contacto",
+      "instruction": "Lee el modelo y usa la tabla solo para resolver la tarea.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S3"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "a1m1-start-s3-teach-title",
+        "a1m1-start-s3-teach-text",
+        "a1m1-start-s3-support"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S3"
+    },
+    {
+      "id": "a1m1-start-s3-check-1",
+      "lessonId": "a1-general-start",
+      "order": 13,
+      "phase": "starter-practice",
+      "title": "Números para contacto · comprobación 1",
+      "instruction": "¿Cuál es la lectura completa de room 204 en la tabla?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S3.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s3-check-1-title",
+        "a1m1-start-s3-check-1-instruction",
+        "a1m1-start-s3-practice-1"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S3",
+      "practiceIndex": 1
+    },
+    {
+      "id": "a1m1-start-s3-check-2",
+      "lessonId": "a1-general-start",
+      "order": 14,
+      "phase": "starter-practice",
+      "title": "Números para contacto · comprobación 2",
+      "instruction": "Complete: “The class starts at ___ o’clock.” (18:00)",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S3.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s3-check-2-title",
+        "a1m1-start-s3-check-2-instruction",
+        "a1m1-start-s3-practice-2"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S3",
+      "practiceIndex": 2
+    },
+    {
+      "id": "a1m1-start-s3-check-3",
+      "lessonId": "a1-general-start",
+      "order": 15,
+      "phase": "starter-practice",
+      "title": "Números para contacto · comprobación 3",
+      "instruction": "Escribe 555-0142 con palabras inglesas.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S3.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s3-check-3-title",
+        "a1m1-start-s3-check-3-instruction",
+        "a1m1-start-s3-practice-3"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S3",
+      "practiceIndex": 3
+    },
+    {
+      "id": "a1m1-start-s3-check-4",
+      "lessonId": "a1-general-start",
+      "order": 16,
+      "phase": "starter-practice",
+      "title": "Números para contacto · comprobación 4",
+      "instruction": "¿Cómo se dice 18:00 en esta tarjeta?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S3.practice.4"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s3-check-4-title",
+        "a1m1-start-s3-check-4-instruction",
+        "a1m1-start-s3-practice-4"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S3",
+      "practiceIndex": 4
+    },
+    {
+      "id": "a1m1-start-s3-check-5",
+      "lessonId": "a1-general-start",
+      "order": 17,
+      "phase": "starter-practice",
+      "title": "Números para contacto · comprobación 5",
+      "instruction": "¿Qué lectura corta también sirve para room 204?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S3.practice.5"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s3-check-5-title",
+        "a1m1-start-s3-check-5-instruction",
+        "a1m1-start-s3-practice-5"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S3",
+      "practiceIndex": 5
+    },
+    {
+      "id": "a1m1-start-s3-check-6",
+      "lessonId": "a1-general-start",
+      "order": 18,
+      "phase": "starter-practice",
+      "title": "Números para contacto · comprobación 6",
+      "instruction": "¿Cuál indica una hora de la mañana?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S3.practice.6"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s3-check-6-title",
+        "a1m1-start-s3-check-6-instruction",
+        "a1m1-start-s3-practice-6"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S3",
+      "practiceIndex": 6
+    },
+    {
+      "id": "a1m1-start-s4-teach",
+      "lessonId": "a1-general-start",
+      "order": 19,
+      "phase": "starter-teach",
+      "title": "Escucha inicial con lectura del docente",
+      "instruction": "Lee el modelo y usa la tabla solo para resolver la tarea.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S4"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "a1m1-start-s4-teach-title",
+        "a1m1-start-s4-teach-text",
+        "a1m1-start-s4-support"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S4"
+    },
+    {
+      "id": "a1m1-start-s4-check-1",
+      "lessonId": "a1-general-start",
+      "order": 20,
+      "phase": "starter-practice",
+      "title": "Escucha inicial con lectura del docente · comprobación 1",
+      "instruction": "¿De qué país es Ana?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S4.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s4-check-1-title",
+        "a1m1-start-s4-check-1-instruction",
+        "a1m1-start-s4-practice-1"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S4",
+      "practiceIndex": 1
+    },
+    {
+      "id": "a1m1-start-s4-check-2",
+      "lessonId": "a1-general-start",
+      "order": 21,
+      "phase": "starter-practice",
+      "title": "Escucha inicial con lectura del docente · comprobación 2",
+      "instruction": "¿En qué ciudad vive Ana?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S4.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s4-check-2-title",
+        "a1m1-start-s4-check-2-instruction",
+        "a1m1-start-s4-practice-2"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S4",
+      "practiceIndex": 2
+    },
+    {
+      "id": "a1m1-start-s4-check-3",
+      "lessonId": "a1-general-start",
+      "order": 22,
+      "phase": "starter-practice",
+      "title": "Escucha inicial con lectura del docente · comprobación 3",
+      "instruction": "Completa lo que lees después de “I’m from”: “I’m from ___.”",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S4.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s4-check-3-title",
+        "a1m1-start-s4-check-3-instruction",
+        "a1m1-start-s4-practice-3"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S4",
+      "practiceIndex": 3
+    },
+    {
+      "id": "a1m1-start-s5-teach",
+      "lessonId": "a1-general-start",
+      "order": 23,
+      "phase": "starter-teach",
+      "title": "Tarjeta puente para la unidad 1",
+      "instruction": "Lee el modelo y usa la tabla solo para resolver la tarea.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S5"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "a1m1-start-s5-teach-title",
+        "a1m1-start-s5-teach-text",
+        "a1m1-start-s5-support"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S5"
+    },
+    {
+      "id": "a1m1-start-s5-check-1",
+      "lessonId": "a1-general-start",
+      "order": 24,
+      "phase": "starter-practice",
+      "title": "Tarjeta puente para la unidad 1 · comprobación 1",
+      "instruction": "Ordena la mini presentación de la tarjeta.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S5.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s5-check-1-title",
+        "a1m1-start-s5-check-1-instruction",
+        "a1m1-start-s5-practice-1"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S5",
+      "practiceIndex": 1
+    },
+    {
+      "id": "a1m1-start-s5-check-2",
+      "lessonId": "a1-general-start",
+      "order": 25,
+      "phase": "starter-practice",
+      "title": "Tarjeta puente para la unidad 1 · comprobación 2",
+      "instruction": "¿En qué aula es la clase de Ana?",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S5.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s5-check-2-title",
+        "a1m1-start-s5-check-2-instruction",
+        "a1m1-start-s5-practice-2"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S5",
+      "practiceIndex": 2
+    },
+    {
+      "id": "a1m1-start-s5-check-3",
+      "lessonId": "a1-general-start",
+      "order": 26,
+      "phase": "starter-practice",
+      "title": "Tarjeta puente para la unidad 1 · comprobación 3",
+      "instruction": "Convierte los datos Ana + Peru en dos frases.",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S5.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s5-check-3-title",
+        "a1m1-start-s5-check-3-instruction",
+        "a1m1-start-s5-practice-3"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S5",
+      "practiceIndex": 3
+    },
+    {
+      "id": "a1m1-start-s5-check-4",
+      "lessonId": "a1-general-start",
+      "order": 27,
+      "phase": "starter-practice",
+      "title": "Tarjeta puente para la unidad 1 · comprobación 4",
+      "instruction": "Completa: “See you on ___.” (día de la tarjeta)",
+      "route": "learner",
+      "sourceRefs": [
+        "starter.S5.practice.4"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-start-s5-check-4-title",
+        "a1m1-start-s5-check-4-instruction",
+        "a1m1-start-s5-practice-4"
+      ],
+      "background": "/images/lessons/backgrounds/listening-lounge.webp",
+      "sceneSide": "right",
+      "activityId": "S5",
+      "practiceIndex": 4
+    },
+    {
+      "id": "a1m1-u1-teach",
+      "lessonId": "a1-general-u1",
+      "order": 1,
+      "phase": "unit-teach",
+      "title": "Saludar y presentarse",
+      "instruction": "Lee el escenario y el modelo original; consulta la tabla cuando te ayude.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "module1.unit1-teach-title",
+        "module1.unit1-teach-text",
+        "module1.unit1-language-support"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u1-comprehension",
+      "lessonId": "a1-general-u1",
+      "order": 2,
+      "phase": "comprehension",
+      "title": "Saludar y presentarse · comprueba el sentido",
+      "instruction": "Lee el modelo y comprueba el sentido.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.comprehension.1",
+        "module1.unit1.comprehension.2",
+        "module1.unit1.comprehension.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-comprehension-title",
+        "a1m1-u1-comprehension-instruction",
+        "a1m1-u1-comprehension-items"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u1-practice-1",
+      "lessonId": "a1-general-u1",
+      "order": 3,
+      "phase": "practice",
+      "title": "Saludar y presentarse · práctica 1",
+      "instruction": "When you first meet a classmate, choose the best opening.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-practice-1-title",
+        "a1m1-u1-practice-1-instruction",
+        "a1m1-u1-practice-block-1"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u1-practice-2",
+      "lessonId": "a1-general-u1",
+      "order": 4,
+      "phase": "practice",
+      "title": "Saludar y presentarse · práctica 2",
+      "instruction": "Complete: “I’m ___ Peru.”",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-practice-2-title",
+        "a1m1-u1-practice-2-instruction",
+        "a1m1-u1-practice-block-2"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right",
+      "practiceType": "cloze"
+    },
+    {
+      "id": "a1m1-u1-practice-3",
+      "lessonId": "a1-general-u1",
+      "order": 5,
+      "phase": "practice",
+      "title": "Saludar y presentarse · práctica 3",
+      "instruction": "Where is Ana from?",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-practice-3-title",
+        "a1m1-u1-practice-3-instruction",
+        "a1m1-u1-practice-block-3"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u1-practice-4",
+      "lessonId": "a1-general-u1",
+      "order": 6,
+      "phase": "practice",
+      "title": "Saludar y presentarse · práctica 4",
+      "instruction": "Reply to “What’s your name?” as Luis.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.practice.4"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-practice-4-title",
+        "a1m1-u1-practice-4-instruction",
+        "a1m1-u1-practice-block-4"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right",
+      "practiceType": "rewrite"
+    },
+    {
+      "id": "a1m1-u1-practice-5",
+      "lessonId": "a1-general-u1",
+      "order": 7,
+      "phase": "practice",
+      "title": "Saludar y presentarse · práctica 5",
+      "instruction": "Order: meet / you / Nice / to",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.practice.5"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-practice-5-title",
+        "a1m1-u1-practice-5-instruction",
+        "a1m1-u1-practice-block-5"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right",
+      "practiceType": "order"
+    },
+    {
+      "id": "a1m1-u1-transfer-speak",
+      "lessonId": "a1-general-u1",
+      "order": 8,
+      "phase": "transfer-speaking",
+      "title": "Saludar y presentarse · transferencia oral",
+      "instruction": "Usa la tarjeta nueva y responde con tus palabras.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-transfer-speak-title",
+        "a1m1-u1-transfer-speak-prompt",
+        "a1m1-u1-transfer-speak-recording"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u1-transfer-review",
+      "lessonId": "a1-general-u1",
+      "order": 9,
+      "phase": "transfer-writing",
+      "title": "Saludar y presentarse · revisión escrita",
+      "instruction": "Escribe una respuesta breve; la revisión es humana.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit1.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u1-transfer-review-title",
+        "a1m1-u1-transfer-review-prompt",
+        "a1m1-u1-transfer-review-essay"
+      ],
+      "background": "/images/lessons/backgrounds/campus.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u2-teach",
+      "lessonId": "a1-general-u2",
+      "order": 1,
+      "phase": "unit-teach",
+      "title": "Identificar personas y objetos",
+      "instruction": "Lee el escenario y el modelo original; consulta la tabla cuando te ayude.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "module1.unit2-teach-title",
+        "module1.unit2-teach-text",
+        "module1.unit2-language-support"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u2-comprehension",
+      "lessonId": "a1-general-u2",
+      "order": 2,
+      "phase": "comprehension",
+      "title": "Identificar personas y objetos · comprueba el sentido",
+      "instruction": "Lee el modelo y comprueba el sentido.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.comprehension.1",
+        "module1.unit2.comprehension.2",
+        "module1.unit2.comprehension.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-comprehension-title",
+        "a1m1-u2-comprehension-instruction",
+        "a1m1-u2-comprehension-items"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u2-practice-1",
+      "lessonId": "a1-general-u2",
+      "order": 3,
+      "phase": "practice",
+      "title": "Identificar personas y objetos · práctica 1",
+      "instruction": "You point to Diego. Choose the correct introduction.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-practice-1-title",
+        "a1m1-u2-practice-1-instruction",
+        "a1m1-u2-practice-block-1"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u2-practice-2",
+      "lessonId": "a1-general-u2",
+      "order": 4,
+      "phase": "practice",
+      "title": "Identificar personas y objetos · práctica 2",
+      "instruction": "Complete: “This is my ___ Diego.”",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-practice-2-title",
+        "a1m1-u2-practice-2-instruction",
+        "a1m1-u2-practice-block-2"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right",
+      "practiceType": "cloze"
+    },
+    {
+      "id": "a1m1-u2-practice-3",
+      "lessonId": "a1-general-u2",
+      "order": 5,
+      "phase": "practice",
+      "title": "Identificar personas y objetos · práctica 3",
+      "instruction": "Who is Elena?",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-practice-3-title",
+        "a1m1-u2-practice-3-instruction",
+        "a1m1-u2-practice-block-3"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u2-practice-4",
+      "lessonId": "a1-general-u2",
+      "order": 6,
+      "phase": "practice",
+      "title": "Identificar personas y objetos · práctica 4",
+      "instruction": "Identify Diego in a complete sentence.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.practice.4"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-practice-4-title",
+        "a1m1-u2-practice-4-instruction",
+        "a1m1-u2-practice-block-4"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right",
+      "practiceType": "rewrite"
+    },
+    {
+      "id": "a1m1-u2-practice-5",
+      "lessonId": "a1-general-u2",
+      "order": 7,
+      "phase": "practice",
+      "title": "Identificar personas y objetos · práctica 5",
+      "instruction": "Order: my / colleague / Diego / This / is",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.practice.5"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-practice-5-title",
+        "a1m1-u2-practice-5-instruction",
+        "a1m1-u2-practice-block-5"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right",
+      "practiceType": "order"
+    },
+    {
+      "id": "a1m1-u2-transfer-speak",
+      "lessonId": "a1-general-u2",
+      "order": 8,
+      "phase": "transfer-speaking",
+      "title": "Identificar personas y objetos · transferencia oral",
+      "instruction": "Usa la tarjeta nueva y responde con tus palabras.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-transfer-speak-title",
+        "a1m1-u2-transfer-speak-prompt",
+        "a1m1-u2-transfer-speak-recording"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u2-transfer-review",
+      "lessonId": "a1-general-u2",
+      "order": 9,
+      "phase": "transfer-writing",
+      "title": "Identificar personas y objetos · revisión escrita",
+      "instruction": "Escribe una respuesta breve; la revisión es humana.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit2.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u2-transfer-review-title",
+        "a1m1-u2-transfer-review-prompt",
+        "a1m1-u2-transfer-review-essay"
+      ],
+      "background": "/images/lessons/backgrounds/community-bookshop.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u3-teach",
+      "lessonId": "a1-general-u3",
+      "order": 1,
+      "phase": "unit-teach",
+      "title": "Compartir contactos y horarios",
+      "instruction": "Lee el escenario y el modelo original; consulta la tabla cuando te ayude.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "module1.unit3-teach-title",
+        "module1.unit3-teach-text",
+        "module1.unit3-language-support"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u3-comprehension",
+      "lessonId": "a1-general-u3",
+      "order": 2,
+      "phase": "comprehension",
+      "title": "Compartir contactos y horarios · comprueba el sentido",
+      "instruction": "Lee el modelo y comprueba el sentido.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.comprehension.1",
+        "module1.unit3.comprehension.2",
+        "module1.unit3.comprehension.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-comprehension-title",
+        "a1m1-u3-comprehension-instruction",
+        "a1m1-u3-comprehension-items"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u3-practice-1",
+      "lessonId": "a1-general-u3",
+      "order": 3,
+      "phase": "practice",
+      "title": "Compartir contactos y horarios · práctica 1",
+      "instruction": "A classmate asks about availability. Choose the question.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-practice-1-title",
+        "a1m1-u3-practice-1-instruction",
+        "a1m1-u3-practice-block-1"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u3-practice-2",
+      "lessonId": "a1-general-u3",
+      "order": 4,
+      "phase": "practice",
+      "title": "Compartir contactos y horarios · práctica 2",
+      "instruction": "Complete: “My phone number ___ 555-0142.”",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-practice-2-title",
+        "a1m1-u3-practice-2-instruction",
+        "a1m1-u3-practice-block-2"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right",
+      "practiceType": "cloze"
+    },
+    {
+      "id": "a1m1-u3-practice-3",
+      "lessonId": "a1-general-u3",
+      "order": 5,
+      "phase": "practice",
+      "title": "Compartir contactos y horarios · práctica 3",
+      "instruction": "What is Elena’s phone number?",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-practice-3-title",
+        "a1m1-u3-practice-3-instruction",
+        "a1m1-u3-practice-block-3"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u3-practice-4",
+      "lessonId": "a1-general-u3",
+      "order": 6,
+      "phase": "practice",
+      "title": "Compartir contactos y horarios · práctica 4",
+      "instruction": "Give Elena’s contact phone in a complete sentence.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.practice.4"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-practice-4-title",
+        "a1m1-u3-practice-4-instruction",
+        "a1m1-u3-practice-block-4"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right",
+      "practiceType": "rewrite"
+    },
+    {
+      "id": "a1m1-u3-practice-5",
+      "lessonId": "a1-general-u3",
+      "order": 7,
+      "phase": "practice",
+      "title": "Compartir contactos y horarios · práctica 5",
+      "instruction": "Order: number / is / 555-0142 / My / phone",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.practice.5"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-practice-5-title",
+        "a1m1-u3-practice-5-instruction",
+        "a1m1-u3-practice-block-5"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right",
+      "practiceType": "order"
+    },
+    {
+      "id": "a1m1-u3-transfer-speak",
+      "lessonId": "a1-general-u3",
+      "order": 8,
+      "phase": "transfer-speaking",
+      "title": "Compartir contactos y horarios · transferencia oral",
+      "instruction": "Usa la tarjeta nueva y responde con tus palabras.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-transfer-speak-title",
+        "a1m1-u3-transfer-speak-prompt",
+        "a1m1-u3-transfer-speak-recording"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u3-transfer-review",
+      "lessonId": "a1-general-u3",
+      "order": 9,
+      "phase": "transfer-writing",
+      "title": "Compartir contactos y horarios · revisión escrita",
+      "instruction": "Escribe una respuesta breve; la revisión es humana.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit3.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u3-transfer-review-title",
+        "a1m1-u3-transfer-review-prompt",
+        "a1m1-u3-transfer-review-essay"
+      ],
+      "background": "/images/lessons/backgrounds/town-park.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u4-teach",
+      "lessonId": "a1-general-u4",
+      "order": 1,
+      "phase": "unit-teach",
+      "title": "Pedir repetición y aclaración",
+      "instruction": "Lee el escenario y el modelo original; consulta la tabla cuando te ayude.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "module1.unit4-teach-title",
+        "module1.unit4-teach-text",
+        "module1.unit4-language-support"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u4-comprehension",
+      "lessonId": "a1-general-u4",
+      "order": 2,
+      "phase": "comprehension",
+      "title": "Pedir repetición y aclaración · comprueba el sentido",
+      "instruction": "Lee el modelo y comprueba el sentido.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.comprehension.1",
+        "module1.unit4.comprehension.2",
+        "module1.unit4.comprehension.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-comprehension-title",
+        "a1m1-u4-comprehension-instruction",
+        "a1m1-u4-comprehension-items"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u4-practice-1",
+      "lessonId": "a1-general-u4",
+      "order": 3,
+      "phase": "practice",
+      "title": "Pedir repetición y aclaración · práctica 1",
+      "instruction": "You did not hear the date. Choose the repair.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.practice.1"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-practice-1-title",
+        "a1m1-u4-practice-1-instruction",
+        "a1m1-u4-practice-block-1"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u4-practice-2",
+      "lessonId": "a1-general-u4",
+      "order": 4,
+      "phase": "practice",
+      "title": "Pedir repetición y aclaración · práctica 2",
+      "instruction": "Complete: “I ___ understand.”",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.practice.2"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-practice-2-title",
+        "a1m1-u4-practice-2-instruction",
+        "a1m1-u4-practice-block-2"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right",
+      "practiceType": "cloze"
+    },
+    {
+      "id": "a1m1-u4-practice-3",
+      "lessonId": "a1-general-u4",
+      "order": 5,
+      "phase": "practice",
+      "title": "Pedir repetición y aclaración · práctica 3",
+      "instruction": "What is the room number?",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.practice.3"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-practice-3-title",
+        "a1m1-u4-practice-3-instruction",
+        "a1m1-u4-practice-block-3"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right",
+      "practiceType": "choice"
+    },
+    {
+      "id": "a1m1-u4-practice-4",
+      "lessonId": "a1-general-u4",
+      "order": 6,
+      "phase": "practice",
+      "title": "Pedir repetición y aclaración · práctica 4",
+      "instruction": "Confirm the appointment day and time.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.practice.4"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-practice-4-title",
+        "a1m1-u4-practice-4-instruction",
+        "a1m1-u4-practice-block-4"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right",
+      "practiceType": "rewrite"
+    },
+    {
+      "id": "a1m1-u4-practice-5",
+      "lessonId": "a1-general-u4",
+      "order": 7,
+      "phase": "practice",
+      "title": "Pedir repetición y aclaración · práctica 5",
+      "instruction": "Order: repeat / that, / please / Could / you",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.practice.5"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-practice-5-title",
+        "a1m1-u4-practice-5-instruction",
+        "a1m1-u4-practice-block-5"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right",
+      "practiceType": "order"
+    },
+    {
+      "id": "a1m1-u4-transfer-speak",
+      "lessonId": "a1-general-u4",
+      "order": 8,
+      "phase": "transfer-speaking",
+      "title": "Pedir repetición y aclaración · transferencia oral",
+      "instruction": "Usa la tarjeta nueva y responde con tus palabras.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-transfer-speak-title",
+        "a1m1-u4-transfer-speak-prompt",
+        "a1m1-u4-transfer-speak-recording"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-u4-transfer-review",
+      "lessonId": "a1-general-u4",
+      "order": 9,
+      "phase": "transfer-writing",
+      "title": "Pedir repetición y aclaración · revisión escrita",
+      "instruction": "Escribe una respuesta breve; la revisión es humana.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.unit4.transfer"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-u4-transfer-review-title",
+        "a1m1-u4-transfer-review-prompt",
+        "a1m1-u4-transfer-review-essay"
+      ],
+      "background": "/images/lessons/backgrounds/travel-station.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-mission-briefing",
+      "lessonId": "a1-general-mission",
+      "order": 1,
+      "phase": "mission-briefing",
+      "title": "Misión: recepción de un centro de formación",
+      "instruction": "Lee la hoja común y recibe tu tarjeta de rol.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.mission"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "a1m1-mission-briefing-title",
+        "a1m1-mission-briefing-instructions",
+        "a1m1-mission-briefing-common-sheet",
+        "a1m1-mission-briefing-role-notes"
+      ],
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "sceneSide": "right",
+      "roleCardRevealMode": "role-card-only",
+      "roleCardRuntimeStatus": "metadata-only-until-role-card-viewer-exists"
+    },
+    {
+      "id": "a1m1-mission-model",
+      "lessonId": "a1-general-mission",
+      "order": 2,
+      "phase": "mission-model",
+      "title": "Misión · modelo breve",
+      "instruction": "Usa el modelo para entender el propósito y cambia los datos.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.mission"
+      ],
+      "interactiveCount": 0,
+      "runtimeBlockIds": [
+        "a1m1-mission-model-title",
+        "a1m1-mission-model-text",
+        "a1m1-mission-model-language"
+      ],
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "sceneSide": "right"
+    },
+    {
+      "id": "a1m1-mission-speak",
+      "lessonId": "a1-general-mission",
+      "order": 3,
+      "phase": "mission-speaking",
+      "title": "Misión · diálogo",
+      "instruction": "Representa los dos roles y cambia los roles.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.mission"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-mission-speak-title",
+        "a1m1-mission-speak-prompt",
+        "a1m1-mission-speak-recording"
+      ],
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "sceneSide": "right",
+      "reviewChecklist": [
+        "Saluda y se presenta.",
+        "Identifica dos personas u objetos.",
+        "Confirma contacto y hora.",
+        "Pide repetición o aclaración si falta un dato.",
+        "Confirma día, hora y sala con los datos de la tarjeta.",
+        "Completa la tarjeta sin inventar contacto u horario."
+      ]
+    },
+    {
+      "id": "a1m1-mission-card",
+      "lessonId": "a1-general-mission",
+      "order": 4,
+      "phase": "mission-writing",
+      "title": "Misión · tarjeta",
+      "instruction": "Escribe los datos y revísalos con la lista.",
+      "route": "learner",
+      "sourceRefs": [
+        "module1.mission"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-mission-card-title",
+        "a1m1-mission-card-prompt",
+        "a1m1-mission-card-essay"
+      ],
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "sceneSide": "right",
+      "reviewChecklist": [
+        "Saluda y se presenta.",
+        "Identifica dos personas u objetos.",
+        "Confirma contacto y hora.",
+        "Pide repetición o aclaración si falta un dato.",
+        "Confirma día, hora y sala con los datos de la tarjeta.",
+        "Completa la tarjeta sin inventar contacto u horario."
+      ]
+    },
+    {
+      "id": "a1m1-mission-mediation",
+      "lessonId": "a1-general-mission",
+      "order": 5,
+      "phase": "mission-mediation",
+      "title": "Misión · mediación",
+      "instruction": "Transfiere los datos importantes y declara la ausencia de información.",
+      "route": "learner",
+      "sourceRefs": [
+        "blueprint.mediation.M01"
+      ],
+      "interactiveCount": 1,
+      "runtimeBlockIds": [
+        "a1m1-mission-mediation-title",
+        "a1m1-mission-mediation-prompt",
+        "a1m1-mission-mediation-source",
+        "a1m1-mission-mediation-essay"
+      ],
+      "background": "/images/lessons/backgrounds/botanical-office.webp",
+      "sceneSide": "right",
+      "reviewChecklist": [
+        "Tuesday, 18:00 y Room 4",
+        "notebook y Marta en recepción",
+        "parking no aparece"
+      ]
+    }
+  ],
+  "sourceAudit": {
+    "sourceFiles": {
+      "early": {
+        "label": "programa-completo-c2/early.json",
+        "sha256": "914199d650fb0404611096a3c0213258edb3347802a1705d58bd1009c7f22495"
+      },
+      "blueprint": {
+        "label": "programa-completo-c2/blueprint.json",
+        "sha256": "5f7a4a6f2aa3b344c2eaf468564e422801a9ec52b65b856361a933934652aa4c"
+      },
+      "academicMapping": {
+        "label": "a1-module1-pilot/academic-mapping.md",
+        "sha256": "f42153ec72d6b587fec74a78610ae84ee69d5dedb6f36538192c8381e2986f5f"
+      }
+    },
+    "selectedSourceModule": "numeric module 1",
+    "selectedStarter": "starter.S1–S5",
+    "counts": {
+      "starterPractice": 22,
+      "unitComprehension": 12,
+      "unitPractice": 20
+    },
+    "requiredUnitKeys": {
+      "comprehension": 12,
+      "practice": 20
+    },
+    "normalizations": [
+      "Source choice maps to multiple_choice with unique deterministic option keys.",
+      "Source cloze maps to short_answer with answerLayout inlineBlank and question blank ___ preserved.",
+      "Source order maps to ordering with 1-based positions and actual correctSentence.",
+      "Source rewrite maps to short_answer with teacherReviewOnly and no automatic grading.",
+      "Source match arrows map to structured pairs."
+    ],
+    "ambiguousSourceFieldsCorrected": [
+      "answer and answer_key are normalised by source type.",
+      "Source model text is preserved as original reading model; no generated listening is implied.",
+      "Blueprint M01 mediation evidence is included as a separate human-reviewed mission scene."
+    ]
+  },
+  "sourceInventory": [
+    {
+      "sourceKey": "blueprint.mediation.M01",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content",
+        "essay"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.mission",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content",
+        "teacher_notes",
+        "recording",
+        "essay"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit1",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit1.comprehension.1",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit1.comprehension.2",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit1.comprehension.3",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit1.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit1.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit1.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit1.practice.4",
+      "sourceTypes": [
+        "scene-reference",
+        "rewrite"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit1.practice.5",
+      "sourceTypes": [
+        "scene-reference",
+        "order"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "ordering"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit1.transfer",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "recording",
+        "essay"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit2",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit2.comprehension.1",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit2.comprehension.2",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit2.comprehension.3",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit2.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit2.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit2.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit2.practice.4",
+      "sourceTypes": [
+        "scene-reference",
+        "rewrite"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit2.practice.5",
+      "sourceTypes": [
+        "scene-reference",
+        "order"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "ordering"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit2.transfer",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "recording",
+        "essay"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit3",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit3.comprehension.1",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit3.comprehension.2",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit3.comprehension.3",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit3.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit3.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit3.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit3.practice.4",
+      "sourceTypes": [
+        "scene-reference",
+        "rewrite"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit3.practice.5",
+      "sourceTypes": [
+        "scene-reference",
+        "order"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "ordering"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit3.transfer",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "recording",
+        "essay"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit4",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit4.comprehension.1",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit4.comprehension.2",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit4.comprehension.3",
+      "sourceTypes": [
+        "scene-reference",
+        "comprehension"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "module1.unit4.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit4.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit4.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit4.practice.4",
+      "sourceTypes": [
+        "scene-reference",
+        "rewrite"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit4.practice.5",
+      "sourceTypes": [
+        "scene-reference",
+        "order"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "ordering"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "module1.unit4.transfer",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "recording",
+        "essay"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "starter.S1",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "starter.S1.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "match"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "match"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S1.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S1.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S2",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "starter.S2.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S2.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "order"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "ordering"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S2.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S2.practice.4",
+      "sourceTypes": [
+        "scene-reference",
+        "rewrite"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S2.practice.5",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S2.practice.6",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S3",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "starter.S3.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S3.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S3.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "rewrite"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S3.practice.4",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S3.practice.5",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S3.practice.6",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S4",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "starter.S4.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S4.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S4.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S5",
+      "sourceTypes": [
+        "scene-reference"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "structured-content"
+      ],
+      "feedbackAvailable": false,
+      "hintAvailable": false
+    },
+    {
+      "sourceKey": "starter.S5.practice.1",
+      "sourceTypes": [
+        "scene-reference",
+        "order"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "ordering"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S5.practice.2",
+      "sourceTypes": [
+        "scene-reference",
+        "choice"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "multiple_choice"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S5.practice.3",
+      "sourceTypes": [
+        "scene-reference",
+        "rewrite"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    },
+    {
+      "sourceKey": "starter.S5.practice.4",
+      "sourceTypes": [
+        "scene-reference",
+        "cloze"
+      ],
+      "blockTypes": [
+        "title",
+        "text",
+        "short_answer"
+      ],
+      "feedbackAvailable": true,
+      "hintAvailable": true
+    }
+  ],
+  "audioManifest": {
+    "status": "pending_authorization",
+    "currentState": "scripts_written_no_listening_recorded",
+    "preserveExistingAudio": true,
+    "noAudioBlocksGenerated": true,
+    "plannedScripts": [
+      {
+        "lessonId": "a1-general-start",
+        "scriptId": "a1-general-start-s1-reference",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s1-reference.mp3",
+        "sourceRef": "starter.S1.input.teacher_read_script",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "scriptId": "a1-general-start-s2-reference",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s2-reference.mp3",
+        "sourceRef": "starter.S2.input.teacher_read_script",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "scriptId": "a1-general-start-s3-reference",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s3-reference.mp3",
+        "sourceRef": "starter.S3.input.teacher_read_script",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "scriptId": "a1-general-start-s4-reference",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s4-reference.mp3",
+        "sourceRef": "starter.S4.input.teacher_read_script",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-start",
+        "scriptId": "a1-general-start-s5-reference",
+        "plannedPath": "/audio/a1-module1-pilot/starter-s5-reference.mp3",
+        "sourceRef": "starter.S5.input.teacher_read_script",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-u1",
+        "scriptId": "a1-general-u1-model",
+        "plannedPath": "/audio/a1-module1-pilot/u1-model.mp3",
+        "sourceRef": "module1.unit1.model.text",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-u2",
+        "scriptId": "a1-general-u2-model",
+        "plannedPath": "/audio/a1-module1-pilot/u2-model.mp3",
+        "sourceRef": "module1.unit2.model.text",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-u3",
+        "scriptId": "a1-general-u3-model",
+        "plannedPath": "/audio/a1-module1-pilot/u3-model.mp3",
+        "sourceRef": "module1.unit3.model.text",
+        "status": "pending_authorization"
+      },
+      {
+        "lessonId": "a1-general-u4",
+        "scriptId": "a1-general-u4-model",
+        "plannedPath": "/audio/a1-module1-pilot/u4-model.mp3",
+        "sourceRef": "module1.unit4.model.text",
+        "status": "pending_authorization"
+      }
+    ],
+    "listeningPlan": [
+      {
+        "lessonId": "a1-general-u1",
+        "sceneId": "a1m1-u1-listening",
+        "audioPath": "/audio/a1-module1-pilot/u1-model.mp3",
+        "status": "planned_pending_file_verification",
+        "visibleLabelWhenReady": "Audio de práctica con voz sintética",
+        "transcriptSourceRef": "module1.unit1.model.text",
+        "transcriptDisclosure": "after-listen-check",
+        "transcriptSupportLabel": "Ver transcripción",
+        "detailsHiddenUntilCheck": true,
+        "followUpQuestionCount": 6,
+        "answerPolicy": "Ask six new fact questions after the clip; do not reveal the model transcript before the listening check.",
+        "readingMode": "Keep the reading model in a separate scene; listening must test new questions rather than repeat the comprehension answers."
+      },
+      {
+        "lessonId": "a1-general-u2",
+        "sceneId": "a1m1-u2-listening",
+        "audioPath": "/audio/a1-module1-pilot/u2-model.mp3",
+        "status": "planned_pending_file_verification",
+        "visibleLabelWhenReady": "Audio de práctica con voz sintética",
+        "transcriptSourceRef": "module1.unit2.model.text",
+        "transcriptDisclosure": "after-listen-check",
+        "transcriptSupportLabel": "Ver transcripción",
+        "detailsHiddenUntilCheck": true,
+        "followUpQuestionCount": 6,
+        "answerPolicy": "Ask six new fact questions after the clip; do not reveal the model transcript before the listening check.",
+        "readingMode": "Keep the reading model in a separate scene; listening must test new questions rather than repeat the comprehension answers."
+      },
+      {
+        "lessonId": "a1-general-u3",
+        "sceneId": "a1m1-u3-listening",
+        "audioPath": "/audio/a1-module1-pilot/u3-model.mp3",
+        "status": "planned_pending_file_verification",
+        "visibleLabelWhenReady": "Audio de práctica con voz sintética",
+        "transcriptSourceRef": "module1.unit3.model.text",
+        "transcriptDisclosure": "after-listen-check",
+        "transcriptSupportLabel": "Ver transcripción",
+        "detailsHiddenUntilCheck": true,
+        "followUpQuestionCount": 6,
+        "answerPolicy": "Ask six new fact questions after the clip; do not reveal the model transcript before the listening check.",
+        "readingMode": "Keep the reading model in a separate scene; listening must test new questions rather than repeat the comprehension answers."
+      },
+      {
+        "lessonId": "a1-general-u4",
+        "sceneId": "a1m1-u4-listening",
+        "audioPath": "/audio/a1-module1-pilot/u4-model.mp3",
+        "status": "planned_pending_file_verification",
+        "visibleLabelWhenReady": "Audio de práctica con voz sintética",
+        "transcriptSourceRef": "module1.unit4.model.text",
+        "transcriptDisclosure": "after-listen-check",
+        "transcriptSupportLabel": "Ver transcripción",
+        "detailsHiddenUntilCheck": true,
+        "followUpQuestionCount": 6,
+        "answerPolicy": "Ask six new fact questions after the clip; do not reveal the model transcript before the listening check.",
+        "readingMode": "Keep the reading model in a separate scene; listening must test new questions rather than repeat the comprehension answers."
+      }
+    ],
+    "syntheticAudioLabel": "Audio de práctica con voz sintética",
+    "policy": "Do not create fake players or audio URLs; teacher may read original scripts until approved resources exist. Integrate a real audio block only after the planned file is verified."
+  },
+  "runtimeMappingGuidance": {
+    "learningRevision": "course-guided-v1",
+    "oneInteractiveBlockPerScene": true,
+    "interactiveTypes": [
+      "essay",
+      "match",
+      "multiple_choice",
+      "ordering",
+      "recording",
+      "short_answer"
+    ],
+    "teacherNotesRoute": "teacher-only",
+    "roleCardReveal": "Use role-card-only only when a real viewer can reveal one role; default is teacher-led common-sheet mode.",
+    "productionReview": "Recording and essay blocks set aiGrading false and require human checklist review."
+  },
+  "visualAcceptanceManifest": {
+    "approvedReferences": [
+      "docs/design/graphic-guide-v1/auto-choice-reference.png",
+      "docs/design/graphic-guide-v1/auto-fill-reference.png",
+      "docs/design/graphic-guide-v1/writing-instruction-reference.png",
+      "docs/design/content-format-mockups/v3/"
+    ],
+    "compositionContract": {
+      "environment": "Use the complete painted lesson environment; do not replace it with abstract cards or gradients.",
+      "text": "Keep the readable text area opaque and roughly half the desktop frame; preserve legibility on mobile.",
+      "characterAndScene": "Keep the illustrated environment visible with the detail side indicated by sceneSide.",
+      "controls": "Use cobalt primary action, white outlined secondary actions, 44px minimum controls, and a truly round microphone control for recording.",
+      "autoCheck": "Option and fill checks use the current compact Spanish auto-check treatment; source mockup labels do not override the pilot instruction."
+    },
+    "lessonSceneMapping": {
+      "a1-general-start": {
+        "background": "/images/lessons/backgrounds/listening-lounge.webp",
+        "sceneSide": "right",
+        "learningRevision": "course-guided-v1",
+        "sceneCount": 27
+      },
+      "a1-general-u1": {
+        "background": "/images/lessons/backgrounds/campus.webp",
+        "sceneSide": "right",
+        "learningRevision": "course-guided-v1",
+        "sceneCount": 9
+      },
+      "a1-general-u2": {
+        "background": "/images/lessons/backgrounds/community-bookshop.webp",
+        "sceneSide": "right",
+        "learningRevision": "course-guided-v1",
+        "sceneCount": 9
+      },
+      "a1-general-u3": {
+        "background": "/images/lessons/backgrounds/town-park.webp",
+        "sceneSide": "right",
+        "learningRevision": "course-guided-v1",
+        "sceneCount": 9
+      },
+      "a1-general-u4": {
+        "background": "/images/lessons/backgrounds/travel-station.webp",
+        "sceneSide": "right",
+        "learningRevision": "course-guided-v1",
+        "sceneCount": 9
+      },
+      "a1-general-mission": {
+        "background": "/images/lessons/backgrounds/botanical-office.webp",
+        "sceneSide": "right",
+        "learningRevision": "course-guided-v1",
+        "sceneCount": 5
+      }
+    }
+  },
+  "acceptance": {
+    "fixedIds": {
+      "course": "a1-general-module1-pilot",
+      "module": "a1-general-module1",
+      "lessons": [
+        "a1-general-start",
+        "a1-general-u1",
+        "a1-general-u2",
+        "a1-general-u3",
+        "a1-general-u4",
+        "a1-general-mission"
+      ]
+    },
+    "unitComprehensionItems": 12,
+    "unitPracticeItems": 20,
+    "starterActivities": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5"
+    ],
+    "allInteractiveScenesHaveOneBlock": true,
+    "allProductionNoAiGrading": true,
+    "audioPending": true
+  }
+}

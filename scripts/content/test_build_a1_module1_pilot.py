@@ -7,6 +7,7 @@ import importlib.util
 import json
 import os
 import re
+import tempfile
 import unittest
 from pathlib import Path
 from typing import Any, Iterable
@@ -18,6 +19,7 @@ EARLY = Path(os.environ["A1_PILOT_SOURCE"]) if os.environ.get("A1_PILOT_SOURCE")
 BLUEPRINT = Path(os.environ["A1_PILOT_BLUEPRINT"]) if os.environ.get("A1_PILOT_BLUEPRINT") else None
 MAPPING = Path(os.environ["A1_PILOT_MAPPING"]) if os.environ.get("A1_PILOT_MAPPING") else None
 GENERATED = WORKTREE / "docs/curriculum/a1-module1-pilot.json"
+GENERATED_MANIFEST = WORKTREE / "docs/curriculum/a1-module1-pilot-manifest.json"
 
 
 def _load_compiler():
@@ -70,16 +72,23 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.generated = json.loads(GENERATED.read_text(encoding="utf-8")) if GENERATED.exists() else None
+        cls.generated_manifest = json.loads(GENERATED_MANIFEST.read_text(encoding="utf-8")) if GENERATED_MANIFEST.exists() else None
         source_paths_available = all(path is not None and path.exists() for path in (EARLY, BLUEPRINT, MAPPING))
-        cls.course = COMPILER.build_course(EARLY, BLUEPRINT, MAPPING) if source_paths_available else cls.generated
-        if cls.course is None:
-            raise RuntimeError("Provide A1_PILOT_SOURCE/A1_PILOT_BLUEPRINT/A1_PILOT_MAPPING or generate the public JSON first")
+        if source_paths_available:
+            cls.course, cls.manifest = COMPILER.build_artifacts(EARLY, BLUEPRINT, MAPPING)
+        else:
+            cls.course, cls.manifest = cls.generated, cls.generated_manifest
+        if cls.course is None or cls.manifest is None:
+            raise RuntimeError("Provide source paths or generate both the public JSON and its manifest first")
 
     def test_public_contract_and_fixed_ids(self) -> None:
+        self.assertEqual(set(self.course), {"course", "module", "lessons"})
+        self.assertEqual(set(self.course["course"]), {"id", "title", "description", "language", "level"})
+        self.assertEqual(set(self.course["module"]), {"id", "title", "description", "level", "objectives"})
+        self.assertIsInstance(self.course["module"]["objectives"], str)
         self.assertEqual(self.course["course"]["id"], "a1-general-module1-pilot")
         self.assertIn("description", self.course["course"])
         self.assertEqual(self.course["module"]["id"], "a1-general-module1")
-        self.assertEqual(self.course["module"]["courseId"], self.course["course"]["id"])
         self.assertEqual(
             [lesson["id"] for lesson in self.course["lessons"]],
             [
@@ -91,15 +100,15 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                 "a1-general-mission",
             ],
         )
-        self.assertEqual([lesson["id"] for lesson in self.course["module"]["lessons"]], [lesson["id"] for lesson in self.course["lessons"]])
+        self.assertEqual([lesson["order"] for lesson in self.course["lessons"]], list(range(6)))
         for lesson in self.course["lessons"]:
+            self.assertEqual(set(lesson), {"id", "title", "description", "order", "blocks"})
             self.assertTrue(lesson["blocks"], lesson["id"])
-            self.assertEqual(lesson["sceneCount"], len(lesson["scenes"]))
 
     def test_runtime_ids_are_new_and_unique(self) -> None:
         identifiers = [lesson["id"] for lesson in self.course["lessons"]]
-        identifiers.extend(scene["id"] for lesson in self.course["lessons"] for scene in lesson["scenes"])
         identifiers.extend(block["id"] for block in _blocks(self.course))
+        identifiers.extend(scene["id"] for scene in self.manifest["sceneSummaries"])
         self.assertEqual(len(identifiers), len(set(identifiers)))
         source_ids = {"starter", "S1", "S2", "S3", "S4", "S5", "M01", "1", "2", "3", "4"}
         self.assertTrue(source_ids.isdisjoint(identifiers))
@@ -122,10 +131,10 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         }
         self.assertEqual(len(comp_keys), 12)
         self.assertEqual(len(practice_keys), 20)
-        self.assertEqual(self.course["sourceAudit"]["counts"]["unitComprehension"], 12)
-        self.assertEqual(self.course["sourceAudit"]["counts"]["unitPractice"], 20)
-        self.assertEqual(self.course["sourceAudit"]["counts"]["starterPractice"], 22)
-        self.assertEqual(self.course["acceptance"]["starterActivities"], ["S1", "S2", "S3", "S4", "S5"])
+        self.assertEqual(self.manifest["sourceAudit"]["counts"]["unitComprehension"], 12)
+        self.assertEqual(self.manifest["sourceAudit"]["counts"]["unitPractice"], 20)
+        self.assertEqual(self.manifest["sourceAudit"]["counts"]["starterPractice"], 22)
+        self.assertEqual(self.manifest["acceptance"]["starterActivities"], ["S1", "S2", "S3", "S4", "S5"])
         practice_blocks = [
             block
             for lesson in self.course["lessons"]
@@ -181,27 +190,27 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
 
     def test_every_scene_has_existing_asset_and_at_most_one_interactive(self) -> None:
         interactive = {"multiple_choice", "short_answer", "ordering", "match", "essay", "recording"}
-        for lesson in self.course["lessons"]:
-            for scene in lesson["scenes"]:
-                asset = scene["background"]
-                self.assertTrue((WORKTREE / "public" / asset.lstrip("/")).exists(), asset)
-                self.assertLessEqual(scene["interactiveCount"], 1, scene["id"])
-                self.assertEqual(scene["runtimeBlockIds"], [block["id"] for block in scene["runtimeBlocks"]])
-                for block in scene["runtimeBlocks"]:
-                    metadata = block["data"]
-                    for key in ("learningRevision", "pilotSceneId", "guidedTitle", "scene", "sceneSide"):
-                        self.assertIn(key, metadata, block["id"])
-                    self.assertEqual(metadata["learningRevision"], "course-guided-v1")
-                    self.assertEqual(metadata["pilotSceneId"], scene["id"])
-                    self.assertEqual(metadata["sceneSide"], "right")
-                self.assertEqual(scene["interactiveCount"], sum(block["type"] in interactive for block in scene["runtimeBlocks"]))
+        blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
+        for scene in self.manifest["sceneSummaries"]:
+            asset = scene["background"]
+            self.assertTrue((WORKTREE / "public" / asset.lstrip("/")).exists(), asset)
+            self.assertLessEqual(scene["interactiveCount"], 1, scene["id"])
+            scene_blocks = [blocks_by_id[block_id] for block_id in scene["runtimeBlockIds"]]
+            for block in scene_blocks:
+                metadata = block["data"]
+                for key in ("learningRevision", "pilotSceneId", "guidedTitle", "scene", "sceneSide"):
+                    self.assertIn(key, metadata, block["id"])
+                self.assertEqual(metadata["learningRevision"], "course-guided-v1")
+                self.assertEqual(metadata["pilotSceneId"], scene["id"])
+                self.assertEqual(metadata["sceneSide"], "right")
+            self.assertEqual(scene["interactiveCount"], sum(block["type"] in interactive for block in scene_blocks))
 
     def test_starter_support_tables_are_collapsible(self) -> None:
-        starter = self.course["lessons"][0]
-        teach_scenes = [scene for scene in starter["scenes"] if scene["phase"] == "starter-teach"]
+        blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
+        teach_scenes = [scene for scene in self.manifest["sceneSummaries"] if scene["phase"] == "starter-teach"]
         self.assertEqual([scene["activityId"] for scene in teach_scenes], ["S1", "S2", "S3", "S4", "S5"])
         for scene in teach_scenes:
-            tables = [block for block in scene["runtimeBlocks"] if block["type"] == "structured-content"]
+            tables = [block for block_id in scene["runtimeBlockIds"] if (block := blocks_by_id[block_id])["type"] == "structured-content"]
             self.assertEqual(len(tables), 1, scene["id"])
             self.assertTrue(tables[0]["data"].get("collapsible"))
             self.assertTrue(tables[0]["data"].get("supportLabel"))
@@ -223,7 +232,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
 
     def test_no_audio_is_fabricated_and_role_cards_do_not_claim_hidden_runtime(self) -> None:
         self.assertFalse([block for block in _blocks(self.course) if block["type"] == "audio"])
-        manifest = self.course["audioManifest"]
+        manifest = self.manifest["audioManifest"]
         self.assertEqual(manifest["status"], "pending_authorization")
         self.assertTrue(manifest["noAudioBlocksGenerated"])
         self.assertTrue(manifest["preserveExistingAudio"])
@@ -234,12 +243,44 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertEqual(len(manifest["listeningPlan"]), 4)
         self.assertTrue(all(item["detailsHiddenUntilCheck"] for item in manifest["listeningPlan"]))
         self.assertTrue(all(item["followUpQuestionCount"] == 6 for item in manifest["listeningPlan"]))
-        briefing = self.course["lessons"][-1]["scenes"][0]
+        briefing = next(scene for scene in self.manifest["sceneSummaries"] if scene["id"] == "a1m1-mission-briefing")
         self.assertEqual(briefing["roleCardRevealMode"], "role-card-only")
         self.assertEqual(briefing["roleCardRuntimeStatus"], "metadata-only-until-role-card-viewer-exists")
-        notes = [block for block in briefing["runtimeBlocks"] if block["type"] == "teacher_notes"]
+        blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
+        notes = [blocks_by_id[block_id] for block_id in briefing["runtimeBlockIds"] if blocks_by_id[block_id]["type"] == "teacher_notes"]
         self.assertEqual(len(notes), 1)
         self.assertEqual(notes[0]["roleCardReveal"]["runtimeSupport"], "planned-no-runtime-claim")
+
+    @unittest.skipUnless(all(path is not None and path.exists() for path in (EARLY, BLUEPRINT, MAPPING)), "verified audio integration needs the private source files")
+    def test_verified_audio_manifest_is_the_only_audio_insertion_path(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            audio_file = Path(directory) / "u1-model.mp3"
+            audio_file.write_bytes(b"verified test fixture")
+            audio_manifest = Path(directory) / "audio.json"
+            audio_manifest.write_text(
+                json.dumps(
+                    {
+                        "audio": [
+                            {
+                                "lessonId": "a1-general-u1",
+                                "sceneId": "a1m1-u1-teach",
+                                "filePath": str(audio_file),
+                                "url": "/audio/a1-module1-pilot/u1-model.mp3",
+                                "label": "Audio de práctica con voz sintética",
+                                "sourceRef": "module1.unit1.model.text",
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            course, manifest = COMPILER.build_artifacts(EARLY, BLUEPRINT, MAPPING, audio_manifest)
+            audio_blocks = [block for block in _blocks(course) if block["type"] == "audio"]
+            self.assertEqual(len(audio_blocks), 1)
+            self.assertEqual(audio_blocks[0]["url"], "/audio/a1-module1-pilot/u1-model.mp3")
+            self.assertTrue(audio_blocks[0]["data"]["audioVerified"])
+            self.assertEqual(manifest["audioManifest"]["status"], "verified_audio_integrated")
+            self.assertFalse(manifest["audioManifest"]["noAudioBlocksGenerated"])
 
     def test_blueprint_m01_and_visual_references_are_recorded(self) -> None:
         mediation = [
@@ -251,17 +292,22 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         case = mediation[0]["data"]["blueprintCase"]
         self.assertEqual(case["module"], "M01")
         self.assertIn("Tuesday at 18:00", case["source_en"])
-        references = self.course["visualAcceptanceManifest"]["approvedReferences"]
+        references = self.manifest["visualAcceptanceManifest"]["approvedReferences"]
         for reference in references[:3]:
             self.assertTrue((WORKTREE / reference).exists(), reference)
-        mapping = self.course["visualAcceptanceManifest"]["lessonSceneMapping"]
+        mapping = self.manifest["visualAcceptanceManifest"]["lessonSceneMapping"]
         self.assertEqual(set(mapping), {lesson["id"] for lesson in self.course["lessons"]})
 
     def test_checked_in_json_is_current_compiler_output(self) -> None:
         self.assertIsNotNone(self.generated)
+        self.assertIsNotNone(self.generated_manifest)
         self.assertEqual(self.generated["course"]["id"], self.course["course"]["id"])
-        self.assertEqual(self.generated["acceptance"], self.course["acceptance"])
-        self.assertEqual(self.generated["sourceAudit"]["counts"], self.course["sourceAudit"]["counts"])
+        self.assertEqual(self.generated_manifest["acceptance"], self.manifest["acceptance"])
+        self.assertEqual(self.generated_manifest["sourceAudit"]["counts"], self.manifest["sourceAudit"]["counts"])
+        self.assertNotIn("blocks", self.generated_manifest)
+        self.assertNotIn("runtimeBlocks", self.generated_manifest)
+        self.assertNotIn("originalEnglishModel", json.dumps(self.generated_manifest, ensure_ascii=False))
+        self.assertNotIn("audioUrl", json.dumps(self.generated_manifest, ensure_ascii=False))
 
 
 if __name__ == "__main__":

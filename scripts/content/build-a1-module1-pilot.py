@@ -1567,7 +1567,7 @@ def _source_counts(starter: dict[str, Any], units: list[dict[str, Any]]) -> dict
     }
 
 
-def build_course(early_path: Path, blueprint_path: Path, mapping_path: Path) -> dict[str, Any]:
+def _build_full_course(early_path: Path, blueprint_path: Path, mapping_path: Path) -> dict[str, Any]:
     early = _read_json(early_path)
     blueprint = _read_json(blueprint_path)
     module = next((item for item in early.get("modules", []) if str(item.get("id")) == "1"), None)
@@ -1588,7 +1588,7 @@ def build_course(early_path: Path, blueprint_path: Path, mapping_path: Path) -> 
         _lesson(
             "a1-general-start",
             MODULE_ID,
-            1,
+            0,
             _as_text(starter.get("title")),
             _as_text(starter.get("purpose")),
             start_scenes,
@@ -1608,7 +1608,7 @@ def build_course(early_path: Path, blueprint_path: Path, mapping_path: Path) -> 
             _lesson(
                 lesson_id,
                 MODULE_ID,
-                index + 1,
+                index,
                 _as_text(unit.get("title")),
                 _as_text(unit.get("objective")),
                 scenes,
@@ -1624,7 +1624,7 @@ def build_course(early_path: Path, blueprint_path: Path, mapping_path: Path) -> 
         _lesson(
             "a1-general-mission",
             MODULE_ID,
-            6,
+            5,
             "Misión: recepción de un centro de formación",
             _as_text(mission.get("scenario")),
             mission_scenes,
@@ -1791,6 +1791,267 @@ def build_course(early_path: Path, blueprint_path: Path, mapping_path: Path) -> 
     }
 
 
+def _primary_course(full: dict[str, Any]) -> dict[str, Any]:
+    """Return the exact seed payload; provenance lives in the sidecar."""
+
+    source_course = full["course"]
+    source_module = full["module"]
+    objectives = source_module.get("objectives", [])
+    if isinstance(objectives, list):
+        objectives = " ".join(_as_text(item) for item in objectives)
+    primary_lessons = []
+    for lesson in full["lessons"]:
+        primary_lessons.append(
+            {
+                "id": lesson["id"],
+                "title": lesson["title"],
+                "description": lesson["description"],
+                "order": lesson["order"],
+                "blocks": lesson["blocks"],
+            }
+        )
+    return {
+        "course": {
+            "id": source_course["id"],
+            "title": source_course["title"],
+            "description": source_course["description"],
+            "language": source_course["language"],
+            "level": source_course["level"],
+        },
+        "module": {
+            "id": source_module["id"],
+            "title": source_module["title"],
+            "description": source_module["description"],
+            "level": source_module["level"],
+            "objectives": objectives,
+        },
+        "lessons": primary_lessons,
+    }
+
+
+def _scene_summaries(full: dict[str, Any]) -> list[dict[str, Any]]:
+    summaries: list[dict[str, Any]] = []
+    for lesson in full["lessons"]:
+        for scene in lesson.get("scenes", []):
+            summary: dict[str, Any] = {
+                "id": scene["id"],
+                "lessonId": lesson["id"],
+                "order": scene["order"],
+                "phase": scene["phase"],
+                "title": scene["title"],
+                "instruction": scene["instruction"],
+                "route": scene["route"],
+                "sourceRefs": scene["sourceRefs"],
+                "interactiveCount": scene["interactiveCount"],
+                "runtimeBlockIds": scene["runtimeBlockIds"],
+                "background": scene["background"],
+                "sceneSide": scene["sceneSide"],
+            }
+            # Keep scene-level planning fields while excluding full model/card
+            # payloads that already live in the primary blocks.
+            for key in (
+                "activityId",
+                "practiceIndex",
+                "practiceType",
+                "roleCardRevealMode",
+                "roleCardRuntimeStatus",
+                "reviewChecklist",
+            ):
+                if key in scene:
+                    summary[key] = deepcopy(scene[key])
+            summaries.append(summary)
+    return summaries
+
+
+def _source_inventory(full: dict[str, Any]) -> list[dict[str, Any]]:
+    inventory: dict[str, dict[str, Any]] = {}
+    for lesson in full["lessons"]:
+        for block in lesson["blocks"]:
+            refs = list(block.get("sourceItems", [])) + list(block.get("data", {}).get("sourceItems", []))
+            refs += [{"sourceKey": item.get("sourceKey"), "sourceType": item.get("sourceType")} for item in block.get("items", [])]
+            refs += [{"sourceKey": value, "sourceType": "scene-reference"} for value in block.get("data", {}).get("sourceRefs", [])]
+            for ref in refs:
+                key = ref.get("sourceKey")
+                if not key:
+                    continue
+                record = inventory.setdefault(
+                    key,
+                    {
+                        "sourceKey": key,
+                        "sourceTypes": [],
+                        "blockTypes": [],
+                        "feedbackAvailable": False,
+                        "hintAvailable": False,
+                    },
+                )
+                source_type = ref.get("sourceType")
+                if source_type and source_type not in record["sourceTypes"]:
+                    record["sourceTypes"].append(source_type)
+                if block["type"] not in record["blockTypes"]:
+                    record["blockTypes"].append(block["type"])
+                record["feedbackAvailable"] = record["feedbackAvailable"] or bool(
+                    block.get("sourceFeedback") or block.get("data", {}).get("sourceFeedback") or block.get("explanation")
+                )
+                record["hintAvailable"] = record["hintAvailable"] or bool(block.get("hint") or block.get("data", {}).get("sourceHint"))
+    return [inventory[key] for key in sorted(inventory)]
+
+
+def _manifest_from_full(full: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schemaVersion": SCHEMA_VERSION,
+        "kind": "standalone-pilot-course-manifest",
+        "courseId": full["course"]["id"],
+        "moduleId": full["module"]["id"],
+        "lessonSummaries": [
+            {
+                "id": lesson["id"],
+                "order": lesson["order"],
+                "sourceRef": lesson["sourceRef"],
+                "durationMinutes": lesson["durationMinutes"],
+                "prerequisites": lesson["prerequisites"],
+                "learningOutcomes": lesson["learningOutcomes"],
+                "sceneCount": lesson["sceneCount"],
+                "background": lesson["background"],
+            }
+            for lesson in full["lessons"]
+        ],
+        "sceneSummaries": _scene_summaries(full),
+        "sourceAudit": full["sourceAudit"],
+        "sourceInventory": _source_inventory(full),
+        "audioManifest": full["audioManifest"],
+        "runtimeMappingGuidance": full["runtimeMappingGuidance"],
+        "visualAcceptanceManifest": full["visualAcceptanceManifest"],
+        "acceptance": full["acceptance"],
+    }
+
+
+def _audio_entries(path: Path) -> list[dict[str, Any]]:
+    payload = _read_json(path)
+    if isinstance(payload, list):
+        entries = payload
+    elif isinstance(payload, dict):
+        entries = payload.get("audio") or payload.get("entries") or payload.get("files")
+    else:
+        entries = None
+    if not isinstance(entries, list) or not entries:
+        raise ValueError("--audio-manifest must contain a non-empty audio/entries/files array")
+    if not all(isinstance(entry, dict) for entry in entries):
+        raise ValueError("--audio-manifest entries must be objects")
+    return entries
+
+
+def _verified_file_path(value: Any) -> Path:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("Verified audio requires a filePath/path")
+    raw = Path(value)
+    candidates = [raw, Path.cwd() / raw, Path(__file__).resolve().parents[2] / raw]
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate.resolve()
+    raise ValueError(f"Verified audio file does not exist: {value}")
+
+
+def _audio_url(entry: dict[str, Any], file_path: Path) -> str:
+    value = entry.get("url")
+    if isinstance(value, str) and value.startswith("/audio/") and "pending" not in value.lower():
+        return value
+    public_root = (Path(__file__).resolve().parents[2] / "public").resolve()
+    try:
+        relative = file_path.relative_to(public_root)
+    except ValueError as exc:
+        raise ValueError("Verified audio outside public/ requires an explicit /audio/... url") from exc
+    url = "/" + relative.as_posix()
+    if not url.startswith("/audio/"):
+        raise ValueError("Verified audio url must be under /audio/")
+    return url
+
+
+def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None:
+    entries = _audio_entries(manifest_path)
+    lessons = {lesson["id"]: lesson for lesson in full["lessons"]}
+    seen_ids: set[str] = set()
+    for entry in entries:
+        lesson_id = _as_text(entry.get("lessonId"))
+        lesson = lessons.get(lesson_id)
+        if lesson is None:
+            raise ValueError(f"Audio manifest references unknown lesson {lesson_id!r}")
+        file_path = _verified_file_path(entry.get("filePath", entry.get("path")))
+        url = _audio_url(entry, file_path)
+        scene_id = _as_text(entry.get("sceneId"))
+        scene = next((item for item in lesson["scenes"] if item["id"] == scene_id), None) if scene_id else None
+        if scene is None:
+            scene = next((item for item in lesson["scenes"] if item["phase"] == "unit-teach"), None)
+        if scene is None:
+            raise ValueError(f"Audio manifest has no target scene for {lesson_id!r}")
+        block_id = _as_text(entry.get("blockId")) or f"{lesson_id}-verified-audio"
+        if block_id in seen_ids or any(block["id"] == block_id for item in full["lessons"] for block in item["blocks"]):
+            raise ValueError(f"Duplicate verified audio block id {block_id!r}")
+        seen_ids.add(block_id)
+        title = _as_text(entry.get("label")) or "Audio de práctica con voz sintética"
+        source_ref = _as_text(entry.get("sourceRef")) or f"{lesson.get('sourceRef')}.model.text"
+        audio_block = _block(
+            block_id,
+            "audio",
+            max((block.get("order", 0) for block in scene["runtimeBlocks"]), default=0) + 1,
+            scene["id"],
+            title,
+            scene["background"],
+            content_role="listening",
+            source_refs=[source_ref],
+            url=url,
+            title=title,
+            data={
+                **_metadata(
+                    scene["id"],
+                    title,
+                    scene["background"],
+                    content_role="listening",
+                    source_refs=[source_ref],
+                    audioVerified=True,
+                    audioLabel=title,
+                    transcriptDisclosure="after-listen-check",
+                    supportLabel="Ver transcripción",
+                )
+            },
+        )
+        scene["runtimeBlocks"].append(audio_block)
+        scene["runtimeBlockIds"].append(block_id)
+        lesson["blocks"].append(audio_block)
+    full["audioManifest"].update(
+        {
+            "status": "verified_audio_integrated",
+            "currentState": "verified_audio_blocks_inserted",
+            "noAudioBlocksGenerated": False,
+            "verifiedManifest": manifest_path.as_posix(),
+            "verifiedFiles": [
+                {"lessonId": entry.get("lessonId"), "sceneId": entry.get("sceneId"), "url": entry.get("url")}
+                for entry in entries
+            ],
+        }
+    )
+
+
+def build_artifacts(
+    early_path: Path,
+    blueprint_path: Path,
+    mapping_path: Path,
+    audio_manifest_path: Path | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    full = _build_full_course(early_path, blueprint_path, mapping_path)
+    if audio_manifest_path is not None:
+        _integrate_verified_audio(full, audio_manifest_path)
+    return _primary_course(full), _manifest_from_full(full)
+
+
+def build_course(
+    early_path: Path,
+    blueprint_path: Path,
+    mapping_path: Path,
+    audio_manifest_path: Path | None = None,
+) -> dict[str, Any]:
+    return build_artifacts(early_path, blueprint_path, mapping_path, audio_manifest_path)[0]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -1804,11 +2065,27 @@ def main() -> None:
     parser.add_argument("--blueprint", type=Path, default=DEFAULT_BLUEPRINT)
     parser.add_argument("--mapping", type=Path, default=DEFAULT_MAPPING)
     parser.add_argument("--out", "--output", dest="output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--manifest-out",
+        type=Path,
+        default=None,
+        help="Sidecar manifest path; defaults beside --out with -manifest suffix.",
+    )
+    parser.add_argument(
+        "--audio-manifest",
+        type=Path,
+        default=None,
+        help="Optional verified audio manifest. Every file must exist before audio blocks are inserted.",
+    )
     args = parser.parse_args()
-    course = build_course(args.source, args.blueprint, args.mapping)
+    course, manifest = build_artifacts(args.source, args.blueprint, args.mapping, args.audio_manifest)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(course, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    manifest_path = args.manifest_out or args.output.with_name(f"{args.output.stem}-manifest.json")
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {args.output} ({len(json.dumps(course, ensure_ascii=False))} chars)")
+    print(f"wrote {manifest_path} ({len(json.dumps(manifest, ensure_ascii=False))} chars)")
 
 
 if __name__ == "__main__":
