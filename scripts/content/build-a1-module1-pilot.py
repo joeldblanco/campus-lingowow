@@ -2887,7 +2887,6 @@ def _integrate_verified_audio(full: dict[str, Any], manifest_path: Path) -> None
                     spokenTranscript=transcript,
                     transcript=transcript,
                     transcriptDisclosure="after-listen-check",
-                    supportLabel="Ver transcripción",
                     listeningAssessment="six-question-follow-up",
                     gradedListening=True,
                     noListeningAssessment=False,

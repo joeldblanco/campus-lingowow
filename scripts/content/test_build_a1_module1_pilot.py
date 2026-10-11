@@ -412,8 +412,13 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             transcript = blocks_by_id["a1m1-u1-listening-transcript"]
             self.assertEqual(transcript["format"], "html")
             self.assertIn("<details><summary>Ver transcripción</summary>", transcript["content"])
+            self.assertEqual(
+                transcript["content"].count("<details><summary>Ver transcripción</summary>"),
+                1,
+            )
             self.assertIn("five five five", transcript["content"])
             self.assertNotIn("originalEnglishModel", transcript["data"])
+            self.assertNotIn("supportLabel", audio_blocks[0]["data"])
             listening_check = blocks_by_id["a1m1-u1-listening-check-items"]
             self.assertEqual(listening_check["data"]["contentRole"], "listening-check")
             self.assertEqual(len(listening_check["items"]), 6)
@@ -514,6 +519,18 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             all_audio_blocks = [block for block in _blocks(course) if block["type"] == "audio"]
             self.assertEqual(len(all_audio_blocks), 11)
             self.assertTrue(all("sintética" in block["prompt"] for block in all_audio_blocks))
+            unit_audio_blocks = [
+                block for block in all_audio_blocks if block["data"].get("audioKind") == "unit-model"
+            ]
+            self.assertEqual(len(unit_audio_blocks), 4)
+            self.assertTrue(all("supportLabel" not in block["data"] for block in unit_audio_blocks))
+            blocks_by_id = {block["id"]: block for block in all_blocks}
+            for unit_number in range(1, 5):
+                transcript = blocks_by_id[f"a1m1-u{unit_number}-listening-transcript"]
+                self.assertEqual(
+                    transcript["content"].count("<details><summary>Ver transcripción</summary>"),
+                    1,
+                )
             audio_manifest_data = manifest["audioManifest"]
             self.assertEqual(audio_manifest_data["verifiedFileCount"], 11)
             self.assertEqual(
