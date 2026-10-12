@@ -67,7 +67,7 @@ _APPROVED_BACKGROUND_POOL = (
 )
 
 
-# Synthetic clips are intentionally short chunks that support the following
+# Synthetic clips are intentionally short phrases that support the following
 # demand.  The clip generator owned by the parent task uses the returned text
 # and keeps the verified unit-model MP3s untouched.
 _AUDIO_SPECS: dict[int, tuple[dict[str, str], ...]] = {
@@ -239,7 +239,7 @@ _PLANS: dict[int, dict[str, Any]] = {
         "forms": ["This is / That is", "Who is...?", "my / your", "hers / mine", "Is this...?"],
     },
     3: {
-        "sceneInstruction": "Lee un contacto breve, escucha los chunks y concreta un horario.",
+        "sceneInstruction": "Lee un contacto breve, escucha las frases y concreta un horario.",
         "model": (
             ("A", "My phone number is 555-0142."),
             ("B", "My email is elena dot ramos at example dot org."),
@@ -323,7 +323,7 @@ _LOCAL_SUPPORT: dict[int, dict[str, list[list[str]]]] = {
         "practice-3": [["I'm from + lugar", "Busca la frase de origen en el modelo."]],
         "practice-4": [["What's your name? → I'm ___", "Responde con un nombre."]],
         "practice-5": [["Nice to meet you.", "Cierra el primer encuentro con esta frase."]],
-        "transfer-speaking": [["Tarjeta nueva", "Usa nombre, país y ciudad; completa los huecos del patrón si lo necesitas."]],
+        "transfer-speaking": [["Tarjeta nueva", "Usa el nombre y los datos de lugar que aparecen; completa los huecos si lo necesitas."]],
         "transfer-writing": [["I'm = I am", "Escribe 2–4 frases con los datos de la tarjeta, sin copiar Ana."]],
     },
     2: {
@@ -345,7 +345,7 @@ _LOCAL_SUPPORT: dict[int, dict[str, list[list[str]]]] = {
         "practice-3": [["phone / email", "Separa los dos datos de contacto."]],
         "practice-4": [["on + día / at + hora", "Día lleva on; hora lleva at."]],
         "practice-5": [["That works for me.", "Acepta una propuesta que sí te sirve."]],
-        "transfer-speaking": [["Tarjeta nueva", "Lee el contacto y concreta día y hora de la tarjeta."]],
+        "transfer-speaking": [["Tarjeta nueva", "Lee el contacto u horario que aparecen y concreta el dato de la tarjeta."]],
         "transfer-writing": [["on + día / at + hora", "Escribe contacto y una confirmación breve."]],
     },
     4: {
@@ -359,6 +359,34 @@ _LOCAL_SUPPORT: dict[int, dict[str, list[list[str]]]] = {
         "transfer-speaking": [["Tarjeta nueva", "Pide repetición, aclara el día y comprueba la sala de la tarjeta."]],
         "transfer-writing": [["Do you mean...? / Yes, ...", "Escribe una reparación y una confirmación con los datos nuevos."]],
     },
+}
+
+
+_TRANSFER_CHECKLISTS: dict[int, list[str]] = {
+    1: [
+        "Incluye el nombre de la tarjeta elegida.",
+        "Incluye los datos de lugar que aparecen en esa tarjeta.",
+        "Usa I'm = I am para presentarte.",
+        "Comprueba que la otra persona entendió los datos.",
+    ],
+    2: [
+        "Identifica la persona u objeto de la tarjeta.",
+        "Distingue uno de varios cuando corresponda.",
+        "Indica la relación o pertenencia con un posesivo.",
+        "Comprueba que la otra persona entendió el referente.",
+    ],
+    3: [
+        "Incluye los datos de contacto u horario de la tarjeta elegida.",
+        "Usa on para el día y at para la hora cuando aparecen.",
+        "Confirma si la propuesta funciona.",
+        "Comprueba que la otra persona entendió los datos.",
+    ],
+    4: [
+        "Pide repetición si falta un dato.",
+        "Aclara el día que aparece en la tarjeta.",
+        "Confirma la sala o el día sin inventar datos.",
+        "Comprueba que la otra persona entendió la versión final.",
+    ],
 }
 
 
@@ -549,7 +577,7 @@ def _new_pronunciation_block(
         {
             "id": f"a1teach-u{unit_number}-pronunciation-v2-item-{index}",
             "term": spec["text"],
-            "definition": f"{_pronunciation_meaning(unit_number, spec['text'])} Escucha el chunk y repítelo.",
+            "definition": f"{_pronunciation_meaning(unit_number, spec['text'])} Escucha la frase y repítela.",
             "audioUrl": f"{_AUDIO_BASE}{spec['filename']}",
         }
         for index, spec in enumerate(specs, start=1)
@@ -580,7 +608,7 @@ def _new_pronunciation_block(
 
 
 def _pronunciation_meaning(unit_number: int, text: str) -> str:
-    """Return the practical Spanish meaning for a spoken chunk."""
+    """Return the practical Spanish meaning for a spoken phrase."""
 
     lowered = text.lower().rstrip(".")
     if unit_number == 3 and "works for me" in lowered:
@@ -685,6 +713,21 @@ def _upsert_block(scene: dict[str, Any], block: dict[str, Any]) -> dict[str, Any
     return block
 
 
+def _move_block_before(scene: dict[str, Any], block_id: str, target_id: str) -> None:
+    """Keep a local card immediately before the production control it supports."""
+
+    blocks = _scene_blocks(scene)
+    block_index = next((index for index, block in enumerate(blocks) if block.get("id") == block_id), None)
+    target_index = next((index for index, block in enumerate(blocks) if block.get("id") == target_id), None)
+    if block_index is None or target_index is None or block_index < target_index:
+        return
+    block = blocks.pop(block_index)
+    blocks.insert(target_index, block)
+    for order, item in enumerate(blocks):
+        item["order"] = order
+    scene["runtimeBlocks"] = blocks
+
+
 def _new_local_support_block(
     unit_number: int,
     scene: dict[str, Any],
@@ -773,7 +816,7 @@ def _update_original_teaching_text(
             "sourceTeachingToDemand": deepcopy(mapping),
             "modelMode": "brief dialogue with meaning and one controlled change",
             "learningModeGuidance": {
-                "self": "Escucha un chunk, consulta el sentido y cambia un dato.",
+                "self": "Escucha una frase, consulta el sentido y cambia un dato.",
                 "teacher": "Modela una ronda, comprueba significado y cambia un dato.",
             },
         }
@@ -785,11 +828,6 @@ def _transfer_scene(lesson: dict[str, Any]) -> dict[str, Any] | None:
         lesson,
         lambda scene: scene.get("phase") in {"transfer-speak", "transfer-speaking"},
     )
-
-
-def _background_for_phase(lesson: dict[str, Any], phase: str, fallback: str) -> str:
-    scene = _find_scene(lesson, lambda item: item.get("phase") == phase)
-    return _as_text(scene.get("background")) if scene is not None else fallback
 
 
 def _micro_backgrounds(lesson: dict[str, Any], fallback: str) -> tuple[str, str]:
@@ -805,26 +843,85 @@ def _micro_backgrounds(lesson: dict[str, Any], fallback: str) -> tuple[str, str]
     return selected[0], selected[1]
 
 
+def _transfer_card_data(plan: dict[str, Any]) -> list[dict[str, str]]:
+    return [
+        {"label": row[0], "data": row[1], "pattern": row[2]}
+        for row in plan["transferRows"]
+    ]
+
+
+def _transfer_data_summary(card_data: list[dict[str, str]]) -> str:
+    return " / ".join(f"{card['label']}: {card['data']}" for card in card_data)
+
+
+def _transfer_learning_modes(card_data: list[dict[str, str]]) -> dict[str, str]:
+    summary = _transfer_data_summary(card_data)
+    return {
+        "individual": (
+            "Elige una tarjeta visible en esta escena y usa solo sus datos nuevos: "
+            f"{summary}. Completa el patrón opcional si te ayuda."
+        ),
+        "teacher": (
+            "La docente modela una ronda con la tarjeta elegida, comprueba significado y datos, "
+            "y deja que la persona cambie un dato."
+        ),
+    }
+
+
+def _transfer_answer_prompts(unit_number: int, card_data: list[dict[str, str]]) -> list[str]:
+    summary = _transfer_data_summary(card_data)
+    focus = {
+        1: "preséntate con el nombre y los datos de lugar que aparecen",
+        2: "identifica la persona u objeto y su relación o pertenencia",
+        3: "comparte el contacto u horario que aparecen",
+        4: "pide repetición, aclara el día y confirma la sala o el día",
+    }[unit_number]
+    return [
+        f"Elige una tarjeta de esta escena ({summary}); {focus} con sus datos nuevos.",
+        "Usa el patrón opcional de la tarjeta, pide repetición si falta un dato y confirma la información.",
+    ]
+
+
+def _current_transfer_card(
+    card_data: list[dict[str, str]],
+    paired_production_block_id: str,
+) -> dict[str, Any]:
+    return {
+        "kind": "new-information",
+        "cards": deepcopy(card_data),
+        "patternOptional": True,
+        "pairedProductionBlockId": paired_production_block_id,
+    }
+
+
 def _rewrite_transfer_prompt(
     lesson: dict[str, Any],
     unit_number: int,
     plan: dict[str, Any],
     transfer_scene: dict[str, Any],
+    mapping: list[dict[str, Any]],
 ) -> None:
-    """Point oral and written production at the new data cards."""
+    """Point oral and written production at the new data cards.
+
+    The original model/prompt stays in provenance fields.  Every learner-facing
+    production field is refreshed from the same local card payload so a stale
+    source example cannot sit beside the new task.
+    """
 
     card_id = f"a1teach-u{unit_number}-transfer-cards-v2"
-    card_data = [
-        {"label": row[0], "data": row[1], "pattern": row[2]}
-        for row in plan["transferRows"]
-    ]
+    writing_card_id = f"a1teach-u{unit_number}-transfer-writing-cards-v2"
+    card_data = _transfer_card_data(plan)
+    transfer_card = _current_transfer_card(
+        card_data,
+        f"a1m1-u{unit_number}-transfer-speak-recording",
+    )
+    learning_modes = _transfer_learning_modes(card_data)
+    checklist = deepcopy(_TRANSFER_CHECKLISTS[unit_number])
+    answer_prompts = _transfer_answer_prompts(unit_number, card_data)
     transfer_scene["instruction"] = "Elige una tarjeta nueva, comunica sus datos y comprueba el significado."
-    transfer_scene["transferCard"] = {
-        "kind": "new-information",
-        "cards": deepcopy(card_data),
-        "patternOptional": True,
-        "pairedProductionBlockId": f"a1m1-u{unit_number}-transfer-speak-recording",
-    }
+    transfer_scene["transferCard"] = deepcopy(transfer_card)
+    transfer_scene["routeModes"] = deepcopy(learning_modes)
+    transfer_scene["reviewChecklist"] = deepcopy(checklist)
     for block in _scene_blocks(transfer_scene):
         block_id = _as_text(block.get("id"))
         if block_id.endswith("-prompt") and block.get("type") == "text":
@@ -837,12 +934,10 @@ def _rewrite_transfer_prompt(
                 "<p>Escucha significado, datos y una reparación útil; no exige copiar un diálogo.</p></details>"
             )
             data = block.setdefault("data", {})
-            data["sourceTransferModel"] = data.get("originalEnglishModel", "")
-            data["transferCard"] = {
-                "kind": "new-information",
-                "cards": deepcopy(card_data),
-                "patternOptional": True,
-            }
+            data.setdefault("sourceTransferModel", data.get("originalEnglishModel", ""))
+            data["transferCard"] = deepcopy(transfer_card)
+            data["transferCardsBlockId"] = card_id
+            data["reviewChecklist"] = deepcopy(checklist)
             data["teachingRevision"] = TEACHING_REVISION
             data["localSupportForSceneId"] = transfer_scene.get("id")
         elif block_id.endswith("-recording") and block.get("type") == "recording":
@@ -851,29 +946,79 @@ def _rewrite_transfer_prompt(
                 "Usa el patrón opcional, pide repetición si falta un dato y confirma la información."
             )
             block["instruction"] = "Habla con la tarjeta nueva; la revisión es humana."
-            block.setdefault("data", {})["transferCardsBlockId"] = card_id
+            data = block.setdefault("data", {})
+            data["transferCardsBlockId"] = card_id
+            data["transferCard"] = deepcopy(transfer_card)
+            data["reviewChecklist"] = deepcopy(checklist)
+            turns = data.get("conversationTurns")
+            if isinstance(turns, list):
+                for index, turn in enumerate(turns):
+                    if not isinstance(turn, dict):
+                        continue
+                    turn["answerPrompt"] = answer_prompts[min(index, len(answer_prompts) - 1)]
 
     review_scene = _find_scene(lesson, lambda scene: scene.get("phase") in {"transfer-review", "transfer-writing"})
     if review_scene is None:
         return
-    review_scene["instruction"] = "Escribe 2–4 frases con los datos de una tarjeta nueva; la revisión es humana."
+    essay_id = next(
+        (_as_text(block.get("id")) for block in _scene_blocks(review_scene) if block.get("type") == "essay"),
+        f"a1m1-u{unit_number}-transfer-review-essay",
+    )
+    writing_card = _new_table_block(
+        writing_card_id,
+        review_scene,
+        "Tarjetas nuevas para escribir",
+        ["Tarjeta", "Datos nuevos", "Patrón opcional"],
+        plan["transferRows"],
+        mapping,
+        "transfer-cards",
+        content_role="production-support",
+        purpose="Consulta estas tarjetas en esta misma escena y escribe con sus datos; no necesitas volver a la transferencia oral.",
+    )
+    writing_card["data"].update(
+        {
+            "pairedProductionBlockId": essay_id,
+            "localForSceneId": review_scene.get("id"),
+            "transferCard": deepcopy(transfer_card),
+        }
+    )
+    _upsert_block(review_scene, writing_card)
+    _move_block_before(review_scene, writing_card_id, essay_id)
+    review_scene["instruction"] = "Elige una tarjeta visible aquí y escribe 2–4 frases con sus datos; la revisión es humana."
+    review_scene["transferCard"] = deepcopy(transfer_card)
+    review_scene["routeModes"] = deepcopy(learning_modes)
+    review_scene["reviewChecklist"] = deepcopy(checklist)
     for block in _scene_blocks(review_scene):
         block_id = _as_text(block.get("id"))
         if block_id.endswith("-prompt") and block.get("type") == "text":
             block["content"] = (
-                "<p><strong>Consigna:</strong> Elige una tarjeta nueva y escribe 2–4 frases con sus datos.</p>"
+                "<p><strong>Consigna:</strong> Elige una tarjeta visible aquí y escribe 2–4 frases con sus datos.</p>"
+                "<p>Consulta las tarjetas de esta escena; completa los huecos del patrón opcional si te ayuda.</p>"
                 "<details><summary>Ver patrón opcional</summary>"
                 "<p>Completa los huecos del patrón de la tarjeta; no copies el modelo original.</p></details>"
                 "<details><summary>Guía docente</summary>"
                 "<p>Revisa significado, datos y una forma útil; no hay calificación automática.</p></details>"
             )
-            block.setdefault("data", {})["teachingRevision"] = TEACHING_REVISION
+            data = block.setdefault("data", {})
+            data.setdefault("sourceTransferModel", data.get("originalEnglishModel", ""))
+            data["transferCard"] = deepcopy(transfer_card)
+            data["transferCardsBlockId"] = writing_card_id
+            data["reviewChecklist"] = deepcopy(checklist)
+            data["teachingRevision"] = TEACHING_REVISION
+            data["localSupportForSceneId"] = review_scene.get("id")
         elif block_id.endswith("-essay") and block.get("type") == "essay":
-            block.setdefault("data", {}).setdefault("sourcePromptOriginal", block.get("prompt", ""))
+            data = block.setdefault("data", {})
+            data.setdefault("sourcePromptOriginal", block.get("prompt", ""))
+            data.setdefault("sourceTransferModel", data.get("originalEnglishModel", ""))
             block["prompt"] = (
-                "Escribe 2–4 frases en inglés con los datos de una tarjeta nueva. "
+                "Escribe 2–4 frases en inglés con los datos de una tarjeta visible en esta escena. "
                 "Incluye una comprobación o reparación breve si la necesitas."
             )
+            data["learningModes"] = deepcopy(learning_modes)
+            data["reviewChecklist"] = deepcopy(checklist)
+            data["transferCard"] = deepcopy(transfer_card)
+            data["transferCardsBlockId"] = writing_card_id
+            data["teachingRevision"] = TEACHING_REVISION
 
 
 def _sync_scene_plans(full: dict[str, Any]) -> None:
@@ -926,6 +1071,70 @@ def _sync_scene_plans(full: dict[str, Any]) -> None:
         ]
 
 
+def _make_transcript_optional(full: dict[str, Any]) -> None:
+    """Describe transcript details as optional practice support, without fake gating."""
+
+    unit_lesson_ids = {f"a1-general-u{unit}" for unit in _UNIT_NUMBERS}
+    audio_manifest = full.get("audioManifest")
+    listening_plan = audio_manifest.get("listeningPlan") if isinstance(audio_manifest, dict) else None
+    if isinstance(listening_plan, list):
+        for item in listening_plan:
+            if not isinstance(item, dict) or item.get("lessonId") not in unit_lesson_ids:
+                continue
+            if "detailsHiddenUntilCheck" in item:
+                item["detailsHiddenUntilCheck"] = False
+            item["transcriptDisclosure"] = "visible-reference"
+            item["answerPolicy"] = (
+                "Intenta responder las preguntas si quieres; consulta la transcripción cuando la necesites "
+                "para revisar significado y pronunciación."
+            )
+            item["readingMode"] = (
+                "La transcripción queda disponible como apoyo de práctica; las preguntas siguen invitando "
+                "a escuchar primero, sin bloquear la consulta."
+            )
+
+    for lesson in full.get("lessons", []):
+        if not isinstance(lesson, dict) or lesson.get("id") not in unit_lesson_ids:
+            continue
+        for scene in lesson.get("scenes", []):
+            if not isinstance(scene, dict) or scene.get("phase") not in {"listening-audio", "listening-check"}:
+                continue
+            phase = scene.get("phase")
+            scene["transcriptDisclosure"] = "visible-reference"
+            scene["transcriptSupportLabel"] = "Ver transcripción"
+            if phase == "listening-audio":
+                scene["instruction"] = (
+                    "Escucha el audio, comprueba seis datos nuevos y consulta la transcripción cuando la necesites."
+                )
+            else:
+                scene["instruction"] = (
+                    "Intenta responder las seis preguntas nuevas; consulta la transcripción cuando la necesites."
+                )
+            for block in _scene_blocks(scene):
+                data = block.setdefault("data", {})
+                if "detailsHiddenUntilCheck" in data:
+                    data["detailsHiddenUntilCheck"] = False
+                if "transcriptDisclosure" in data:
+                    data["transcriptDisclosure"] = "visible-reference"
+                for field in ("content", "instruction", "prompt"):
+                    value = block.get(field)
+                    if not isinstance(value, str):
+                        continue
+                    replacements = {
+                        "Después de comprobar tus respuestas, abre la transcripción.":
+                            "Consulta la transcripción cuando la necesites para practicar.",
+                        "Responde seis preguntas nuevas sobre el audio antes de ver la transcripción.":
+                            "Intenta responder seis preguntas nuevas sobre el audio; consulta la transcripción cuando la necesites.",
+                        "Escucha el audio; comprueba seis datos nuevos y abre la transcripción después.":
+                            "Escucha el audio, comprueba seis datos nuevos y consulta la transcripción cuando la necesites.",
+                        "Responde las seis preguntas nuevas antes de abrir la transcripción.":
+                            "Intenta responder las seis preguntas nuevas; consulta la transcripción cuando la necesites.",
+                    }
+                    for old, new in replacements.items():
+                        value = value.replace(old, new)
+                    block[field] = value
+
+
 def _revise_unit(lesson: dict[str, Any], unit_number: int) -> dict[str, Any]:
     plan = _PLANS[unit_number]
     teach_scene = _find_scene(lesson, lambda scene: scene.get("phase") == "unit-teach")
@@ -976,7 +1185,7 @@ def _revise_unit(lesson: dict[str, Any], unit_number: int) -> dict[str, Any]:
         sound_scene_id,
         "unit-teach-pronunciation",
         "Sonidos útiles",
-        "Escucha cada chunk, separa la palabra clave y repítelo con un dato nuevo.",
+        "Escucha cada frase breve, separa la palabra clave y repítela con un dato nuevo.",
         sound_mapping,
         [f"module1.unit{unit_number}.teaching.pronunciation.v2"],
         "pronunciation",
@@ -1015,7 +1224,7 @@ def _revise_unit(lesson: dict[str, Any], unit_number: int) -> dict[str, Any]:
         teach_scene,
         patterns_scene_id,
         "unit-teach-patterns",
-        "Patrones para actuar",
+        "Patrones útiles",
         "Mira el patrón, sustituye un dato y prepara una tarjeta nueva.",
         pattern_mapping,
         [f"module1.unit{unit_number}.teaching.patterns.v2"],
@@ -1028,7 +1237,7 @@ def _revise_unit(lesson: dict[str, Any], unit_number: int) -> dict[str, Any]:
         _new_title_block(
             f"a1teach-u{unit_number}-patterns-title-v2",
             patterns_scene,
-            "Patrones para actuar",
+            "Patrones útiles",
             pattern_mapping,
             "patterns-stage",
         ),
@@ -1038,7 +1247,7 @@ def _revise_unit(lesson: dict[str, Any], unit_number: int) -> dict[str, Any]:
         _new_text_block(
             f"a1teach-u{unit_number}-patterns-instruction-v2",
             patterns_scene,
-            "Patrones para actuar",
+            "Patrones útiles",
             "<p><strong>Ruta:</strong> Elige un patrón, cambia un solo dato y comprueba el significado antes de producir.</p>",
             pattern_mapping,
             "patterns-routine",
@@ -1049,7 +1258,7 @@ def _revise_unit(lesson: dict[str, Any], unit_number: int) -> dict[str, Any]:
         _new_table_block(
             f"a1teach-u{unit_number}-grammar-v2",
             patterns_scene,
-            "Gramática para actuar",
+            "Patrones útiles",
             ["Patrón", "Para qué sirve", "Ejemplo"],
             plan["grammarRows"],
             pattern_mapping,
@@ -1093,8 +1302,10 @@ def _revise_unit(lesson: dict[str, Any], unit_number: int) -> dict[str, Any]:
             (_as_text(block.get("id")) for block in _scene_blocks(transfer_scene) if block.get("type") == "recording"),
             "",
         )
-        _rewrite_transfer_prompt(lesson, unit_number, plan, transfer_scene)
+        _rewrite_transfer_prompt(lesson, unit_number, plan, transfer_scene, transfer_mapping)
         _upsert_block(transfer_scene, card)
+        recording_id = card["data"].get("pairedProductionBlockId", "")
+        _move_block_before(transfer_scene, card["id"], _as_text(recording_id))
 
     # Every existing demand gets its own recoverable cue.  It stays local to
     # the scene, so the learner does not need to navigate back to the teaching
@@ -1140,6 +1351,7 @@ def _document_revision(full: dict[str, Any], mappings: dict[str, dict[str, Any]]
     ]
     guidance["microScenesPerUnit"] = ["unit-teach-pronunciation", "unit-teach-patterns"]
     guidance["localDemandSupport"] = "Each listening-check, comprehension, practice, and transfer scene carries its own collapsed support block."
+    guidance["transcriptAccess"] = "Unit listening transcripts remain available as optional practice support; questions invite a first attempt without blocking consultation."
     guidance["teachingPresentation"] = {
         "pronunciation": "vocabulary items carry an audioUrl; the parent renderer owns playback",
         "support": "collapsed visible support keeps the autonomous route recoverable",
@@ -1172,6 +1384,7 @@ def revise_units(full: dict[str, Any], compiler: Any | None = None) -> None:
             continue
         mappings[_as_text(lesson.get("id"))] = _revise_unit(lesson, unit_number)
 
+    _make_transcript_optional(full)
     _sync_scene_plans(full)
 
     # Some callers retain a separate module.lessons list.  Keep it aligned

@@ -93,15 +93,55 @@ def _block(
             "id": block_id,
             "type": block_type,
             "order": order,
-            "data": {**data, "doNotAutoGrade": True, "teacherReviewOnly": True},
+            "data": {
+                **data,
+                "doNotAutoGrade": True,
+                "teacherReviewOnly": True,
+                "originalEnglishModel": "Source model: Ana lives in Lima.",
+                "reviewChecklist": ["Old Ana checklist"],
+                "conversationTurns": [
+                    {
+                        "id": f"{block_id}-turn-1",
+                        "question": "What is the old task?",
+                        "answerPrompt": "Use Ana and Arequipa from the old card.",
+                    },
+                    {
+                        "id": f"{block_id}-turn-2",
+                        "question": "What is the old confirmation?",
+                        "answerPrompt": "Confirm the old Lima detail.",
+                    },
+                ],
+            },
             "prompt": "Habla con la tarjeta.",
+        }
+    if block_type == "essay":
+        return {
+            "id": block_id,
+            "type": block_type,
+            "order": order,
+            "data": {
+                **data,
+                "doNotAutoGrade": True,
+                "teacherReviewOnly": True,
+                "originalEnglishModel": "Source essay model: Ana lives in Lima.",
+                "learningModes": {
+                    "individual": "Escribe sobre Ana y Arequipa; el dato viejo es Lima.",
+                    "teacher": "Modela la respuesta vieja de Ana.",
+                },
+                "reviewChecklist": ["Old Ana checklist"],
+            },
+            "prompt": "Escribe sobre Ana y Arequipa.",
         }
     if block_type == "audio":
         return {
             "id": block_id,
             "type": block_type,
             "order": order,
-            "data": data,
+            "data": {
+                **data,
+                "detailsHiddenUntilCheck": True,
+                "transcriptDisclosure": "after-listen-check",
+            },
             "url": f"/audio/a1-module1-pilot/u{block_id.split('-')[1]}-model.mp3",
             "sha256": f"hash-{block_id}",
             "transcript": "Original verified transcript.",
@@ -147,6 +187,12 @@ def _fixture() -> dict[str, Any]:
                     _block(f"{scene_id}-title", scene_id, scene_asset, "title", role="production"),
                     _block(f"{scene_id}-prompt", scene_id, scene_asset, role="production", order=1),
                     _block(f"{scene_id}-recording", scene_id, scene_asset, "recording", role="production", order=2),
+                ]
+            elif phase == "transfer-writing":
+                blocks = [
+                    _block(f"{scene_id}-title", scene_id, scene_asset, "title", role="production"),
+                    _block(f"{scene_id}-prompt", scene_id, scene_asset, role="production", order=1),
+                    _block(f"{scene_id}-essay", scene_id, scene_asset, "essay", role="production", order=2),
                 ]
             else:
                 block_type = "multiple_choice" if phase in {"comprehension", "practice"} else "text"
@@ -199,6 +245,16 @@ def _fixture() -> dict[str, Any]:
         "sourceAudit": {"counts": {"unitPractice": 20}},
         "runtimeMappingGuidance": {"oneInteractiveBlockPerScene": True},
         "acceptance": {"audioPending": False},
+        "audioManifest": {
+            "listeningPlan": [
+                {
+                    "lessonId": f"a1-general-u{unit}",
+                    "detailsHiddenUntilCheck": True,
+                    "transcriptDisclosure": "after-listen-check",
+                }
+                for unit in range(1, 5)
+            ]
+        },
     }
 
 
@@ -240,9 +296,9 @@ class A1UnitTeachingTests(unittest.TestCase):
 
         after_ids = {block["id"] for lesson in full["lessons"] for block in lesson["blocks"]}
         self.assertTrue(before_ids <= after_ids)
-        # Each unit receives two micro-scenes (3 + 4 blocks), one transfer
-        # card, and nine local demand-support blocks: 17 new blocks/unit.
-        self.assertEqual(len(after_ids), len(before_ids) + 68)
+        # Each unit receives two micro-scenes (3 + 4 blocks), oral and written
+        # transfer cards, and nine local demand-support blocks: 18 new blocks/unit.
+        self.assertEqual(len(after_ids), len(before_ids) + 72)
         self.assertEqual(
             before_questions,
             {
@@ -310,6 +366,16 @@ class A1UnitTeachingTests(unittest.TestCase):
             self.assertEqual(cards["content"]["headers"], ["Tarjeta", "Datos nuevos", "Patrón opcional"])
             self.assertTrue(all(len(row) == 3 and "___" in row[2] for row in cards["content"]["rows"]))
             self.assertFalse(any("Hi, I'm Marta" in cell for row in cards["content"]["rows"] for cell in row))
+            recording = next(block for block in transfer["runtimeBlocks"] if block["id"].endswith("-recording"))
+            self.assertEqual(recording["data"]["transferCardsBlockId"], cards["id"])
+            self.assertLess(
+                [block["id"] for block in transfer["runtimeBlocks"]].index(cards["id"]),
+                [block["id"] for block in transfer["runtimeBlocks"]].index(recording["id"]),
+            )
+            self.assertEqual(recording["data"]["reviewChecklist"], TEACHING._TRANSFER_CHECKLISTS[unit])
+            self.assertTrue(all("Ana" not in turn["answerPrompt"] for turn in recording["data"]["conversationTurns"]))
+            self.assertTrue(all("Arequipa" not in turn["answerPrompt"] for turn in recording["data"]["conversationTurns"]))
+            self.assertTrue(all("Lima" not in turn["answerPrompt"] for turn in recording["data"]["conversationTurns"]))
             transfer_text = next(
                 block["content"] for block in transfer["runtimeBlocks"] if block["id"].endswith("-prompt")
             )
@@ -320,6 +386,30 @@ class A1UnitTeachingTests(unittest.TestCase):
             self.assertIn("tarjeta nueva", recording_prompt.casefold())
             self.assertNotIn("Ana", transfer_text)
             self.assertNotIn("Ana", recording_prompt)
+            writing = next(scene for scene in lesson["scenes"] if scene["phase"] == "transfer-writing")
+            writing_cards = next(
+                block for block in writing["runtimeBlocks"]
+                if block["id"] == f"a1teach-u{unit}-transfer-writing-cards-v2"
+            )
+            self.assertEqual(writing_cards["data"]["pilotSceneId"], writing["id"])
+            self.assertEqual(writing_cards["data"]["localForSceneId"], writing["id"])
+            self.assertEqual(writing_cards["data"]["pairedProductionBlockId"], f"a1m1-u{unit}-transfer-review-essay")
+            self.assertTrue(all(len(row) == 3 and "___" in row[2] for row in writing_cards["content"]["rows"]))
+            writing_text = next(
+                block["content"] for block in writing["runtimeBlocks"] if block["id"].endswith("-prompt")
+            )
+            essay = next(block for block in writing["runtimeBlocks"] if block["type"] == "essay")
+            self.assertIn("tarjetas de esta escena", writing_text)
+            self.assertLess(
+                [block["id"] for block in writing["runtimeBlocks"]].index(writing_cards["id"]),
+                [block["id"] for block in writing["runtimeBlocks"]].index(essay["id"]),
+            )
+            self.assertEqual(essay["data"]["transferCardsBlockId"], writing_cards["id"])
+            self.assertEqual(essay["data"]["learningModes"], TEACHING._transfer_learning_modes(TEACHING._transfer_card_data(TEACHING._PLANS[unit])))
+            self.assertEqual(essay["data"]["reviewChecklist"], TEACHING._TRANSFER_CHECKLISTS[unit])
+            self.assertNotIn("Ana", essay["data"]["learningModes"]["individual"])
+            self.assertNotIn("Lima", essay["data"]["learningModes"]["individual"])
+            self.assertNotIn("Arequipa", essay["data"]["learningModes"]["individual"])
             demand_phases = {"listening-check", "comprehension", "practice", "transfer-speaking", "transfer-writing"}
             demand_scenes = [scene for scene in lesson["scenes"] if scene["phase"] in demand_phases]
             self.assertEqual(len(demand_scenes), 9)
@@ -336,15 +426,45 @@ class A1UnitTeachingTests(unittest.TestCase):
                 self.assertEqual(support_data["pilotSceneId"], demand["id"])
             self.assertLessEqual(teach["interactiveCount"], 1)
 
+            listening = next(scene for scene in lesson["scenes"] if scene["phase"] == "listening-audio")
+            self.assertEqual(listening["transcriptDisclosure"], "visible-reference")
+            self.assertIn("cuando la necesites", listening["instruction"])
+            audio = next(block for block in listening["runtimeBlocks"] if block["type"] == "audio")
+            self.assertFalse(audio["data"]["detailsHiddenUntilCheck"])
+            self.assertEqual(audio["data"]["transcriptDisclosure"], "visible-reference")
+
         self.assertEqual(full["sourceAudit"]["teachingRevision"], TEACHING.TEACHING_REVISION)
         self.assertEqual(set(full["sourceAudit"]["teachingSourceToDemand"]), {f"a1-general-u{i}" for i in range(1, 5)})
         self.assertIn("a1m1-u1-practice-1", full["sourceAudit"]["teachingSourceToDemand"]["a1-general-u1"]["demandSceneIds"])
+        self.assertTrue(all(not item["detailsHiddenUntilCheck"] for item in full["audioManifest"]["listeningPlan"]))
+        self.assertNotIn("chunk", json.dumps(full, ensure_ascii=False).casefold())
 
     def test_forms_and_context_are_visible_before_their_demands(self) -> None:
         full = _fixture()
+        u1_before = next(item for item in full["lessons"] if item["id"] == "a1-general-u1")
+        oral_prompt_before = next(
+            block for block in u1_before["blocks"] if block["id"] == "a1m1-u1-transfer-speak-prompt"
+        )
+        writing_prompt_before = next(
+            block for block in u1_before["blocks"] if block["id"] == "a1m1-u1-transfer-review-prompt"
+        )
+        essay_before = next(block for block in u1_before["blocks"] if block["id"] == "a1m1-u1-transfer-review-essay")
+        oral_source_model = oral_prompt_before["data"]["originalEnglishModel"]
+        writing_source_model = writing_prompt_before["data"]["originalEnglishModel"]
+        essay_source_prompt = essay_before["prompt"]
         TEACHING.revise_units(full)
 
-        u1 = next(item for item in full["lessons"] if item["id"] == "a1-general-u1")
+        u1_after = next(item for item in full["lessons"] if item["id"] == "a1-general-u1")
+        oral_prompt_after = next(block for block in u1_after["blocks"] if block["id"] == "a1m1-u1-transfer-speak-prompt")
+        writing_prompt_after = next(block for block in u1_after["blocks"] if block["id"] == "a1m1-u1-transfer-review-prompt")
+        essay_after = next(block for block in u1_after["blocks"] if block["id"] == "a1m1-u1-transfer-review-essay")
+        self.assertEqual(oral_prompt_after["data"]["sourceTransferModel"], oral_source_model)
+        self.assertEqual(writing_prompt_after["data"]["sourceTransferModel"], writing_source_model)
+        self.assertEqual(essay_after["data"]["sourcePromptOriginal"], essay_source_prompt)
+        self.assertNotIn("Ana", essay_after["prompt"])
+        self.assertNotIn("Arequipa", essay_after["prompt"])
+
+        u1 = u1_after
         u1_patterns = next(scene for scene in u1["scenes"] if scene["phase"] == "unit-teach-patterns")
         u1_grammar = next(block for block in u1_patterns["runtimeBlocks"] if block["id"] == "a1teach-u1-grammar-v2")
         u1_rows = u1_grammar["content"]["rows"]
