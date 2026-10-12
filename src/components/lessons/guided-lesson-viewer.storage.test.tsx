@@ -71,4 +71,30 @@ describe('GuidedLessonViewer illustrated position storage', () => {
       'Peter'
     )
   })
+
+  it('scopes illustrated position to teachingRevision before learningRevision', () => {
+    sessionStorage.setItem('illustrated-teaching-revision:teaching-v2', '1')
+    sessionStorage.setItem('illustrated-teaching-revision:scene-v2', '0')
+
+    render(
+      <GuidedLessonViewer
+        blocks={[
+          {
+            ...block('text', 'reading'),
+            data: { teachingRevision: 'teaching-v2', learningRevision: 'course-guided-v1' },
+          } as Block,
+          {
+            ...block('essay', 'writing'),
+            data: { learningRevision: 'course-guided-v1' },
+          } as Block,
+        ]}
+        storageKey="illustrated-teaching-revision"
+        illustratedContent
+        unitOneAuthored
+      />
+    )
+
+    expect(screen.getByRole('heading', { name: 'Escritura' })).toBeInTheDocument()
+    expect(sessionStorage.getItem('illustrated-teaching-revision:scene-v2')).toBe('0')
+  })
 })

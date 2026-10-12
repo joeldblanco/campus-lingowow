@@ -14,6 +14,7 @@ import type { Block, EssayBlock, RecordingBlock } from '@/types/course-builder'
 import { Button } from '@/components/ui/button'
 import { EssayAIGrading } from './essay-ai-grading'
 import { RecordingAIGrading } from './recording-ai-grading'
+import { getLearningReviewChecklist, LearningReviewChecklist } from './learning-review-checklist'
 import { cn } from '@/lib/utils'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
 import recordingControlStyles from './unit1-production.module.css'
@@ -43,6 +44,7 @@ interface ConversationTurn {
   question: string
   audioUrl?: string
   answerPrompt?: string
+  reviewChecklist?: string[]
 }
 
 const ACTION_CLASS =
@@ -135,6 +137,10 @@ function normalizeTurns(block: RecordingBlock): ConversationTurn[] {
         question,
         audioUrl,
         answerPrompt: asString(turn.answerPrompt) || asString(turn.followUp),
+        reviewChecklist: (() => {
+          const checklist = getLearningReviewChecklist(turn.reviewChecklist)
+          return checklist.length > 0 ? checklist : undefined
+        })(),
       }
     })
     .filter((turn): turn is ConversationTurn => Boolean(turn))
@@ -391,6 +397,7 @@ function ConversationProduction({
   const [recordingError, setRecordingError] = useState<string | null>(null)
   const [allTurnsGraded, setAllTurnsGraded] = useState(false)
   const [completed, setCompleted] = useState(false)
+  const [selfReviewReady, setSelfReviewReady] = useState(false)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const chunksRef = useRef<Blob[]>([])
@@ -400,6 +407,15 @@ function ConversationProduction({
   const currentTurn = turns[turnIndex] || turns[0]
   const currentAudioUrl = recordings[turnIndex]
   const selfMode = mode === 'self' && !isTeacher
+  const unit1Data = getUnit1Data(block)
+  const aiGradingDisabled = block.aiGrading === false || unit1Data.aiGrading === false
+  const globalReviewChecklist = useMemo(
+    () => getLearningReviewChecklist(unit1Data.reviewChecklist),
+    [unit1Data.reviewChecklist]
+  )
+  const reviewChecklist = currentTurn?.reviewChecklist?.length
+    ? currentTurn.reviewChecklist
+    : globalReviewChecklist
 
   useRecordingReport(isRecording, onRecordingStateChange)
   useCompletionReport(completed && !isTeacher, onGuidedCompletionChange)
@@ -434,6 +450,7 @@ function ConversationProduction({
   const startRecording = async () => {
     if (!selfMode || isRecording) return
     setRecordingError(null)
+    setSelfReviewReady(false)
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
       setRecordingError('Tu navegador no permite grabar audio.')
       return
@@ -476,17 +493,24 @@ function ConversationProduction({
     if (isRecording) stopRecording()
     setMode(nextMode)
     setRecordingError(null)
+    setSelfReviewReady(false)
     setCompleted(false)
     if (nextMode === 'teacher') setAllTurnsGraded(false)
   }
 
   const handleGraded = () => {
+    setSelfReviewReady(false)
     replaceRecording(turnIndex, null)
     if (turnIndex >= turns.length - 1) {
       setAllTurnsGraded(true)
       return
     }
     setTurnIndex((current) => current + 1)
+  }
+
+  const handleSelfReviewed = () => {
+    if (!currentAudioUrl || (reviewChecklist.length > 0 && !selfReviewReady)) return
+    handleGraded()
   }
 
   const action = allTurnsGraded && selfMode ? (
@@ -500,25 +524,37 @@ function ConversationProduction({
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Button>
   ) : currentAudioUrl && selfMode ? (
-    <RecordingAIGrading
-      audioUrl={currentAudioUrl}
-      instruction={currentTurn.question}
-      blockId={block.id}
-      language={block.aiGradingConfig?.language || 'english'}
-      targetLevel={block.aiGradingConfig?.targetLevel || 'A1'}
-      buttonText="Enviar respuesta"
-      className={ACTION_CLASS}
-      onGraded={handleGraded}
-      onSyncResponse={
-        classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined
-      }
-      onGradingStateChange={(state) => {
-        if (state === 'error') setRecordingError('No se pudo evaluar esta respuesta. Inténtalo de nuevo.')
-      }}
-    />
+    aiGradingDisabled ? (
+      <Button
+        type="button"
+        className={ACTION_CLASS}
+        onClick={handleSelfReviewed}
+        disabled={reviewChecklist.length > 0 && !selfReviewReady}
+      >
+        Confirmar revisión
+        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+      </Button>
+    ) : (
+      <RecordingAIGrading
+        audioUrl={currentAudioUrl}
+        instruction={currentTurn.question}
+        blockId={block.id}
+        language={block.aiGradingConfig?.language || 'english'}
+        targetLevel={block.aiGradingConfig?.targetLevel || 'A1'}
+        buttonText="Enviar respuesta"
+        className={ACTION_CLASS}
+        onGraded={handleGraded}
+        onSyncResponse={
+          classroomSync.canInteract ? classroomSync.sendBlockResponse : undefined
+        }
+        onGradingStateChange={(state) => {
+          if (state === 'error') setRecordingError('No se pudo evaluar esta respuesta. Inténtalo de nuevo.')
+        }}
+      />
+    )
   ) : (
     <Button type="button" className={ACTION_CLASS} disabled>
-      Enviar respuesta
+      {aiGradingDisabled ? 'Confirmar revisión' : 'Enviar respuesta'}
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Button>
   )
@@ -601,7 +637,19 @@ function ConversationProduction({
             </button>
             <span className="text-base leading-6 text-[#506187]">Turno {turnIndex + 1} de {turns.length}</span>
             {recordingError && <p role="alert" className="text-base leading-6 text-[#C13E50]">{recordingError}</p>}
-            {currentAudioUrl && !isRecording && <p className="text-sm leading-5 text-[#08775E]">Grabación lista para enviar.</p>}
+            {currentAudioUrl && !isRecording && (
+              <div className="w-full max-w-[36rem] space-y-3">
+                <p className="text-sm leading-5 text-[#08775E]">
+                  {aiGradingDisabled ? 'Escucha tu grabación y revísala.' : 'Grabación lista para enviar.'}
+                </p>
+                {aiGradingDisabled && (
+                  <audio controls src={currentAudioUrl} className="w-full" aria-label="Escuchar tu grabación" />
+                )}
+                {aiGradingDisabled && reviewChecklist.length > 0 && (
+                  <LearningReviewChecklist key={currentAudioUrl} items={reviewChecklist} onReady={setSelfReviewReady} />
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

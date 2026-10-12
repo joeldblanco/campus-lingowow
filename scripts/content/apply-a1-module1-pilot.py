@@ -328,16 +328,20 @@ def _validate_block(
     if not isinstance(block_type, str) or block_type not in KNOWN_BLOCK_TYPES:
         raise PlanError(f"{label}.type is not a supported runtime block type")
     audio_paths: frozenset[str] = frozenset()
-    if block_type == "audio":
+    pronunciation = block_type == "vocabulary" and _block_metadata(block).get("teachingPresentation") == "pronunciation"
+    if block_type == "audio" or pronunciation:
         if audio_manifest is None:
             raise PlanError(f"{label} cannot contain unapproved audio; provide a verified audio manifest")
         references = _iter_audio_references(block)
-        if len(references) != 1:
+        if not references or (block_type == "audio" and len(references) != 1):
             raise PlanError(f"{label} must reference exactly one verified local audio asset")
-        audio_path = _audio_public_path(references[0], f"{label}.audio")
-        if audio_path not in audio_manifest:
+        audio_paths = frozenset(_audio_public_path(ref, f"{label}.audio") for ref in references)
+        if not audio_paths.issubset(audio_manifest):
             raise PlanError(f"{label} audio is missing from the verified audio manifest")
-        audio_paths = frozenset({audio_path})
+        if pronunciation:
+            items = block.get("items", [])
+            if not items or any(not isinstance(item, dict) or not item.get("audioUrl") for item in items):
+                raise PlanError(f"{label} pronunciation items require verified audioUrl")
     if not _is_int(block["order"]) or block["order"] < 0:
         raise PlanError(f"{label}.order must be a non-negative integer")
     json.dumps(block, ensure_ascii=False, allow_nan=False)
@@ -483,13 +487,8 @@ def validate_plan(
             metadata = _block_metadata(validated)
             if validated["type"] != "teacher_notes":
                 scene_ids.add(metadata["pilotSceneId"])
-            if validated["type"] == "audio":
-                referenced_audio_paths.add(
-                    _audio_public_path(
-                        _iter_audio_references(validated)[0],
-                        f"{label}.blocks[{block_order}].audio",
-                    )
-                )
+            for reference in _iter_audio_references(validated):
+                referenced_audio_paths.add(_audio_public_path(reference, f"{label}.blocks[{block_order}].audio"))
         if not scene_ids:
             raise PlanError(f"{label} must contain a learner-facing illustrated scene")
 

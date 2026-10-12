@@ -54,6 +54,316 @@
       "path": "public/audio/a1-module1-pilot/starter-s5-bridge.mp3",
       "sha256": "20ab646b57ba182280db1ea3c6d4286cd75283877468cab42c9e508a155336d7",
       "sourceEnglishTranscript": "Hi, I’m Ana. I’m from Peru. See you on Tuesday at six in room two oh four."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s1-hello-v2.mp3",
+      "sha256": "7e6c31ac5ad4dbafd99a75de430d7b142cd0c0da39d9f4fbf358e1fb8003dc99",
+      "sourceEnglishTranscript": "Hello."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s1-im-name-v2.mp3",
+      "sha256": "6a6d36531fb7d988f023ccb3675599630fa2a8b03cf7fdae1a0cfb32f7f08e69",
+      "sourceEnglishTranscript": "I'm Ana."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s1-my-name-v2.mp3",
+      "sha256": "f606d802c5283dc93930b81c837aaca4d5a79d33ec9cca004d3b8febd95afdbf",
+      "sourceEnglishTranscript": "My name is Ana."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-a-v2.mp3",
+      "sha256": "32e7dacd9bfef01b02316f597d6b724721d4398806f92961f5629e0c8d330f37",
+      "sourceEnglishTranscript": "A"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-n-v2.mp3",
+      "sha256": "47e6fea06b87442329e615e486911a19d176f4e10eb9f282d64bf2d7dee370cd",
+      "sourceEnglishTranscript": "N"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-t-v2.mp3",
+      "sha256": "551c28a801e85ebb01d3d10beda2a3454282f2f1328e4b227516e280b0d8b546",
+      "sourceEnglishTranscript": "T"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-o-v2.mp3",
+      "sha256": "8dc47c6a035443955375eefcba0be75a771d5caa57315d65eb40f49b55c015c8",
+      "sourceEnglishTranscript": "O"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-r-v2.mp3",
+      "sha256": "68f817cd82da4475539e4e89044cf9cfb45f91766002075125f13c11a80599d7",
+      "sourceEnglishTranscript": "R"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-e-v2.mp3",
+      "sha256": "57fe21c4c41420790c5b7781af6dae42a73dd97c074daeec590f4072cb8a6f47",
+      "sourceEnglishTranscript": "E"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-s-v2.mp3",
+      "sha256": "39ad6c1a9fb0562d2712132db2f4fc49114ef545fed9fd16bc27ecd065b40490",
+      "sourceEnglishTranscript": "S"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-j-v2.mp3",
+      "sha256": "b4c39a402948aff5f79073c1c8439c644dcd96ddb33a9b2ce3afd12b4a6ca920",
+      "sourceEnglishTranscript": "J"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-x-v2.mp3",
+      "sha256": "f5c23b18ec398b87bb8a4405dc68bd17dff4af3df83e69ed8fa3fd5a9d60b7fb",
+      "sourceEnglishTranscript": "X"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-y-v2.mp3",
+      "sha256": "922609ef8a958bd7b92adecf7783906192b9d6abda3b60180c5790e0d81264fb",
+      "sourceEnglishTranscript": "Y"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s2-letter-z-v2.mp3",
+      "sha256": "f95fc3985c7bf97f3824291dc0ae4dd8d21265817e56aa0a22784ffbb8e231fd",
+      "sourceEnglishTranscript": "Z"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-0-v2.mp3",
+      "sha256": "22fcc83e0413a7c65326e67add6a089774804de666e67b1342073f99b6e69e4c",
+      "sourceEnglishTranscript": "Zero."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-1-v2.mp3",
+      "sha256": "86f38025491aaf352d6c70e396026eb2b693130066bdc2dd0ac94d3e67320142",
+      "sourceEnglishTranscript": "One."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-2-v2.mp3",
+      "sha256": "19f8d457515dd6f43ac14dfe3e497b5b73cf632a65583f6404c04b964c153d99",
+      "sourceEnglishTranscript": "Two."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-3-v2.mp3",
+      "sha256": "df3aa7599460dd4217f1c91f89bdf45d766730f2da3a8e18e9b34fcee72e6c87",
+      "sourceEnglishTranscript": "Three."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-4-v2.mp3",
+      "sha256": "7f7fefe1d2fdb024d55b13f5b502fc4cacebc36bbc33847e39f71dbb7fe2ae82",
+      "sourceEnglishTranscript": "Four."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-5-v2.mp3",
+      "sha256": "d607c271e4d2d4505dc1f79e59275c6fe4bd371e5c23df61e5431ca083266c22",
+      "sourceEnglishTranscript": "Five."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-6-v2.mp3",
+      "sha256": "920f221a6233b506346ef87e422ad0d69a2283ab51c30a522d95a7d0ca86ebaa",
+      "sourceEnglishTranscript": "Six."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-7-v2.mp3",
+      "sha256": "cbf20bf997e6eea97e53f878d8e38f6819db07dce13fac96fbbedd7044b71ee9",
+      "sourceEnglishTranscript": "Seven."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-8-v2.mp3",
+      "sha256": "bc6ec1492d3600628bb239a7d747d309c39e101d67cf845a1e1c716ffe6a6804",
+      "sourceEnglishTranscript": "Eight."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-number-9-v2.mp3",
+      "sha256": "2f6fd4ecd024be1ed847d5a2c090761e103f40c31f2bd1d36a8e3243ed5b12dc",
+      "sourceEnglishTranscript": "Nine."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-eighteen-v2.mp3",
+      "sha256": "101556742ffec9bea3cfb78fe0c3df01b7db93c66d95ab493eb37796de749318",
+      "sourceEnglishTranscript": "Eighteen."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-six-pm-v2.mp3",
+      "sha256": "d45a095f62c9d016aa1255c773cd9ad2f554ac66ab1625595a81361bca4f2e73",
+      "sourceEnglishTranscript": "Six p.m."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-room-204-v2.mp3",
+      "sha256": "9d51eb64a48bd507091ed86e5b4beb8aeded302c0657a74b914f22863f83fa48",
+      "sourceEnglishTranscript": "Room two oh four."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s3-phone-555-0142-v2.mp3",
+      "sha256": "9dce8fdab8228166f4fd8e69c928b8a329488f277b79fd5953014158fa042d89",
+      "sourceEnglishTranscript": "Five five five, zero one four two."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s4-from-v2.mp3",
+      "sha256": "a9a4ef097eed52ee0c7f87757657960f9a4c27c1841dce85d1b80209bf044c4c",
+      "sourceEnglishTranscript": "From."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s4-live-in-v2.mp3",
+      "sha256": "8d80f7258ce339e728b139c6ed60d74f9f3be5558269560694cc377cbc981a5a",
+      "sourceEnglishTranscript": "Live in."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s4-introduction-v2.mp3",
+      "sha256": "d39c6199d0fe71b0c9fae09cafec0a26043c5ac15bcf18c0bae85d82e0e7e44d",
+      "sourceEnglishTranscript": "I'm from Peru. I live in Lima."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-im-name-v2.mp3",
+      "sha256": "6a6d36531fb7d988f023ccb3675599630fa2a8b03cf7fdae1a0cfb32f7f08e69",
+      "sourceEnglishTranscript": "I'm Ana."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-from-peru-v2.mp3",
+      "sha256": "cab49c6e290a1b923dc7dafc1c09646e1d93c7901bbddc59b5b4ec8c8b2ce5c9",
+      "sourceEnglishTranscript": "I'm from Peru."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-see-you-tuesday-v2.mp3",
+      "sha256": "604b8859926e9bb75f6634733b66460e1cb5a64a2fb61eaa3e372c7ef657df4e",
+      "sourceEnglishTranscript": "See you on Tuesday."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-six-v2.mp3",
+      "sha256": "a81a8bf64832ae94a3247152398febd28e2c7dd0f5a327d8dd08f8c7721c5e47",
+      "sourceEnglishTranscript": "At six."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-room-204-v2.mp3",
+      "sha256": "80534630e0734a14c20b1d10adb7a7f9be43a8c04311b17ecd2da2d2d7fb9cbc",
+      "sourceEnglishTranscript": "In room two oh four."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-letter-l-v2.mp3",
+      "sha256": "7625b90fd441dcace8ddf9b4271c23f970b8a2ccf97fbb6682cf178cf81d28fb",
+      "sourceEnglishTranscript": "L"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-letter-u-v2.mp3",
+      "sha256": "6d86d883be97c31dc1b981cada8296c4f7c42893fae08e675ce8030175d43a16",
+      "sourceEnglishTranscript": "U"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-letter-i-v2.mp3",
+      "sha256": "040de7a4e2630a2a589295462a428bcd2043261a3533f2a19ee42734769e751d",
+      "sourceEnglishTranscript": "I"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-letter-v-v2.mp3",
+      "sha256": "efbbc5211f4a61e6e3ec04502fe908e2cd359c44130338bf6e9a16a2e8f1960d",
+      "sourceEnglishTranscript": "V"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-letter-g-v2.mp3",
+      "sha256": "17519c02d73a8e37943bd3d0baf90cd47a1fe913e6735d5bab22ceb0ef236f3a",
+      "sourceEnglishTranscript": "G"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-thursday-v2.mp3",
+      "sha256": "c107fe494cd9082f68cf677a9465fa61d5b776842f07d830f39cf9afb9bada09",
+      "sourceEnglishTranscript": "Thursday."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-seven-v2.mp3",
+      "sha256": "cbf20bf997e6eea97e53f878d8e38f6819db07dce13fac96fbbedd7044b71ee9",
+      "sourceEnglishTranscript": "Seven."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-start-s5-transfer-room-105-v2.mp3",
+      "sha256": "dd552d006f374fd3f7630602290b9447165e0633fcb9bdcf3c51f7b1e39973db",
+      "sourceEnglishTranscript": "Room one oh five."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u1-greeting-v2.mp3",
+      "sha256": "5085168b5f1dbd959292774a772f9decb09db885e8bc1e9eea3c3511cfe9b521",
+      "sourceEnglishTranscript": "Hi, I'm Ana."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u1-name-question-v2.mp3",
+      "sha256": "f600bcb063236f37c3e497d40d73a46018881bdb0ffb32ad5070e3ccaf8ad7c2",
+      "sourceEnglishTranscript": "What's your name?"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u1-origin-v2.mp3",
+      "sha256": "cab49c6e290a1b923dc7dafc1c09646e1d93c7901bbddc59b5b4ec8c8b2ce5c9",
+      "sourceEnglishTranscript": "I'm from Peru."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u1-city-v2.mp3",
+      "sha256": "bb9b0ddbb933998f0043b0dc5817e7a75b18501d0f5b0426b7ec823d707d287f",
+      "sourceEnglishTranscript": "I live in Lima."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u2-introduce-colleague-v2.mp3",
+      "sha256": "b564e9393a50a23acd6e57482c7cf1471133c59dbed9762bf5d3c7bdd9b860ed",
+      "sourceEnglishTranscript": "This is my colleague."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u2-who-question-v2.mp3",
+      "sha256": "ef0f045dd1a484e68ee8ab5cae50a4094d630aa320f4af13d6aca2e2370aa4b9",
+      "sourceEnglishTranscript": "Who is she?"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u2-hers-v2.mp3",
+      "sha256": "40eeba200538a21046fb5884a0330bf36d4950fd1690544399a3dd4977f7fa2f",
+      "sourceEnglishTranscript": "The blue folder is hers."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u2-badge-v2.mp3",
+      "sha256": "a2548060bb2a3e2b23165641b17132e3dece3d275f1f52707425e93ac02e805c",
+      "sourceEnglishTranscript": "Is this your badge?"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u2-beside-v2.mp3",
+      "sha256": "e285f7f570823feca2b5933a59c19899d63eb8a06135dd8a2dc2d70cb0e76b0d",
+      "sourceEnglishTranscript": "Elena is beside Diego."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u2-owner-v2.mp3",
+      "sha256": "3e5deb5841a48b5bb2de6061f0a98e9823bd87c3bc1451f592fcab8d20be57b0",
+      "sourceEnglishTranscript": "Rosa's folder."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u3-phone-v2.mp3",
+      "sha256": "80e8fb727f266acd7bb4db01af57e1edb8cfe8cafc4da0d7542cf03fbf25d853",
+      "sourceEnglishTranscript": "My phone number is five five five, zero one four two."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u3-email-v2.mp3",
+      "sha256": "9935e08bc2e584eb1cc5231094540dccc3900fffb617e20c76001d87471b9b81",
+      "sourceEnglishTranscript": "My email is elena dot ramos at example dot org."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u3-availability-v2.mp3",
+      "sha256": "ff5c21d194c9154b46705d7246c0a2939770df5d523b3b7a71678e2a0e469bc7",
+      "sourceEnglishTranscript": "When are you free?"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u3-confirm-time-v2.mp3",
+      "sha256": "f73c650841b3800d094e00cc3888c65c92f36e126ce4d11a8ad0d317c17c0d91",
+      "sourceEnglishTranscript": "I'm free on Tuesday at six. That works for me."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u4-repeat-v2.mp3",
+      "sha256": "69b2821acbb00a8432a7ff832d8bacc5abb8e34f0e1ccfe6aa4f3362a79664e1",
+      "sourceEnglishTranscript": "Could you repeat that, please?"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u4-understand-v2.mp3",
+      "sha256": "46f8332151fcd66d34806f55de4be15ae4725198b8c80ee1a5c83b7a28ac5ecd",
+      "sourceEnglishTranscript": "I don't understand."
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u4-clarify-v2.mp3",
+      "sha256": "1673ad4bec275828772bfe7fe917af44c40f1a540e4537953f12b7f190f2f3e7",
+      "sourceEnglishTranscript": "Do you mean this Thursday?"
+    },
+    {
+      "path": "public/audio/a1-module1-pilot/teach-u4-room-v2.mp3",
+      "sha256": "7c228956ba5bc3bbd7aa8d8056668484cb92e70f8fde0c50fbfd827c63f6864a",
+      "sourceEnglishTranscript": "The room is two oh four."
     }
   ]
 }
