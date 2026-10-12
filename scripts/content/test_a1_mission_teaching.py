@@ -210,6 +210,34 @@ class MissionTeachingRevisionTests(unittest.TestCase):
             self.assertEqual(set(guidance), {"self", "teacher"}, block["id"])
             self.assertTrue(all(isinstance(value, str) and value.strip() for value in guidance.values()), block["id"])
 
+    def test_mission_recording_uses_runtime_guidance_without_learning_modes(self) -> None:
+        course = _full_fixture()
+        MODULE.revise_mission(course)
+        recording = _block(_scene(_mission(course), "a1m1-mission-speak"), "a1m1-mission-speak-recording")
+        data = recording["data"]
+
+        self.assertNotIn("learningModes", data)
+        self.assertEqual(set(data["learningModeGuidance"]), {"self", "teacher"})
+        self.assertTrue(all(isinstance(value, str) and value.strip() for value in data["learningModeGuidance"].values()))
+        turns = data["conversationTurns"]
+        self.assertEqual(
+            turns[0]["reviewChecklist"],
+            [
+                "Saluda y dice su nombre.",
+                "Pregunta el nombre y responde Nice to meet you.",
+                "Usa una pregunta y una respuesta comprensibles.",
+            ],
+        )
+        self.assertEqual(
+            turns[1]["reviewChecklist"],
+            [
+                "Comparte un contacto.",
+                "Confirma martes a las seis.",
+                "Confirma que la sala es 204.",
+                "Pide repetición si falta un dato.",
+            ],
+        )
+
     def test_revision_is_idempotent_and_runtime_blockers_are_reported(self) -> None:
         course = _full_fixture()
         MODULE.revise_mission(course)

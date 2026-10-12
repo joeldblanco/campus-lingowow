@@ -44,6 +44,7 @@ interface ConversationTurn {
   question: string
   audioUrl?: string
   answerPrompt?: string
+  reviewChecklist?: string[]
 }
 
 const ACTION_CLASS =
@@ -136,6 +137,10 @@ function normalizeTurns(block: RecordingBlock): ConversationTurn[] {
         question,
         audioUrl,
         answerPrompt: asString(turn.answerPrompt) || asString(turn.followUp),
+        reviewChecklist: (() => {
+          const checklist = getLearningReviewChecklist(turn.reviewChecklist)
+          return checklist.length > 0 ? checklist : undefined
+        })(),
       }
     })
     .filter((turn): turn is ConversationTurn => Boolean(turn))
@@ -404,10 +409,13 @@ function ConversationProduction({
   const selfMode = mode === 'self' && !isTeacher
   const unit1Data = getUnit1Data(block)
   const aiGradingDisabled = block.aiGrading === false || unit1Data.aiGrading === false
-  const reviewChecklist = useMemo(
+  const globalReviewChecklist = useMemo(
     () => getLearningReviewChecklist(unit1Data.reviewChecklist),
     [unit1Data.reviewChecklist]
   )
+  const reviewChecklist = currentTurn?.reviewChecklist?.length
+    ? currentTurn.reviewChecklist
+    : globalReviewChecklist
 
   useRecordingReport(isRecording, onRecordingStateChange)
   useCompletionReport(completed && !isTeacher, onGuidedCompletionChange)

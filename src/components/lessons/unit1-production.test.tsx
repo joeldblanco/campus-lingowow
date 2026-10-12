@@ -336,7 +336,20 @@ describe('Unit 1 conversation production', () => {
           aiGrading: false,
           data: {
             unit1Role: 'conversation',
-            reviewChecklist: ['Escuché mi grabación.', 'Dije el dato nuevo.'],
+            learningRevision: 'course-guided-v1',
+            reviewChecklist: ['Criterio global de respaldo.'],
+            conversationTurns: [
+              {
+                id: 'turn-1',
+                question: 'What is your name?',
+                reviewChecklist: ['Saluda y dice su nombre.', 'Pregunta el nombre y responde Nice to meet you.'],
+              },
+              {
+                id: 'turn-2',
+                question: 'When are you free?',
+                reviewChecklist: ['Comparte un contacto.', 'Confirma martes a las seis.'],
+              },
+            ],
           },
         } as Block}
         guidedActionTarget={target}
@@ -349,17 +362,29 @@ describe('Unit 1 conversation production', () => {
 
     await waitFor(() => expect(screen.getByLabelText('Escuchar tu grabación')).toBeInTheDocument())
     expect(screen.getByText('Revisa tu respuesta')).toBeInTheDocument()
+    expect(screen.getByText('Saluda y dice su nombre.')).toBeInTheDocument()
+    expect(screen.queryByText('Comparte un contacto.')).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Enviar respuesta' })).not.toBeInTheDocument()
 
     const reviewButton = target.querySelector('button') as HTMLButtonElement
     expect(reviewButton).toHaveTextContent('Confirmar revisión')
     expect(reviewButton).toBeDisabled()
-    fireEvent.click(screen.getByLabelText('Escuché mi grabación.'))
-    fireEvent.click(screen.getByLabelText('Dije el dato nuevo.'))
+    fireEvent.click(screen.getByLabelText('Saluda y dice su nombre.'))
+    fireEvent.click(screen.getByLabelText('Pregunta el nombre y responde Nice to meet you.'))
     expect(reviewButton).not.toBeDisabled()
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
 
-    expect(screen.getByText('Turno 2 de 5')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByText('Turno 2 de 2')).toBeInTheDocument())
+    expect(screen.queryByText('Comparte un contacto.')).not.toBeInTheDocument()
+    expect(screen.queryByText('Saluda y dice su nombre.')).not.toBeInTheDocument()
+    expect(target.querySelector('button')).toBeDisabled()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Grabar respuesta' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Detener grabación' })).toBeInTheDocument())
+    fireEvent.click(screen.getByRole('button', { name: 'Detener grabación' }))
+    await waitFor(() => expect(screen.getByLabelText('Escuchar tu grabación')).toBeInTheDocument())
+    expect(screen.getByText('Comparte un contacto.')).toBeInTheDocument()
+    expect(screen.queryByText('Saluda y dice su nombre.')).not.toBeInTheDocument()
     expect(stopTrack).toHaveBeenCalled()
   })
 

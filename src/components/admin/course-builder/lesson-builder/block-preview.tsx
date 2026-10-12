@@ -71,6 +71,7 @@ import {
   isPilotGuidedMatchProfile,
   type GuidedMatchChoice,
 } from '@/lib/guided-match-options'
+import { shuffleGuidedChoices } from '@/lib/shuffle-guided-choices'
 import { EssayAIGrading as EssayAIGradingButton } from '@/components/lessons/essay-ai-grading'
 import { RecordingAIGrading } from '@/components/lessons/recording-ai-grading'
 import { useClassroomSync } from '@/components/classroom/use-classroom-sync'
@@ -157,6 +158,21 @@ const GUIDED_PRIMARY_ACTION_CLASS =
   'min-h-12 rounded-full bg-[#245CFF] px-6 text-base leading-6 text-white hover:bg-[#245CFF]/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
 const GUIDED_SECONDARY_ACTION_CLASS =
   'min-h-11 rounded-full border-[#506187] bg-white px-5 text-base leading-6 text-[#10245C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#10245C] focus-visible:ring-offset-2'
+
+type OrderingItem = OrderingBlock['items'][number]
+
+function isOrderingCorrect(items: readonly OrderingItem[]) {
+  return items.length > 0 && items.every((item, index) => item.correctPosition === index + 1)
+}
+
+/** Keep guided ordering reproducible while ensuring the learner has work to do. */
+export function buildGuidedOrderingItems(items: readonly OrderingItem[], seed: string): OrderingItem[] {
+  const shuffled = shuffleGuidedChoices(items, seed)
+  if (shuffled.length > 1 && isOrderingCorrect(shuffled)) {
+    ;[shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]]
+  }
+  return shuffled
+}
 
 type Unit1ProductionRole = 'sentences' | 'conversation' | 'profile' | 'presentation'
 
@@ -5878,19 +5894,21 @@ function OrderingBlockPreview({
       (!classroom.isInClassroom || !classroom.isTeacher)
   )
   const [items, setItems] = useState(() =>
-    block.items ? (guidedMode ? [...block.items] : [...block.items].sort(() => Math.random() - 0.5)) : []
+    block.items
+      ? (guidedMode ? buildGuidedOrderingItems(block.items, block.id) : [...block.items].sort(() => Math.random() - 0.5))
+      : []
   )
   const [showResultState, setShowResultState] = useState(false)
-  const showResult = !isExamMode && showResultState
-  const isCorrectOrder = items.length > 0 && items.every((item, index) => item.correctPosition === index + 1)
-  const completed = guidedMode && showResult && isCorrectOrder
+  const showResult = !guidedMode && !isExamMode && showResultState
+  const isCorrectOrder = isOrderingCorrect(items)
+  const completed = guidedMode && isCorrectOrder
   const hasGuidedAction = guidedMode && items.length > 0 && !completed
 
-  useGuidedCompletion(guidedMode, completed, showResultState, onGuidedCompletionChange)
+  useGuidedCompletion(guidedMode, completed, items.length > 0, onGuidedCompletionChange)
   useGuidedActionPresence(guidedMode, hasGuidedAction, onGuidedActionPresence)
 
   const moveItem = (index: number, direction: 'up' | 'down') => {
-    if (showResult) return
+    if (showResult || completed) return
     const newItems = [...items]
     const targetIndex = direction === 'up' ? index - 1 : index + 1
     if (targetIndex < 0 || targetIndex >= items.length) return
@@ -5904,7 +5922,13 @@ function OrderingBlockPreview({
   }
 
   const handleReset = () => {
-    setItems(block.items ? [...block.items].sort(() => Math.random() - 0.5) : [])
+    setItems(
+      block.items
+        ? (guidedMode
+          ? buildGuidedOrderingItems(block.items, block.id)
+          : [...block.items].sort(() => Math.random() - 0.5))
+        : []
+    )
     setShowResultState(false)
   }
 
@@ -5924,44 +5948,60 @@ function OrderingBlockPreview({
       size="sm"
       className={guidedMode ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
     >
-      Reintentar
+      {guidedMode ? 'Reiniciar orden' : 'Reintentar'}
     </Button>
   )
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+      <div className={cn(
+        'flex items-center gap-2 font-semibold text-sm',
+        guidedMode ? 'text-[#10245C]' : 'text-primary'
+      )}>
         <LucideIcons.ArrowUpDown className="h-5 w-5" />
         <span>Ordenar</span>
       </div>
 
       {block.title && <h3 className="font-bold text-lg">{block.title}</h3>}
-      {block.instruction && <p className="text-muted-foreground">{block.instruction}</p>}
+      {block.instruction && <p className={guidedMode ? 'text-[#506187]' : 'text-muted-foreground'}>{block.instruction}</p>}
 
       <div className="space-y-2">
         {items.map((item, index) => {
-          const isCorrectPosition = showResult && item.correctPosition === index + 1
+          const isCorrectPosition = (showResult || completed) && item.correctPosition === index + 1
 
           return (
             <div
               key={item.id}
+              data-testid="guided-ordering-item"
+              data-guided-ordering-item={item.id}
               className={cn(
-                'p-3 border rounded-lg flex items-center gap-3 transition-all',
-                showResult
-                  ? isCorrectPosition
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-red-500 bg-red-50'
-                  : 'border-gray-200 bg-white'
+                guidedMode
+                  ? 'min-h-14 rounded-2xl border bg-white p-3 text-[#10245C] transition-all'
+                  : 'p-3 border rounded-lg flex items-center gap-3 transition-all',
+                guidedMode
+                  ? completed
+                    ? 'border-[#08775E] bg-[#F2FBF7]'
+                    : 'border-[#506187]/30'
+                  : showResult
+                    ? isCorrectPosition
+                      ? 'border-green-500 bg-green-50'
+                      : 'border-red-500 bg-red-50'
+                    : 'border-gray-200 bg-white'
               )}
             >
-              <span className="font-bold text-muted-foreground w-6">{index + 1}.</span>
+              <span className={cn(
+                'w-6 font-bold',
+                guidedMode ? 'text-[#506187]' : 'text-muted-foreground'
+              )}>{index + 1}.</span>
               <span className="flex-1">{item.text}</span>
-              {!showResult && (
+              {!showResult && !completed && (
                 <div className="flex flex-col gap-1">
                   <Button
-                    variant="ghost"
+                    variant={guidedMode ? 'outline' : 'ghost'}
                     size="icon"
-                    className="h-6 w-6"
+                    className={guidedMode
+                      ? 'min-h-11 min-w-11 rounded-full border-[#506187]/40 bg-white p-0 text-[#10245C] hover:border-[#245CFF] hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#245CFF]'
+                      : 'h-6 w-6'}
                     onClick={() => moveItem(index, 'up')}
                     disabled={index === 0}
                     aria-label={`Subir ${item.text}`}
@@ -5969,9 +6009,11 @@ function OrderingBlockPreview({
                     <LucideIcons.ChevronUp className="h-4 w-4" />
                   </Button>
                   <Button
-                    variant="ghost"
+                    variant={guidedMode ? 'outline' : 'ghost'}
                     size="icon"
-                    className="h-6 w-6"
+                    className={guidedMode
+                      ? 'min-h-11 min-w-11 rounded-full border-[#506187]/40 bg-white p-0 text-[#10245C] hover:border-[#245CFF] hover:bg-[#EEE8FA] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#245CFF]'
+                      : 'h-6 w-6'}
                     onClick={() => moveItem(index, 'down')}
                     disabled={index === items.length - 1}
                     aria-label={`Bajar ${item.text}`}
@@ -5980,9 +6022,9 @@ function OrderingBlockPreview({
                   </Button>
                 </div>
               )}
-              {showResult &&
+              {(showResult || completed) &&
                 (isCorrectPosition ? (
-                  <CheckCircle2 className="h-5 w-5 text-green-500" />
+                  <CheckCircle2 className={cn('h-5 w-5', guidedMode ? 'text-[#08775E]' : 'text-green-500')} />
                 ) : (
                   <LucideIcons.X className="h-5 w-5 text-red-500" />
                 ))}
@@ -5991,24 +6033,21 @@ function OrderingBlockPreview({
         })}
       </div>
 
-      {guidedMode && showResult && (
+      {guidedMode && completed && (
         <p
           role="status"
           aria-live="polite"
-          className={cn(
-            'text-base leading-6',
-            completed ? 'text-[#08775E]' : 'text-[#C13E50]'
-          )}
+          className="text-base leading-6 text-[#08775E]"
         >
-          {completed ? '¡Correcto!' : 'Todavía no. Revisa el orden y vuelve a intentarlo.'}
+          ¡Correcto!
         </p>
       )}
 
       {guidedMode ? (
         <div className="flex gap-2">
           {!completed && (guidedActionTarget
-            ? renderGuidedAction(showResult ? retryAction : checkAction, guidedMode, guidedActionTarget)
-            : showResult ? retryAction : checkAction)}
+            ? renderGuidedAction(retryAction, guidedMode, guidedActionTarget)
+            : retryAction)}
         </div>
       ) : !isExamMode && (
         <div className="flex gap-2">

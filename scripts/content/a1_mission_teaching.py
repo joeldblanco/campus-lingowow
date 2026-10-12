@@ -361,10 +361,6 @@ def _revise_speaking(scene: dict[str, Any], model_scene: dict[str, Any]) -> None
     recording_data.update(
         {
             "originalEnglishModel": MISSION_MODEL,
-            "learningModes": {
-                "individual": "Ensaya ambas voces con la hoja común visible y confirma cada criterio al terminar.",
-                "teacher": "La docente acompaña una ronda y revisa el significado; su guía complementa el ensayo.",
-            },
             "learningModeGuidance": {
                 "self": "Ensaya ambas voces con la hoja común visible y confirma cada criterio al terminar.",
                 "teacher": "La docente acompaña una ronda y revisa el significado; su guía complementa el ensayo.",
@@ -380,6 +376,7 @@ def _revise_speaking(scene: dict[str, Any], model_scene: dict[str, Any]) -> None
             "autonomyMode": "rehearsal-common-sheet",
         }
     )
+    recording_data.pop("learningModes", None)
     recording_data.pop("roleCardRevealMode", None)
     recording_data.pop("roleCardRuntimeStatus", None)
     recording_data["conversationTurns"] = [
@@ -387,11 +384,22 @@ def _revise_speaking(scene: dict[str, Any], model_scene: dict[str, Any]) -> None
             "id": "a1m1-mission-turn-1",
             "question": "What’s your name?",
             "answerPrompt": "Say Hi, I’m Ana. Ask the name and say Nice to meet you.",
+            "reviewChecklist": [
+                "Saluda y dice su nombre.",
+                "Pregunta el nombre y responde Nice to meet you.",
+                "Usa una pregunta y una respuesta comprensibles.",
+            ],
         },
         {
             "id": "a1m1-mission-turn-2",
             "question": "When are you free?",
             "answerPrompt": "Use the common sheet: give Tuesday at six, room 204 and one contact. Ask for repetition if needed.",
+            "reviewChecklist": [
+                "Comparte un contacto.",
+                "Confirma martes a las seis.",
+                "Confirma que la sala es 204.",
+                "Pide repetición si falta un dato.",
+            ],
         },
     ]
 
@@ -524,6 +532,8 @@ def _assert_mission_invariants(mission: dict[str, Any]) -> None:
         for block in blocks:
             if block.get("type") not in {"essay", "recording"}:
                 continue
+            if block.get("type") == "recording" and "learningModes" in _data(block):
+                raise AssertionError(f"Mission recording must use self/teacher learningModeGuidance only in {scene['id']}")
             guidance = _data(block).get("learningModeGuidance")
             if not isinstance(guidance, dict) or set(guidance) != {"self", "teacher"}:
                 raise AssertionError(f"Mission production needs self/teacher learningModeGuidance in {scene['id']}")

@@ -21,27 +21,65 @@ vi.mock('@/components/admin/course-builder/lesson-builder/block-preview', () => 
     onGuidedActionPresence?: (present: boolean) => void
     onGuidedCompletionChange?: (completed: boolean) => void
   }) => {
-    const [checked, setChecked] = useState(false)
+    const [items, setItems] = useState(() => {
+      if (block.type !== 'ordering') return []
+      return [block.items[1], block.items[0], block.items[2]]
+    })
+    const completed = block.type === 'ordering' && items.length > 0 && items.every((item, index) => item.correctPosition === index + 1)
 
     useEffect(() => {
       if (block.type !== 'ordering') return
-      onGuidedActionPresence?.(!checked)
-      onGuidedCompletionChange?.(checked)
+      onGuidedActionPresence?.(!completed)
+      onGuidedCompletionChange?.(completed)
       return () => onGuidedActionPresence?.(false)
-    }, [block.type, checked, onGuidedActionPresence, onGuidedCompletionChange])
+    }, [block.type, completed, onGuidedActionPresence, onGuidedCompletionChange])
 
     if (block.type !== 'ordering') return <p>Next scene</p>
-
-    const action = !checked ? (
-      <button type="button" onClick={() => setChecked(true)}>
-        Comprobar
-      </button>
-    ) : null
 
     return (
       <>
         <p>Ordering block</p>
-        {action && (guidedActionTarget ? createPortal(action, guidedActionTarget) : action)}
+        {items.map((item, index) => (
+          <div key={item.id} data-testid="viewer-ordering-item" data-viewer-ordering-item={item.id}>
+            <span>{item.text}</span>
+            {!completed && <>
+              <button
+                type="button"
+                onClick={() => {
+                  if (index === 0) return
+                  setItems((current) => {
+                    const next = [...current]
+                    ;[next[index - 1], next[index]] = [next[index], next[index - 1]]
+                    return next
+                  })
+                }}
+                disabled={index === 0}
+                aria-label={`Subir ${item.text}`}
+              >
+                Subir
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (index === items.length - 1) return
+                  setItems((current) => {
+                    const next = [...current]
+                    ;[next[index], next[index + 1]] = [next[index + 1], next[index]]
+                    return next
+                  })
+                }}
+                disabled={index === items.length - 1}
+                aria-label={`Bajar ${item.text}`}
+              >
+                Bajar
+              </button>
+            </>}
+          </div>
+        ))}
+        {!completed && (() => {
+          const action = <button type="button">Reiniciar orden</button>
+          return guidedActionTarget ? createPortal(action, guidedActionTarget) : action
+        })()}
       </>
     )
   },
@@ -64,14 +102,18 @@ describe('GuidedLessonViewer ordering activity', () => {
     sessionStorage.clear()
   })
 
-  it('keeps the next-scene action hidden until ordering reports completion', async () => {
+  it('does not auto-pass the initial shuffled order and advances after the last move', async () => {
     const blocks: Block[] = [
       authoredBlock(
         {
           id: 'ordering',
           type: 'ordering',
           order: 0,
-          items: [{ id: 'one', text: 'One', correctPosition: 1 }],
+          items: [
+            { id: 'one', text: 'One', correctPosition: 1 },
+            { id: 'two', text: 'Two', correctPosition: 2 },
+            { id: 'three', text: 'Three', correctPosition: 3 },
+          ],
         },
         'ordering-scene'
       ),
@@ -94,10 +136,11 @@ describe('GuidedLessonViewer ordering activity', () => {
       />
     )
 
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Comprobar' })).toBeInTheDocument())
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Bajar Two' })).toBeInTheDocument())
     expect(screen.queryByRole('button', { name: 'Continuar' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Comprobar' })).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Comprobar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Bajar Two' }))
     await waitFor(() => expect(screen.getByRole('button', { name: 'Continuar' })).toBeInTheDocument())
   })
 })
