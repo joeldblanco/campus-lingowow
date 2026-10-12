@@ -27,7 +27,7 @@ ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL NEXT_PUBLIC_DOMAIN=$NEXT_PUBLIC_DOM
 ARG SOURCE_COMMIT
 # Build placeholders never authorize calls to external services. Real secrets
 # are supplied to the running container, not copied into the build context.
-RUN DATABASE_URL=postgresql://build:build@localhost:5432/build RESEND_API_KEY=re_build PAYPAL_CLIENT_ID=build PAYPAL_CLIENT_SECRET=build GEMINI_API_KEY=build node --max-old-space-size=6144 node_modules/next/dist/bin/next build
+RUN DATABASE_URL=postgresql://build:build@localhost:5432/build RESEND_API_KEY=re_build PAYPAL_CLIENT_ID=build PAYPAL_CLIENT_SECRET=build GEMINI_API_KEY=build node scripts/build-with-heartbeat.cjs
 
 FROM base AS runner
 RUN apt-get update && apt-get install -y --no-install-recommends curl libnspr4 libnss3 libasound2 libexpat1 && rm -rf /var/lib/apt/lists/*
