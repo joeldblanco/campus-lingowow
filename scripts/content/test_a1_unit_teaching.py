@@ -240,7 +240,9 @@ class A1UnitTeachingTests(unittest.TestCase):
 
         after_ids = {block["id"] for lesson in full["lessons"] for block in lesson["blocks"]}
         self.assertTrue(before_ids <= after_ids)
-        self.assertEqual(len(after_ids), len(before_ids) + 16)
+        # Each unit receives two micro-scenes (3 + 4 blocks), one transfer
+        # card, and nine local demand-support blocks: 17 new blocks/unit.
+        self.assertEqual(len(after_ids), len(before_ids) + 68)
         self.assertEqual(
             before_questions,
             {
@@ -262,26 +264,102 @@ class A1UnitTeachingTests(unittest.TestCase):
 
         for unit in range(1, 5):
             lesson = next(item for item in full["lessons"] if item["id"] == f"a1-general-u{unit}")
-            self.assertEqual(lesson["sceneCount"], 11)
+            self.assertEqual(lesson["sceneCount"], 13)
             self.assertEqual(
                 [block["id"] for scene in lesson["scenes"] for block in scene["runtimeBlocks"]],
                 [block["id"] for block in lesson["blocks"]],
             )
             teach = next(scene for scene in lesson["scenes"] if scene["phase"] == "unit-teach")
-            vocab = next(block for block in teach["runtimeBlocks"] if block["type"] == "vocabulary")
+            self.assertFalse(
+                any(
+                    block["id"].startswith((
+                        f"a1teach-u{unit}-pronunciation-v2",
+                        f"a1teach-u{unit}-grammar-v2",
+                        f"a1teach-u{unit}-substitution-v2",
+                    ))
+                    for block in teach["runtimeBlocks"]
+                )
+            )
+            sounds = next(scene for scene in lesson["scenes"] if scene["phase"] == "unit-teach-pronunciation")
+            patterns = next(scene for scene in lesson["scenes"] if scene["phase"] == "unit-teach-patterns")
+            self.assertEqual(
+                [scene["phase"] for scene in lesson["scenes"][:3]],
+                ["unit-teach", "unit-teach-pronunciation", "unit-teach-patterns"],
+            )
+            vocab = next(block for block in sounds["runtimeBlocks"] if block["type"] == "vocabulary")
             self.assertEqual(vocab["data"]["teachingPresentation"], "pronunciation")
+            self.assertEqual(vocab["data"]["pronunciationSource"], "synthetic-teaching-v2")
+            self.assertNotIn("audioSource", vocab["data"])
             self.assertEqual(len(vocab["items"]), 4)
+            self.assertTrue(
+                all(set(item) == {"id", "term", "definition", "audioUrl"} for item in vocab["items"])
+            )
             self.assertTrue(all(item["audioUrl"].startswith("/audio/a1-module1-pilot/teach-u") for item in vocab["items"]))
-            self.assertTrue(any(block["id"] == f"a1teach-u{unit}-grammar-v2" for block in teach["runtimeBlocks"]))
-            self.assertTrue(any(block["id"] == f"a1teach-u{unit}-substitution-v2" for block in teach["runtimeBlocks"]))
+            grammar = next(block for block in patterns["runtimeBlocks"] if block["id"] == f"a1teach-u{unit}-grammar-v2")
+            substitution = next(block for block in patterns["runtimeBlocks"] if block["id"] == f"a1teach-u{unit}-substitution-v2")
+            self.assertEqual(grammar["data"]["pilotSceneId"], patterns["id"])
+            self.assertEqual(substitution["data"]["pilotSceneId"], patterns["id"])
+            self.assertEqual(grammar["data"]["sourceTeachingToDemand"][0]["demandSceneIds"], [
+                scene["id"] for scene in lesson["scenes"]
+                if scene["phase"] in {"listening-check", "comprehension", "practice", "transfer-speaking", "transfer-writing"}
+            ])
             transfer = next(scene for scene in lesson["scenes"] if scene["phase"] == "transfer-speaking")
             cards = next(block for block in transfer["runtimeBlocks"] if block["id"] == f"a1teach-u{unit}-transfer-cards-v2")
             self.assertEqual(cards["data"]["pairedProductionBlockId"], f"a1m1-u{unit}-transfer-speak-recording")
+            self.assertEqual(cards["data"]["pilotSceneId"], transfer["id"])
+            self.assertEqual(cards["content"]["headers"], ["Tarjeta", "Datos nuevos", "Patrón opcional"])
+            self.assertTrue(all(len(row) == 3 and "___" in row[2] for row in cards["content"]["rows"]))
+            self.assertFalse(any("Hi, I'm Marta" in cell for row in cards["content"]["rows"] for cell in row))
+            transfer_text = next(
+                block["content"] for block in transfer["runtimeBlocks"] if block["id"].endswith("-prompt")
+            )
+            recording_prompt = next(
+                block["prompt"] for block in transfer["runtimeBlocks"] if block["id"].endswith("-recording")
+            )
+            self.assertIn("tarjeta nueva", transfer_text.casefold())
+            self.assertIn("tarjeta nueva", recording_prompt.casefold())
+            self.assertNotIn("Ana", transfer_text)
+            self.assertNotIn("Ana", recording_prompt)
+            demand_phases = {"listening-check", "comprehension", "practice", "transfer-speaking", "transfer-writing"}
+            demand_scenes = [scene for scene in lesson["scenes"] if scene["phase"] in demand_phases]
+            self.assertEqual(len(demand_scenes), 9)
+            for demand in demand_scenes:
+                support = [
+                    block for block in demand["runtimeBlocks"]
+                    if block["id"].startswith(f"a1teach-u{unit}-support-")
+                ]
+                self.assertEqual(len(support), 1, demand["id"])
+                support_data = support[0]["data"]
+                self.assertTrue(support_data["collapsible"])
+                self.assertFalse(support_data["answerRevealing"])
+                self.assertEqual(support_data["localSupportForSceneId"], demand["id"])
+                self.assertEqual(support_data["pilotSceneId"], demand["id"])
             self.assertLessEqual(teach["interactiveCount"], 1)
 
         self.assertEqual(full["sourceAudit"]["teachingRevision"], TEACHING.TEACHING_REVISION)
         self.assertEqual(set(full["sourceAudit"]["teachingSourceToDemand"]), {f"a1-general-u{i}" for i in range(1, 5)})
         self.assertIn("a1m1-u1-practice-1", full["sourceAudit"]["teachingSourceToDemand"]["a1-general-u1"]["demandSceneIds"])
+
+    def test_forms_and_context_are_visible_before_their_demands(self) -> None:
+        full = _fixture()
+        TEACHING.revise_units(full)
+
+        u1 = next(item for item in full["lessons"] if item["id"] == "a1-general-u1")
+        u1_patterns = next(scene for scene in u1["scenes"] if scene["phase"] == "unit-teach-patterns")
+        u1_grammar = next(block for block in u1_patterns["runtimeBlocks"] if block["id"] == "a1teach-u1-grammar-v2")
+        u1_rows = u1_grammar["content"]["rows"]
+        self.assertTrue(any("I'm = I am" in row[0] and "I am Ana" in row[2] for row in u1_rows))
+
+        u2 = next(item for item in full["lessons"] if item["id"] == "a1-general-u2")
+        u2_teach = next(scene for scene in u2["scenes"] if scene["phase"] == "unit-teach")
+        u2_model = next(block for block in u2_teach["runtimeBlocks"] if block["id"].endswith("-teach-text"))
+        self.assertIn("Who is she?", u2_model["content"])
+        self.assertIn("manager Ana", u2_model["content"])
+        u2_patterns = next(scene for scene in u2["scenes"] if scene["phase"] == "unit-teach-patterns")
+        u2_grammar = next(block for block in u2_patterns["runtimeBlocks"] if block["id"] == "a1teach-u2-grammar-v2")
+        u2_rows = u2_grammar["content"]["rows"]
+        self.assertTrue(any("These are" in row[0] and "plural" in row[1] for row in u2_rows))
+        self.assertTrue(any("my / your / his / her / our / their" in row[0] for row in u2_rows))
 
     def test_visible_model_is_shorter_and_revision_is_idempotent(self) -> None:
         full = _fixture()
