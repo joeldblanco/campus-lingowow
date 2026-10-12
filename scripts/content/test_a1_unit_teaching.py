@@ -261,12 +261,12 @@ def _fixture() -> dict[str, Any]:
 class A1UnitTeachingTests(unittest.TestCase):
     def test_audio_specs_are_namespaced_and_within_limit(self) -> None:
         specs = TEACHING.unit_audio_specs()
-        self.assertEqual(len(specs), 16)
+        self.assertEqual(len(specs), 18)
         self.assertEqual(len({item["filename"] for item in specs}), len(specs))
         for unit in range(1, 5):
             unit_specs = [item for item in specs if item["filename"].startswith(f"teach-u{unit}-")]
             self.assertLessEqual(len(unit_specs), 8)
-            self.assertEqual(len(unit_specs), 4)
+            self.assertEqual(len(unit_specs), 6 if unit == 2 else 4)
             for item in unit_specs:
                 self.assertRegex(item["filename"], rf"teach-u{unit}-.+-v2\.mp3")
                 self.assertTrue(item["text"])
@@ -346,7 +346,7 @@ class A1UnitTeachingTests(unittest.TestCase):
             self.assertEqual(vocab["data"]["teachingPresentation"], "pronunciation")
             self.assertEqual(vocab["data"]["pronunciationSource"], "synthetic-teaching-v2")
             self.assertNotIn("audioSource", vocab["data"])
-            self.assertEqual(len(vocab["items"]), 4)
+            self.assertEqual(len(vocab["items"]), 6 if unit == 2 else 4)
             self.assertTrue(
                 all(set(item) == {"id", "term", "definition", "audioUrl"} for item in vocab["items"])
             )
@@ -399,13 +399,16 @@ class A1UnitTeachingTests(unittest.TestCase):
                 block["content"] for block in writing["runtimeBlocks"] if block["id"].endswith("-prompt")
             )
             essay = next(block for block in writing["runtimeBlocks"] if block["type"] == "essay")
-            self.assertIn("tarjetas de esta escena", writing_text)
+            self.assertIn("tarjeta visible aquí", writing_text)
             self.assertLess(
                 [block["id"] for block in writing["runtimeBlocks"]].index(writing_cards["id"]),
                 [block["id"] for block in writing["runtimeBlocks"]].index(essay["id"]),
             )
             self.assertEqual(essay["data"]["transferCardsBlockId"], writing_cards["id"])
-            self.assertEqual(essay["data"]["learningModes"], TEACHING._transfer_learning_modes(TEACHING._transfer_card_data(TEACHING._PLANS[unit])))
+            self.assertTrue(essay['data']['promptPresentedSeparately'])
+            self.assertIn('tarjeta', essay['data']['learningModes']['individual'])
+            self.assertLess(len(essay['data']['learningModes']['individual'].split()), 15)
+            self.assertEqual(essay['data']['transferCardsBlockId'], writing_cards['id'])
             self.assertEqual(essay["data"]["reviewChecklist"], TEACHING._TRANSFER_CHECKLISTS[unit])
             self.assertNotIn("Ana", essay["data"]["learningModes"]["individual"])
             self.assertNotIn("Lima", essay["data"]["learningModes"]["individual"])
@@ -474,12 +477,14 @@ class A1UnitTeachingTests(unittest.TestCase):
         u2_teach = next(scene for scene in u2["scenes"] if scene["phase"] == "unit-teach")
         u2_model = next(block for block in u2_teach["runtimeBlocks"] if block["id"].endswith("-teach-text"))
         self.assertIn("Who is she?", u2_model["content"])
-        self.assertIn("manager Ana", u2_model["content"])
+        self.assertIn("manager Elena", u2_model["content"])
         u2_patterns = next(scene for scene in u2["scenes"] if scene["phase"] == "unit-teach-patterns")
         u2_grammar = next(block for block in u2_patterns["runtimeBlocks"] if block["id"] == "a1teach-u2-grammar-v2")
         u2_rows = u2_grammar["content"]["rows"]
         self.assertTrue(any("These are" in row[0] and "plural" in row[1] for row in u2_rows))
-        self.assertTrue(any("my / your / his / her / our / their" in row[0] for row in u2_rows))
+        self.assertTrue(any('my / your' in row[0] and 'mi / tu' in row[1] for row in u2_rows))
+        self.assertTrue(any('his / her' in row[0] and 'de él / de ella' in row[1] for row in u2_rows))
+        self.assertTrue(any('our / their' in row[0] and 'nuestro / de ellos' in row[1] for row in u2_rows))
 
     def test_visible_model_is_shorter_and_revision_is_idempotent(self) -> None:
         full = _fixture()

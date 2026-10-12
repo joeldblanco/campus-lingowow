@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import html
 import hashlib
+import importlib.util
 import json
 import re
 from copy import deepcopy
@@ -3120,6 +3121,26 @@ def build_artifacts(
     full = _build_full_course(early_path, blueprint_path, mapping_path)
     if audio_manifest_path is not None:
         _integrate_verified_audio(full, audio_manifest_path)
+        for filename, function in (
+            ("a1_starter_teaching.py", "revise_starter"),
+            ("a1_unit_teaching.py", "revise_units"),
+            ("a1_mission_teaching.py", "revise_mission"),
+        ):
+            spec = importlib.util.spec_from_file_location(filename.removesuffix(".py"), Path(__file__).with_name(filename))
+            assert spec and spec.loader
+            revision = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(revision)
+            getattr(revision, function)(full)
+        for lesson in full['lessons']:
+            for scene in lesson['scenes']:
+                for block in scene['runtimeBlocks']:
+                    block.setdefault('data', {})['teachingRevision'] = 'a1-teaching-v2'
+        full["backgroundAssignment"] = _assign_all_lesson_backgrounds(full["lessons"])
+        for lesson in full["lessons"]:
+            full["visualAcceptanceManifest"]["lessonSceneMapping"][lesson["id"]].update({
+                "sceneCount": lesson["sceneCount"],
+                "sceneAssets": next(item["scenes"] for item in full["backgroundAssignment"]["lessons"] if item["lessonId"] == lesson["id"]),
+            })
     return _primary_course(full), _manifest_from_full(full)
 
 

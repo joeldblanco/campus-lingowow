@@ -356,6 +356,8 @@ describe('Unit 1 conversation production', () => {
       />
     )
 
+    expect(target.querySelector('button')).toHaveTextContent('Confirmar revisión')
+    expect(target.querySelector('button')).toBeDisabled()
     fireEvent.click(screen.getByRole('button', { name: 'Grabar respuesta' }))
     await waitFor(() => expect(screen.getByRole('button', { name: 'Detener grabación' })).toBeInTheDocument())
     fireEvent.click(screen.getByRole('button', { name: 'Detener grabación' }))

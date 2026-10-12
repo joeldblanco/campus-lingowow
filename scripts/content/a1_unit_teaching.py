@@ -114,6 +114,8 @@ _AUDIO_SPECS: dict[int, tuple[dict[str, str], ...]] = {
             "text": "Is this your badge?",
             "sourceRef": "module1.unit2.teaching.pronunciation.4",
         },
+        {"filename": "teach-u2-beside-v2.mp3", "text": "Elena is beside Diego.", "sourceRef": "module1.unit2.teaching.pronunciation.5"},
+        {"filename": "teach-u2-owner-v2.mp3", "text": "Rosa's folder.", "sourceRef": "module1.unit2.teaching.pronunciation.6"},
     ),
     3: (
         {
@@ -203,16 +205,19 @@ _PLANS: dict[int, dict[str, Any]] = {
     2: {
         "sceneInstruction": "Mira quién o qué es, escucha una frase y cambia un referente.",
         "model": (
-            ("A", "This is my colleague Diego. Ana is beside him."),
+            ("A", "This is my colleague Diego. Elena is beside him."),
             ("B", "Who is she?"),
-            ("A", "That is our manager Ana. The blue folder is hers."),
+            ("A", "That is our manager Elena. The blue folder is hers."),
             ("B", "Is this your badge?"),
+            ("A", "Yes, it is. The red folder is mine."),
         ),
-        "meaning": "Señala personas u objetos y confirma de quién son; Ana es la manager.",
+        "meaning": "Señala personas u objetos y confirma de quién son; Elena es la encargada.",
         "change": "Cambia la persona, el objeto o la relación; no cambies toda la frase.",
         "languageRows": [
             ["This is my colleague.", "Este es mi compañero."],
             ["Who is she?", "¿Quién es ella?"],
+            ["Elena is beside Diego.", "Elena está al lado de Diego; beside significa al lado de."],
+            ["Rosa's folder.", "La carpeta de Rosa; nombre + 's indica de quién es."],
             ["That is our manager.", "Esa es nuestra encargada."],
             ["The blue folder is hers.", "La carpeta azul es suya."],
             ["The red folder is mine.", "La carpeta roja es mía."],
@@ -223,7 +228,9 @@ _PLANS: dict[int, dict[str, Any]] = {
         "grammarRows": [
             ["This is / That is + uno", "Identifica una persona u objeto (singular).", "This is my colleague."],
             ["These are / Those are + dos o más", "Identifica personas u objetos (plural).", "These are my folders."],
-            ["my / your / his / her / our / their", "Marca de quién es algo.", "That is our manager."],
+            ["my / your + objeto", "mi / tu; señala a quien habla o escucha.", "my folder / your badge"],
+            ["his / her + objeto", "de él / de ella.", "his folder / her folder"],
+            ["our / their + objeto", "nuestro / de ellos.", "our manager / their folders"],
             ["hers / mine", "Sustituye el nombre del dueño.", "The folder is hers / mine."],
         ],
         "substitutionRows": [
@@ -244,7 +251,8 @@ _PLANS: dict[int, dict[str, Any]] = {
             ("A", "My phone number is 555-0142."),
             ("B", "My email is elena dot ramos at example dot org."),
             ("A", "When are you free?"),
-            ("B", "I'm free on Tuesday at six. That works for me."),
+            ("B", "I'm free on Tuesday at six."),
+            ("A", "That works for me."),
         ),
         "meaning": "Comparte un contacto, pregunta disponibilidad y acepta una hora.",
         "change": "Cambia el dato de contacto y después el día o la hora; usa on + día y at + hora.",
@@ -277,8 +285,9 @@ _PLANS: dict[int, dict[str, Any]] = {
         "model": (
             ("A", "The appointment is on Thursday."),
             ("B", "I don't understand. Could you repeat that, please?"),
-            ("A", "Do you mean this Thursday?"),
-            ("B", "Yes, this Thursday. The room is two oh four."),
+            ("A", "On Thursday."),
+            ("B", "Do you mean this Thursday?"),
+            ("A", "Yes, this Thursday. The room is two oh four."),
         ),
         "meaning": "Pide ayuda cuando falta un dato, aclara y confirma sin inventar.",
         "change": "Cambia solo el día o la sala; conserva la secuencia de reparación.",
@@ -367,25 +376,25 @@ _TRANSFER_CHECKLISTS: dict[int, list[str]] = {
         "Incluye el nombre de la tarjeta elegida.",
         "Incluye los datos de lugar que aparecen en esa tarjeta.",
         "Usa I'm = I am para presentarte.",
-        "Comprueba que la otra persona entendió los datos.",
+        "Verifiqué que el mensaje coincide con la tarjeta.",
     ],
     2: [
         "Identifica la persona u objeto de la tarjeta.",
         "Distingue uno de varios cuando corresponda.",
         "Indica la relación o pertenencia con un posesivo.",
-        "Comprueba que la otra persona entendió el referente.",
+        "Verifiqué que el mensaje coincide con la tarjeta.",
     ],
     3: [
         "Incluye los datos de contacto u horario de la tarjeta elegida.",
         "Usa on para el día y at para la hora cuando aparecen.",
         "Confirma si la propuesta funciona.",
-        "Comprueba que la otra persona entendió los datos.",
+        "Verifiqué que el mensaje coincide con la tarjeta.",
     ],
     4: [
         "Pide repetición si falta un dato.",
         "Aclara el día que aparece en la tarjeta.",
         "Confirma la sala o el día sin inventar datos.",
-        "Comprueba que la otra persona entendió la versión final.",
+        "Verifiqué que el mensaje coincide con la tarjeta.",
     ],
 }
 
@@ -394,7 +403,7 @@ def unit_audio_specs() -> list[dict[str, str]]:
     """Return the synthetic pronunciation clip hand-off for U1–U4.
 
     The returned objects are copies so a renderer cannot mutate the module's
-    source data.  There are four clips per unit, safely below the eight-clip
+    source data.  There are four to six clips per unit, below the eight-clip
     limit, and every filename is namespaced as a teaching v2 asset.
     """
 
@@ -993,9 +1002,6 @@ def _rewrite_transfer_prompt(
         if block_id.endswith("-prompt") and block.get("type") == "text":
             block["content"] = (
                 "<p><strong>Consigna:</strong> Elige una tarjeta visible aquí y escribe 2–4 frases con sus datos.</p>"
-                "<p>Consulta las tarjetas de esta escena; completa los huecos del patrón opcional si te ayuda.</p>"
-                "<details><summary>Ver patrón opcional</summary>"
-                "<p>Completa los huecos del patrón de la tarjeta; no copies el modelo original.</p></details>"
                 "<details><summary>Guía docente</summary>"
                 "<p>Revisa significado, datos y una forma útil; no hay calificación automática.</p></details>"
             )
@@ -1014,7 +1020,11 @@ def _rewrite_transfer_prompt(
                 "Escribe 2–4 frases en inglés con los datos de una tarjeta visible en esta escena. "
                 "Incluye una comprobación o reparación breve si la necesitas."
             )
-            data["learningModes"] = deepcopy(learning_modes)
+            data["learningModes"] = {
+                "individual": "Usa una tarjeta; escribe y después revisa tu mensaje.",
+                "teacher": "Tu profesora cambia un dato de la tarjeta y revisa tu mensaje.",
+            }
+            data["promptPresentedSeparately"] = True
             data["reviewChecklist"] = deepcopy(checklist)
             data["transferCard"] = deepcopy(transfer_card)
             data["transferCardsBlockId"] = writing_card_id
@@ -1353,7 +1363,7 @@ def _document_revision(full: dict[str, Any], mappings: dict[str, dict[str, Any]]
     guidance["localDemandSupport"] = "Each listening-check, comprehension, practice, and transfer scene carries its own collapsed support block."
     guidance["transcriptAccess"] = "Unit listening transcripts remain available as optional practice support; questions invite a first attempt without blocking consultation."
     guidance["teachingPresentation"] = {
-        "pronunciation": "vocabulary items carry an audioUrl; the parent renderer owns playback",
+        "pronunciation": "vocabulary items carry a verified pronunciation asset; the parent renderer owns playback",
         "support": "collapsed visible support keeps the autonomous route recoverable",
         "production": "new transfer cards sit beside the existing production control",
     }

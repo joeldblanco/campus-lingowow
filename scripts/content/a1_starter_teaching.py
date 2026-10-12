@@ -1330,7 +1330,7 @@ def _mark_optional_alphabet_audio(lesson: dict[str, Any]) -> None:
             support_data.update(
                 {
                     "optionalAlphabetReference": True,
-                    "supportLabel": "Consulta opcional del alfabeto completo",
+                    "supportLabel": "Ver todas las letras",
                     "supportPurpose": "Consulta una letra nueva solo cuando la necesites; practica primero el grupo breve.",
                     "teachingRevision": _TEACHING_REVISION,
                 }
@@ -1345,13 +1345,13 @@ def _mark_optional_alphabet_audio(lesson: dict[str, Any]) -> None:
             data.update(
                 {
                     "optionalAlphabetReference": True,
-                    "supportLabel": "Consultar el alfabeto completo si un nombre nuevo lo necesita",
+                    "supportLabel": "Escuchar el alfabeto completo",
                     "supportPurpose": "Consulta opcional; primero trabaja las letras del grupo breve.",
                     "pronunciationSource": "original-audio",
                     "teachingRevision": _TEACHING_REVISION,
                 }
             )
-            block["prompt"] = "Consulta opcional: escucha el alfabeto completo si lo necesitas."
+            block["prompt"] = "Voz sintética. Escucha el alfabeto completo si lo necesitas."
             block["title"] = "Consulta opcional del alfabeto completo"
 
 
@@ -1504,6 +1504,26 @@ def revise_starter(full: dict[str, Any]) -> None:
     _ensure_transfer_scene(lesson)
     _mark_optional_alphabet_audio(lesson)
     _annotate_materials(lesson)
+    for scene in lesson.get('scenes', []):
+        if not isinstance(scene, dict):
+            continue
+        scene['title'] = str(scene.get('title', '')).replace('Escucha inicial con lectura del docente', 'Escucha una presentación')
+        for block in _runtime_blocks(scene):
+            for key in ('title',):
+                if isinstance(block.get(key), str):
+                    block[key] = block[key].replace('Escucha inicial con lectura del docente', 'Escucha una presentación')
+            data = block.setdefault('data', {})
+            if isinstance(data.get('guidedTitle'), str):
+                data['guidedTitle'] = data['guidedTitle'].replace('Escucha inicial con lectura del docente', 'Escucha una presentación')
+            if block.get('type') == 'audio' and block['id'] != 'a1m1-start-s2-teach-starter-s2-alphabet-audio':
+                block['prompt'] = 'Voz sintética. Escucha y repite cuando quieras.'
+            reference_labels = {
+                '/audio/a1-module1-pilot/starter-s3-numbers-0-20.mp3': 'Escuchar los números del 0 al 20',
+                '/audio/a1-module1-pilot/starter-s3-contact-time.mp3': 'Escuchar teléfono, hora y aula',
+                '/audio/a1-module1-pilot/starter-u4-help-phrases.mp3': 'Escuchar frases para pedir ayuda',
+            }
+            if block.get('type') == 'audio' and block.get('url') in reference_labels:
+                data['supportLabel'] = reference_labels[block['url']]
     for scene in lesson.get("scenes", []):
         if isinstance(scene, dict):
             scene.pop("_starter_audio_candidates", None)

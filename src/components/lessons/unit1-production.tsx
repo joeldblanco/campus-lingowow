@@ -554,7 +554,7 @@ function ConversationProduction({
     )
   ) : (
     <Button type="button" className={ACTION_CLASS} disabled>
-      Enviar respuesta
+      {aiGradingDisabled ? 'Confirmar revisión' : 'Enviar respuesta'}
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </Button>
   )

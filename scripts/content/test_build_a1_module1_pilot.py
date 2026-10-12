@@ -21,7 +21,7 @@ MAPPING = Path(os.environ["A1_PILOT_MAPPING"]) if os.environ.get("A1_PILOT_MAPPI
 GENERATED = WORKTREE / "docs/curriculum/a1-module1-pilot.json"
 GENERATED_MANIFEST = WORKTREE / "docs/curriculum/a1-module1-pilot-manifest.json"
 AUDIO_MANIFEST_ENV = Path(os.environ["A1_PILOT_AUDIO_MANIFEST"]) if os.environ.get("A1_PILOT_AUDIO_MANIFEST") else None
-DEFAULT_AUDIO_MANIFEST = WORKTREE / "docs/curriculum/a1-module1-audio-manifest.json"
+DEFAULT_AUDIO_MANIFEST = WORKTREE / "docs/curriculum/a1-module1-audio-integration.json"
 APPLY_SCRIPT = WORKTREE / "scripts/content/apply-a1-module1-pilot.py"
 
 
@@ -117,6 +117,9 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertIsInstance(self.course["module"]["objectives"], str)
         self.assertEqual(self.course["course"]["id"], "a1-general-module1-pilot")
         self.assertIn("description", self.course["course"])
+        if self.audio_enabled:
+            for block in _blocks(self.course):
+                self.assertEqual(block['data']['teachingRevision'], 'a1-teaching-v2', block['id'])
         self.assertEqual(self.course["module"]["id"], "a1-general-module1")
         self.assertEqual(
             [lesson["id"] for lesson in self.course["lessons"]],
@@ -173,7 +176,13 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
         for block_id in teaching_ids:
             content = blocks_by_id[block_id]["content"]
-            self.assertIn("<strong>Consigna:</strong>", content, block_id)
+            if self.audio_enabled:
+                scene_id = blocks_by_id[block_id]['data']['pilotSceneId']
+                scene_text = ' '.join(block.get('content', '') for block in _blocks(self.course) if block['type'] == 'text' and block['data']['pilotSceneId'] == scene_id)
+                self.assertRegex(scene_text, r'<strong>(?:Consigna|Aprende antes de responder):</strong>', block_id)
+                self.assertLess(len(re.sub('<[^>]+>', '', content).split()), 100, block_id)
+            else:
+                self.assertIn("<strong>Consigna:</strong>", content, block_id)
             self.assertIn("<strong>Modelo:</strong>", content, block_id)
             self.assertNotIn("Modelo original", content, block_id)
             self.assertNotIn("Ruta docente", content, block_id)
@@ -342,24 +351,28 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertEqual(u1_production[0]["data"].get("guidedRole"), "conversation")
         self.assertEqual(u1_production[0]["data"]["conversationTurns"][0]["question"], "What is your name and where are you from?")
         self.assertEqual(u1_production[1]["data"].get("unit1Role"), "profile")
-        self.assertIn("Arequipa", u1_production[1]["data"]["learningModes"]["individual"])
+        self.assertIn("Quito", json.dumps(u1_production[1]['data']['transferCard'],ensure_ascii=False)) if self.audio_enabled else self.assertIn("Arequipa", u1_production[1]["data"]["learningModes"]["individual"])
         self.assertNotIn("Lima", u1_production[1]["data"]["learningModes"]["individual"])
         review_intro = next(
             block
             for block in self.course["lessons"][1]["blocks"]
             if block["id"] == "a1m1-u1-transfer-review-prompt"
         )
-        self.assertIn("<details><summary>Ver ejemplo</summary>", review_intro["content"])
+        if not self.audio_enabled:
+            self.assertIn("<details><summary>Ver ejemplo</summary>", review_intro["content"])
+        else:
+            self.assertIn('tarjeta visible aquí', review_intro['content'])
         self.assertIn("<details><summary>Guía docente</summary>", review_intro["content"])
         self.assertNotIn("<strong>Instrucción:</strong>", review_intro["content"])
         self.assertNotIn("La tarjeta confirma que Ana vive en Lima", review_intro["content"])
-        active_transfer_markers = ("Arequipa", "credencial 17", "maria.soto@example.org", "Friday at 4:00")
+        active_transfer_markers = ("Quito", "green folder hers", "marta.cruz@example.org", "room 206") if self.audio_enabled else ("Arequipa", "credencial 17", "maria.soto@example.org", "Friday at 4:00")
         stale_transfer_markers = ("Lima", "carpeta azul", "Saturday morning", "Thursday at 3:30")
         for lesson, active_marker, stale_marker in zip(
             self.course["lessons"][1:5], active_transfer_markers, stale_transfer_markers
         ):
             essay = next(block for block in lesson["blocks"] if block["type"] == "essay")
-            self.assertIn(active_marker, essay["data"]["learningModes"]["individual"], lesson["id"])
+            current_task = json.dumps(essay['data']['transferCard'],ensure_ascii=False) if self.audio_enabled else essay["data"]["learningModes"]["individual"]
+            self.assertIn(active_marker, current_task, lesson["id"])
             self.assertNotIn(stale_marker, essay["data"]["learningModes"]["individual"], lesson["id"])
         essays = [block for block in production if block["type"] == "essay"]
         for essay in essays:
@@ -372,7 +385,10 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
             if block["id"] == "a1m1-mission-card-prompt"
         )
         self.assertIn("<details><summary>Ver ejemplo</summary>", mission_intro["content"])
-        self.assertIn("<details><summary>Guía docente</summary>", mission_intro["content"])
+        if not self.audio_enabled:
+            self.assertIn("<details><summary>Guía docente</summary>", mission_intro["content"])
+        else:
+            self.assertIn('hoja común', mission_intro['content'])
         self.assertNotIn("<strong>Instrucción:</strong>", mission_intro["content"])
         mission_card = next(
             block
@@ -423,15 +439,23 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                 and block["data"].get("pilotSceneId") == recording["data"].get("pilotSceneId")
             )
             self.assertEqual(intro["content"].count("<strong>Consigna:</strong>"), 1, recording["id"])
-            self.assertEqual(intro["content"].count("<details><summary>Ver ejemplo</summary>"), 1, recording["id"])
-            self.assertEqual(intro["content"].count("<details><summary>Guía docente</summary>"), 1, recording["id"])
+            example_label = 'Ver ejemplo de estructura' if self.audio_enabled and recording['id'].startswith('a1m1-u') else 'Ver ejemplo'
+            self.assertEqual(intro["content"].count(f"<details><summary>{example_label}</summary>"), 1, recording["id"])
+            if self.audio_enabled and recording['id'] == 'a1m1-mission-speak-recording':
+                self.assertTrue(recording['data']['learningModeGuidance']['teacher'])
+                self.assertIn('hoja común', recording['data']['learningModeGuidance']['self'])
+            else:
+                self.assertEqual(intro["content"].count("<details><summary>Guía docente</summary>"), 1, recording["id"])
             self.assertNotIn("<strong>Modelo:</strong>", intro["content"], recording["id"])
 
     def test_no_audio_is_fabricated_and_role_cards_do_not_claim_hidden_runtime(self) -> None:
         manifest = self.manifest["audioManifest"]
         if self.audio_enabled:
             audio_blocks = [block for block in _blocks(self.course) if block["type"] == "audio"]
-            self.assertEqual(len(audio_blocks), 11)
+            original_audio = [block for block in audio_blocks if block["data"].get("audioKind") != "practice-reference"]
+            self.assertEqual(len(original_audio), 11)
+            self.assertEqual(len({block['url'] for block in original_audio}), 11)
+            self.assertTrue(all(block['url'] in {original['url'] for original in original_audio} for block in audio_blocks))
             self.assertEqual(manifest["status"], "verified_audio_integrated")
             self.assertFalse(manifest["noAudioBlocksGenerated"])
             self.assertEqual(manifest["verifiedFileCount"], 11)
@@ -448,12 +472,16 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         self.assertTrue(manifest["preserveExistingAudio"])
         if self.audio_enabled:
             briefing = next(scene for scene in self.manifest["sceneSummaries"] if scene["id"] == "a1m1-mission-briefing")
-            self.assertEqual(briefing["roleCardRevealMode"], "role-card-only")
-            self.assertEqual(briefing["roleCardRuntimeStatus"], "metadata-only-until-role-card-viewer-exists")
+            self.assertNotIn("roleCardRevealMode", briefing)
+            self.assertNotIn("roleCardRuntimeStatus", briefing)
+            mission_summary = next(lesson for lesson in self.manifest['lessonSummaries'] if lesson['id'] == 'a1-general-mission')
+            self.assertIn('hoja común', mission_summary['routePolicy']['self'])
+            self.assertIn('ensayo', mission_summary['routePolicy']['self'])
             blocks_by_id = {block["id"]: block for block in _blocks(self.course)}
             notes = [blocks_by_id[block_id] for block_id in briefing["runtimeBlockIds"] if blocks_by_id[block_id]["type"] == "teacher_notes"]
             self.assertEqual(len(notes), 1)
-            self.assertEqual(notes[0]["roleCardReveal"]["runtimeSupport"], "planned-no-runtime-claim")
+            self.assertNotIn('roleCardReveal', notes[0])
+            self.assertIn('hoja común', notes[0]['content'])
             return
         planned_paths = {item["plannedPath"] for item in manifest["plannedScripts"]}
         self.assertIn("/audio/a1-module1-pilot/u1-model.mp3", planned_paths)
@@ -632,7 +660,9 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
                 },
             )
             all_audio_blocks = [block for block in _blocks(course) if block["type"] == "audio"]
-            self.assertEqual(len(all_audio_blocks), 11)
+            self.assertEqual(len([block for block in all_audio_blocks if block['data'].get('audioKind') != 'practice-reference']), 11)
+            self.assertEqual(len([block for block in all_audio_blocks if block['data'].get('audioKind') == 'practice-reference']), 3)
+            self.assertEqual({block['url'] for block in all_audio_blocks}, {entry['url'] for entry in entries})
             self.assertTrue(all("sintética" in block["prompt"] for block in all_audio_blocks))
             unit_audio_blocks = [
                 block for block in all_audio_blocks if block["data"].get("audioKind") == "unit-model"
@@ -715,7 +745,7 @@ class A1Module1PilotCompilerTests(unittest.TestCase):
         audio_manifest = None
         if generated_has_audio:
             self.assertIsNotNone(self.audio_manifest_path)
-            raw_audio_manifest = json.loads(self.audio_manifest_path.read_text(encoding="utf-8"))
+            raw_audio_manifest = json.loads((WORKTREE / "docs/curriculum/a1-module1-audio-manifest.json").read_text(encoding="utf-8"))
             audio_manifest = {
                 "files": [
                     {

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import type { Block, SentenceVariant } from '@/types/course-builder'
 import { sanitizeHtml } from '@/lib/sanitize-html'
+import { GuidedPronunciation } from './guided-pronunciation'
 
 const NAVY_TEXT = 'text-[#10245C]'
 const SLATE_TEXT = 'text-[#506187]'
@@ -666,6 +667,7 @@ export function GuidedLessonBlock({
       )
 
     case 'vocabulary':
+      if (block.data?.teachingPresentation === 'pronunciation') return <GuidedPronunciation block={block} />
       // Rich item media keeps its established controls and playback semantics.
       if (
         !block.items.length ||

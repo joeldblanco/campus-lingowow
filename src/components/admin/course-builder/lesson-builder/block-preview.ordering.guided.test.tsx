@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { BlockPreview, buildGuidedOrderingItems } from './block-preview'
+import { BlockPreview, buildGuidedOrderingItems, isOrderingCorrect } from './block-preview'
 
 vi.mock('@/lib/actions/ai-grading-limits', () => ({
   canUseAIGrading: vi.fn(),
@@ -32,6 +32,24 @@ const orderingBlock = {
 }
 
 describe('guided ordering preview', () => {
+  it('lets an authored scene provide the instruction without repeating its technical header', () => {
+    render(<BlockPreview block={orderingBlock} guidedAppearance hideBlockHeader />)
+    expect(screen.queryByText('Ordenar')).not.toBeInTheDocument()
+    expect(screen.queryByText(orderingBlock.instruction!)).not.toBeInTheDocument()
+    expect(screen.getAllByTestId('guided-ordering-item')).toHaveLength(3)
+  })
+  it('accepts interchangeable repeated letters and never presents their correct text order initially', () => {
+    const letters = [
+      { id: 'a-first', text: 'A', correctPosition: 1 },
+      { id: 'n', text: 'N', correctPosition: 2 },
+      { id: 'a-last', text: 'A', correctPosition: 3 },
+    ]
+    expect(isOrderingCorrect([letters[2], letters[1], letters[0]])).toBe(true)
+    expect(isOrderingCorrect([letters[1], letters[0], letters[2]])).toBe(false)
+    for (const seed of ['letters-one', 'letters-two', 'letters-three']) {
+      expect(isOrderingCorrect(buildGuidedOrderingItems(letters, seed))).toBe(false)
+    }
+  })
   it('uses a deterministic shuffled fixture that cannot start complete', () => {
     const first = buildGuidedOrderingItems(orderingBlock.items, orderingBlock.id)
     const second = buildGuidedOrderingItems(orderingBlock.items, orderingBlock.id)

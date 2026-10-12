@@ -224,6 +224,7 @@ class MissionTeachingRevisionTests(unittest.TestCase):
             turns[0]["reviewChecklist"],
             [
                 "Saluda y dice su nombre.",
+                "Identifica su objeto con This is my…",
                 "Pregunta el nombre y responde Nice to meet you.",
                 "Usa una pregunta y una respuesta comprensibles.",
             ],
@@ -241,6 +242,10 @@ class MissionTeachingRevisionTests(unittest.TestCase):
     def test_revision_is_idempotent_and_runtime_blockers_are_reported(self) -> None:
         course = _full_fixture()
         MODULE.revise_mission(course)
+        for lesson in course["lessons"]:
+            for block in lesson["blocks"]:
+                if block.get("type") == "essay":
+                    self.assertTrue(block["data"]["promptPresentedSeparately"])
         first = json.dumps(course, ensure_ascii=False, sort_keys=True)
         MODULE.revise_mission(course)
         second = json.dumps(course, ensure_ascii=False, sort_keys=True)

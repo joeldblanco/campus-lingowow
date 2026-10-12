@@ -36,3 +36,5 @@ jobs:
         run: |
           python3 scripts/content/test_build_a1_module1_pilot.py
           python3 -m unittest discover -s tests/content -p test_apply_a1_module1_pilot.py
+          python3 -m unittest discover -s scripts/content -p 'test_a1_*teaching.py'
+          python3 -m unittest discover -s tests/content -p 'test_a1_*.py'

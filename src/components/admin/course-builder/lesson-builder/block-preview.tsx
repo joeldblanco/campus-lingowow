@@ -161,15 +161,17 @@ const GUIDED_SECONDARY_ACTION_CLASS =
 
 type OrderingItem = OrderingBlock['items'][number]
 
-function isOrderingCorrect(items: readonly OrderingItem[]) {
-  return items.length > 0 && items.every((item, index) => item.correctPosition === index + 1)
+export function isOrderingCorrect(items: readonly OrderingItem[]) {
+  const expected = [...items].sort((a, b) => a.correctPosition - b.correctPosition)
+  return items.length > 0 && items.every((item, index) => item.text === expected[index].text)
 }
 
 /** Keep guided ordering reproducible while ensuring the learner has work to do. */
 export function buildGuidedOrderingItems(items: readonly OrderingItem[], seed: string): OrderingItem[] {
   const shuffled = shuffleGuidedChoices(items, seed)
   if (shuffled.length > 1 && isOrderingCorrect(shuffled)) {
-    ;[shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]]
+    const other = shuffled.findIndex(item => item.text !== shuffled[0].text)
+    if (other >= 0) [shuffled[0], shuffled[other]] = [shuffled[other], shuffled[0]]
   }
   return shuffled
 }
@@ -4114,6 +4116,7 @@ function EssayBlockPreview({
   void hideHeader // Essay blocks have a different layout
   const unit1Role = getUnit1ProductionRole(block)
   const isA1PilotProduction = guidedAppearance && block.data?.pilotRevision === 'a1-module1-pilot-v1'
+  const promptPresentedSeparately = isA1PilotProduction && block.data?.teachingRevision === 'a1-teaching-v2' && block.data?.promptPresentedSeparately === true
   const isUnit1Profile = guidedAppearance && unit1Role === 'profile' && !isA1PilotProduction
   const essayPrompt = isUnit1Profile
     ? getUnit1DataString(block, 'productionPrompt') ||
@@ -4202,7 +4205,7 @@ function EssayBlockPreview({
 
       <div className="space-y-2">
         {guidedAppearance ? (
-          <p id={`guided-essay-prompt-${block.id}`} className="text-base leading-6 text-[#10245C]">
+          <p id={`guided-essay-prompt-${block.id}`} className={promptPresentedSeparately ? 'sr-only' : 'text-base leading-6 text-[#10245C]'}>
             {essayPrompt}
           </p>
         ) : (
@@ -5885,7 +5888,6 @@ function OrderingBlockPreview({
   onGuidedActionPresence?: (present: boolean) => void
   onGuidedCompletionChange?: (completed: boolean) => void
 }) {
-  void hideHeader // Ordering blocks have a different layout
   const classroom = useClassroomSync()
   const guidedMode = Boolean(
     guidedAppearance &&
@@ -5954,7 +5956,7 @@ function OrderingBlockPreview({
 
   return (
     <div className="space-y-4">
-      <div className={cn(
+      {(!guidedAppearance || !hideHeader) && <><div className={cn(
         'flex items-center gap-2 font-semibold text-sm',
         guidedMode ? 'text-[#10245C]' : 'text-primary'
       )}>
@@ -5964,10 +5966,11 @@ function OrderingBlockPreview({
 
       {block.title && <h3 className="font-bold text-lg">{block.title}</h3>}
       {block.instruction && <p className={guidedMode ? 'text-[#506187]' : 'text-muted-foreground'}>{block.instruction}</p>}
+      </>}
 
       <div className="space-y-2">
         {items.map((item, index) => {
-          const isCorrectPosition = (showResult || completed) && item.correctPosition === index + 1
+          const isCorrectPosition = completed || (showResult && item.correctPosition === index + 1)
 
           return (
             <div
@@ -5976,7 +5979,7 @@ function OrderingBlockPreview({
               data-guided-ordering-item={item.id}
               className={cn(
                 guidedMode
-                  ? 'min-h-14 rounded-2xl border bg-white p-3 text-[#10245C] transition-all'
+                  ? 'flex min-h-14 items-center gap-3 rounded-2xl border bg-white p-3 text-[#10245C] transition-all'
                   : 'p-3 border rounded-lg flex items-center gap-3 transition-all',
                 guidedMode
                   ? completed
@@ -5995,7 +5998,7 @@ function OrderingBlockPreview({
               )}>{index + 1}.</span>
               <span className="flex-1">{item.text}</span>
               {!showResult && !completed && (
-                <div className="flex flex-col gap-1">
+                <div className={guidedMode ? 'flex shrink-0 gap-2' : 'flex flex-col gap-1'}>
                   <Button
                     variant={guidedMode ? 'outline' : 'ghost'}
                     size="icon"

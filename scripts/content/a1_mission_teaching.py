@@ -271,7 +271,7 @@ def _revise_briefing(scene: dict[str, Any]) -> None:
     instructions = _find_block(scene, "a1m1-mission-briefing-instructions")
     instructions["content"] = _append_route_notice(
         instructions.get("content"),
-        "<p><strong>Ruta autónoma:</strong> ensaya las dos voces con la hoja común visible; esta vista no entrega tarjetas privadas.</p>",
+        "<p><strong>Por tu cuenta:</strong> ensaya ambas voces con la hoja común. Con tu profesora, practiquen juntos.</p>",
     )
     instructions["data"] = _data(instructions)
     instructions["data"].pop("roleCardRevealMode", None)
@@ -338,8 +338,7 @@ def _revise_speaking(scene: dict[str, Any], model_scene: dict[str, Any]) -> None
         "<p><strong>Consigna:</strong> Representa una ronda de 60–90 segundos con la hoja común visible. "
         "Saluda, di tu nombre, identifica un objeto, comparte un contacto y confirma horario y sala.</p>"
         f"<details><summary>Ver ejemplo</summary><p>{MISSION_MODEL}</p></details>"
-        "<p>Si falta un dato, pide repetición. En autonomía, repite la ronda con el otro papel: es un ensayo, "
-        "no una interacción espontánea con tarjeta privada.</p>"
+        "<p>Por tu cuenta, ensaya primero una voz y luego la otra. Si falta un dato, pide repetición.</p>"
     )
     _data(prompt)["originalEnglishModel"] = MISSION_MODEL
 
@@ -383,9 +382,10 @@ def _revise_speaking(scene: dict[str, Any], model_scene: dict[str, Any]) -> None
         {
             "id": "a1m1-mission-turn-1",
             "question": "What’s your name?",
-            "answerPrompt": "Say Hi, I’m Ana. Ask the name and say Nice to meet you.",
+            "answerPrompt": "Saluda, di «Hi, I’m Ana», identifica tu objeto y pregunta su nombre.",
             "reviewChecklist": [
                 "Saluda y dice su nombre.",
+                "Identifica su objeto con This is my…",
                 "Pregunta el nombre y responde Nice to meet you.",
                 "Usa una pregunta y una respuesta comprensibles.",
             ],
@@ -393,7 +393,7 @@ def _revise_speaking(scene: dict[str, Any], model_scene: dict[str, Any]) -> None
         {
             "id": "a1m1-mission-turn-2",
             "question": "When are you free?",
-            "answerPrompt": "Use the common sheet: give Tuesday at six, room 204 and one contact. Ask for repetition if needed.",
+            "answerPrompt": "Da el contacto y confirma martes a las seis y sala 204. Pide que repita si lo necesitas.",
             "reviewChecklist": [
                 "Comparte un contacto.",
                 "Confirma martes a las seis.",
@@ -506,6 +506,8 @@ def _sync_mission_lesson(mission: dict[str, Any]) -> None:
         blocks = _scene_blocks(scene)
         for order, block in enumerate(blocks):
             block["order"] = order
+            if block.get("type") == "essay":
+                _data(block)["promptPresentedSeparately"] = True
             flattened.append(block)
         scene["runtimeBlockIds"] = [block["id"] for block in blocks]
         scene["interactiveCount"] = sum(block.get("type") in {"match", "fill_blanks", "multiple_choice", "true_false", "short_answer", "essay", "recording", "ordering"} for block in blocks)
