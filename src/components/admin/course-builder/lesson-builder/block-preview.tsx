@@ -346,6 +346,11 @@ export function BlockPreview({
             block={block as OrderingBlock}
             isExamMode={isExamMode}
             hideHeader={hideBlockHeader}
+            isTeacher={isTeacher}
+            guidedAppearance={guidedAppearance}
+            guidedActionTarget={guidedActionTarget}
+            onGuidedActionPresence={onGuidedActionPresence}
+            onGuidedCompletionChange={onGuidedCompletionChange}
           />
         )
       case 'drag_drop':
@@ -5849,17 +5854,40 @@ function OrderingBlockPreview({
   block,
   isExamMode,
   hideHeader,
+  isTeacher,
+  guidedAppearance = false,
+  guidedActionTarget,
+  onGuidedActionPresence,
+  onGuidedCompletionChange,
 }: {
   block: OrderingBlock
   isExamMode?: boolean
   hideHeader?: boolean
+  isTeacher?: boolean
+  guidedAppearance?: boolean
+  guidedActionTarget?: HTMLElement | null
+  onGuidedActionPresence?: (present: boolean) => void
+  onGuidedCompletionChange?: (completed: boolean) => void
 }) {
   void hideHeader // Ordering blocks have a different layout
+  const classroom = useClassroomSync()
+  const guidedMode = Boolean(
+    guidedAppearance &&
+      !isExamMode &&
+      !isTeacher &&
+      (!classroom.isInClassroom || !classroom.isTeacher)
+  )
   const [items, setItems] = useState(() =>
-    block.items ? [...block.items].sort(() => Math.random() - 0.5) : []
+    block.items ? (guidedMode ? [...block.items] : [...block.items].sort(() => Math.random() - 0.5)) : []
   )
   const [showResultState, setShowResultState] = useState(false)
   const showResult = !isExamMode && showResultState
+  const isCorrectOrder = items.length > 0 && items.every((item, index) => item.correctPosition === index + 1)
+  const completed = guidedMode && showResult && isCorrectOrder
+  const hasGuidedAction = guidedMode && items.length > 0 && !completed
+
+  useGuidedCompletion(guidedMode, completed, showResultState, onGuidedCompletionChange)
+  useGuidedActionPresence(guidedMode, hasGuidedAction, onGuidedActionPresence)
 
   const moveItem = (index: number, direction: 'up' | 'down') => {
     if (showResult) return
@@ -5879,6 +5907,26 @@ function OrderingBlockPreview({
     setItems(block.items ? [...block.items].sort(() => Math.random() - 0.5) : [])
     setShowResultState(false)
   }
+
+  const checkAction = (
+    <Button
+      onClick={handleCheck}
+      size="sm"
+      className={guidedMode ? GUIDED_PRIMARY_ACTION_CLASS : undefined}
+    >
+      {guidedMode ? 'Comprobar' : 'Verificar'}
+    </Button>
+  )
+  const retryAction = (
+    <Button
+      variant="outline"
+      onClick={handleReset}
+      size="sm"
+      className={guidedMode ? GUIDED_SECONDARY_ACTION_CLASS : undefined}
+    >
+      Reintentar
+    </Button>
+  )
 
   return (
     <div className="space-y-4">
@@ -5916,6 +5964,7 @@ function OrderingBlockPreview({
                     className="h-6 w-6"
                     onClick={() => moveItem(index, 'up')}
                     disabled={index === 0}
+                    aria-label={`Subir ${item.text}`}
                   >
                     <LucideIcons.ChevronUp className="h-4 w-4" />
                   </Button>
@@ -5925,6 +5974,7 @@ function OrderingBlockPreview({
                     className="h-6 w-6"
                     onClick={() => moveItem(index, 'down')}
                     disabled={index === items.length - 1}
+                    aria-label={`Bajar ${item.text}`}
                   >
                     <LucideIcons.ChevronDown className="h-4 w-4" />
                   </Button>
@@ -5941,16 +5991,31 @@ function OrderingBlockPreview({
         })}
       </div>
 
-      {!isExamMode && (
+      {guidedMode && showResult && (
+        <p
+          role="status"
+          aria-live="polite"
+          className={cn(
+            'text-base leading-6',
+            completed ? 'text-[#08775E]' : 'text-[#C13E50]'
+          )}
+        >
+          {completed ? '¡Correcto!' : 'Todavía no. Revisa el orden y vuelve a intentarlo.'}
+        </p>
+      )}
+
+      {guidedMode ? (
+        <div className="flex gap-2">
+          {!completed && (guidedActionTarget
+            ? renderGuidedAction(showResult ? retryAction : checkAction, guidedMode, guidedActionTarget)
+            : showResult ? retryAction : checkAction)}
+        </div>
+      ) : !isExamMode && (
         <div className="flex gap-2">
           {!showResult ? (
-            <Button onClick={handleCheck} size="sm">
-              Verificar
-            </Button>
+            checkAction
           ) : (
-            <Button variant="outline" onClick={handleReset} size="sm">
-              Reintentar
-            </Button>
+            retryAction
           )}
         </div>
       )}

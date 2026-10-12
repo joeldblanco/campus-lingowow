@@ -290,8 +290,76 @@ describe('Unit 1 conversation production', () => {
     expect(onRecordingStateChange).toHaveBeenLastCalledWith(false)
 
     fireEvent.click(target.querySelector('button') as HTMLButtonElement)
-    expect(screen.getByText('Turno 2 de 5')).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByText('Turno 2 de 5')).toBeInTheDocument())
     expect(onCompletion).toHaveBeenLastCalledWith(false)
+    expect(stopTrack).toHaveBeenCalled()
+  })
+
+  it('uses transparent self-review when AI grading is disabled', async () => {
+    const stopTrack = vi.fn()
+    const stream = { getTracks: () => [{ stop: stopTrack }] }
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia: vi.fn().mockResolvedValue(stream) },
+    })
+    vi.stubGlobal(
+      'MediaRecorder',
+      class {
+        state = 'inactive'
+        ondataavailable: ((event: { data: Blob }) => void) | null = null
+        onstop: (() => void) | null = null
+
+        start() {
+          this.state = 'recording'
+        }
+
+        stop() {
+          this.state = 'inactive'
+          this.onstop?.()
+        }
+      }
+    )
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      value: vi.fn(() => 'blob:conversation-human-review'),
+    })
+    Object.defineProperty(URL, 'revokeObjectURL', {
+      configurable: true,
+      value: vi.fn(),
+    })
+
+    const target = document.createElement('div')
+    render(
+      <Unit1Production
+        block={{
+          ...conversationBlock(),
+          aiGrading: false,
+          data: {
+            unit1Role: 'conversation',
+            reviewChecklist: ['Escuché mi grabación.', 'Dije el dato nuevo.'],
+          },
+        } as Block}
+        guidedActionTarget={target}
+      />
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Grabar respuesta' }))
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Detener grabación' })).toBeInTheDocument())
+    fireEvent.click(screen.getByRole('button', { name: 'Detener grabación' }))
+
+    await waitFor(() => expect(screen.getByLabelText('Escuchar tu grabación')).toBeInTheDocument())
+    expect(screen.getByText('Revisa tu respuesta')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Enviar respuesta' })).not.toBeInTheDocument()
+
+    const reviewButton = target.querySelector('button') as HTMLButtonElement
+    expect(reviewButton).toHaveTextContent('Confirmar revisión')
+    expect(reviewButton).toBeDisabled()
+    fireEvent.click(screen.getByLabelText('Escuché mi grabación.'))
+    fireEvent.click(screen.getByLabelText('Dije el dato nuevo.'))
+    expect(reviewButton).not.toBeDisabled()
+    fireEvent.click(target.querySelector('button') as HTMLButtonElement)
+
+    expect(screen.getByText('Turno 2 de 5')).toBeInTheDocument()
     expect(stopTrack).toHaveBeenCalled()
   })
 

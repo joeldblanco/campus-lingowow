@@ -49,7 +49,7 @@ type StepTransition = {
 }
 
 const GUIDED_ACTIVITIES = new Set<Block['type']>([
-  'match', 'fill_blanks', 'multiple_choice', 'true_false', 'short_answer', 'essay', 'recording',
+  'match', 'fill_blanks', 'multiple_choice', 'true_false', 'short_answer', 'ordering', 'essay', 'recording',
 ])
 
 export function GuidedLessonViewer({
@@ -68,8 +68,10 @@ export function GuidedLessonViewer({
       illustratedContent ? buildIllustratedLessonSteps(blocks) : buildGuidedLessonSteps(blocks),
     [blocks, illustratedContent]
   )
+  const teachingRevision = blocks.find(block => typeof block.data?.teachingRevision === 'string')?.data?.teachingRevision
   const authoredRevision = blocks.find(block => typeof block.data?.learningRevision === 'string')?.data?.learningRevision
-  const positionStorageKey = illustratedContent ? `${storageKey}:${authoredRevision || 'scene-v2'}` : storageKey
+  const sceneRevision = teachingRevision || authoredRevision || 'scene-v2'
+  const positionStorageKey = illustratedContent ? `${storageKey}:${sceneRevision}` : storageKey
   const { targets, callbacks, completed, completionCallbacks, captureTarget } = useGuidedLessonActions(steps)
   // Start at zero for the server and first client render, then restore the
   // session position after hydration so SSR markup stays deterministic.
@@ -452,7 +454,7 @@ export function GuidedLessonViewer({
         <div
           className={cn(
             'guided-lesson-footer order-4 mt-2 flex flex-col-reverse gap-4 border-t border-[#506187]/20 pt-4 sm:flex-row sm:items-center sm:justify-between',
-            illustratedContent && currentStep?.blocks.some((block) => ['match', 'multiple_choice', 'true_false', 'short_answer', 'fill_blanks'].includes(block.type)) && 'guided-lesson-footer--exercise',
+            illustratedContent && currentStep?.blocks.some((block) => ['match', 'multiple_choice', 'true_false', 'short_answer', 'fill_blanks', 'ordering'].includes(block.type)) && 'guided-lesson-footer--exercise',
             currentStepArt && 'md:col-span-2'
           )}
           data-guided-footer-shell
