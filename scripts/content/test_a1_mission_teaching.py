@@ -30,6 +30,15 @@ def _full_fixture() -> dict[str, Any]:
 
     course = json.loads(SOURCE.read_text(encoding="utf-8-sig"))
     for lesson in course["lessons"]:
+        if lesson["id"] == "a1-general-mission":
+            # The reviewed source fixture may already carry support rows
+            # from a previous compiler pass.  Start from the authored
+            # mission so this test can observe the revision adding them.
+            lesson["blocks"] = [
+                block
+                for block in lesson.get("blocks", [])
+                if not str(block.get("id", "")).startswith(MODULE.NEW_BLOCK_PREFIX)
+            ]
         lesson["scenes"] = []
         if lesson["id"] == "a1-general-mission":
             scenes: dict[str, dict[str, Any]] = {}
@@ -87,7 +96,11 @@ def _block(scene: dict[str, Any], block_id: str) -> dict[str, Any]:
 class MissionTeachingRevisionTests(unittest.TestCase):
     def test_revision_preserves_existing_ids_audio_and_unit_content(self) -> None:
         course = _full_fixture()
-        before_ids = _block_ids(course)
+        before_ids = {
+            block_id
+            for block_id in _block_ids(course)
+            if not block_id.startswith(MODULE.NEW_BLOCK_PREFIX)
+        }
         before_units = {
             lesson["id"]: copy.deepcopy(lesson["blocks"])
             for lesson in course["lessons"]
@@ -178,6 +191,24 @@ class MissionTeachingRevisionTests(unittest.TestCase):
             self.assertIn(phrase, checklist)
         self.assertNotIn("Tuesday", checklist)
         self.assertNotIn("Room 4", checklist)
+
+    def test_production_exposes_runtime_learning_mode_guidance(self) -> None:
+        course = _full_fixture()
+        MODULE.revise_mission(course)
+        mission = _mission(course)
+        production_blocks = [
+            block
+            for scene in mission["scenes"]
+            for block in scene["runtimeBlocks"]
+            if block.get("type") in {"recording", "essay"}
+        ]
+
+        self.assertTrue(production_blocks)
+        for block in production_blocks:
+            guidance = block.get("data", {}).get("learningModeGuidance")
+            self.assertIsInstance(guidance, dict, block["id"])
+            self.assertEqual(set(guidance), {"self", "teacher"}, block["id"])
+            self.assertTrue(all(isinstance(value, str) and value.strip() for value in guidance.values()), block["id"])
 
     def test_revision_is_idempotent_and_runtime_blockers_are_reported(self) -> None:
         course = _full_fixture()

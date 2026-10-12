@@ -365,6 +365,10 @@ def _revise_speaking(scene: dict[str, Any], model_scene: dict[str, Any]) -> None
                 "individual": "Ensaya ambas voces con la hoja común visible y confirma cada criterio al terminar.",
                 "teacher": "La docente acompaña una ronda y revisa el significado; su guía complementa el ensayo.",
             },
+            "learningModeGuidance": {
+                "self": "Ensaya ambas voces con la hoja común visible y confirma cada criterio al terminar.",
+                "teacher": "La docente acompaña una ronda y revisa el significado; su guía complementa el ensayo.",
+            },
             "reviewChecklist": [
                 "Saluda, dice su nombre y pregunta el nombre.",
                 "Identifica un objeto con This is my …",
@@ -421,6 +425,10 @@ def _revise_card(scene: dict[str, Any]) -> None:
         "individual": "Escribe y revisa la tarjeta con la hoja común visible; confirma los cinco datos antes de continuar.",
         "teacher": "La docente revisa nombre, contacto, día, hora, sala y la frase de apoyo.",
     }
+    essay_data["learningModeGuidance"] = {
+        "self": "Escribe y revisa la tarjeta con la hoja común visible; confirma los cinco datos antes de continuar.",
+        "teacher": "La docente revisa nombre, contacto, día, hora, sala y la frase de apoyo.",
+    }
     essay_data["autonomyMode"] = "rehearsal-common-sheet"
 
 
@@ -466,6 +474,14 @@ def _revise_mediation(scene: dict[str, Any]) -> None:
     essay_data["sourceEnglishModel"] = source_english
     essay_data["modelLanguage"] = "es"
     essay_data["autonomyMode"] = "rehearsal-common-sheet"
+    essay_data["learningModes"] = {
+        "individual": "Lee la ficha, redacta la respuesta en español y comprueba cada dato.",
+        "teacher": "La docente revisa la transferencia y la información que falta.",
+    }
+    essay_data["learningModeGuidance"] = {
+        "self": "Lee la ficha, redacta la respuesta en español y comprueba cada dato.",
+        "teacher": "La docente revisa la transferencia y la información que falta.",
+    }
     checklist = [
         "Incluye martes, 18:00 y sala 4.",
         "Indica que debe llevar un cuaderno.",
@@ -505,6 +521,14 @@ def _assert_mission_invariants(mission: dict[str, Any]) -> None:
             raise AssertionError(f"New mission support block has an invalid type in {scene['id']}")
         if any(block.get("aiGrading") is not False for block in blocks if block.get("type") in {"essay", "recording"}):
             raise AssertionError(f"Mission production must remain human-reviewed in {scene['id']}")
+        for block in blocks:
+            if block.get("type") not in {"essay", "recording"}:
+                continue
+            guidance = _data(block).get("learningModeGuidance")
+            if not isinstance(guidance, dict) or set(guidance) != {"self", "teacher"}:
+                raise AssertionError(f"Mission production needs self/teacher learningModeGuidance in {scene['id']}")
+            if any(not isinstance(value, str) or not value.strip() for value in guidance.values()):
+                raise AssertionError(f"Mission production learningModeGuidance must contain text in {scene['id']}")
     route_self = mission.get("routePolicy", {}).get("self", "").lower()
     if "ensayo" not in route_self or "hoja común" not in route_self:
         raise AssertionError("Autonomous mission route must be declared as common-sheet rehearsal")
