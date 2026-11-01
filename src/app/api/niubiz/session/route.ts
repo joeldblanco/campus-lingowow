@@ -31,7 +31,25 @@ const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
 const amountsMatch = (left: number, right: number) =>
   Number.isFinite(left) && Number.isFinite(right) && Math.abs(left - right) < 0.0001
 
+const isValidAmount = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value > 0
+
 const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || null
+
+function canonicalizeJson(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonicalizeJson)
+  if (value && typeof value === 'object') {
+    const record = value as Record<string, unknown>
+    return Object.fromEntries(
+      Object.keys(record)
+        .sort()
+        .map((key) => [key, canonicalizeJson(record[key])])
+    )
+  }
+  return value
+}
+
+const canonicalJson = (value: unknown) => JSON.stringify(canonicalizeJson(value)) ?? ''
 
 const isUniqueConstraintError = (error: unknown) =>
   typeof error === 'object' &&
@@ -49,12 +67,14 @@ function checkExistingPendingOrder(
     customerEmail: string | null
     amount: number
     currency: string
+    invoiceData: unknown
   },
   input: {
     amount: number
     currency: string
     signedInUserId?: string
     customerEmail: string | null
+    invoiceData: unknown
   }
 ): PendingOrderCheck {
   if (pendingOrder.status !== 'PENDING' || pendingOrder.expiresAt <= new Date()) {
@@ -74,10 +94,16 @@ function checkExistingPendingOrder(
   }
 
   if (pendingOrder.userId) {
-    return pendingOrder.userId === input.signedInUserId ? null : 'mismatch'
+    return pendingOrder.userId === input.signedInUserId &&
+      canonicalJson(pendingOrder.invoiceData) === canonicalJson(input.invoiceData)
+      ? null
+      : 'mismatch'
   }
 
-  return !input.signedInUserId && Boolean(storedEmail) && storedEmail === input.customerEmail
+  return !input.signedInUserId &&
+    Boolean(storedEmail) &&
+    storedEmail === input.customerEmail &&
+    canonicalJson(pendingOrder.invoiceData) === canonicalJson(input.invoiceData)
     ? null
     : 'mismatch'
 }
@@ -104,7 +130,7 @@ export async function POST(req: Request) {
       customerInfo?: CustomerInfo
     }
 
-    if (!amount) {
+    if (!isValidAmount(amount)) {
       return new NextResponse('Amount is required', { status: 400 })
     }
 
@@ -150,6 +176,7 @@ export async function POST(req: Request) {
       const requestCurrency = (invoiceData.currency || 'USD').toUpperCase()
       const requestEmail = normalizeEmail(customerInfo?.email)
       const requestUserId = session?.user?.id
+      const requestInvoiceData = { ...invoiceData, customerInfo: customerInfo || null }
       let pendingOrder = await db.pendingOrder.findUnique({ where: { purchaseNumber } })
 
       if (pendingOrder) {
@@ -158,6 +185,7 @@ export async function POST(req: Request) {
           currency: requestCurrency,
           signedInUserId: requestUserId,
           customerEmail: requestEmail,
+          invoiceData: requestInvoiceData,
         })
         if (check) return pendingOrderError(check)
       } else {
@@ -188,6 +216,7 @@ export async function POST(req: Request) {
             currency: requestCurrency,
             signedInUserId: requestUserId,
             customerEmail: requestEmail,
+            invoiceData: requestInvoiceData,
           })
           if (check) return pendingOrderError(check)
         }

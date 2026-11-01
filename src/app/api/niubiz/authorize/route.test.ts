@@ -77,6 +77,15 @@ vi.mock('@/lib/utils/date', () => ({
 
 import { POST } from './route'
 
+const customerInfo = {
+  email: 'student@example.com',
+  firstName: 'Student',
+  address: 'Main Street',
+  city: 'Lima',
+  country: 'PE',
+  zipCode: '15000',
+}
+
 const invoiceData = {
   items: [
     {
@@ -97,6 +106,10 @@ const invoiceData = {
   currency: 'USD',
 }
 
+function registeredInvoiceData(overrides: Record<string, unknown> = {}) {
+  return { ...invoiceData, customerInfo: { ...customerInfo, ...overrides } }
+}
+
 function request(overrides: Record<string, unknown> = {}) {
   return new NextRequest('http://localhost/api/niubiz/authorize', {
     method: 'POST',
@@ -106,14 +119,7 @@ function request(overrides: Record<string, unknown> = {}) {
       amount: 100,
       orderId: 'order-1',
       invoiceData,
-      customerInfo: {
-        email: 'student@example.com',
-        firstName: 'Student',
-        address: 'Main Street',
-        city: 'Lima',
-        country: 'PE',
-        zipCode: '15000',
-      },
+      customerInfo,
       ...overrides,
     }),
   })
@@ -155,7 +161,7 @@ function resetHarness() {
     amount: 100,
     status: mocks.state.pendingStatus,
     expiresAt: new Date(Date.now() + 30 * 60 * 1000),
-    invoiceData,
+    invoiceData: registeredInvoiceData(),
   }))
   mocks.db.pendingOrder.updateMany.mockImplementation(
     async ({ where, data }: { where: { status: string }; data: { status: string } }) => {
@@ -288,6 +294,7 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
       customerEmail: null,
       amount: 100,
       status: 'PENDING',
+      invoiceData: registeredInvoiceData(),
     })
     mocks.db.classBooking.create.mockRejectedValueOnce(
       Object.assign(new Error('unique conflict'), { code: 'P2002' })
@@ -434,6 +441,7 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
       customerEmail: null,
       amount: 100,
       status: 'PENDING',
+      invoiceData: registeredInvoiceData(),
     }
     mocks.db.pendingOrder.findUnique.mockResolvedValue(pendingOrder)
     mocks.db.pendingOrder.updateMany
@@ -457,6 +465,7 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
       customerEmail: 'guest@example.com',
       amount: 100,
       status: 'PENDING',
+      invoiceData: registeredInvoiceData({ email: 'guest@example.com', firstName: 'Guest' }),
     })
 
     const response = await POST(
@@ -486,6 +495,7 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
       customerEmail: null,
       amount: 100,
       status: 'PENDING',
+      invoiceData: registeredInvoiceData(),
       expiresAt: new Date(Date.now() - 1_000),
     })
 
@@ -494,6 +504,43 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
     expect(response.status).toBe(409)
     expect(await response.text()).toBe('Payment request is already being processed')
     expect(mocks.db.pendingOrder.updateMany).not.toHaveBeenCalled()
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects a changed currency or schedule before claiming the pending order', async () => {
+    const changedCurrency = await POST(
+      request({ invoiceData: { ...invoiceData, currency: 'PEN' } })
+    )
+    expect(changedCurrency.status).toBe(409)
+    expect(await changedCurrency.text()).toBe('Payment request does not match the pending order')
+
+    const changedSchedule = await POST(
+      request({
+        invoiceData: {
+          ...invoiceData,
+          items: [
+            {
+              ...invoiceData.items[0],
+              selectedSchedule: [
+                { teacherId: 'teacher-2', dayOfWeek: 2, startTime: '16:00', endTime: '17:00' },
+              ],
+            },
+          ],
+        },
+      })
+    )
+    expect(changedSchedule.status).toBe(409)
+    expect(await changedSchedule.text()).toBe('Payment request does not match the pending order')
+    expect(mocks.db.pendingOrder.updateMany).not.toHaveBeenCalled()
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects nonnumeric JSON amounts before reading or claiming the order', async () => {
+    const response = await POST(request({ amount: '100junk' }))
+
+    expect(response.status).toBe(400)
+    expect(await response.text()).toBe('Missing required fields')
+    expect(mocks.db.pendingOrder.findUnique).not.toHaveBeenCalled()
     expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
   })
 

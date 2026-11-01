@@ -288,7 +288,11 @@ describe('POST /api/niubiz/checkout reservation preparation', () => {
     const secondResponse = await POST(request())
 
     expect(secondResponse.status).toBe(307)
-    expect(secondResponse.headers.get('location')).toContain('reservation_pending_review=true')
+    const secondLocation = new URL(secondResponse.headers.get('location') || '')
+    expect(secondLocation.searchParams.get('orderNumber')).toBe(
+      mocks.state.invoices[0].invoiceNumber
+    )
+    expect(secondLocation.searchParams.get('reservation_pending_review')).toBe('true')
     expect(mocks.authorizeNiubizTransaction).toHaveBeenCalledTimes(1)
   })
 
@@ -326,6 +330,21 @@ describe('POST /api/niubiz/checkout reservation preparation', () => {
 
     expect(response.status).toBe(307)
     expect(response.headers.get('location')).toContain('niubiz_error=already_processed')
+    expect(mocks.db.pendingOrder.updateMany).not.toHaveBeenCalled()
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects a nonnumeric URL amount before provider authorization', async () => {
+    const response = await POST(
+      new NextRequest('http://localhost/api/niubiz/checkout?purchaseNumber=order-1&amount=100junk', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ transactionToken: 'transaction-token' }),
+      })
+    )
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toContain('niubiz_error=invalid_amount')
     expect(mocks.db.pendingOrder.updateMany).not.toHaveBeenCalled()
     expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
   })
@@ -400,6 +419,7 @@ describe('POST /api/niubiz/checkout reservation preparation', () => {
   it('routes GET callbacks through the same no-second-authorization guard', async () => {
     mocks.db.invoice.findFirst.mockResolvedValueOnce({
       id: 'invoice-existing',
+      invoiceNumber: 'INV-existing',
       status: 'PAID',
       total: 100,
       niubizTransactionId: 'transaction-token',
@@ -414,7 +434,9 @@ describe('POST /api/niubiz/checkout reservation preparation', () => {
     )
 
     expect(response.status).toBe(307)
-    expect(response.headers.get('location')).toContain('reservation_pending_review=true')
+    const location = new URL(response.headers.get('location') || '')
+    expect(location.searchParams.get('orderNumber')).toBe('INV-existing')
+    expect(location.searchParams.get('reservation_pending_review')).toBe('true')
     expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
   })
 })

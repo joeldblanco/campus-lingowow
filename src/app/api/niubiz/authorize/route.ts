@@ -72,6 +72,24 @@ const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
 const isPendingOrderExpired = (expiresAt?: Date | null) =>
   Boolean(expiresAt && expiresAt <= new Date())
 
+const isValidAmount = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value) && value > 0
+
+function canonicalizeJson(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonicalizeJson)
+  if (value && typeof value === 'object') {
+    const record = value as Record<string, unknown>
+    return Object.fromEntries(
+      Object.keys(record)
+        .sort()
+        .map((key) => [key, canonicalizeJson(record[key])])
+    )
+  }
+  return value
+}
+
+const canonicalJson = (value: unknown) => JSON.stringify(canonicalizeJson(value)) ?? ''
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth()
@@ -88,7 +106,7 @@ export async function POST(req: NextRequest) {
       customerInfo?: CustomerInfo
     }
 
-    if (!transactionToken || !amount || !orderId) {
+    if (!transactionToken || !isValidAmount(amount) || !orderId) {
       return new NextResponse('Missing required fields', { status: 400 })
     }
 
@@ -172,6 +190,13 @@ export async function POST(req: NextRequest) {
         )
 
     if (!pendingIdentityMatches || Math.abs(pendingOrder.amount - amount) >= 0.0001) {
+      return new NextResponse('Payment request does not match the pending order', { status: 409 })
+    }
+
+    const requestInvoiceData = invoiceData
+      ? { ...invoiceData, customerInfo: customerInfo || null }
+      : null
+    if (canonicalJson(pendingOrder.invoiceData) !== canonicalJson(requestInvoiceData)) {
       return new NextResponse('Payment request does not match the pending order', { status: 409 })
     }
 

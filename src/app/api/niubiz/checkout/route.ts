@@ -138,7 +138,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const requestedAmount = parseFloat(amount)
+    const requestedAmount = Number(amount)
+    if (!Number.isFinite(requestedAmount) || requestedAmount <= 0) {
+      return NextResponse.redirect(
+        new URL('/shop/cart/checkout?niubiz_error=invalid_amount', request.url)
+      )
+    }
 
     // Claim the pending order before contacting Niubiz. A completed/uncertain
     // claim is never authorized again, even if the first request disappeared.
@@ -154,10 +159,13 @@ export async function POST(request: NextRequest) {
       existingInvoice.niubizTransactionId === transactionToken &&
       Math.abs(existingInvoice.total - requestedAmount) < 0.0001
 
-    const redirectToConfirmation = (reservationPendingReview: boolean) => {
+    const redirectToConfirmation = (
+      invoiceNumber: string,
+      reservationPendingReview: boolean
+    ) => {
       const confirmationUrl = new URL('/shop/cart/checkout/confirmation', request.url)
       confirmationUrl.searchParams.set('success', 'true')
-      confirmationUrl.searchParams.set('orderNumber', purchaseNumber)
+      confirmationUrl.searchParams.set('orderNumber', invoiceNumber)
       confirmationUrl.searchParams.set('amount', amount)
       if (reservationPendingReview) {
         confirmationUrl.searchParams.set('reservation_pending_review', 'true')
@@ -173,6 +181,7 @@ export async function POST(request: NextRequest) {
       }
 
       return redirectToConfirmation(
+        existingInvoice.invoiceNumber,
         existingInvoice.notes?.includes(`${RESERVATION_REVIEW_MARKER}:`) ?? false
       )
     }
@@ -221,6 +230,7 @@ export async function POST(request: NextRequest) {
         Math.abs(claimedInvoice.total - requestedAmount) < 0.0001
       ) {
         return redirectToConfirmation(
+          claimedInvoice.invoiceNumber,
           claimedInvoice.notes?.includes(`${RESERVATION_REVIEW_MARKER}:`) ?? false
         )
       }

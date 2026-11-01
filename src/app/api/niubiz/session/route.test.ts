@@ -43,6 +43,10 @@ const invoiceData = {
   currency: 'USD',
 }
 
+function registeredInvoiceData(overrides: Record<string, unknown> = {}) {
+  return { ...invoiceData, customerInfo: { ...customerInfo, ...overrides } }
+}
+
 function request(overrides: Record<string, unknown> = {}) {
   return new NextRequest('http://localhost/api/niubiz/session', {
     method: 'POST',
@@ -67,7 +71,7 @@ function pendingOrder(overrides: Record<string, unknown> = {}) {
     customerName: customerInfo.firstName,
     amount: 100,
     currency: 'USD',
-    invoiceData,
+    invoiceData: registeredInvoiceData(),
     status: 'PENDING',
     expiresAt: new Date(Date.now() + 30 * 60 * 1000),
     ...overrides,
@@ -113,6 +117,15 @@ describe('POST /api/niubiz/session durable order preparation', () => {
     )
   })
 
+  it('rejects a nonnumeric amount before persisting or contacting the provider', async () => {
+    const response = await POST(request({ amount: '100junk' }))
+
+    expect(response.status).toBe(400)
+    expect(await response.text()).toBe('Amount is required')
+    expect(mocks.db.pendingOrder.create).not.toHaveBeenCalled()
+    expect(mocks.getNiubizAccessToken).not.toHaveBeenCalled()
+  })
+
   it('keeps an existing PENDING order and allows a matching session retry', async () => {
     mocks.db.pendingOrder.findUnique.mockResolvedValueOnce(pendingOrder())
 
@@ -122,6 +135,31 @@ describe('POST /api/niubiz/session durable order preparation', () => {
     expect(mocks.db.pendingOrder.create).not.toHaveBeenCalled()
     expect(mocks.getNiubizAccessToken).toHaveBeenCalledTimes(1)
     expect(mocks.createNiubizSession).toHaveBeenCalledTimes(1)
+  })
+
+  it('rejects a matching-amount session retry when fulfillment data changes', async () => {
+    mocks.db.pendingOrder.findUnique.mockResolvedValueOnce(pendingOrder())
+
+    const response = await POST(
+      request({
+        invoiceData: {
+          ...invoiceData,
+          items: [
+            {
+              ...invoiceData.items[0],
+              selectedSchedule: [
+                { teacherId: 'teacher-2', dayOfWeek: 2, startTime: '16:00', endTime: '17:00' },
+              ],
+            },
+          ],
+        },
+      })
+    )
+
+    expect(response.status).toBe(409)
+    expect(await response.text()).toBe('Payment request does not match the pending order')
+    expect(mocks.getNiubizAccessToken).not.toHaveBeenCalled()
+    expect(mocks.createNiubizSession).not.toHaveBeenCalled()
   })
 
   it('does not offer another provider session for an existing invoice', async () => {
