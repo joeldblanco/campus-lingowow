@@ -7,11 +7,12 @@ const mocks = vi.hoisted(() => {
     purchases: [] as Array<Record<string, unknown>>,
     schedules: [] as Array<Record<string, unknown>>,
     bookings: [] as Array<Record<string, unknown>>,
+    pendingStatus: 'PENDING',
   }
   const db = {
-    pendingOrder: { findUnique: vi.fn(), update: vi.fn() },
+    pendingOrder: { findUnique: vi.fn(), update: vi.fn(), updateMany: vi.fn() },
     user: { findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn() },
-    invoice: { create: vi.fn() },
+    invoice: { create: vi.fn(), findFirst: vi.fn() },
     coupon: { update: vi.fn() },
     academicPeriod: { findMany: vi.fn() },
     plan: { findUnique: vi.fn() },
@@ -20,7 +21,7 @@ const mocks = vi.hoisted(() => {
     classSchedule: { findUnique: vi.fn(), create: vi.fn() },
     classBooking: { findFirst: vi.fn(), create: vi.fn() },
     $transaction: vi.fn(),
-    $executeRaw: vi.fn(),
+    $queryRaw: vi.fn(),
   }
   return {
     state,
@@ -64,7 +65,7 @@ vi.mock('@/lib/utils/date', () => ({
   })),
 }))
 
-import { POST } from './route'
+import { GET, POST } from './route'
 
 const invoiceData = {
   items: [
@@ -103,7 +104,10 @@ function request() {
 }
 
 function resetHarness() {
-  for (const values of Object.values(mocks.state)) values.splice(0)
+  for (const key of ['invoices', 'purchases', 'schedules', 'bookings'] as const) {
+    mocks.state[key].splice(0)
+  }
+  mocks.state.pendingStatus = 'PENDING'
   vi.clearAllMocks()
 
   mocks.getNiubizAccessToken.mockResolvedValue('access-token')
@@ -124,10 +128,28 @@ function resetHarness() {
     userId: 'student-1',
     customerEmail: 'student@example.com',
     customerName: 'Student',
-    status: 'PENDING',
+    amount: 100,
+    status: mocks.state.pendingStatus,
     invoiceData,
   })
   mocks.db.pendingOrder.update.mockResolvedValue({})
+  mocks.db.pendingOrder.findUnique.mockImplementation(async () => ({
+    id: 'pending-1',
+    purchaseNumber: 'order-1',
+    userId: 'student-1',
+    customerEmail: 'student@example.com',
+    customerName: 'Student',
+    amount: 100,
+    status: mocks.state.pendingStatus,
+    invoiceData,
+  }))
+  mocks.db.pendingOrder.updateMany.mockImplementation(
+    async ({ where, data }: { where: { status: string }; data: { status: string } }) => {
+      if (mocks.state.pendingStatus !== where.status) return { count: 0 }
+      mocks.state.pendingStatus = data.status
+      return { count: 1 }
+    }
+  )
   mocks.db.invoice.create.mockImplementation(
     async ({ data }: { data: Record<string, unknown> }) => {
       const invoice = { id: 'invoice-1', ...data, notes: data.notes }
@@ -135,6 +157,7 @@ function resetHarness() {
       return { ...invoice, items: [] }
     }
   )
+  mocks.db.invoice.findFirst.mockImplementation(async () => mocks.state.invoices[0] || null)
   mocks.db.coupon.update.mockResolvedValue({})
   mocks.db.academicPeriod.findMany.mockResolvedValue([
     {
@@ -181,7 +204,7 @@ function resetHarness() {
       return { id: `booking-${mocks.state.bookings.length}`, ...data }
     }
   )
-  mocks.db.$executeRaw.mockImplementation(
+  mocks.db.$queryRaw.mockImplementation(
     async (_query: TemplateStringsArray, ...values: unknown[]) => {
       const marker = values.find(
         (value): value is string =>
@@ -191,7 +214,7 @@ function resetHarness() {
         const invoice = mocks.state.invoices[0]
         invoice.notes = invoice.notes ? `${invoice.notes}; ${marker}` : marker
       }
-      return 1
+      return [{ id: 'invoice-1', notes: mocks.state.invoices[0].notes, status: 'PAID' }]
     }
   )
   mocks.db.$transaction.mockImplementation(
@@ -252,6 +275,100 @@ describe('POST /api/niubiz/checkout reservation preparation', () => {
     expect(mocks.notifySelfServiceEnrollmentCreated).toHaveBeenCalledWith('enrollment-1')
   })
 
+  it('replays a reviewed payment without a second provider authorization', async () => {
+    mocks.db.classBooking.create.mockRejectedValueOnce(
+      Object.assign(new Error('unique conflict'), { code: 'P2002' })
+    )
+
+    const firstResponse = await POST(request())
+    expect(firstResponse.headers.get('location')).toContain('reservation_pending_review=true')
+    expect(mocks.state.pendingStatus).toBe('COMPLETED')
+    expect(mocks.authorizeNiubizTransaction).toHaveBeenCalledTimes(1)
+
+    const secondResponse = await POST(request())
+
+    expect(secondResponse.status).toBe(307)
+    expect(secondResponse.headers.get('location')).toContain('reservation_pending_review=true')
+    expect(mocks.authorizeNiubizTransaction).toHaveBeenCalledTimes(1)
+  })
+
+  it('rejects a changed amount for a reused order without exposing invoice data', async () => {
+    mocks.db.invoice.findFirst.mockResolvedValueOnce({
+      id: 'invoice-existing',
+      status: 'PAID',
+      total: 100,
+      niubizTransactionId: 'transaction-token',
+      notes: 'private invoice notes',
+      items: [{ id: 'private-item' }],
+    })
+
+    const response = await POST(
+      new NextRequest('http://localhost/api/niubiz/checkout?purchaseNumber=order-1&amount=99', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ transactionToken: 'transaction-token' }),
+      })
+    )
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toContain('niubiz_error=already_processed')
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects a changed amount before claiming a still-pending order', async () => {
+    const response = await POST(
+      new NextRequest('http://localhost/api/niubiz/checkout?purchaseNumber=order-1&amount=99', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ transactionToken: 'different-token' }),
+      })
+    )
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toContain('niubiz_error=already_processed')
+    expect(mocks.db.pendingOrder.updateMany).not.toHaveBeenCalled()
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
+  })
+
+  it('rejects an expired pending order before provider authorization', async () => {
+    mocks.db.pendingOrder.findUnique.mockResolvedValueOnce({
+      id: 'pending-1',
+      purchaseNumber: 'order-1',
+      userId: 'student-1',
+      customerEmail: 'student@example.com',
+      customerName: 'Student',
+      amount: 100,
+      status: 'PENDING',
+      invoiceData,
+      expiresAt: new Date(Date.now() - 1_000),
+    })
+
+    const response = await POST(request())
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toContain('niubiz_error=already_processed')
+    expect(mocks.db.pendingOrder.updateMany).not.toHaveBeenCalled()
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
+  })
+
+  it('refuses a concurrent claimant before provider authorization', async () => {
+    mocks.db.pendingOrder.updateMany
+      .mockResolvedValueOnce({ count: 1 })
+      .mockResolvedValueOnce({ count: 0 })
+
+    const [firstResponse, secondResponse] = await Promise.all([POST(request()), POST(request())])
+
+    expect([firstResponse.status, secondResponse.status]).toEqual([307, 307])
+    const locations = [firstResponse, secondResponse].map(
+      (response) => response.headers.get('location') || ''
+    )
+    expect(locations.some((location) => location.includes('niubiz_error=already_processed'))).toBe(
+      true
+    )
+    expect(mocks.getNiubizAccessToken).toHaveBeenCalledTimes(1)
+    expect(mocks.authorizeNiubizTransaction).toHaveBeenCalledTimes(1)
+  })
+
   it('does not create an invoice when provider authorization is declined', async () => {
     mocks.authorizeNiubizTransaction.mockResolvedValueOnce({
       dataMap: { ACTION_CODE: '101', ACTION_DESCRIPTION: 'Declined' },
@@ -272,6 +389,32 @@ describe('POST /api/niubiz/checkout reservation preparation', () => {
     expect(response.status).toBe(307)
     expect(response.headers.get('location')).toContain('niubiz_error=server_error')
     expect(mocks.db.invoice.create).not.toHaveBeenCalled()
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
+    expect(mocks.state.pendingStatus).toBe('COMPLETED')
+
+    const replay = await POST(request())
+    expect(replay.headers.get('location')).toContain('niubiz_error=already_processed')
+    expect(mocks.getNiubizAccessToken).toHaveBeenCalledTimes(1)
+  })
+
+  it('routes GET callbacks through the same no-second-authorization guard', async () => {
+    mocks.db.invoice.findFirst.mockResolvedValueOnce({
+      id: 'invoice-existing',
+      status: 'PAID',
+      total: 100,
+      niubizTransactionId: 'transaction-token',
+      notes: 'reviewed; reservation_pending_review:schedule_conflict',
+      items: [],
+    })
+
+    const response = await GET(
+      new NextRequest(
+        'http://localhost/api/niubiz/checkout?purchaseNumber=order-1&amount=100&transactionToken=transaction-token'
+      )
+    )
+
+    expect(response.status).toBe(307)
+    expect(response.headers.get('location')).toContain('reservation_pending_review=true')
     expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
   })
 })

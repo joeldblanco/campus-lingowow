@@ -11,6 +11,7 @@ import {
 import {
   classifyReservationReviewReason,
   persistReservationReview,
+  RESERVATION_REVIEW_MARKER,
 } from '@/lib/enrollments/paid-reservation-review'
 import {
   DEFAULT_TEACHER_TIMEZONE,
@@ -67,6 +68,9 @@ const hasRequiredBillingInfo = (customerInfo?: CustomerInfo | null) => {
     customerInfo?.zipCode?.trim()
   )
 }
+
+const isPendingOrderExpired = (expiresAt?: Date | null) =>
+  Boolean(expiresAt && expiresAt <= new Date())
 
 // This endpoint receives the POST from Niubiz after 3DS authentication
 // Niubiz sends transactionToken in the body as application/x-www-form-urlencoded
@@ -134,13 +138,106 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const requestedAmount = parseFloat(amount)
+
+    // Claim the pending order before contacting Niubiz. A completed/uncertain
+    // claim is never authorized again, even if the first request disappeared.
+    const pendingOrder = await db.pendingOrder.findUnique({ where: { purchaseNumber } })
+    let pendingOrderClaimed = false
+    const existingInvoice = await db.invoice.findFirst({
+      where: { niubizOrderId: purchaseNumber },
+      include: { items: true },
+    })
+
+    const matchingPaidInvoice =
+      existingInvoice?.status === 'PAID' &&
+      existingInvoice.niubizTransactionId === transactionToken &&
+      Math.abs(existingInvoice.total - requestedAmount) < 0.0001
+
+    const redirectToConfirmation = (reservationPendingReview: boolean) => {
+      const confirmationUrl = new URL('/shop/cart/checkout/confirmation', request.url)
+      confirmationUrl.searchParams.set('success', 'true')
+      confirmationUrl.searchParams.set('orderNumber', purchaseNumber)
+      confirmationUrl.searchParams.set('amount', amount)
+      if (reservationPendingReview) {
+        confirmationUrl.searchParams.set('reservation_pending_review', 'true')
+      }
+      return NextResponse.redirect(confirmationUrl)
+    }
+
+    if (existingInvoice) {
+      if (!matchingPaidInvoice) {
+        return NextResponse.redirect(
+          new URL('/shop/cart/checkout?niubiz_error=already_processed', request.url)
+        )
+      }
+
+      return redirectToConfirmation(
+        existingInvoice.notes?.includes(`${RESERVATION_REVIEW_MARKER}:`) ?? false
+      )
+    }
+
+    if (!pendingOrder) {
+      return NextResponse.redirect(
+        new URL('/shop/cart/checkout?niubiz_error=missing_order', request.url)
+      )
+    }
+
+    if (pendingOrder.status !== 'PENDING' || isPendingOrderExpired(pendingOrder.expiresAt)) {
+      return NextResponse.redirect(
+        new URL('/shop/cart/checkout?niubiz_error=already_processed', request.url)
+      )
+    }
+
+    if (Math.abs(pendingOrder.amount - requestedAmount) >= 0.0001) {
+      return NextResponse.redirect(
+        new URL('/shop/cart/checkout?niubiz_error=already_processed', request.url)
+      )
+    }
+
+    const pendingInvoiceData = pendingOrder.invoiceData as unknown as InvoiceData
+    if (!hasRequiredBillingInfo(pendingInvoiceData.customerInfo)) {
+      return NextResponse.redirect(
+        new URL('/shop/cart/checkout?niubiz_error=missing_billing_info', request.url)
+      )
+    }
+
+    const claim = await db.pendingOrder.updateMany({
+      where: { id: pendingOrder.id, status: 'PENDING' },
+      data: { status: 'COMPLETED' },
+    })
+
+    if (claim.count !== 1) {
+      const claimedInvoice = await db.invoice
+        .findFirst({
+          where: { niubizOrderId: purchaseNumber },
+          include: { items: true },
+        })
+        .catch(() => null)
+
+      if (
+        claimedInvoice?.status === 'PAID' &&
+        claimedInvoice.niubizTransactionId === transactionToken &&
+        Math.abs(claimedInvoice.total - requestedAmount) < 0.0001
+      ) {
+        return redirectToConfirmation(
+          claimedInvoice.notes?.includes(`${RESERVATION_REVIEW_MARKER}:`) ?? false
+        )
+      }
+
+      return NextResponse.redirect(
+        new URL('/shop/cart/checkout?niubiz_error=already_processed', request.url)
+      )
+    }
+    pendingOrderClaimed = true
+
     // Get access token for authorization
     const accessToken = await getNiubizAccessToken()
 
     // Authorize the transaction with Niubiz
     const authorization = await authorizeNiubizTransaction(
       transactionToken,
-      parseFloat(amount),
+      requestedAmount,
       purchaseNumber,
       accessToken
     )
@@ -155,6 +252,12 @@ export async function POST(request: NextRequest) {
     if (actionCode !== '000') {
       const errorMessage = authorization?.dataMap?.ACTION_DESCRIPTION || 'Pago denegado'
       console.error('[NIUBIZ CHECKOUT] Authorization failed:', errorMessage)
+      if (pendingOrderClaimed) {
+        await db.pendingOrder.updateMany({
+          where: { id: pendingOrder.id, status: 'COMPLETED' },
+          data: { status: 'PENDING' },
+        })
+      }
       return NextResponse.redirect(
         new URL(
           `/shop/cart/checkout?niubiz_error=auth_failed&message=${encodeURIComponent(errorMessage)}`,
@@ -165,13 +268,6 @@ export async function POST(request: NextRequest) {
 
     // Payment successful - Now create invoice and enrollment
     console.log('[NIUBIZ CHECKOUT] Payment successful, processing order...')
-
-    // Get pending order data
-    const pendingOrder = await db.pendingOrder
-      .findUnique({
-        where: { purchaseNumber },
-      })
-      .catch(() => null)
 
     let invoiceNumber = `INV-${purchaseNumber}`
     let reservationPendingReview = false
@@ -632,31 +728,17 @@ export async function GET(request: NextRequest) {
   })
 
   if (transactionToken) {
-    // If we got a transactionToken via GET, process it
     const purchaseNumber = searchParams.get('purchaseNumber')
     const amount = searchParams.get('amount')
 
     if (purchaseNumber && amount) {
-      try {
-        const accessToken = await getNiubizAccessToken()
-        const authorization = await authorizeNiubizTransaction(
-          transactionToken,
-          parseFloat(amount),
-          purchaseNumber,
-          accessToken
-        )
-
-        const actionCode = authorization?.dataMap?.ACTION_CODE
-        if (actionCode === '000') {
-          const confirmationUrl = new URL('/shop/cart/checkout/confirmation', request.url)
-          confirmationUrl.searchParams.set('success', 'true')
-          confirmationUrl.searchParams.set('orderNumber', purchaseNumber)
-          confirmationUrl.searchParams.set('amount', amount)
-          return NextResponse.redirect(confirmationUrl)
-        }
-      } catch (error) {
-        console.error('[NIUBIZ CHECKOUT] GET authorization error:', error)
-      }
+      return POST(
+        new NextRequest(request.url, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ transactionToken }),
+        })
+      )
     }
   }
 

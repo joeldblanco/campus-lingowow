@@ -16,6 +16,7 @@ interface CustomerInfo {
 
 interface InvoiceData {
   currency?: string
+  total?: number
 }
 
 const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
@@ -24,6 +25,69 @@ const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
       customerInfo?.city?.trim() &&
       customerInfo?.country?.trim() &&
       customerInfo?.zipCode?.trim()
+  )
+}
+
+const amountsMatch = (left: number, right: number) =>
+  Number.isFinite(left) && Number.isFinite(right) && Math.abs(left - right) < 0.0001
+
+const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || null
+
+const isUniqueConstraintError = (error: unknown) =>
+  typeof error === 'object' &&
+  error !== null &&
+  'code' in error &&
+  (error as { code?: string }).code === 'P2002'
+
+type PendingOrderCheck = 'mismatch' | 'unavailable' | null
+
+function checkExistingPendingOrder(
+  pendingOrder: {
+    status: string
+    expiresAt: Date
+    userId: string | null
+    customerEmail: string | null
+    amount: number
+    currency: string
+  },
+  input: {
+    amount: number
+    currency: string
+    signedInUserId?: string
+    customerEmail: string | null
+  }
+): PendingOrderCheck {
+  if (pendingOrder.status !== 'PENDING' || pendingOrder.expiresAt <= new Date()) {
+    return 'unavailable'
+  }
+
+  if (
+    !amountsMatch(pendingOrder.amount, input.amount) ||
+    pendingOrder.currency.toUpperCase() !== input.currency
+  ) {
+    return 'mismatch'
+  }
+
+  const storedEmail = normalizeEmail(pendingOrder.customerEmail)
+  if (storedEmail && storedEmail !== input.customerEmail) {
+    return 'mismatch'
+  }
+
+  if (pendingOrder.userId) {
+    return pendingOrder.userId === input.signedInUserId ? null : 'mismatch'
+  }
+
+  return !input.signedInUserId && Boolean(storedEmail) && storedEmail === input.customerEmail
+    ? null
+    : 'mismatch'
+}
+
+function pendingOrderError(check: Exclude<PendingOrderCheck, null>) {
+  return new NextResponse(
+    check === 'unavailable'
+      ? 'Payment request is already being processed'
+      : 'Payment request does not match the pending order',
+    { status: 409 }
   )
 }
 
@@ -52,16 +116,29 @@ export async function POST(req: Request) {
       return new NextResponse('Billing address is required for card payments', { status: 400 })
     }
 
-    // 1. Get Access Token
-    const accessToken = await getNiubizAccessToken()
+    if (Boolean(purchaseNumber) !== Boolean(invoiceData)) {
+      return new NextResponse('Purchase number and invoice data are required together', {
+        status: 400,
+      })
+    }
 
-    // 2. Create Session
-    const niubizSession = await createNiubizSession(amount, accessToken)
-    console.log('[NIUBIZ_SESSION_DEBUG] Created session for Merchant:', niubizSession.merchantId)
+    if (invoiceData?.total !== undefined && !amountsMatch(invoiceData.total, amount)) {
+      return new NextResponse('Payment amount does not match the order', { status: 400 })
+    }
 
-    // 3. Save pending order data if provided (for 3DS redirect flow)
+    // Register the order before opening a provider session. The status is the
+    // durable pre-authorization claim used by the callbacks; never delete or
+    // overwrite a claimed/non-PENDING record.
     if (purchaseNumber && invoiceData) {
       console.log('[NIUBIZ_SESSION] Saving pending order:', purchaseNumber)
+
+      const existingInvoice = await db.invoice.findFirst({
+        where: { niubizOrderId: purchaseNumber },
+        select: { id: true },
+      })
+      if (existingInvoice) {
+        return new NextResponse('Payment request is already being processed', { status: 409 })
+      }
 
       const pendingInvoiceData = JSON.parse(
         JSON.stringify({
@@ -70,32 +147,57 @@ export async function POST(req: Request) {
         })
       ) as Prisma.InputJsonObject
 
-      // Delete any existing pending order with same purchaseNumber
-      await db.pendingOrder
-        .deleteMany({
-          where: { purchaseNumber },
-        })
-        .catch(() => {}) // Ignore if table doesn't exist yet
+      const requestCurrency = (invoiceData.currency || 'USD').toUpperCase()
+      const requestEmail = normalizeEmail(customerInfo?.email)
+      const requestUserId = session?.user?.id
+      let pendingOrder = await db.pendingOrder.findUnique({ where: { purchaseNumber } })
 
-      // Create new pending order
-      await db.pendingOrder
-        .create({
-          data: {
-            purchaseNumber,
-            userId: session?.user?.id || null,
-            customerEmail: customerInfo?.email || null,
-            customerName: customerInfo?.firstName || null,
+      if (pendingOrder) {
+        const check = checkExistingPendingOrder(pendingOrder, {
+          amount,
+          currency: requestCurrency,
+          signedInUserId: requestUserId,
+          customerEmail: requestEmail,
+        })
+        if (check) return pendingOrderError(check)
+      } else {
+        try {
+          pendingOrder = await db.pendingOrder.create({
+            data: {
+              purchaseNumber,
+              userId: requestUserId || null,
+              customerEmail: customerInfo?.email || null,
+              customerName: customerInfo?.firstName || null,
+              amount,
+              currency: requestCurrency,
+              invoiceData: pendingInvoiceData,
+              status: 'PENDING',
+              expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+            },
+          })
+        } catch (error) {
+          if (!isUniqueConstraintError(error)) throw error
+
+          // Another session request won the unique purchase-number race. Bind
+          // this request to the record that actually exists; never overwrite it.
+          pendingOrder = await db.pendingOrder.findUnique({ where: { purchaseNumber } })
+          if (!pendingOrder) throw error
+
+          const check = checkExistingPendingOrder(pendingOrder, {
             amount,
-            currency: invoiceData.currency || 'USD',
-            invoiceData: pendingInvoiceData,
-            status: 'PENDING',
-            expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
-          },
-        })
-        .catch((err) => {
-          console.error('[NIUBIZ_SESSION] Error saving pending order:', err)
-        })
+            currency: requestCurrency,
+            signedInUserId: requestUserId,
+            customerEmail: requestEmail,
+          })
+          if (check) return pendingOrderError(check)
+        }
+      }
     }
+
+    // Only offer the provider session after the local order record is durable.
+    const accessToken = await getNiubizAccessToken()
+    const niubizSession = await createNiubizSession(amount, accessToken)
+    console.log('[NIUBIZ_SESSION_DEBUG] Created session for Merchant:', niubizSession.merchantId)
 
     return NextResponse.json(niubizSession)
   } catch (error) {

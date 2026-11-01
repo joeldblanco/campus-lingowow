@@ -5,7 +5,7 @@ export const RESERVATION_REVIEW_MARKER = 'reservation_pending_review'
 export type ReservationReviewReason = 'schedule_conflict' | 'scheduling_failed'
 
 type InvoiceUpdateClient = {
-  $executeRaw(query: TemplateStringsArray, ...values: unknown[]): Promise<number>
+  $queryRaw<T = unknown>(query: TemplateStringsArray, ...values: unknown[]): Promise<T>
 }
 
 export function appendReservationReviewMarker(
@@ -47,17 +47,23 @@ export async function persistReservationReview<T extends Pick<Invoice, 'id' | 'n
   invoice: T,
   reason: ReservationReviewReason
 ): Promise<T & { notes: string }> {
-  const notes = appendReservationReviewMarker(invoice.notes, reason)
+  const marker = appendReservationReviewMarker(null, reason)
 
-  await client.$executeRaw`
+  const rows = await client.$queryRaw<Array<{ id: string; notes: string | null; status: string }>>`
     UPDATE "invoices"
     SET "notes" = CASE
-      WHEN "notes" IS NULL OR "notes" = '' THEN ${notes}
+      WHEN "notes" IS NULL OR "notes" = '' THEN ${marker}
       WHEN POSITION(${`${RESERVATION_REVIEW_MARKER}:`} IN "notes") > 0 THEN "notes"
-      ELSE "notes" || '; ' || ${notes}
+      ELSE "notes" || '; ' || ${marker}
     END
-    WHERE "id" = ${invoice.id}
+    WHERE "id" = ${invoice.id} AND "status" = 'PAID'
+    RETURNING "id", "notes", "status"
   `
 
-  return { ...invoice, notes }
+  const updatedInvoice = rows[0]
+  if (!updatedInvoice || updatedInvoice.status !== 'PAID') {
+    throw new Error('reservation_review_invoice_not_paid')
+  }
+
+  return { ...invoice, notes: updatedInvoice.notes ?? marker }
 }

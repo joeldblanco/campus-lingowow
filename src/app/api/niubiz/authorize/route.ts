@@ -12,6 +12,7 @@ import {
 import {
   classifyReservationReviewReason,
   persistReservationReview,
+  RESERVATION_REVIEW_MARKER,
 } from '@/lib/enrollments/paid-reservation-review'
 import {
   DEFAULT_TEACHER_TIMEZONE,
@@ -68,6 +69,9 @@ const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
   )
 }
 
+const isPendingOrderExpired = (expiresAt?: Date | null) =>
+  Boolean(expiresAt && expiresAt <= new Date())
+
 export async function POST(req: NextRequest) {
   try {
     const session = await auth()
@@ -92,30 +96,108 @@ export async function POST(req: NextRequest) {
       return new NextResponse('Billing address is required for card payments', { status: 400 })
     }
 
-    // Determine user ID
-    let userId = session?.user?.id
+    // Determine user ID without creating a guest until the order claim succeeds.
+    const signedInUserId = session?.user?.id
+    let userId = signedInUserId
 
     // If no user but customerInfo aka GUEST
     if (!userId && customerInfo) {
-      // Check if user exists by email first?
       const existingUser = await db.user.findUnique({
         where: { email: customerInfo.email },
+        select: { id: true },
       })
 
       if (existingUser) {
         userId = existingUser.id
-      } else {
-        // Create guest user
-        const guestUser = await db.user.create({
-          data: {
-            name: customerInfo.firstName,
-            lastName: customerInfo.lastName,
-            email: customerInfo.email,
-            roles: ['GUEST'],
-          },
-        })
-        userId = guestUser.id
       }
+    }
+
+    const existingInvoice = await db.invoice.findFirst({
+      where: { niubizOrderId: orderId },
+      include: { items: true },
+    })
+
+    const matchingPaidInvoice =
+      existingInvoice?.status === 'PAID' &&
+      existingInvoice.userId === userId &&
+      existingInvoice.niubizTransactionId === transactionToken &&
+      Math.abs(existingInvoice.total - amount) < 0.0001
+
+    if (existingInvoice) {
+      if (!matchingPaidInvoice) {
+        return new NextResponse('Payment already processed', { status: 409 })
+      }
+
+      const reservationPendingReview = existingInvoice.notes?.includes(
+        `${RESERVATION_REVIEW_MARKER}:`
+      )
+
+      return NextResponse.json({
+        success: true,
+        replayed: true,
+        authorization: null,
+        cardToken: null,
+        orderId,
+        // Replays only need the public confirmation identifier. Do not return
+        // the stored billing address, notes, items, or user relation again.
+        invoice: {
+          invoiceNumber: existingInvoice.invoiceNumber,
+          status: existingInvoice.status,
+          total: existingInvoice.total,
+          currency: existingInvoice.currency,
+          paymentMethod: existingInvoice.paymentMethod,
+        },
+        purchases: [],
+        needsScheduleSetup: reservationPendingReview,
+        reservation_pending_review: reservationPendingReview,
+        enrollments: [],
+      })
+    }
+
+    const pendingOrder = await db.pendingOrder.findUnique({ where: { purchaseNumber: orderId } })
+    let pendingOrderClaimed = false
+
+    if (pendingOrder) {
+      const pendingIdentityMatches = pendingOrder.userId
+        ? pendingOrder.userId === userId
+        : Boolean(
+            !signedInUserId &&
+            customerInfo?.email &&
+            pendingOrder.customerEmail &&
+            customerInfo.email.trim().toLowerCase() ===
+              pendingOrder.customerEmail.trim().toLowerCase()
+          )
+
+      if (!pendingIdentityMatches || Math.abs(pendingOrder.amount - amount) >= 0.0001) {
+        return new NextResponse('Payment request does not match the pending order', { status: 409 })
+      }
+
+      if (pendingOrder.status !== 'PENDING' || isPendingOrderExpired(pendingOrder.expiresAt)) {
+        return new NextResponse('Payment request is already being processed', { status: 409 })
+      }
+
+      const claim = await db.pendingOrder.updateMany({
+        where: { id: pendingOrder.id, status: 'PENDING' },
+        data: { status: 'COMPLETED' },
+      })
+
+      if (claim.count !== 1) {
+        return new NextResponse('Payment request is already being processed', { status: 409 })
+      }
+
+      pendingOrderClaimed = true
+    }
+
+    if (!userId && customerInfo) {
+      const guestUser = await db.user.create({
+        data: {
+          name: customerInfo.firstName,
+          lastName: customerInfo.lastName,
+          email: customerInfo.email,
+          roles: ['GUEST'],
+        },
+      })
+      userId = guestUser.id
     }
 
     if (!userId) {
@@ -135,6 +217,12 @@ export async function POST(req: NextRequest) {
     // Check if authorization was successful
     // ACTION_CODE "000" means Approved usually
     if (authorization?.dataMap?.ACTION_CODE !== '000') {
+      if (pendingOrderClaimed && pendingOrder) {
+        await db.pendingOrder.updateMany({
+          where: { id: pendingOrder.id, status: 'COMPLETED' },
+          data: { status: 'PENDING' },
+        })
+      }
       throw new Error(
         `Niubiz Payment Failed: ${authorization?.dataMap?.ACTION_DESCRIPTION || 'Unknown error'}`
       )
@@ -479,6 +567,7 @@ export async function POST(req: NextRequest) {
       } catch (error) {
         reservationPendingReview = true
         purchases = []
+        newlyCreatedEnrollmentIds = []
         needsScheduleSetup = true
         invoice = await persistReservationReview(
           db,
