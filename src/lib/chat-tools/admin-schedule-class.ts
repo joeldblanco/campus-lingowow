@@ -73,14 +73,6 @@ export async function handleAdminScheduleClass(params: {
     // must not silently reinterpret the admin's requested time.
     const scheduleTimezone = adminTimezone || student.timezone || 'America/Lima'
 
-    if (student.roles.includes(UserRole.GUEST) && !student.roles.includes(UserRole.STUDENT)) {
-      await db.user.update({
-        where: { id: student.id },
-        data: { roles: { push: UserRole.STUDENT } },
-      })
-      console.log(`[AdminScheduleClass] Promoted GUEST "${student.name}" to STUDENT`)
-    }
-
     const now = new Date()
 
     const enrollment = await db.enrollment.findFirst({
@@ -264,6 +256,14 @@ export async function handleAdminScheduleClass(params: {
       }
 
       cursor.setDate(cursor.getDate() + 1)
+    }
+
+    if (scheduledCount > 0 && student.roles.includes(UserRole.GUEST) && !student.roles.includes(UserRole.STUDENT)) {
+      await db.user.update({
+        where: { id: student.id },
+        data: { roles: { push: UserRole.STUDENT } },
+      })
+      console.log(`[AdminScheduleClass] Promoted GUEST "${student.name}" to STUDENT`)
     }
 
     if (scheduledCount === 0) {

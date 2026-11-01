@@ -31,14 +31,14 @@ const STUDENT = {
   timezone: 'America/New_York',
 }
 
-function mockUserFindFirst() {
+function mockUserFindFirst(student = STUDENT) {
   // Resolves the student lookup, the teacher-by-id attempt (no match), and the
   // teacher-by-email lookup, based on the where clause shape.
   vi.mocked(db.user.findFirst).mockImplementation((async (args: { where: Record<string, unknown> }) => {
     const where = args.where
     if (where.id) return null // teacher-by-id attempt with an email string → no match
     const email = (where.email as { equals?: string } | undefined)?.equals
-    if (email === 'student@x.com') return STUDENT
+    if (email === 'student@x.com') return student
     if (email === 'teacher@x.com') return { id: 'teacher-1' }
     return null
   }) as never)
@@ -112,5 +112,43 @@ describe('handleAdminScheduleClass', () => {
     expect(result.success).toBe(true)
     expect(db.classBooking.create).toHaveBeenCalledTimes(1)
     expect((result.data as { scheduledCount: number }).scheduledCount).toBe(1)
+  })
+
+  it('promotes a guest only after at least one booking succeeds', async () => {
+    const guestStudent = { ...STUDENT, roles: ['GUEST'] }
+    mockUserFindFirst(guestStudent)
+
+    const result = await handleAdminScheduleClass({
+      studentNameOrEmail: 'student@x.com',
+      teacherNameOrEmail: 'teacher@x.com',
+      slots: [{ dayOfWeek: 'wednesday', localTime: '19:00' }],
+      adminTimezone: 'America/Lima',
+    })
+
+    expect(result.success).toBe(true)
+    expect(db.user.update).toHaveBeenCalledWith({
+      where: { id: 'student-1' },
+      data: { roles: { push: 'STUDENT' } },
+    })
+    expect(vi.mocked(db.user.update).mock.invocationCallOrder[0]).toBeGreaterThan(
+      vi.mocked(db.classBooking.create).mock.invocationCallOrder[0]
+    )
+  })
+
+  it('does not promote a guest when every requested booking is skipped', async () => {
+    const guestStudent = { ...STUDENT, roles: ['GUEST'] }
+    mockUserFindFirst(guestStudent)
+    vi.mocked(db.teacherAvailability.findMany).mockResolvedValue([])
+
+    const result = await handleAdminScheduleClass({
+      studentNameOrEmail: 'student@x.com',
+      teacherNameOrEmail: 'teacher@x.com',
+      slots: [{ dayOfWeek: 'wednesday', localTime: '19:00' }],
+      adminTimezone: 'America/Lima',
+    })
+
+    expect(result.success).toBe(false)
+    expect(db.classBooking.create).not.toHaveBeenCalled()
+    expect(db.user.update).not.toHaveBeenCalled()
   })
 })
