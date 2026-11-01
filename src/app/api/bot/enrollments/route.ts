@@ -6,6 +6,15 @@ import { EnrollmentStatus } from '@prisma/client'
 import { verifyPaypalTransaction, createInvoiceFromPaypal } from '@/lib/actions/commercial'
 import { notifySelfServiceEnrollmentCreated } from '@/lib/enrollments/self-service-enrollment'
 
+class EnrollmentRequestError extends Error {
+  constructor(
+    readonly status: number,
+    readonly payload: Record<string, unknown>
+  ) {
+    super('Enrollment request failed')
+  }
+}
+
 /**
  * GET /api/bot/enrollments
  * List enrollments with filters
@@ -201,30 +210,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'academicPeriodId es requerido' }, { status: 400 })
     }
 
-    // 1. Find or create student
-    let student = await db.user.findUnique({
-      where: { email: studentEmail },
-    })
-
-    if (!student) {
-      if (!studentName) {
-        return NextResponse.json(
-          { error: 'studentName es requerido cuando el estudiante no existe en el sistema' },
-          { status: 400 }
-        )
-      }
-      student = await db.user.create({
-        data: {
-          email: studentEmail,
-          name: studentName,
-          lastName: studentLastName || null,
-          roles: ['STUDENT'],
-          status: 'ACTIVE',
-        },
-      })
-    }
-
-    // 2. Verify course exists
+    // Verify course exists before opening the write transaction.
     const course = await db.course.findUnique({
       where: { id: courseId },
       select: { id: true, title: true, classDuration: true, isSynchronous: true },
@@ -233,7 +219,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Curso no encontrado' }, { status: 404 })
     }
 
-    // 3. Verify academic period exists
+    // Verify academic period exists before opening the write transaction.
     const academicPeriod = await db.academicPeriod.findUnique({
       where: { id: academicPeriodId },
     })
@@ -241,42 +227,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Período académico no encontrado' }, { status: 404 })
     }
 
-    // 4. Check for duplicate enrollment
-    const existingEnrollment = await db.enrollment.findUnique({
-      where: {
-        studentId_courseId_academicPeriodId: {
-          studentId: student.id,
-          courseId,
-          academicPeriodId,
-        },
-      },
-    })
-    if (existingEnrollment) {
-      return NextResponse.json(
-        {
-          error: 'El estudiante ya está inscrito en este curso para este período académico',
-          existingEnrollmentId: existingEnrollment.id,
-        },
-        { status: 409 }
-      )
-    }
-
-    // 5. Verify teacher exists (if provided)
-    const resolvedTeacherId = teacherId
-    if (teacherId) {
-      const teacher = await db.user.findUnique({
-        where: { id: teacherId },
-        select: { id: true, roles: true },
-      })
-      if (!teacher || !teacher.roles.includes('TEACHER')) {
-        return NextResponse.json(
-          { error: 'Profesor no encontrado o no tiene rol TEACHER' },
-          { status: 404 }
-        )
-      }
-    }
-
-    // 6. Verify PayPal transaction if provided
+    // Verify the external payment before opening the write transaction.
     let paypalData = null
     if (paypalOrderId) {
       const paypalCheck = await verifyPaypalTransaction(paypalOrderId)
@@ -287,24 +238,10 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      // Check if invoice already exists
-      const existingInvoice = await db.invoice.findFirst({
-        where: { paypalOrderId },
-      })
-      if (existingInvoice) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'Este pago de PayPal ya está asociado a otra factura/inscripción',
-          },
-          { status: 409 }
-        )
-      }
-
       paypalData = paypalCheck.data
     }
 
-    // 7. Determine enrollment status based on period dates
+    // Determine enrollment status from the already verified period.
     const now = new Date()
     let enrollmentStatus: EnrollmentStatus
     if (academicPeriod.startDate > now) {
@@ -315,138 +252,185 @@ export async function POST(request: NextRequest) {
       enrollmentStatus = EnrollmentStatus.ACTIVE
     }
 
-    // 8. Create enrollment
-    const enrollment = await db.enrollment.create({
-      data: {
-        studentId: student.id,
-        courseId,
-        academicPeriodId,
-        teacherId: resolvedTeacherId || null,
-        status: enrollmentStatus,
-        progress: 0,
-        classesTotal: classesTotal || scheduledClasses?.length || 8,
-        classesAttended: 0,
-        classesMissed: 0,
-        enrollmentType: 'MANUAL',
-        notes: notes || null,
-      },
-    })
-
-    // 9. Create invoice from PayPal if applicable
-    if (paypalData) {
-      const invoiceResult = await createInvoiceFromPaypal(paypalData, student.id)
-      if (!invoiceResult.success) {
-        // Rollback enrollment
-        await db.enrollment.delete({ where: { id: enrollment.id } })
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'Error al generar la factura. La inscripción ha sido revertida.',
-          },
-          { status: 500 }
-        )
-      }
-    }
-
-    // 10. Create weekly schedule if provided
-    let schedulesCreated = 0
-    if (weeklySchedule && weeklySchedule.length > 0 && resolvedTeacherId) {
-      const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
-
-      // Get teacher timezone
-      const teacher = await db.user.findUnique({
-        where: { id: resolvedTeacherId },
-        select: { timezone: true },
-      })
-      const teacherTimezone = teacher?.timezone || 'America/Lima'
-
-      for (const slot of weeklySchedule) {
-        const utcData = convertRecurringScheduleToUTC(
-          slot.dayOfWeek,
-          slot.startTime,
-          slot.endTime,
-          teacherTimezone
-        )
-        await db.classSchedule.create({
-          data: {
-            enrollmentId: enrollment.id,
-            teacherId: resolvedTeacherId,
-            dayOfWeek: utcData.dayOfWeek,
-            startTime: utcData.startTime,
-            endTime: utcData.endTime,
-          },
-        })
-        schedulesCreated++
-      }
-    }
-
-    // 11. Create individual class bookings if provided
-    let classesCreated = 0
-    if (scheduledClasses && scheduledClasses.length > 0 && resolvedTeacherId) {
-      const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
-
-      // Get teacher timezone
-      const teacher = await db.user.findUnique({
-        where: { id: resolvedTeacherId },
-        select: { timezone: true },
-      })
-      const teacherTimezone = teacher?.timezone || 'America/Lima'
-
-      for (const cls of scheduledClasses) {
-        const localTimeSlot = `${cls.startTime}-${cls.endTime}`
-        const utcData = convertTimeSlotToUTC(cls.date, localTimeSlot, teacherTimezone)
-
-        // Check if slot is already booked
-        const existingBooking = await db.classBooking.findUnique({
-          where: {
-            teacherId_day_timeSlot: {
-              teacherId: resolvedTeacherId,
-              day: utcData.day,
-              timeSlot: utcData.timeSlot,
-            },
-          },
-        })
-
-        if (!existingBooking) {
-          await db.classBooking.create({
-            data: {
-              studentId: student.id,
-              teacherId: resolvedTeacherId,
-              enrollmentId: enrollment.id,
-              day: utcData.day,
-              timeSlot: utcData.timeSlot,
-              status: 'CONFIRMED',
-            },
+    const { createdEnrollment, schedulesCreated, classesCreated } = await db.$transaction(async (tx) => {
+      // All local writes, including a newly created student and PayPal invoice, commit together.
+      let student = await tx.user.findUnique({ where: { email: studentEmail } })
+      if (!student) {
+        if (!studentName) {
+          throw new EnrollmentRequestError(400, {
+            error: 'studentName es requerido cuando el estudiante no existe en el sistema',
           })
-          classesCreated++
+        }
+        student = await tx.user.create({
+          data: {
+            email: studentEmail,
+            name: studentName,
+            lastName: studentLastName || null,
+            roles: ['STUDENT'],
+            status: 'ACTIVE',
+          },
+        })
+      }
+
+      const existingEnrollment = await tx.enrollment.findUnique({
+        where: {
+          studentId_courseId_academicPeriodId: {
+            studentId: student.id,
+            courseId,
+            academicPeriodId,
+          },
+        },
+      })
+      if (existingEnrollment) {
+        throw new EnrollmentRequestError(409, {
+          error: 'El estudiante ya está inscrito en este curso para este período académico',
+          existingEnrollmentId: existingEnrollment.id,
+        })
+      }
+
+      const resolvedTeacherId = teacherId
+      if (teacherId) {
+        const teacher = await tx.user.findUnique({
+          where: { id: teacherId },
+          select: { id: true, roles: true },
+        })
+        if (!teacher || !teacher.roles.includes('TEACHER')) {
+          throw new EnrollmentRequestError(404, {
+            error: 'Profesor no encontrado o no tiene rol TEACHER',
+          })
         }
       }
-    }
 
-    // 12. Fetch created enrollment with relations for response
-    const createdEnrollment = await db.enrollment.findUnique({
-      where: { id: enrollment.id },
-      include: {
-        student: {
-          select: { id: true, name: true, lastName: true, email: true },
+      if (paypalData) {
+        const existingInvoice = await tx.invoice.findFirst({ where: { paypalOrderId } })
+        if (existingInvoice) {
+          throw new EnrollmentRequestError(409, {
+            success: false,
+            error: 'Este pago de PayPal ya está asociado a otra factura/inscripción',
+          })
+        }
+      }
+
+      const enrollment = await tx.enrollment.create({
+        data: {
+          studentId: student.id,
+          courseId,
+          academicPeriodId,
+          teacherId: resolvedTeacherId || null,
+          status: enrollmentStatus,
+          progress: 0,
+          classesTotal: classesTotal || scheduledClasses?.length || 8,
+          classesAttended: 0,
+          classesMissed: 0,
+          enrollmentType: 'MANUAL',
+          notes: notes || null,
         },
-        course: {
-          select: { id: true, title: true, language: true, level: true },
+      })
+
+      if (paypalData) {
+        const invoiceResult = await createInvoiceFromPaypal(paypalData, student.id, tx)
+        if (!invoiceResult.success) {
+          throw new EnrollmentRequestError(500, {
+            success: false,
+            error: 'Error al generar la factura. La inscripción ha sido revertida.',
+          })
+        }
+      }
+
+      let schedulesCreated = 0
+      if (weeklySchedule && weeklySchedule.length > 0 && resolvedTeacherId) {
+        const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
+        const teacher = await tx.user.findUnique({
+          where: { id: resolvedTeacherId },
+          select: { timezone: true },
+        })
+        const teacherTimezone = teacher?.timezone || 'America/Lima'
+
+        for (const slot of weeklySchedule) {
+          const utcData = convertRecurringScheduleToUTC(
+            slot.dayOfWeek,
+            slot.startTime,
+            slot.endTime,
+            teacherTimezone
+          )
+          await tx.classSchedule.create({
+            data: {
+              enrollmentId: enrollment.id,
+              teacherId: resolvedTeacherId,
+              dayOfWeek: utcData.dayOfWeek,
+              startTime: utcData.startTime,
+              endTime: utcData.endTime,
+            },
+          })
+          schedulesCreated++
+        }
+      }
+
+      let classesCreated = 0
+      if (scheduledClasses && scheduledClasses.length > 0 && resolvedTeacherId) {
+        const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
+        const teacher = await tx.user.findUnique({
+          where: { id: resolvedTeacherId },
+          select: { timezone: true },
+        })
+        const teacherTimezone = teacher?.timezone || 'America/Lima'
+
+        for (const cls of scheduledClasses) {
+          const localTimeSlot = `${cls.startTime}-${cls.endTime}`
+          const utcData = convertTimeSlotToUTC(cls.date, localTimeSlot, teacherTimezone)
+          const existingBooking = await tx.classBooking.findUnique({
+            where: {
+              teacherId_day_timeSlot: {
+                teacherId: resolvedTeacherId,
+                day: utcData.day,
+                timeSlot: utcData.timeSlot,
+              },
+            },
+          })
+
+          if (!existingBooking) {
+            await tx.classBooking.create({
+              data: {
+                studentId: student.id,
+                teacherId: resolvedTeacherId,
+                enrollmentId: enrollment.id,
+                day: utcData.day,
+                timeSlot: utcData.timeSlot,
+                status: 'CONFIRMED',
+              },
+            })
+            classesCreated++
+          }
+        }
+      }
+
+      const createdEnrollment = await tx.enrollment.findUnique({
+        where: { id: enrollment.id },
+        include: {
+          student: {
+            select: { id: true, name: true, lastName: true, email: true },
+          },
+          course: {
+            select: { id: true, title: true, language: true, level: true },
+          },
+          academicPeriod: {
+            select: { id: true, name: true, startDate: true, endDate: true },
+          },
+          teacher: {
+            select: { id: true, name: true, lastName: true },
+          },
+          schedules: {
+            select: { dayOfWeek: true, startTime: true, endTime: true },
+          },
         },
-        academicPeriod: {
-          select: { id: true, name: true, startDate: true, endDate: true },
-        },
-        teacher: {
-          select: { id: true, name: true, lastName: true },
-        },
-        schedules: {
-          select: { dayOfWeek: true, startTime: true, endTime: true },
-        },
-      },
+      })
+
+      if (!createdEnrollment) throw new Error('La inscripción creada no pudo ser recuperada')
+      return { createdEnrollment, schedulesCreated, classesCreated }
     })
 
     try {
-      await notifySelfServiceEnrollmentCreated(enrollment.id)
+      await notifySelfServiceEnrollmentCreated(createdEnrollment.id)
     } catch (notificationError) {
       console.error('[BOT API] Error sending enrollment notifications:', notificationError)
     }
@@ -456,27 +440,27 @@ export async function POST(request: NextRequest) {
         success: true,
         data: {
           enrollment: {
-            id: createdEnrollment!.id,
-            status: createdEnrollment!.status,
-            classesTotal: createdEnrollment!.classesTotal,
+            id: createdEnrollment.id,
+            status: createdEnrollment.status,
+            classesTotal: createdEnrollment.classesTotal,
             student: {
-              id: createdEnrollment!.student.id,
-              name: [createdEnrollment!.student.name, createdEnrollment!.student.lastName]
+              id: createdEnrollment.student.id,
+              name: [createdEnrollment.student.name, createdEnrollment.student.lastName]
                 .filter(Boolean)
                 .join(' '),
-              email: createdEnrollment!.student.email,
+              email: createdEnrollment.student.email,
             },
-            course: createdEnrollment!.course,
+            course: createdEnrollment.course,
             academicPeriod: {
-              id: createdEnrollment!.academicPeriod.id,
-              name: createdEnrollment!.academicPeriod.name,
-              startDate: createdEnrollment!.academicPeriod.startDate.toISOString().split('T')[0],
-              endDate: createdEnrollment!.academicPeriod.endDate.toISOString().split('T')[0],
+              id: createdEnrollment.academicPeriod.id,
+              name: createdEnrollment.academicPeriod.name,
+              startDate: createdEnrollment.academicPeriod.startDate.toISOString().split('T')[0],
+              endDate: createdEnrollment.academicPeriod.endDate.toISOString().split('T')[0],
             },
-            teacher: createdEnrollment!.teacher
+            teacher: createdEnrollment.teacher
               ? {
-                  id: createdEnrollment!.teacher.id,
-                  name: [createdEnrollment!.teacher.name, createdEnrollment!.teacher.lastName]
+                  id: createdEnrollment.teacher.id,
+                  name: [createdEnrollment.teacher.name, createdEnrollment.teacher.lastName]
                     .filter(Boolean)
                     .join(' '),
                 }
@@ -490,6 +474,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
+    if (error instanceof EnrollmentRequestError) {
+      return NextResponse.json(error.payload, { status: error.status })
+    }
     console.error('[BOT API] Error creating enrollment:', error)
     return NextResponse.json({ error: 'Error al crear la inscripción' }, { status: 500 })
   }

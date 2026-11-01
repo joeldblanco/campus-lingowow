@@ -421,13 +421,6 @@ export async function createTrialClass(
       return { success: false, error: 'Estudiante no encontrado' }
     }
 
-    if (student.roles.includes('GUEST') && !student.roles.includes('STUDENT')) {
-      await db.user.update({
-        where: { id: student.id },
-        data: { roles: { push: 'STUDENT' } },
-      })
-    }
-
     // Verificar que el profesor exista y tenga rol TEACHER.
     const teacher = await db.user.findFirst({
       where: { id: validatedData.teacherId, roles: { has: 'TEACHER' } },
@@ -482,17 +475,26 @@ export async function createTrialClass(
     }
 
     try {
-      const classBooking = await db.classBooking.create({
-        data: {
-          studentId: validatedData.studentId,
-          teacherId: validatedData.teacherId,
-          enrollmentId: null,
-          isTrial: true,
-          day: utcData.day,
-          timeSlot: utcData.timeSlot,
-          notes: validatedData.notes,
-          status: 'CONFIRMED',
-        },
+      const classBooking = await db.$transaction(async (tx) => {
+        if (student.roles.includes('GUEST') && !student.roles.includes('STUDENT')) {
+          await tx.user.update({
+            where: { id: student.id },
+            data: { roles: { push: 'STUDENT' } },
+          })
+        }
+
+        return tx.classBooking.create({
+          data: {
+            studentId: validatedData.studentId,
+            teacherId: validatedData.teacherId,
+            enrollmentId: null,
+            isTrial: true,
+            day: utcData.day,
+            timeSlot: utcData.timeSlot,
+            notes: validatedData.notes,
+            status: 'CONFIRMED',
+          },
+        })
       })
 
       await prepareClassMeetingBestEffort(classBooking.id)

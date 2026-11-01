@@ -8,6 +8,10 @@ import {
 import { formatUserName } from '@/lib/utils/name-formatter'
 import { sendEnrollmentConfirmationStudentEmail, sendNewEnrollmentTeacherEmail } from '@/lib/mail'
 
+type EnrollmentClient = {
+  enrollment: Pick<typeof db.enrollment, 'findUnique' | 'create' | 'update'>
+}
+
 const ACTIVE_ENROLLMENT_STATUS = 'ACTIVE'
 const DEFAULT_TIMEZONE = 'America/Lima'
 
@@ -30,6 +34,7 @@ interface UpsertSelfServiceEnrollmentInput {
   teacherId?: string | null
   status?: EnrollmentStatusValue
   updateClassesTotal?: boolean
+  client?: EnrollmentClient
 }
 
 interface EnrollmentUniqueInput {
@@ -203,16 +208,17 @@ function getFirstClassDisplay(
 }
 
 export async function upsertSelfServiceEnrollment(input: UpsertSelfServiceEnrollmentInput) {
+  const client = input.client ?? db
   const uniqueWhere = getEnrollmentUniqueWhere(input)
   const updateData = buildEnrollmentUpdateData(input)
 
-  const existingEnrollment = await db.enrollment.findUnique({
+  const existingEnrollment = await client.enrollment.findUnique({
     where: uniqueWhere,
     select: { id: true },
   })
 
   if (existingEnrollment) {
-    const enrollment = await db.enrollment.update({
+    const enrollment = await client.enrollment.update({
       where: { id: existingEnrollment.id },
       data: updateData,
     })
@@ -221,7 +227,7 @@ export async function upsertSelfServiceEnrollment(input: UpsertSelfServiceEnroll
   }
 
   try {
-    const enrollment = await db.enrollment.create({
+    const enrollment = await client.enrollment.create({
       data: {
         studentId: input.studentId,
         courseId: input.courseId,
@@ -236,11 +242,13 @@ export async function upsertSelfServiceEnrollment(input: UpsertSelfServiceEnroll
 
     return { enrollment, wasCreated: true }
   } catch (error) {
-    if (!isUniqueConstraintError(error)) {
+    // A failed statement aborts an interactive transaction; let the caller
+    // roll it back instead of issuing the fallback reads on that client.
+    if (!isUniqueConstraintError(error) || input.client) {
       throw error
     }
 
-    const concurrentEnrollment = await db.enrollment.findUnique({
+    const concurrentEnrollment = await client.enrollment.findUnique({
       where: uniqueWhere,
       select: { id: true },
     })
@@ -249,7 +257,7 @@ export async function upsertSelfServiceEnrollment(input: UpsertSelfServiceEnroll
       throw error
     }
 
-    const enrollment = await db.enrollment.update({
+    const enrollment = await client.enrollment.update({
       where: { id: concurrentEnrollment.id },
       data: updateData,
     })

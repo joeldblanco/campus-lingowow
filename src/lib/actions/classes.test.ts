@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { db } from '@/lib/db'
+import { ensureGoogleMeetSpaceForBooking } from '@/lib/google-meet'
 import { revalidatePath } from 'next/cache'
 
 vi.mock('@/lib/db', () => ({
   db: {
+    $transaction: vi.fn(),
     classBooking: {
       update: vi.fn(),
       create: vi.fn(),
@@ -109,6 +111,7 @@ describe('createTrialClass', () => {
     } as never)
     vi.mocked(db.user.findFirst).mockResolvedValue({ id: 'teacher-1' } as never)
     vi.mocked(db.user.update).mockResolvedValue({} as never)
+    vi.mocked(db.$transaction).mockImplementation(async (callback) => callback(db as never))
     vi.mocked(db.classBooking.findMany).mockResolvedValue([] as never)
     vi.mocked(db.classBooking.findFirst).mockResolvedValue(null as never)
     vi.mocked(db.classBooking.create).mockResolvedValue({ id: 'booking-trial' } as never)
@@ -134,7 +137,7 @@ describe('createTrialClass', () => {
     expect(db.user.update).not.toHaveBeenCalled()
   })
 
-  it('promotes a GUEST student to STUDENT before scheduling', async () => {
+  it('promotes a GUEST student to STUDENT when scheduling succeeds', async () => {
     vi.mocked(db.user.findUnique).mockResolvedValue({
       id: 'student-1',
       roles: ['GUEST'],
@@ -148,6 +151,41 @@ describe('createTrialClass', () => {
     })
     expect(result.success).toBe(true)
     expect(db.classBooking.create).toHaveBeenCalled()
+  })
+
+  it('does not persist a guest promotion when booking creation fails', async () => {
+    const student = {
+      id: 'student-1',
+      roles: ['GUEST'],
+    }
+    vi.mocked(db.user.findUnique).mockResolvedValue(student as never)
+    vi.mocked(db.user.update).mockImplementation(
+      (async () => {
+        student.roles.push('STUDENT')
+        return student
+      }) as never
+    )
+    vi.mocked(db.classBooking.create).mockRejectedValueOnce({ code: 'P2002' })
+    vi.mocked(db.$transaction).mockImplementationOnce(async (callback) => {
+      const originalRoles = [...student.roles]
+      try {
+        return await callback(db as never)
+      } catch (error) {
+        student.roles = originalRoles
+        throw error
+      }
+    })
+
+    const result = await createTrialClass(baseInput)
+
+    expect(result).toEqual({
+      success: false,
+      error: 'El profesor ya tiene una clase en ese horario',
+    })
+    expect(student.roles).toEqual(['GUEST'])
+    expect(db.$transaction).toHaveBeenCalledOnce()
+    expect(ensureGoogleMeetSpaceForBooking).not.toHaveBeenCalled()
+    expect(revalidatePath).not.toHaveBeenCalled()
   })
 
   it('rejects when the teacher already has an overlapping class', async () => {

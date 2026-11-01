@@ -894,6 +894,7 @@ model ClassBooking {
   meetingMessages    MeetingMessage[]
   whiteboardData     WhiteboardData?
   recordings         ClassRecording[]
+  inboxRequests      InboxBookingRequest[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -903,6 +904,18 @@ model ClassBooking {
   @@index([teacherId])
   @@index([enrollmentId])
   @@map("class_bookings")
+}
+
+model InboxBookingRequest {
+  requestId         String        @id @map("request_id")
+  fingerprint       String
+  bookingId         String?       @map("booking_id")
+  operatorId        String        @map("operator_id")
+  identityReference String        @map("identity_reference")
+  createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  booking           ClassBooking? @relation(fields: [bookingId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+
+  @@map("inbox_booking_requests")
 }
 
 enum MeetingProvider {
