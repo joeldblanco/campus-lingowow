@@ -47,6 +47,7 @@ type Options = {
   failBookingUpdate?: boolean
   failScheduleCreateMany?: boolean
   createdNotes?: string | null
+  reviewNotesBeforeUpdate?: string
 }
 
 type Counters = { bookingCreates: number }
@@ -123,6 +124,7 @@ const mocks = vi.hoisted(() => ({
   academicPeriodFindUnique: vi.fn(),
   userFindMany: vi.fn(),
   transaction: vi.fn(),
+  queryRaw: vi.fn(),
   verifyPaypalTransaction: vi.fn(),
   createInvoiceFromPaypal: vi.fn(),
   verifyLingowowInvoice: vi.fn(),
@@ -142,6 +144,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('@/lib/db', () => ({
   db: {
     $transaction: mocks.transaction,
+    $queryRaw: mocks.queryRaw,
     enrollment: {
       findUnique: mocks.enrollmentFindUnique,
       findFirst: mocks.enrollmentFindFirst,
@@ -405,6 +408,19 @@ function installDatabase(state: State, options: Options = {}) {
   mocks.academicPeriodFindUnique.mockImplementation((args) =>
     client().academicPeriod.findUnique(args)
   )
+  mocks.queryRaw.mockImplementation(async () => {
+    if (!state.enrollment) return []
+    if (options.reviewNotesBeforeUpdate !== undefined) {
+      state.enrollment.notes = options.reviewNotesBeforeUpdate
+    }
+    const marker = 'schedule_pending_review:scheduling_failed'
+    if (!state.enrollment.notes) {
+      state.enrollment.notes = marker
+    } else if (!state.enrollment.notes.includes('schedule_pending_review:')) {
+      state.enrollment.notes = `${state.enrollment.notes}; ${marker}`
+    }
+    return [{ id: state.enrollment.id, notes: state.enrollment.notes }]
+  })
   mocks.transaction.mockImplementation(async (callback: (client: DatabaseClient) => Promise<unknown>) => {
     const staged = cloneState(state)
     const result = await callback(createClient(staged, options, { bookingCreates: 0 }))
@@ -495,6 +511,40 @@ describe('enrollment schedule atomicity', () => {
     expect(state.bookings).toHaveLength(1)
     expect(mocks.notify).toHaveBeenCalledWith('enrollment-created')
     expect(mocks.revalidatePath).toHaveBeenCalled()
+  })
+
+  it('reports only committed class inserts when a requested slot is occupied', async () => {
+    state.bookings = [
+      makeBooking({
+        id: 'occupied-slot',
+        studentId: 'student-2',
+        enrollmentId: 'other-enrollment',
+      }),
+    ]
+    installDatabase(state)
+
+    const result = await createEnrollmentWithSchedule(createInput())
+
+    expect(result).toMatchObject({ success: true, classesCreated: 0, schedule_pending_review: false })
+    expect(state.bookings).toHaveLength(1)
+  })
+
+  it('preserves a concurrent staff note when appending the review marker', async () => {
+    installDatabase(state, {
+      failBookingCreateAt: 2,
+      createdNotes: 'initial scheduling context',
+      reviewNotesBeforeUpdate: 'staff note added concurrently',
+    })
+
+    const result = await createEnrollmentWithSchedule(
+      createInput({ scheduledClasses: [classInput('2099-01-01'), classInput('2099-01-02')] })
+    )
+
+    expect(result).toMatchObject({ success: true, classesCreated: 0, schedule_pending_review: true })
+    expect(state.enrollment).toMatchObject({
+      notes: 'staff note added concurrently; schedule_pending_review:scheduling_failed',
+    })
+    expect(mocks.queryRaw).toHaveBeenCalled()
   })
 
   it('preserves existing schedules when replacement createMany fails', async () => {

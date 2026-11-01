@@ -438,14 +438,6 @@ interface CreateEnrollmentWithScheduleData {
 const SCHEDULE_PENDING_REVIEW_PREFIX = 'schedule_pending_review:'
 const SCHEDULE_PENDING_REVIEW_MARKER = `${SCHEDULE_PENDING_REVIEW_PREFIX}scheduling_failed`
 
-function appendSchedulePendingReviewMarker(notes: string | null | undefined) {
-  if (notes?.includes(SCHEDULE_PENDING_REVIEW_PREFIX)) {
-    return notes
-  }
-
-  return notes ? `${notes}; ${SCHEDULE_PENDING_REVIEW_MARKER}` : SCHEDULE_PENDING_REVIEW_MARKER
-}
-
 // Create enrollment with schedule (for synchronous courses)
 export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithScheduleData) {
   try {
@@ -605,12 +597,15 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
 
     // 5. Create class schedules and bookings if this is a synchronous course
     let schedulePendingReview = false
+    let classesCreated = 0
     if (data.teacherId && data.scheduledClasses.length > 0) {
       const scheduleTimezone = data.userTimezone || 'America/Lima'
 
       try {
         const { convertRecurringScheduleToUTC, convertTimeSlotToUTC } = await import('@/lib/utils/date')
-        await db.$transaction(async (tx) => {
+        classesCreated = await db.$transaction(async (tx) => {
+          let committedClassesCreated = 0
+
           // Create recurring schedule entries if applicable
           if (data.isRecurring && data.weeklySchedule.length > 0) {
             for (const slot of data.weeklySchedule) {
@@ -663,24 +658,38 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
                   status: 'CONFIRMED',
                 },
               })
+              committedClassesCreated++
             } else {
               console.warn(
                 `Slot already booked: ${utcData.day} ${utcData.timeSlot} for teacher ${cls.teacherId}`
               )
             }
           }
+
+          return committedClassesCreated
         })
 
-        console.log(`[Enrollment] Created ${data.scheduledClasses.length} class bookings`)
+        console.log(`[Enrollment] Created ${classesCreated} class bookings`)
       } catch (scheduleError) {
         console.error('Error creating class schedules:', scheduleError)
         schedulePendingReview = true
 
         try {
-          enrollment = await db.enrollment.update({
-            where: { id: enrollment.id },
-            data: { notes: appendSchedulePendingReviewMarker(enrollment.notes) },
-          })
+          const reviewRows = await db.$queryRaw<Array<{ id: string; notes: string | null }>>`
+            UPDATE "enrollments"
+            SET "notes" = CASE
+              WHEN "notes" IS NULL OR "notes" = '' THEN ${SCHEDULE_PENDING_REVIEW_MARKER}
+              WHEN POSITION(${SCHEDULE_PENDING_REVIEW_PREFIX} IN "notes") > 0 THEN "notes"
+              ELSE "notes" || '; ' || ${SCHEDULE_PENDING_REVIEW_MARKER}
+            END
+            WHERE "id" = ${enrollment.id}
+            RETURNING "id", "notes"
+          `
+          const reviewedEnrollment = reviewRows[0]
+          if (!reviewedEnrollment || reviewedEnrollment.id !== enrollment.id) {
+            throw new Error('enrollment_schedule_review_not_persisted')
+          }
+          enrollment = { ...enrollment, notes: reviewedEnrollment.notes }
         } catch (markerError) {
           console.error('Error marking enrollment schedule for review:', markerError)
           return {
@@ -710,7 +719,7 @@ export async function createEnrollmentWithSchedule(data: CreateEnrollmentWithSch
     return {
       success: true,
       enrollment,
-      classesCreated: schedulePendingReview ? 0 : data.scheduledClasses.length,
+      classesCreated: schedulePendingReview ? 0 : classesCreated,
       schedule_pending_review: schedulePendingReview,
     }
   } catch (error) {
