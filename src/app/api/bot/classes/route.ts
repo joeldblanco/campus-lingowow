@@ -189,52 +189,56 @@ export async function POST(request: NextRequest) {
     const teacherTimezone = enrollment.teacher.timezone || 'America/Lima'
     const { convertTimeSlotToUTC } = await import('@/lib/utils/date')
 
-    let created = 0
-    const skipped: string[] = []
+    const { created, skipped } = await db.$transaction(async (tx) => {
+      let created = 0
+      const skipped: string[] = []
 
-    for (const cls of classes) {
-      if (!cls.date || !cls.startTime || !cls.endTime) {
-        skipped.push(`${cls.date || '?'}: datos incompletos`)
-        continue
+      for (const cls of classes) {
+        if (!cls.date || !cls.startTime || !cls.endTime) {
+          skipped.push(`${cls.date || '?'}: datos incompletos`)
+          continue
+        }
+
+        const localTimeSlot = `${cls.startTime}-${cls.endTime}`
+        const utcData = convertTimeSlotToUTC(cls.date, localTimeSlot, teacherTimezone)
+
+        // Check if slot is already booked
+        const existingBooking = await tx.classBooking.findUnique({
+          where: {
+            teacherId_day_timeSlot: {
+              teacherId,
+              day: utcData.day,
+              timeSlot: utcData.timeSlot,
+            },
+          },
+        })
+
+        if (existingBooking) {
+          skipped.push(`${cls.date} ${cls.startTime}-${cls.endTime}: horario ya ocupado`)
+        } else {
+          await tx.classBooking.create({
+            data: {
+              studentId: enrollment.studentId,
+              teacherId,
+              enrollmentId: enrollment.id,
+              day: utcData.day,
+              timeSlot: utcData.timeSlot,
+              status: 'CONFIRMED',
+            },
+          })
+          created++
+        }
       }
 
-      const localTimeSlot = `${cls.startTime}-${cls.endTime}`
-      const utcData = convertTimeSlotToUTC(cls.date, localTimeSlot, teacherTimezone)
-
-      // Check if slot is already booked
-      const existingBooking = await db.classBooking.findUnique({
-        where: {
-          teacherId_day_timeSlot: {
-            teacherId,
-            day: utcData.day,
-            timeSlot: utcData.timeSlot,
-          },
+      // Update classesTotal on enrollment in the same transaction as bookings.
+      await tx.enrollment.update({
+        where: { id: enrollmentId },
+        data: {
+          classesTotal: { increment: created },
         },
       })
 
-      if (existingBooking) {
-        skipped.push(`${cls.date} ${cls.startTime}-${cls.endTime}: horario ya ocupado`)
-      } else {
-        await db.classBooking.create({
-          data: {
-            studentId: enrollment.studentId,
-            teacherId,
-            enrollmentId: enrollment.id,
-            day: utcData.day,
-            timeSlot: utcData.timeSlot,
-            status: 'CONFIRMED',
-          },
-        })
-        created++
-      }
-    }
-
-    // Update classesTotal on enrollment
-    await db.enrollment.update({
-      where: { id: enrollmentId },
-      data: {
-        classesTotal: { increment: created },
-      },
+      return { created, skipped }
     })
 
     return NextResponse.json({
