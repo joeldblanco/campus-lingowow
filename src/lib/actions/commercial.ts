@@ -1432,12 +1432,13 @@ export async function createInvoiceFromPaypal(
     items: Array<{ name: string; quantity: string; unit_amount: { value: string } }>
     date: Date
   },
-  userId: string
+  userId: string,
+  client: Pick<typeof db, 'invoice'> = db
 ) {
   try {
     const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`
 
-    const invoice = await db.invoice.create({
+    const invoice = await client.invoice.create({
       data: {
         invoiceNumber,
         userId: userId,
