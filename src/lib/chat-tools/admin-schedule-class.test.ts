@@ -151,4 +151,22 @@ describe('handleAdminScheduleClass', () => {
     expect(db.classBooking.create).not.toHaveBeenCalled()
     expect(db.user.update).not.toHaveBeenCalled()
   })
+
+  it('does not promote a guest when every booking insert is rejected', async () => {
+    const guestStudent = { ...STUDENT, roles: ['GUEST'] }
+    mockUserFindFirst(guestStudent)
+    vi.mocked(db.classBooking.create).mockRejectedValue({ code: 'P2002' } as never)
+
+    const result = await handleAdminScheduleClass({
+      studentNameOrEmail: 'student@x.com',
+      teacherNameOrEmail: 'teacher@x.com',
+      slots: [{ dayOfWeek: 'wednesday', localTime: '19:00' }],
+      adminTimezone: 'America/Lima',
+    })
+
+    expect(result.success).toBe(false)
+    expect(db.classBooking.create).toHaveBeenCalled()
+    expect(guestStudent.roles).toEqual(['GUEST'])
+    expect(db.user.update).not.toHaveBeenCalled()
+  })
 })

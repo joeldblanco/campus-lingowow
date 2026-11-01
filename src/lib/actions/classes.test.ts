@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { db } from '@/lib/db'
+import { ensureGoogleMeetSpaceForBooking } from '@/lib/google-meet'
 import { revalidatePath } from 'next/cache'
 
 vi.mock('@/lib/db', () => ({
@@ -183,6 +184,8 @@ describe('createTrialClass', () => {
     })
     expect(student.roles).toEqual(['GUEST'])
     expect(db.$transaction).toHaveBeenCalledOnce()
+    expect(ensureGoogleMeetSpaceForBooking).not.toHaveBeenCalled()
+    expect(revalidatePath).not.toHaveBeenCalled()
   })
 
   it('rejects when the teacher already has an overlapping class', async () => {
