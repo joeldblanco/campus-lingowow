@@ -4,11 +4,15 @@ import { authorizeNiubizTransaction, getNiubizAccessToken, registerNiubizCard } 
 import { db } from '@/lib/db'
 import { sendPaymentConfirmationEmail } from '@/lib/mail'
 import { formatFullName } from '@/lib/utils/name-formatter'
-import { Invoice } from '@prisma/client'
+import type { Invoice } from '@prisma/client'
 import {
   notifySelfServiceEnrollmentCreated,
   upsertSelfServiceEnrollment,
 } from '@/lib/enrollments/self-service-enrollment'
+import {
+  classifyReservationReviewReason,
+  persistReservationReview,
+} from '@/lib/enrollments/paid-reservation-review'
 import {
   DEFAULT_TEACHER_TIMEZONE,
   getUtcOccurrenceForDate,
@@ -58,9 +62,9 @@ interface CustomerInfo {
 const hasRequiredBillingInfo = (customerInfo?: CustomerInfo) => {
   return Boolean(
     customerInfo?.address?.trim() &&
-      customerInfo?.city?.trim() &&
-      customerInfo?.country?.trim() &&
-      customerInfo?.zipCode?.trim()
+    customerInfo?.city?.trim() &&
+    customerInfo?.country?.trim() &&
+    customerInfo?.zipCode?.trim()
   )
 }
 
@@ -152,6 +156,8 @@ export async function POST(req: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let purchases: any[] = []
     let needsScheduleSetup = false
+    let reservationPendingReview = false
+    let newlyCreatedEnrollmentIds: string[] = []
 
     if (invoiceData) {
       console.log('[NIUBIZ] Processing invoiceData:', JSON.stringify(invoiceData, null, 2))
@@ -193,270 +199,293 @@ export async function POST(req: NextRequest) {
         },
       })
 
-      if (invoiceData.couponId) {
-        await db.coupon.update({
-          where: { id: invoiceData.couponId },
-          data: { usageCount: { increment: 1 } },
-        })
-      }
+      try {
+        await db.$transaction(async (tx) => {
+          const db = tx
 
-      const today = new Date()
-
-      const upcomingPeriods = await db.academicPeriod.findMany({
-        where: {
-          endDate: { gte: today },
-          isSpecialWeek: false,
-        },
-        orderBy: { startDate: 'asc' },
-      })
-
-      // Process purchases
-      purchases = await Promise.all(
-        invoiceData.items.map(async (item) => {
-          let plan = null
-          let enrollment: { id: string; course?: { title?: string } } | null = null
-          let enrollmentWasCreated = false
-          let courseId: string | null = null
-          let teacherTimezones = new Map<string, string>()
-          let selectedScheduleWithTeacherTimezones = item.selectedSchedule
-
-          if (item.planId) {
-            plan = await db.plan.findUnique({
-              where: { id: item.planId },
-              include: {
-                course: true,
-                product: {
-                  include: { course: true },
-                },
-              },
+          if (invoiceData.couponId) {
+            await db.coupon.update({
+              where: { id: invoiceData.couponId },
+              data: { usageCount: { increment: 1 } },
             })
-            // Get courseId from plan, or from product if plan doesn't have it
-            courseId = plan?.courseId || plan?.product?.courseId || null
           }
 
-          if (item.selectedSchedule?.length) {
-            const teacherIds = [...new Set(item.selectedSchedule.map((slot) => slot.teacherId))]
-            const teachers = await db.user.findMany({
-              where: { id: { in: teacherIds } },
-              select: { id: true, timezone: true },
-            })
-            teacherTimezones = new Map(
-              teachers.map((teacher) => [teacher.id, teacher.timezone || DEFAULT_TEACHER_TIMEZONE])
-            )
-            selectedScheduleWithTeacherTimezones = item.selectedSchedule.map((slot) => ({
-              ...slot,
-              teacherTimezone:
-                teacherTimezones.get(slot.teacherId) || DEFAULT_TEACHER_TIMEZONE,
-            }))
-          }
+          const today = new Date()
 
-          // If still no courseId, try to get it from the product directly
-          if (!courseId && item.productId) {
-            const product = await db.product.findUnique({
-              where: { id: item.productId },
-              select: { courseId: true },
-            })
-            courseId = product?.courseId || null
-          }
-
-          const purchase = await db.productPurchase.create({
-            data: {
-              userId: userId!,
-              productId: item.productId,
-              invoiceId: invoice!.id,
-              status: 'CONFIRMED',
-              selectedSchedule: item.selectedSchedule
-                ? JSON.parse(JSON.stringify(item.selectedSchedule))
-                : undefined,
-              proratedClasses: item.proratedClasses || undefined,
-              proratedPrice: item.proratedPrice || undefined,
+          const upcomingPeriods = await db.academicPeriod.findMany({
+            where: {
+              endDate: { gte: today },
+              isSpecialWeek: false,
             },
+            orderBy: { startDate: 'asc' },
           })
 
-          // Enrollment logic
-          console.log('[NIUBIZ] Enrollment check:', {
-            planId: item.planId,
-            includesClasses: plan?.includesClasses,
-            planCourseId: plan?.courseId,
-            productCourseId: plan?.product?.courseId,
-            resolvedCourseId: courseId,
-            selectedSchedule: item.selectedSchedule,
-            selectedScheduleLength: item.selectedSchedule?.length,
-            upcomingPeriods: upcomingPeriods.length,
-          })
+          // Process purchases
+          purchases = await Promise.all(
+            invoiceData.items.map(async (item) => {
+              let plan = null
+              let enrollment: { id: string; course?: { title?: string } } | null = null
+              let enrollmentWasCreated = false
+              let courseId: string | null = null
+              let teacherTimezones = new Map<string, string>()
+              let selectedScheduleWithTeacherTimezones = item.selectedSchedule
 
-          const eligibleWindow = selectedScheduleWithTeacherTimezones?.length
-            ? resolveEligibleEnrollmentWindow(
-                upcomingPeriods,
-                selectedScheduleWithTeacherTimezones,
-                today
-              )
-            : null
-
-          if (
-            plan?.includesClasses &&
-            courseId &&
-            item.selectedSchedule &&
-            item.selectedSchedule.length > 0 &&
-            eligibleWindow
-          ) {
-            console.log('[NIUBIZ] Creating enrollment for student:', userId, 'in course:', courseId)
-
-            // Extraer el teacherId del primer slot del horario seleccionado
-            const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
-
-            const enrollmentResult = await upsertSelfServiceEnrollment({
-              studentId: userId!,
-              courseId: courseId!,
-              academicPeriodId: eligibleWindow.period.id,
-              teacherId: firstTeacherId,
-              classesTotal: item.proratedClasses ?? plan.classesPerPeriod ?? 8,
-            })
-            enrollment = enrollmentResult.enrollment
-            enrollmentWasCreated = enrollmentResult.wasCreated
-
-            await db.productPurchase.update({
-              where: { id: purchase.id },
-              data: {
-                enrollmentId: enrollment.id,
-                status: 'ENROLLED',
-              },
-            })
-
-            // Create schedules and bookings
-            if (enrollment) {
-              const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
-
-              await Promise.all(
-                item.selectedSchedule.map(async (slot) => {
-                  const timezone =
-                    teacherTimezones.get(slot.teacherId) || DEFAULT_TEACHER_TIMEZONE
-                  const utcData = convertRecurringScheduleToUTC(
-                    slot.dayOfWeek,
-                    slot.startTime,
-                    slot.endTime,
-                    timezone
-                  )
-
-                  const existingSchedule = await db.classSchedule.findUnique({
-                    where: {
-                      enrollmentId_dayOfWeek_startTime: {
-                        enrollmentId: enrollment!.id,
-                        dayOfWeek: utcData.dayOfWeek,
-                        startTime: utcData.startTime,
-                      },
+              if (item.planId) {
+                plan = await db.plan.findUnique({
+                  where: { id: item.planId },
+                  include: {
+                    course: true,
+                    product: {
+                      include: { course: true },
                     },
-                  })
-
-                  if (!existingSchedule) {
-                    await db.classSchedule.create({
-                      data: {
-                        enrollmentId: enrollment!.id,
-                        teacherId: slot.teacherId,
-                        dayOfWeek: utcData.dayOfWeek,
-                        startTime: utcData.startTime,
-                        endTime: utcData.endTime,
-                      },
-                    })
-                  }
+                  },
                 })
-              )
+                // Get courseId from plan, or from product if plan doesn't have it
+                courseId = plan?.courseId || plan?.product?.courseId || null
+              }
 
-              // Bookings for current period
-              // IMPORTANTE: Los horarios en selectedSchedule ya están convertidos a UTC
-              // Debemos iterar sobre las fechas UTC y comparar con dayOfWeek UTC
-              const periodEnd = new Date(eligibleWindow.period.endDate)
-              const startDate = new Date(eligibleWindow.enrollmentStart)
-              const currentDate = new Date(startDate)
-              currentDate.setUTCHours(0, 0, 0, 0)
+              if (item.selectedSchedule?.length) {
+                const teacherIds = [...new Set(item.selectedSchedule.map((slot) => slot.teacherId))]
+                const teachers = await db.user.findMany({
+                  where: { id: { in: teacherIds } },
+                  select: { id: true, timezone: true },
+                })
+                teacherTimezones = new Map(
+                  teachers.map((teacher) => [
+                    teacher.id,
+                    teacher.timezone || DEFAULT_TEACHER_TIMEZONE,
+                  ])
+                )
+                selectedScheduleWithTeacherTimezones = item.selectedSchedule.map((slot) => ({
+                  ...slot,
+                  teacherTimezone: teacherTimezones.get(slot.teacherId) || DEFAULT_TEACHER_TIMEZONE,
+                }))
+              }
 
-              while (currentDate <= periodEnd) {
-                // Usar getUTCDay() para obtener el día de la semana en UTC
-                // ya que los slots del schedule están en UTC
-                const dayOfWeekUTC = currentDate.getUTCDay()
-                const scheduleForDay = selectedScheduleWithTeacherTimezones?.find(
-                  (slot) => slot.dayOfWeek === dayOfWeekUTC
+              // If still no courseId, try to get it from the product directly
+              if (!courseId && item.productId) {
+                const product = await db.product.findUnique({
+                  where: { id: item.productId },
+                  select: { courseId: true },
+                })
+                courseId = product?.courseId || null
+              }
+
+              const purchase = await db.productPurchase.create({
+                data: {
+                  userId: userId!,
+                  productId: item.productId,
+                  invoiceId: invoice!.id,
+                  status: 'CONFIRMED',
+                  selectedSchedule: item.selectedSchedule
+                    ? JSON.parse(JSON.stringify(item.selectedSchedule))
+                    : undefined,
+                  proratedClasses: item.proratedClasses || undefined,
+                  proratedPrice: item.proratedPrice || undefined,
+                },
+              })
+
+              // Enrollment logic
+              console.log('[NIUBIZ] Enrollment check:', {
+                planId: item.planId,
+                includesClasses: plan?.includesClasses,
+                planCourseId: plan?.courseId,
+                productCourseId: plan?.product?.courseId,
+                resolvedCourseId: courseId,
+                selectedSchedule: item.selectedSchedule,
+                selectedScheduleLength: item.selectedSchedule?.length,
+                upcomingPeriods: upcomingPeriods.length,
+              })
+
+              const eligibleWindow = selectedScheduleWithTeacherTimezones?.length
+                ? resolveEligibleEnrollmentWindow(
+                    upcomingPeriods,
+                    selectedScheduleWithTeacherTimezones,
+                    today
+                  )
+                : null
+
+              if (
+                plan?.includesClasses &&
+                courseId &&
+                item.selectedSchedule &&
+                item.selectedSchedule.length > 0 &&
+                eligibleWindow
+              ) {
+                console.log(
+                  '[NIUBIZ] Creating enrollment for student:',
+                  userId,
+                  'in course:',
+                  courseId
                 )
 
-                if (scheduleForDay) {
-                  const occurrenceAt = getUtcOccurrenceForDate(currentDate, scheduleForDay)
+                // Extraer el teacherId del primer slot del horario seleccionado
+                const firstTeacherId = item.selectedSchedule[0]?.teacherId || null
 
-                  if (
-                    occurrenceAt.getTime() < startDate.getTime() ||
-                    occurrenceAt.getTime() > periodEnd.getTime() ||
-                    !isOccurrenceEligibleForSelfService(occurrenceAt, scheduleForDay, today)
-                  ) {
-                    currentDate.setUTCDate(currentDate.getUTCDate() + 1)
-                    continue
-                  }
+                const enrollmentResult = await upsertSelfServiceEnrollment({
+                  studentId: userId!,
+                  courseId: courseId!,
+                  academicPeriodId: eligibleWindow.period.id,
+                  teacherId: firstTeacherId,
+                  classesTotal: item.proratedClasses ?? plan.classesPerPeriod ?? 8,
+                  client: db,
+                })
+                enrollment = enrollmentResult.enrollment
+                enrollmentWasCreated = enrollmentResult.wasCreated
 
-                  // Formatear fecha en UTC para consistencia
-                  const year = currentDate.getUTCFullYear()
-                  const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
-                  const day = String(currentDate.getUTCDate()).padStart(2, '0')
-                  const dayString = `${year}-${month}-${day}`
+                await db.productPurchase.update({
+                  where: { id: purchase.id },
+                  data: {
+                    enrollmentId: enrollment.id,
+                    status: 'ENROLLED',
+                  },
+                })
 
-                  const timeSlot = `${scheduleForDay.startTime}-${scheduleForDay.endTime}`
+                // Create schedules and bookings
+                if (enrollment) {
+                  const { convertRecurringScheduleToUTC } = await import('@/lib/utils/date')
 
-                  const existingBooking = await db.classBooking.findFirst({
-                    where: {
-                      studentId: userId!,
-                      teacherId: scheduleForDay.teacherId,
-                      day: dayString,
-                      timeSlot: timeSlot,
-                    },
-                  })
+                  await Promise.all(
+                    item.selectedSchedule.map(async (slot) => {
+                      const timezone =
+                        teacherTimezones.get(slot.teacherId) || DEFAULT_TEACHER_TIMEZONE
+                      const utcData = convertRecurringScheduleToUTC(
+                        slot.dayOfWeek,
+                        slot.startTime,
+                        slot.endTime,
+                        timezone
+                      )
 
-                  if (!existingBooking) {
-                    await db.classBooking.create({
-                      data: {
-                        studentId: userId!,
-                        teacherId: scheduleForDay.teacherId,
-                        enrollmentId: enrollment!.id,
-                        day: dayString,
-                        timeSlot: timeSlot,
-                        status: 'CONFIRMED',
-                      },
+                      const existingSchedule = await db.classSchedule.findUnique({
+                        where: {
+                          enrollmentId_dayOfWeek_startTime: {
+                            enrollmentId: enrollment!.id,
+                            dayOfWeek: utcData.dayOfWeek,
+                            startTime: utcData.startTime,
+                          },
+                        },
+                      })
+
+                      if (!existingSchedule) {
+                        await db.classSchedule.create({
+                          data: {
+                            enrollmentId: enrollment!.id,
+                            teacherId: slot.teacherId,
+                            dayOfWeek: utcData.dayOfWeek,
+                            startTime: utcData.startTime,
+                            endTime: utcData.endTime,
+                          },
+                        })
+                      }
                     })
+                  )
+
+                  // Bookings for current period
+                  // IMPORTANTE: Los horarios en selectedSchedule ya están convertidos a UTC
+                  // Debemos iterar sobre las fechas UTC y comparar con dayOfWeek UTC
+                  const periodEnd = new Date(eligibleWindow.period.endDate)
+                  const startDate = new Date(eligibleWindow.enrollmentStart)
+                  const currentDate = new Date(startDate)
+                  currentDate.setUTCHours(0, 0, 0, 0)
+
+                  while (currentDate <= periodEnd) {
+                    // Usar getUTCDay() para obtener el día de la semana en UTC
+                    // ya que los slots del schedule están en UTC
+                    const dayOfWeekUTC = currentDate.getUTCDay()
+                    const scheduleForDay = selectedScheduleWithTeacherTimezones?.find(
+                      (slot) => slot.dayOfWeek === dayOfWeekUTC
+                    )
+
+                    if (scheduleForDay) {
+                      const occurrenceAt = getUtcOccurrenceForDate(currentDate, scheduleForDay)
+
+                      if (
+                        occurrenceAt.getTime() < startDate.getTime() ||
+                        occurrenceAt.getTime() > periodEnd.getTime() ||
+                        !isOccurrenceEligibleForSelfService(occurrenceAt, scheduleForDay, today)
+                      ) {
+                        currentDate.setUTCDate(currentDate.getUTCDate() + 1)
+                        continue
+                      }
+
+                      // Formatear fecha en UTC para consistencia
+                      const year = currentDate.getUTCFullYear()
+                      const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0')
+                      const day = String(currentDate.getUTCDate()).padStart(2, '0')
+                      const dayString = `${year}-${month}-${day}`
+
+                      const timeSlot = `${scheduleForDay.startTime}-${scheduleForDay.endTime}`
+
+                      const existingBooking = await db.classBooking.findFirst({
+                        where: {
+                          studentId: userId!,
+                          teacherId: scheduleForDay.teacherId,
+                          day: dayString,
+                          timeSlot: timeSlot,
+                        },
+                      })
+
+                      if (!existingBooking) {
+                        await db.classBooking.create({
+                          data: {
+                            studentId: userId!,
+                            teacherId: scheduleForDay.teacherId,
+                            enrollmentId: enrollment!.id,
+                            day: dayString,
+                            timeSlot: timeSlot,
+                            status: 'CONFIRMED',
+                          },
+                        })
+                      }
+                    }
+                    currentDate.setUTCDate(currentDate.getUTCDate() + 1)
                   }
                 }
-                currentDate.setUTCDate(currentDate.getUTCDate() + 1)
+
+                // Update role to STUDENT
+                const user = await db.user.findUnique({
+                  where: { id: userId },
+                  select: { roles: true },
+                })
+
+                if (user && user.roles.includes('GUEST') && !user.roles.includes('STUDENT')) {
+                  const updatedRoles = user.roles.filter((role) => role !== 'GUEST')
+                  updatedRoles.push('STUDENT')
+                  await db.user.update({
+                    where: { id: userId },
+                    data: { roles: updatedRoles },
+                  })
+                } else if (user && !user.roles.includes('STUDENT')) {
+                  await db.user.update({
+                    where: { id: userId },
+                    data: { roles: { push: 'STUDENT' } },
+                  })
+                }
               }
-            }
 
-            // Update role to STUDENT
-            const user = await db.user.findUnique({
-              where: { id: userId },
-              select: { roles: true },
+              return {
+                ...purchase,
+                enrollment,
+                enrollmentWasCreated,
+              }
             })
+          )
 
-            if (user && user.roles.includes('GUEST') && !user.roles.includes('STUDENT')) {
-              const updatedRoles = user.roles.filter((role) => role !== 'GUEST')
-              updatedRoles.push('STUDENT')
-              await db.user.update({
-                where: { id: userId },
-                data: { roles: updatedRoles },
-              })
-            } else if (user && !user.roles.includes('STUDENT')) {
-              await db.user.update({
-                where: { id: userId },
-                data: { roles: { push: 'STUDENT' } },
-              })
-            }
-          }
-
-          return {
-            ...purchase,
-            enrollment,
-            enrollmentWasCreated,
-          }
+          needsScheduleSetup = purchases.some((p) => p.enrollment && !p.selectedSchedule)
+          newlyCreatedEnrollmentIds = purchases.flatMap((purchase) =>
+            purchase.enrollmentWasCreated && purchase.enrollment ? [purchase.enrollment.id] : []
+          )
         })
-      )
-
-      needsScheduleSetup = purchases.some((p) => p.enrollment && !p.selectedSchedule)
-      const newlyCreatedEnrollmentIds = purchases.flatMap((purchase) =>
-        purchase.enrollmentWasCreated && purchase.enrollment ? [purchase.enrollment.id] : []
-      )
+      } catch (error) {
+        reservationPendingReview = true
+        purchases = []
+        needsScheduleSetup = true
+        invoice = await persistReservationReview(
+          db,
+          invoice,
+          classifyReservationReviewReason(error)
+        )
+      }
 
       // Send Email
       try {
@@ -511,6 +540,7 @@ export async function POST(req: NextRequest) {
       invoice,
       purchases,
       needsScheduleSetup,
+      reservation_pending_review: reservationPendingReview,
       enrollments: purchases
         .filter((p) => p.enrollment !== null)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

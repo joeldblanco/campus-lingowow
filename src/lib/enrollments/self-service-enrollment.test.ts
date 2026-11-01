@@ -107,6 +107,30 @@ describe('self-service enrollment helper', () => {
     })
   })
 
+  it('keeps all enrollment queries on an injected transaction client', async () => {
+    const transactionClient = {
+      enrollment: {
+        findUnique: vi.fn().mockResolvedValueOnce(null),
+        create: vi.fn().mockRejectedValueOnce({ code: 'P2002' }),
+        update: vi.fn(),
+      },
+    }
+
+    await expect(
+      upsertSelfServiceEnrollment({
+        studentId: 'student-1',
+        courseId: 'course-1',
+        academicPeriodId: 'period-1',
+        classesTotal: 8,
+        client: transactionClient,
+      })
+    ).rejects.toMatchObject({ code: 'P2002' })
+
+    expect(transactionClient.enrollment.findUnique).toHaveBeenCalledTimes(1)
+    expect(db.enrollment.findUnique).not.toHaveBeenCalled()
+    expect(transactionClient.enrollment.update).not.toHaveBeenCalled()
+  })
+
   it('loads enrollment data and dispatches platform and email notifications', async () => {
     vi.mocked(db.enrollment.findUnique).mockResolvedValueOnce({
       id: 'enrollment-1',
