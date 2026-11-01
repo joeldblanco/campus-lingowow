@@ -157,36 +157,38 @@ export async function POST(req: NextRequest) {
     const pendingOrder = await db.pendingOrder.findUnique({ where: { purchaseNumber: orderId } })
     let pendingOrderClaimed = false
 
-    if (pendingOrder) {
-      const pendingIdentityMatches = pendingOrder.userId
-        ? pendingOrder.userId === userId
-        : Boolean(
-            !signedInUserId &&
-            customerInfo?.email &&
-            pendingOrder.customerEmail &&
-            customerInfo.email.trim().toLowerCase() ===
-              pendingOrder.customerEmail.trim().toLowerCase()
-          )
-
-      if (!pendingIdentityMatches || Math.abs(pendingOrder.amount - amount) >= 0.0001) {
-        return new NextResponse('Payment request does not match the pending order', { status: 409 })
-      }
-
-      if (pendingOrder.status !== 'PENDING' || isPendingOrderExpired(pendingOrder.expiresAt)) {
-        return new NextResponse('Payment request is already being processed', { status: 409 })
-      }
-
-      const claim = await db.pendingOrder.updateMany({
-        where: { id: pendingOrder.id, status: 'PENDING' },
-        data: { status: 'COMPLETED' },
-      })
-
-      if (claim.count !== 1) {
-        return new NextResponse('Payment request is already being processed', { status: 409 })
-      }
-
-      pendingOrderClaimed = true
+    if (!pendingOrder) {
+      return new NextResponse('Payment request is not registered', { status: 409 })
     }
+
+    const pendingIdentityMatches = pendingOrder.userId
+      ? pendingOrder.userId === userId
+      : Boolean(
+          !signedInUserId &&
+          customerInfo?.email &&
+          pendingOrder.customerEmail &&
+          customerInfo.email.trim().toLowerCase() ===
+            pendingOrder.customerEmail.trim().toLowerCase()
+        )
+
+    if (!pendingIdentityMatches || Math.abs(pendingOrder.amount - amount) >= 0.0001) {
+      return new NextResponse('Payment request does not match the pending order', { status: 409 })
+    }
+
+    if (pendingOrder.status !== 'PENDING' || isPendingOrderExpired(pendingOrder.expiresAt)) {
+      return new NextResponse('Payment request is already being processed', { status: 409 })
+    }
+
+    const claim = await db.pendingOrder.updateMany({
+      where: { id: pendingOrder.id, status: 'PENDING' },
+      data: { status: 'COMPLETED' },
+    })
+
+    if (claim.count !== 1) {
+      return new NextResponse('Payment request is already being processed', { status: 409 })
+    }
+
+    pendingOrderClaimed = true
 
     if (!userId && customerInfo) {
       const guestUser = await db.user.create({

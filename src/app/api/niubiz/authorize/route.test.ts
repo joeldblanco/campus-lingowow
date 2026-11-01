@@ -146,7 +146,17 @@ function resetHarness() {
     }
   )
   mocks.db.invoice.findFirst.mockImplementation(async () => mocks.state.invoices[0] || null)
-  mocks.db.pendingOrder.findUnique.mockImplementation(async () => null)
+  mocks.db.pendingOrder.findUnique.mockImplementation(async () => ({
+    id: 'pending-1',
+    purchaseNumber: 'order-1',
+    userId: 'student-1',
+    customerEmail: 'student@example.com',
+    customerName: 'Student',
+    amount: 100,
+    status: mocks.state.pendingStatus,
+    expiresAt: new Date(Date.now() + 30 * 60 * 1000),
+    invoiceData,
+  }))
   mocks.db.pendingOrder.updateMany.mockImplementation(
     async ({ where, data }: { where: { status: string }; data: { status: string } }) => {
       if (mocks.state.pendingStatus !== where.status) return { count: 0 }
@@ -307,6 +317,17 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
     expect(response.status).toBe(500)
     expect(mocks.db.invoice.create).not.toHaveBeenCalled()
     expect(mocks.db.$transaction).not.toHaveBeenCalled()
+  })
+
+  it('refuses authorization without a durable pending order', async () => {
+    mocks.db.pendingOrder.findUnique.mockResolvedValueOnce(null)
+
+    const response = await POST(request())
+
+    expect(response.status).toBe(409)
+    expect(await response.text()).toBe('Payment request is not registered')
+    expect(mocks.getNiubizAccessToken).not.toHaveBeenCalled()
+    expect(mocks.authorizeNiubizTransaction).not.toHaveBeenCalled()
   })
 
   it('does not create a local invoice when the provider tool fails', async () => {
