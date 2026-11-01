@@ -54,7 +54,7 @@ vi.mock('@/lib/api-auth', () => ({ authenticateRequest: mocks.authenticate }))
 vi.mock('@/lib/db', () => ({
   db: {
     $transaction: mocks.transaction,
-    user: { findUnique: mocks.userFindUnique },
+    user: { findUnique: mocks.userFindUnique, create: mocks.userCreate },
     course: { findUnique: mocks.courseFindUnique },
     academicPeriod: { findUnique: mocks.academicPeriodFindUnique },
     enrollment: { findUnique: mocks.enrollmentFindUnique },
@@ -158,6 +158,11 @@ function makeClient(target: State, options: Options = {}) {
     invoice: {
       findFirst: async ({ where }: { where: { paypalOrderId: string } }) =>
         target.invoices.find((invoice) => invoice.paypalOrderId === where.paypalOrderId) ?? null,
+      create: async ({ data }: { data: { paypalOrderId: string } }) => {
+        const invoice = { paypalOrderId: data.paypalOrderId }
+        target.invoices.push(invoice)
+        return invoice
+      },
     },
     classSchedule: {
       create: async ({ data }: { data: State['schedules'][number] }) => {
@@ -244,6 +249,11 @@ describe('POST /api/bot/enrollments atomicity', () => {
     }))
     mocks.convertTimeSlotToUTC.mockImplementation((day: string, timeSlot: string) => ({ day, timeSlot }))
     mocks.userFindUnique.mockResolvedValue(null)
+    mocks.userCreate.mockImplementation(async ({ data }: { data: Omit<Student, 'id' | 'timezone'> }) => {
+      const student = { id: `student-${state.students.length + 1}`, timezone: 'UTC', ...data }
+      state.students.push(student)
+      return student
+    })
     mocks.enrollmentFindUnique.mockResolvedValue(null)
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
   })
@@ -303,6 +313,42 @@ describe('POST /api/bot/enrollments atomicity', () => {
     expect(state.schedules).toHaveLength(1)
     expect(state.bookings).toHaveLength(2)
     expect(mocks.notify).toHaveBeenCalledWith('enrollment-1')
+  })
+
+  it('commits a verified PayPal invoice through the transaction client', async () => {
+    mocks.verifyPaypalTransaction.mockResolvedValue({ success: true, data: paypalData })
+    mocks.createInvoiceFromPaypal.mockImplementation(
+      async (_data: unknown, _userId: string, client: ReturnType<typeof makeClient>) => {
+        await client.invoice.create({ data: { paypalOrderId: paypalData.resourceId } })
+        return { success: true }
+      }
+    )
+    installHarness(state)
+
+    const response = await POST(buildRequest(validBody({ paypalOrderId: paypalData.resourceId })))
+
+    expect(response.status).toBe(201)
+    expect(mocks.createInvoiceFromPaypal).toHaveBeenCalledWith(
+      paypalData,
+      'student-1',
+      expect.objectContaining({ invoice: expect.any(Object) })
+    )
+    expect(state.invoices).toEqual([{ paypalOrderId: paypalData.resourceId }])
+  })
+
+  it.each([
+    ['course', () => mocks.courseFindUnique.mockResolvedValue(null)],
+    ['academic period', () => mocks.academicPeriodFindUnique.mockResolvedValue(null)],
+  ])('does not create a student when the %s validation fails', async (_label, failValidation) => {
+    failValidation()
+    installHarness(state)
+
+    const response = await POST(buildRequest(validBody()))
+
+    expect(response.status).toBe(404)
+    expect(state.students).toEqual([])
+    expect(mocks.userCreate).not.toHaveBeenCalled()
+    expect(mocks.transaction).not.toHaveBeenCalled()
   })
 
   it('does not create a student when required student validation fails', async () => {
