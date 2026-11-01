@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from 'node:util'
 import { auth } from '@/auth'
 import { createNiubizSession, getNiubizAccessToken } from '@/lib/niubiz'
 import { db } from '@/lib/db'
@@ -36,20 +37,6 @@ const isValidAmount = (value: unknown): value is number =>
 
 const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || null
 
-function canonicalizeJson(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(canonicalizeJson)
-  if (value && typeof value === 'object') {
-    const record = value as Record<string, unknown>
-    return Object.fromEntries(
-      Object.keys(record)
-        .sort()
-        .map((key) => [key, canonicalizeJson(record[key])])
-    )
-  }
-  return value
-}
-
-const canonicalJson = (value: unknown) => JSON.stringify(canonicalizeJson(value)) ?? ''
 
 const isUniqueConstraintError = (error: unknown) =>
   typeof error === 'object' &&
@@ -95,7 +82,7 @@ function checkExistingPendingOrder(
 
   if (pendingOrder.userId) {
     return pendingOrder.userId === input.signedInUserId &&
-      canonicalJson(pendingOrder.invoiceData) === canonicalJson(input.invoiceData)
+      isDeepStrictEqual(pendingOrder.invoiceData, input.invoiceData)
       ? null
       : 'mismatch'
   }
@@ -103,7 +90,7 @@ function checkExistingPendingOrder(
   return !input.signedInUserId &&
     Boolean(storedEmail) &&
     storedEmail === input.customerEmail &&
-    canonicalJson(pendingOrder.invoiceData) === canonicalJson(input.invoiceData)
+    isDeepStrictEqual(pendingOrder.invoiceData, input.invoiceData)
     ? null
     : 'mismatch'
 }

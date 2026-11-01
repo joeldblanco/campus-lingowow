@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from 'node:util'
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { authorizeNiubizTransaction, getNiubizAccessToken, registerNiubizCard } from '@/lib/niubiz'
@@ -75,20 +76,6 @@ const isPendingOrderExpired = (expiresAt?: Date | null) =>
 const isValidAmount = (value: unknown): value is number =>
   typeof value === 'number' && Number.isFinite(value) && value > 0
 
-function canonicalizeJson(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(canonicalizeJson)
-  if (value && typeof value === 'object') {
-    const record = value as Record<string, unknown>
-    return Object.fromEntries(
-      Object.keys(record)
-        .sort()
-        .map((key) => [key, canonicalizeJson(record[key])])
-    )
-  }
-  return value
-}
-
-const canonicalJson = (value: unknown) => JSON.stringify(canonicalizeJson(value)) ?? ''
 
 export async function POST(req: NextRequest) {
   try {
@@ -196,7 +183,7 @@ export async function POST(req: NextRequest) {
     const requestInvoiceData = invoiceData
       ? { ...invoiceData, customerInfo: customerInfo || null }
       : null
-    if (canonicalJson(pendingOrder.invoiceData) !== canonicalJson(requestInvoiceData)) {
+    if (!isDeepStrictEqual(pendingOrder.invoiceData, requestInvoiceData)) {
       return new NextResponse('Payment request does not match the pending order', { status: 409 })
     }
 
