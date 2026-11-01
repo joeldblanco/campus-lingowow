@@ -23,7 +23,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
   
   if (invoiceNumber) {
     invoice = await db.invoice.findFirst({
-      where: { invoiceNumber },
+      where: { invoiceNumber, status: 'PAID' },
       include: {
         user: {
           select: {
@@ -56,8 +56,8 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
     })
   }
   
-  // If no invoice found by number and user is logged in, get their most recent paid invoice
-  if (!invoice && session?.user?.id) {
+  // An explicit order must never be replaced with a different purchase.
+  if (!invoice && !invoiceNumber && session?.user?.id) {
     invoice = await db.invoice.findFirst({
       where: { 
         userId: session.user.id,
@@ -96,7 +96,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
     })
   }
   
-  if (!invoice) {
+  if (!invoice || invoice.status !== 'PAID') {
     redirect('/shop')
   }
 
@@ -117,6 +117,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
 
   const userEmail = invoice.user?.email || ''
   const paymentMethod = invoice.paymentMethod || 'creditCard'
+  const reservationPendingReview = invoice.notes?.includes('reservation_pending_review:') === true
 
   // A buyer with no password set has not yet activated their account. When they
   // are not logged in either, this confirmation is the end of a guest checkout,
@@ -148,6 +149,15 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                 )}
               </p>
             </div>
+
+            {reservationPendingReview && (
+              <div role="status" className="mx-6 mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900">
+                <h2 className="font-semibold">Reserva pendiente de revisión</h2>
+                <p className="mt-1 text-sm">
+                  Tu pago está confirmado. Revisaremos los horarios contigo antes de confirmar tus clases.
+                </p>
+              </div>
+            )}
 
             {/* Content Grid */}
             <div className="grid lg:grid-cols-5 gap-0 border-t">
@@ -259,7 +269,9 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                         </div>
                         <div className="min-w-0">
                           <p className="font-semibold text-gray-900">
-                            Activa tu cuenta para entrar a tus clases
+                            {reservationPendingReview
+                              ? 'Activa tu cuenta para gestionar tu compra'
+                              : 'Activa tu cuenta para entrar a tus clases'}
                           </p>
                           <p className="text-sm text-gray-600 mt-1">
                             {userEmail ? (
@@ -288,7 +300,7 @@ export default async function ConfirmationPage({ searchParams }: ConfirmationPag
                     {/* Single primary next step for an activated buyer */}
                     <Button asChild size="lg" className="w-full">
                       <Link href="/dashboard">
-                        Ir a mis clases
+                        {reservationPendingReview ? 'Entrar a mi cuenta' : 'Ir a mis clases'}
                         <ChevronRight className="h-5 w-5" />
                       </Link>
                     </Button>
