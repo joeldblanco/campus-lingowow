@@ -9,7 +9,9 @@ import {
   upsertSelfServiceEnrollment,
 } from '@/lib/enrollments/self-service-enrollment'
 import {
+  appendReservationSchedulingInProgressMarker,
   classifyReservationReviewReason,
+  clearReservationSchedulingInProgressMarker,
   persistReservationReview,
   RESERVATION_REVIEW_MARKER,
 } from '@/lib/enrollments/paid-reservation-review'
@@ -341,7 +343,9 @@ export async function POST(request: NextRequest) {
             billingCity: customerInfo?.city?.trim() || null,
             billingAddress: customerInfo?.address?.trim() || null,
             billingZipCode: customerInfo?.zipCode?.trim() || null,
-            notes: `Niubiz Order ID: ${purchaseNumber}, Auth: ${authorization?.header?.ecoreTransactionUUID}`,
+            notes: appendReservationSchedulingInProgressMarker(
+              `Niubiz Order ID: ${purchaseNumber}, Auth: ${authorization?.header?.ecoreTransactionUUID}`
+            ),
             items: {
               create: invoiceData.items.map((item) => ({
                 productId: item.productId,
@@ -626,6 +630,9 @@ export async function POST(request: NextRequest) {
                 }
               }
             }
+
+            const readyInvoice = await clearReservationSchedulingInProgressMarker(db, invoice.id)
+            invoice = { ...invoice, notes: readyInvoice.notes }
           })
         } catch (error) {
           reservationPendingReview = true

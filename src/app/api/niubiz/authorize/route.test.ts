@@ -46,6 +46,24 @@ const mocks = vi.hoisted(() => {
   }
 })
 
+const schedulingInProgressMarker = 'reservation_pending_review:scheduling_in_progress'
+const schedulingInProgressPattern = new RegExp(
+  `(^|; )${schedulingInProgressMarker}(; |$)`,
+  'g'
+)
+
+function clearSchedulingInProgressMarker(notes: unknown) {
+  if (typeof notes !== 'string') return notes
+  return (
+    notes.replace(schedulingInProgressPattern, '$1').replace(/; $/g, '').trim() || null
+  )
+}
+
+function replaceSchedulingInProgressMarker(notes: unknown, marker: string) {
+  if (typeof notes !== 'string') return marker
+  return notes.replace(schedulingInProgressPattern, `$1${marker}$2`)
+}
+
 vi.mock('@/auth', () => ({ auth: mocks.auth }))
 vi.mock('@/lib/db', () => ({ db: mocks.db }))
 vi.mock('@/lib/niubiz', () => ({
@@ -218,15 +236,18 @@ function resetHarness() {
   )
   mocks.db.$queryRaw.mockImplementation(
     async (_query: TemplateStringsArray, ...values: unknown[]) => {
+      const invoice = mocks.state.invoices[0]
       const marker = values.find(
         (value): value is string =>
-          typeof value === 'string' && value.includes('reservation_pending_review:')
+          typeof value === 'string' &&
+          /^reservation_pending_review:(schedule_conflict|scheduling_failed)$/.test(value)
       )
       if (marker) {
-        const invoice = mocks.state.invoices[0]
-        invoice.notes = invoice.notes ? `${invoice.notes}; ${marker}` : marker
+        invoice.notes = replaceSchedulingInProgressMarker(invoice.notes, marker)
+      } else if (values.includes(schedulingInProgressMarker)) {
+        invoice.notes = clearSchedulingInProgressMarker(invoice.notes)
       }
-      return [{ id: 'invoice-1', notes: mocks.state.invoices[0].notes, status: 'PAID' }]
+      return [{ id: 'invoice-1', notes: invoice.notes, status: 'PAID' }]
     }
   )
   mocks.db.$transaction.mockImplementation(
@@ -235,6 +256,7 @@ function resetHarness() {
         purchases: [...mocks.state.purchases],
         schedules: [...mocks.state.schedules],
         bookings: [...mocks.state.bookings],
+        invoiceNotes: mocks.state.invoices.map((invoice) => invoice.notes),
       }
       try {
         return await callback(mocks.db)
@@ -242,6 +264,9 @@ function resetHarness() {
         mocks.state.purchases.splice(0, mocks.state.purchases.length, ...snapshot.purchases)
         mocks.state.schedules.splice(0, mocks.state.schedules.length, ...snapshot.schedules)
         mocks.state.bookings.splice(0, mocks.state.bookings.length, ...snapshot.bookings)
+        mocks.state.invoices.forEach((invoice, index) => {
+          invoice.notes = snapshot.invoiceNotes[index]
+        })
         throw error
       }
     }
@@ -267,6 +292,9 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
     expect(body.purchases).toEqual([])
     expect(mocks.state.invoices[0].status).toBe('PAID')
     expect(mocks.state.invoices[0].notes).toContain('reservation_pending_review:schedule_conflict')
+    expect(mocks.state.invoices[0].notes).not.toContain(
+      'reservation_pending_review:scheduling_in_progress'
+    )
     expect(mocks.state.purchases).toEqual([])
     expect(mocks.state.schedules).toEqual([])
     expect(mocks.state.bookings).toEqual([])
@@ -280,6 +308,9 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
 
     expect(response.status).toBe(200)
     expect(body.reservation_pending_review).toBe(false)
+    expect(mocks.state.invoices[0].notes).not.toContain(
+      'reservation_pending_review:scheduling_in_progress'
+    )
     expect(mocks.state.purchases).toHaveLength(1)
     expect(mocks.state.schedules).toHaveLength(1)
     expect(mocks.state.bookings.length).toBeGreaterThan(0)
@@ -554,7 +585,11 @@ describe('POST /api/niubiz/authorize reservation preparation', () => {
 
     expect(response.status).toBe(500)
     expect(mocks.state.invoices[0].status).toBe('PAID')
-    expect(mocks.state.invoices[0].notes).not.toContain('reservation_pending_review:')
+    // A failed marker write leaves the bounded in-progress marker intact so
+    // replay cannot present a paid-but-ready reservation as fulfilled.
+    expect(mocks.state.invoices[0].notes).toContain(
+      'reservation_pending_review:scheduling_in_progress'
+    )
     expect(mocks.authorizeNiubizTransaction).toHaveBeenCalledTimes(1)
     expect(mocks.notifySelfServiceEnrollmentCreated).not.toHaveBeenCalled()
   })
