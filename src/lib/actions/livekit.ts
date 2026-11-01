@@ -89,6 +89,10 @@ export async function createLiveKitMeeting(bookingId: string) {
       throw new Error('No tienes permisos para crear esta videollamada')
     }
 
+    if (booking.status === 'CANCELLED') {
+      throw new Error('La reserva está cancelada')
+    }
+
     const roomName = generateRoomName(bookingId)
     const isTeacher = booking.teacherId === session.user.id
 

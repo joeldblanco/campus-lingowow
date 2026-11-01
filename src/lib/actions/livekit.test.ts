@@ -190,6 +190,20 @@ describe('createLiveKitMeeting', () => {
     expect(result.success).toBe(false)
   })
 
+  it.each(['teacher-1', 'student-1'])('does not create a room or reactivate a cancelled booking for %s', async (userId) => {
+    vi.mocked(auth).mockResolvedValue({ user: { id: userId } } as never)
+    vi.mocked(db.classBooking.findUnique).mockResolvedValueOnce({
+      id: 'booking-1', teacherId: 'teacher-1', studentId: 'student-1', status: 'CANCELLED',
+    } as never)
+
+    const result = await createLiveKitMeeting('booking-1')
+
+    expect(result).toEqual({ success: false, error: 'La reserva está cancelada' })
+    expect(db.videoCall.upsert).not.toHaveBeenCalled()
+    expect(db.classBooking.update).not.toHaveBeenCalled()
+    expect(auditLog).not.toHaveBeenCalled()
+  })
+
   it('returns success: false when booking does not exist', async () => {
     vi.mocked(auth).mockResolvedValue({ user: { id: 'teacher-1' } } as never)
     vi.mocked(db.classBooking.findUnique).mockResolvedValueOnce(null as never)
